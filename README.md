@@ -1,2 +1,4 @@
-# slot-srv
+
+# Slot server
+
 Slots games server.

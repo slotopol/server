@@ -19,3 +19,9 @@
 
 # Go workspace file
 go.work
+
+# Visual Studio settings
+.vs/
+
+# Visual Studio Code settings
+.vscode/
