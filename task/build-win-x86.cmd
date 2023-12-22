@@ -7,4 +7,4 @@ for /F "tokens=*" %%g in ('git describe --tags') do (set buildvers=%%g)
 for /F "tokens=*" %%g in ('go run %~dp0\timenow.go') do (set buildtime=%%g)
 
 go env -w GOOS=windows GOARCH=386 CGO_ENABLED=1
-go build -o %GOPATH%\bin\slot.win.x86.exe -v -ldflags="-linkmode external -extldflags -static -X 'github.com/schwarzlichtbezirk/slot-srv/config.BuildVers=%buildvers%' -X 'github.com/schwarzlichtbezirk/slot-srv/config.BuildTime=%buildtime%'" %wd%/cmd
+go build -o %GOPATH%\bin\slot_win_x86.exe -v -ldflags="-linkmode external -extldflags -static -X 'github.com/schwarzlichtbezirk/slot-srv/config.BuildVers=%buildvers%' -X 'github.com/schwarzlichtbezirk/slot-srv/config.BuildTime=%buildtime%'" %wd%

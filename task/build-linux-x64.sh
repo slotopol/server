@@ -8,4 +8,4 @@ buildvers=$(git describe --tags)
 buildtime=$(go run "$(dirname "$0")/timenow.go") # $(date -u +'%FT%TZ')
 
 go env -w GOOS=linux GOARCH=amd64 CGO_ENABLED=1
-go build -o $GOPATH/bin/slot.linux.x64.exe -v -ldflags="-linkmode external -extldflags -static -X 'github.com/schwarzlichtbezirk/slot-srv/config.BuildVers=$buildvers' -X 'github.com/schwarzlichtbezirk/slot-srv/config.BuildTime=$buildtime'" $wd/cmd
+go build -o $GOPATH/bin/slot_linux_x64 -v -ldflags="-linkmode external -extldflags -static -X 'github.com/schwarzlichtbezirk/slot-srv/config.BuildVers=$buildvers' -X 'github.com/schwarzlichtbezirk/slot-srv/config.BuildTime=$buildtime'" $wd
