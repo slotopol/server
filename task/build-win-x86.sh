@@ -4,6 +4,8 @@
 
 wd=$(realpath -s "$(dirname "$0")/..")
 
+cp -ruv "$wd/confdata" "$GOPATH/bin/config"
+
 buildvers=$(git describe --tags)
 buildtime=$(go run "$(dirname "$0")/timenow.go") # $(date -u +'%FT%TZ')
 

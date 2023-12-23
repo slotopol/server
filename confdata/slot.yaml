@@ -1,0 +1,4 @@
+
+# Server configuration file. First of all you can change
+# "access-key" and "refresh-key" for tokens protection.
+# This file does not modified by server runtime.

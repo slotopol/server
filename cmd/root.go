@@ -2,45 +2,29 @@ package cmd
 
 import (
 	"fmt"
-	"os"
 
 	"github.com/schwarzlichtbezirk/slot-srv/config"
 	"github.com/spf13/cobra"
 )
 
-// BaseName returns name of file in given file path without extension.
-func BaseName(fpath string) string {
-	var j = len(fpath)
-	if j == 0 {
-		return ""
-	}
-	var i = j - 1
-	for {
-		if os.IsPathSeparator(fpath[i]) {
-			i++
-			break
-		}
-		if fpath[i] == '.' {
-			j = i
-		}
-		if i == 0 {
-			break
-		}
-		i--
-	}
-	return fpath[i:j]
-}
-
 var (
 	rootCmd = &cobra.Command{
-		Use:     BaseName(os.Args[0]),
+		Use:     config.AppName,
 		Version: config.BuildVers,
 		Short:   "Slots games backend",
 		Long:    `This application performs all implemented tasks for slots games.`,
+		RunE: func(cmd *cobra.Command, args []string) error {
+			fmt.Println("***")
+			return nil
+		},
 	}
 )
 
 func init() {
+	cobra.OnInitialize(config.InitConfig)
+
+	rootCmd.PersistentFlags().StringVarP(&config.CfgFile, "config", "c", "", "config file (default is config/slot.yaml at executable location)")
+	rootCmd.PersistentFlags().BoolVarP(&config.DevMode, "devmode", "d", false, "start application in developer mode")
 	rootCmd.SetVersionTemplate(fmt.Sprintf("version: %s, builton: %s", config.BuildVers, config.BuildTime))
 }
 
