@@ -7,12 +7,15 @@ import (
 	"github.com/spf13/cobra"
 )
 
+const rootShort = "Slots games backend"
+const rootLong = `This application performs all implemented tasks for slots games.`
+
 var (
 	rootCmd = &cobra.Command{
 		Use:     config.AppName,
 		Version: config.BuildVers,
-		Short:   "Slots games backend",
-		Long:    `This application performs all implemented tasks for slots games.`,
+		Short:   rootShort,
+		Long:    rootLong,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			fmt.Println("***")
 			return nil

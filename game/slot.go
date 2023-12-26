@@ -34,10 +34,10 @@ type WinScan struct {
 
 type SlotGame interface {
 	NewScreen() Screen                  // returns new empty screen object for this game
-	Bet() int                           // returns current bet
+	GetBet() int                        // returns current bet
 	SetBet(int) error                   // set bet to given value
-	Line() []int                        // returns selected lines indexes
-	SetLine([]int) error                // setup selected lines indexes
+	GetLines() []int                    // returns selected lines indexes
+	SetLines([]int) error               // setup selected lines indexes
 	Scanner(screen Screen, sw *WinScan) // scan given screen and append result to sw
 	Spawn(screen Screen, sw *WinScan)   // setup bonus games to win results
 }
