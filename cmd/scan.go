@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/schwarzlichtbezirk/slot-srv/config"
+	"github.com/schwarzlichtbezirk/slot-srv/game/sizzlinghot"
 	"github.com/schwarzlichtbezirk/slot-srv/game/slotopol"
 	"github.com/schwarzlichtbezirk/slot-srv/game/slotopoldeluxe"
 	"github.com/spf13/cobra"
@@ -23,23 +24,31 @@ var scanCmd = &cobra.Command{
 	Example: fmt.Sprintf(scanExmp, config.AppName),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		if fSlotopol {
-			slotopol.CalcStat()
+			slotopol.CalcStat(fReels)
 		}
 		if fSlotopolDeluxe {
-			slotopoldeluxe.CalcStat()
+			slotopoldeluxe.CalcStat(fReels)
+		}
+		if fSizzlingHot {
+			sizzlinghot.CalcStat(fReels)
 		}
 		return nil
 	},
 }
 
 var (
+	fReels          string
 	fSlotopol       bool
 	fSlotopolDeluxe bool
+	fSizzlingHot    bool
 )
 
 func init() {
 	rootCmd.AddCommand(scanCmd)
 
-	scanCmd.Flags().BoolVarP(&fSlotopol, "slotopol", "s", false, "'Slotopol' Megajack 5x3 slots")
-	scanCmd.Flags().BoolVar(&fSlotopolDeluxe, "slotopoldeluxe", false, "'Slotopol Deluxe' Megajack 5x3 slots")
+	var flags = scanCmd.Flags()
+	flags.StringVarP(&fReels, "reels", "r", "orig", "name of reels set to use")
+	flags.BoolVarP(&fSlotopol, "slotopol", "s", false, "'Slotopol' Megajack 5x3 slots")
+	flags.BoolVar(&fSlotopolDeluxe, "slotopoldeluxe", false, "'Slotopol Deluxe' Megajack 5x3 slots")
+	flags.BoolVar(&fSizzlingHot, "sizzlinghot", false, "'Sizzling Hot' Novomatic 5x3 slots")
 }

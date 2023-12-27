@@ -51,7 +51,7 @@ func InitConfig() {
 	if DevMode {
 		fmt.Println("*running in developer mode*")
 	}
-	fmt.Printf("version: %s, builton: %s", BuildVers, BuildTime)
+	fmt.Printf("version: %s, builton: %s\n", BuildVers, BuildTime)
 
 	if str, err := os.Executable(); err == nil {
 		ExePath = filepath.Dir(str)

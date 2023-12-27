@@ -9,19 +9,76 @@ import (
 	"github.com/schwarzlichtbezirk/slot-srv/game/slotopol"
 )
 
-// Reels sets.
-// RTP = 83.99(sym) + 13.667(mje) + 5.9039(mjm) = 103.56151012726772%
+// Original reels.
+// symbols: 81.213(lined) + 2.7777(scatter) = 83.990312%
+// spin1 bonuses: count1 28672, rtp = 9.057617%
+// spin3 bonuses: count3 3328, rtp = 3.153992%
+// spin6 bonuses: count6 768, rtp = 1.455688%
+// monopoly bonuses: count 6912, rtp = 5.903901%
+// jackpots: count 32, frequency 1/1048576
+// RTP = 83.99(sym) + 13.667(mje) + 5.9039(mjm) = 103.561510%
 var ReelsOrig = game.Reels5x{
-	{1, 2, 13, 4, 13, 3, 13, 5, 9, 7, 8, 13, 10, 13, 12, 11, 13, 12, 11, 13, 13, 2, 4, 5, 2, 6, 7, 9, 8, 3, 10, 6}, // 1 reel
-	{13, 2, 12, 9, 13, 2, 5, 6, 9, 7, 13, 10, 12, 13, 11, 12, 13, 11, 12, 13, 3, 4, 5, 2, 8, 7, 10, 4, 6, 8, 3, 1}, // 2 reel
-	{2, 1, 12, 3, 4, 5, 2, 6, 7, 10, 8, 4, 3, 13, 12, 11, 13, 12, 11, 13, 12, 3, 5, 13, 9, 6, 7, 10, 13, 8, 9, 13}, // 3 reel
-	{1, 2, 12, 4, 3, 6, 4, 2, 7, 8, 10, 5, 13, 12, 11, 13, 12, 11, 13, 12, 9, 4, 5, 3, 13, 6, 10, 7, 13, 8, 9, 13}, // 4 reel
-	{1, 2, 12, 4, 3, 5, 12, 6, 7, 10, 8, 12, 9, 13, 12, 11, 13, 12, 11, 13, 12, 3, 4, 5, 2, 6, 7, 10, 13, 8, 9, 5}, // 5 reel
+	{1, 2, 13, 4, 13, 3, 13, 5, 9, 7, 8, 13, 10, 13, 12, 11, 13, 12, 11, 13, 13, 2, 4, 5, 2, 6, 7, 9, 8, 3, 10, 6},
+	{13, 2, 12, 9, 13, 2, 5, 6, 9, 7, 13, 10, 12, 13, 11, 12, 13, 11, 12, 13, 3, 4, 5, 2, 8, 7, 10, 4, 6, 8, 3, 1},
+	{2, 1, 12, 3, 4, 5, 2, 6, 7, 10, 8, 4, 3, 13, 12, 11, 13, 12, 11, 13, 12, 3, 5, 13, 9, 6, 7, 10, 13, 8, 9, 13},
+	{1, 2, 12, 4, 3, 6, 4, 2, 7, 8, 10, 5, 13, 12, 11, 13, 12, 11, 13, 12, 9, 4, 5, 3, 13, 6, 10, 7, 13, 8, 9, 13},
+	{1, 2, 12, 4, 3, 5, 12, 6, 7, 10, 8, 12, 9, 13, 12, 11, 13, 12, 11, 13, 12, 3, 4, 5, 2, 6, 7, 10, 13, 8, 9, 5},
+}
+
+// reels lengths [32, 32, 32, 32, 32], total reshuffles 33554432
+// symbols: 79.254(lined) + 2.7777(scatter) = 82.031429%
+// spin1 bonuses: count1 20736, rtp = 6.550598%
+// spin3 bonuses: count3 3120, rtp = 2.956867%
+// spin6 bonuses: count6 720, rtp = 1.364708%
+// monopoly bonuses: count 6720, rtp = 5.739904%
+// jackpots: count 32, frequency 1/1048576
+// RTP = 82.031(sym) + 10.872(mje) + 5.7399(mjm) = 98.643506%
+var Reels986 = game.Reels5x{
+	{1, 5, 13, 4, 13, 3, 13, 5, 9, 7, 8, 13, 10, 13, 12, 11, 13, 12, 11, 13, 13, 2, 4, 5, 2, 6, 7, 9, 8, 3, 10, 6},
+	{13, 2, 12, 9, 13, 4, 5, 6, 9, 7, 13, 10, 12, 13, 11, 13, 13, 11, 12, 13, 3, 4, 5, 2, 8, 7, 10, 4, 6, 8, 3, 1},
+	{2, 1, 12, 3, 4, 5, 2, 6, 7, 10, 8, 4, 5, 13, 12, 11, 13, 12, 11, 13, 12, 3, 5, 13, 9, 6, 7, 10, 13, 8, 9, 13},
+	{1, 2, 12, 4, 3, 6, 4, 2, 7, 8, 10, 5, 13, 12, 11, 13, 12, 11, 13, 12, 9, 4, 5, 3, 12, 6, 10, 7, 13, 8, 9, 13},
+	{1, 2, 12, 4, 3, 5, 12, 6, 7, 10, 8, 12, 9, 13, 12, 11, 13, 12, 11, 13, 12, 3, 4, 5, 2, 6, 7, 10, 13, 8, 9, 5},
+}
+
+// reels lengths [32, 32, 32, 32, 32], total reshuffles 33554432
+// symbols: 77.605(lined) + 2.7777(scatter) = 80.382288%
+// spin1 bonuses: count1 20736, rtp = 6.550598%
+// spin3 bonuses: count3 3120, rtp = 2.956867%
+// spin6 bonuses: count6 720, rtp = 1.364708%
+// monopoly bonuses: count 6720, rtp = 5.739904%
+// jackpots: count 32, frequency 1/1048576
+// RTP = 80.382(sym) + 10.872(mje) + 5.7399(mjm) = 96.994365%
+var Reels970 = game.Reels5x{
+	{1, 5, 13, 4, 13, 3, 13, 5, 9, 7, 8, 13, 10, 13, 12, 11, 13, 12, 11, 13, 13, 2, 4, 5, 2, 6, 7, 9, 8, 3, 10, 6},
+	{13, 2, 12, 9, 13, 4, 5, 6, 9, 7, 13, 10, 12, 13, 11, 13, 13, 11, 12, 13, 3, 4, 5, 2, 8, 7, 10, 4, 6, 8, 3, 1},
+	{2, 1, 12, 3, 4, 5, 2, 6, 7, 10, 8, 4, 5, 13, 12, 11, 13, 12, 11, 13, 12, 3, 5, 13, 9, 6, 7, 10, 13, 8, 9, 13},
+	{1, 2, 12, 4, 3, 6, 4, 2, 7, 8, 10, 5, 13, 12, 11, 13, 12, 11, 13, 12, 2, 4, 5, 3, 12, 6, 10, 7, 13, 8, 9, 13},
+	{1, 2, 12, 4, 3, 5, 12, 6, 7, 3, 8, 12, 9, 13, 12, 11, 13, 12, 11, 13, 12, 3, 4, 5, 2, 6, 7, 10, 13, 8, 9, 5},
+}
+
+// reels lengths [32, 32, 32, 32, 32], total reshuffles 33554432
+// symbols: 76.288(lined) + 2.7777(scatter) = 79.065740%
+// spin1 bonuses: count1 20736, rtp = 6.550598%
+// spin3 bonuses: count3 3120, rtp = 2.956867%
+// spin6 bonuses: count6 720, rtp = 1.364708%
+// monopoly bonuses: count 6720, rtp = 5.739904%
+// jackpots: count 32, frequency 1/1048576
+// RTP = 79.066(sym) + 10.872(mje) + 5.7399(mjm) = 95.677817%
+var Reels957 = game.Reels5x{
+	{1, 5, 13, 4, 13, 3, 13, 5, 9, 7, 8, 13, 10, 13, 12, 11, 13, 12, 11, 13, 13, 2, 4, 5, 2, 6, 7, 9, 8, 3, 10, 6},
+	{13, 2, 12, 9, 13, 4, 5, 6, 9, 7, 13, 10, 12, 13, 11, 13, 13, 11, 12, 13, 3, 4, 5, 2, 8, 7, 10, 4, 6, 8, 3, 1},
+	{2, 1, 12, 3, 4, 5, 2, 6, 7, 10, 8, 4, 5, 13, 12, 11, 13, 12, 11, 13, 12, 3, 5, 13, 9, 6, 7, 10, 13, 8, 9, 13},
+	{1, 2, 12, 4, 3, 6, 4, 2, 7, 8, 3, 5, 13, 12, 11, 13, 12, 11, 13, 12, 2, 4, 5, 3, 12, 6, 10, 7, 13, 8, 9, 13},
+	{1, 2, 12, 4, 3, 5, 12, 6, 7, 3, 8, 12, 2, 13, 12, 11, 13, 12, 11, 13, 12, 3, 4, 5, 2, 6, 7, 10, 13, 8, 9, 5},
 }
 
 // Map with available reels.
-var ReelsMap = map[string]game.Reels{
-	"103.6": &ReelsOrig,
+var ReelsMap = map[string]*game.Reels5x{
+	"orig": &ReelsOrig,
+	"98.6": &Reels986,
+	"97.0": &Reels970,
+	"95.7": &Reels957,
 }
 
 // Lined payment.
@@ -70,14 +127,15 @@ var LineBonus = [13][5]int{
 	{0, 0, 0, 0, mjm},        // 13 Monopoly
 }
 
-func NewGame() *slotopol.Game {
+func NewGame(reels *game.Reels5x) *slotopol.Game {
 	return &slotopol.Game{
-		Bet: 1,
-		FS:  0,
-		SBL: []int{1},
-
-		Reels:     &ReelsOrig,
-		BetLines:  &game.BetLinesMgj,
+		Slot5x3: game.Slot5x3{
+			SBL:      []int{1},
+			Bet:      1,
+			FS:       0,
+			Reels:    reels,
+			BetLines: &game.BetLinesMgj,
+		},
 		LinePay:   &LinePay,
 		ScatPay:   &ScatPay,
 		ScatFree:  &slotopol.ScatFreespin,
@@ -89,8 +147,17 @@ const (
 	jid = 1 // jackpot ID
 )
 
-func CalcStat() {
-	var g = NewGame()
+func CalcStat(rn string) {
+	var reels *game.Reels5x
+	if rn != "" {
+		var ok bool
+		if reels, ok = ReelsMap[rn]; !ok {
+			return
+		}
+	} else {
+		reels = &ReelsOrig
+	}
+	var g = NewGame(reels)
 	var sbl = float64(len(g.SBL))
 	var s game.Stat
 	var t0 = time.Now()
@@ -98,7 +165,7 @@ func CalcStat() {
 		var ctx, cancel = context.WithCancel(context.Background())
 		defer cancel()
 		go s.Progress(ctx, time.NewTicker(2*time.Second), sbl, float64(g.Reels.Reshuffles()))
-		s.Rotator5x(ctx, g, g.Reels)
+		s.BruteForce5x(ctx, g, g.Reels)
 	}()
 	var dur = time.Since(t0)
 	var n = float64(s.Reshuffles)
@@ -112,12 +179,14 @@ func CalcStat() {
 	var rtpmje6 = Mmje6 * qmje6 * 100
 	var Mmjm, qmjm = 286.60597422268, float64(s.BonusCount[mjm]) / n / sbl
 	var rtpmjm = Mmjm * qmjm * 100
-	fmt.Printf("selected %d lines, reshuffles %d, time spent %v\n", len(g.SBL), s.Reshuffles, dur)
-	fmt.Printf("symbols: %2.5g(lined) + %2.5g(scatter) = %g%%\n", lp, sp, rtpsym)
-	fmt.Printf("spin1 bonuses: count1 %d, rtp = %g%%\n", s.BonusCount[mje1], rtpmje1)
-	fmt.Printf("spin3 bonuses: count3 %d, rtp = %g%%\n", s.BonusCount[mje3], rtpmje3)
-	fmt.Printf("spin6 bonuses: count6 %d, rtp = %g%%\n", s.BonusCount[mje6], rtpmje6)
-	fmt.Printf("monopoly bonuses: count %d, rtp = %g%%\n", s.BonusCount[mjm], rtpmjm)
+	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", float64(s.Reshuffles)/float64(g.Reels.Reshuffles())*100, len(g.SBL), dur)
+	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
+		len(g.Reels.Reel(1)), len(g.Reels.Reel(2)), len(g.Reels.Reel(3)), len(g.Reels.Reel(4)), len(g.Reels.Reel(5)), g.Reels.Reshuffles())
+	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lp, sp, rtpsym)
+	fmt.Printf("spin1 bonuses: count1 %d, rtp = %.6f%%\n", s.BonusCount[mje1], rtpmje1)
+	fmt.Printf("spin3 bonuses: count3 %d, rtp = %.6f%%\n", s.BonusCount[mje3], rtpmje3)
+	fmt.Printf("spin6 bonuses: count6 %d, rtp = %.6f%%\n", s.BonusCount[mje6], rtpmje6)
+	fmt.Printf("monopoly bonuses: count %d, rtp = %.6f%%\n", s.BonusCount[mjm], rtpmjm)
 	fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(n/float64(s.JackCount[jid])))
-	fmt.Printf("RTP = %2.5g(sym) + %2.5g(mje) + %2.5g(mjm) = %g%%\n", rtpsym, rtpmje1+rtpmje3+rtpmje6, rtpmjm, rtpsym+rtpmje1+rtpmje3+rtpmje6+rtpmjm)
+	fmt.Printf("RTP = %.5g(sym) + %.5g(mje) + %.5g(mjm) = %.6f%%\n", rtpsym, rtpmje1+rtpmje3+rtpmje6, rtpmjm, rtpsym+rtpmje1+rtpmje3+rtpmje6+rtpmjm)
 }

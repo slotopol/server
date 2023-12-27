@@ -8,19 +8,24 @@ import (
 	"github.com/schwarzlichtbezirk/slot-srv/game"
 )
 
-// Reels sets.
-// RTP = 88.394(sym) + 7.6765(mje9) + 3.6899(mjm) = 99.76055565071695%
+// Original reels.
+// reels lengths [32, 32, 32, 32, 32], total reshuffles 33554432
+// symbols: 48.848(lined) + 39.546(scatter) = 88.394135%
+// spin9 bonuses: count 2700, rtp = 7.676482%
+// monopoly bonuses: count 4320, rtp = 3.689938%
+// jackpots: count 32, frequency 1/1048576
+// RTP = 88.394(sym) + 7.6765(mje9) + 3.6899(mjm) = 99.760556%
 var ReelsOrig = game.Reels5x{
-	{13, 1, 5, 12, 13, 11, 12, 11, 13, 8, 2, 12, 13, 3, 4, 6, 13, 2, 5, 10, 13, 9, 7, 8, 13, 10, 7, 9, 13, 3, 4, 6}, // 1 reel
-	{9, 5, 10, 13, 9, 6, 3, 4, 13, 2, 12, 8, 12, 13, 11, 12, 11, 13, 5, 7, 10, 6, 3, 4, 13, 2, 12, 8, 13, 7, 1, 12}, // 2 reel
-	{12, 13, 11, 12, 11, 13, 5, 10, 9, 7, 1, 12, 13, 3, 8, 6, 12, 13, 8, 4, 12, 2, 5, 10, 13, 7, 2, 13, 6, 3, 4, 9}, // 3 reel
-	{12, 1, 2, 13, 6, 5, 12, 4, 8, 12, 13, 3, 10, 9, 7, 13, 11, 11, 11, 11, 13, 5, 12, 9, 8, 6, 13, 3, 10, 2, 7, 4}, // 4 reel
-	{13, 11, 13, 12, 6, 4, 12, 3, 2, 5, 12, 10, 7, 12, 8, 1, 9, 12, 8, 9, 12, 4, 3, 12, 2, 5, 12, 10, 7, 13, 12, 6}, // 5 reel
+	{13, 1, 5, 12, 13, 11, 12, 11, 13, 8, 2, 12, 13, 3, 4, 6, 13, 2, 5, 10, 13, 9, 7, 8, 13, 10, 7, 9, 13, 3, 4, 6},
+	{9, 5, 10, 13, 9, 6, 3, 4, 13, 2, 12, 8, 12, 13, 11, 12, 11, 13, 5, 7, 10, 6, 3, 4, 13, 2, 12, 8, 13, 7, 1, 12},
+	{12, 13, 11, 12, 11, 13, 5, 10, 9, 7, 1, 12, 13, 3, 8, 6, 12, 13, 8, 4, 12, 2, 5, 10, 13, 7, 2, 13, 6, 3, 4, 9},
+	{12, 1, 2, 13, 6, 5, 12, 4, 8, 12, 13, 3, 10, 9, 7, 13, 11, 11, 11, 11, 13, 5, 12, 9, 8, 6, 13, 3, 10, 2, 7, 4},
+	{13, 11, 13, 12, 6, 4, 12, 3, 2, 5, 12, 10, 7, 12, 8, 1, 9, 12, 8, 9, 12, 4, 3, 12, 2, 5, 12, 10, 7, 13, 12, 6},
 }
 
 // Map with available reels.
-var ReelsMap = map[string]game.Reels{
-	"99.8": &ReelsOrig,
+var ReelsMap = map[string]*game.Reels5x{
+	"orig": &ReelsOrig,
 }
 
 // Lined payment.
@@ -94,53 +99,27 @@ var Jackpot = [13][5]int{
 }
 
 type Game struct {
-	Bet int   // bet value
-	FS  int   // free spin number
-	SBL []int // selected bet lines
-
-	Reels     game.Reels
-	BetLines  game.Lineset
+	game.Slot5x3
 	LinePay   *[13][5]int
 	ScatPay   *[5]int
 	ScatFree  *[5]int
 	LineBonus *[13][5]int
 }
 
-func NewGame() *Game {
+func NewGame(reels *game.Reels5x) *Game {
 	return &Game{
-		Bet: 1,
-		FS:  0,
-		SBL: []int{1},
-
-		Reels:     &ReelsOrig,
-		BetLines:  &game.BetLinesMgj,
+		Slot5x3: game.Slot5x3{
+			SBL:      []int{1},
+			Bet:      1,
+			FS:       0,
+			Reels:    reels,
+			BetLines: &game.BetLinesMgj,
+		},
 		LinePay:   &LinePay,
 		ScatPay:   &ScatPay,
 		ScatFree:  &ScatFreespin,
 		LineBonus: &LineBonus,
 	}
-}
-
-func (g *Game) NewScreen() game.Screen {
-	return &game.Screen5x3{}
-}
-
-func (g *Game) GetBet() int {
-	return g.Bet
-}
-
-func (g *Game) SetBet(bet int) error {
-	g.Bet = bet
-	return nil
-}
-
-func (g *Game) GetLines() []int {
-	return g.SBL
-}
-
-func (g *Game) SetLines(sbl []int) error {
-	g.SBL = sbl
-	return nil
 }
 
 // Not from lined paytable.
@@ -283,6 +262,12 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 func (g *Game) Spawn(screen game.Screen, sw *game.WinScan) {
 	for i, wi := range sw.Wins {
 		switch wi.BID {
+		case mje1:
+			sw.Wins[i].Bon, sw.Wins[i].Pay = Eldorado1Spawn(g.Bet)
+		case mje3:
+			sw.Wins[i].Bon, sw.Wins[i].Pay = Eldorado3Spawn(g.Bet)
+		case mje6:
+			sw.Wins[i].Bon, sw.Wins[i].Pay = Eldorado6Spawn(g.Bet)
 		case mje9:
 			sw.Wins[i].Bon, sw.Wins[i].Pay = Eldorado9Spawn(g.Bet)
 		case mjm:
@@ -291,8 +276,17 @@ func (g *Game) Spawn(screen game.Screen, sw *game.WinScan) {
 	}
 }
 
-func CalcStat() {
-	var g = NewGame()
+func CalcStat(rn string) {
+	var reels *game.Reels5x
+	if rn != "" {
+		var ok bool
+		if reels, ok = ReelsMap[rn]; !ok {
+			return
+		}
+	} else {
+		reels = &ReelsOrig
+	}
+	var g = NewGame(reels)
 	var sbl = float64(len(g.SBL))
 	var s game.Stat
 	var t0 = time.Now()
@@ -300,7 +294,7 @@ func CalcStat() {
 		var ctx, cancel = context.WithCancel(context.Background())
 		defer cancel()
 		go s.Progress(ctx, time.NewTicker(2*time.Second), sbl, float64(g.Reels.Reshuffles()))
-		s.Rotator5x(ctx, g, g.Reels)
+		s.BruteForce5x(ctx, g, g.Reels)
 	}()
 	var dur = time.Since(t0)
 	var n = float64(s.Reshuffles)
@@ -310,10 +304,12 @@ func CalcStat() {
 	var rtpmje9 = Mmje9 * qmje9 * 100
 	var Mmjm, qmjm = 286.60597422268, float64(s.BonusCount[mjm]) / n / sbl
 	var rtpmjm = Mmjm * qmjm * 100
-	fmt.Printf("selected %d lines, reshuffles %d, time spent %v\n", len(g.SBL), s.Reshuffles, dur)
-	fmt.Printf("symbols: %2.5g(lined) + %2.5g(scatter) = %g%%\n", lp, sp, rtpsym)
-	fmt.Printf("spin9 bonuses: count %d, rtp = %g%%\n", s.BonusCount[mje9], rtpmje9)
-	fmt.Printf("monopoly bonuses: count %d, rtp = %g%%\n", s.BonusCount[mjm], rtpmjm)
+	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", float64(s.Reshuffles)/float64(g.Reels.Reshuffles())*100, len(g.SBL), dur)
+	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
+		len(g.Reels.Reel(1)), len(g.Reels.Reel(2)), len(g.Reels.Reel(3)), len(g.Reels.Reel(4)), len(g.Reels.Reel(5)), g.Reels.Reshuffles())
+	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lp, sp, rtpsym)
+	fmt.Printf("spin9 bonuses: count %d, rtp = %.6f%%\n", s.BonusCount[mje9], rtpmje9)
+	fmt.Printf("monopoly bonuses: count %d, rtp = %.6f%%\n", s.BonusCount[mjm], rtpmjm)
 	fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(n/float64(s.JackCount[jid])))
-	fmt.Printf("RTP = %2.5g(sym) + %2.5g(mje9) + %2.5g(mjm) = %g%%\n", rtpsym, rtpmje9, rtpmjm, rtpsym+rtpmje9+rtpmjm)
+	fmt.Printf("RTP = %.5g(sym) + %.5g(mje9) + %.5g(mjm) = %.6f%%\n", rtpsym, rtpmje9, rtpmjm, rtpsym+rtpmje9+rtpmjm)
 }

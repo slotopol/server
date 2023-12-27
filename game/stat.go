@@ -52,7 +52,7 @@ func (s *Stat) Progress(ctx context.Context, steps *time.Ticker, sel, total floa
 	}
 }
 
-func (s *Stat) Rotator5x(ctx context.Context, g SlotGame, reels Reels) {
+func (s *Stat) BruteForce5x(ctx context.Context, g SlotGame, reels Reels) {
 	var screen = g.NewScreen()
 	var ws WinScan
 	var r1 = reels.Reel(1)

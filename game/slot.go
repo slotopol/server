@@ -1,6 +1,8 @@
 package game
 
-import "math/rand"
+import (
+	"math/rand"
+)
 
 type Reels interface {
 	Cols() int          // returns number of columns
@@ -79,4 +81,35 @@ func (s *Screen5x3) SetCol(x int, reel []int, pos int) {
 	for y := 0; y < 3; y++ {
 		s[x-1][y] = reel[(pos+y)%len(reel)]
 	}
+}
+
+type Slot5x3 struct {
+	SBL []int // selected bet lines
+	Bet int   // bet value
+	FS  int   // free spin number
+
+	Reels    *Reels5x
+	BetLines *Lines5col
+}
+
+func (g *Slot5x3) NewScreen() Screen {
+	return &Screen5x3{}
+}
+
+func (g *Slot5x3) GetBet() int {
+	return g.Bet
+}
+
+func (g *Slot5x3) SetBet(bet int) error {
+	g.Bet = bet
+	return nil
+}
+
+func (g *Slot5x3) GetLines() []int {
+	return g.SBL
+}
+
+func (g *Slot5x3) SetLines(sbl []int) error {
+	g.SBL = sbl
+	return nil
 }
