@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/schwarzlichtbezirk/slot-srv/config"
+	"github.com/schwarzlichtbezirk/slot-srv/game/dolphinspearl"
 	"github.com/schwarzlichtbezirk/slot-srv/game/sizzlinghot"
 	"github.com/schwarzlichtbezirk/slot-srv/game/slotopol"
 	"github.com/schwarzlichtbezirk/slot-srv/game/slotopoldeluxe"
@@ -32,6 +33,13 @@ var scanCmd = &cobra.Command{
 		if fSizzlingHot {
 			sizzlinghot.CalcStat(fReels)
 		}
+		if fDolphinsPearl {
+			if fReels == "bon" {
+				dolphinspearl.CalcStatBon()
+			} else {
+				dolphinspearl.CalcStatReg(fReels)
+			}
+		}
 		return nil
 	},
 }
@@ -41,14 +49,16 @@ var (
 	fSlotopol       bool
 	fSlotopolDeluxe bool
 	fSizzlingHot    bool
+	fDolphinsPearl  bool
 )
 
 func init() {
 	rootCmd.AddCommand(scanCmd)
 
 	var flags = scanCmd.Flags()
-	flags.StringVarP(&fReels, "reels", "r", "orig", "name of reels set to use")
+	flags.StringVarP(&fReels, "reels", "r", "", "name of reels set to use")
 	flags.BoolVarP(&fSlotopol, "slotopol", "s", false, "'Slotopol' Megajack 5x3 slots")
 	flags.BoolVar(&fSlotopolDeluxe, "slotopoldeluxe", false, "'Slotopol Deluxe' Megajack 5x3 slots")
 	flags.BoolVar(&fSizzlingHot, "sizzlinghot", false, "'Sizzling Hot' Novomatic 5x3 slots")
+	flags.BoolVar(&fDolphinsPearl, "dolphinspearl", false, "'Dolphins Pearl' Novomatic 5x3 slots")
 }

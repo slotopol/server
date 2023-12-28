@@ -11,7 +11,7 @@ import (
 // Original reels.
 // reels lengths [25, 25, 25, 25, 25], total reshuffles 9765625
 // RTP = 89.653(lined) + 6.0024(scatter) = 95.655629%
-var ReelsOrig = game.Reels5x{
+var Reels96 = game.Reels5x{
 	{1, 4, 4, 4, 3, 1, 3, 3, 8, 6, 6, 6, 7, 7, 7, 6, 6, 2, 2, 5, 2, 5, 5, 5, 4},
 	{1, 6, 6, 6, 2, 2, 1, 2, 7, 7, 7, 7, 8, 4, 4, 4, 4, 5, 5, 5, 3, 5, 3, 3, 6},
 	{1, 6, 7, 7, 7, 8, 5, 5, 5, 1, 5, 2, 2, 4, 2, 4, 4, 4, 3, 3, 7, 3, 6, 6, 6},
@@ -21,7 +21,7 @@ var ReelsOrig = game.Reels5x{
 
 // Map with available reels.
 var ReelsMap = map[string]*game.Reels5x{
-	"orig": &ReelsOrig,
+	"95.66": &Reels96,
 }
 
 // Lined payment.
@@ -64,7 +64,7 @@ type Game struct {
 func NewGame(reels *game.Reels5x) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			SBL:      []int{1},
+			SBL:      []int{1, 2, 3, 4, 5},
 			Bet:      1,
 			FS:       0,
 			Reels:    reels,
@@ -127,10 +127,10 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 		}
 	}
 
-	if count > 1 {
+	if count > 0 {
 		if g.ScatPay[count-1] > 0 {
 			ws.Wins = append(ws.Wins, game.WinItem{
-				Pay:  g.Bet * g.ScatPay[count-1],
+				Pay:  g.Bet * g.ScatPay[count-1], // independent from selected lines
 				Mult: 1,
 				Sym:  scat,
 				Num:  count,
@@ -138,9 +138,6 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 			})
 		}
 	}
-}
-
-func (g *Game) Spawn(screen game.Screen, sw *game.WinScan) {
 }
 
 func CalcStat(rn string) {
@@ -151,7 +148,7 @@ func CalcStat(rn string) {
 			return
 		}
 	} else {
-		reels = &ReelsOrig
+		reels = &Reels96
 	}
 	var g = NewGame(reels)
 	var sbl = float64(len(g.SBL))
@@ -165,13 +162,13 @@ func CalcStat(rn string) {
 	}()
 	var dur = time.Since(t0)
 	var n = float64(s.Reshuffles)
-	var lp, sp = float64(s.LinePay) / n / sbl * 100, float64(s.ScatPay) / n * 100
-	var rtpsym = lp + sp
+	var lrtp, srtp = float64(s.LinePay) / n / sbl * 100, float64(s.ScatPay) / n * 100
+	var rtpsym = lrtp + srtp
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", float64(s.Reshuffles)/float64(g.Reels.Reshuffles())*100, len(g.SBL), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(g.Reels.Reel(1)), len(g.Reels.Reel(2)), len(g.Reels.Reel(3)), len(g.Reels.Reel(4)), len(g.Reels.Reel(5)), g.Reels.Reshuffles())
 	if s.JackCount[jid] > 0 {
 		fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(n/float64(s.JackCount[jid])))
 	}
-	fmt.Printf("RTP = %.5g(lined) + %.5g(scatter) = %.6f%%\n", lp, sp, rtpsym)
+	fmt.Printf("RTP = %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 }

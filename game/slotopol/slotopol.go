@@ -15,7 +15,7 @@ import (
 // monopoly bonuses: count 4320, rtp = 3.689938%
 // jackpots: count 32, frequency 1/1048576
 // RTP = 88.394(sym) + 7.6765(mje9) + 3.6899(mjm) = 99.760556%
-var ReelsOrig = game.Reels5x{
+var Reels100 = game.Reels5x{
 	{13, 1, 5, 12, 13, 11, 12, 11, 13, 8, 2, 12, 13, 3, 4, 6, 13, 2, 5, 10, 13, 9, 7, 8, 13, 10, 7, 9, 13, 3, 4, 6},
 	{9, 5, 10, 13, 9, 6, 3, 4, 13, 2, 12, 8, 12, 13, 11, 12, 11, 13, 5, 7, 10, 6, 3, 4, 13, 2, 12, 8, 13, 7, 1, 12},
 	{12, 13, 11, 12, 11, 13, 5, 10, 9, 7, 1, 12, 13, 3, 8, 6, 12, 13, 8, 4, 12, 2, 5, 10, 13, 7, 2, 13, 6, 3, 4, 9},
@@ -25,7 +25,7 @@ var ReelsOrig = game.Reels5x{
 
 // Map with available reels.
 var ReelsMap = map[string]*game.Reels5x{
-	"orig": &ReelsOrig,
+	"99.76": &Reels100,
 }
 
 // Lined payment.
@@ -194,8 +194,8 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			} else {
 				payl = 0
 				// delete non-wild line
-				for x := cntw; x < cntl; x++ {
-					xy[x] = 0
+				for x := cntw + 1; x <= cntl; x++ {
+					xy[x-1] = 0
 				}
 			}
 		}
@@ -245,10 +245,10 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 		}
 	}
 
-	if count > 1 {
+	if count > 0 {
 		if g.ScatPay[count-1] > 0 || g.ScatFree[count-1] > 0 {
 			ws.Wins = append(ws.Wins, game.WinItem{
-				Pay:  g.Bet * g.ScatPay[count-1],
+				Pay:  g.Bet * g.ScatPay[count-1], // independent from selected lines
 				Mult: 1,
 				Sym:  scat,
 				Num:  count,
@@ -284,7 +284,7 @@ func CalcStat(rn string) {
 			return
 		}
 	} else {
-		reels = &ReelsOrig
+		reels = &Reels100
 	}
 	var g = NewGame(reels)
 	var sbl = float64(len(g.SBL))
@@ -298,8 +298,8 @@ func CalcStat(rn string) {
 	}()
 	var dur = time.Since(t0)
 	var n = float64(s.Reshuffles)
-	var lp, sp = float64(s.LinePay) / n / sbl * 100, float64(s.ScatPay) / n * 100
-	var rtpsym = lp + sp
+	var lrtp, srtp = float64(s.LinePay) / n / sbl * 100, float64(s.ScatPay) / n * 100
+	var rtpsym = lrtp + srtp
 	var Mmje9, qmje9 = 106.0 * 9, float64(s.BonusCount[mje9]) / n / sbl
 	var rtpmje9 = Mmje9 * qmje9 * 100
 	var Mmjm, qmjm = 286.60597422268, float64(s.BonusCount[mjm]) / n / sbl
@@ -307,7 +307,7 @@ func CalcStat(rn string) {
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", float64(s.Reshuffles)/float64(g.Reels.Reshuffles())*100, len(g.SBL), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(g.Reels.Reel(1)), len(g.Reels.Reel(2)), len(g.Reels.Reel(3)), len(g.Reels.Reel(4)), len(g.Reels.Reel(5)), g.Reels.Reshuffles())
-	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lp, sp, rtpsym)
+	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 	fmt.Printf("spin9 bonuses: count %d, rtp = %.6f%%\n", s.BonusCount[mje9], rtpmje9)
 	fmt.Printf("monopoly bonuses: count %d, rtp = %.6f%%\n", s.BonusCount[mjm], rtpmjm)
 	fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(n/float64(s.JackCount[jid])))

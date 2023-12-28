@@ -47,7 +47,7 @@ func (s *Stat) Progress(ctx context.Context, steps *time.Ticker, sel, total floa
 		case <-steps.C:
 			var n = float64(atomic.LoadUint64(&s.Reshuffles))
 			var pays = (float64(atomic.LoadUint64(&s.LinePay))/sel + float64(atomic.LoadUint64(&s.ScatPay))) / n * 100
-			fmt.Printf("processed %.1fm, ready %2.2f%%, pays %2.2f%%\n", n/1e6, n/total*100, pays)
+			fmt.Printf("processed %.1fm, ready %2.2f%%, symbols pays %2.2f%%\n", n/1e6, n/total*100, pays)
 		}
 	}
 }

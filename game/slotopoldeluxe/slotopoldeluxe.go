@@ -17,7 +17,7 @@ import (
 // monopoly bonuses: count 6912, rtp = 5.903901%
 // jackpots: count 32, frequency 1/1048576
 // RTP = 83.99(sym) + 13.667(mje) + 5.9039(mjm) = 103.561510%
-var ReelsOrig = game.Reels5x{
+var Reels103 = game.Reels5x{
 	{1, 2, 13, 4, 13, 3, 13, 5, 9, 7, 8, 13, 10, 13, 12, 11, 13, 12, 11, 13, 13, 2, 4, 5, 2, 6, 7, 9, 8, 3, 10, 6},
 	{13, 2, 12, 9, 13, 2, 5, 6, 9, 7, 13, 10, 12, 13, 11, 12, 13, 11, 12, 13, 3, 4, 5, 2, 8, 7, 10, 4, 6, 8, 3, 1},
 	{2, 1, 12, 3, 4, 5, 2, 6, 7, 10, 8, 4, 3, 13, 12, 11, 13, 12, 11, 13, 12, 3, 5, 13, 9, 6, 7, 10, 13, 8, 9, 13},
@@ -75,10 +75,10 @@ var Reels957 = game.Reels5x{
 
 // Map with available reels.
 var ReelsMap = map[string]*game.Reels5x{
-	"orig": &ReelsOrig,
-	"98.6": &Reels986,
-	"97.0": &Reels970,
-	"95.7": &Reels957,
+	"103.56": &Reels103, // original
+	"98.64":  &Reels986,
+	"96.99":  &Reels970,
+	"95.68":  &Reels957,
 }
 
 // Lined payment.
@@ -155,7 +155,7 @@ func CalcStat(rn string) {
 			return
 		}
 	} else {
-		reels = &ReelsOrig
+		reels = &Reels103
 	}
 	var g = NewGame(reels)
 	var sbl = float64(len(g.SBL))
@@ -169,8 +169,8 @@ func CalcStat(rn string) {
 	}()
 	var dur = time.Since(t0)
 	var n = float64(s.Reshuffles)
-	var lp, sp = float64(s.LinePay) / n / sbl * 100, float64(s.ScatPay) / n * 100
-	var rtpsym = lp + sp
+	var lrtp, srtp = float64(s.LinePay) / n / sbl * 100, float64(s.ScatPay) / n * 100
+	var rtpsym = lrtp + srtp
 	var Mmje1, qmje1 = 106.0 * 1, float64(s.BonusCount[mje1]) / n / sbl
 	var rtpmje1 = Mmje1 * qmje1 * 100
 	var Mmje3, qmje3 = 106.0 * 3, float64(s.BonusCount[mje3]) / n / sbl
@@ -182,7 +182,7 @@ func CalcStat(rn string) {
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", float64(s.Reshuffles)/float64(g.Reels.Reshuffles())*100, len(g.SBL), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(g.Reels.Reel(1)), len(g.Reels.Reel(2)), len(g.Reels.Reel(3)), len(g.Reels.Reel(4)), len(g.Reels.Reel(5)), g.Reels.Reshuffles())
-	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lp, sp, rtpsym)
+	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 	fmt.Printf("spin1 bonuses: count1 %d, rtp = %.6f%%\n", s.BonusCount[mje1], rtpmje1)
 	fmt.Printf("spin3 bonuses: count3 %d, rtp = %.6f%%\n", s.BonusCount[mje3], rtpmje3)
 	fmt.Printf("spin6 bonuses: count6 %d, rtp = %.6f%%\n", s.BonusCount[mje6], rtpmje6)

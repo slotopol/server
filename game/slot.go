@@ -113,3 +113,6 @@ func (g *Slot5x3) SetLines(sbl []int) error {
 	g.SBL = sbl
 	return nil
 }
+
+func (g *Slot5x3) Spawn(screen Screen, sw *WinScan) {
+}
