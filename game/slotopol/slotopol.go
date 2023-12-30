@@ -220,7 +220,6 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			})
 		} else if sl > 0 && cntl > 0 && g.LineBonus[sl-1][cntl-1] > 0 {
 			ws.Wins = append(ws.Wins, game.WinItem{
-				Mult: 1,
 				Sym:  sl,
 				Num:  cntl,
 				Line: li,
@@ -276,12 +275,12 @@ func (g *Game) Spawn(screen game.Screen, sw *game.WinScan) {
 	}
 }
 
-func CalcStat(rn string) {
+func CalcStat(ctx context.Context, rn string) float64 {
 	var reels *game.Reels5x
 	if rn != "" {
 		var ok bool
 		if reels, ok = ReelsMap[rn]; !ok {
-			return
+			return 0
 		}
 	} else {
 		reels = &Reels100
@@ -290,12 +289,8 @@ func CalcStat(rn string) {
 	var sbl = float64(len(g.SBL))
 	var s game.Stat
 	var t0 = time.Now()
-	func() {
-		var ctx, cancel = context.WithCancel(context.Background())
-		defer cancel()
-		go s.Progress(ctx, time.NewTicker(2*time.Second), sbl, float64(g.Reels.Reshuffles()))
-		s.BruteForce5x(ctx, g, g.Reels)
-	}()
+	go s.Progress(ctx, time.NewTicker(2*time.Second), sbl, float64(g.Reels.Reshuffles()))
+	s.BruteForce5x(ctx, g, g.Reels)
 	var dur = time.Since(t0)
 	var n = float64(s.Reshuffles)
 	var lrtp, srtp = float64(s.LinePay) / n / sbl * 100, float64(s.ScatPay) / n * 100
@@ -304,6 +299,7 @@ func CalcStat(rn string) {
 	var rtpmje9 = Mmje9 * qmje9 * 100
 	var Mmjm, qmjm = 286.60597422268, float64(s.BonusCount[mjm]) / n / sbl
 	var rtpmjm = Mmjm * qmjm * 100
+	var rtp = rtpsym + rtpmje9 + rtpmjm
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", float64(s.Reshuffles)/float64(g.Reels.Reshuffles())*100, len(g.SBL), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(g.Reels.Reel(1)), len(g.Reels.Reel(2)), len(g.Reels.Reel(3)), len(g.Reels.Reel(4)), len(g.Reels.Reel(5)), g.Reels.Reshuffles())
@@ -311,5 +307,6 @@ func CalcStat(rn string) {
 	fmt.Printf("spin9 bonuses: count %d, rtp = %.6f%%\n", s.BonusCount[mje9], rtpmje9)
 	fmt.Printf("monopoly bonuses: count %d, rtp = %.6f%%\n", s.BonusCount[mjm], rtpmjm)
 	fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(n/float64(s.JackCount[jid])))
-	fmt.Printf("RTP = %.5g(sym) + %.5g(mje9) + %.5g(mjm) = %.6f%%\n", rtpsym, rtpmje9, rtpmjm, rtpsym+rtpmje9+rtpmjm)
+	fmt.Printf("RTP = %.5g(sym) + %.5g(mje9) + %.5g(mjm) = %.6f%%\n", rtpsym, rtpmje9, rtpmjm, rtp)
+	return rtp
 }

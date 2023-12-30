@@ -140,12 +140,12 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 	}
 }
 
-func CalcStat(rn string) {
+func CalcStat(ctx context.Context, rn string) float64 {
 	var reels *game.Reels5x
 	if rn != "" {
 		var ok bool
 		if reels, ok = ReelsMap[rn]; !ok {
-			return
+			return 0
 		}
 	} else {
 		reels = &Reels96
@@ -154,12 +154,8 @@ func CalcStat(rn string) {
 	var sbl = float64(len(g.SBL))
 	var s game.Stat
 	var t0 = time.Now()
-	func() {
-		var ctx, cancel = context.WithCancel(context.Background())
-		defer cancel()
-		go s.Progress(ctx, time.NewTicker(2*time.Second), sbl, float64(g.Reels.Reshuffles()))
-		s.BruteForce5x(ctx, g, g.Reels)
-	}()
+	go s.Progress(ctx, time.NewTicker(2*time.Second), sbl, float64(g.Reels.Reshuffles()))
+	s.BruteForce5x(ctx, g, g.Reels)
 	var dur = time.Since(t0)
 	var n = float64(s.Reshuffles)
 	var lrtp, srtp = float64(s.LinePay) / n / sbl * 100, float64(s.ScatPay) / n * 100
@@ -171,4 +167,5 @@ func CalcStat(rn string) {
 		fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(n/float64(s.JackCount[jid])))
 	}
 	fmt.Printf("RTP = %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
+	return rtpsym
 }

@@ -1,9 +1,11 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/schwarzlichtbezirk/slot-srv/config"
+	"github.com/schwarzlichtbezirk/slot-srv/game/champagne"
 	"github.com/schwarzlichtbezirk/slot-srv/game/dolphinspearl"
 	"github.com/schwarzlichtbezirk/slot-srv/game/sizzlinghot"
 	"github.com/schwarzlichtbezirk/slot-srv/game/slotopol"
@@ -14,7 +16,7 @@ import (
 const scanShort = "Slots reels scanning"
 const scanLong = `Calculate RTP (Return to Player) percentage for specified slot game reels.`
 const scanExmp = `Scan reels for 'Slotopol' game:
-  %s scan -s`
+  %s scan --slotopol --reels=99.76`
 
 // scanCmd represents the scan command
 var scanCmd = &cobra.Command{
@@ -24,20 +26,26 @@ var scanCmd = &cobra.Command{
 	Long:    scanLong,
 	Example: fmt.Sprintf(scanExmp, config.AppName),
 	RunE: func(cmd *cobra.Command, args []string) error {
+		var ctx, cancel = context.WithCancel(context.Background())
+		defer cancel()
+
 		if fSlotopol {
-			slotopol.CalcStat(fReels)
+			slotopol.CalcStat(ctx, fReels)
 		}
 		if fSlotopolDeluxe {
-			slotopoldeluxe.CalcStat(fReels)
+			slotopoldeluxe.CalcStat(ctx, fReels)
+		}
+		if fChampagne {
+			champagne.CalcStatReg(ctx, fReels)
 		}
 		if fSizzlingHot {
-			sizzlinghot.CalcStat(fReels)
+			sizzlinghot.CalcStat(ctx, fReels)
 		}
 		if fDolphinsPearl {
 			if fReels == "bon" {
-				dolphinspearl.CalcStatBon()
+				dolphinspearl.CalcStatBon(ctx)
 			} else {
-				dolphinspearl.CalcStatReg(fReels)
+				dolphinspearl.CalcStatReg(ctx, fReels)
 			}
 		}
 		return nil
@@ -48,6 +56,7 @@ var (
 	fReels          string
 	fSlotopol       bool
 	fSlotopolDeluxe bool
+	fChampagne      bool
 	fSizzlingHot    bool
 	fDolphinsPearl  bool
 )
@@ -59,6 +68,7 @@ func init() {
 	flags.StringVarP(&fReels, "reels", "r", "", "name of reels set to use")
 	flags.BoolVarP(&fSlotopol, "slotopol", "s", false, "'Slotopol' Megajack 5x3 slots")
 	flags.BoolVar(&fSlotopolDeluxe, "slotopoldeluxe", false, "'Slotopol Deluxe' Megajack 5x3 slots")
+	flags.BoolVar(&fChampagne, "champagne", false, "'Champagne' Megajack 5x3 slots")
 	flags.BoolVar(&fSizzlingHot, "sizzlinghot", false, "'Sizzling Hot' Novomatic 5x3 slots")
 	flags.BoolVar(&fDolphinsPearl, "dolphinspearl", false, "'Dolphins Pearl' Novomatic 5x3 slots")
 }
