@@ -5,10 +5,15 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/schwarzlichtbezirk/slot-srv/game"
+	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/game/slotopol"
 )
 
 func CalcStat(ctx context.Context, rn string) float64 {
+	fmt.Printf("*bonus games calculations*\n")
+	slotopol.Emje = slotopol.ExpEldorado()
+	slotopol.Emjm = slotopol.ExpMonopoly()
+	fmt.Printf("*reels calculations*\n")
 	var reels *game.Reels5x
 	if rn != "" {
 		var ok bool
@@ -28,14 +33,14 @@ func CalcStat(ctx context.Context, rn string) float64 {
 	var n = float64(s.Reshuffles)
 	var lrtp, srtp = float64(s.LinePay) / n / sbl * 100, float64(s.ScatPay) / n * 100
 	var rtpsym = lrtp + srtp
-	var Mmje1, qmje1 = 106.0 * 1, float64(s.BonusCount[mje1]) / n / sbl
-	var rtpmje1 = Mmje1 * qmje1 * 100
-	var Mmje3, qmje3 = 106.0 * 3, float64(s.BonusCount[mje3]) / n / sbl
-	var rtpmje3 = Mmje3 * qmje3 * 100
-	var Mmje6, qmje6 = 106.0 * 6, float64(s.BonusCount[mje6]) / n / sbl
-	var rtpmje6 = Mmje6 * qmje6 * 100
-	var Mmjm, qmjm = 286.60597422268, float64(s.BonusCount[mjm]) / n / sbl
-	var rtpmjm = Mmjm * qmjm * 100
+	var qmje1 = float64(s.BonusCount[mje1]) / n / sbl
+	var rtpmje1 = slotopol.Emje * 1 * qmje1 * 100
+	var qmje3 = float64(s.BonusCount[mje3]) / n / sbl
+	var rtpmje3 = slotopol.Emje * 3 * qmje3 * 100
+	var qmje6 = float64(s.BonusCount[mje6]) / n / sbl
+	var rtpmje6 = slotopol.Emje * 6 * qmje6 * 100
+	var qmjm = float64(s.BonusCount[mjm]) / n / sbl
+	var rtpmjm = slotopol.Emjm * qmjm * 100
 	var rtp = rtpsym + rtpmje1 + rtpmje3 + rtpmje6 + rtpmjm
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", float64(s.Reshuffles)/float64(g.Reels.Reshuffles())*100, len(g.SBL), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",

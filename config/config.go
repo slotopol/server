@@ -12,11 +12,11 @@ import (
 
 var (
 	// compiled binary version, sets by compiler with command
-	//    go build -ldflags="-X 'github.com/schwarzlichtbezirk/slot-srv/config.BuildVers=%buildvers%'"
+	//    go build -ldflags="-X 'github.com/slotopol/server/config.BuildVers=%buildvers%'"
 	BuildVers string
 
 	// compiled binary build date, sets by compiler with command
-	//    go build -ldflags="-X 'github.com/schwarzlichtbezirk/slot-srv/config.BuildTime=%buildtime%'"
+	//    go build -ldflags="-X 'github.com/slotopol/server/config.BuildTime=%buildtime%'"
 	BuildTime string
 )
 

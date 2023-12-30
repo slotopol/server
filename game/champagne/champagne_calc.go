@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/schwarzlichtbezirk/slot-srv/game"
+	"github.com/slotopol/server/game"
 )
 
 var Emjc float64 // Bottle game calculated expectation

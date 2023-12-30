@@ -1,8 +1,8 @@
 package slotopoldeluxe
 
 import (
-	"github.com/schwarzlichtbezirk/slot-srv/game"
-	"github.com/schwarzlichtbezirk/slot-srv/game/slotopol"
+	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/game/slotopol"
 )
 
 // Original reels.

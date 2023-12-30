@@ -1,9 +1,9 @@
 
 # Slot server
 
-[![Go](https://github.com/schwarzlichtbezirk/slot-srv/actions/workflows/go.yml/badge.svg)](https://github.com/schwarzlichtbezirk/slot-srv/actions/workflows/go.yml)
-[![GitHub release](https://img.shields.io/github/v/release/schwarzlichtbezirk/slot-srv.svg)](https://github.com/schwarzlichtbezirk/slot-srv/releases/latest)
-[![Hits-of-Code](https://hitsofcode.com/github/schwarzlichtbezirk/slot-srv?branch=main)](https://hitsofcode.com/github/schwarzlichtbezirk/slot-srv/view?branch=main)
+[![Go](https://github.com/slotopol/server/actions/workflows/go.yml/badge.svg)](https://github.com/slotopol/server/actions/workflows/go.yml)
+[![GitHub release](https://img.shields.io/github/v/release/slotopol/server.svg)](https://github.com/slotopol/server/releases/latest)
+[![Hits-of-Code](https://hitsofcode.com/github/slotopol/server?branch=main)](https://hitsofcode.com/github/slotopol/server/view?branch=main)
 
 Slots games server.
 

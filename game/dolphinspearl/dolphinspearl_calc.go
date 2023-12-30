@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/schwarzlichtbezirk/slot-srv/game"
+	"github.com/slotopol/server/game"
 )
 
 func CalcStatBon(ctx context.Context) float64 {

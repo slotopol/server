@@ -1,6 +1,6 @@
 package main
 
-import "github.com/schwarzlichtbezirk/slot-srv/cmd"
+import "github.com/slotopol/server/cmd"
 
 func main() {
 	cmd.Execute()

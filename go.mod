@@ -1,4 +1,4 @@
-module github.com/schwarzlichtbezirk/slot-srv
+module github.com/slotopol/server
 
 go 1.21
 

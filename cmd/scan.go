@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/schwarzlichtbezirk/slot-srv/config"
-	"github.com/schwarzlichtbezirk/slot-srv/game/champagne"
-	"github.com/schwarzlichtbezirk/slot-srv/game/dolphinspearl"
-	"github.com/schwarzlichtbezirk/slot-srv/game/sizzlinghot"
-	"github.com/schwarzlichtbezirk/slot-srv/game/slotopol"
-	"github.com/schwarzlichtbezirk/slot-srv/game/slotopoldeluxe"
+	"github.com/slotopol/server/config"
+	"github.com/slotopol/server/game/champagne"
+	"github.com/slotopol/server/game/dolphinspearl"
+	"github.com/slotopol/server/game/sizzlinghot"
+	"github.com/slotopol/server/game/slotopol"
+	"github.com/slotopol/server/game/slotopoldeluxe"
 	"github.com/spf13/cobra"
 )
 

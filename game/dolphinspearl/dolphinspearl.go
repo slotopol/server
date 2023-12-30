@@ -1,7 +1,7 @@
 package dolphinspearl
 
 import (
-	"github.com/schwarzlichtbezirk/slot-srv/game"
+	"github.com/slotopol/server/game"
 )
 
 // reels lengths [30, 43, 43, 43, 43], total reshuffles 102564030

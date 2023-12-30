@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/schwarzlichtbezirk/slot-srv/config"
+	"github.com/slotopol/server/config"
 	"github.com/spf13/cobra"
 )
 
