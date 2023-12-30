@@ -2,8 +2,8 @@ package champagne
 
 import "math/rand"
 
-// len = 36, count = 630, avr boutle gain = 90.555556, M = 193.65079365079
-var Boutles = [36]int{
+// len = 36, count = 630, avr bottle gain = 90.555556, M = 193.65079365079
+var Bottles = [36]int{
 	10, 10, 10, 10, 10, 10, // 6
 	20, 20, 20, 20, 20, 20, // 6
 	30, 30, 30, 30, 30, 30, // 6
@@ -14,7 +14,7 @@ var Boutles = [36]int{
 	500, 500, // 2
 }
 
-type WinBoutle struct {
+type WinBottle struct {
 	Mult int `json:"mult" yaml:"mult" xml:"mult,attr"` // bet multiplier
 	Pay  int `json:"pay" yaml:"pay" xml:"pay,attr"`    // pay by this cell
 }
@@ -29,10 +29,10 @@ func Shuffle[T any](src []T) []T {
 }
 
 func ChampagneSpawn(bet int) (any, int) {
-	var res [5]WinBoutle
+	var res [5]WinBottle
 	var cash int
 
-	var p = Shuffle(Boutles[:])
+	var p = Shuffle(Bottles[:])
 	for i := 0; i < 5; i++ {
 		res[i].Mult = p[i]
 		res[i].Pay = bet * p[i]
