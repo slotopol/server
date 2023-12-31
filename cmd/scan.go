@@ -7,6 +7,7 @@ import (
 	"github.com/slotopol/server/config"
 	"github.com/slotopol/server/game/champagne"
 	"github.com/slotopol/server/game/dolphinspearl"
+	"github.com/slotopol/server/game/jewels"
 	"github.com/slotopol/server/game/sizzlinghot"
 	"github.com/slotopol/server/game/slotopol"
 	"github.com/slotopol/server/game/slotopoldeluxe"
@@ -38,6 +39,9 @@ var scanCmd = &cobra.Command{
 		if fChampagne {
 			champagne.CalcStatReg(ctx, fReels)
 		}
+		if fJewels {
+			jewels.CalcStat(ctx, fReels)
+		}
 		if fSizzlingHot {
 			sizzlinghot.CalcStat(ctx, fReels)
 		}
@@ -57,6 +61,7 @@ var (
 	fSlotopol       bool
 	fSlotopolDeluxe bool
 	fChampagne      bool
+	fJewels         bool
 	fSizzlingHot    bool
 	fDolphinsPearl  bool
 )
@@ -69,6 +74,7 @@ func init() {
 	flags.BoolVarP(&fSlotopol, "slotopol", "s", false, "'Slotopol' Megajack 5x3 slots")
 	flags.BoolVar(&fSlotopolDeluxe, "slotopoldeluxe", false, "'Slotopol Deluxe' Megajack 5x3 slots")
 	flags.BoolVar(&fChampagne, "champagne", false, "'Champagne' Megajack 5x3 slots")
+	flags.BoolVar(&fJewels, "jewels", false, "'Jewels' Novomatic 5x3 slots")
 	flags.BoolVar(&fSizzlingHot, "sizzlinghot", false, "'Sizzling Hot' Novomatic 5x3 slots")
 	flags.BoolVar(&fDolphinsPearl, "dolphinspearl", false, "'Dolphins Pearl' Novomatic 5x3 slots")
 }

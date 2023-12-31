@@ -98,10 +98,16 @@ func CalcStat(ctx context.Context, rn string) float64 {
 	var g = NewGame(reels)
 	var sbl = float64(len(g.SBL))
 	var s game.Stat
-	var t0 = time.Now()
-	go s.Progress(ctx, time.NewTicker(2*time.Second), sbl, float64(g.Reels.Reshuffles()))
-	s.BruteForce5x(ctx, g, g.Reels)
-	var dur = time.Since(t0)
+
+	var dur = func() time.Duration {
+		var t0 = time.Now()
+		var ctx2, cancel2 = context.WithCancel(ctx)
+		defer cancel2()
+		go s.Progress(ctx2, time.NewTicker(2*time.Second), sbl, float64(g.Reels.Reshuffles()))
+		s.BruteForce5x(ctx2, g, g.Reels)
+		return time.Since(t0)
+	}()
+
 	var n = float64(s.Reshuffles)
 	var lrtp, srtp = float64(s.LinePay) / n / sbl * 100, float64(s.ScatPay) / n * 100
 	var rtpsym = lrtp + srtp

@@ -1,4 +1,4 @@
-package sizzlinghot
+package jewels
 
 import (
 	"context"
@@ -16,7 +16,7 @@ func CalcStat(ctx context.Context, rn string) float64 {
 			return 0
 		}
 	} else {
-		reels = &Reels96
+		reels = &Reels93
 	}
 	var g = NewGame(reels)
 	var sbl = float64(len(g.SBL))
@@ -32,14 +32,10 @@ func CalcStat(ctx context.Context, rn string) float64 {
 	}()
 
 	var n = float64(s.Reshuffles)
-	var lrtp, srtp = float64(s.LinePay) / n / sbl * 100, float64(s.ScatPay) / n * 100
-	var rtpsym = lrtp + srtp
+	var lrtp = float64(s.LinePay) / n / sbl * 100
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", float64(s.Reshuffles)/float64(g.Reels.Reshuffles())*100, len(g.SBL), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(g.Reels.Reel(1)), len(g.Reels.Reel(2)), len(g.Reels.Reel(3)), len(g.Reels.Reel(4)), len(g.Reels.Reel(5)), g.Reels.Reshuffles())
-	if s.JackCount[jid] > 0 {
-		fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(n/float64(s.JackCount[jid])))
-	}
-	fmt.Printf("RTP = %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-	return rtpsym
+	fmt.Printf("RTP = %g%%\n", lrtp)
+	return lrtp
 }

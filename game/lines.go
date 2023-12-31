@@ -1,26 +1,46 @@
 package game
 
+type Line interface {
+	At(x int) int   // returns symbol at position x, starts from 1
+	Set(x, val int) // set value at position x
+	Len() int       // returns length of line
+}
+
 type Lineset interface {
-	Num() int       // returns number lines in set
-	Cols() int      // returns number of columns
-	Line(int) []int // returns line with given number, starts from 1
+	Cols() int     // returns number of columns
+	Line(int) Line // returns line with given number, starts from 1
+	Num() int      // returns number lines in set
 }
 
-type Lines5col [][5]int
+type Line5x [5]int
 
-func (ls *Lines5col) Num() int {
-	return len(*ls)
+func (l *Line5x) At(x int) int {
+	return l[x-1]
 }
 
-func (ls *Lines5col) Cols() int {
+func (l *Line5x) Set(x, val int) {
+	l[x-1] = val
+}
+
+func (l *Line5x) Len() int {
 	return 5
 }
 
-func (ls *Lines5col) Line(n int) []int {
-	return (*ls)[n-1][:]
+type Lineset5x []Line5x
+
+func (ls Lineset5x) Cols() int {
+	return 5
 }
 
-var BetLinesMgj = Lines5col{
+func (ls Lineset5x) Line(n int) Line {
+	return &ls[n-1]
+}
+
+func (ls Lineset5x) Num() int {
+	return len(ls)
+}
+
+var BetLinesMgj = Lineset5x{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3
@@ -44,7 +64,7 @@ var BetLinesMgj = Lines5col{
 	{1, 1, 2, 1, 1}, // 21
 }
 
-var BetLinesNvm9 = Lines5col{
+var BetLinesNvm9 = Lineset5x{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3
@@ -56,7 +76,7 @@ var BetLinesNvm9 = Lines5col{
 	{1, 1, 2, 3, 3}, // 9
 }
 
-var BetLinesNvm10 = Lines5col{
+var BetLinesNvm10 = Lineset5x{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3
@@ -69,7 +89,7 @@ var BetLinesNvm10 = Lines5col{
 	{3, 2, 2, 2, 1}, // 10
 }
 
-var BetLinesNvm20 = Lines5col{
+var BetLinesNvm20 = Lineset5x{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3
