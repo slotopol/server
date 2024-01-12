@@ -1,3 +1,5 @@
+//go:build full || novomatic
+
 package config
 
 import (

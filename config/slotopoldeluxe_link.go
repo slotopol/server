@@ -1,3 +1,5 @@
+//go:build full || megajack
+
 package config
 
 import (
