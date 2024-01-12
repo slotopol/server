@@ -11,8 +11,12 @@ import (
 	"github.com/slotopol/server/game/sizzlinghot"
 	"github.com/slotopol/server/game/slotopol"
 	"github.com/slotopol/server/game/slotopoldeluxe"
+
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 )
+
+var flags *pflag.FlagSet
 
 const scanShort = "Slots reels scanning"
 const scanLong = `Calculate RTP (Return to Player) percentage for specified slot game reels.`
@@ -30,22 +34,23 @@ var scanCmd = &cobra.Command{
 		var ctx, cancel = context.WithCancel(context.Background())
 		defer cancel()
 
-		if fSlotopol {
+		var is bool
+		if is, _ = flags.GetBool("slotopol"); is {
 			slotopol.CalcStat(ctx, fReels)
 		}
-		if fSlotopolDeluxe {
+		if is, _ = flags.GetBool("slotopoldeluxe"); is {
 			slotopoldeluxe.CalcStat(ctx, fReels)
 		}
-		if fChampagne {
+		if is, _ = flags.GetBool("champagne"); is {
 			champagne.CalcStatReg(ctx, fReels)
 		}
-		if fJewels {
+		if is, _ = flags.GetBool("jewels"); is {
 			jewels.CalcStat(ctx, fReels)
 		}
-		if fSizzlingHot {
+		if is, _ = flags.GetBool("sizzlinghot"); is {
 			sizzlinghot.CalcStat(ctx, fReels)
 		}
-		if fDolphinsPearl {
+		if is, _ = flags.GetBool("dolphinspearl"); is {
 			if fReels == "bon" {
 				dolphinspearl.CalcStatBon(ctx)
 			} else {
@@ -57,24 +62,19 @@ var scanCmd = &cobra.Command{
 }
 
 var (
-	fReels          string
-	fSlotopol       bool
-	fSlotopolDeluxe bool
-	fChampagne      bool
-	fJewels         bool
-	fSizzlingHot    bool
-	fDolphinsPearl  bool
+	fReels string
 )
 
 func init() {
 	rootCmd.AddCommand(scanCmd)
 
-	var flags = scanCmd.Flags()
+	flags = scanCmd.Flags()
 	flags.StringVarP(&fReels, "reels", "r", "", "name of reels set to use")
-	flags.BoolVarP(&fSlotopol, "slotopol", "s", false, "'Slotopol' Megajack 5x3 slots")
-	flags.BoolVar(&fSlotopolDeluxe, "slotopoldeluxe", false, "'Slotopol Deluxe' Megajack 5x3 slots")
-	flags.BoolVar(&fChampagne, "champagne", false, "'Champagne' Megajack 5x3 slots")
-	flags.BoolVar(&fJewels, "jewels", false, "'Jewels' Novomatic 5x3 slots")
-	flags.BoolVar(&fSizzlingHot, "sizzlinghot", false, "'Sizzling Hot' Novomatic 5x3 slots")
-	flags.BoolVar(&fDolphinsPearl, "dolphinspearl", false, "'Dolphins Pearl' Novomatic 5x3 slots")
+
+	flags.BoolP("slotopol", "s", false, "'Slotopol' Megajack 5x3 slots")
+	flags.Bool("slotopoldeluxe", false, "'Slotopol Deluxe' Megajack 5x3 slots")
+	flags.Bool("champagne", false, "'Champagne' Megajack 5x3 slots")
+	flags.Bool("jewels", false, "'Jewels' Novomatic 5x3 slots")
+	flags.Bool("sizzlinghot", false, "'Sizzling Hot' Novomatic 5x3 slots")
+	flags.Bool("dolphinspearl", false, "'Dolphins Pearl' Novomatic 5x3 slots")
 }

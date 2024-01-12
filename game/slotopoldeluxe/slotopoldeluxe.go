@@ -13,7 +13,7 @@ import (
 // monopoly bonuses: count 6912, rtp = 5.903901%
 // jackpots: count 32, frequency 1/1048576
 // RTP = 83.99(sym) + 13.667(mje) + 5.9039(mjm) = 103.561510%
-var Reels103 = game.Reels5x{
+var Reels104 = game.Reels5x{
 	{1, 2, 13, 4, 13, 3, 13, 5, 9, 7, 8, 13, 10, 13, 12, 11, 13, 12, 11, 13, 13, 2, 4, 5, 2, 6, 7, 9, 8, 3, 10, 6},
 	{13, 2, 12, 9, 13, 2, 5, 6, 9, 7, 13, 10, 12, 13, 11, 12, 13, 11, 12, 13, 3, 4, 5, 2, 8, 7, 10, 4, 6, 8, 3, 1},
 	{2, 1, 12, 3, 4, 5, 2, 6, 7, 10, 8, 4, 3, 13, 12, 11, 13, 12, 11, 13, 12, 3, 5, 13, 9, 6, 7, 10, 13, 8, 9, 13},
@@ -71,10 +71,10 @@ var Reels957 = game.Reels5x{
 
 // Map with available reels.
 var ReelsMap = map[string]*game.Reels5x{
-	"103.56": &Reels103, // original
-	"98.64":  &Reels986,
-	"96.99":  &Reels970,
-	"95.68":  &Reels957,
+	"104": &Reels104, // original
+	"99":  &Reels986,
+	"97":  &Reels970,
+	"96":  &Reels957,
 }
 
 // Lined payment.

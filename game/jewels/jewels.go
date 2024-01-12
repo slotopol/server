@@ -94,15 +94,15 @@ var Reels118 = game.Reels5x{
 
 // Map with available reels.
 var ReelsMap = map[string]*game.Reels5x{
-	"88.90": &Reels89,
-	"89.85": &Reels90,
-	"91.00": &Reels91,
-	"92.99": &Reels93,
-	"95.02": &Reels95,
-	"96.08": &Reels96,
-	"97.61": &Reels98,
-	"99.79": &Reels100,
-	"117.8": &Reels118,
+	"89":  &Reels89,
+	"90":  &Reels90,
+	"91":  &Reels91,
+	"93":  &Reels93,
+	"95":  &Reels95,
+	"96":  &Reels96,
+	"98":  &Reels98,
+	"100": &Reels100,
+	"118": &Reels118,
 }
 
 // Lined payment.

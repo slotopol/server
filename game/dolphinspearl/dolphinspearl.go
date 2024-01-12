@@ -90,13 +90,13 @@ var ReelsBon = game.Reels5x{
 
 // Map with available reels.
 var ReelsMap = map[string]*game.Reels5x{
-	"86.30": &ReelsReg86,
-	"88.06": &ReelsReg88,
-	"90.37": &ReelsReg90,
-	"92.19": &ReelsReg92,
-	"94.24": &ReelsReg94,
-	"96.18": &ReelsReg96,
-	"bon":   &ReelsBon,
+	"86":  &ReelsReg86,
+	"88":  &ReelsReg88,
+	"90":  &ReelsReg90,
+	"92":  &ReelsReg92,
+	"94":  &ReelsReg94,
+	"96":  &ReelsReg96,
+	"bon": &ReelsBon,
 }
 
 // Lined payment.
@@ -141,9 +141,6 @@ var Jackpot = [13][5]int{
 
 type Game struct {
 	game.Slot5x3
-	LinePay  *[13][5]int
-	ScatPay  *[5]int
-	ScatFree *[5]int
 }
 
 func NewGame(reels *game.Reels5x) *Game {
@@ -155,9 +152,6 @@ func NewGame(reels *game.Reels5x) *Game {
 			Reels:    reels,
 			BetLines: &game.BetLinesNvm10,
 		},
-		LinePay:  &LinePay,
-		ScatPay:  &ScatPay,
-		ScatFree: &ScatFreespin,
 	}
 }
 
@@ -199,10 +193,10 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 
 		var payw, payl int
 		if cntw > 0 {
-			payw = g.LinePay[wild-1][cntw-1]
+			payw = LinePay[wild-1][cntw-1]
 		}
 		if cntl > 0 && sl > 0 {
-			payl = g.LinePay[sl-1][cntl-1]
+			payl = LinePay[sl-1][cntl-1]
 		}
 		if payw > 0 && payl > 0 {
 			if payw*mm < payl*m {
@@ -258,7 +252,7 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 	}
 
 	if count > 0 {
-		if pay, fs := g.ScatPay[count-1], g.ScatFree[count-1]; pay > 0 || fs > 0 {
+		if pay, fs := ScatPay[count-1], ScatFreespin[count-1]; pay > 0 || fs > 0 {
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Pay:  g.Bet * pay, // independent from selected lines
 				Mult: m,

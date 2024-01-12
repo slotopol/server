@@ -21,7 +21,7 @@ func CalcStat(ctx context.Context, rn string) float64 {
 			return 0
 		}
 	} else {
-		reels = &Reels103
+		reels = &Reels104
 	}
 	var g = NewGame(reels)
 	var sbl = float64(len(g.SBL))
