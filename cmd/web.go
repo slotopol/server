@@ -3,9 +3,10 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/gin-gonic/gin"
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/spi"
+
+	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 )
 

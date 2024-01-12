@@ -1,0 +1,49 @@
+package config
+
+import (
+	"context"
+
+	"github.com/slotopol/server/game/dolphinspearl"
+	"github.com/spf13/pflag"
+)
+
+func init() {
+	FlagsSetters = append(FlagsSetters, func(flags *pflag.FlagSet) {
+		flags.Bool("dolphinspearl", false, "'Dolphins Pearl' Novomatic 5x3 slots")
+	})
+	ScatIters = append(ScatIters, func(flags *pflag.FlagSet, ctx context.Context) {
+		if is, _ := flags.GetBool("dolphinspearl"); is {
+			var rn, _ = flags.GetString("reels")
+			if rn == "bon" {
+				dolphinspearl.CalcStatBon(ctx)
+			} else {
+				dolphinspearl.CalcStatReg(ctx, rn)
+			}
+		}
+	})
+
+	for _, aliase := range []string{
+		"dolphinspearl",
+		"dolphinspearldeluxe",
+		"attila",
+		"bananasplash",
+		"dynastyofming",
+		"gryphonsgold",
+		"jokerdolphin",
+		"pharaonsgold2",
+		"pharaonsgold3",
+		"polarfox",
+		"secretforest",
+		"themoneygame",
+		"unicornmagic",
+	} {
+		GameAliases[aliase] = "dolphinspearl"
+	}
+
+	GameFactory["dolphinspearl"] = func(name string) any {
+		if reels, ok := dolphinspearl.ReelsMap[name]; ok {
+			return dolphinspearl.NewGame(reels)
+		}
+		return nil
+	}
+}
