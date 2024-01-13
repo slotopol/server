@@ -63,5 +63,7 @@ func Router() *gin.Engine {
 	var rg = r.Group("/game")
 	rg.POST("/join", SpiGameJoin)
 	rg.POST("/part", SpiGamePart)
+	rg.POST("/bet", SpiGameBet)
+	rg.POST("/line", SpiGameLine)
 	return r
 }

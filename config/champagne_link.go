@@ -20,10 +20,10 @@ func init() {
 		}
 	})
 
-	for _, aliase := range []string{
+	for _, alias := range []string{
 		"champagne",
 	} {
-		GameAliases[aliase] = "champagne"
+		GameAliases[alias] = "champagne"
 	}
 
 	GameFactory["champagne"] = func(name string) any {

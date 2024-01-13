@@ -24,7 +24,7 @@ func init() {
 		}
 	})
 
-	for _, aliase := range []string{
+	for _, alias := range []string{
 		"dolphinspearl",
 		"dolphinspearldeluxe",
 		"attila",
@@ -39,7 +39,7 @@ func init() {
 		"themoneygame",
 		"unicornmagic",
 	} {
-		GameAliases[aliase] = "dolphinspearl"
+		GameAliases[alias] = "dolphinspearl"
 	}
 
 	GameFactory["dolphinspearl"] = func(name string) any {

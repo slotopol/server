@@ -37,13 +37,23 @@ var (
 	ErrNoCfgFile = errors.New("configyration file was not found")
 )
 
+type CfgXormDrv struct {
+	// Provides XORM driver name.
+	XormDriverName string `json:"xorm-driver-name" yaml:"xorm-driver-name" mapstructure:"xorm-driver-name"`
+}
+
 // Config is common service settings.
 type Config struct {
+	CfgXormDrv `json:"xorm" yaml:"xorm" mapstructure:"xorm"`
 }
 
 // Instance of common service settings.
 // Inits default values if config is not found.
-var Cfg = &Config{}
+var Cfg = &Config{
+	CfgXormDrv: CfgXormDrv{
+		XormDriverName: "sqlite3",
+	},
+}
 
 func InitConfig() {
 	var err error
@@ -123,6 +133,27 @@ func PathName(fpath string) string {
 		i--
 	}
 	return fpath[i:j]
+}
+
+// JoinPath performs fast join of two UNIX-like path chunks.
+func JoinPath(dir, base string) string {
+	if dir == "" || dir == "." {
+		return base
+	}
+	if base == "" || base == "." {
+		return dir
+	}
+	if dir[len(dir)-1] == '/' {
+		if base[0] == '/' {
+			return dir + base[1:]
+		} else {
+			return dir + base
+		}
+	}
+	if base[0] == '/' {
+		return dir + base
+	}
+	return dir + "/" + base
 }
 
 // FileExists check up file existence.

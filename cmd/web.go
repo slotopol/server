@@ -21,11 +21,15 @@ var webCmd = &cobra.Command{
 	Short:   webShort,
 	Long:    webLong,
 	Example: fmt.Sprintf(webExmp, cfg.AppName),
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) (err error) {
 		if cfg.DevMode {
 			gin.SetMode(gin.DebugMode)
 		} else {
 			gin.SetMode(gin.ReleaseMode)
+		}
+
+		if err = Init(); err != nil {
+			return
 		}
 
 		var r = spi.Router()

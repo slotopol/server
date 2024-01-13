@@ -24,7 +24,11 @@ var scanCmd = &cobra.Command{
 	Short:   scanShort,
 	Long:    scanLong,
 	Example: fmt.Sprintf(scanExmp, cfg.AppName),
-	RunE: func(cmd *cobra.Command, args []string) error {
+	RunE: func(cmd *cobra.Command, args []string) (err error) {
+		if err = Init(); err != nil {
+			return
+		}
+
 		var ctx, cancel = context.WithCancel(context.Background())
 		defer cancel()
 
@@ -32,7 +36,7 @@ var scanCmd = &cobra.Command{
 			iter(flags, ctx)
 		}
 
-		return nil
+		return
 	},
 }
 
