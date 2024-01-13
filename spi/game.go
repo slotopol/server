@@ -33,7 +33,7 @@ func SpiGameJoin(c *gin.Context) {
 		return
 	}
 
-	var user, has = Users[arg.UID]
+	var user, has = Users.Get(arg.UID)
 	if !has {
 		Ret400(c, SEC_game_join_nouser, ErrNoUser)
 		return
@@ -59,8 +59,8 @@ func SpiGameJoin(c *gin.Context) {
 		Alias: alias,
 		game:  slotgame.(game.SlotGame),
 	}
-	OpenGames[gid] = og
-	user.games[gid] = og
+	OpenGames.Set(gid, og)
+	user.games.Set(gid, og)
 	ret.GID = gid
 
 	RetOk(c, ret)
@@ -82,20 +82,20 @@ func SpiGamePart(c *gin.Context) {
 		return
 	}
 
-	var og, is = OpenGames[arg.GID]
+	var og, is = OpenGames.Get(arg.GID)
 	if !is {
 		Ret400(c, SEC_game_part_notopened, ErrNotOpened)
 		return
 	}
 
-	var user, has = Users[og.UID]
+	var user, has = Users.Get(og.UID)
 	if !has {
 		Ret500(c, SEC_game_part_nouser, ErrNoUser)
 		return
 	}
 
-	delete(OpenGames, arg.GID)
-	delete(user.games, arg.GID)
+	OpenGames.Delete(arg.GID)
+	user.games.Delete(arg.GID)
 
 	c.Status(http.StatusOK)
 }
@@ -117,7 +117,7 @@ func SpiGameBet(c *gin.Context) {
 		return
 	}
 
-	var og, is = OpenGames[arg.GID]
+	var og, is = OpenGames.Get(arg.GID)
 	if !is {
 		Ret400(c, SEC_game_bet_notopened, ErrNotOpened)
 		return
@@ -136,19 +136,19 @@ func SpiGameLine(c *gin.Context) {
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid"`
-		Lines   []int    `json:"lines" yaml:"lines" xml:"lines"`
+		Lines   game.SBL `json:"sbl" yaml:"sbl" xml:"sbl"`
 	}
 
 	if err = c.Bind(&arg); err != nil {
 		Ret400(c, SEC_game_line_nobind, err)
 		return
 	}
-	if arg.GID == 0 || len(arg.Lines) == 0 {
+	if arg.GID == 0 || arg.Lines == 0 {
 		Ret400(c, SEC_game_line_nodata, ErrNoData)
 		return
 	}
 
-	var og, is = OpenGames[arg.GID]
+	var og, is = OpenGames.Get(arg.GID)
 	if !is {
 		Ret400(c, SEC_game_line_notopened, ErrNotOpened)
 		return

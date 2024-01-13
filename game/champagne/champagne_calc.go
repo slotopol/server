@@ -48,7 +48,7 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 	}
 	var g = NewGame(reels)
 	g.FS = 15 // set free spins mode
-	var sbl = float64(len(g.SBL))
+	var sbl = float64(g.SBL.Num())
 	var s game.Stat
 
 	var dur = func() time.Duration {
@@ -68,7 +68,7 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 	var qmjc = float64(s.BonusCount[mjc]) / n / sbl
 	var rtpmjc = Emjc * qmjc * 100
 	var rtp = sq * (rtpsym + rtpmjc)
-	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", float64(s.Reshuffles)/float64(g.Reels.Reshuffles())*100, len(g.SBL), dur)
+	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", float64(s.Reshuffles)/float64(g.Reels.Reshuffles())*100, g.SBL.Num(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(g.Reels.Reel(1)), len(g.Reels.Reel(2)), len(g.Reels.Reel(3)), len(g.Reels.Reel(4)), len(g.Reels.Reel(5)), g.Reels.Reshuffles())
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
@@ -96,7 +96,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 	}
 	var g = NewGame(reels)
 	g.FS = 0 // no free spins
-	var sbl = float64(len(g.SBL))
+	var sbl = float64(g.SBL.Num())
 	var s game.Stat
 
 	var dur = func() time.Duration {
@@ -115,7 +115,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 	var qmjc = float64(s.BonusCount[mjc]) / n / sbl
 	var rtpmjc = Emjc * qmjc * 100
 	var rtp = rtpsym + rtpmjc + q*rtpfs
-	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", float64(s.Reshuffles)/float64(g.Reels.Reshuffles())*100, len(g.SBL), dur)
+	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", float64(s.Reshuffles)/float64(g.Reels.Reshuffles())*100, g.SBL.Num(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(g.Reels.Reel(1)), len(g.Reels.Reel(2)), len(g.Reels.Reel(3)), len(g.Reels.Reel(4)), len(g.Reels.Reel(5)), g.Reels.Reshuffles())
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)

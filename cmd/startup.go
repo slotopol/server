@@ -55,6 +55,39 @@ func InitStorage() (err error) {
 			return
 		}
 	}
+
+	const limit = 256
+
+	var offset = 0
+	for {
+		var chunk []*spi.Room
+		if err = session.Limit(limit, offset).Find(&chunk); err != nil {
+			return
+		}
+		offset += limit
+		for _, room := range chunk {
+			spi.Rooms.Set(room.RID, room)
+		}
+		if limit > len(chunk) {
+			break
+		}
+	}
+
+	offset = 0
+	for {
+		var chunk []*spi.User
+		if err = session.Limit(limit, offset).Find(&chunk); err != nil {
+			return
+		}
+		offset += limit
+		for _, user := range chunk {
+			user.Init()
+			spi.Users.Set(user.UID, user)
+		}
+		if limit > len(chunk) {
+			break
+		}
+	}
 	return
 }
 

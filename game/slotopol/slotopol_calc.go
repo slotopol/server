@@ -96,7 +96,7 @@ func CalcStat(ctx context.Context, rn string) float64 {
 		reels = &Reels100
 	}
 	var g = NewGame(reels)
-	var sbl = float64(len(g.SBL))
+	var sbl = float64(g.SBL.Num())
 	var s game.Stat
 
 	var dur = func() time.Duration {
@@ -116,7 +116,7 @@ func CalcStat(ctx context.Context, rn string) float64 {
 	var qmjm = float64(s.BonusCount[mjm]) / n / sbl
 	var rtpmjm = Emjm * qmjm * 100
 	var rtp = rtpsym + rtpmje9 + rtpmjm
-	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", float64(s.Reshuffles)/float64(g.Reels.Reshuffles())*100, len(g.SBL), dur)
+	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", float64(s.Reshuffles)/float64(g.Reels.Reshuffles())*100, g.SBL.Num(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(g.Reels.Reel(1)), len(g.Reels.Reel(2)), len(g.Reels.Reel(3)), len(g.Reels.Reel(4)), len(g.Reels.Reel(5)), g.Reels.Reshuffles())
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)

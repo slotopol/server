@@ -38,8 +38,8 @@ type SlotGame interface {
 	NewScreen() Screen                  // returns new empty screen object for this game
 	GetBet() int                        // returns current bet
 	SetBet(int) error                   // set bet to given value
-	GetLines() []int                    // returns selected lines indexes
-	SetLines([]int) error               // setup selected lines indexes
+	GetLines() SBL                      // returns selected lines indexes
+	SetLines(SBL) error                 // setup selected lines indexes
 	Scanner(screen Screen, sw *WinScan) // scan given screen and append result to sw
 	Spawn(screen Screen, sw *WinScan)   // setup bonus games to win results
 }
@@ -84,9 +84,9 @@ func (s *Screen5x3) SetCol(x int, reel []int, pos int) {
 }
 
 type Slot5x3 struct {
-	SBL []int // selected bet lines
-	Bet int   // bet value
-	FS  int   // free spin number
+	SBL SBL // selected bet lines
+	Bet int // bet value
+	FS  int // free spin number
 
 	Reels    *Reels5x
 	BetLines *Lineset5x
@@ -105,11 +105,11 @@ func (g *Slot5x3) SetBet(bet int) error {
 	return nil
 }
 
-func (g *Slot5x3) GetLines() []int {
+func (g *Slot5x3) GetLines() SBL {
 	return g.SBL
 }
 
-func (g *Slot5x3) SetLines(sbl []int) error {
+func (g *Slot5x3) SetLines(sbl SBL) error {
 	g.SBL = sbl
 	return nil
 }

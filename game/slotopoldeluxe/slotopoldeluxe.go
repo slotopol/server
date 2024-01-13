@@ -126,7 +126,7 @@ var LineBonus = [13][5]int{
 func NewGame(reels *game.Reels5x) *slotopol.Game {
 	return &slotopol.Game{
 		Slot5x3: game.Slot5x3{
-			SBL:      []int{1},
+			SBL:      game.MakeSBL(1),
 			Bet:      1,
 			FS:       0,
 			Reels:    reels,

@@ -146,7 +146,7 @@ type Game struct {
 func NewGame(reels *game.Reels5x) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			SBL:      []int{1},
+			SBL:      game.MakeSBL(1),
 			Bet:      1,
 			FS:       0,
 			Reels:    reels,
@@ -169,7 +169,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 		mm = 3
 	}
 
-	for _, li := range g.SBL {
+	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = g.BetLines.Line(li)
 
 		var xy game.Line5x

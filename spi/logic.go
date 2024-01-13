@@ -15,7 +15,7 @@ type User struct {
 	Email   string `xorm:"notnull unique index" json:"email" yaml:"email" xml:"email"`
 	Secret  string `json:"secret" yaml:"secret" xml:"secret"` // auth password
 	Name    string `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
-	games   map[uint64]OpenGame
+	games   RWMap[uint64, OpenGame]
 }
 
 type OpenGame struct {
@@ -25,14 +25,19 @@ type OpenGame struct {
 	game  game.SlotGame
 }
 
-var UIDcounter uint64 = 1
-var Users = map[uint64]*User{
-	1: &User{
-		UID:     1,
-		Balance: 100,
-		games:   map[uint64]OpenGame{},
-	},
-}
+var Rooms RWMap[uint64, *Room]
+
+var Users RWMap[uint64, *User]
 
 var GIDcounter uint64
-var OpenGames = map[uint64]OpenGame{}
+var OpenGames RWMap[uint64, OpenGame]
+
+func (user *User) Init() {
+	user.games.Init(0)
+}
+
+func init() {
+	Rooms.Init(0)
+	Users.Init(0)
+	OpenGames.Init(0)
+}

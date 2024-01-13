@@ -12,6 +12,60 @@ type Lineset interface {
 	Num() int      // returns number lines in set
 }
 
+// SBL is selected bet lines set.
+type SBL uint
+
+// MakeSBL creates lines set from slice of line indexes.
+func MakeSBL(lines ...int) SBL {
+	var sbl SBL
+	for _, n := range lines {
+		sbl |= 1 << n
+	}
+	return sbl
+}
+
+// Num returns number of selected lines in set.
+func (sbl SBL) Num() int {
+	var count SBL
+	for sbl > 0 {
+		count += sbl & 1
+		sbl >>= 1
+	}
+	return int(count)
+}
+
+// Next helps iterate lines numbers as followed:
+//
+//	for n := sbl.Next(0); n != 0; n = sbl.Next(n) {}
+func (sbl SBL) Next(n int) int {
+	sbl >>= n + 1
+	for sbl > 0 {
+		n++
+		if sbl&1 > 0 {
+			return n
+		}
+		sbl >>= 1
+	}
+	return 0
+}
+
+// Is checks that line with given number is set.
+func (sbl SBL) Is(n int) bool {
+	return sbl&1<<n > 0
+}
+
+// Set line with given number.
+func (sbl *SBL) Set(n int) {
+	*sbl |= 1 << n
+}
+
+// Toggle line with given number and return whether it set.
+func (sbl *SBL) Toggle(n int) bool {
+	var bit SBL = 1 << n
+	*sbl ^= bit
+	return *sbl&bit > 0
+}
+
 type Line5x [5]int
 
 func (l *Line5x) At(x int) int {
