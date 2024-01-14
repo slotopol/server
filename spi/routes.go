@@ -48,6 +48,13 @@ func Ret400(c *gin.Context, code int, err error) {
 	})
 }
 
+func Ret403(c *gin.Context, code int, err error) {
+	Negotiate(c, http.StatusForbidden, ajaxerr{
+		What: err.Error(),
+		Code: code,
+	})
+}
+
 func Ret500(c *gin.Context, code int, err error) {
 	Negotiate(c, http.StatusInternalServerError, ajaxerr{
 		What: err.Error(),
@@ -55,15 +62,16 @@ func Ret500(c *gin.Context, code int, err error) {
 	})
 }
 
-func Router() *gin.Engine {
-	var r = gin.New()
+func Router(r *gin.Engine) {
 	r.Use(gzip.Gzip(gzip.DefaultCompression))
 	r.GET("/ping", SpiPing)
 	r.GET("/info", SpiInfo)
 	var rg = r.Group("/game")
 	rg.POST("/join", SpiGameJoin)
 	rg.POST("/part", SpiGamePart)
-	rg.POST("/bet", SpiGameBet)
-	rg.POST("/line", SpiGameLine)
-	return r
+	rg.GET("/bet", SpiGameGetBet)
+	rg.PUT("/bet", SpiGameSetBet)
+	rg.GET("/sbl", SpiGameGetSbl)
+	rg.PUT("/sbl", SpiGameSetSbl)
+	rg.POST("/spin", SpiGameSpin)
 }

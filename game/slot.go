@@ -1,6 +1,7 @@
 package game
 
 import (
+	"errors"
 	"math/rand"
 )
 
@@ -23,7 +24,7 @@ type WinItem struct {
 	Sym  int  `json:"sym,omitempty" yaml:"sym,omitempty" xml:"sym,omitempty,attr"`    // win symbol
 	Num  int  `json:"num,omitempty" yaml:"num,omitempty" xml:"num,omitempty,attr"`    // number of win symbol
 	Line int  `json:"line,omitempty" yaml:"line,omitempty" xml:"line,omitempty,attr"` // line mumber (0 for scatters and not lined)
-	XY   Line `json:"xy" yaml:"pay" xml:"pay"`                                        // symbols positions on screen
+	XY   Line `json:"xy" yaml:"xy" xml:"xy"`                                          // symbols positions on screen
 	Free int  `json:"free,omitempty" yaml:"free,omitempty" xml:"free,omitempty,attr"` // number of free spins remains
 	BID  int  `json:"bid,omitempty" yaml:"bid,omitempty" xml:"bid,omitempty,attr"`    // bonus identifier
 	Jack int  `json:"jack,omitempty" yaml:"jack,omitempty" xml:"jack,omitempty,attr"` // jackpot identifier
@@ -31,11 +32,20 @@ type WinItem struct {
 }
 
 type WinScan struct {
-	Wins []WinItem
+	Wins []WinItem `json:"wins" yaml:"wins" xml:"wins"`
+}
+
+func (ws *WinScan) SumPay() int {
+	var sum int
+	for _, wi := range ws.Wins {
+		sum += wi.Pay * wi.Mult
+	}
+	return sum
 }
 
 type SlotGame interface {
 	NewScreen() Screen                  // returns new empty screen object for this game
+	Spin(screen Screen)                 // fill the screen with random hits on those reels
 	GetBet() int                        // returns current bet
 	SetBet(int) error                   // set bet to given value
 	GetLines() SBL                      // returns selected lines indexes
@@ -60,9 +70,10 @@ func (r *Reels5x) Reshuffles() int {
 }
 
 func (r *Reels5x) Spin(screen Screen) {
-	for x := 0; x < 5; x++ {
-		var hit = rand.Intn(len(r[x]))
-		screen.SetCol(x, r[x], hit)
+	for x := 1; x <= 5; x++ {
+		var reel = r.Reel(x)
+		var hit = rand.Intn(len(reel))
+		screen.SetCol(x, reel, hit)
 	}
 }
 
@@ -83,6 +94,12 @@ func (s *Screen5x3) SetCol(x int, reel []int, pos int) {
 	}
 }
 
+var (
+	ErrBetEmpty   = errors.New("bet is empty")
+	ErrNoLineset  = errors.New("lines set is empty")
+	ErrLinesetOut = errors.New("lines set is out of range bet lines")
+)
+
 type Slot5x3 struct {
 	SBL SBL // selected bet lines
 	Bet int // bet value
@@ -96,11 +113,18 @@ func (g *Slot5x3) NewScreen() Screen {
 	return &Screen5x3{}
 }
 
+func (g *Slot5x3) Spin(screen Screen) {
+	g.Reels.Spin(screen)
+}
+
 func (g *Slot5x3) GetBet() int {
 	return g.Bet
 }
 
 func (g *Slot5x3) SetBet(bet int) error {
+	if bet < 1 {
+		return ErrBetEmpty
+	}
 	g.Bet = bet
 	return nil
 }
@@ -110,6 +134,13 @@ func (g *Slot5x3) GetLines() SBL {
 }
 
 func (g *Slot5x3) SetLines(sbl SBL) error {
+	var mask SBL = (1<<len(*g.BetLines) - 1) << 1
+	if sbl == 0 {
+		return ErrNoLineset
+	}
+	if mask&sbl != 0 {
+		return ErrLinesetOut
+	}
 	g.SBL = sbl
 	return nil
 }

@@ -1,11 +1,16 @@
 package spi
 
-import "github.com/slotopol/server/game"
+import (
+	"sync"
+
+	"github.com/slotopol/server/game"
+)
 
 type Room struct {
 	RID  uint64  `xorm:"pk autoincr" json:"rid" yaml:"rid" xml:"rid,attr"`
 	Bank float64 `json:"bank" yaml:"bank" xml:"bank"` // users win/lost balance, in coins
 	Fund float64 `json:"fund" yaml:"fund" xml:"fund"` // jackpot fund, in coins
+	mux  sync.RWMutex
 }
 
 type User struct {

@@ -32,7 +32,8 @@ var webCmd = &cobra.Command{
 			return
 		}
 
-		var r = spi.Router()
+		var r = gin.New()
+		spi.Router(r)
 		RunWeb(r)
 		return nil
 	},

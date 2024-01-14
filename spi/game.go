@@ -7,6 +7,7 @@ import (
 	"sync/atomic"
 
 	cfg "github.com/slotopol/server/config"
+	"xorm.io/xorm"
 
 	"github.com/gin-gonic/gin"
 	"github.com/slotopol/server/game"
@@ -70,7 +71,7 @@ func SpiGamePart(c *gin.Context) {
 	var err error
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid" form:"gid"`
 	}
 
 	if err = c.Bind(&arg); err != nil {
@@ -100,7 +101,38 @@ func SpiGamePart(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-func SpiGameBet(c *gin.Context) {
+func SpiGameGetBet(c *gin.Context) {
+	var err error
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid" form:"gid"`
+	}
+	var ret struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		Bet     int      `json:"bet" yaml:"bet" xml:"bet"`
+	}
+
+	if err = c.Bind(&arg); err != nil {
+		Ret400(c, SEC_game_getbet_nobind, err)
+		return
+	}
+	if arg.GID == 0 {
+		Ret400(c, SEC_game_getbet_nodata, ErrNoData)
+		return
+	}
+
+	var og, is = OpenGames.Get(arg.GID)
+	if !is {
+		Ret400(c, SEC_game_getbet_notopened, ErrNotOpened)
+		return
+	}
+
+	ret.Bet = og.game.GetBet()
+
+	RetOk(c, ret)
+}
+
+func SpiGameSetBet(c *gin.Context) {
 	var err error
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
@@ -109,55 +141,180 @@ func SpiGameBet(c *gin.Context) {
 	}
 
 	if err = c.Bind(&arg); err != nil {
-		Ret400(c, SEC_game_bet_nobind, err)
+		Ret400(c, SEC_game_setbet_nobind, err)
 		return
 	}
 	if arg.GID == 0 || arg.Bet == 0 {
-		Ret400(c, SEC_game_bet_nodata, ErrNoData)
+		Ret400(c, SEC_game_setbet_nodata, ErrNoData)
 		return
 	}
 
 	var og, is = OpenGames.Get(arg.GID)
 	if !is {
-		Ret400(c, SEC_game_bet_notopened, ErrNotOpened)
+		Ret400(c, SEC_game_setbet_notopened, ErrNotOpened)
 		return
 	}
 
 	if err = og.game.SetBet(arg.Bet); err != nil {
-		Ret400(c, SEC_game_bet_badbet, err)
+		Ret400(c, SEC_game_setbet_badbet, err)
 		return
 	}
 
 	c.Status(http.StatusOK)
 }
 
-func SpiGameLine(c *gin.Context) {
+func SpiGameGetSbl(c *gin.Context) {
 	var err error
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid"`
-		Lines   game.SBL `json:"sbl" yaml:"sbl" xml:"sbl"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid" form:"gid"`
+	}
+	var ret struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		SBL     game.SBL `json:"sbl" yaml:"sbl" xml:"sbl"`
 	}
 
 	if err = c.Bind(&arg); err != nil {
-		Ret400(c, SEC_game_line_nobind, err)
+		Ret400(c, SEC_game_getsbl_nobind, err)
 		return
 	}
-	if arg.GID == 0 || arg.Lines == 0 {
-		Ret400(c, SEC_game_line_nodata, ErrNoData)
+	if arg.GID == 0 {
+		Ret400(c, SEC_game_getsbl_nodata, ErrNoData)
 		return
 	}
 
 	var og, is = OpenGames.Get(arg.GID)
 	if !is {
-		Ret400(c, SEC_game_line_notopened, ErrNotOpened)
+		Ret400(c, SEC_game_getsbl_notopened, ErrNotOpened)
 		return
 	}
 
-	if err = og.game.SetLines(arg.Lines); err != nil {
-		Ret400(c, SEC_game_line_badlines, err)
+	ret.SBL = og.game.GetLines()
+
+	RetOk(c, ret)
+}
+
+func SpiGameSetSbl(c *gin.Context) {
+	var err error
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid"`
+		SBL     game.SBL `json:"sbl" yaml:"sbl" xml:"sbl"`
+	}
+
+	if err = c.Bind(&arg); err != nil {
+		Ret400(c, SEC_game_setsbl_nobind, err)
+		return
+	}
+	if arg.GID == 0 || arg.SBL == 0 {
+		Ret400(c, SEC_game_setsbl_nodata, ErrNoData)
+		return
+	}
+
+	var og, is = OpenGames.Get(arg.GID)
+	if !is {
+		Ret400(c, SEC_game_setsbl_notopened, ErrNotOpened)
+		return
+	}
+
+	if err = og.game.SetLines(arg.SBL); err != nil {
+		Ret400(c, SEC_game_setsbl_badlines, err)
 		return
 	}
 
 	c.Status(http.StatusOK)
+}
+
+func SpiGameSpin(c *gin.Context) {
+	var err error
+	var ok bool
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid" form:"gid"`
+	}
+	var ret struct {
+		XMLName xml.Name     `json:"-" yaml:"-" xml:"ret"`
+		Screen  game.Screen  `json:"screen" yaml:"screen" xml:"screen"`
+		WinScan game.WinScan `json:"winscan" yaml:"winscan" xml:"winscan"`
+		Balance int          `json:"balance" yaml:"balance" xml:"balance"`
+		Gain    int          `json:"gain" yaml:"gain" xml:"gain"`
+	}
+
+	if err = c.Bind(&arg); err != nil {
+		Ret400(c, SEC_game_spin_nobind, err)
+		return
+	}
+	if arg.GID == 0 {
+		Ret400(c, SEC_game_spin_nodata, ErrNoData)
+		return
+	}
+
+	var og OpenGame
+	if og, ok = OpenGames.Get(arg.GID); !ok {
+		Ret400(c, SEC_game_spin_notopened, ErrNotOpened)
+		return
+	}
+
+	var user *User
+	if user, ok = Users.Get(og.UID); !ok {
+		Ret500(c, SEC_game_spin_nouser, ErrNoUser)
+		return
+	}
+
+	var totalbet = og.game.GetBet() * og.game.GetLines().Num()
+	var totalwin int
+
+	if user.Balance < totalbet {
+		Ret403(c, SEC_game_spin_nomoney, ErrNoMoney)
+		return
+	}
+
+	var room *Room
+	if room, ok = Rooms.Get(user.RID); !ok {
+		Ret500(c, SEC_game_spin_noroom, ErrNoRoom)
+		return
+	}
+
+	ret.Screen = og.game.NewScreen()
+
+	room.mux.RLock()
+	var bank = room.Bank
+	room.mux.RUnlock()
+	for {
+		og.game.Spin(ret.Screen)
+		og.game.Scanner(ret.Screen, &ret.WinScan)
+		totalwin = ret.WinScan.SumPay()
+		if bank+float64(totalbet-totalwin) >= 0 {
+			break
+		}
+	}
+
+	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (ret interface{}, err error) {
+		const sql1 = `UPDATE room SET bank=bank+? WHERE rid=?`
+		if ret, err = session.Exec(sql1, totalbet-totalwin, room.RID); err != nil {
+			Ret500(c, SEC_game_spin_sqlbank, err)
+			return
+		}
+
+		const sql2 = `UPDATE user SET balance=balance+? WHERE uid=?`
+		if ret, err = session.Exec(sql2, totalwin-totalbet, user.UID); err != nil {
+			Ret500(c, SEC_game_spin_sqlbalance, err)
+			return
+		}
+
+		room.mux.Lock()
+		room.Bank += float64(totalbet - totalwin)
+		room.mux.Unlock()
+
+		user.Balance += totalwin - totalbet
+
+		return
+	}); err != nil {
+		return
+	}
+
+	ret.Balance = user.Balance
+	ret.Gain = totalwin
+
+	RetOk(c, ret)
 }

@@ -1,4 +1,4 @@
-//go:build full || novomatic
+//go:build !prod || full || novomatic
 
 package config
 
