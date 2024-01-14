@@ -11,24 +11,26 @@ type Biner interface {
 	UnmarshalBin(b []byte) (int, error)
 }
 
+type Sym byte // symbol type
+
 type Reels interface {
 	Cols() int          // returns number of columns
-	Reel(col int) []int // returns reel at given column, index from
+	Reel(col int) []Sym // returns reel at given column, index from
 	Reshuffles() int    // returns total number of reshuffles
-	Spin(screen Screen) // fill the screen with random hits on those reels
 }
 
 type Screen interface {
 	Dim() (int, int)                   // returns screen dimensions
-	At(x int, y int) int               // returns symbol at position (x, y), starts from (1, 1)
-	SetCol(x int, reel []int, pos int) // setup column on screen with given reel at given position
+	At(x int, y int) Sym               // returns symbol at position (x, y), starts from (1, 1)
+	SetCol(x int, reel []Sym, pos int) // setup column on screen with given reel at given position
+	Spin(reels Reels)                  // fill the screen with random hits on those reels
 	Biner
 }
 
 type WinItem struct {
 	Pay  int  `json:"pay,omitempty" yaml:"pay,omitempty" xml:"pay,omitempty,attr"`    // payment with selected bet
 	Mult int  `json:"mult,omitempty" yaml:"mult,omitempty" xml:"mult,omitempty,attr"` // multiplier for payment for free spins and other special cases
-	Sym  int  `json:"sym,omitempty" yaml:"sym,omitempty" xml:"sym,omitempty,attr"`    // win symbol
+	Sym  Sym  `json:"sym,omitempty" yaml:"sym,omitempty" xml:"sym,omitempty,attr"`    // win symbol
 	Num  int  `json:"num,omitempty" yaml:"num,omitempty" xml:"num,omitempty,attr"`    // number of win symbol
 	Line int  `json:"line,omitempty" yaml:"line,omitempty" xml:"line,omitempty,attr"` // line mumber (0 for scatters and not lined)
 	XY   Line `json:"xy" yaml:"xy" xml:"xy"`                                          // symbols positions on screen
@@ -51,24 +53,26 @@ func (ws *WinScan) SumPay() int {
 }
 
 type SlotGame interface {
-	NewScreen() Screen                  // returns new empty screen object for this game
-	Spin(screen Screen)                 // fill the screen with random hits on those reels
-	GetBet() int                        // returns current bet
+	NewScreen() Screen                  // returns new empty screen object for this game, constat function
+	Scanner(screen Screen, sw *WinScan) // scan given screen and append result to sw, constat function
+	Spin(screen Screen)                 // fill the screen with random hits on those reels, constat function
+	Spawn(screen Screen, sw *WinScan)   // setup bonus games to win results, constat function
+	Apply(screen Screen, sw *WinScan)   // update game state to spin results
+	FreeSpins() int                     // returns number of free spins remained, constat function
+	GetBet() int                        // returns current bet, constat function
 	SetBet(int) error                   // set bet to given value
-	GetLines() SBL                      // returns selected lines indexes
+	GetLines() SBL                      // returns selected lines indexes, constat function
 	SetLines(SBL) error                 // setup selected lines indexes
-	Scanner(screen Screen, sw *WinScan) // scan given screen and append result to sw
-	Spawn(screen Screen, sw *WinScan)   // setup bonus games to win results
 }
 
 // Reels for 5-reels slots.
-type Reels5x [5][]int
+type Reels5x [5][]Sym
 
 func (r *Reels5x) Cols() int {
 	return 5
 }
 
-func (r *Reels5x) Reel(col int) []int {
+func (r *Reels5x) Reel(col int) []Sym {
 	return r[col-1]
 }
 
@@ -76,28 +80,28 @@ func (r *Reels5x) Reshuffles() int {
 	return len(r[0]) * len(r[1]) * len(r[2]) * len(r[3]) * len(r[4])
 }
 
-func (r *Reels5x) Spin(screen Screen) {
-	for x := 1; x <= 5; x++ {
-		var reel = r.Reel(x)
-		var hit = rand.Intn(len(reel))
-		screen.SetCol(x, reel, hit)
-	}
-}
-
 // Screen for 5x3 slots.
-type Screen5x3 [5][3]int
+type Screen5x3 [5][3]Sym
 
 func (s *Screen5x3) Dim() (int, int) {
 	return 5, 3
 }
 
-func (s *Screen5x3) At(x int, y int) int {
+func (s *Screen5x3) At(x int, y int) Sym {
 	return s[x-1][y-1]
 }
 
-func (s *Screen5x3) SetCol(x int, reel []int, pos int) {
+func (s *Screen5x3) SetCol(x int, reel []Sym, pos int) {
 	for y := 0; y < 3; y++ {
 		s[x-1][y] = reel[(pos+y)%len(reel)]
+	}
+}
+
+func (s *Screen5x3) Spin(reels Reels) {
+	for x := 1; x <= 5; x++ {
+		var reel = reels.Reel(x)
+		var hit = rand.Intn(len(reel))
+		s.SetCol(x, reel, hit)
 	}
 }
 
@@ -120,7 +124,7 @@ func (s *Screen5x3) UnmarshalBin(b []byte) (int, error) {
 	var i int
 	for x := 0; x < 5; x++ {
 		for y := 0; y < 3; y++ {
-			s[x][y] = int(b[i])
+			s[x][y] = Sym(b[i])
 			i++
 		}
 	}
@@ -147,7 +151,25 @@ func (g *Slot5x3) NewScreen() Screen {
 }
 
 func (g *Slot5x3) Spin(screen Screen) {
-	g.Reels.Spin(screen)
+	screen.Spin(g.Reels)
+}
+
+func (g *Slot5x3) Spawn(screen Screen, sw *WinScan) {
+}
+
+func (g *Slot5x3) Apply(screen Screen, sw *WinScan) {
+	if g.FS > 0 {
+		g.FS--
+	}
+	for _, wi := range sw.Wins {
+		if wi.Free > 0 {
+			g.FS += wi.Free
+		}
+	}
+}
+
+func (g *Slot5x3) FreeSpins() int {
+	return g.FS
 }
 
 func (g *Slot5x3) GetBet() int {
@@ -176,7 +198,4 @@ func (g *Slot5x3) SetLines(sbl SBL) error {
 	}
 	g.SBL = sbl
 	return nil
-}
-
-func (g *Slot5x3) Spawn(screen Screen, sw *WinScan) {
 }

@@ -174,7 +174,8 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 
 		var xy game.Line5x
 		var cntw, cntl = 0, 5
-		var sl, m = 0, mm
+		var sl game.Sym
+		var m = mm
 		for x := 1; x <= 5; x++ {
 			var sx = screen.At(x, line.At(x))
 			if sx == wild {
@@ -262,5 +263,13 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 				Free: fs,
 			})
 		}
+	}
+}
+
+func (g *Game) Spin(screen game.Screen) {
+	if g.FS == 0 {
+		screen.Spin(g.Reels)
+	} else {
+		screen.Spin(&ReelsBon)
 	}
 }

@@ -54,6 +54,7 @@ const (
 	SEC_game_spin_noprops
 	SEC_game_spin_nomoney
 	SEC_game_spin_noroom
+	SEC_game_spin_badbank
 	SEC_game_spin_sqlbank
 	SEC_game_spin_sqlbalance
 	SEC_game_spin_sqllog
@@ -71,4 +72,5 @@ var (
 	ErrNoAliase  = errors.New("no game alias")
 	ErrNoReels   = errors.New("no reels for given game with selected percentage")
 	ErrNotOpened = errors.New("game with given ID is not opened")
+	ErrBadBank   = errors.New("can not generate spin with current bank balance")
 )

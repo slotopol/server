@@ -153,7 +153,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 
 		var xy game.Line5x
 		var cntw, cntl = 0, 5
-		var sl = 0
+		var sl game.Sym
 		for x := 1; x <= 5; x++ {
 			var sx = screen.At(x, line.At(x))
 			if sx == wild {

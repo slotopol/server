@@ -37,6 +37,11 @@ var (
 	ErrNoCfgFile = errors.New("configyration file was not found")
 )
 
+type CfgGameplay struct {
+	// Maximum number of spin attempts at bad bank balance.
+	MaxSpinAttempts int `json:"max-spin-attempts" yaml:"max-spin-attempts" mapstructure:"max-spin-attempts"`
+}
+
 type CfgXormDrv struct {
 	// Provides XORM driver name.
 	XormDriverName string `json:"xorm-driver-name" yaml:"xorm-driver-name" mapstructure:"xorm-driver-name"`
@@ -44,12 +49,16 @@ type CfgXormDrv struct {
 
 // Config is common service settings.
 type Config struct {
-	CfgXormDrv `json:"xorm" yaml:"xorm" mapstructure:"xorm"`
+	CfgGameplay `json:"gameplay" yaml:"xorm" mapstructure:"gameplay"`
+	CfgXormDrv  `json:"xorm" yaml:"xorm" mapstructure:"xorm"`
 }
 
 // Instance of common service settings.
 // Inits default values if config is not found.
 var Cfg = &Config{
+	CfgGameplay: CfgGameplay{
+		MaxSpinAttempts: 300,
+	},
 	CfgXormDrv: CfgXormDrv{
 		XormDriverName: "sqlite3",
 	},

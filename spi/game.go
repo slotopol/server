@@ -300,8 +300,15 @@ func SpiGameSpin(c *gin.Context) {
 		return
 	}
 
-	var totalbet = og.game.GetBet() * og.game.GetLines().Num()
-	var totalwin int
+	var (
+		bet      = og.game.GetBet()
+		sbl      = og.game.GetLines()
+		totalbet int
+		totalwin int
+	)
+	if og.game.FreeSpins() == 0 {
+		totalbet = bet * sbl.Num()
+	}
 
 	var props *Props
 	if props, ok = user.props.Get(og.RID); !ok {
@@ -320,22 +327,36 @@ func SpiGameSpin(c *gin.Context) {
 	}
 
 	// get game screen object
-	ret.Screen = og.game.NewScreen()
+	var scrn = og.game.NewScreen()
 
 	// spin until gain less than bank value
 	room.mux.RLock()
 	var bank = room.Bank
 	room.mux.RUnlock()
 	var ws game.WinScan
+	var n = 0
 	for {
-		og.game.Spin(ret.Screen)
-		og.game.Scanner(ret.Screen, &ws)
+		og.game.Spin(scrn)
+		og.game.Scanner(scrn, &ws)
+		og.game.Spawn(scrn, &ws)
 		totalwin = ws.SumPay()
 		if bank+float64(totalbet-totalwin) >= 0 || (bank < 0 && totalbet > totalwin) {
 			break
 		}
+		if n >= cfg.Cfg.MaxSpinAttempts {
+			Ret500(c, SEC_game_spin_badbank, ErrBadBank)
+			return
+		}
+		n++
 	}
-	ret.Wins = ws.Wins
+
+	// write spin result to log and get spin ID
+	var sl = Spinlog{
+		GID: arg.GID,
+		Bet: bet,
+		SBL: sbl,
+	}
+	sl.Screen, _ = scrn.MarshalBin()
 
 	// write gain and total bet as transaction
 	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (ret interface{}, err error) {
@@ -351,31 +372,31 @@ func SpiGameSpin(c *gin.Context) {
 			return
 		}
 
-		room.mux.Lock()
-		room.Bank += float64(totalbet - totalwin)
-		room.mux.Unlock()
-
-		props.Wallet += totalwin - totalbet
+		if _, err = session.Insert(&sl); err != nil {
+			Ret500(c, SEC_game_spin_sqllog, err)
+			return
+		}
 
 		return
 	}); err != nil {
 		return
 	}
 
+	// make changes to memory data
+	room.mux.Lock()
+	room.Bank += float64(totalbet - totalwin)
+	room.mux.Unlock()
+
+	props.Wallet += totalwin - totalbet
+
+	og.game.Apply(scrn, &ws)
+
+	// prepare result
+	ret.SID = sl.SID
+	ret.Screen = scrn
+	ret.Wins = ws.Wins
 	ret.Wallet = props.Wallet
 	ret.Gain = totalwin
-
-	// write spin result to log and get spin ID
-	var sl = Spinlog{
-		GID: arg.GID,
-		Bet: og.game.GetBet(),
-		SBL: og.game.GetLines(),
-	}
-	sl.Screen, _ = ret.Screen.MarshalBin()
-	if _, err = cfg.XormSpinlog.Insert(&sl); err != nil {
-		Ret500(c, SEC_game_spin_sqllog, err)
-	}
-	ret.SID = sl.SID
 
 	RetOk(c, ret)
 }
