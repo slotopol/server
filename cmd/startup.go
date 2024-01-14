@@ -26,7 +26,7 @@ func InitStorage() (err error) {
 	var session = cfg.XormStorage.NewSession()
 	defer session.Close()
 
-	if err = session.Sync(&spi.Room{}, &spi.User{}); err != nil {
+	if err = session.Sync(&spi.Room{}, &spi.User{}, &spi.Balance{}); err != nil {
 		return
 	}
 
@@ -37,21 +37,28 @@ func InitStorage() (err error) {
 	if ok {
 		var room = spi.Room{
 			RID:  1,
-			Bank: 0,
-			Fund: 0,
+			Bank: 10000,
+			Fund: 1000000,
+			Name: "virtual",
 		}
 		if _, err = session.Insert(&room); err != nil {
 			return
 		}
 		var user = spi.User{
-			UID:     1,
-			RID:     1,
-			Balance: 1000,
-			Email:   "example@example.org",
-			Secret:  "admin",
-			Name:    "admin",
+			UID:    1,
+			Email:  "example@example.org",
+			Secret: "pGjkSD",
+			Name:   "admin",
 		}
 		if _, err = session.Insert(&user); err != nil {
+			return
+		}
+		var balance = spi.Balance{
+			UID:   1,
+			RID:   1,
+			Value: 1000,
+		}
+		if _, err = session.Insert(&balance); err != nil {
 			return
 		}
 	}
@@ -83,6 +90,28 @@ func InitStorage() (err error) {
 		for _, user := range chunk {
 			user.Init()
 			spi.Users.Set(user.UID, user)
+		}
+		if limit > len(chunk) {
+			break
+		}
+	}
+
+	offset = 0
+	for {
+		var chunk []*spi.Balance
+		if err = session.Limit(limit, offset).Find(&chunk); err != nil {
+			return
+		}
+		offset += limit
+		for _, bal := range chunk {
+			if !spi.Rooms.Has(bal.RID) {
+				return fmt.Errorf("found balance without room linkage, UID=%d, RID=%d, value=%d", bal.UID, bal.RID, bal.Value)
+			}
+			var user, ok = spi.Users.Get(bal.UID)
+			if !ok {
+				return fmt.Errorf("found balance without user linkage, UID=%d, RID=%d, value=%d", bal.UID, bal.RID, bal.Value)
+			}
+			user.InsertBalance(bal)
 		}
 		if limit > len(chunk) {
 			break

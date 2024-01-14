@@ -15,33 +15,57 @@ import (
 
 func SpiGameJoin(c *gin.Context) {
 	var err error
+	var ok bool
 	var arg struct {
 		XMLName  xml.Name `json:"-" yaml:"-" xml:"arg"`
-		UID      uint64   `json:"uid" yaml:"uid" xml:"uid" form:"uid"`
+		UID      uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
+		RID      uint64   `json:"rid" yaml:"rid" xml:"rid,attr" form:"rid"`
 		GameName string   `json:"gamename" yaml:"gamename" xml:"gamename" form:"gamename"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
 	}
 
 	if err = c.Bind(&arg); err != nil {
 		Ret400(c, SEC_game_join_nobind, err)
 		return
 	}
-	if arg.UID == 0 || arg.GameName == "" {
+	if arg.UID == 0 {
+		Ret400(c, SEC_game_join_nouid, ErrNoUID)
+		return
+	}
+	if arg.RID == 0 {
+		Ret400(c, SEC_game_join_norid, ErrNoRID)
+		return
+	}
+	if arg.GameName == "" {
 		Ret400(c, SEC_game_join_nodata, ErrNoData)
 		return
 	}
 
-	var user, has = Users.Get(arg.UID)
-	if !has {
+	var user *User
+	if user, ok = Users.Get(arg.UID); !ok {
 		Ret400(c, SEC_game_join_nouser, ErrNoUser)
 		return
 	}
 
-	var alias, is = cfg.GameAliases[strings.ToLower(arg.GameName)]
-	if !is {
+	var room *Room
+	if room, ok = Rooms.Get(arg.RID); !ok {
+		Ret500(c, SEC_game_join_noroom, ErrNoRoom)
+		return
+	}
+	_ = room
+
+	var balance *Balance
+	if balance, ok = user.balance.Get(arg.RID); !ok {
+		Ret403(c, SEC_game_join_nobalance, ErrNoBalance)
+		return
+	}
+	_ = balance
+
+	var alias string
+	if alias, ok = cfg.GameAliases[strings.ToLower(arg.GameName)]; !ok {
 		Ret400(c, SEC_game_join_noalias, ErrNoAliase)
 		return
 	}
@@ -57,6 +81,7 @@ func SpiGameJoin(c *gin.Context) {
 	var og = OpenGame{
 		GID:   gid,
 		UID:   arg.UID,
+		RID:   arg.RID,
 		Alias: alias,
 		game:  slotgame.(game.SlotGame),
 	}
@@ -69,9 +94,10 @@ func SpiGameJoin(c *gin.Context) {
 
 func SpiGamePart(c *gin.Context) {
 	var err error
+	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid" form:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
 	}
 
 	if err = c.Bind(&arg); err != nil {
@@ -79,18 +105,18 @@ func SpiGamePart(c *gin.Context) {
 		return
 	}
 	if arg.GID == 0 {
-		Ret400(c, SEC_game_part_nodata, ErrNoData)
+		Ret400(c, SEC_game_part_nogid, ErrNoGID)
 		return
 	}
 
-	var og, is = OpenGames.Get(arg.GID)
-	if !is {
+	var og OpenGame
+	if og, ok = OpenGames.Get(arg.GID); !ok {
 		Ret400(c, SEC_game_part_notopened, ErrNotOpened)
 		return
 	}
 
-	var user, has = Users.Get(og.UID)
-	if !has {
+	var user *User
+	if user, ok = Users.Get(og.UID); !ok {
 		Ret500(c, SEC_game_part_nouser, ErrNoUser)
 		return
 	}
@@ -103,9 +129,10 @@ func SpiGamePart(c *gin.Context) {
 
 func SpiGameGetBet(c *gin.Context) {
 	var err error
+	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid" form:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -117,12 +144,12 @@ func SpiGameGetBet(c *gin.Context) {
 		return
 	}
 	if arg.GID == 0 {
-		Ret400(c, SEC_game_getbet_nodata, ErrNoData)
+		Ret400(c, SEC_game_getbet_nogid, ErrNoGID)
 		return
 	}
 
-	var og, is = OpenGames.Get(arg.GID)
-	if !is {
+	var og OpenGame
+	if og, ok = OpenGames.Get(arg.GID); !ok {
 		Ret400(c, SEC_game_getbet_notopened, ErrNotOpened)
 		return
 	}
@@ -134,9 +161,10 @@ func SpiGameGetBet(c *gin.Context) {
 
 func SpiGameSetBet(c *gin.Context) {
 	var err error
+	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
 		Bet     int      `json:"bet" yaml:"bet" xml:"bet"`
 	}
 
@@ -144,13 +172,17 @@ func SpiGameSetBet(c *gin.Context) {
 		Ret400(c, SEC_game_setbet_nobind, err)
 		return
 	}
-	if arg.GID == 0 || arg.Bet == 0 {
+	if arg.GID == 0 {
+		Ret400(c, SEC_game_setbet_nogid, ErrNoGID)
+		return
+	}
+	if arg.Bet == 0 {
 		Ret400(c, SEC_game_setbet_nodata, ErrNoData)
 		return
 	}
 
-	var og, is = OpenGames.Get(arg.GID)
-	if !is {
+	var og OpenGame
+	if og, ok = OpenGames.Get(arg.GID); !ok {
 		Ret400(c, SEC_game_setbet_notopened, ErrNotOpened)
 		return
 	}
@@ -165,9 +197,10 @@ func SpiGameSetBet(c *gin.Context) {
 
 func SpiGameGetSbl(c *gin.Context) {
 	var err error
+	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid" form:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -179,12 +212,12 @@ func SpiGameGetSbl(c *gin.Context) {
 		return
 	}
 	if arg.GID == 0 {
-		Ret400(c, SEC_game_getsbl_nodata, ErrNoData)
+		Ret400(c, SEC_game_getsbl_nogid, ErrNoGID)
 		return
 	}
 
-	var og, is = OpenGames.Get(arg.GID)
-	if !is {
+	var og OpenGame
+	if og, ok = OpenGames.Get(arg.GID); !ok {
 		Ret400(c, SEC_game_getsbl_notopened, ErrNotOpened)
 		return
 	}
@@ -196,9 +229,10 @@ func SpiGameGetSbl(c *gin.Context) {
 
 func SpiGameSetSbl(c *gin.Context) {
 	var err error
+	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
 		SBL     game.SBL `json:"sbl" yaml:"sbl" xml:"sbl"`
 	}
 
@@ -206,13 +240,17 @@ func SpiGameSetSbl(c *gin.Context) {
 		Ret400(c, SEC_game_setsbl_nobind, err)
 		return
 	}
-	if arg.GID == 0 || arg.SBL == 0 {
+	if arg.GID == 0 {
+		Ret400(c, SEC_game_setsbl_nogid, ErrNoGID)
+		return
+	}
+	if arg.SBL == 0 {
 		Ret400(c, SEC_game_setsbl_nodata, ErrNoData)
 		return
 	}
 
-	var og, is = OpenGames.Get(arg.GID)
-	if !is {
+	var og OpenGame
+	if og, ok = OpenGames.Get(arg.GID); !ok {
 		Ret400(c, SEC_game_setsbl_notopened, ErrNotOpened)
 		return
 	}
@@ -230,7 +268,7 @@ func SpiGameSpin(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid" form:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
 	}
 	var ret struct {
 		XMLName xml.Name     `json:"-" yaml:"-" xml:"ret"`
@@ -245,7 +283,7 @@ func SpiGameSpin(c *gin.Context) {
 		return
 	}
 	if arg.GID == 0 {
-		Ret400(c, SEC_game_spin_nodata, ErrNoData)
+		Ret400(c, SEC_game_spin_nogid, ErrNoGID)
 		return
 	}
 
@@ -264,13 +302,18 @@ func SpiGameSpin(c *gin.Context) {
 	var totalbet = og.game.GetBet() * og.game.GetLines().Num()
 	var totalwin int
 
-	if user.Balance < totalbet {
+	var balance *Balance
+	if balance, ok = user.balance.Get(og.RID); !ok {
+		Ret403(c, SEC_game_spin_nobalance, ErrNoBalance)
+		return
+	}
+	if balance.Value < totalbet {
 		Ret403(c, SEC_game_spin_nomoney, ErrNoMoney)
 		return
 	}
 
 	var room *Room
-	if room, ok = Rooms.Get(user.RID); !ok {
+	if room, ok = Rooms.Get(og.RID); !ok {
 		Ret500(c, SEC_game_spin_noroom, ErrNoRoom)
 		return
 	}
@@ -284,7 +327,7 @@ func SpiGameSpin(c *gin.Context) {
 		og.game.Spin(ret.Screen)
 		og.game.Scanner(ret.Screen, &ret.WinScan)
 		totalwin = ret.WinScan.SumPay()
-		if bank+float64(totalbet-totalwin) >= 0 {
+		if bank+float64(totalbet-totalwin) >= 0 || (bank < 0 && totalbet > totalwin) {
 			break
 		}
 	}
@@ -296,8 +339,8 @@ func SpiGameSpin(c *gin.Context) {
 			return
 		}
 
-		const sql2 = `UPDATE user SET balance=balance+? WHERE uid=?`
-		if ret, err = session.Exec(sql2, totalwin-totalbet, user.UID); err != nil {
+		const sql2 = `UPDATE balance SET value=value+? WHERE uid=? AND rid=?`
+		if ret, err = session.Exec(sql2, totalwin-totalbet, balance.UID, balance.RID); err != nil {
 			Ret500(c, SEC_game_spin_sqlbalance, err)
 			return
 		}
@@ -306,14 +349,14 @@ func SpiGameSpin(c *gin.Context) {
 		room.Bank += float64(totalbet - totalwin)
 		room.mux.Unlock()
 
-		user.Balance += totalwin - totalbet
+		balance.Value += totalwin - totalbet
 
 		return
 	}); err != nil {
 		return
 	}
 
-	ret.Balance = user.Balance
+	ret.Balance = balance.Value
 	ret.Gain = totalwin
 
 	RetOk(c, ret)

@@ -1,4 +1,4 @@
-//go:build full || megajack
+//go:build !prod || full || megajack
 
 package config
 
