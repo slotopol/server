@@ -12,7 +12,7 @@ const (
 	SEC_game_join_nodata
 	SEC_game_join_nouser
 	SEC_game_join_noroom
-	SEC_game_join_nobalance
+	SEC_game_join_noprops
 	SEC_game_join_noalias
 	SEC_game_join_noreels
 
@@ -51,11 +51,12 @@ const (
 	SEC_game_spin_nogid
 	SEC_game_spin_notopened
 	SEC_game_spin_nouser
-	SEC_game_spin_nobalance
+	SEC_game_spin_noprops
 	SEC_game_spin_nomoney
 	SEC_game_spin_noroom
 	SEC_game_spin_sqlbank
 	SEC_game_spin_sqlbalance
+	SEC_game_spin_sqllog
 )
 
 var (
@@ -65,7 +66,7 @@ var (
 	ErrNoData    = errors.New("data does not provided or empty")
 	ErrNoRoom    = errors.New("room with given ID does not found")
 	ErrNoUser    = errors.New("user with given ID does not found")
-	ErrNoBalance = errors.New("user does not have balance")
+	ErrNoProps   = errors.New("user does not have props at this room")
 	ErrNoMoney   = errors.New("not enough money")
 	ErrNoAliase  = errors.New("no game alias")
 	ErrNoReels   = errors.New("no reels for given game with selected percentage")

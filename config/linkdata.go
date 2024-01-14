@@ -16,4 +16,7 @@ var GameAliases = map[string]string{}
 
 var GameFactory = map[string]func(string) any{}
 
-var XormStorage *xorm.Engine
+var (
+	XormStorage *xorm.Engine
+	XormSpinlog *xorm.Engine
+)

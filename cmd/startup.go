@@ -11,14 +11,17 @@ import (
 	"xorm.io/xorm/names"
 )
 
-const slotfile = "slot.sqlite"
+const (
+	slotrecfile = "slot-rec.sqlite"
+	slotlogfile = "slot-log.sqlite"
+)
 
 var (
 	Cfg = cfg.Cfg
 )
 
 func InitStorage() (err error) {
-	if cfg.XormStorage, err = xorm.NewEngine(Cfg.XormDriverName, cfg.JoinPath(cfg.CfgPath, slotfile)); err != nil {
+	if cfg.XormStorage, err = xorm.NewEngine(Cfg.XormDriverName, cfg.JoinPath(cfg.CfgPath, slotrecfile)); err != nil {
 		return
 	}
 	cfg.XormStorage.SetMapper(names.GonicMapper{})
@@ -26,7 +29,7 @@ func InitStorage() (err error) {
 	var session = cfg.XormStorage.NewSession()
 	defer session.Close()
 
-	if err = session.Sync(&spi.Room{}, &spi.User{}, &spi.Balance{}); err != nil {
+	if err = session.Sync(&spi.Room{}, &spi.User{}, &spi.Props{}); err != nil {
 		return
 	}
 
@@ -35,30 +38,37 @@ func InitStorage() (err error) {
 		return
 	}
 	if ok {
-		var room = spi.Room{
+		if _, err = session.Insert(&spi.Room{
 			RID:  1,
 			Bank: 10000,
 			Fund: 1000000,
+			Lock: 0,
 			Name: "virtual",
-		}
-		if _, err = session.Insert(&room); err != nil {
+		}); err != nil {
 			return
 		}
-		var user = spi.User{
+		if _, err = session.Insert(&spi.User{
 			UID:    1,
 			Email:  "example@example.org",
 			Secret: "pGjkSD",
 			Name:   "admin",
-		}
-		if _, err = session.Insert(&user); err != nil {
+		}); err != nil {
 			return
 		}
-		var balance = spi.Balance{
-			UID:   1,
-			RID:   1,
-			Value: 1000,
+		if _, err = session.Insert(&spi.Props{
+			UID:    1,
+			RID:    0,
+			Wallet: 0,
+			Access: spi.ALall,
+		}); err != nil {
+			return
 		}
-		if _, err = session.Insert(&balance); err != nil {
+		if _, err = session.Insert(&spi.Props{
+			UID:    1,
+			RID:    1,
+			Wallet: 1000,
+			Access: spi.ALall,
+		}); err != nil {
 			return
 		}
 	}
@@ -98,20 +108,20 @@ func InitStorage() (err error) {
 
 	offset = 0
 	for {
-		var chunk []*spi.Balance
+		var chunk []*spi.Props
 		if err = session.Limit(limit, offset).Find(&chunk); err != nil {
 			return
 		}
 		offset += limit
-		for _, bal := range chunk {
-			if !spi.Rooms.Has(bal.RID) {
-				return fmt.Errorf("found balance without room linkage, UID=%d, RID=%d, value=%d", bal.UID, bal.RID, bal.Value)
+		for _, props := range chunk {
+			if props.RID != 0 && !spi.Rooms.Has(props.RID) {
+				return fmt.Errorf("found props without room linkage, UID=%d, RID=%d, value=%d", props.UID, props.RID, props.Wallet)
 			}
-			var user, ok = spi.Users.Get(bal.UID)
+			var user, ok = spi.Users.Get(props.UID)
 			if !ok {
-				return fmt.Errorf("found balance without user linkage, UID=%d, RID=%d, value=%d", bal.UID, bal.RID, bal.Value)
+				return fmt.Errorf("found props without user linkage, UID=%d, RID=%d, value=%d", props.UID, props.RID, props.Wallet)
 			}
-			user.InsertBalance(bal)
+			user.InsertProps(props)
 		}
 		if limit > len(chunk) {
 			break
@@ -120,9 +130,27 @@ func InitStorage() (err error) {
 	return
 }
 
+func InitSpinlog() (err error) {
+	if cfg.XormSpinlog, err = xorm.NewEngine(Cfg.XormDriverName, cfg.JoinPath(cfg.CfgPath, slotlogfile)); err != nil {
+		return
+	}
+	cfg.XormSpinlog.SetMapper(names.GonicMapper{})
+
+	var session = cfg.XormSpinlog.NewSession()
+	defer session.Close()
+
+	if err = session.Sync(&spi.Spinlog{}); err != nil {
+		return
+	}
+	return
+}
+
 func Init() (err error) {
 	if err = InitStorage(); err != nil {
-		return fmt.Errorf("can not init XORM storage: %w", err)
+		return fmt.Errorf("can not init XORM records storage: %w", err)
+	}
+	if err = InitSpinlog(); err != nil {
+		return fmt.Errorf("can not init XORM spins log: %w", err)
 	}
 	return
 }

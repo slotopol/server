@@ -57,12 +57,12 @@ func SpiGameJoin(c *gin.Context) {
 	}
 	_ = room
 
-	var balance *Balance
-	if balance, ok = user.balance.Get(arg.RID); !ok {
-		Ret403(c, SEC_game_join_nobalance, ErrNoBalance)
+	var props *Props
+	if props, ok = user.props.Get(arg.RID); !ok {
+		Ret403(c, SEC_game_join_noprops, ErrNoProps)
 		return
 	}
-	_ = balance
+	_ = props
 
 	var alias string
 	if alias, ok = cfg.GameAliases[strings.ToLower(arg.GameName)]; !ok {
@@ -271,11 +271,12 @@ func SpiGameSpin(c *gin.Context) {
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
 	}
 	var ret struct {
-		XMLName xml.Name     `json:"-" yaml:"-" xml:"ret"`
-		Screen  game.Screen  `json:"screen" yaml:"screen" xml:"screen"`
-		WinScan game.WinScan `json:"winscan" yaml:"winscan" xml:"winscan"`
-		Balance int          `json:"balance" yaml:"balance" xml:"balance"`
-		Gain    int          `json:"gain" yaml:"gain" xml:"gain"`
+		XMLName xml.Name       `json:"-" yaml:"-" xml:"ret"`
+		SID     uint64         `json:"sid" yaml:"sid" xml:"sid,attr" form:"sid"`
+		Screen  game.Screen    `json:"screen" yaml:"screen" xml:"screen"`
+		Wins    []game.WinItem `json:"wins" yaml:"wins" xml:"wins"`
+		Wallet  int            `json:"wallet" yaml:"wallet" xml:"wallet"`
+		Gain    int            `json:"gain" yaml:"gain" xml:"gain"`
 	}
 
 	if err = c.Bind(&arg); err != nil {
@@ -302,12 +303,12 @@ func SpiGameSpin(c *gin.Context) {
 	var totalbet = og.game.GetBet() * og.game.GetLines().Num()
 	var totalwin int
 
-	var balance *Balance
-	if balance, ok = user.balance.Get(og.RID); !ok {
-		Ret403(c, SEC_game_spin_nobalance, ErrNoBalance)
+	var props *Props
+	if props, ok = user.props.Get(og.RID); !ok {
+		Ret403(c, SEC_game_spin_noprops, ErrNoProps)
 		return
 	}
-	if balance.Value < totalbet {
+	if props.Wallet < totalbet {
 		Ret403(c, SEC_game_spin_nomoney, ErrNoMoney)
 		return
 	}
@@ -318,20 +319,25 @@ func SpiGameSpin(c *gin.Context) {
 		return
 	}
 
+	// get game screen object
 	ret.Screen = og.game.NewScreen()
 
+	// spin until gain less than bank value
 	room.mux.RLock()
 	var bank = room.Bank
 	room.mux.RUnlock()
+	var ws game.WinScan
 	for {
 		og.game.Spin(ret.Screen)
-		og.game.Scanner(ret.Screen, &ret.WinScan)
-		totalwin = ret.WinScan.SumPay()
+		og.game.Scanner(ret.Screen, &ws)
+		totalwin = ws.SumPay()
 		if bank+float64(totalbet-totalwin) >= 0 || (bank < 0 && totalbet > totalwin) {
 			break
 		}
 	}
+	ret.Wins = ws.Wins
 
+	// write gain and total bet as transaction
 	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (ret interface{}, err error) {
 		const sql1 = `UPDATE room SET bank=bank+? WHERE rid=?`
 		if ret, err = session.Exec(sql1, totalbet-totalwin, room.RID); err != nil {
@@ -339,8 +345,8 @@ func SpiGameSpin(c *gin.Context) {
 			return
 		}
 
-		const sql2 = `UPDATE balance SET value=value+? WHERE uid=? AND rid=?`
-		if ret, err = session.Exec(sql2, totalwin-totalbet, balance.UID, balance.RID); err != nil {
+		const sql2 = `UPDATE props SET wallet=wallet+? WHERE uid=? AND rid=?`
+		if ret, err = session.Exec(sql2, totalwin-totalbet, props.UID, props.RID); err != nil {
 			Ret500(c, SEC_game_spin_sqlbalance, err)
 			return
 		}
@@ -349,15 +355,27 @@ func SpiGameSpin(c *gin.Context) {
 		room.Bank += float64(totalbet - totalwin)
 		room.mux.Unlock()
 
-		balance.Value += totalwin - totalbet
+		props.Wallet += totalwin - totalbet
 
 		return
 	}); err != nil {
 		return
 	}
 
-	ret.Balance = balance.Value
+	ret.Wallet = props.Wallet
 	ret.Gain = totalwin
+
+	// write spin result to log and get spin ID
+	var sl = Spinlog{
+		GID: arg.GID,
+		Bet: og.game.GetBet(),
+		SBL: og.game.GetLines(),
+	}
+	sl.Screen, _ = ret.Screen.MarshalBin()
+	if _, err = cfg.XormSpinlog.Insert(&sl); err != nil {
+		Ret500(c, SEC_game_spin_sqllog, err)
+	}
+	ret.SID = sl.SID
 
 	RetOk(c, ret)
 }

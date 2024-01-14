@@ -2,8 +2,14 @@ package game
 
 import (
 	"errors"
+	"io"
 	"math/rand"
 )
+
+type Biner interface {
+	MarshalBin() ([]byte, error)
+	UnmarshalBin(b []byte) (int, error)
+}
 
 type Reels interface {
 	Cols() int          // returns number of columns
@@ -16,6 +22,7 @@ type Screen interface {
 	Dim() (int, int)                   // returns screen dimensions
 	At(x int, y int) int               // returns symbol at position (x, y), starts from (1, 1)
 	SetCol(x int, reel []int, pos int) // setup column on screen with given reel at given position
+	Biner
 }
 
 type WinItem struct {
@@ -92,6 +99,32 @@ func (s *Screen5x3) SetCol(x int, reel []int, pos int) {
 	for y := 0; y < 3; y++ {
 		s[x-1][y] = reel[(pos+y)%len(reel)]
 	}
+}
+
+func (s *Screen5x3) MarshalBin() ([]byte, error) {
+	var b [15]byte
+	var i int
+	for x := 0; x < 5; x++ {
+		for y := 0; y < 3; y++ {
+			b[i] = byte(s[x][y])
+			i++
+		}
+	}
+	return b[:], nil
+}
+
+func (s *Screen5x3) UnmarshalBin(b []byte) (int, error) {
+	if len(b) < 15 {
+		return 0, io.EOF
+	}
+	var i int
+	for x := 0; x < 5; x++ {
+		for y := 0; y < 3; y++ {
+			s[x][y] = int(b[i])
+			i++
+		}
+	}
+	return 15, nil
 }
 
 var (
