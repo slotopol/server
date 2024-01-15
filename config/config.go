@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/slotopol/server/util"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -24,7 +25,7 @@ var (
 	// Developer mode, running at debugger.
 	DevMode bool
 	// AppName is name of this application without extension.
-	AppName = PathName(os.Args[0])
+	AppName = util.PathName(os.Args[0])
 	// Executable path.
 	ExePath string
 	// Configuration file with path.
@@ -119,50 +120,6 @@ func InitConfig() {
 		CfgPath = filepath.Dir(CfgFile)
 		fmt.Println("config path:", CfgPath)
 	}
-}
-
-// PathName returns name of file in given file path without extension.
-func PathName(fpath string) string {
-	var j = len(fpath)
-	if j == 0 {
-		return ""
-	}
-	var i = j - 1
-	for {
-		if os.IsPathSeparator(fpath[i]) {
-			i++
-			break
-		}
-		if fpath[i] == '.' {
-			j = i
-		}
-		if i == 0 {
-			break
-		}
-		i--
-	}
-	return fpath[i:j]
-}
-
-// JoinPath performs fast join of two UNIX-like path chunks.
-func JoinPath(dir, base string) string {
-	if dir == "" || dir == "." {
-		return base
-	}
-	if base == "" || base == "." {
-		return dir
-	}
-	if dir[len(dir)-1] == '/' {
-		if base[0] == '/' {
-			return dir + base[1:]
-		} else {
-			return dir + base
-		}
-	}
-	if base[0] == '/' {
-		return dir + base
-	}
-	return dir + "/" + base
 }
 
 // FileExists check up file existence.

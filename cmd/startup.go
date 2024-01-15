@@ -5,6 +5,7 @@ import (
 
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/spi"
+	"github.com/slotopol/server/util"
 
 	_ "github.com/mattn/go-sqlite3"
 	"xorm.io/xorm"
@@ -21,7 +22,7 @@ var (
 )
 
 func InitStorage() (err error) {
-	if cfg.XormStorage, err = xorm.NewEngine(Cfg.XormDriverName, cfg.JoinPath(cfg.CfgPath, slotroomfile)); err != nil {
+	if cfg.XormStorage, err = xorm.NewEngine(Cfg.XormDriverName, util.JoinPath(cfg.CfgPath, slotroomfile)); err != nil {
 		return
 	}
 	cfg.XormStorage.SetMapper(names.GonicMapper{})
@@ -131,7 +132,7 @@ func InitStorage() (err error) {
 }
 
 func InitSpinlog() (err error) {
-	if cfg.XormSpinlog, err = xorm.NewEngine(Cfg.XormDriverName, cfg.JoinPath(cfg.CfgPath, slotspinfile)); err != nil {
+	if cfg.XormSpinlog, err = xorm.NewEngine(Cfg.XormDriverName, util.JoinPath(cfg.CfgPath, slotspinfile)); err != nil {
 		return
 	}
 	cfg.XormSpinlog.SetMapper(names.GonicMapper{})

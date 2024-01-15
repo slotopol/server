@@ -1,4 +1,4 @@
-package spi
+package util
 
 import (
 	"sync"

@@ -5,9 +5,9 @@ import (
 	"encoding/xml"
 	"log"
 	"net/http"
-	"strings"
 
 	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/util"
 	"xorm.io/xorm"
 
 	"github.com/gin-gonic/gin"
@@ -66,7 +66,7 @@ func SpiGameJoin(c *gin.Context) {
 	}
 	_ = props
 
-	var alias = strings.ToLower(arg.Alias)
+	var alias = util.ToID(arg.Alias)
 	var gname string
 	if gname, ok = cfg.GameAliases[alias]; !ok {
 		Ret400(c, SEC_game_join_noalias, ErrNoAliase)
@@ -405,11 +405,11 @@ func SpiGameSpin(c *gin.Context) {
 	}
 	var b []byte
 	b, _ = json.Marshal(scrn)
-	sl.Screen = string(b)
+	sl.Screen = util.B2S(b)
 	b, _ = json.Marshal(og.game)
-	sl.Game = string(b)
+	sl.Game = util.B2S(b)
 	b, _ = json.Marshal(ws.Wins)
-	sl.Wins = string(b)
+	sl.Wins = util.B2S(b)
 	if _, err = cfg.XormSpinlog.Insert(&sl); err != nil {
 		log.Printf("can not write to spin log: %s", err.Error())
 	}

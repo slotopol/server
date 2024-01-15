@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 )
 
 type Room struct {
@@ -21,8 +22,8 @@ type User struct {
 	Email  string `xorm:"notnull unique index" json:"email" yaml:"email" xml:"email"`
 	Secret string `xorm:"notnull" json:"secret" yaml:"secret" xml:"secret"` // auth password
 	Name   string `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
-	games  RWMap[uint64, OpenGame]
-	props  RWMap[uint64, *Props]
+	games  util.RWMap[uint64, OpenGame]
+	props  util.RWMap[uint64, *Props]
 }
 
 type OpenGame struct {
@@ -65,11 +66,11 @@ type Spinlog struct {
 	CTime  time.Time `xorm:"created" json:"ctime" yaml:"ctime" xml:"ctime"`
 }
 
-var Rooms RWMap[uint64, *Room]
+var Rooms util.RWMap[uint64, *Room]
 
-var Users RWMap[uint64, *User]
+var Users util.RWMap[uint64, *User]
 
-var OpenGames RWMap[uint64, OpenGame]
+var OpenGames util.RWMap[uint64, OpenGame]
 
 func (user *User) Init() {
 	user.games.Init(0)
