@@ -43,8 +43,8 @@ func init() {
 	}
 
 	GameFactory["dolphinspearl"] = func(name string) any {
-		if reels, ok := dolphinspearl.ReelsMap[name]; ok {
-			return dolphinspearl.NewGame(reels)
+		if _, ok := dolphinspearl.ReelsMap[name]; ok {
+			return dolphinspearl.NewGame(name)
 		}
 		return nil
 	}

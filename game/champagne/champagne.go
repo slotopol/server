@@ -106,20 +106,20 @@ type Game struct {
 	game.Slot5x3
 }
 
-func NewGame(reels *game.Reels5x) *Game {
+func NewGame(ri string) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			SBL:      game.MakeSBL(1),
-			Bet:      1,
-			FS:       0,
-			Reels:    reels,
-			BetLines: &game.BetLinesMgj,
+			SBL: game.MakeSBL(1),
+			Bet: 1,
+			FS:  0,
+			RI:  ri,
+			BLI: "mgj",
 		},
 	}
 }
 
 // Not from lined paytable.
-var special = [12]bool{
+var Special = [12]bool{
 	true,  //  1
 	false, //  2
 	false, //  3
@@ -148,8 +148,9 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 		mm = 2
 	}
 
+	var bl = game.BetLines5x[g.BLI]
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
-		var line = g.BetLines.Line(li)
+		var line = bl.Line(li)
 
 		var xy game.Line5x
 		var cntw, cntl = 0, 5
@@ -159,11 +160,11 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			if sx == wild {
 				if sl == 0 {
 					cntw = x
-				} else if special[sl-1] {
+				} else if Special[sl-1] {
 					cntl = x - 1
 					break
 				}
-			} else if cntw > 0 && special[sx-1] {
+			} else if cntw > 0 && Special[sx-1] {
 				cntl = x - 1
 				break
 			} else if sl == 0 && sx != scat {
@@ -267,6 +268,10 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 			})
 		}
 	}
+}
+
+func (g *Game) Spin(screen game.Screen) {
+	screen.Spin(ReelsMap[g.RI])
 }
 
 func (g *Game) Spawn(screen game.Screen, sw *game.WinScan) {

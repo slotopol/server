@@ -28,8 +28,8 @@ func init() {
 	}
 
 	GameFactory["sizzlinghot"] = func(name string) any {
-		if reels, ok := sizzlinghot.ReelsMap[name]; ok {
-			return sizzlinghot.NewGame(reels)
+		if _, ok := sizzlinghot.ReelsMap[name]; ok {
+			return sizzlinghot.NewGame(name)
 		}
 		return nil
 	}

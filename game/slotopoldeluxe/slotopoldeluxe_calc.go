@@ -21,9 +21,9 @@ func CalcStat(ctx context.Context, rn string) float64 {
 			return 0
 		}
 	} else {
-		reels = &Reels104
+		rn, reels = "104", &Reels104
 	}
-	var g = NewGame(reels)
+	var g = NewGame(rn)
 	var sbl = float64(g.SBL.Num())
 	var s game.Stat
 
@@ -31,8 +31,8 @@ func CalcStat(ctx context.Context, rn string) float64 {
 		var t0 = time.Now()
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		go s.Progress(ctx2, time.NewTicker(2*time.Second), sbl, float64(g.Reels.Reshuffles()))
-		s.BruteForce5x(ctx2, g, g.Reels)
+		go s.Progress(ctx2, time.NewTicker(2*time.Second), sbl, float64(reels.Reshuffles()))
+		s.BruteForce5x(ctx2, g, reels)
 		return time.Since(t0)
 	}()
 
@@ -48,9 +48,9 @@ func CalcStat(ctx context.Context, rn string) float64 {
 	var qmjm = float64(s.BonusCount[mjm]) / n / sbl
 	var rtpmjm = slotopol.Emjm * qmjm * 100
 	var rtp = rtpsym + rtpmje1 + rtpmje3 + rtpmje6 + rtpmjm
-	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", float64(s.Reshuffles)/float64(g.Reels.Reshuffles())*100, g.SBL.Num(), dur)
+	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", float64(s.Reshuffles)/float64(reels.Reshuffles())*100, g.SBL.Num(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
-		len(g.Reels.Reel(1)), len(g.Reels.Reel(2)), len(g.Reels.Reel(3)), len(g.Reels.Reel(4)), len(g.Reels.Reel(5)), g.Reels.Reshuffles())
+		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 	fmt.Printf("spin1 bonuses: count1 %d, rtp = %.6f%%\n", s.BonusCount[mje1], rtpmje1)
 	fmt.Printf("spin3 bonuses: count3 %d, rtp = %.6f%%\n", s.BonusCount[mje3], rtpmje3)

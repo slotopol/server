@@ -165,3 +165,10 @@ var BetLinesNvm20 = Lineset5x{
 	{3, 1, 1, 1, 1}, // 19
 	{2, 2, 1, 2, 2}, // 20
 }
+
+var BetLines5x = map[string]Lineset5x{
+	"mgj":   BetLinesMgj,
+	"nvm9":  BetLinesNvm9,
+	"nvm10": BetLinesNvm10,
+	"nvm20": BetLinesNvm20,
+}

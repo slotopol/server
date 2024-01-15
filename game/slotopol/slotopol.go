@@ -96,30 +96,22 @@ var Jackpot = [13][5]int{
 
 type Game struct {
 	game.Slot5x3
-	LinePay   *[13][5]int
-	ScatPay   *[5]int
-	ScatFree  *[5]int
-	LineBonus *[13][5]int
 }
 
-func NewGame(reels *game.Reels5x) *Game {
+func NewGame(ri string) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			SBL:      game.MakeSBL(1),
-			Bet:      1,
-			FS:       0,
-			Reels:    reels,
-			BetLines: &game.BetLinesMgj,
+			SBL: game.MakeSBL(1),
+			Bet: 1,
+			FS:  0,
+			RI:  ri,
+			BLI: "mgj",
 		},
-		LinePay:   &LinePay,
-		ScatPay:   &ScatPay,
-		ScatFree:  &ScatFreespin,
-		LineBonus: &LineBonus,
 	}
 }
 
 // Not from lined paytable.
-var special = [13]bool{
+var Special = [13]bool{
 	true,  //  1
 	false, //  2
 	false, //  3
@@ -149,8 +141,9 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 		mm = 2
 	}
 
+	var bl = game.BetLines5x[g.BLI]
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
-		var line = g.BetLines.Line(li)
+		var line = bl.Line(li)
 
 		var xy game.Line5x
 		var cntw, cntl = 0, 5
@@ -161,12 +154,12 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			if sx == wild {
 				if sl == 0 {
 					cntw = x
-				} else if special[sl-1] {
+				} else if Special[sl-1] {
 					cntl = x - 1
 					break
 				}
 				m = 2 * mm
-			} else if cntw > 0 && special[sx-1] {
+			} else if cntw > 0 && Special[sx-1] {
 				cntl = x - 1
 				break
 			} else if sl == 0 && sx != scat {
@@ -180,10 +173,10 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 
 		var payw, payl int
 		if cntw > 0 {
-			payw = g.LinePay[wild-1][cntw-1]
+			payw = LinePay[wild-1][cntw-1]
 		}
 		if cntl > 0 && sl > 0 {
-			payl = g.LinePay[sl-1][cntl-1]
+			payl = LinePay[sl-1][cntl-1]
 		}
 		if payw > 0 && payl > 0 {
 			if payw*mm < payl*m {
@@ -215,13 +208,13 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 				XY:   &xy,
 				Jack: Jackpot[wild-1][cntw-1],
 			})
-		} else if sl > 0 && cntl > 0 && g.LineBonus[sl-1][cntl-1] > 0 {
+		} else if sl > 0 && cntl > 0 && LineBonus[sl-1][cntl-1] > 0 {
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Sym:  sl,
 				Num:  cntl,
 				Line: li,
 				XY:   &xy,
-				BID:  g.LineBonus[sl-1][cntl-1],
+				BID:  LineBonus[sl-1][cntl-1],
 			})
 		}
 	}
@@ -242,7 +235,7 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 	}
 
 	if count > 0 {
-		if pay, fs := g.ScatPay[count-1], g.ScatFree[count-1]; pay > 0 || fs > 0 {
+		if pay, fs := ScatPay[count-1], ScatFreespin[count-1]; pay > 0 || fs > 0 {
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Pay:  g.Bet * pay, // independent from selected lines
 				Mult: 1,
@@ -253,6 +246,10 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 			})
 		}
 	}
+}
+
+func (g *Game) Spin(screen game.Screen) {
+	screen.Spin(ReelsMap[g.RI])
 }
 
 func (g *Game) Spawn(screen game.Screen, sw *game.WinScan) {

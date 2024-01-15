@@ -138,20 +138,16 @@ var (
 )
 
 type Slot5x3 struct {
-	SBL SBL // selected bet lines
-	Bet int // bet value
-	FS  int // free spin number
+	SBL SBL `json:"sbl" yaml:"sbl" xml:"sbl"` // selected bet lines
+	Bet int `json:"bet" yaml:"bet" xml:"bet"` // bet value
+	FS  int `json:"fs" yaml:"fs" xml:"fs"`    // free spin number
 
-	Reels    *Reels5x
-	BetLines *Lineset5x
+	RI  string `json:"ri" yaml:"ri" xml:"ri"`    // reels index
+	BLI string `json:"bli" yaml:"bli" xml:"bli"` // bet lines index
 }
 
 func (g *Slot5x3) NewScreen() Screen {
 	return &Screen5x3{}
-}
-
-func (g *Slot5x3) Spin(screen Screen) {
-	screen.Spin(g.Reels)
 }
 
 func (g *Slot5x3) Spawn(screen Screen, sw *WinScan) {
@@ -189,7 +185,8 @@ func (g *Slot5x3) GetLines() SBL {
 }
 
 func (g *Slot5x3) SetLines(sbl SBL) error {
-	var mask SBL = (1<<len(*g.BetLines) - 1) << 1
+	var bl = BetLines5x[g.BLI]
+	var mask SBL = (1<<len(bl) - 1) << 1
 	if sbl == 0 {
 		return ErrNoLineset
 	}

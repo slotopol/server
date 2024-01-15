@@ -27,8 +27,8 @@ func init() {
 	}
 
 	GameFactory["champagne"] = func(name string) any {
-		if reels, ok := champagne.ReelsMap[name]; ok {
-			return champagne.NewGame(reels)
+		if _, ok := champagne.ReelsMap[name]; ok {
+			return champagne.NewGame(name)
 		}
 		return nil
 	}

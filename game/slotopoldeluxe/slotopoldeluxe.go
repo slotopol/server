@@ -123,22 +123,158 @@ var LineBonus = [13][5]int{
 	{0, 0, 0, 0, mjm},        // 13 Monopoly
 }
 
-func NewGame(reels *game.Reels5x) *slotopol.Game {
-	return &slotopol.Game{
+type Game struct {
+	game.Slot5x3
+}
+
+func NewGame(ri string) *Game {
+	return &Game{
 		Slot5x3: game.Slot5x3{
-			SBL:      game.MakeSBL(1),
-			Bet:      1,
-			FS:       0,
-			Reels:    reels,
-			BetLines: &game.BetLinesMgj,
+			SBL: game.MakeSBL(1),
+			Bet: 1,
+			FS:  0,
+			RI:  ri,
+			BLI: "mgj",
 		},
-		LinePay:   &LinePay,
-		ScatPay:   &ScatPay,
-		ScatFree:  &slotopol.ScatFreespin,
-		LineBonus: &LineBonus,
 	}
 }
 
 const (
 	jid = 1 // jackpot ID
 )
+
+const wild, scat = 11, 1
+
+func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
+	g.ScanLined(screen, ws)
+	g.ScanScatters(screen, ws)
+}
+
+// Lined symbols calculation.
+func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
+	var bl = game.BetLines5x[g.BLI]
+	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
+		var line = bl.Line(li)
+
+		var xy game.Line5x
+		var cntw, cntl = 0, 5
+		var sl game.Sym
+		var m = 1
+		for x := 1; x <= 5; x++ {
+			var sx = screen.At(x, line.At(x))
+			if sx == wild {
+				if sl == 0 {
+					cntw = x
+				} else if slotopol.Special[sl-1] {
+					cntl = x - 1
+					break
+				}
+				m = 2
+			} else if cntw > 0 && slotopol.Special[sx-1] {
+				cntl = x - 1
+				break
+			} else if sl == 0 && sx != scat {
+				sl = sx
+			} else if sx != sl {
+				cntl = x - 1
+				break
+			}
+			xy.Set(x, line.At(x))
+		}
+
+		var payw, payl int
+		if cntw > 0 {
+			payw = LinePay[wild-1][cntw-1]
+		}
+		if cntl > 0 && sl > 0 {
+			payl = LinePay[sl-1][cntl-1]
+		}
+		if payw > 0 && payl > 0 {
+			if payw < payl*m {
+				payw = 0
+			} else {
+				payl = 0
+				// delete non-wild line
+				for x := cntw + 1; x <= cntl; x++ {
+					xy.Set(x, 0)
+				}
+			}
+		}
+		if payl > 0 {
+			ws.Wins = append(ws.Wins, game.WinItem{
+				Pay:  g.Bet * payl,
+				Mult: m,
+				Sym:  sl,
+				Num:  cntl,
+				Line: li,
+				XY:   &xy,
+			})
+		} else if payw > 0 {
+			ws.Wins = append(ws.Wins, game.WinItem{
+				Pay:  g.Bet * payw,
+				Mult: 1,
+				Sym:  wild,
+				Num:  cntw,
+				Line: li,
+				XY:   &xy,
+				Jack: slotopol.Jackpot[wild-1][cntw-1],
+			})
+		} else if sl > 0 && cntl > 0 && LineBonus[sl-1][cntl-1] > 0 {
+			ws.Wins = append(ws.Wins, game.WinItem{
+				Sym:  sl,
+				Num:  cntl,
+				Line: li,
+				XY:   &xy,
+				BID:  LineBonus[sl-1][cntl-1],
+			})
+		}
+	}
+}
+
+// Scatters calculation.
+func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
+	var xy game.Line5x
+	var count = 0
+	for x := 1; x <= 5; x++ {
+		for y := 1; y <= 3; y++ {
+			if screen.At(x, y) == scat {
+				xy.Set(x, y)
+				count++
+				break
+			}
+		}
+	}
+
+	if count > 0 {
+		if pay := ScatPay[count-1]; pay > 0 {
+			ws.Wins = append(ws.Wins, game.WinItem{
+				Pay:  g.Bet * pay, // independent from selected lines
+				Mult: 1,
+				Sym:  scat,
+				Num:  count,
+				XY:   &xy,
+			})
+		}
+	}
+}
+
+func (g *Game) Spin(screen game.Screen) {
+	screen.Spin(ReelsMap[g.RI])
+}
+
+func (g *Game) Spawn(screen game.Screen, sw *game.WinScan) {
+	for i, wi := range sw.Wins {
+		switch wi.BID {
+		case mje1:
+			sw.Wins[i].Bon, sw.Wins[i].Pay = slotopol.Eldorado1Spawn(g.Bet)
+		case mje3:
+			sw.Wins[i].Bon, sw.Wins[i].Pay = slotopol.Eldorado3Spawn(g.Bet)
+		case mje6:
+			sw.Wins[i].Bon, sw.Wins[i].Pay = slotopol.Eldorado6Spawn(g.Bet)
+		case mje9:
+			sw.Wins[i].Bon, sw.Wins[i].Pay = slotopol.Eldorado9Spawn(g.Bet)
+		case mjm:
+			sw.Wins[i].Bon, sw.Wins[i].Pay = slotopol.MonopolySpawn(g.Bet)
+		}
+	}
+}

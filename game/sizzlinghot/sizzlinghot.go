@@ -53,21 +53,17 @@ var Jackpot = [8][5]int{
 
 type Game struct {
 	game.Slot5x3
-	LinePay *[8][5]int
-	ScatPay *[5]int
 }
 
-func NewGame(reels *game.Reels5x) *Game {
+func NewGame(ri string) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			SBL:      game.MakeSBL(1, 2, 3, 4, 5),
-			Bet:      1,
-			FS:       0,
-			Reels:    reels,
-			BetLines: &game.BetLinesNvm10,
+			SBL: game.MakeSBL(1, 2, 3, 4, 5),
+			Bet: 1,
+			FS:  0,
+			RI:  ri,
+			BLI: "nvm10",
 		},
-		LinePay: &LinePay,
-		ScatPay: &ScatPay,
 	}
 }
 
@@ -80,8 +76,9 @@ func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
+	var bl = game.BetLines5x[g.BLI]
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
-		var line = g.BetLines.Line(li)
+		var line = bl.Line(li)
 
 		var sc = screen.At(1, line.At(1))
 		var xy, count = game.Line5x{line.At(1), 0, 0, 0, 0}, 1
@@ -123,7 +120,7 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 	}
 
 	if count > 0 {
-		if pay := g.ScatPay[count-1]; pay > 0 {
+		if pay := ScatPay[count-1]; pay > 0 {
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Pay:  g.Bet * pay, // independent from selected lines
 				Mult: 1,
@@ -133,4 +130,8 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 			})
 		}
 	}
+}
+
+func (g *Game) Spin(screen game.Screen) {
+	screen.Spin(ReelsMap[g.RI])
 }

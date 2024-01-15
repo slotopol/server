@@ -120,14 +120,14 @@ type Game struct {
 	game.Slot5x3
 }
 
-func NewGame(reels *game.Reels5x) *Game {
+func NewGame(ri string) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			SBL:      game.MakeSBL(1),
-			Bet:      1,
-			FS:       0,
-			Reels:    reels,
-			BetLines: &game.BetLinesNvm10,
+			SBL: game.MakeSBL(1),
+			Bet: 1,
+			FS:  0,
+			RI:  ri,
+			BLI: "nvm10",
 		},
 	}
 }
@@ -138,8 +138,9 @@ func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
+	var bl = game.BetLines5x[g.BLI]
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
-		var line = g.BetLines.Line(li)
+		var line = bl.Line(li)
 
 		var syml = screen.At(3, line.At(3))
 		var xy game.Line5x
@@ -173,4 +174,8 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			})
 		}
 	}
+}
+
+func (g *Game) Spin(screen game.Screen) {
+	screen.Spin(ReelsMap[g.RI])
 }

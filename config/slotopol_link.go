@@ -27,8 +27,8 @@ func init() {
 	}
 
 	GameFactory["slotopol"] = func(name string) any {
-		if reels, ok := slotopol.ReelsMap[name]; ok {
-			return slotopol.NewGame(reels)
+		if _, ok := slotopol.ReelsMap[name]; ok {
+			return slotopol.NewGame(name)
 		}
 		return nil
 	}

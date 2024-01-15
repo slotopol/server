@@ -360,6 +360,12 @@ func SpiGameSpin(c *gin.Context) {
 
 	// write gain and total bet as transaction
 	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (ret interface{}, err error) {
+		defer func() {
+			if err != nil {
+				session.Rollback()
+			}
+		}()
+
 		const sql1 = `UPDATE room SET bank=bank+? WHERE rid=?`
 		if ret, err = session.Exec(sql1, totalbet-totalwin, room.RID); err != nil {
 			Ret500(c, SEC_game_spin_sqlbank, err)
