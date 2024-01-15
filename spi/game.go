@@ -1,10 +1,11 @@
 package spi
 
 import (
+	"encoding/json"
 	"encoding/xml"
+	"log"
 	"net/http"
 	"strings"
-	"sync/atomic"
 
 	cfg "github.com/slotopol/server/config"
 	"xorm.io/xorm"
@@ -17,14 +18,15 @@ func SpiGameJoin(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
-		XMLName  xml.Name `json:"-" yaml:"-" xml:"arg"`
-		UID      uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
-		RID      uint64   `json:"rid" yaml:"rid" xml:"rid,attr" form:"rid"`
-		GameName string   `json:"gamename" yaml:"gamename" xml:"gamename" form:"gamename"`
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
+		RID     uint64   `json:"rid" yaml:"rid" xml:"rid,attr" form:"rid"`
+		Alias   string   `json:"alias" yaml:"alias" xml:"alias" form:"alias"`
 	}
 	var ret struct {
-		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
+		XMLName xml.Name    `json:"-" yaml:"-" xml:"ret"`
+		GID     uint64      `json:"gid" yaml:"gid" xml:"gid,attr"`
+		Screen  game.Screen `json:"screen" yaml:"screen" xml:"screen"`
 	}
 
 	if err = c.Bind(&arg); err != nil {
@@ -39,7 +41,7 @@ func SpiGameJoin(c *gin.Context) {
 		Ret400(c, SEC_game_join_norid, ErrNoRID)
 		return
 	}
-	if arg.GameName == "" {
+	if arg.Alias == "" {
 		Ret400(c, SEC_game_join_nodata, ErrNoData)
 		return
 	}
@@ -64,30 +66,39 @@ func SpiGameJoin(c *gin.Context) {
 	}
 	_ = props
 
-	var alias string
-	if alias, ok = cfg.GameAliases[strings.ToLower(arg.GameName)]; !ok {
+	var alias = strings.ToLower(arg.Alias)
+	var gname string
+	if gname, ok = cfg.GameAliases[alias]; !ok {
 		Ret400(c, SEC_game_join_noalias, ErrNoAliase)
 		return
 	}
 
-	var maker = cfg.GameFactory[alias]
+	var maker = cfg.GameFactory[gname]
 	var slotgame = maker("96")
 	if slotgame == nil {
 		Ret400(c, SEC_game_join_noreels, ErrNoReels)
 		return
 	}
 
-	var gid = atomic.AddUint64(&GIDcounter, 1)
 	var og = OpenGame{
-		GID:   gid,
 		UID:   arg.UID,
 		RID:   arg.RID,
 		Alias: alias,
 		game:  slotgame.(game.SlotGame),
 	}
-	OpenGames.Set(gid, og)
-	user.games.Set(gid, og)
-	ret.GID = gid
+	if _, err = cfg.XormStorage.Insert(&og); err != nil {
+		Ret500(c, SEC_game_join_insert, err)
+		return
+	}
+
+	OpenGames.Set(og.GID, og)
+	user.games.Set(og.GID, og)
+
+	var scrn = og.game.NewScreen()
+	og.game.Spin(scrn)
+
+	ret.GID = og.GID
+	ret.Screen = scrn
 
 	RetOk(c, ret)
 }
@@ -275,8 +286,9 @@ func SpiGameSpin(c *gin.Context) {
 		SID     uint64         `json:"sid" yaml:"sid" xml:"sid,attr" form:"sid"`
 		Screen  game.Screen    `json:"screen" yaml:"screen" xml:"screen"`
 		Wins    []game.WinItem `json:"wins" yaml:"wins" xml:"wins"`
-		Wallet  int            `json:"wallet" yaml:"wallet" xml:"wallet"`
 		Gain    int            `json:"gain" yaml:"gain" xml:"gain"`
+		FS      int            `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
+		Wallet  int            `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
 	if err = c.Bind(&arg); err != nil {
@@ -301,12 +313,13 @@ func SpiGameSpin(c *gin.Context) {
 	}
 
 	var (
+		fs       = og.game.FreeSpins()
 		bet      = og.game.GetBet()
 		sbl      = og.game.GetLines()
 		totalbet int
 		totalwin int
 	)
-	if og.game.FreeSpins() == 0 {
+	if fs == 0 {
 		totalbet = bet * sbl.Num()
 	}
 
@@ -350,14 +363,6 @@ func SpiGameSpin(c *gin.Context) {
 		n++
 	}
 
-	// write spin result to log and get spin ID
-	var sl = Spinlog{
-		GID: arg.GID,
-		Bet: bet,
-		SBL: sbl,
-	}
-	sl.Screen, _ = scrn.MarshalBin()
-
 	// write gain and total bet as transaction
 	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (ret interface{}, err error) {
 		defer func() {
@@ -378,11 +383,6 @@ func SpiGameSpin(c *gin.Context) {
 			return
 		}
 
-		if _, err = session.Insert(&sl); err != nil {
-			Ret500(c, SEC_game_spin_sqllog, err)
-			return
-		}
-
 		return
 	}); err != nil {
 		return
@@ -397,11 +397,29 @@ func SpiGameSpin(c *gin.Context) {
 
 	og.game.Apply(scrn, &ws)
 
+	// write spin result to log and get spin ID
+	var sl = Spinlog{
+		GID:    arg.GID,
+		Gain:   totalwin,
+		Wallet: props.Wallet,
+	}
+	var b []byte
+	b, _ = json.Marshal(scrn)
+	sl.Screen = string(b)
+	b, _ = json.Marshal(og.game)
+	sl.Game = string(b)
+	b, _ = json.Marshal(ws.Wins)
+	sl.Wins = string(b)
+	if _, err = cfg.XormSpinlog.Insert(&sl); err != nil {
+		log.Printf("can not write to spin log: %s", err.Error())
+	}
+
 	// prepare result
 	ret.SID = sl.SID
 	ret.Screen = scrn
 	ret.Wins = ws.Wins
 	ret.Wallet = props.Wallet
+	ret.FS = fs
 	ret.Gain = totalwin
 
 	RetOk(c, ret)

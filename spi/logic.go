@@ -33,6 +33,10 @@ type OpenGame struct {
 	game  game.SlotGame
 }
 
+func (OpenGame) TableName() string {
+	return "game"
+}
+
 type AL uint
 
 const (
@@ -53,9 +57,11 @@ type Props struct {
 type Spinlog struct {
 	SID    uint64    `xorm:"pk autoincr" json:"sid" yaml:"sid" xml:"sid,attr"`
 	GID    uint64    `xorm:"notnull" json:"gid" yaml:"gid" xml:"gid,attr"`
-	Screen []byte    `xorm:"notnull" json:"screen" yaml:"screen" xml:"screen"`
-	Bet    int       `xorm:"notnull" json:"bet" yaml:"bet" xml:"bet"`
-	SBL    game.SBL  `xorm:"notnull" json:"sbl" yaml:"sbl" xml:"sbl"`
+	Game   string    `xorm:"notnull" json:"game" yaml:"game" xml:"game"`
+	Screen string    `xorm:"notnull" json:"screen" yaml:"screen" xml:"screen"`
+	Wins   string    `json:"wins" yaml:"wins" xml:"wins"`
+	Gain   int       `xorm:"notnull" json:"gain" yaml:"gain" xml:"gain"`
+	Wallet int       `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"`
 	CTime  time.Time `xorm:"created" json:"ctime" yaml:"ctime" xml:"ctime"`
 }
 
@@ -63,7 +69,6 @@ var Rooms RWMap[uint64, *Room]
 
 var Users RWMap[uint64, *User]
 
-var GIDcounter uint64
 var OpenGames RWMap[uint64, OpenGame]
 
 func (user *User) Init() {

@@ -2,14 +2,8 @@ package game
 
 import (
 	"errors"
-	"io"
 	"math/rand"
 )
-
-type Biner interface {
-	MarshalBin() ([]byte, error)
-	UnmarshalBin(b []byte) (int, error)
-}
 
 type Sym byte // symbol type
 
@@ -24,7 +18,6 @@ type Screen interface {
 	At(x int, y int) Sym               // returns symbol at position (x, y), starts from (1, 1)
 	SetCol(x int, reel []Sym, pos int) // setup column on screen with given reel at given position
 	Spin(reels Reels)                  // fill the screen with random hits on those reels
-	Biner
 }
 
 type WinItem struct {
@@ -105,32 +98,6 @@ func (s *Screen5x3) Spin(reels Reels) {
 	}
 }
 
-func (s *Screen5x3) MarshalBin() ([]byte, error) {
-	var b [15]byte
-	var i int
-	for x := 0; x < 5; x++ {
-		for y := 0; y < 3; y++ {
-			b[i] = byte(s[x][y])
-			i++
-		}
-	}
-	return b[:], nil
-}
-
-func (s *Screen5x3) UnmarshalBin(b []byte) (int, error) {
-	if len(b) < 15 {
-		return 0, io.EOF
-	}
-	var i int
-	for x := 0; x < 5; x++ {
-		for y := 0; y < 3; y++ {
-			s[x][y] = Sym(b[i])
-			i++
-		}
-	}
-	return 15, nil
-}
-
 var (
 	ErrBetEmpty   = errors.New("bet is empty")
 	ErrNoLineset  = errors.New("lines set is empty")
@@ -190,7 +157,7 @@ func (g *Slot5x3) SetLines(sbl SBL) error {
 	if sbl == 0 {
 		return ErrNoLineset
 	}
-	if mask&sbl != 0 {
+	if sbl&^mask != 0 {
 		return ErrLinesetOut
 	}
 	g.SBL = sbl

@@ -12,7 +12,8 @@ import (
 )
 
 const (
-	slotfile = "slot.sqlite"
+	slotroomfile = "slot-room.sqlite"
+	slotspinfile = "slot-spin.sqlite"
 )
 
 var (
@@ -20,7 +21,7 @@ var (
 )
 
 func InitStorage() (err error) {
-	if cfg.XormStorage, err = xorm.NewEngine(Cfg.XormDriverName, cfg.JoinPath(cfg.CfgPath, slotfile)); err != nil {
+	if cfg.XormStorage, err = xorm.NewEngine(Cfg.XormDriverName, cfg.JoinPath(cfg.CfgPath, slotroomfile)); err != nil {
 		return
 	}
 	cfg.XormStorage.SetMapper(names.GonicMapper{})
@@ -28,7 +29,7 @@ func InitStorage() (err error) {
 	var session = cfg.XormStorage.NewSession()
 	defer session.Close()
 
-	if err = session.Sync(&spi.Room{}, &spi.User{}, &spi.Props{}, &spi.Spinlog{}); err != nil {
+	if err = session.Sync(&spi.Room{}, &spi.User{}, &spi.Props{}, &spi.OpenGame{}); err != nil {
 		return
 	}
 
@@ -129,9 +130,27 @@ func InitStorage() (err error) {
 	return
 }
 
+func InitSpinlog() (err error) {
+	if cfg.XormSpinlog, err = xorm.NewEngine(Cfg.XormDriverName, cfg.JoinPath(cfg.CfgPath, slotspinfile)); err != nil {
+		return
+	}
+	cfg.XormSpinlog.SetMapper(names.GonicMapper{})
+
+	var session = cfg.XormSpinlog.NewSession()
+	defer session.Close()
+
+	if err = session.Sync(&spi.Spinlog{}); err != nil {
+		return
+	}
+	return
+}
+
 func Init() (err error) {
 	if err = InitStorage(); err != nil {
 		return fmt.Errorf("can not init XORM records storage: %w", err)
+	}
+	if err = InitSpinlog(); err != nil {
+		return fmt.Errorf("can not init XORM spins log storage: %w", err)
 	}
 	return
 }

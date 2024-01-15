@@ -15,6 +15,7 @@ const (
 	SEC_game_join_noprops
 	SEC_game_join_noalias
 	SEC_game_join_noreels
+	SEC_game_join_insert
 
 	// POST game/part
 	SEC_game_part_nobind
@@ -57,7 +58,6 @@ const (
 	SEC_game_spin_badbank
 	SEC_game_spin_sqlbank
 	SEC_game_spin_sqlbalance
-	SEC_game_spin_sqllog
 )
 
 var (
