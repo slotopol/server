@@ -30,7 +30,10 @@ func InitStorage() (err error) {
 	var session = cfg.XormStorage.NewSession()
 	defer session.Close()
 
-	if err = session.Sync(&spi.Room{}, &spi.User{}, &spi.Props{}, &spi.OpenGame{}); err != nil {
+	if err = session.Sync(
+		&spi.Room{}, &spi.User{}, &spi.Props{},
+		&spi.OpenGame{}, spi.Walletlog{},
+	); err != nil {
 		return
 	}
 

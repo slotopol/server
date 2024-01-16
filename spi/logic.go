@@ -28,8 +28,8 @@ type User struct {
 
 type OpenGame struct {
 	GID   uint64 `xorm:"pk autoincr" json:"gid" yaml:"gid" xml:"gid,attr"`
-	UID   uint64 `xorm:"notnull" json:"uid" yaml:"uid" xml:"uid,attr"`
 	RID   uint64 `xorm:"notnull" json:"rid" yaml:"rid" xml:"rid,attr"`
+	UID   uint64 `xorm:"notnull" json:"uid" yaml:"uid" xml:"uid,attr"`
 	Alias string `xorm:"notnull" json:"alias" yaml:"alias" xml:"alias"`
 	game  game.SlotGame
 }
@@ -49,8 +49,8 @@ const (
 )
 
 type Props struct {
-	UID    uint64 `xorm:"notnull index(bid)" json:"uid" yaml:"uid" xml:"uid,attr"`
 	RID    uint64 `xorm:"notnull index(bid)" json:"rid" yaml:"rid" xml:"rid,attr"`
+	UID    uint64 `xorm:"notnull index(bid)" json:"uid" yaml:"uid" xml:"uid,attr"`
 	Wallet int    `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"` // in coins
 	Access AL     `xorm:"notnull" json:"access" yaml:"access" xml:"access"`
 }
@@ -66,6 +66,15 @@ type Spinlog struct {
 	CTime  time.Time `xorm:"created" json:"ctime" yaml:"ctime" xml:"ctime"`
 }
 
+type Walletlog struct {
+	RID    uint64    `xorm:"notnull" json:"rid" yaml:"rid" xml:"rid,attr"`
+	UID    uint64    `xorm:"notnull" json:"uid" yaml:"uid" xml:"uid,attr"`
+	AdmID  uint64    `xorm:"notnull" json:"admid" yaml:"admid" xml:"admid"`
+	Wallet int       `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"` // in coins
+	Addend int       `xorm:"notnull" json:"addend" yaml:"addend" xml:"addend"`
+	CTime  time.Time `xorm:"created" json:"ctime" yaml:"ctime" xml:"ctime"`
+}
+
 var Rooms util.RWMap[uint64, *Room]
 
 var Users util.RWMap[uint64, *User]
@@ -75,6 +84,13 @@ var OpenGames util.RWMap[uint64, OpenGame]
 func (user *User) Init() {
 	user.games.Init(0)
 	user.props.Init(0)
+}
+
+func (user *User) GetWallet(rid uint64) int {
+	if props, ok := user.props.Get(rid); ok {
+		return props.Wallet
+	}
+	return 0
 }
 
 func (user *User) InsertProps(props *Props) {

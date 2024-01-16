@@ -55,6 +55,13 @@ func Ret403(c *gin.Context, code int, err error) {
 	})
 }
 
+func Ret404(c *gin.Context, code int, err error) {
+	Negotiate(c, http.StatusNotFound, ajaxerr{
+		What: err.Error(),
+		Code: code,
+	})
+}
+
 func Ret500(c *gin.Context, code int, err error) {
 	Negotiate(c, http.StatusInternalServerError, ajaxerr{
 		What: err.Error(),
@@ -69,9 +76,12 @@ func Router(r *gin.Engine) {
 	var rg = r.Group("/game")
 	rg.POST("/join", SpiGameJoin)
 	rg.POST("/part", SpiGamePart)
-	rg.GET("/bet", SpiGameGetBet)
-	rg.PUT("/bet", SpiGameSetBet)
-	rg.GET("/sbl", SpiGameGetSbl)
-	rg.PUT("/sbl", SpiGameSetSbl)
+	rg.POST("/bet/get", SpiGameBetGet)
+	rg.POST("/bet/set", SpiGameBetSet)
+	rg.POST("/sbl/get", SpiGameSblGet)
+	rg.POST("/sbl/set", SpiGameSblSet)
 	rg.POST("/spin", SpiGameSpin)
+	var rp = r.Group("/prop")
+	rp.POST("/wallet/get", SpiPropsWalletGet)
+	rp.POST("/wallet/add", SpiPropsWalletAdd)
 }

@@ -39,6 +39,8 @@ var (
 )
 
 type CfgGameplay struct {
+	// Maximum value to add to wallet by one transaction.
+	AdjunctLimit int
 	// Maximum number of spin attempts at bad bank balance.
 	MaxSpinAttempts int `json:"max-spin-attempts" yaml:"max-spin-attempts" mapstructure:"max-spin-attempts"`
 }
@@ -58,6 +60,7 @@ type Config struct {
 // Inits default values if config is not found.
 var Cfg = &Config{
 	CfgGameplay: CfgGameplay{
+		AdjunctLimit:    100000,
 		MaxSpinAttempts: 300,
 	},
 	CfgXormDrv: CfgXormDrv{
