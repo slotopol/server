@@ -37,7 +37,7 @@ type WinScan struct {
 	Wins []WinItem `json:"wins" yaml:"wins" xml:"wins"`
 }
 
-func (ws *WinScan) SumPay() int {
+func (ws *WinScan) Gain() int {
 	var sum int
 	for _, wi := range ws.Wins {
 		sum += wi.Pay * wi.Mult
@@ -52,6 +52,8 @@ type SlotGame interface {
 	Spawn(screen Screen, sw *WinScan)   // setup bonus games to win results, constat function
 	Apply(screen Screen, sw *WinScan)   // update game state to spin results
 	FreeSpins() int                     // returns number of free spins remained, constat function
+	GetGain() int                       // returns gain for double up games, constat function
+	SetGain(gain int) error             // set gain to given value
 	GetBet() int                        // returns current bet, constat function
 	SetBet(int) error                   // set bet to given value
 	GetLines() SBL                      // returns selected lines indexes, constat function
@@ -105,9 +107,10 @@ var (
 )
 
 type Slot5x3 struct {
-	SBL SBL `json:"sbl" yaml:"sbl" xml:"sbl"` // selected bet lines
-	Bet int `json:"bet" yaml:"bet" xml:"bet"` // bet value
-	FS  int `json:"fs" yaml:"fs" xml:"fs"`    // free spin number
+	Gain int `json:"gain" yaml:"gain" xml:"gain"` // gain for double up games
+	SBL  SBL `json:"sbl" yaml:"sbl" xml:"sbl"`    // selected bet lines
+	Bet  int `json:"bet" yaml:"bet" xml:"bet"`    // bet value
+	FS   int `json:"fs" yaml:"fs" xml:"fs"`       // free spin number
 
 	RI  string `json:"ri" yaml:"ri" xml:"ri"`    // reels index
 	BLI string `json:"bli" yaml:"bli" xml:"bli"` // bet lines index
@@ -133,6 +136,15 @@ func (g *Slot5x3) Apply(screen Screen, sw *WinScan) {
 
 func (g *Slot5x3) FreeSpins() int {
 	return g.FS
+}
+
+func (g *Slot5x3) GetGain() int {
+	return g.Gain
+}
+
+func (g *Slot5x3) SetGain(gain int) error {
+	g.Gain = gain
+	return nil
 }
 
 func (g *Slot5x3) GetBet() int {

@@ -81,6 +81,7 @@ func Router(r *gin.Engine) {
 	rg.POST("/sbl/get", SpiGameSblGet)
 	rg.POST("/sbl/set", SpiGameSblSet)
 	rg.POST("/spin", SpiGameSpin)
+	rg.POST("/doubleup", SpiGameDoubleup)
 	var rp = r.Group("/prop")
 	rp.POST("/wallet/get", SpiPropsWalletGet)
 	rp.POST("/wallet/add", SpiPropsWalletAdd)

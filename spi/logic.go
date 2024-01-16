@@ -10,11 +10,15 @@ import (
 
 type Room struct {
 	RID  uint64  `xorm:"pk autoincr" json:"rid" yaml:"rid" xml:"rid,attr"`
+	Name string  `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
 	Bank float64 `xorm:"notnull" json:"bank" yaml:"bank" xml:"bank"` // users win/lost balance, in coins
 	Fund float64 `xorm:"notnull" json:"fund" yaml:"fund" xml:"fund"` // jackpot fund, in coins
 	Lock float64 `xorm:"notnull" json:"lock" yaml:"lock" xml:"lock"` // not changed deposit within games
-	Name string  `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
-	mux  sync.RWMutex
+
+	JptRate float64 `xorm:"'jptrate' notnull default 0.015" json:"jptrate" yaml:"jptrate" xml:"jptrate"`
+	GainRTP float64 `xorm:"'gainrtp' notnull default 95.00" json:"gainrtp" yaml:"gainrtp" xml:"gainrtp"`
+
+	mux sync.RWMutex
 }
 
 type User struct {
@@ -67,8 +71,8 @@ type Spinlog struct {
 }
 
 type Walletlog struct {
-	RID    uint64    `xorm:"notnull" json:"rid" yaml:"rid" xml:"rid,attr"`
-	UID    uint64    `xorm:"notnull" json:"uid" yaml:"uid" xml:"uid,attr"`
+	RID    uint64    `xorm:"notnull index(bid)" json:"rid" yaml:"rid" xml:"rid,attr"`
+	UID    uint64    `xorm:"notnull index(bid)" json:"uid" yaml:"uid" xml:"uid,attr"`
 	AdmID  uint64    `xorm:"notnull" json:"admid" yaml:"admid" xml:"admid"`
 	Wallet int       `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"` // in coins
 	Addend int       `xorm:"notnull" json:"addend" yaml:"addend" xml:"addend"`

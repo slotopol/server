@@ -5,7 +5,7 @@ import "errors"
 const (
 	SECnull = iota
 
-	// POST game/join
+	// POST /game/join
 	SEC_game_join_nobind
 	SEC_game_join_norid
 	SEC_game_join_nouid
@@ -14,58 +14,59 @@ const (
 	SEC_game_join_nouser
 	SEC_game_join_noalias
 	SEC_game_join_noreels
-	SEC_game_join_insert
+	SEC_game_join_open
+	SEC_game_join_props
 
-	// POST game/part
+	// POST /game/part
 	SEC_game_part_nobind
 	SEC_game_part_nogid
 	SEC_game_part_notopened
 	SEC_game_part_nouser
 
-	// GET game/bet
+	// POST /game/bet
 	SEC_game_betget_nobind
 	SEC_game_betget_nogid
 	SEC_game_betget_notopened
 
-	// PUT game/bet
+	// POST /game/bet
 	SEC_game_betset_nobind
 	SEC_game_betset_nogid
 	SEC_game_betset_nodata
 	SEC_game_betset_notopened
 	SEC_game_betset_badbet
 
-	// GET game/sbl
+	// POST /game/sbl
 	SEC_game_sblget_nobind
 	SEC_game_sblget_nogid
 	SEC_game_sblget_notopened
 
-	// PUT game/sbl
+	// POST /game/sbl
 	SEC_game_sblset_nobind
 	SEC_game_sblset_nogid
 	SEC_game_sblset_nodata
 	SEC_game_sblset_notopened
 	SEC_game_sblset_badlines
 
-	// POST game/spin
+	// POST /game/spin
 	SEC_game_spin_nobind
 	SEC_game_spin_nogid
 	SEC_game_spin_notopened
 	SEC_game_spin_noroom
 	SEC_game_spin_nouser
+	SEC_game_spin_noprops
 	SEC_game_spin_nomoney
 	SEC_game_spin_badbank
 	SEC_game_spin_sqlbank
 	SEC_game_spin_sqlupdate
-	SEC_game_spin_sqlinsert
 
-	// GET prop/wallet
+	// POST /prop/wallet
 	SEC_prop_walletget_nobind
 	SEC_prop_walletget_norid
 	SEC_prop_walletget_nouid
 	SEC_prop_walletget_noroom
 	SEC_prop_walletget_nouser
 
-	// PUT prop/wallet
+	// POST /prop/wallet
 	SEC_prop_walletadd_nobind
 	SEC_prop_walletadd_norid
 	SEC_prop_walletadd_nouid
@@ -77,6 +78,17 @@ const (
 	SEC_prop_walletadd_sqlupdate
 	SEC_prop_walletadd_sqlinsert
 	SEC_prop_walletadd_sqllog
+
+	// POST /game/doubleup
+	SEC_game_doubleup_nobind
+	SEC_game_doubleup_nogid
+	SEC_game_doubleup_nomult
+	SEC_game_doubleup_bigmult
+	SEC_game_doubleup_notopened
+	SEC_game_doubleup_noroom
+	SEC_game_doubleup_nouser
+	SEC_game_doubleup_noprops
+	SEC_game_doubleup_nomoney
 )
 
 var (
@@ -86,7 +98,10 @@ var (
 	ErrNoData    = errors.New("data does not provided or empty")
 	ErrNoRoom    = errors.New("room with given ID does not found")
 	ErrNoUser    = errors.New("user with given ID does not found")
+	ErrNoWallet  = errors.New("wallet for given user and room does not found")
 	ErrNoMoney   = errors.New("not enough money")
+	ErrNoMult    = errors.New("gamble multiplier not given")
+	ErrBigMult   = errors.New("gamble multiplier too big")
 	ErrZero      = errors.New("given value is zero")
 	ErrTooBig    = errors.New("given value exceeds the limit")
 	ErrNoAliase  = errors.New("no game alias")

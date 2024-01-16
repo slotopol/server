@@ -43,11 +43,13 @@ func InitStorage() (err error) {
 	}
 	if ok {
 		if _, err = session.Insert(&spi.Room{
-			RID:  1,
-			Bank: 10000,
-			Fund: 1000000,
-			Lock: 0,
-			Name: "virtual",
+			RID:     1,
+			Bank:    10000,
+			Fund:    1000000,
+			Lock:    0,
+			Name:    "virtual",
+			JptRate: 0.015,
+			GainRTP: 95.00,
 		}); err != nil {
 			return
 		}
