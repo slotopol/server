@@ -140,18 +140,20 @@ var Jackpot = [13][5]int{
 }
 
 type Game struct {
-	game.Slot5x3
+	game.Slot5x3 `yaml:",inline"`
+	FS           int `json:"fs" yaml:"fs" xml:"fs"`       // free spin number
+	Gain         int `json:"gain" yaml:"gain" xml:"gain"` // gain for double up games
 }
 
 func NewGame(ri string) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			SBL: game.MakeSBL(1),
-			Bet: 1,
-			FS:  0,
 			RI:  ri,
 			BLI: "nvm10",
+			SBL: game.MakeSBL(1),
+			Bet: 1,
 		},
+		FS: 0,
 	}
 }
 
@@ -273,4 +275,28 @@ func (g *Game) Spin(screen game.Screen) {
 	} else {
 		screen.Spin(&ReelsBon)
 	}
+}
+
+func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
+	if g.FS > 0 {
+		g.FS--
+	}
+	for _, wi := range sw.Wins {
+		if wi.Free > 0 {
+			g.FS += wi.Free
+		}
+	}
+}
+
+func (g *Game) FreeSpins() int {
+	return g.FS
+}
+
+func (g *Game) GetGain() int {
+	return g.Gain
+}
+
+func (g *Game) SetGain(gain int) error {
+	g.Gain = gain
+	return nil
 }

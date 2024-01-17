@@ -53,7 +53,7 @@ type SlotGame interface {
 	Apply(screen Screen, sw *WinScan)   // update game state to spin results
 	FreeSpins() int                     // returns number of free spins remained, constat function
 	GetGain() int                       // returns gain for double up games, constat function
-	SetGain(gain int) error             // set gain to given value
+	SetGain(gain int) error             // set gain to given value on double up games
 	GetBet() int                        // returns current bet, constat function
 	SetBet(int) error                   // set bet to given value
 	GetLines() SBL                      // returns selected lines indexes, constat function
@@ -104,16 +104,14 @@ var (
 	ErrBetEmpty   = errors.New("bet is empty")
 	ErrNoLineset  = errors.New("lines set is empty")
 	ErrLinesetOut = errors.New("lines set is out of range bet lines")
+	ErrNoFeature  = errors.New("feature not available")
 )
 
 type Slot5x3 struct {
-	Gain int `json:"gain" yaml:"gain" xml:"gain"` // gain for double up games
-	SBL  SBL `json:"sbl" yaml:"sbl" xml:"sbl"`    // selected bet lines
-	Bet  int `json:"bet" yaml:"bet" xml:"bet"`    // bet value
-	FS   int `json:"fs" yaml:"fs" xml:"fs"`       // free spin number
-
 	RI  string `json:"ri" yaml:"ri" xml:"ri"`    // reels index
 	BLI string `json:"bli" yaml:"bli" xml:"bli"` // bet lines index
+	SBL SBL    `json:"sbl" yaml:"sbl" xml:"sbl"` // selected bet lines
+	Bet int    `json:"bet" yaml:"bet" xml:"bet"` // bet value
 }
 
 func (g *Slot5x3) NewScreen() Screen {
@@ -124,27 +122,18 @@ func (g *Slot5x3) Spawn(screen Screen, sw *WinScan) {
 }
 
 func (g *Slot5x3) Apply(screen Screen, sw *WinScan) {
-	if g.FS > 0 {
-		g.FS--
-	}
-	for _, wi := range sw.Wins {
-		if wi.Free > 0 {
-			g.FS += wi.Free
-		}
-	}
 }
 
 func (g *Slot5x3) FreeSpins() int {
-	return g.FS
+	return 0
 }
 
 func (g *Slot5x3) GetGain() int {
-	return g.Gain
+	return 0
 }
 
 func (g *Slot5x3) SetGain(gain int) error {
-	g.Gain = gain
-	return nil
+	return ErrNoFeature
 }
 
 func (g *Slot5x3) GetBet() int {

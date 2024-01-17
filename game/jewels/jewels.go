@@ -117,17 +117,17 @@ var LinePay = [7][5]int{
 }
 
 type Game struct {
-	game.Slot5x3
+	game.Slot5x3 `yaml:",inline"`
+	Gain         int `json:"gain" yaml:"gain" xml:"gain"` // gain for double up games
 }
 
 func NewGame(ri string) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			SBL: game.MakeSBL(1),
-			Bet: 1,
-			FS:  0,
 			RI:  ri,
 			BLI: "nvm10",
+			SBL: game.MakeSBL(1),
+			Bet: 1,
 		},
 	}
 }
@@ -178,4 +178,13 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 
 func (g *Game) Spin(screen game.Screen) {
 	screen.Spin(ReelsMap[g.RI])
+}
+
+func (g *Game) GetGain() int {
+	return g.Gain
+}
+
+func (g *Game) SetGain(gain int) error {
+	g.Gain = gain
+	return nil
 }

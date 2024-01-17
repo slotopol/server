@@ -164,8 +164,6 @@ func SpiGameState(c *gin.Context) {
 	var ret struct {
 		XMLName xml.Name      `json:"-" yaml:"-" xml:"ret"`
 		Game    game.SlotGame `json:"game" yaml:"game" xml:"game"`
-		FS      int           `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
-		Gain    int           `json:"gain" yaml:"gain" xml:"gain"`
 		Wallet  int           `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
@@ -197,8 +195,6 @@ func SpiGameState(c *gin.Context) {
 	}
 
 	ret.Game = og.game
-	ret.FS = og.game.FreeSpins()
-	ret.Gain = og.game.GetGain()
 	ret.Wallet = props.Wallet
 
 	RetOk(c, ret)

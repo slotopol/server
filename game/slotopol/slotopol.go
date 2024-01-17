@@ -95,18 +95,19 @@ var Jackpot = [13][5]int{
 }
 
 type Game struct {
-	game.Slot5x3
+	game.Slot5x3 `yaml:",inline"`
+	FS           int `json:"fs" yaml:"fs" xml:"fs"` // free spin number
 }
 
 func NewGame(ri string) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			SBL: game.MakeSBL(1),
-			Bet: 1,
-			FS:  0,
 			RI:  ri,
 			BLI: "mgj",
+			SBL: game.MakeSBL(1),
+			Bet: 1,
 		},
+		FS: 0,
 	}
 }
 

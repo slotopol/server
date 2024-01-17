@@ -103,18 +103,19 @@ var Jackpot = [12][5]int{
 }
 
 type Game struct {
-	game.Slot5x3
+	game.Slot5x3 `yaml:",inline"`
+	FS           int `json:"fs" yaml:"fs" xml:"fs"` // free spin number
 }
 
 func NewGame(ri string) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			SBL: game.MakeSBL(1),
-			Bet: 1,
-			FS:  0,
 			RI:  ri,
 			BLI: "mgj",
+			SBL: game.MakeSBL(1),
+			Bet: 1,
 		},
+		FS: 0,
 	}
 }
 
@@ -281,4 +282,19 @@ func (g *Game) Spawn(screen game.Screen, sw *game.WinScan) {
 			sw.Wins[i].Bon, sw.Wins[i].Pay = ChampagneSpawn(g.Bet)
 		}
 	}
+}
+
+func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
+	if g.FS > 0 {
+		g.FS--
+	}
+	for _, wi := range sw.Wins {
+		if wi.Free > 0 {
+			g.FS += wi.Free
+		}
+	}
+}
+
+func (g *Game) FreeSpins() int {
+	return g.FS
 }
