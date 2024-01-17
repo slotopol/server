@@ -23,6 +23,13 @@ const (
 	SEC_game_part_notopened
 	SEC_game_part_nouser
 
+	// POST /game/state
+	SEC_game_state_nobind
+	SEC_game_state_nogid
+	SEC_game_state_notopened
+	SEC_game_state_nouser
+	SEC_game_state_noprops
+
 	// POST /game/bet
 	SEC_game_betget_nobind
 	SEC_game_betget_nogid

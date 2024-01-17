@@ -63,8 +63,8 @@ type Spinlog struct {
 	SID    uint64    `xorm:"pk autoincr" json:"sid" yaml:"sid" xml:"sid,attr"`
 	GID    uint64    `xorm:"notnull" json:"gid" yaml:"gid" xml:"gid,attr"`
 	Game   string    `xorm:"notnull" json:"game" yaml:"game" xml:"game"`
-	Screen string    `xorm:"notnull" json:"screen" yaml:"screen" xml:"screen"`
-	Wins   string    `json:"wins" yaml:"wins" xml:"wins"`
+	Screen string    `xorm:"notnull" json:"screen,omitempty" yaml:"screen,omitempty" xml:"screen,omitempty"`
+	Wins   string    `json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
 	Gain   int       `xorm:"notnull" json:"gain" yaml:"gain" xml:"gain"`
 	Wallet int       `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"`
 	CTime  time.Time `xorm:"created" json:"ctime" yaml:"ctime" xml:"ctime"`

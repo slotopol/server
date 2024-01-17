@@ -154,6 +154,56 @@ func SpiGamePart(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+func SpiGameState(c *gin.Context) {
+	var err error
+	var ok bool
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
+	}
+	var ret struct {
+		XMLName xml.Name      `json:"-" yaml:"-" xml:"ret"`
+		Game    game.SlotGame `json:"game" yaml:"game" xml:"game"`
+		FS      int           `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
+		Gain    int           `json:"gain" yaml:"gain" xml:"gain"`
+		Wallet  int           `json:"wallet" yaml:"wallet" xml:"wallet"`
+	}
+
+	if err = c.Bind(&arg); err != nil {
+		Ret400(c, SEC_game_state_nobind, err)
+		return
+	}
+	if arg.GID == 0 {
+		Ret400(c, SEC_game_state_nogid, ErrNoGID)
+		return
+	}
+
+	var og OpenGame
+	if og, ok = OpenGames.Get(arg.GID); !ok {
+		Ret404(c, SEC_game_state_notopened, ErrNotOpened)
+		return
+	}
+
+	var user *User
+	if user, ok = Users.Get(og.UID); !ok {
+		Ret500(c, SEC_game_state_nouser, ErrNoUser)
+		return
+	}
+
+	var props *Props
+	if props, ok = user.props.Get(og.RID); !ok {
+		Ret500(c, SEC_game_state_noprops, ErrNoWallet)
+		return
+	}
+
+	ret.Game = og.game
+	ret.FS = og.game.FreeSpins()
+	ret.Gain = og.game.GetGain()
+	ret.Wallet = props.Wallet
+
+	RetOk(c, ret)
+}
+
 func SpiGameBetGet(c *gin.Context) {
 	var err error
 	var ok bool
@@ -301,9 +351,9 @@ func SpiGameSpin(c *gin.Context) {
 		XMLName xml.Name       `json:"-" yaml:"-" xml:"ret"`
 		SID     uint64         `json:"sid" yaml:"sid" xml:"sid,attr" form:"sid"`
 		Screen  game.Screen    `json:"screen" yaml:"screen" xml:"screen"`
-		Wins    []game.WinItem `json:"wins" yaml:"wins" xml:"wins"`
-		Gain    int            `json:"gain" yaml:"gain" xml:"gain"`
+		Wins    []game.WinItem `json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
 		FS      int            `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
+		Gain    int            `json:"gain" yaml:"gain" xml:"gain"`
 		Wallet  int            `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
@@ -452,6 +502,7 @@ func SpiGameDoubleup(c *gin.Context) {
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		SID     uint64   `json:"sid" yaml:"sid" xml:"sid,attr" form:"sid"`
 		Gain    int      `json:"gain" yaml:"gain" xml:"gain"`
 		Wallet  int      `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
@@ -550,6 +601,19 @@ func SpiGameDoubleup(c *gin.Context) {
 	props.Wallet += multgain - gain
 
 	og.game.SetGain(multgain)
+
+	// write doubleup result to log and get spin ID
+	var sl = Spinlog{
+		GID:    arg.GID,
+		Gain:   multgain,
+		Wallet: props.Wallet,
+	}
+	var b []byte
+	b, _ = json.Marshal(og.game)
+	sl.Game = util.B2S(b)
+	if _, err = cfg.XormSpinlog.Insert(&sl); err != nil {
+		log.Printf("can not write to spin log: %s", err.Error())
+	}
 
 	// prepare result
 	ret.Gain = multgain
