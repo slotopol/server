@@ -5,6 +5,10 @@ import "errors"
 const (
 	SECnull = iota
 
+	// authorization
+	SEC_unauthorized
+	SEC_nourl
+
 	// POST /game/join
 	SEC_game_join_nobind
 	SEC_game_join_norid
@@ -96,9 +100,17 @@ const (
 	SEC_game_doubleup_nouser
 	SEC_game_doubleup_noprops
 	SEC_game_doubleup_nomoney
+
+	// POST /user/rename
+	SEC_user_rename_nobind
+	SEC_user_rename_nouid
+	SEC_user_rename_noname
+	SEC_user_rename_nouser
+	SEC_user_rename_update
 )
 
 var (
+	Err404       = errors.New("page not found")
 	ErrNoUID     = errors.New("user ID does not provided")
 	ErrNoRID     = errors.New("room ID does not provided")
 	ErrNoGID     = errors.New("game ID does not provided")

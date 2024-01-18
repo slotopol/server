@@ -152,6 +152,9 @@ func InitSpinlog() (err error) {
 }
 
 func Init() (err error) {
+	if err = spi.AuthMiddleware.MiddlewareInit(); err != nil {
+		return fmt.Errorf("auth middleware failure on init: %w", err)
+	}
 	if err = InitStorage(); err != nil {
 		return fmt.Errorf("can not init XORM records storage: %w", err)
 	}

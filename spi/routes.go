@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 	"net/http"
 
-	"github.com/gin-contrib/gzip"
+	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 )
@@ -39,40 +39,51 @@ type ajaxerr struct {
 	XMLName xml.Name `json:"-" yaml:"-" xml:"error"`
 	What    string   `json:"what" yaml:"what" xml:"what"`
 	Code    int      `json:"code,omitempty" yaml:"code,omitempty" xml:"code,omitempty"`
+	UID     uint64   `json:"uid,omitempty" yaml:"uid,omitempty" xml:"uid,omitempty,attr"`
+}
+
+func RetErr(c *gin.Context, status, code int, err error) {
+	var claims = jwt.ExtractClaims(c)
+	var uid uint64
+	if v, ok := claims[identityKey]; ok {
+		uid = uint64(v.(float64))
+	}
+	Negotiate(c, status, ajaxerr{
+		What: err.Error(),
+		Code: code,
+		UID:  uid,
+	})
 }
 
 func Ret400(c *gin.Context, code int, err error) {
-	Negotiate(c, http.StatusBadRequest, ajaxerr{
-		What: err.Error(),
-		Code: code,
-	})
+	RetErr(c, http.StatusBadRequest, code, err)
 }
 
 func Ret403(c *gin.Context, code int, err error) {
-	Negotiate(c, http.StatusForbidden, ajaxerr{
-		What: err.Error(),
-		Code: code,
-	})
+	RetErr(c, http.StatusForbidden, code, err)
 }
 
 func Ret404(c *gin.Context, code int, err error) {
-	Negotiate(c, http.StatusNotFound, ajaxerr{
-		What: err.Error(),
-		Code: code,
-	})
+	RetErr(c, http.StatusNotFound, code, err)
 }
 
 func Ret500(c *gin.Context, code int, err error) {
-	Negotiate(c, http.StatusInternalServerError, ajaxerr{
-		What: err.Error(),
-		Code: code,
-	})
+	RetErr(c, http.StatusInternalServerError, code, err)
 }
 
 func Router(r *gin.Engine) {
-	r.Use(gzip.Gzip(gzip.DefaultCompression))
+	r.NoRoute(AuthMiddleware.MiddlewareFunc(), Handle404)
 	r.GET("/ping", SpiPing)
 	r.GET("/info", SpiInfo)
+	r.POST("/login", AuthMiddleware.LoginHandler)
+
+	// authorization expected
+	var ra = r.Group("/auth")
+	ra.GET("/refresh", AuthMiddleware.RefreshHandler)
+	ra.Use(AuthMiddleware.MiddlewareFunc())
+	ra.POST("/hello", SpiAuthHello)
+
+	//r.Use(gzip.Gzip(gzip.DefaultCompression))
 	var rg = r.Group("/game")
 	rg.POST("/join", SpiGameJoin)
 	rg.POST("/part", SpiGamePart)
@@ -86,4 +97,6 @@ func Router(r *gin.Engine) {
 	var rp = r.Group("/prop")
 	rp.POST("/wallet/get", SpiPropsWalletGet)
 	rp.POST("/wallet/add", SpiPropsWalletAdd)
+	var ru = r.Group("/user")
+	ru.POST("/rename", SpiUserRename)
 }

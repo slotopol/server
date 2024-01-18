@@ -31,7 +31,7 @@ func SpiGameJoin(c *gin.Context) {
 		Wallet  int         `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
-	if err = c.Bind(&arg); err != nil {
+	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_game_join_nobind, err)
 		return
 	}
@@ -127,7 +127,7 @@ func SpiGamePart(c *gin.Context) {
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
 	}
 
-	if err = c.Bind(&arg); err != nil {
+	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_game_part_nobind, err)
 		return
 	}
@@ -167,7 +167,7 @@ func SpiGameState(c *gin.Context) {
 		Wallet  int           `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
-	if err = c.Bind(&arg); err != nil {
+	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_game_state_nobind, err)
 		return
 	}
@@ -212,7 +212,7 @@ func SpiGameBetGet(c *gin.Context) {
 		Bet     int      `json:"bet" yaml:"bet" xml:"bet"`
 	}
 
-	if err = c.Bind(&arg); err != nil {
+	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_game_betget_nobind, err)
 		return
 	}
@@ -241,7 +241,7 @@ func SpiGameBetSet(c *gin.Context) {
 		Bet     int      `json:"bet" yaml:"bet" xml:"bet"`
 	}
 
-	if err = c.Bind(&arg); err != nil {
+	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_game_betset_nobind, err)
 		return
 	}
@@ -280,7 +280,7 @@ func SpiGameSblGet(c *gin.Context) {
 		SBL     game.SBL `json:"sbl" yaml:"sbl" xml:"sbl"`
 	}
 
-	if err = c.Bind(&arg); err != nil {
+	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_game_sblget_nobind, err)
 		return
 	}
@@ -309,7 +309,7 @@ func SpiGameSblSet(c *gin.Context) {
 		SBL     game.SBL `json:"sbl" yaml:"sbl" xml:"sbl"`
 	}
 
-	if err = c.Bind(&arg); err != nil {
+	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_game_sblset_nobind, err)
 		return
 	}
@@ -353,7 +353,7 @@ func SpiGameSpin(c *gin.Context) {
 		Wallet  int            `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
-	if err = c.Bind(&arg); err != nil {
+	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_game_spin_nobind, err)
 		return
 	}
@@ -503,7 +503,7 @@ func SpiGameDoubleup(c *gin.Context) {
 		Wallet  int      `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
-	if err = c.Bind(&arg); err != nil {
+	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_game_doubleup_nobind, err)
 		return
 	}

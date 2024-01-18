@@ -21,7 +21,7 @@ func SpiPropsWalletGet(c *gin.Context) {
 		Wallet  int      `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
-	if err = c.Bind(&arg); err != nil {
+	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_prop_walletget_nobind, err)
 		return
 	}
@@ -66,7 +66,7 @@ func SpiPropsWalletAdd(c *gin.Context) {
 		Wallet  int      `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
-	if err = c.Bind(&arg); err != nil {
+	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_prop_walletadd_nobind, err)
 		return
 	}
