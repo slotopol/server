@@ -74,10 +74,12 @@ func Ret500(c *gin.Context, code int, err error) {
 func Router(r *gin.Engine) {
 	r.NoRoute(AuthMiddleware.MiddlewareFunc(), Handle404)
 	r.GET("/ping", SpiPing)
-	r.GET("/info", SpiInfo)
+	r.GET("/servinfo", SpiServInfo)
+	r.GET("/memusage", SpiMemUsage)
+	r.GET("/gamelist", SpiGameList)
 
 	// authorization
-	r.POST("/login", AuthMiddleware.LoginHandler)
+	r.POST("/signin", AuthMiddleware.LoginHandler)
 	r.GET("/refresh", AuthMiddleware.RefreshHandler)
 	var ra = r.Group("", AuthMiddleware.MiddlewareFunc())
 
@@ -93,7 +95,6 @@ func Router(r *gin.Engine) {
 	rg.POST("/spin", SpiGameSpin)
 	rg.POST("/doubleup", SpiGameDoubleup)
 	var rp = ra.Group("/prop")
-	rp.Use(AuthMiddleware.MiddlewareFunc())
 	rp.POST("/wallet/get", SpiPropsWalletGet)
 	rp.POST("/wallet/add", SpiPropsWalletAdd)
 	var ru = ra.Group("/user")

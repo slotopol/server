@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"time"
 
 	"github.com/slotopol/server/util"
 	"github.com/spf13/cobra"
@@ -38,6 +39,12 @@ var (
 	ErrNoCfgFile = errors.New("configyration file was not found")
 )
 
+type CfgJwtAuth struct {
+	TokenKey        string        `json:"token-key" yaml:"token-key" mapstructure:"token-key"`
+	TokenTimeout    time.Duration `json:"token-timeout" yaml:"token-timeout" mapstructure:"token-timeout"`
+	TokenMaxRefresh time.Duration `json:"token-max-refresh" yaml:"token-max-refresh" mapstructure:"token-max-refresh"`
+}
+
 type CfgGameplay struct {
 	// Maximum value to add to wallet by one transaction.
 	AdjunctLimit int
@@ -52,6 +59,7 @@ type CfgXormDrv struct {
 
 // Config is common service settings.
 type Config struct {
+	CfgJwtAuth  `json:"authentication" yaml:"authentication" mapstructure:"authentication"`
 	CfgGameplay `json:"gameplay" yaml:"xorm" mapstructure:"gameplay"`
 	CfgXormDrv  `json:"xorm" yaml:"xorm" mapstructure:"xorm"`
 }
@@ -59,6 +67,11 @@ type Config struct {
 // Instance of common service settings.
 // Inits default values if config is not found.
 var Cfg = &Config{
+	CfgJwtAuth: CfgJwtAuth{
+		TokenKey:        "skJgM4NsbP3fs4k7vh0gfdkgGl8dJTszdLxZ1sQ9ksFnxbgvw2RsGH8xxddUV479",
+		TokenTimeout:    1 * 24 * time.Hour,
+		TokenMaxRefresh: 3 * 24 * time.Hour,
+	},
 	CfgGameplay: CfgGameplay{
 		AdjunctLimit:    100000,
 		MaxSpinAttempts: 300,

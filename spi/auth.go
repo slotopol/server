@@ -13,9 +13,9 @@ const identityKey = "uid"
 
 var AuthMiddleware = &jwt.GinJWTMiddleware{
 	Realm:       "slotopol",
-	Key:         []byte("secret key"),
-	Timeout:     time.Hour * 24,
-	MaxRefresh:  time.Hour * 72,
+	Key:         []byte("secret key"), // loaded from config later
+	Timeout:     time.Hour * 24,       // loaded from config later
+	MaxRefresh:  time.Hour * 72,       // loaded from config later
 	IdentityKey: identityKey,
 	Authenticator: func(c *gin.Context) (interface{}, error) {
 		var arg struct {
