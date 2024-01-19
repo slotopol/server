@@ -8,6 +8,7 @@ import (
 	"xorm.io/xorm"
 )
 
+// Returns balance at wallet for pointed user at pointed room.
 func SpiPropsWalletGet(c *gin.Context) {
 	var err error
 	var ok bool
@@ -47,11 +48,18 @@ func SpiPropsWalletGet(c *gin.Context) {
 		return
 	}
 
+	var admin, al = GetAdmin(c, arg.RID)
+	if admin != user && al&ALuser == 0 {
+		Ret403(c, SEC_prop_walletget_noaccess, ErrNoAccess)
+		return
+	}
+
 	ret.Wallet = user.GetWallet(arg.RID)
 
 	RetOk(c, ret)
 }
 
+// Adds some coins to user wallet. Addend can be < 0 to remove some coins.
 func SpiPropsWalletAdd(c *gin.Context) {
 	var err error
 	var ok bool
@@ -82,7 +90,7 @@ func SpiPropsWalletAdd(c *gin.Context) {
 		Ret400(c, SEC_prop_walletadd_noadd, ErrZero)
 		return
 	}
-	if arg.Addend > cfg.Cfg.AdjunctLimit {
+	if arg.Addend > cfg.Cfg.AdjunctLimit || arg.Addend < -cfg.Cfg.AdjunctLimit {
 		Ret400(c, SEC_prop_walletadd_limit, ErrTooBig)
 		return
 	}
@@ -113,6 +121,12 @@ func SpiPropsWalletAdd(c *gin.Context) {
 		return
 	}
 
+	var admin, al = GetAdmin(c, arg.RID)
+	if al&ALuser == 0 {
+		Ret403(c, SEC_prop_walletadd_noaccess, ErrNoAccess)
+		return
+	}
+
 	// update wallet as transaction
 	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (ret interface{}, err error) {
 		defer func() {
@@ -124,7 +138,7 @@ func SpiPropsWalletAdd(c *gin.Context) {
 		var wl = Walletlog{
 			RID:    arg.RID,
 			UID:    arg.UID,
-			AdmID:  arg.UID,
+			AdmID:  admin.UID,
 			Wallet: props.Wallet + arg.Addend,
 			Addend: arg.Addend,
 		}

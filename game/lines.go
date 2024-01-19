@@ -12,7 +12,7 @@ type Lineset interface {
 	Num() int      // returns number lines in set
 }
 
-// SBL is selected bet lines set.
+// SBL is selected bet lines bitset.
 type SBL uint
 
 // MakeSBL creates lines set from slice of line indexes.

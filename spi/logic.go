@@ -4,10 +4,12 @@ import (
 	"sync"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/slotopol/server/game"
 	"github.com/slotopol/server/util"
 )
 
+// Room means independent bank into which gambles some users.
 type Room struct {
 	RID  uint64  `xorm:"pk autoincr" json:"rid" yaml:"rid" xml:"rid,attr"`
 	Name string  `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
@@ -21,6 +23,9 @@ type Room struct {
 	mux sync.RWMutex
 }
 
+// User means registration of somebody. Each user can have splitted
+// wallet with some coins balance in each Room. User can opens several
+// games without any limitation.
 type User struct {
 	UID    uint64 `xorm:"pk autoincr" json:"uid" yaml:"uid" xml:"uid,attr"`
 	Email  string `xorm:"notnull unique index" json:"email" yaml:"email" xml:"email"`
@@ -30,6 +35,8 @@ type User struct {
 	props  util.RWMap[uint64, *Props]
 }
 
+// OpenGame is opened game for user with UID at room with RID.
+// Each instance of game have own GID. Alias - is game type identifier.
 type OpenGame struct {
 	GID   uint64 `xorm:"pk autoincr" json:"gid" yaml:"gid" xml:"gid,attr"`
 	RID   uint64 `xorm:"notnull" json:"rid" yaml:"rid" xml:"rid,attr"`
@@ -42,6 +49,7 @@ func (OpenGame) TableName() string {
 	return "game"
 }
 
+// Access level.
 type AL uint
 
 const (
@@ -49,9 +57,11 @@ const (
 	ALuser                 // can change user balance and move user money to/from room deposit
 	ALbank                 // can change room bank, fund, deposit
 	ALadmin                // can change same access levels to other users
-	ALall   AL = 0xffff
+	ALall   AL = 0xffff    // all available rights.
 )
 
+// Props contains properties for user at some room.
+// Any property can be zero by default, or if object does not created at DB.
 type Props struct {
 	RID    uint64 `xorm:"notnull index(bid)" json:"rid" yaml:"rid" xml:"rid,attr"`
 	UID    uint64 `xorm:"notnull index(bid)" json:"uid" yaml:"uid" xml:"uid,attr"`
@@ -79,10 +89,13 @@ type Walletlog struct {
 	CTime  time.Time `xorm:"created" json:"ctime" yaml:"ctime" xml:"ctime"`
 }
 
+// All created rooms, by RID.
 var Rooms util.RWMap[uint64, *Room]
 
+// All registered users, by UID.
 var Users util.RWMap[uint64, *User]
 
+// All opened games, by GID.
 var OpenGames util.RWMap[uint64, OpenGame]
 
 func (user *User) Init() {
@@ -97,8 +110,27 @@ func (user *User) GetWallet(rid uint64) int {
 	return 0
 }
 
+func (user *User) GetAL(rid uint64) AL {
+	if props, ok := user.props.Get(rid); ok {
+		return props.Access
+	}
+	return 0
+}
+
 func (user *User) InsertProps(props *Props) {
 	user.props.Set(props.RID, props)
+}
+
+// GetAdmin always returns User pointer for authorized requests.
+// And access level for it. Or returns nil pointer for not authorized request.
+func GetAdmin(c *gin.Context, rid uint64) (*User, AL) {
+	if v, ok := c.Get(identityKey); ok {
+		var admin = v.(*User)
+		var alg = admin.GetAL(0)
+		var alr = admin.GetAL(rid)
+		return admin, alg | alr
+	}
+	return nil, 0
 }
 
 func init() {

@@ -75,16 +75,14 @@ func Router(r *gin.Engine) {
 	r.NoRoute(AuthMiddleware.MiddlewareFunc(), Handle404)
 	r.GET("/ping", SpiPing)
 	r.GET("/info", SpiInfo)
-	r.POST("/login", AuthMiddleware.LoginHandler)
 
-	// authorization expected
-	var ra = r.Group("/auth")
-	ra.GET("/refresh", AuthMiddleware.RefreshHandler)
-	ra.Use(AuthMiddleware.MiddlewareFunc())
-	ra.POST("/hello", SpiAuthHello)
+	// authorization
+	r.POST("/login", AuthMiddleware.LoginHandler)
+	r.GET("/refresh", AuthMiddleware.RefreshHandler)
+	var ra = r.Group("", AuthMiddleware.MiddlewareFunc())
 
 	//r.Use(gzip.Gzip(gzip.DefaultCompression))
-	var rg = r.Group("/game")
+	var rg = ra.Group("/game")
 	rg.POST("/join", SpiGameJoin)
 	rg.POST("/part", SpiGamePart)
 	rg.POST("/state", SpiGameState)
@@ -94,9 +92,10 @@ func Router(r *gin.Engine) {
 	rg.POST("/sbl/set", SpiGameSblSet)
 	rg.POST("/spin", SpiGameSpin)
 	rg.POST("/doubleup", SpiGameDoubleup)
-	var rp = r.Group("/prop")
+	var rp = ra.Group("/prop")
+	rp.Use(AuthMiddleware.MiddlewareFunc())
 	rp.POST("/wallet/get", SpiPropsWalletGet)
 	rp.POST("/wallet/add", SpiPropsWalletAdd)
-	var ru = r.Group("/user")
+	var ru = ra.Group("/user")
 	ru.POST("/rename", SpiUserRename)
 }

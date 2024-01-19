@@ -20,6 +20,7 @@ type Screen interface {
 	Spin(reels Reels)                  // fill the screen with random hits on those reels
 }
 
+// WinItem describes win on each line or scatters.
 type WinItem struct {
 	Pay  int  `json:"pay,omitempty" yaml:"pay,omitempty" xml:"pay,omitempty,attr"`    // payment with selected bet
 	Mult int  `json:"mult,omitempty" yaml:"mult,omitempty" xml:"mult,omitempty,attr"` // multiplier for payment for free spins and other special cases
@@ -33,10 +34,12 @@ type WinItem struct {
 	Bon  any  `json:"bon,omitempty" yaml:"bon,omitempty" xml:"bon,omitempty"`         // bonus game data
 }
 
+// WinScan is full list of wins by all lines and scatters for some spin.
 type WinScan struct {
 	Wins []WinItem `json:"wins" yaml:"wins" xml:"wins"`
 }
 
+// Total gain for spin.
 func (ws *WinScan) Gain() int {
 	var sum int
 	for _, wi := range ws.Wins {
@@ -107,6 +110,7 @@ var (
 	ErrNoFeature  = errors.New("feature not available")
 )
 
+// Slot5x3 is base struct for all slot games with screen 5x3.
 type Slot5x3 struct {
 	RI  string `json:"ri" yaml:"ri" xml:"ri"`    // reels index
 	BLI string `json:"bli" yaml:"bli" xml:"bli"` // bet lines index

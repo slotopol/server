@@ -15,6 +15,7 @@ import (
 	"github.com/slotopol/server/game"
 )
 
+// Joins to game and creates new instance of game.
 func SpiGameJoin(c *gin.Context) {
 	var err error
 	var ok bool
@@ -48,6 +49,13 @@ func SpiGameJoin(c *gin.Context) {
 		return
 	}
 
+	var alias = util.ToID(arg.Alias)
+	var gname string
+	if gname, ok = cfg.GameAliases[alias]; !ok {
+		Ret400(c, SEC_game_join_noalias, ErrNoAliase)
+		return
+	}
+
 	var room *Room
 	if room, ok = Rooms.Get(arg.RID); !ok {
 		Ret404(c, SEC_game_join_noroom, ErrNoRoom)
@@ -61,10 +69,9 @@ func SpiGameJoin(c *gin.Context) {
 		return
 	}
 
-	var alias = util.ToID(arg.Alias)
-	var gname string
-	if gname, ok = cfg.GameAliases[alias]; !ok {
-		Ret400(c, SEC_game_join_noalias, ErrNoAliase)
+	var admin, al = GetAdmin(c, arg.RID)
+	if admin != user && al&ALgame == 0 {
+		Ret403(c, SEC_prop_join_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -119,6 +126,7 @@ func SpiGameJoin(c *gin.Context) {
 	RetOk(c, ret)
 }
 
+// Removes instance of opened game.
 func SpiGamePart(c *gin.Context) {
 	var err error
 	var ok bool
@@ -148,12 +156,19 @@ func SpiGamePart(c *gin.Context) {
 		return
 	}
 
+	var admin, al = GetAdmin(c, og.RID)
+	if admin != user && al&ALgame == 0 {
+		Ret403(c, SEC_prop_part_noaccess, ErrNoAccess)
+		return
+	}
+
 	OpenGames.Delete(arg.GID)
 	user.games.Delete(arg.GID)
 
 	c.Status(http.StatusOK)
 }
 
+// Returns full state of game with given GID, and balance on wallet.
 func SpiGameState(c *gin.Context) {
 	var err error
 	var ok bool
@@ -188,6 +203,12 @@ func SpiGameState(c *gin.Context) {
 		return
 	}
 
+	var admin, al = GetAdmin(c, og.RID)
+	if admin != user && al&ALgame == 0 {
+		Ret403(c, SEC_prop_state_noaccess, ErrNoAccess)
+		return
+	}
+
 	var props *Props
 	if props, ok = user.props.Get(og.RID); !ok {
 		Ret500(c, SEC_game_state_noprops, ErrNoWallet)
@@ -200,6 +221,7 @@ func SpiGameState(c *gin.Context) {
 	RetOk(c, ret)
 }
 
+// Returns bet value.
 func SpiGameBetGet(c *gin.Context) {
 	var err error
 	var ok bool
@@ -227,11 +249,18 @@ func SpiGameBetGet(c *gin.Context) {
 		return
 	}
 
+	var admin, al = GetAdmin(c, og.RID)
+	if admin.UID != og.UID && al&ALgame == 0 {
+		Ret403(c, SEC_prop_betget_noaccess, ErrNoAccess)
+		return
+	}
+
 	ret.Bet = og.game.GetBet()
 
 	RetOk(c, ret)
 }
 
+// Set bet value.
 func SpiGameBetSet(c *gin.Context) {
 	var err error
 	var ok bool
@@ -260,6 +289,12 @@ func SpiGameBetSet(c *gin.Context) {
 		return
 	}
 
+	var admin, al = GetAdmin(c, og.RID)
+	if admin.UID != og.UID && al&ALgame == 0 {
+		Ret403(c, SEC_prop_betset_noaccess, ErrNoAccess)
+		return
+	}
+
 	if err = og.game.SetBet(arg.Bet); err != nil {
 		Ret403(c, SEC_game_betset_badbet, err)
 		return
@@ -268,6 +303,7 @@ func SpiGameBetSet(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// Returns selected bet lines bitset.
 func SpiGameSblGet(c *gin.Context) {
 	var err error
 	var ok bool
@@ -295,11 +331,18 @@ func SpiGameSblGet(c *gin.Context) {
 		return
 	}
 
+	var admin, al = GetAdmin(c, og.RID)
+	if admin.UID != og.UID && al&ALgame == 0 {
+		Ret403(c, SEC_prop_sblget_noaccess, ErrNoAccess)
+		return
+	}
+
 	ret.SBL = og.game.GetLines()
 
 	RetOk(c, ret)
 }
 
+// Set selected bet lines bitset.
 func SpiGameSblSet(c *gin.Context) {
 	var err error
 	var ok bool
@@ -328,6 +371,12 @@ func SpiGameSblSet(c *gin.Context) {
 		return
 	}
 
+	var admin, al = GetAdmin(c, og.RID)
+	if admin.UID != og.UID && al&ALgame == 0 {
+		Ret403(c, SEC_prop_sblset_noaccess, ErrNoAccess)
+		return
+	}
+
 	if err = og.game.SetLines(arg.SBL); err != nil {
 		Ret403(c, SEC_game_sblset_badlines, err)
 		return
@@ -336,6 +385,7 @@ func SpiGameSblSet(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// Make a spin.
 func SpiGameSpin(c *gin.Context) {
 	var err error
 	var ok bool
@@ -377,6 +427,12 @@ func SpiGameSpin(c *gin.Context) {
 	var user *User
 	if user, ok = Users.Get(og.UID); !ok {
 		Ret500(c, SEC_game_spin_nouser, ErrNoUser)
+		return
+	}
+
+	var admin, al = GetAdmin(c, og.RID)
+	if admin.UID != og.UID && al&ALgame == 0 {
+		Ret403(c, SEC_prop_spin_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -488,6 +544,7 @@ func SpiGameSpin(c *gin.Context) {
 	RetOk(c, ret)
 }
 
+// Double up gamble on last gain.
 func SpiGameDoubleup(c *gin.Context) {
 	var err error
 	var ok bool
@@ -535,6 +592,12 @@ func SpiGameDoubleup(c *gin.Context) {
 	var user *User
 	if user, ok = Users.Get(og.UID); !ok {
 		Ret500(c, SEC_game_doubleup_nouser, ErrNoUser)
+		return
+	}
+
+	var admin, al = GetAdmin(c, og.RID)
+	if admin.UID != og.UID && al&ALgame == 0 {
+		Ret403(c, SEC_prop_doubleup_noaccess, ErrNoAccess)
 		return
 	}
 

@@ -8,6 +8,7 @@ import (
 	cfg "github.com/slotopol/server/config"
 )
 
+// Changes 'Name' of given user.
 func SpiUserRename(c *gin.Context) {
 	var err error
 	var ok bool
@@ -33,6 +34,12 @@ func SpiUserRename(c *gin.Context) {
 	var user *User
 	if user, ok = Users.Get(arg.UID); !ok {
 		Ret404(c, SEC_user_rename_nouser, ErrNoUser)
+		return
+	}
+
+	var admin, al = GetAdmin(c, 0)
+	if admin != user && al&ALadmin == 0 {
+		Ret403(c, SEC_prop_rename_noaccess, ErrNoAccess)
 		return
 	}
 
