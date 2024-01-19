@@ -7,6 +7,8 @@ import (
 
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
+	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/util"
 )
 
 const identityKey = "uid"
@@ -19,9 +21,9 @@ var AuthMiddleware = &jwt.GinJWTMiddleware{
 	IdentityKey: identityKey,
 	Authenticator: func(c *gin.Context) (interface{}, error) {
 		var arg struct {
-			XMLName  xml.Name `json:"-" yaml:"-" xml:"arg"`
-			Username string   `json:"username" yaml:"username" xml:"username" form:"username" binding:"required"`
-			Password string   `json:"password" yaml:"password" xml:"password" form:"password" binding:"required"`
+			XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+			Email   string   `json:"email" yaml:"email" xml:"email" form:"email" binding:"required"`
+			Secret  string   `json:"secret" yaml:"secret" xml:"secret" form:"secret" binding:"required"`
 		}
 		if err := c.ShouldBind(&arg); err != nil {
 			return "", jwt.ErrMissingLoginValues
@@ -29,7 +31,7 @@ var AuthMiddleware = &jwt.GinJWTMiddleware{
 
 		var reguser *User
 		Users.Range(func(uid uint64, user *User) bool {
-			if user.Email == arg.Username && user.Secret == arg.Password {
+			if user.Email == arg.Email && user.Secret == arg.Secret {
 				reguser = user
 				return false
 			}
@@ -53,10 +55,12 @@ var AuthMiddleware = &jwt.GinJWTMiddleware{
 		return jwt.MapClaims{}
 	},
 	IdentityHandler: func(c *gin.Context) interface{} {
-		claims := jwt.ExtractClaims(c)
+		var claims = jwt.ExtractClaims(c)
 		var uid = uint64(claims[identityKey].(float64))
-		var user, _ = Users.Get(uid)
-		return user
+		if user, ok := Users.Get(uid); ok {
+			return user
+		}
+		return nil
 	},
 	LoginResponse:   TokenResponse,
 	RefreshResponse: TokenResponse,
@@ -84,4 +88,48 @@ func TokenResponse(c *gin.Context, code int, token string, expire time.Time) {
 
 func Handle404(c *gin.Context) {
 	Ret404(c, SEC_nourl, Err404)
+}
+
+func SpiSignup(c *gin.Context) {
+	var err error
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		Email   string   `json:"email" yaml:"email" xml:"email" form:"email"`
+		Secret  string   `json:"secret" yaml:"secret" xml:"secret" form:"secret"`
+		Name    string   `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
+	}
+	var ret struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, SEC_signup_nobind, err)
+		return
+	}
+	if len(arg.Secret) < 6 {
+		Ret400(c, SEC_signup_smallsec, ErrSmallKey)
+		return
+	}
+	if arg.Email == "" {
+		Ret400(c, SEC_signup_noemail, ErrNoData)
+		return
+	}
+
+	var email = util.ToLower(arg.Email)
+
+	var user = &User{
+		Email:  email,
+		Secret: arg.Secret,
+		Name:   arg.Name,
+	}
+	if _, err = cfg.XormStorage.Insert(user); err != nil {
+		Ret500(c, SEC_signup_insert, err)
+		return
+	}
+
+	Users.Set(user.UID, user)
+
+	ret.UID = user.UID
+	RetOk(c, ret)
 }

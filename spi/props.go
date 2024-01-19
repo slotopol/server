@@ -128,7 +128,7 @@ func SpiPropsWalletAdd(c *gin.Context) {
 	}
 
 	// update wallet as transaction
-	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (ret interface{}, err error) {
+	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (_ interface{}, err error) {
 		defer func() {
 			if err != nil {
 				session.Rollback()
@@ -145,7 +145,7 @@ func SpiPropsWalletAdd(c *gin.Context) {
 
 		if hasprops {
 			const sql = `UPDATE props SET wallet=wallet+? WHERE uid=? AND rid=?`
-			if ret, err = session.Exec(sql, arg.Addend, props.UID, props.RID); err != nil {
+			if _, err = session.Exec(sql, arg.Addend, props.UID, props.RID); err != nil {
 				Ret500(c, SEC_prop_walletadd_sqlupdate, err)
 				return
 			}

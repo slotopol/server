@@ -13,6 +13,7 @@ import (
 // save server start time
 var starttime = time.Now()
 
+// Check service response.
 func SpiPing(c *gin.Context) {
 	var ret = gin.H{
 		"message": "pong",
@@ -20,6 +21,7 @@ func SpiPing(c *gin.Context) {
 	Negotiate(c, http.StatusOK, ret)
 }
 
+// Static service system information.
 func SpiServInfo(c *gin.Context) {
 	var ret = gin.H{
 		"buildvers": cfg.BuildVers,
@@ -35,6 +37,7 @@ func SpiServInfo(c *gin.Context) {
 	Negotiate(c, http.StatusOK, ret)
 }
 
+// Memory usage footprint.
 func SpiMemUsage(c *gin.Context) {
 	var mem runtime.MemStats
 	runtime.ReadMemStats(&mem)

@@ -88,7 +88,7 @@ func SpiGameJoin(c *gin.Context) {
 		Alias: alias,
 		game:  slotgame.(game.SlotGame),
 	}
-	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (ret interface{}, err error) {
+	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (_ interface{}, err error) {
 		if _, err = session.Insert(&og); err != nil {
 			Ret500(c, SEC_game_join_open, err)
 			return
@@ -482,7 +482,7 @@ func SpiGameSpin(c *gin.Context) {
 	}
 
 	// write gain and total bet as transaction
-	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (ret interface{}, err error) {
+	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (_ interface{}, err error) {
 		defer func() {
 			if err != nil {
 				session.Rollback()
@@ -490,13 +490,13 @@ func SpiGameSpin(c *gin.Context) {
 		}()
 
 		const sql1 = `UPDATE room SET bank=bank+? WHERE rid=?`
-		if ret, err = session.Exec(sql1, totalbet-totalwin, room.RID); err != nil {
+		if _, err = session.Exec(sql1, totalbet-totalwin, room.RID); err != nil {
 			Ret500(c, SEC_game_spin_sqlbank, err)
 			return
 		}
 
 		const sql2 = `UPDATE props SET wallet=wallet+? WHERE uid=? AND rid=?`
-		if ret, err = session.Exec(sql2, totalwin-totalbet, props.UID, props.RID); err != nil {
+		if _, err = session.Exec(sql2, totalwin-totalbet, props.UID, props.RID); err != nil {
 			Ret500(c, SEC_game_spin_sqlupdate, err)
 			return
 		}
@@ -628,7 +628,7 @@ func SpiGameDoubleup(c *gin.Context) {
 	}
 
 	// write gain and total bet as transaction
-	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (ret interface{}, err error) {
+	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (_ interface{}, err error) {
 		defer func() {
 			if err != nil {
 				session.Rollback()
@@ -636,13 +636,13 @@ func SpiGameDoubleup(c *gin.Context) {
 		}()
 
 		const sql1 = `UPDATE room SET bank=bank-? WHERE rid=?`
-		if ret, err = session.Exec(sql1, multgain-gain, room.RID); err != nil {
+		if _, err = session.Exec(sql1, multgain-gain, room.RID); err != nil {
 			Ret500(c, SEC_game_spin_sqlbank, err)
 			return
 		}
 
 		const sql2 = `UPDATE props SET wallet=wallet+? WHERE uid=? AND rid=?`
-		if ret, err = session.Exec(sql2, multgain-gain, props.UID, props.RID); err != nil {
+		if _, err = session.Exec(sql2, multgain-gain, props.UID, props.RID); err != nil {
 			Ret500(c, SEC_game_spin_sqlupdate, err)
 			return
 		}

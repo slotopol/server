@@ -9,6 +9,12 @@ const (
 	SEC_unauthorized
 	SEC_nourl
 
+	// POST /signup
+	SEC_signup_nobind
+	SEC_signup_smallsec
+	SEC_signup_noemail
+	SEC_signup_insert
+
 	// POST /game/join
 	SEC_game_join_nobind
 	SEC_game_join_norid
@@ -112,6 +118,17 @@ const (
 	SEC_game_doubleup_noprops
 	SEC_game_doubleup_nomoney
 
+	// POST /user/delete
+	SEC_user_delete_nobind
+	SEC_user_delete_nouid
+	SEC_user_delete_nouser
+	SEC_prop_delete_noaccess
+	SEC_prop_delete_nosecret
+	SEC_prop_delete_sqluser
+	SEC_game_delete_sqllock
+	SEC_prop_delete_sqlprops
+	SEC_prop_delete_sqlgames
+
 	// POST /user/rename
 	SEC_user_rename_nobind
 	SEC_user_rename_nouid
@@ -123,6 +140,7 @@ const (
 
 var (
 	Err404       = errors.New("page not found")
+	ErrSmallKey  = errors.New("password too small")
 	ErrNoUID     = errors.New("user ID does not provided")
 	ErrNoRID     = errors.New("room ID does not provided")
 	ErrNoGID     = errors.New("game ID does not provided")
@@ -132,6 +150,7 @@ var (
 	ErrNoWallet  = errors.New("wallet for given user and room does not found")
 	ErrNoMoney   = errors.New("not enough money")
 	ErrNoAccess  = errors.New("no access rights for this feature")
+	ErrNoSecret  = errors.New("password confirmation does not pass")
 	ErrNoMult    = errors.New("gamble multiplier not given")
 	ErrBigMult   = errors.New("gamble multiplier too big")
 	ErrZero      = errors.New("given value is zero")

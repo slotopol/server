@@ -79,6 +79,7 @@ func Router(r *gin.Engine) {
 	r.GET("/gamelist", SpiGameList)
 
 	// authorization
+	r.POST("/signup", SpiSignup)
 	r.POST("/signin", AuthMiddleware.LoginHandler)
 	r.GET("/refresh", AuthMiddleware.RefreshHandler)
 	var ra = r.Group("", AuthMiddleware.MiddlewareFunc())
@@ -99,4 +100,5 @@ func Router(r *gin.Engine) {
 	rp.POST("/wallet/add", SpiPropsWalletAdd)
 	var ru = ra.Group("/user")
 	ru.POST("/rename", SpiUserRename)
+	ru.POST("/delete", SpiUserDelete)
 }
