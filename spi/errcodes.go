@@ -12,7 +12,6 @@ const (
 	// POST /signup
 	SEC_signup_nobind
 	SEC_signup_smallsec
-	SEC_signup_noemail
 	SEC_signup_insert
 
 	// POST /game/join
@@ -118,6 +117,23 @@ const (
 	SEC_game_doubleup_noprops
 	SEC_game_doubleup_nomoney
 
+	// POST /user/rename
+	SEC_user_rename_nobind
+	SEC_user_rename_nouid
+	SEC_user_rename_noname
+	SEC_user_rename_nouser
+	SEC_prop_rename_noaccess
+	SEC_user_rename_update
+
+	// POST /user/secret
+	SEC_user_secret_nobind
+	SEC_user_secret_nouid
+	SEC_user_secret_smallsec
+	SEC_user_secret_nouser
+	SEC_prop_secret_noaccess
+	SEC_prop_secret_nosecret
+	SEC_user_secret_update
+
 	// POST /user/delete
 	SEC_user_delete_nobind
 	SEC_user_delete_nouid
@@ -128,14 +144,6 @@ const (
 	SEC_game_delete_sqllock
 	SEC_prop_delete_sqlprops
 	SEC_prop_delete_sqlgames
-
-	// POST /user/rename
-	SEC_user_rename_nobind
-	SEC_user_rename_nouid
-	SEC_user_rename_noname
-	SEC_user_rename_nouser
-	SEC_prop_rename_noaccess
-	SEC_user_rename_update
 )
 
 var (

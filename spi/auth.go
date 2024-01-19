@@ -43,8 +43,10 @@ var AuthMiddleware = &jwt.GinJWTMiddleware{
 		return reguser, nil
 	},
 	Authorizator: func(data interface{}, c *gin.Context) bool {
-		// on case if user was deleted by another workflow before request
-		return data != nil
+		if data == nil { // on case if user was deleted by another workflow before request
+			return false
+		}
+		return data.(*User).GAL&ALban == 0 // not banned
 	},
 	PayloadFunc: func(data interface{}) jwt.MapClaims {
 		if v, ok := data.(*User); ok {
@@ -94,8 +96,8 @@ func SpiSignup(c *gin.Context) {
 	var err error
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		Email   string   `json:"email" yaml:"email" xml:"email" form:"email"`
-		Secret  string   `json:"secret" yaml:"secret" xml:"secret" form:"secret"`
+		Email   string   `json:"email" yaml:"email" xml:"email" form:"email" binding:"required"`
+		Secret  string   `json:"secret" yaml:"secret" xml:"secret" form:"secret" binding:"required"`
 		Name    string   `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
 	}
 	var ret struct {
@@ -109,10 +111,6 @@ func SpiSignup(c *gin.Context) {
 	}
 	if len(arg.Secret) < 6 {
 		Ret400(c, SEC_signup_smallsec, ErrSmallKey)
-		return
-	}
-	if arg.Email == "" {
-		Ret400(c, SEC_signup_noemail, ErrNoData)
 		return
 	}
 

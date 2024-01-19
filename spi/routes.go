@@ -100,5 +100,6 @@ func Router(r *gin.Engine) {
 	rp.POST("/wallet/add", SpiPropsWalletAdd)
 	var ru = ra.Group("/user")
 	ru.POST("/rename", SpiUserRename)
+	ru.POST("/secret", SpiUserSecret)
 	ru.POST("/delete", SpiUserDelete)
 }

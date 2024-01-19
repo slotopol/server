@@ -53,27 +53,44 @@ func InitStorage() (err error) {
 		}); err != nil {
 			return
 		}
-		if _, err = session.Insert(&spi.User{
-			UID:    1,
-			Email:  "example@example.org",
-			Secret: "pGjkSD",
-			Name:   "admin",
+		if _, err = session.Insert(&[]spi.User{
+			{
+				UID:    1,
+				Email:  "admin@example.org",
+				Secret: "pGjkSD",
+				Name:   "admin",
+				GAL:    spi.ALall,
+			},
+			{
+				UID:    2,
+				Email:  "dealer@example.org",
+				Secret: "jpTyD4",
+				Name:   "dealer",
+				GAL:    spi.ALuser,
+			},
+			{
+				UID:    3,
+				Email:  "player@example.org",
+				Secret: "Et7oAm",
+				Name:   "player",
+				GAL:    0,
+			},
 		}); err != nil {
 			return
 		}
-		if _, err = session.Insert(&spi.Props{
-			UID:    1,
-			RID:    0,
-			Wallet: 0,
-			Access: spi.ALall,
-		}); err != nil {
-			return
-		}
-		if _, err = session.Insert(&spi.Props{
-			UID:    1,
-			RID:    1,
-			Wallet: 1000,
-			Access: spi.ALall,
+		if _, err = session.Insert(&[]spi.Props{
+			{
+				UID:    2,
+				RID:    1,
+				Wallet: 12000,
+				Access: spi.ALgame | spi.ALuser,
+			},
+			{
+				UID:    3,
+				RID:    1,
+				Wallet: 1000,
+				Access: 0,
+			},
 		}); err != nil {
 			return
 		}
@@ -120,7 +137,7 @@ func InitStorage() (err error) {
 		}
 		offset += limit
 		for _, props := range chunk {
-			if props.RID != 0 && !spi.Rooms.Has(props.RID) {
+			if !spi.Rooms.Has(props.RID) {
 				return fmt.Errorf("found props without room linkage, UID=%d, RID=%d, value=%d", props.UID, props.RID, props.Wallet)
 			}
 			var user, ok = spi.Users.Get(props.UID)

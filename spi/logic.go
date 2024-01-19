@@ -31,6 +31,7 @@ type User struct {
 	Email  string `xorm:"notnull unique index" json:"email" yaml:"email" xml:"email"`
 	Secret string `xorm:"notnull" json:"secret" yaml:"secret" xml:"secret"` // auth password
 	Name   string `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
+	GAL    AL     `json:"gal,omitempty" yaml:"gal,omitempty" xml:"gal,omitempty"` // global access level
 	games  util.RWMap[uint64, OpenGame]
 	props  util.RWMap[uint64, *Props]
 }
@@ -53,11 +54,12 @@ func (OpenGame) TableName() string {
 type AL uint
 
 const (
-	ALgame  AL = 1 << iota // can change room game settings
+	ALban   AL = 1 << iota // user have no access to room
+	ALgame                 // can change room game settings
 	ALuser                 // can change user balance and move user money to/from room deposit
 	ALbank                 // can change room bank, fund, deposit
 	ALadmin                // can change same access levels to other users
-	ALall   AL = 0xffff    // all available rights.
+	ALall   = ALgame | ALuser | ALbank | ALadmin
 )
 
 // Props contains properties for user at some room.
@@ -126,9 +128,7 @@ func (user *User) InsertProps(props *Props) {
 func GetAdmin(c *gin.Context, rid uint64) (*User, AL) {
 	if v, ok := c.Get(identityKey); ok {
 		var admin = v.(*User)
-		var alg = admin.GetAL(0)
-		var alr = admin.GetAL(rid)
-		return admin, alg | alr
+		return admin, admin.GAL | admin.GetAL(rid)
 	}
 	return nil, 0
 }

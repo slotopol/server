@@ -45,7 +45,7 @@ func SpiUserRename(c *gin.Context) {
 	}
 
 	if _, err = cfg.XormStorage.Cols("name").Update(&User{UID: arg.UID, Name: arg.Name}); err != nil {
-		Ret500(c, SEC_user_rename_update, ErrNoUser)
+		Ret500(c, SEC_user_rename_update, err)
 		return
 	}
 	user.Name = arg.Name
@@ -53,7 +53,56 @@ func SpiUserRename(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-// Deletes registration, drops user and all linker records from database,
+func SpiUserSecret(c *gin.Context) {
+	var err error
+	var ok bool
+	var arg struct {
+		XMLName   xml.Name `json:"-" yaml:"-" xml:"arg"`
+		UID       uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
+		OldSecret string   `json:"oldsecret" yaml:"oldsecret" xml:"oldsecret" form:"oldsecret"`
+		NewSecret string   `json:"newsecret" yaml:"newsecret" xml:"newsecret" form:"newsecret"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, SEC_user_secret_nobind, err)
+		return
+	}
+	if arg.UID == 0 {
+		Ret400(c, SEC_user_secret_nouid, ErrNoUID)
+		return
+	}
+	if len(arg.NewSecret) < 6 {
+		Ret400(c, SEC_user_secret_smallsec, ErrSmallKey)
+		return
+	}
+
+	var user *User
+	if user, ok = Users.Get(arg.UID); !ok {
+		Ret404(c, SEC_user_secret_nouser, ErrNoUser)
+		return
+	}
+
+	var admin, al = GetAdmin(c, 0)
+	if admin != user && al&ALadmin == 0 {
+		Ret403(c, SEC_prop_secret_noaccess, ErrNoAccess)
+		return
+	}
+
+	if arg.OldSecret != user.Secret && al&ALadmin == 0 {
+		Ret403(c, SEC_prop_secret_nosecret, ErrNoSecret)
+		return
+	}
+
+	if _, err = cfg.XormStorage.Cols("secret").Update(&User{UID: arg.UID, Secret: arg.NewSecret}); err != nil {
+		Ret500(c, SEC_user_secret_update, err)
+		return
+	}
+	user.Secret = arg.NewSecret
+
+	c.Status(http.StatusOK)
+}
+
+// Deletes registration, drops user and all linked records from database,
 // and moves all remained coins at wallets to rooms deposits.
 func SpiUserDelete(c *gin.Context) {
 	var err error
