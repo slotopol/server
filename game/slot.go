@@ -116,6 +116,8 @@ type Slot5x3 struct {
 	BLI string `json:"bli" yaml:"bli" xml:"bli"` // bet lines index
 	SBL SBL    `json:"sbl" yaml:"sbl" xml:"sbl"` // selected bet lines
 	Bet int    `json:"bet" yaml:"bet" xml:"bet"` // bet value
+
+	Gain int `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"` // gain for double up games
 }
 
 func (g *Slot5x3) NewScreen() Screen {
@@ -133,11 +135,12 @@ func (g *Slot5x3) FreeSpins() int {
 }
 
 func (g *Slot5x3) GetGain() int {
-	return 0
+	return g.Gain
 }
 
 func (g *Slot5x3) SetGain(gain int) error {
-	return ErrNoFeature
+	g.Gain = gain
+	return nil
 }
 
 func (g *Slot5x3) GetBet() int {

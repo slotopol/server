@@ -2,3 +2,19 @@
 # Server configuration file. First of all you can change
 # "access-key" and "refresh-key" for tokens protection.
 # This file does not modified by server runtime.
+
+authentication:
+  # Private key for HS-256 JWT-tokens.
+  token-key: skJgM4NsbP3fs4k7vh0gfdkgGl8dJTszdLxZ1sQ9ksFnxbgvw2RsGH8xxddUV479
+  # Access token time to live.
+  token-timeout: 24h # 1 day
+  # Refresh token time to live.
+  token-max-refresh: 72h # 3 days
+gameplay:
+  # Maximum value to add to wallet by one transaction.
+  adjunct-limit: 100000
+  # Maximum number of spin attempts at bad bank balance.
+  max-spin-attempts: 300
+xorm:
+  # Provides XORM driver name.
+  xorm-driver-name: sqlite3
