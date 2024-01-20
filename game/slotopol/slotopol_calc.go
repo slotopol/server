@@ -99,30 +99,31 @@ func CalcStat(ctx context.Context, rn string) float64 {
 	var sbl = float64(g.SBL.Num())
 	var s game.Stat
 
+	var total = float64(reels.Reshuffles())
 	var dur = func() time.Duration {
 		var t0 = time.Now()
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		go s.Progress(ctx2, time.NewTicker(2*time.Second), sbl, float64(reels.Reshuffles()))
+		go s.Progress(ctx2, time.NewTicker(2*time.Second), sbl, total)
 		s.BruteForce5x(ctx2, g, reels)
 		return time.Since(t0)
 	}()
 
-	var n = float64(s.Reshuffles)
-	var lrtp, srtp = float64(s.LinePay) / n / sbl * 100, float64(s.ScatPay) / n * 100
+	var reshuf = float64(s.Reshuffles)
+	var lrtp, srtp = float64(s.LinePay) / reshuf / sbl * 100, float64(s.ScatPay) / reshuf * 100
 	var rtpsym = lrtp + srtp
-	var qmje9 = float64(s.BonusCount[mje9]) / n / sbl
+	var qmje9 = float64(s.BonusCount[mje9]) / reshuf / sbl
 	var rtpmje9 = Emje * 9 * qmje9 * 100
-	var qmjm = float64(s.BonusCount[mjm]) / n / sbl
+	var qmjm = float64(s.BonusCount[mjm]) / reshuf / sbl
 	var rtpmjm = Emjm * qmjm * 100
 	var rtp = rtpsym + rtpmje9 + rtpmjm
-	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", float64(s.Reshuffles)/float64(reels.Reshuffles())*100, g.SBL.Num(), dur)
+	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/total*100, g.SBL.Num(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 	fmt.Printf("spin9 bonuses: count %d, rtp = %.6f%%\n", s.BonusCount[mje9], rtpmje9)
 	fmt.Printf("monopoly bonuses: count %d, rtp = %.6f%%\n", s.BonusCount[mjm], rtpmjm)
-	fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(n/float64(s.JackCount[jid])))
+	fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(reshuf/float64(s.JackCount[jid])))
 	fmt.Printf("RTP = %.5g(sym) + %.5g(mje9) + %.5g(mjm) = %.6f%%\n", rtpsym, rtpmje9, rtpmjm, rtp)
 	return rtp
 }

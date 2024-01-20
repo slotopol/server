@@ -86,3 +86,21 @@ func (s *Stat) BruteForce5x(ctx context.Context, g SlotGame, reels Reels) {
 		}
 	}
 }
+
+func (s *Stat) MonteCarlo(ctx context.Context, g SlotGame, n int) {
+	var screen = g.NewScreen()
+	var ws WinScan
+	for i := 0; i < n; i++ {
+		g.Spin(screen)
+		ws.Wins = ws.Wins[:0] // set it empty
+		g.Scanner(screen, &ws)
+		s.Update(&ws)
+		if s.Reshuffles&100 == 0 {
+			select {
+			case <-ctx.Done():
+				return
+			default:
+			}
+		}
+	}
+}
