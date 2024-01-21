@@ -135,6 +135,10 @@ var ScatPay = [5]int{0, 2, 4, 20, 500} // 13 suitcase
 // Scatter freespins table
 var ScatFreespin = [5]int{0, 0, 45, 45, 45} // 13 suitcase
 
+const (
+	jid = 1 // jackpot ID
+)
+
 // Jackpot win combinations.
 var Jackpot = [13][5]int{
 	{0, 0, 0, 0, 0}, //  1 banana

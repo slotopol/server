@@ -112,7 +112,7 @@ func NewGame(ri string) *Game {
 }
 
 // Not from lined paytable.
-var Special = [13]bool{
+var special = [13]bool{
 	true,  //  1
 	false, //  2
 	false, //  3
@@ -155,12 +155,12 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			if sx == wild {
 				if sl == 0 {
 					cntw = x
-				} else if Special[sl-1] {
+				} else if special[sl-1] {
 					cntl = x - 1
 					break
 				}
 				m = 2 * mm
-			} else if cntw > 0 && Special[sx-1] {
+			} else if cntw > 0 && special[sx-1] {
 				cntl = x - 1
 				break
 			} else if sl == 0 && sx != scat {

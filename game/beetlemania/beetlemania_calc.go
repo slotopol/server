@@ -1,4 +1,4 @@
-package dolphinspearl
+package beetlemania
 
 import (
 	"context"
@@ -11,7 +11,7 @@ import (
 func CalcStatBon(ctx context.Context) float64 {
 	var reels = &ReelsBon
 	var g = NewGame("bon")
-	g.FS = 15 // set free spins mode
+	g.FS = 10 // set free spins mode
 	var sbl = float64(g.SBL.Num())
 	var s game.Stat
 
@@ -30,7 +30,7 @@ func CalcStatBon(ctx context.Context) float64 {
 	var rtpsym = lrtp + srtp
 	var q = float64(s.FreeCount) / reshuf
 	var sq = 1 / (1 - q)
-	var rtp = sq * rtpsym
+	var rtp = sq * rtpsym * 3
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/total*100, g.SBL.Num(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
@@ -39,7 +39,7 @@ func CalcStatBon(ctx context.Context) float64 {
 	if s.JackCount[jid] > 0 {
 		fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(reshuf/float64(s.JackCount[jid])))
 	}
-	fmt.Printf("RTP = sq*rtp(sym) = %.5g*%.5g = %.6f%%\n", sq, rtpsym, rtp)
+	fmt.Printf("RTP = sq*rtp(sym)*3 = %.5g*%.5g*3 = %.6f%%\n", sq, rtpsym, rtp)
 	return rtp
 }
 

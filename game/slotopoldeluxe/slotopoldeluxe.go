@@ -142,6 +142,23 @@ const (
 	jid = 1 // jackpot ID
 )
 
+// Not from lined paytable.
+var special = [13]bool{
+	true,  //  1
+	false, //  2
+	false, //  3
+	false, //  4
+	false, //  5
+	false, //  6
+	false, //  7
+	false, //  8
+	false, //  9
+	false, // 10
+	false, // 11
+	true,  // 12
+	true,  // 13
+}
+
 const wild, scat = 11, 1
 
 func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
@@ -164,12 +181,12 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			if sx == wild {
 				if sl == 0 {
 					cntw = x
-				} else if slotopol.Special[sl-1] {
+				} else if special[sl-1] {
 					cntl = x - 1
 					break
 				}
 				m = 2
-			} else if cntw > 0 && slotopol.Special[sx-1] {
+			} else if cntw > 0 && special[sx-1] {
 				cntl = x - 1
 				break
 			} else if sl == 0 && sx != scat {

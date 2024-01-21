@@ -161,6 +161,10 @@ var ScatPay = [5]int{0, 2, 5, 20, 500} // 13 pearl
 // Scatter freespins table
 var ScatFreespin = [5]int{0, 0, 15, 15, 15} // 13 pearl
 
+const (
+	jid = 1 // jackpot ID
+)
+
 // Jackpot win combinations.
 var Jackpot = [13][5]int{
 	{0, 0, 0, 0, 0}, //  1 dolphin

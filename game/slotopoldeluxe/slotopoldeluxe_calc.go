@@ -57,7 +57,9 @@ func CalcStat(ctx context.Context, rn string) float64 {
 	fmt.Printf("spin3 bonuses: count3 %d, rtp = %.6f%%\n", s.BonusCount[mje3], rtpmje3)
 	fmt.Printf("spin6 bonuses: count6 %d, rtp = %.6f%%\n", s.BonusCount[mje6], rtpmje6)
 	fmt.Printf("monopoly bonuses: count %d, rtp = %.6f%%\n", s.BonusCount[mjm], rtpmjm)
-	fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(reshuf/float64(s.JackCount[jid])))
+	if s.JackCount[jid] > 0 {
+		fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(reshuf/float64(s.JackCount[jid])))
+	}
 	fmt.Printf("RTP = %.5g(sym) + %.5g(mje) + %.5g(mjm) = %.6f%%\n", rtpsym, rtpmje1+rtpmje3+rtpmje6, rtpmjm, rtp)
 	return rtp
 }
