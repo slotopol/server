@@ -162,6 +162,10 @@ var LinePay = [11][5]int{
 var ScatPay = [5]int{0, 0, 2, 15, 50} // 10 note
 
 const (
+	jbonus = 1 // jazzbee freespins bonus
+)
+
+const (
 	jid = 1 // jackpot ID
 )
 
@@ -207,73 +211,117 @@ func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
-	var mm = 1
-	if g.FS > 0 && (screen.At(3, 1) == jazz || screen.At(3, 2) == jazz || screen.At(3, 3) == jazz) {
-		mm = 2
-	}
-
 	var bl = game.BetLines5x[g.BLI]
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
-		var iwin game.WinItem
 
-		var wsc [5]game.Sym
+		/*var numw, numl int
+		var syml game.Sym
+		for x := 1; x <= 5; x++ {
+			var symx = screen.At(x, line.At(x))
+			if symx == wild {
+				if syml == 0 {
+					numw = x
+				} else {
+					numl = x
+				}
+			} else if symx == scat || symx == jazz {
+				break
+			} else if syml == 0 {
+				syml = symx
+				numl = x
+			} else if symx == syml {
+				numl = x
+			} else {
+				break
+			}
+		}*/
+
+		var numw, numl int
+		var syml game.Sym
 		for x := 1; x <= 5; x++ {
 			var sx = screen.At(x, line.At(x))
-			wsc[x-1] = sx
 			if sx != wild {
-				break
-			}
-		}
-
-		for _, sc := range wsc {
-			if sc == 0 {
-				break
-			}
-			var count = 0
-			for x := 1; x <= 5; x++ {
-				var sx = screen.At(x, line.At(x))
-				if sx == sc {
-					count++
-				} else if sx == wild && sc != scat {
-					count++
-				} else {
-					break
-				}
-			}
-			if count > 0 {
-				if pay := LinePay[sc-1][count-1]; pay > 0 {
-					if iwin.Pay < pay*g.Bet {
-						var jwin = game.WinItem{
-							Pay:  pay * g.Bet,
-							Mult: mm,
-							Sym:  sc,
-							Num:  count,
-							Line: li,
+				if sx != scat && sx != jazz {
+					syml = sx
+					numl = numw + 1
+					for x := numl + 1; x <= 5; x++ {
+						var sx = screen.At(x, line.At(x))
+						if sx == syml || sx == wild {
+							numl++
+						} else {
+							break
 						}
-						if jp := Jackpot[sc-1][count-1]; jp > 0 {
-							jwin.Jack = jp
-						}
-						iwin = jwin
 					}
 				}
+				break
 			}
+			numw++
 		}
 
-		if iwin.Pay > 0 {
-			// Set xy-array
+		var payw, payl int
+		if numw > 0 {
+			payw = LinePay[wild-1][numw-1]
+		}
+		if numl > 0 {
+			payl = LinePay[syml-1][numl-1]
+		}
+		if payl > payw {
 			var xy game.Line5x
-			for x := 1; x <= iwin.Num; x++ {
+			for x := 1; x <= numl; x++ {
 				xy.Set(x, line.At(x))
 			}
-			// Insert win
-			ws.Wins = append(ws.Wins, iwin)
+			ws.Wins = append(ws.Wins, game.WinItem{
+				Pay:  g.Bet * payl,
+				Mult: 1,
+				Sym:  syml,
+				Num:  numl,
+				Line: li,
+				XY:   &xy,
+			})
+		} else if payw > 0 {
+			var xy game.Line5x
+			for x := 1; x <= numw; x++ {
+				xy.Set(x, line.At(x))
+			}
+			ws.Wins = append(ws.Wins, game.WinItem{
+				Pay:  g.Bet * payw,
+				Mult: 1,
+				Sym:  wild,
+				Num:  numw,
+				Line: li,
+				XY:   &xy,
+				Jack: Jackpot[wild-1][numw-1],
+			})
 		}
 	}
 }
 
 // Scatters calculation.
 func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
+	if g.FS > 0 {
+		var y int
+		if screen.At(3, 1) == jazz {
+			y = 1
+		} else if screen.At(3, 1) == jazz {
+			y = 2
+		} else if screen.At(3, 3) == jazz {
+			y = 3
+		} else {
+			return // ignore scatters on freespins
+		}
+		var xy game.Line5x
+		xy.Set(3, y)
+		ws.Wins = append(ws.Wins, game.WinItem{
+			Mult: 1,
+			Sym:  jazz,
+			Num:  1,
+			XY:   &xy,
+			BID:  jbonus,
+		})
+		return
+	}
+
 	var xy game.Line5x
 	var count = 0
 	for x := 1; x <= 5; x++ {
@@ -293,7 +341,7 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 		if pay := ScatPay[count-1]; pay > 0 {
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Pay:  g.Bet * pay, // independent from selected lines
-				Mult: 1,           // jazzbee will never be near the note on reel
+				Mult: 1,
 				Sym:  scat,
 				Num:  count,
 				XY:   &xy,
@@ -313,7 +361,22 @@ func (g *Game) Spin(screen game.Screen) {
 	}
 }
 
+func (g *Game) Spawn(screen game.Screen, sw *game.WinScan) {
+	for i, wi := range sw.Wins {
+		switch wi.BID {
+		case jbonus:
+			sw.Wins[i].Pay = min(g.Gain, 100_000)
+		}
+	}
+}
+
 func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
+	if g.FS > 0 {
+		g.Gain += sw.Gain()
+	} else {
+		g.Gain = sw.Gain()
+	}
+
 	if g.FS > 0 {
 		g.FS--
 	}

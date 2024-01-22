@@ -128,6 +128,7 @@ func (g *Slot5x3) Spawn(screen Screen, sw *WinScan) {
 }
 
 func (g *Slot5x3) Apply(screen Screen, sw *WinScan) {
+	g.Gain = sw.Gain()
 }
 
 func (g *Slot5x3) FreeSpins() int {

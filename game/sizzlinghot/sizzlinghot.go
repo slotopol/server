@@ -79,24 +79,24 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
 
-		var sc = screen.At(1, line.At(1))
-		var xy, count = game.Line5x{line.At(1), 0, 0, 0, 0}, 1
+		var syml, numl = screen.At(1, line.At(1)), 1
+		var xy = game.Line5x{line.At(1), 0, 0, 0, 0}
 		for x := 2; x <= 5; x++ {
 			var sx = screen.At(x, line.At(x))
-			if sx == sc {
-				count++
+			if sx == syml {
+				numl++
 			} else {
 				break
 			}
 			xy.Set(x, line.At(x))
 		}
 
-		if pay := LinePay[sc-1][count-1]; pay > 0 {
+		if pay := LinePay[syml-1][numl-1]; pay > 0 {
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Pay:  g.Bet * pay,
 				Mult: 1,
-				Sym:  sc,
-				Num:  count,
+				Sym:  syml,
+				Num:  numl,
 				Line: li,
 				XY:   &xy,
 			})

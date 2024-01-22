@@ -16,8 +16,8 @@ func init() {
 	ScatIters = append(ScatIters, func(flags *pflag.FlagSet, ctx context.Context) {
 		if is, _ := flags.GetBool("beetlemania"); is {
 			var rn, _ = flags.GetString("reels")
-			if rn == "bon" {
-				beetlemania.CalcStatBon(ctx)
+			if rn == "bon" || rn == "bonu" {
+				beetlemania.CalcStatBon(ctx, rn)
 			} else {
 				beetlemania.CalcStatReg(ctx, rn)
 			}
