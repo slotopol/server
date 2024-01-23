@@ -83,6 +83,25 @@ const (
 	SEC_game_spin_sqlbank
 	SEC_game_spin_sqlupdate
 
+	// POST /game/doubleup
+	SEC_game_doubleup_nobind
+	SEC_game_doubleup_nogid
+	SEC_game_doubleup_nomult
+	SEC_game_doubleup_bigmult
+	SEC_game_doubleup_notopened
+	SEC_game_doubleup_noroom
+	SEC_game_doubleup_nouser
+	SEC_prop_doubleup_noaccess
+	SEC_game_doubleup_noprops
+	SEC_game_doubleup_nomoney
+
+	// POST /game/collect
+	SEC_game_collect_nobind
+	SEC_game_collect_nogid
+	SEC_game_collect_notopened
+	SEC_prop_collect_noaccess
+	SEC_prop_collect_denied
+
 	// POST /prop/wallet
 	SEC_prop_walletget_nobind
 	SEC_prop_walletget_norid
@@ -104,18 +123,6 @@ const (
 	SEC_prop_walletadd_sqlupdate
 	SEC_prop_walletadd_sqlinsert
 	SEC_prop_walletadd_sqllog
-
-	// POST /game/doubleup
-	SEC_game_doubleup_nobind
-	SEC_game_doubleup_nogid
-	SEC_game_doubleup_nomult
-	SEC_game_doubleup_bigmult
-	SEC_game_doubleup_notopened
-	SEC_game_doubleup_noroom
-	SEC_game_doubleup_nouser
-	SEC_prop_doubleup_noaccess
-	SEC_game_doubleup_noprops
-	SEC_game_doubleup_nomoney
 
 	// POST /user/rename
 	SEC_user_rename_nobind

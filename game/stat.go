@@ -7,6 +7,11 @@ import (
 	"time"
 )
 
+type Stater interface {
+	Count() uint64
+	Update(sw *WinScan)
+}
+
 type Stat struct {
 	Reshuffles uint64
 	LinePay    uint64
@@ -14,6 +19,10 @@ type Stat struct {
 	FreeCount  uint64
 	BonusCount [8]uint64
 	JackCount  [4]uint64
+}
+
+func (s *Stat) Count() uint64 {
+	return atomic.LoadUint64(&s.Reshuffles)
 }
 
 func (s *Stat) Update(sw *WinScan) {
@@ -35,7 +44,7 @@ func (s *Stat) Update(sw *WinScan) {
 			atomic.AddUint64(&s.JackCount[wi.Jack], 1)
 		}
 	}
-	s.Reshuffles++
+	atomic.AddUint64(&s.Reshuffles, 1)
 }
 
 func (s *Stat) Progress(ctx context.Context, steps *time.Ticker, sel, total float64) {
@@ -52,7 +61,7 @@ func (s *Stat) Progress(ctx context.Context, steps *time.Ticker, sel, total floa
 	}
 }
 
-func (s *Stat) BruteForce5x(ctx context.Context, g SlotGame, reels Reels) {
+func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	var screen = g.NewScreen()
 	var ws WinScan
 	var r1 = reels.Reel(1)
@@ -73,7 +82,7 @@ func (s *Stat) BruteForce5x(ctx context.Context, g SlotGame, reels Reels) {
 						ws.Wins = ws.Wins[:0] // set it empty
 						g.Scanner(screen, &ws)
 						s.Update(&ws)
-						if s.Reshuffles&100 == 0 {
+						if s.Count()&100 == 0 {
 							select {
 							case <-ctx.Done():
 								return
@@ -87,7 +96,7 @@ func (s *Stat) BruteForce5x(ctx context.Context, g SlotGame, reels Reels) {
 	}
 }
 
-func (s *Stat) MonteCarlo(ctx context.Context, g SlotGame, n int) {
+func MonteCarlo(ctx context.Context, s Stater, g SlotGame, n int) {
 	var screen = g.NewScreen()
 	var ws WinScan
 	for i := 0; i < n; i++ {
@@ -95,7 +104,7 @@ func (s *Stat) MonteCarlo(ctx context.Context, g SlotGame, n int) {
 		ws.Wins = ws.Wins[:0] // set it empty
 		g.Scanner(screen, &ws)
 		s.Update(&ws)
-		if s.Reshuffles&100 == 0 {
+		if s.Count()&100 == 0 {
 			select {
 			case <-ctx.Done():
 				return

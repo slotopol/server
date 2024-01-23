@@ -680,3 +680,40 @@ func SpiGameDoubleup(c *gin.Context) {
 
 	RetOk(c, ret)
 }
+
+func SpiGameCollect(c *gin.Context) {
+	var err error
+	var ok bool
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, SEC_game_collect_nobind, err)
+		return
+	}
+	if arg.GID == 0 {
+		Ret400(c, SEC_game_collect_nogid, ErrNoGID)
+		return
+	}
+
+	var og OpenGame
+	if og, ok = OpenGames.Get(arg.GID); !ok {
+		Ret404(c, SEC_game_collect_notopened, ErrNotOpened)
+		return
+	}
+
+	var admin, al = GetAdmin(c, og.RID)
+	if admin.UID != og.UID && al&ALgame == 0 {
+		Ret403(c, SEC_prop_collect_noaccess, ErrNoAccess)
+		return
+	}
+
+	if err = og.game.SetGain(0); err != nil {
+		Ret403(c, SEC_prop_collect_denied, err)
+		return
+	}
+
+	c.Status(http.StatusOK)
+}

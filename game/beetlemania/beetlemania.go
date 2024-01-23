@@ -365,7 +365,7 @@ func (g *Game) Spawn(screen game.Screen, sw *game.WinScan) {
 	for i, wi := range sw.Wins {
 		switch wi.BID {
 		case jbonus:
-			sw.Wins[i].Pay = min(g.Gain, 100_000)
+			sw.Wins[i].Pay = min(g.Gain, 100_000*g.Bet)
 		}
 	}
 }

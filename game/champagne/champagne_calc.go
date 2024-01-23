@@ -57,7 +57,7 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		go s.Progress(ctx2, time.NewTicker(2*time.Second), sbl, total)
-		s.BruteForce5x(ctx2, g, reels)
+		game.BruteForce5x(ctx2, &s, g, reels)
 		return time.Since(t0)
 	}()
 
@@ -73,7 +73,7 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-	fmt.Printf("free games %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount, q, sq)
+	fmt.Printf("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount, q, sq)
 	fmt.Printf("champagne bonuses: count %d, rtp = %.6f%%\n", s.BonusCount[mjc], rtpmjc)
 	if s.JackCount[jid] > 0 {
 		fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(reshuf/float64(s.JackCount[jid])))
@@ -108,7 +108,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		go s.Progress(ctx2, time.NewTicker(2*time.Second), sbl, total)
-		s.BruteForce5x(ctx2, g, reels)
+		game.BruteForce5x(ctx2, &s, g, reels)
 		return time.Since(t0)
 	}()
 
@@ -123,7 +123,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-	fmt.Printf("free games %d, q = %.6f\n", s.FreeCount, q)
+	fmt.Printf("free spins %d, q = %.6f\n", s.FreeCount, q)
 	fmt.Printf("champagne bonuses: count %d, rtp = %.6f%%\n", s.BonusCount[mjc], rtpmjc)
 	if s.JackCount[jid] > 0 {
 		fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(reshuf/float64(s.JackCount[jid])))

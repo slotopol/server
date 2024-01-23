@@ -3,10 +3,28 @@ package beetlemania
 import (
 	"context"
 	"fmt"
+	"math"
+	"sync/atomic"
 	"time"
 
 	"github.com/slotopol/server/game"
 )
+
+type Stat struct {
+	game.Stat
+	FGNum [5]uint64
+	FGPay uint64
+}
+
+func (s *Stat) Update(sw *game.WinScan) {
+	s.Stat.Update(sw)
+	if len(sw.Wins) > 0 {
+		if wi := sw.Wins[len(sw.Wins)-1]; wi.Free > 0 {
+			atomic.AddUint64(&s.FGNum[wi.Num-1], 1)
+			atomic.AddUint64(&s.FGPay, uint64(sw.Gain()))
+		}
+	}
+}
 
 func CalcStatBon(ctx context.Context, rn string) float64 {
 	var reels *game.Reels5x
@@ -21,7 +39,7 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 	var g = NewGame(rn)
 	g.FS = 10 // set free spins mode
 	var sbl = float64(g.SBL.Num())
-	var s game.Stat
+	var s Stat
 
 	var total = float64(reels.Reshuffles())
 	var dur = func() time.Duration {
@@ -29,7 +47,7 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		go s.Progress(ctx2, time.NewTicker(2*time.Second), sbl, total)
-		s.BruteForce5x(ctx2, g, reels)
+		game.BruteForce5x(ctx2, &s, g, reels)
 		return time.Since(t0)
 	}()
 
@@ -68,8 +86,9 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		rn, reels = "92", &ReelsReg92
 	}
 	var g = NewGame(rn)
+	g.SBL = game.MakeSBL(1, 2, 3, 4, 5)
 	var sbl = float64(g.SBL.Num())
-	var s game.Stat
+	var s Stat
 
 	var total = float64(reels.Reshuffles())
 	var dur = func() time.Duration {
@@ -77,24 +96,29 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		go s.Progress(ctx2, time.NewTicker(2*time.Second), sbl, total)
-		s.BruteForce5x(ctx2, g, reels)
+		game.BruteForce5x(ctx2, &s, g, reels)
 		return time.Since(t0)
 	}()
 
 	var reshuf = float64(s.Reshuffles)
 	var lrtp, srtp = float64(s.LinePay) / reshuf / sbl * 100, float64(s.ScatPay) / reshuf * 100
 	var rtpsym = lrtp + srtp
-	var q = float64(s.FreeCount) / reshuf
-	var sq = 1 / (1 - q)
-	var rtp = lrtp + srtp + q*rtpfs
+	var fgsum = float64(s.FGNum[2] + s.FGNum[3] + s.FGNum[4])
+	var fgpay = float64(s.FGPay) / fgsum
+	var rtpbon = (fgpay + rtpfs*10/100) * math.Pow(2, 1.25)
+	var q = fgsum / total
+	var rtp = lrtp + srtp + q*rtpbon
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/total*100, g.SBL.Num(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-	fmt.Printf("free games %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount, q, sq)
+	fmt.Printf("free games numbers: [0, 0, %d, %d, %d]\n", s.FGNum[2], s.FGNum[3], s.FGNum[4])
+	fmt.Printf("free games %g, q = %.6f\n", fgsum, q)
+	fmt.Printf("average pay by freespins start %.6f\n", fgpay)
+	fmt.Printf("rtpbon = (fgpay+rtpfs*10)*2^10/8 = %.6f\n", rtpbon)
 	if s.JackCount[jid] > 0 {
 		fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(reshuf/float64(s.JackCount[jid])))
 	}
-	fmt.Printf("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, q, rtpfs, rtp)
+	fmt.Printf("RTP = %.5g(sym) + q*%.5g(bon) = %.6f%%\n", rtpsym, rtpbon, rtp)
 	return rtp
 }

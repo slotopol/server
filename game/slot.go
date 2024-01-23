@@ -152,6 +152,9 @@ func (g *Slot5x3) SetBet(bet int) error {
 	if bet < 1 {
 		return ErrBetEmpty
 	}
+	if g.FreeSpins() > 0 {
+		return ErrNoFeature
+	}
 	g.Bet = bet
 	return nil
 }
@@ -168,6 +171,9 @@ func (g *Slot5x3) SetLines(sbl SBL) error {
 	}
 	if sbl&^mask != 0 {
 		return ErrLinesetOut
+	}
+	if g.FreeSpins() > 0 {
+		return ErrNoFeature
 	}
 	g.SBL = sbl
 	return nil
