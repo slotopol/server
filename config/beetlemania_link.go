@@ -26,6 +26,8 @@ func init() {
 
 	for _, alias := range []string{
 		"beetlemania",
+		"beetlemaniadeluxe",
+		"hottarget",
 	} {
 		GameAliases[alias] = "beetlemania"
 	}
