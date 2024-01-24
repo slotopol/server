@@ -12,6 +12,7 @@ type Stater interface {
 	Update(sw *WinScan)
 }
 
+// Stat is statistics calculation for slot reels.
 type Stat struct {
 	Reshuffles uint64
 	LinePay    uint64
