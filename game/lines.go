@@ -7,6 +7,8 @@ type Line interface {
 	Set(x, val int) // set value at position x
 	Len() int       // returns length of line
 	Free()          // put object to pool
+
+	CopyN(num int) Line
 }
 
 type Lineset interface {
@@ -96,6 +98,15 @@ func (l *Line5x) Set(x, val int) {
 
 func (l *Line5x) Len() int {
 	return 5
+}
+
+func (l *Line5x) CopyN(num int) Line {
+	var dst = NewLine5x()
+	copy(dst[:num], l[:num])
+	for i := num; i < 5; i++ {
+		dst[i] = 0
+	}
+	return dst
 }
 
 type Lineset5x []Line5x

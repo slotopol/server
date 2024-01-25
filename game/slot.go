@@ -3,6 +3,7 @@ package game
 import (
 	"errors"
 	"math/rand"
+	"sync"
 )
 
 type Sym byte // symbol type
@@ -18,6 +19,10 @@ type Screen interface {
 	At(x int, y int) Sym               // returns symbol at position (x, y), starts from (1, 1)
 	SetCol(x int, reel []Sym, pos int) // setup column on screen with given reel at given position
 	Spin(reels Reels)                  // fill the screen with random hits on those reels
+	ScatNum(scat Sym) (n int)          // returns number of scatters on the screen
+	ScatNumOdd(scat Sym) (n int)       // returns number of scatters on the screen on odd reels
+	ScatNumCont(scat Sym) (n int)      // returns number of continuous scatters on the screen
+	Free()                             // put object to pool
 }
 
 // WinItem describes win on each line or scatters.
@@ -89,6 +94,20 @@ func (r *Reels5x) Reshuffles() int {
 // Screen for 5x3 slots.
 type Screen5x3 [5][3]Sym
 
+var pools5x = sync.Pool{
+	New: func() any {
+		return &Screen5x3{}
+	},
+}
+
+func NewScreen5x3() *Screen5x3 {
+	return pools5x.Get().(*Screen5x3)
+}
+
+func (s *Screen5x3) Free() {
+	pools5x.Put(s)
+}
+
 func (s *Screen5x3) Dim() (int, int) {
 	return 5, 3
 }
@@ -111,6 +130,38 @@ func (s *Screen5x3) Spin(reels Reels) {
 	}
 }
 
+func (s *Screen5x3) ScatNum(scat Sym) (n int) {
+	for x := 0; x < 5; x++ {
+		var r = s[x]
+		if r[0] == scat || r[1] == scat || r[2] == scat {
+			n++
+		}
+	}
+	return
+}
+
+func (s *Screen5x3) ScatNumOdd(scat Sym) (n int) {
+	for x := 0; x < 5; x += 2 {
+		var r = s[x]
+		if r[0] == scat || r[1] == scat || r[2] == scat {
+			n++
+		}
+	}
+	return
+}
+
+func (s *Screen5x3) ScatNumCont(scat Sym) (n int) {
+	for x := 0; x < 5; x += 2 {
+		var r = s[x]
+		if r[0] == scat || r[1] == scat || r[2] == scat {
+			n++
+		} else {
+			break
+		}
+	}
+	return
+}
+
 var (
 	ErrBetEmpty   = errors.New("bet is empty")
 	ErrNoLineset  = errors.New("lines set is empty")
@@ -129,7 +180,7 @@ type Slot5x3 struct {
 }
 
 func (g *Slot5x3) NewScreen() Screen {
-	return &Screen5x3{}
+	return NewScreen5x3()
 }
 
 func (g *Slot5x3) Spawn(screen Screen, sw *WinScan) {

@@ -229,30 +229,22 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			payl = LinePay[syml-1][numl-1]
 		}
 		if payl > payw {
-			var xy = game.NewLine5x()
-			for x := 1; x <= numl; x++ {
-				xy.Set(x, line.At(x))
-			}
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Pay:  g.Bet * payl,
 				Mult: 1,
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
-				XY:   xy,
+				XY:   line.CopyN(numl),
 			})
 		} else if payw > 0 {
-			var xy = game.NewLine5x()
-			for x := 1; x <= numw; x++ {
-				xy.Set(x, line.At(x))
-			}
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Pay:  g.Bet * payw,
 				Mult: 1,
 				Sym:  wild,
 				Num:  numw,
 				Line: li,
-				XY:   xy,
+				XY:   line.CopyN(numw),
 				Jack: Jackpot[wild-1][numw-1],
 			})
 		}
@@ -261,14 +253,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
-	var count = 0
-	for x := 1; x <= 5; x += 2 { // only odd reels
-		if screen.At(x, 1) == scat || screen.At(x, 2) == scat || screen.At(x, 3) == scat {
-			count++
-		}
-	}
-
-	if count >= 3 {
+	if count := screen.ScatNumOdd(scat); count >= 3 {
 		var xy = game.NewLine5x()
 		for x := 1; x <= 5; x += 2 { // only odd reels
 			for y := 1; y <= 3; y++ {

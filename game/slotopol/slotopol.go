@@ -168,43 +168,31 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			payl = LinePay[syml-1][numl-1]
 		}
 		if payl*mw > payw {
-			var xy = game.NewLine5x()
-			for x := 1; x <= numl; x++ {
-				xy.Set(x, line.At(x))
-			}
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Pay:  g.Bet * payl,
 				Mult: mw,
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
-				XY:   xy,
+				XY:   line.CopyN(numl),
 			})
 		} else if payw > 0 {
-			var xy = game.NewLine5x()
-			for x := 1; x <= numw; x++ {
-				xy.Set(x, line.At(x))
-			}
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Pay:  g.Bet * payw,
 				Mult: 1,
 				Sym:  wild,
 				Num:  numw,
 				Line: li,
-				XY:   xy,
+				XY:   line.CopyN(numw),
 				Jack: Jackpot[wild-1][numw-1],
 			})
 		} else if syml > 0 && numl > 0 && LineBonus[syml-1][numl-1] > 0 {
-			var xy = game.NewLine5x()
-			for x := 1; x <= numl; x++ {
-				xy.Set(x, line.At(x))
-			}
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Mult: 1,
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
-				XY:   xy,
+				XY:   line.CopyN(numl),
 				BID:  LineBonus[syml-1][numl-1],
 			})
 		}
@@ -213,14 +201,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
-	var count = 0
-	for x := 1; x <= 5; x++ {
-		if screen.At(x, 1) == scat || screen.At(x, 2) == scat || screen.At(x, 3) == scat {
-			count++
-		}
-	}
-
-	if count >= 2 {
+	if count := screen.ScatNum(scat); count >= 2 {
 		var pay = ScatPay[count-1]
 		var xy = game.NewLine5x()
 		for x := 1; x <= 5; x++ {

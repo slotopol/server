@@ -64,6 +64,7 @@ func (s *Stat) Progress(ctx context.Context, steps *time.Ticker, sel, total floa
 
 func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	var screen = g.NewScreen()
+	defer screen.Free()
 	var ws WinScan
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)
@@ -99,6 +100,7 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 
 func MonteCarlo(ctx context.Context, s Stater, g SlotGame, n int) {
 	var screen = g.NewScreen()
+	defer screen.Free()
 	var ws WinScan
 	for i := 0; i < n; i++ {
 		g.Spin(screen)

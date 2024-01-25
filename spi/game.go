@@ -116,7 +116,9 @@ func SpiGameJoin(c *gin.Context) {
 	OpenGames.Set(og.GID, og)
 	user.games.Set(og.GID, og)
 
+	// make game screen object
 	var scrn = og.game.NewScreen()
+	defer scrn.Free()
 	og.game.Spin(scrn)
 
 	ret.GID = og.GID
@@ -459,6 +461,7 @@ func SpiGameSpin(c *gin.Context) {
 
 	// get game screen object
 	var scrn = og.game.NewScreen()
+	defer scrn.Free()
 
 	// spin until gain less than bank value
 	room.mux.RLock()
