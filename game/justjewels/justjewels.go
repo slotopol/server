@@ -77,7 +77,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 		var line = bl.Line(li)
 
 		var syml = screen.At(3, line.At(3))
-		var xy game.Line5x
+		var xy = game.NewLine5x()
 		var numl = 1
 		xy.Set(3, line.At(3))
 		if screen.At(2, line.At(2)) == syml {
@@ -104,36 +104,41 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
-				XY:   &xy,
+				XY:   xy,
 			})
+		} else {
+			xy.Free()
 		}
 	}
 }
 
 // Scatters calculation.
 func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
-	var xy game.Line5x
 	var count = 0
 	for x := 1; x <= 5; x++ {
-		for y := 1; y <= 3; y++ {
-			if screen.At(x, y) == scat {
-				xy.Set(x, y)
-				count++
-				break
-			}
+		if screen.At(x, 1) == scat || screen.At(x, 2) == scat || screen.At(x, 3) == scat {
+			count++
 		}
 	}
 
-	if count > 0 {
-		if pay := ScatPay[count-1]; pay > 0 {
-			ws.Wins = append(ws.Wins, game.WinItem{
-				Pay:  g.Bet * pay, // independent from selected lines
-				Mult: 1,
-				Sym:  scat,
-				Num:  count,
-				XY:   &xy,
-			})
+	if count >= 3 {
+		var pay = ScatPay[count-1]
+		var xy = game.NewLine5x()
+		for x := 1; x <= 5; x++ {
+			for y := 1; y <= 3; y++ {
+				if screen.At(x, y) == scat {
+					xy.Set(x, y)
+					break
+				}
+			}
 		}
+		ws.Wins = append(ws.Wins, game.WinItem{
+			Pay:  g.Bet * pay, // independent from selected lines
+			Mult: 1,
+			Sym:  scat,
+			Num:  count,
+			XY:   xy,
+		})
 	}
 }
 

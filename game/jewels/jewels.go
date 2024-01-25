@@ -157,7 +157,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 		var line = bl.Line(li)
 
 		var syml = screen.At(3, line.At(3))
-		var xy game.Line5x
+		var xy = game.NewLine5x()
 		var numl = 1
 		xy.Set(3, line.At(3))
 		if screen.At(2, line.At(2)) == syml {
@@ -184,8 +184,10 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
-				XY:   &xy,
+				XY:   xy,
 			})
+		} else {
+			xy.Free()
 		}
 	}
 }

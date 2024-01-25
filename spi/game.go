@@ -465,6 +465,7 @@ func SpiGameSpin(c *gin.Context) {
 	var bank = room.Bank
 	room.mux.RUnlock()
 	var ws game.WinScan
+	defer ws.Reset()
 	var n = 0
 	for {
 		og.game.Spin(scrn)

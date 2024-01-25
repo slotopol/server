@@ -1,9 +1,12 @@
 package game
 
+import "sync"
+
 type Line interface {
 	At(x int) int   // returns symbol at position x, starts from 1
 	Set(x, val int) // set value at position x
 	Len() int       // returns length of line
+	Free()          // put object to pool
 }
 
 type Lineset interface {
@@ -67,6 +70,21 @@ func (sbl *SBL) Toggle(n int) bool {
 }
 
 type Line5x [5]int
+
+var pooll5x = sync.Pool{
+	New: func() any {
+		return &Line5x{}
+	},
+}
+
+func NewLine5x() *Line5x {
+	return pooll5x.Get().(*Line5x)
+}
+
+func (l *Line5x) Free() {
+	clear(l[:])
+	pooll5x.Put(l)
+}
 
 func (l *Line5x) At(x int) int {
 	return l[x-1]

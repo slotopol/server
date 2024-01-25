@@ -80,9 +80,9 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 					screen.SetCol(4, r4, i4)
 					for i5 := range r5 {
 						screen.SetCol(5, r5, i5)
-						ws.Wins = ws.Wins[:0] // set it empty
 						g.Scanner(screen, &ws)
 						s.Update(&ws)
+						ws.Reset()
 						if s.Count()&100 == 0 {
 							select {
 							case <-ctx.Done():
@@ -102,9 +102,9 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, n int) {
 	var ws WinScan
 	for i := 0; i < n; i++ {
 		g.Spin(screen)
-		ws.Wins = ws.Wins[:0] // set it empty
 		g.Scanner(screen, &ws)
 		s.Update(&ws)
+		ws.Reset()
 		if s.Count()&100 == 0 {
 			select {
 			case <-ctx.Done():

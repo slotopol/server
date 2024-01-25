@@ -39,6 +39,14 @@ type WinScan struct {
 	Wins []WinItem `json:"wins" yaml:"wins" xml:"wins"`
 }
 
+// Reset puts lines to pool and set array empty with saved capacity.
+func (ws *WinScan) Reset() {
+	for _, wi := range ws.Wins {
+		wi.XY.Free()
+	}
+	ws.Wins = ws.Wins[:0] // set it empty
+}
+
 // Total gain for spin.
 func (ws *WinScan) Gain() int {
 	var sum int
