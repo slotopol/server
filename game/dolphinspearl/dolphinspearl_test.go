@@ -7,7 +7,7 @@ import (
 	"github.com/slotopol/server/game/dolphinspearl"
 )
 
-// go test -v -benchmem -run=^$ -bench ^BenchmarkSpin$ -count=5 -cover ./game/dolphinspearl
+// go test -v -bench ^BenchmarkSpin$ -benchmem -count=5 -cover ./game/dolphinspearl
 
 func BenchmarkSpin(b *testing.B) {
 	var g = dolphinspearl.NewGame("92")

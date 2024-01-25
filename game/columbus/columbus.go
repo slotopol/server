@@ -254,20 +254,11 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 // Scatters calculation.
 func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 	if count := screen.ScatNumOdd(scat); count >= 3 {
-		var xy = game.NewLine5x()
-		for x := 1; x <= 5; x += 2 { // only odd reels
-			for y := 1; y <= 3; y++ {
-				if screen.At(x, y) == scat {
-					xy.Set(x, y)
-					break
-				}
-			}
-		}
 		ws.Wins = append(ws.Wins, game.WinItem{
 			Mult: 1,
 			Sym:  scat,
 			Num:  count,
-			XY:   xy,
+			XY:   screen.ScatPosOdd(scat),
 			Free: 10,
 		})
 	}

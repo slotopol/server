@@ -84,7 +84,6 @@ func NewLine5x() *Line5x {
 }
 
 func (l *Line5x) Free() {
-	clear(l[:])
 	pooll5x.Put(l)
 }
 

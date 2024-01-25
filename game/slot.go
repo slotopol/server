@@ -22,6 +22,9 @@ type Screen interface {
 	ScatNum(scat Sym) (n int)          // returns number of scatters on the screen
 	ScatNumOdd(scat Sym) (n int)       // returns number of scatters on the screen on odd reels
 	ScatNumCont(scat Sym) (n int)      // returns number of continuous scatters on the screen
+	ScatPos(scat Sym) Line             // returns line with scatters positions on the screen
+	ScatPosOdd(scat Sym) Line          // returns line with scatters positions on the screen on odd reels
+	ScatPosCont(scat Sym) Line         // returns line with continuous scatters positions on the screen
 	Free()                             // put object to pool
 }
 
@@ -151,15 +154,71 @@ func (s *Screen5x3) ScatNumOdd(scat Sym) (n int) {
 }
 
 func (s *Screen5x3) ScatNumCont(scat Sym) (n int) {
-	for x := 0; x < 5; x += 2 {
+	for x := 0; x < 5; x++ {
 		var r = s[x]
 		if r[0] == scat || r[1] == scat || r[2] == scat {
 			n++
 		} else {
-			break
+			break // scatters should be continuous
 		}
 	}
 	return
+}
+
+func (s *Screen5x3) ScatPos(scat Sym) Line {
+	var l = NewLine5x()
+	for x := 0; x < 5; x++ {
+		var r = s[x]
+		if r[0] == scat {
+			l[x] = 1
+		} else if r[1] == scat {
+			l[x] = 2
+		} else if r[2] == scat {
+			l[x] = 3
+		} else {
+			l[x] = 0
+		}
+	}
+	return l
+}
+
+func (s *Screen5x3) ScatPosOdd(scat Sym) Line {
+	var l = NewLine5x()
+	for x := 0; x < 5; x += 2 {
+		var r = s[x]
+		if r[0] == scat {
+			l[x] = 1
+		} else if r[1] == scat {
+			l[x] = 2
+		} else if r[2] == scat {
+			l[x] = 3
+		} else {
+			l[x] = 0
+		}
+	}
+	l[1], l[3] = 0, 0
+	return l
+}
+
+func (s *Screen5x3) ScatPosCont(scat Sym) Line {
+	var l = NewLine5x()
+	var x int
+	for x = 0; x < 5; x++ {
+		var r = s[x]
+		if r[0] == scat {
+			l[x] = 1
+		} else if r[1] == scat {
+			l[x] = 2
+		} else if r[2] == scat {
+			l[x] = 3
+		} else {
+			break // scatters should be continuous
+		}
+	}
+	for ; x < 5; x++ {
+		l[x] = 0
+	}
+	return l
 }
 
 var (

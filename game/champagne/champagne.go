@@ -234,21 +234,12 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 			fs = ScatFreespinReg[count-1]
 		}
 		var pay = ScatPay[count-1]
-		var xy = game.NewLine5x()
-		for x := 1; x <= 5; x++ {
-			for y := 1; y <= 3; y++ {
-				if screen.At(x, y) == scat {
-					xy.Set(x, y)
-					break
-				}
-			}
-		}
 		ws.Wins = append(ws.Wins, game.WinItem{
 			Pay:  g.Bet * pay, // independent from selected lines
 			Mult: 1,
 			Sym:  scat,
 			Num:  count,
-			XY:   xy,
+			XY:   screen.ScatPos(scat),
 			Free: fs,
 		})
 	}
