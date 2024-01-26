@@ -163,7 +163,7 @@ func NewGame(ri string) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
 			RI:  ri,
-			BLI: "nvm10",
+			BLI: "nvm20",
 			SBL: game.MakeSBL(1),
 			Bet: 1,
 		},

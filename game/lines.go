@@ -122,6 +122,9 @@ func (ls Lineset5x) Num() int {
 	return len(ls)
 }
 
+// (1 ,1) symbol is on left top corner
+
+// Megajack 21 bet lines
 var BetLinesMgj = Lineset5x{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
@@ -146,6 +149,7 @@ var BetLinesMgj = Lineset5x{
 	{1, 1, 2, 1, 1}, // 21
 }
 
+// Novomatic 9 bet lines (old versions of games)
 var BetLinesNvm9 = Lineset5x{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
@@ -158,6 +162,7 @@ var BetLinesNvm9 = Lineset5x{
 	{1, 1, 2, 3, 3}, // 9
 }
 
+// Novomatic 10 bet lines (deluxe versions of games)
 var BetLinesNvm10 = Lineset5x{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
@@ -171,6 +176,7 @@ var BetLinesNvm10 = Lineset5x{
 	{3, 2, 2, 2, 1}, // 10
 }
 
+// Novomatic 20 bet lines (new games)
 var BetLinesNvm20 = Lineset5x{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2

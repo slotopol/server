@@ -14,6 +14,9 @@ type Reels interface {
 	Reshuffles() int    // returns total number of reshuffles
 }
 
+// Screen contains symbols rectangle of the slot game.
+// It can be with dimensions 3x1, 3x3, 5x3, 5x4 or others.
+// (1 ,1) symbol is on left top corner.
 type Screen interface {
 	Dim() (int, int)                   // returns screen dimensions
 	At(x int, y int) Sym               // returns symbol at position (x, y), starts from (1, 1)
