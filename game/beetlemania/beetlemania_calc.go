@@ -107,7 +107,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 	var fgpay = float64(s.FGPay) / fgsum
 	var rtpbon = (fgpay + rtpfs*10/100) * math.Pow(2, 1.25)
 	var q = fgsum / total
-	var rtp = lrtp + srtp + q*rtpbon
+	var rtp = rtpsym + q*rtpbon
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/total*100, g.SBL.Num(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
