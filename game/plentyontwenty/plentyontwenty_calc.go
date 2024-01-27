@@ -16,7 +16,7 @@ func CalcStat(ctx context.Context, rn string) float64 {
 			return 0
 		}
 	} else {
-		rn, reels = "93", &Reels93
+		rn, reels = "92", &Reels92
 	}
 	var g = NewGame(rn)
 	var sbl = float64(g.SBL.Num())

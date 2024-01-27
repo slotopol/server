@@ -20,7 +20,7 @@ const (
 	SEC_game_join_nouid
 	SEC_game_join_nodata
 	SEC_game_join_noalias
-	SEC_game_join_noroom
+	SEC_game_join_noclub
 	SEC_game_join_nouser
 	SEC_prop_join_noaccess
 	SEC_game_join_noreels
@@ -74,7 +74,7 @@ const (
 	SEC_game_spin_nobind
 	SEC_game_spin_nogid
 	SEC_game_spin_notopened
-	SEC_game_spin_noroom
+	SEC_game_spin_noclub
 	SEC_game_spin_nouser
 	SEC_prop_spin_noaccess
 	SEC_game_spin_noprops
@@ -89,7 +89,7 @@ const (
 	SEC_game_doubleup_nomult
 	SEC_game_doubleup_bigmult
 	SEC_game_doubleup_notopened
-	SEC_game_doubleup_noroom
+	SEC_game_doubleup_noclub
 	SEC_game_doubleup_nouser
 	SEC_prop_doubleup_noaccess
 	SEC_game_doubleup_noprops
@@ -106,7 +106,7 @@ const (
 	SEC_prop_walletget_nobind
 	SEC_prop_walletget_norid
 	SEC_prop_walletget_nouid
-	SEC_prop_walletget_noroom
+	SEC_prop_walletget_noclub
 	SEC_prop_walletget_nouser
 	SEC_prop_walletget_noaccess
 
@@ -116,7 +116,7 @@ const (
 	SEC_prop_walletadd_nouid
 	SEC_prop_walletadd_noadd
 	SEC_prop_walletadd_limit
-	SEC_prop_walletadd_noroom
+	SEC_prop_walletadd_noclub
 	SEC_prop_walletadd_nouser
 	SEC_prop_walletadd_nomoney
 	SEC_prop_walletadd_noaccess
@@ -157,12 +157,12 @@ var (
 	Err404       = errors.New("page not found")
 	ErrSmallKey  = errors.New("password too small")
 	ErrNoUID     = errors.New("user ID does not provided")
-	ErrNoRID     = errors.New("room ID does not provided")
+	ErrNoCID     = errors.New("club ID does not provided")
 	ErrNoGID     = errors.New("game ID does not provided")
 	ErrNoData    = errors.New("data does not provided or empty")
-	ErrNoRoom    = errors.New("room with given ID does not found")
+	ErrNoClub    = errors.New("club with given ID does not found")
 	ErrNoUser    = errors.New("user with given ID does not found")
-	ErrNoWallet  = errors.New("wallet for given user and room does not found")
+	ErrNoWallet  = errors.New("wallet for given user and club does not found")
 	ErrNoMoney   = errors.New("not enough money")
 	ErrNoAccess  = errors.New("no access rights for this feature")
 	ErrNoSecret  = errors.New("password confirmation does not pass")

@@ -16,10 +16,6 @@ var (
 		Version: config.BuildVers,
 		Short:   rootShort,
 		Long:    rootLong,
-		RunE: func(cmd *cobra.Command, args []string) error {
-			fmt.Println("***")
-			return nil
-		},
 	}
 )
 

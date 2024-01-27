@@ -9,9 +9,9 @@ import (
 	"github.com/slotopol/server/util"
 )
 
-// Room means independent bank into which gambles some users.
-type Room struct {
-	RID  uint64  `xorm:"pk autoincr" json:"rid" yaml:"rid" xml:"rid,attr"`
+// Club means independent bank into which gambles some users.
+type Club struct {
+	CID  uint64  `xorm:"pk autoincr" json:"cid" yaml:"cid" xml:"cid,attr"`
 	Name string  `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
 	Bank float64 `xorm:"notnull" json:"bank" yaml:"bank" xml:"bank"` // users win/lost balance, in coins
 	Fund float64 `xorm:"notnull" json:"fund" yaml:"fund" xml:"fund"` // jackpot fund, in coins
@@ -24,7 +24,7 @@ type Room struct {
 }
 
 // User means registration of somebody. Each user can have splitted
-// wallet with some coins balance in each Room. User can opens several
+// wallet with some coins balance in each Club. User can opens several
 // games without any limitation.
 type User struct {
 	UID    uint64 `xorm:"pk autoincr" json:"uid" yaml:"uid" xml:"uid,attr"`
@@ -36,11 +36,11 @@ type User struct {
 	props  util.RWMap[uint64, *Props]
 }
 
-// OpenGame is opened game for user with UID at room with RID.
+// OpenGame is opened game for user with UID at club with CID.
 // Each instance of game have own GID. Alias - is game type identifier.
 type OpenGame struct {
 	GID   uint64 `xorm:"pk autoincr" json:"gid" yaml:"gid" xml:"gid,attr"`
-	RID   uint64 `xorm:"notnull" json:"rid" yaml:"rid" xml:"rid,attr"`
+	CID   uint64 `xorm:"notnull" json:"cid" yaml:"cid" xml:"cid,attr"`
 	UID   uint64 `xorm:"notnull" json:"uid" yaml:"uid" xml:"uid,attr"`
 	Alias string `xorm:"notnull" json:"alias" yaml:"alias" xml:"alias"`
 	game  game.SlotGame
@@ -54,18 +54,18 @@ func (OpenGame) TableName() string {
 type AL uint
 
 const (
-	ALban   AL = 1 << iota // user have no access to room
-	ALgame                 // can change room game settings
-	ALuser                 // can change user balance and move user money to/from room deposit
-	ALbank                 // can change room bank, fund, deposit
+	ALban   AL = 1 << iota // user have no access to club
+	ALgame                 // can change club game settings
+	ALuser                 // can change user balance and move user money to/from club deposit
+	ALbank                 // can change club bank, fund, deposit
 	ALadmin                // can change same access levels to other users
 	ALall   = ALgame | ALuser | ALbank | ALadmin
 )
 
-// Props contains properties for user at some room.
+// Props contains properties for user at some club.
 // Any property can be zero by default, or if object does not created at DB.
 type Props struct {
-	RID    uint64 `xorm:"notnull index(bid)" json:"rid" yaml:"rid" xml:"rid,attr"`
+	CID    uint64 `xorm:"notnull index(bid)" json:"cid" yaml:"cid" xml:"cid,attr"`
 	UID    uint64 `xorm:"notnull index(bid)" json:"uid" yaml:"uid" xml:"uid,attr"`
 	Wallet int    `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"` // in coins
 	Access AL     `xorm:"notnull" json:"access" yaml:"access" xml:"access"`
@@ -83,7 +83,7 @@ type Spinlog struct {
 }
 
 type Walletlog struct {
-	RID    uint64    `xorm:"notnull index(bid)" json:"rid" yaml:"rid" xml:"rid,attr"`
+	CID    uint64    `xorm:"notnull index(bid)" json:"cid" yaml:"cid" xml:"cid,attr"`
 	UID    uint64    `xorm:"notnull index(bid)" json:"uid" yaml:"uid" xml:"uid,attr"`
 	AdmID  uint64    `xorm:"notnull" json:"admid" yaml:"admid" xml:"admid"`
 	Wallet int       `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"` // in coins
@@ -91,8 +91,8 @@ type Walletlog struct {
 	CTime  time.Time `xorm:"created" json:"ctime" yaml:"ctime" xml:"ctime"`
 }
 
-// All created rooms, by RID.
-var Rooms util.RWMap[uint64, *Room]
+// All created clubs, by CID.
+var Clubs util.RWMap[uint64, *Club]
 
 // All registered users, by UID.
 var Users util.RWMap[uint64, *User]
@@ -105,36 +105,36 @@ func (user *User) Init() {
 	user.props.Init(0)
 }
 
-func (user *User) GetWallet(rid uint64) int {
-	if props, ok := user.props.Get(rid); ok {
+func (user *User) GetWallet(cid uint64) int {
+	if props, ok := user.props.Get(cid); ok {
 		return props.Wallet
 	}
 	return 0
 }
 
-func (user *User) GetAL(rid uint64) AL {
-	if props, ok := user.props.Get(rid); ok {
+func (user *User) GetAL(cid uint64) AL {
+	if props, ok := user.props.Get(cid); ok {
 		return props.Access
 	}
 	return 0
 }
 
 func (user *User) InsertProps(props *Props) {
-	user.props.Set(props.RID, props)
+	user.props.Set(props.CID, props)
 }
 
 // GetAdmin always returns User pointer for authorized requests.
 // And access level for it. Or returns nil pointer for not authorized request.
-func GetAdmin(c *gin.Context, rid uint64) (*User, AL) {
+func GetAdmin(c *gin.Context, cid uint64) (*User, AL) {
 	if v, ok := c.Get(identityKey); ok {
 		var admin = v.(*User)
-		return admin, admin.GAL | admin.GetAL(rid)
+		return admin, admin.GAL | admin.GetAL(cid)
 	}
 	return nil, 0
 }
 
 func init() {
-	Rooms.Init(0)
+	Clubs.Init(0)
 	Users.Init(0)
 	OpenGames.Init(0)
 }

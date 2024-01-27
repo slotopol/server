@@ -103,7 +103,7 @@ func SpiUserSecret(c *gin.Context) {
 }
 
 // Deletes registration, drops user and all linked records from database,
-// and moves all remained coins at wallets to rooms deposits.
+// and moves all remained coins at wallets to clubs deposits.
 func SpiUserDelete(c *gin.Context) {
 	var err error
 	var ok bool
@@ -157,10 +157,10 @@ func SpiUserDelete(c *gin.Context) {
 			return
 		}
 
-		const sql1 = `UPDATE room SET lock=lock+? WHERE rid=?`
-		if user.props.Range(func(rid uint64, props *Props) bool {
+		const sql1 = `UPDATE club SET lock=lock+? WHERE cid=?`
+		if user.props.Range(func(cid uint64, props *Props) bool {
 			if props.Wallet != 0 {
-				if _, err = session.Exec(sql1, props.Wallet, rid); err != nil {
+				if _, err = session.Exec(sql1, props.Wallet, cid); err != nil {
 					Ret500(c, SEC_game_delete_sqllock, err)
 					return false
 				}
@@ -185,11 +185,11 @@ func SpiUserDelete(c *gin.Context) {
 		return
 	}
 
-	user.props.Range(func(rid uint64, props *Props) bool {
-		ret.Wallets[rid] = props.Wallet
-		if room, ok := Rooms.Get(rid); ok && props.Wallet != 0 {
-			room.Lock += float64(props.Wallet)
-			ret.Wallets[rid] = props.Wallet
+	user.props.Range(func(cid uint64, props *Props) bool {
+		ret.Wallets[cid] = props.Wallet
+		if club, ok := Clubs.Get(cid); ok && props.Wallet != 0 {
+			club.Lock += float64(props.Wallet)
+			ret.Wallets[cid] = props.Wallet
 		}
 		return true
 	})

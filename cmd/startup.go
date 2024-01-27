@@ -13,7 +13,7 @@ import (
 )
 
 const (
-	slotroomfile = "slot-room.sqlite"
+	slotclubfile = "slot-club.sqlite"
 	slotspinfile = "slot-spin.sqlite"
 )
 
@@ -22,7 +22,7 @@ var (
 )
 
 func InitStorage() (err error) {
-	if cfg.XormStorage, err = xorm.NewEngine(Cfg.XormDriverName, util.JoinPath(cfg.CfgPath, slotroomfile)); err != nil {
+	if cfg.XormStorage, err = xorm.NewEngine(Cfg.XormDriverName, util.JoinPath(cfg.CfgPath, slotclubfile)); err != nil {
 		return
 	}
 	cfg.XormStorage.SetMapper(names.GonicMapper{})
@@ -31,19 +31,19 @@ func InitStorage() (err error) {
 	defer session.Close()
 
 	if err = session.Sync(
-		&spi.Room{}, &spi.User{}, &spi.Props{},
+		&spi.Club{}, &spi.User{}, &spi.Props{},
 		&spi.OpenGame{}, spi.Walletlog{},
 	); err != nil {
 		return
 	}
 
 	var ok bool
-	if ok, err = session.IsTableEmpty(&spi.Room{}); err != nil {
+	if ok, err = session.IsTableEmpty(&spi.Club{}); err != nil {
 		return
 	}
 	if ok {
-		if _, err = session.Insert(&spi.Room{
-			RID:     1,
+		if _, err = session.Insert(&spi.Club{
+			CID:     1,
 			Bank:    10000,
 			Fund:    1000000,
 			Lock:    0,
@@ -81,13 +81,13 @@ func InitStorage() (err error) {
 		if _, err = session.Insert(&[]spi.Props{
 			{
 				UID:    2,
-				RID:    1,
+				CID:    1,
 				Wallet: 12000,
 				Access: spi.ALgame | spi.ALuser,
 			},
 			{
 				UID:    3,
-				RID:    1,
+				CID:    1,
 				Wallet: 1000,
 				Access: 0,
 			},
@@ -100,13 +100,13 @@ func InitStorage() (err error) {
 
 	var offset = 0
 	for {
-		var chunk []*spi.Room
+		var chunk []*spi.Club
 		if err = session.Limit(limit, offset).Find(&chunk); err != nil {
 			return
 		}
 		offset += limit
-		for _, room := range chunk {
-			spi.Rooms.Set(room.RID, room)
+		for _, club := range chunk {
+			spi.Clubs.Set(club.CID, club)
 		}
 		if limit > len(chunk) {
 			break
@@ -137,12 +137,12 @@ func InitStorage() (err error) {
 		}
 		offset += limit
 		for _, props := range chunk {
-			if !spi.Rooms.Has(props.RID) {
-				return fmt.Errorf("found props without room linkage, UID=%d, RID=%d, value=%d", props.UID, props.RID, props.Wallet)
+			if !spi.Clubs.Has(props.CID) {
+				return fmt.Errorf("found props without club linkage, UID=%d, CID=%d, value=%d", props.UID, props.CID, props.Wallet)
 			}
 			var user, ok = spi.Users.Get(props.UID)
 			if !ok {
-				return fmt.Errorf("found props without user linkage, UID=%d, RID=%d, value=%d", props.UID, props.RID, props.Wallet)
+				return fmt.Errorf("found props without user linkage, UID=%d, CID=%d, value=%d", props.UID, props.CID, props.Wallet)
 			}
 			user.InsertProps(props)
 		}

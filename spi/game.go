@@ -21,7 +21,7 @@ func SpiGameJoin(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		RID     uint64   `json:"rid" yaml:"rid" xml:"rid,attr" form:"rid"`
+		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid"`
 		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
 		Alias   string   `json:"alias" yaml:"alias" xml:"alias" form:"alias"`
 	}
@@ -36,8 +36,8 @@ func SpiGameJoin(c *gin.Context) {
 		Ret400(c, SEC_game_join_nobind, err)
 		return
 	}
-	if arg.RID == 0 {
-		Ret400(c, SEC_game_join_norid, ErrNoRID)
+	if arg.CID == 0 {
+		Ret400(c, SEC_game_join_norid, ErrNoCID)
 		return
 	}
 	if arg.UID == 0 {
@@ -56,12 +56,12 @@ func SpiGameJoin(c *gin.Context) {
 		return
 	}
 
-	var room *Room
-	if room, ok = Rooms.Get(arg.RID); !ok {
-		Ret404(c, SEC_game_join_noroom, ErrNoRoom)
+	var club *Club
+	if club, ok = Clubs.Get(arg.CID); !ok {
+		Ret404(c, SEC_game_join_noclub, ErrNoClub)
 		return
 	}
-	_ = room
+	_ = club
 
 	var user *User
 	if user, ok = Users.Get(arg.UID); !ok {
@@ -69,7 +69,7 @@ func SpiGameJoin(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, arg.RID)
+	var admin, al = GetAdmin(c, arg.CID)
 	if admin != user && al&ALgame == 0 {
 		Ret403(c, SEC_prop_join_noaccess, ErrNoAccess)
 		return
@@ -83,7 +83,7 @@ func SpiGameJoin(c *gin.Context) {
 	}
 
 	var og = OpenGame{
-		RID:   arg.RID,
+		CID:   arg.CID,
 		UID:   arg.UID,
 		Alias: alias,
 		game:  slotgame.(game.SlotGame),
@@ -95,9 +95,9 @@ func SpiGameJoin(c *gin.Context) {
 		}
 
 		// ensure that wallet record is exist
-		if !user.props.Has(arg.RID) {
+		if !user.props.Has(arg.CID) {
 			var props = &Props{
-				RID: arg.RID,
+				CID: arg.CID,
 				UID: arg.UID,
 			}
 			if _, err = session.Insert(props); err != nil {
@@ -105,7 +105,7 @@ func SpiGameJoin(c *gin.Context) {
 				return
 			}
 
-			user.props.Set(arg.RID, props)
+			user.props.Set(arg.CID, props)
 		}
 
 		return
@@ -123,7 +123,7 @@ func SpiGameJoin(c *gin.Context) {
 
 	ret.GID = og.GID
 	ret.Screen = scrn
-	ret.Wallet = user.GetWallet(arg.RID)
+	ret.Wallet = user.GetWallet(arg.CID)
 
 	RetOk(c, ret)
 }
@@ -158,7 +158,7 @@ func SpiGamePart(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.RID)
+	var admin, al = GetAdmin(c, og.CID)
 	if admin != user && al&ALgame == 0 {
 		Ret403(c, SEC_prop_part_noaccess, ErrNoAccess)
 		return
@@ -205,14 +205,14 @@ func SpiGameState(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.RID)
+	var admin, al = GetAdmin(c, og.CID)
 	if admin != user && al&ALgame == 0 {
 		Ret403(c, SEC_prop_state_noaccess, ErrNoAccess)
 		return
 	}
 
 	var props *Props
-	if props, ok = user.props.Get(og.RID); !ok {
+	if props, ok = user.props.Get(og.CID); !ok {
 		Ret500(c, SEC_game_state_noprops, ErrNoWallet)
 		return
 	}
@@ -251,7 +251,7 @@ func SpiGameBetGet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.RID)
+	var admin, al = GetAdmin(c, og.CID)
 	if admin.UID != og.UID && al&ALgame == 0 {
 		Ret403(c, SEC_prop_betget_noaccess, ErrNoAccess)
 		return
@@ -291,7 +291,7 @@ func SpiGameBetSet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.RID)
+	var admin, al = GetAdmin(c, og.CID)
 	if admin.UID != og.UID && al&ALgame == 0 {
 		Ret403(c, SEC_prop_betset_noaccess, ErrNoAccess)
 		return
@@ -333,7 +333,7 @@ func SpiGameSblGet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.RID)
+	var admin, al = GetAdmin(c, og.CID)
 	if admin.UID != og.UID && al&ALgame == 0 {
 		Ret403(c, SEC_prop_sblget_noaccess, ErrNoAccess)
 		return
@@ -373,7 +373,7 @@ func SpiGameSblSet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.RID)
+	var admin, al = GetAdmin(c, og.CID)
 	if admin.UID != og.UID && al&ALgame == 0 {
 		Ret403(c, SEC_prop_sblset_noaccess, ErrNoAccess)
 		return
@@ -420,9 +420,9 @@ func SpiGameSpin(c *gin.Context) {
 		return
 	}
 
-	var room *Room
-	if room, ok = Rooms.Get(og.RID); !ok {
-		Ret500(c, SEC_game_spin_noroom, ErrNoRoom)
+	var club *Club
+	if club, ok = Clubs.Get(og.CID); !ok {
+		Ret500(c, SEC_game_spin_noclub, ErrNoClub)
 		return
 	}
 
@@ -432,7 +432,7 @@ func SpiGameSpin(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.RID)
+	var admin, al = GetAdmin(c, og.CID)
 	if admin.UID != og.UID && al&ALgame == 0 {
 		Ret403(c, SEC_prop_spin_noaccess, ErrNoAccess)
 		return
@@ -450,7 +450,7 @@ func SpiGameSpin(c *gin.Context) {
 	}
 
 	var props *Props
-	if props, ok = user.props.Get(og.RID); !ok {
+	if props, ok = user.props.Get(og.CID); !ok {
 		Ret500(c, SEC_game_spin_noprops, ErrNoWallet)
 		return
 	}
@@ -464,9 +464,9 @@ func SpiGameSpin(c *gin.Context) {
 	defer scrn.Free()
 
 	// spin until gain less than bank value
-	room.mux.RLock()
-	var bank = room.Bank
-	room.mux.RUnlock()
+	club.mux.RLock()
+	var bank = club.Bank
+	club.mux.RUnlock()
 	var ws game.WinScan
 	defer ws.Reset()
 	var n = 0
@@ -493,14 +493,14 @@ func SpiGameSpin(c *gin.Context) {
 			}
 		}()
 
-		const sql1 = `UPDATE room SET bank=bank+? WHERE rid=?`
-		if _, err = session.Exec(sql1, totalbet-totalwin, room.RID); err != nil {
+		const sql1 = `UPDATE club SET bank=bank+? WHERE cid=?`
+		if _, err = session.Exec(sql1, totalbet-totalwin, club.CID); err != nil {
 			Ret500(c, SEC_game_spin_sqlbank, err)
 			return
 		}
 
-		const sql2 = `UPDATE props SET wallet=wallet+? WHERE uid=? AND rid=?`
-		if _, err = session.Exec(sql2, totalwin-totalbet, props.UID, props.RID); err != nil {
+		const sql2 = `UPDATE props SET wallet=wallet+? WHERE uid=? AND cid=?`
+		if _, err = session.Exec(sql2, totalwin-totalbet, props.UID, props.CID); err != nil {
 			Ret500(c, SEC_game_spin_sqlupdate, err)
 			return
 		}
@@ -511,9 +511,9 @@ func SpiGameSpin(c *gin.Context) {
 	}
 
 	// make changes to memory data
-	room.mux.Lock()
-	room.Bank += float64(totalbet - totalwin)
-	room.mux.Unlock()
+	club.mux.Lock()
+	club.Bank += float64(totalbet - totalwin)
+	club.mux.Unlock()
 
 	props.Wallet += totalwin - totalbet
 
@@ -587,9 +587,9 @@ func SpiGameDoubleup(c *gin.Context) {
 		return
 	}
 
-	var room *Room
-	if room, ok = Rooms.Get(og.RID); !ok {
-		Ret500(c, SEC_game_doubleup_noroom, ErrNoRoom)
+	var club *Club
+	if club, ok = Clubs.Get(og.CID); !ok {
+		Ret500(c, SEC_game_doubleup_noclub, ErrNoClub)
 		return
 	}
 
@@ -599,14 +599,14 @@ func SpiGameDoubleup(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.RID)
+	var admin, al = GetAdmin(c, og.CID)
 	if admin.UID != og.UID && al&ALgame == 0 {
 		Ret403(c, SEC_prop_doubleup_noaccess, ErrNoAccess)
 		return
 	}
 
 	var props *Props
-	if props, ok = user.props.Get(og.RID); !ok {
+	if props, ok = user.props.Get(og.CID); !ok {
 		Ret500(c, SEC_game_doubleup_noprops, ErrNoWallet)
 		return
 	}
@@ -617,10 +617,10 @@ func SpiGameDoubleup(c *gin.Context) {
 		return
 	}
 
-	room.mux.RLock()
-	var bank = room.Bank
-	var rtp = room.GainRTP
-	room.mux.RUnlock()
+	club.mux.RLock()
+	var bank = club.Bank
+	var rtp = club.GainRTP
+	club.mux.RUnlock()
 
 	var multgain int // new multiplied gain
 	if bank >= float64(gain*arg.Mult) {
@@ -639,14 +639,14 @@ func SpiGameDoubleup(c *gin.Context) {
 			}
 		}()
 
-		const sql1 = `UPDATE room SET bank=bank-? WHERE rid=?`
-		if _, err = session.Exec(sql1, multgain-gain, room.RID); err != nil {
+		const sql1 = `UPDATE club SET bank=bank-? WHERE cid=?`
+		if _, err = session.Exec(sql1, multgain-gain, club.CID); err != nil {
 			Ret500(c, SEC_game_spin_sqlbank, err)
 			return
 		}
 
-		const sql2 = `UPDATE props SET wallet=wallet+? WHERE uid=? AND rid=?`
-		if _, err = session.Exec(sql2, multgain-gain, props.UID, props.RID); err != nil {
+		const sql2 = `UPDATE props SET wallet=wallet+? WHERE uid=? AND cid=?`
+		if _, err = session.Exec(sql2, multgain-gain, props.UID, props.CID); err != nil {
 			Ret500(c, SEC_game_spin_sqlupdate, err)
 			return
 		}
@@ -657,9 +657,9 @@ func SpiGameDoubleup(c *gin.Context) {
 	}
 
 	// make changes to memory data
-	room.mux.Lock()
-	room.Bank -= float64(multgain - gain)
-	room.mux.Unlock()
+	club.mux.Lock()
+	club.Bank -= float64(multgain - gain)
+	club.mux.Unlock()
 
 	props.Wallet += multgain - gain
 
@@ -708,7 +708,7 @@ func SpiGameCollect(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.RID)
+	var admin, al = GetAdmin(c, og.CID)
 	if admin.UID != og.UID && al&ALgame == 0 {
 		Ret403(c, SEC_prop_collect_noaccess, ErrNoAccess)
 		return
