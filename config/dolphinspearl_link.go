@@ -46,9 +46,9 @@ func init() {
 		GameAliases[alias] = "dolphinspearl"
 	}
 
-	GameFactory["dolphinspearl"] = func(name string) any {
-		if _, ok := dolphinspearl.ReelsMap[name]; ok {
-			return dolphinspearl.NewGame(name)
+	GameFactory["dolphinspearl"] = func(rd string) any {
+		if _, ok := dolphinspearl.ReelsMap[rd]; ok {
+			return dolphinspearl.NewGame(rd)
 		}
 		return nil
 	}

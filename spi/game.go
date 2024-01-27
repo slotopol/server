@@ -387,6 +387,89 @@ func SpiGameSblSet(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
+// Returns reels descriptor for given GID.
+func SpiGameReelsGet(c *gin.Context) {
+	var err error
+	var ok bool
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
+	}
+	var ret struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		RD      string   `json:"rd" yaml:"rd" xml:"rd"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, SEC_game_rdget_nobind, err)
+		return
+	}
+	if arg.GID == 0 {
+		Ret400(c, SEC_game_rdget_nogid, ErrNoGID)
+		return
+	}
+
+	var og OpenGame
+	if og, ok = OpenGames.Get(arg.GID); !ok {
+		Ret404(c, SEC_game_rdget_notopened, ErrNotOpened)
+		return
+	}
+
+	var admin, al = GetAdmin(c, og.CID)
+	if admin.UID != og.UID && al&ALgame == 0 {
+		Ret403(c, SEC_prop_rdget_noaccess, ErrNoAccess)
+		return
+	}
+
+	ret.RD = og.Game.GetReels()
+
+	RetOk(c, ret)
+}
+
+// Set reels descriptor for given GID. Only game admin can change reels.
+func SpiGameReelsSet(c *gin.Context) {
+	var err error
+	var ok bool
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
+		RD      string   `json:"rd" yaml:"rd" xml:"rd"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, SEC_game_rdset_nobind, err)
+		return
+	}
+	if arg.GID == 0 {
+		Ret400(c, SEC_game_rdset_nogid, ErrNoGID)
+		return
+	}
+	if arg.RD == "" {
+		Ret400(c, SEC_game_rdset_nodata, ErrNoData)
+		return
+	}
+
+	var og OpenGame
+	if og, ok = OpenGames.Get(arg.GID); !ok {
+		Ret404(c, SEC_game_rdset_notopened, ErrNotOpened)
+		return
+	}
+
+	// only game admin can change reels
+	var _, al = GetAdmin(c, og.CID)
+	if al&ALgame == 0 {
+		Ret403(c, SEC_prop_rdset_noaccess, ErrNoAccess)
+		return
+	}
+
+	if err = og.Game.SetReels(arg.RD); err != nil {
+		Ret403(c, SEC_game_rdset_badreels, err)
+		return
+	}
+
+	c.Status(http.StatusOK)
+}
+
 // Make a spin.
 func SpiGameSpin(c *gin.Context) {
 	var err error

@@ -73,10 +73,10 @@ type Game struct {
 	Mult         int `json:"mult" yaml:"mult" xml:"mult"` // multiplier on freespins
 }
 
-func NewGame(ri string) *Game {
+func NewGame(rd string) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RI:  ri,
+			RD:  rd,
 			BLI: "nvm20",
 			SBL: game.MakeSBL(1),
 			Bet: 1,
@@ -169,7 +169,7 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 }
 
 func (g *Game) Spin(screen game.Screen) {
-	screen.Spin(ReelsMap[g.RI])
+	screen.Spin(ReelsMap[g.RD])
 }
 
 var MultChoose = []int{1, 1, 1, 2, 2, 2, 3, 3, 5, 10} // E = 3.0
@@ -196,4 +196,12 @@ func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
 
 func (g *Game) FreeSpins() int {
 	return g.FS
+}
+
+func (g *Game) SetReels(rd string) error {
+	if _, ok := ReelsMap[rd]; !ok {
+		return game.ErrNoReels
+	}
+	g.RD = rd
+	return nil
 }

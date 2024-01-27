@@ -70,6 +70,20 @@ const (
 	SEC_prop_sblset_noaccess
 	SEC_game_sblset_badlines
 
+	// POST /game/reels/get
+	SEC_game_rdget_nobind
+	SEC_game_rdget_nogid
+	SEC_game_rdget_notopened
+	SEC_prop_rdget_noaccess
+
+	// POST /game/reels/set
+	SEC_game_rdset_nobind
+	SEC_game_rdset_nogid
+	SEC_game_rdset_nodata
+	SEC_game_rdset_notopened
+	SEC_prop_rdset_noaccess
+	SEC_game_rdset_badreels
+
 	// POST /game/spin
 	SEC_game_spin_nobind
 	SEC_game_spin_nogid

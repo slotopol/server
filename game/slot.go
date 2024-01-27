@@ -80,6 +80,8 @@ type SlotGame interface {
 	SetBet(int) error                   // set bet to given value
 	GetLines() SBL                      // returns selected lines indexes, constat function
 	SetLines(SBL) error                 // setup selected lines indexes
+	GetReels() string                   // returns reels descriptor
+	SetReels(rd string) error           // setup reels descriptor
 }
 
 // Reels for 5-reels slots.
@@ -229,11 +231,12 @@ var (
 	ErrNoLineset  = errors.New("lines set is empty")
 	ErrLinesetOut = errors.New("lines set is out of range bet lines")
 	ErrNoFeature  = errors.New("feature not available")
+	ErrNoReels    = errors.New("no reels for given descriptor")
 )
 
 // Slot5x3 is base struct for all slot games with screen 5x3.
 type Slot5x3 struct {
-	RI  string `json:"ri" yaml:"ri" xml:"ri"`    // reels index
+	RD  string `json:"rd" yaml:"rd" xml:"rd"`    // reels descriptor
 	BLI string `json:"bli" yaml:"bli" xml:"bli"` // bet lines index
 	SBL SBL    `json:"sbl" yaml:"sbl" xml:"sbl"` // selected bet lines
 	Bet int    `json:"bet" yaml:"bet" xml:"bet"` // bet value
@@ -298,4 +301,8 @@ func (g *Slot5x3) SetLines(sbl SBL) error {
 	}
 	g.SBL = sbl
 	return nil
+}
+
+func (g *Slot5x3) GetReels() string {
+	return g.RD
 }

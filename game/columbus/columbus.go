@@ -175,10 +175,10 @@ type Game struct {
 	FS           int `json:"fs" yaml:"fs" xml:"fs"` // free spin number
 }
 
-func NewGame(ri string) *Game {
+func NewGame(rd string) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RI:  ri,
+			RD:  rd,
 			BLI: "nvm10",
 			SBL: game.MakeSBL(1),
 			Bet: 1,
@@ -266,7 +266,7 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 
 func (g *Game) Spin(screen game.Screen) {
 	if g.FS == 0 {
-		screen.Spin(ReelsMap[g.RI])
+		screen.Spin(ReelsMap[g.RD])
 	} else {
 		screen.Spin(&ReelsBon)
 	}
@@ -291,4 +291,12 @@ func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
 
 func (g *Game) FreeSpins() int {
 	return g.FS
+}
+
+func (g *Game) SetReels(rd string) error {
+	if _, ok := ReelsMap[rd]; !ok {
+		return game.ErrNoReels
+	}
+	g.RD = rd
+	return nil
 }

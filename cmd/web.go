@@ -33,6 +33,7 @@ var webCmd = &cobra.Command{
 		}
 
 		var r = gin.New()
+		r.SetTrustedProxies([]string{"127.0.0.0/8"})
 		spi.Router(r)
 		RunWeb(r)
 		return nil

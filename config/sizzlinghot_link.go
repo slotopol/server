@@ -27,9 +27,9 @@ func init() {
 		GameAliases[alias] = "sizzlinghot"
 	}
 
-	GameFactory["sizzlinghot"] = func(name string) any {
-		if _, ok := sizzlinghot.ReelsMap[name]; ok {
-			return sizzlinghot.NewGame(name)
+	GameFactory["sizzlinghot"] = func(rd string) any {
+		if _, ok := sizzlinghot.ReelsMap[rd]; ok {
+			return sizzlinghot.NewGame(rd)
 		}
 		return nil
 	}

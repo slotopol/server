@@ -30,9 +30,9 @@ func init() {
 		GameAliases[alias] = "bananasgobahamas"
 	}
 
-	GameFactory["bananasgobahamas"] = func(name string) any {
-		if _, ok := bananasgobahamas.ReelsMap[name]; ok {
-			return bananasgobahamas.NewGame(name)
+	GameFactory["bananasgobahamas"] = func(rd string) any {
+		if _, ok := bananasgobahamas.ReelsMap[rd]; ok {
+			return bananasgobahamas.NewGame(rd)
 		}
 		return nil
 	}

@@ -32,9 +32,9 @@ func init() {
 		GameAliases[alias] = "beetlemania"
 	}
 
-	GameFactory["beetlemania"] = func(name string) any {
-		if _, ok := beetlemania.ReelsMap[name]; ok {
-			return beetlemania.NewGame(name)
+	GameFactory["beetlemania"] = func(rd string) any {
+		if _, ok := beetlemania.ReelsMap[rd]; ok {
+			return beetlemania.NewGame(rd)
 		}
 		return nil
 	}
