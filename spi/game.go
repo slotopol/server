@@ -1,7 +1,6 @@
 package spi
 
 import (
-	"encoding/json"
 	"encoding/xml"
 	"log"
 	"math/rand"
@@ -26,10 +25,10 @@ func SpiGameJoin(c *gin.Context) {
 		Alias   string   `json:"alias" yaml:"alias" xml:"alias" form:"alias"`
 	}
 	var ret struct {
-		XMLName xml.Name    `json:"-" yaml:"-" xml:"ret"`
-		GID     uint64      `json:"gid" yaml:"gid" xml:"gid,attr"`
-		Screen  game.Screen `json:"screen" yaml:"screen" xml:"screen"`
-		Wallet  int         `json:"wallet" yaml:"wallet" xml:"wallet"`
+		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
+		State   `yaml:",inline"`
+		Wallet  int `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -86,8 +85,14 @@ func SpiGameJoin(c *gin.Context) {
 		CID:   arg.CID,
 		UID:   arg.UID,
 		Alias: alias,
-		game:  slotgame.(game.SlotGame),
+		State: State{
+			Game: slotgame.(game.SlotGame),
+			Scrn: slotgame.(game.SlotGame).NewScreen(),
+		},
 	}
+	// make game screen object
+	og.Game.Spin(og.Scrn)
+
 	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (_ interface{}, err error) {
 		if _, err = session.Insert(&og); err != nil {
 			Ret500(c, SEC_game_join_open, err)
@@ -116,13 +121,8 @@ func SpiGameJoin(c *gin.Context) {
 	OpenGames.Set(og.GID, og)
 	user.games.Set(og.GID, og)
 
-	// make game screen object
-	var scrn = og.game.NewScreen()
-	defer scrn.Free()
-	og.game.Spin(scrn)
-
 	ret.GID = og.GID
-	ret.Screen = scrn
+	ret.State = og.State
 	ret.Wallet = user.GetWallet(arg.CID)
 
 	RetOk(c, ret)
@@ -179,9 +179,9 @@ func SpiGameState(c *gin.Context) {
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
 	}
 	var ret struct {
-		XMLName xml.Name      `json:"-" yaml:"-" xml:"ret"`
-		Game    game.SlotGame `json:"game" yaml:"game" xml:"game"`
-		Wallet  int           `json:"wallet" yaml:"wallet" xml:"wallet"`
+		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		State   `yaml:",inline"`
+		Wallet  int `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -217,7 +217,7 @@ func SpiGameState(c *gin.Context) {
 		return
 	}
 
-	ret.Game = og.game
+	ret.State = og.State
 	ret.Wallet = props.Wallet
 
 	RetOk(c, ret)
@@ -257,7 +257,7 @@ func SpiGameBetGet(c *gin.Context) {
 		return
 	}
 
-	ret.Bet = og.game.GetBet()
+	ret.Bet = og.Game.GetBet()
 
 	RetOk(c, ret)
 }
@@ -297,7 +297,7 @@ func SpiGameBetSet(c *gin.Context) {
 		return
 	}
 
-	if err = og.game.SetBet(arg.Bet); err != nil {
+	if err = og.Game.SetBet(arg.Bet); err != nil {
 		Ret403(c, SEC_game_betset_badbet, err)
 		return
 	}
@@ -339,7 +339,7 @@ func SpiGameSblGet(c *gin.Context) {
 		return
 	}
 
-	ret.SBL = og.game.GetLines()
+	ret.SBL = og.Game.GetLines()
 
 	RetOk(c, ret)
 }
@@ -379,7 +379,7 @@ func SpiGameSblSet(c *gin.Context) {
 		return
 	}
 
-	if err = og.game.SetLines(arg.SBL); err != nil {
+	if err = og.Game.SetLines(arg.SBL); err != nil {
 		Ret403(c, SEC_game_sblset_badlines, err)
 		return
 	}
@@ -396,13 +396,10 @@ func SpiGameSpin(c *gin.Context) {
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
 	}
 	var ret struct {
-		XMLName xml.Name       `json:"-" yaml:"-" xml:"ret"`
-		SID     uint64         `json:"sid" yaml:"sid" xml:"sid,attr" form:"sid"`
-		Screen  game.Screen    `json:"screen" yaml:"screen" xml:"screen"`
-		Wins    []game.WinItem `json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
-		FS      int            `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
-		Gain    int            `json:"gain" yaml:"gain" xml:"gain"`
-		Wallet  int            `json:"wallet" yaml:"wallet" xml:"wallet"`
+		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		SID     uint64   `json:"sid" yaml:"sid" xml:"sid,attr" form:"sid"`
+		State   `yaml:",inline"`
+		Wallet  int `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -439,9 +436,9 @@ func SpiGameSpin(c *gin.Context) {
 	}
 
 	var (
-		fs       = og.game.FreeSpins()
-		bet      = og.game.GetBet()
-		sbl      = og.game.GetLines()
+		fs       = og.Game.FreeSpins()
+		bet      = og.Game.GetBet()
+		sbl      = og.Game.GetLines()
 		totalbet int
 		totalwin int
 	)
@@ -459,21 +456,16 @@ func SpiGameSpin(c *gin.Context) {
 		return
 	}
 
-	// get game screen object
-	var scrn = og.game.NewScreen()
-	defer scrn.Free()
-
 	// spin until gain less than bank value
 	club.mux.RLock()
 	var bank = club.Bank
 	club.mux.RUnlock()
 	var ws game.WinScan
-	defer ws.Reset()
 	var n = 0
 	for {
-		og.game.Spin(scrn)
-		og.game.Scanner(scrn, &ws)
-		og.game.Spawn(scrn, &ws)
+		og.Game.Spin(og.Scrn)
+		og.Game.Scanner(og.Scrn, &ws)
+		og.Game.Spawn(og.Scrn, &ws)
 		totalwin = ws.Gain()
 		if bank+float64(totalbet-totalwin) >= 0 || (bank < 0 && totalbet > totalwin) {
 			break
@@ -482,6 +474,7 @@ func SpiGameSpin(c *gin.Context) {
 			Ret500(c, SEC_game_spin_badbank, ErrBadBank)
 			return
 		}
+		ws.Reset()
 		n++
 	}
 
@@ -516,33 +509,24 @@ func SpiGameSpin(c *gin.Context) {
 	club.mux.Unlock()
 
 	props.Wallet += totalwin - totalbet
-
-	og.game.SetGain(totalwin)
-	og.game.Apply(scrn, &ws)
+	og.Game.Apply(og.Scrn, &ws)
+	og.WinScan.Reset() // throw old wins
+	og.WinScan = ws
 
 	// write spin result to log and get spin ID
 	var sl = Spinlog{
 		GID:    arg.GID,
-		Gain:   totalwin,
+		Gain:   og.Game.GetGain(),
 		Wallet: props.Wallet,
 	}
-	var b []byte
-	b, _ = json.Marshal(scrn)
-	sl.Screen = util.B2S(b)
-	b, _ = json.Marshal(og.game)
-	sl.Game = util.B2S(b)
-	b, _ = json.Marshal(ws.Wins)
-	sl.Wins = util.B2S(b)
+	_ = sl.MarshalState(&og.State)
 	if _, err = cfg.XormSpinlog.Insert(&sl); err != nil {
 		log.Printf("can not write to spin log: %s", err.Error())
 	}
 
 	// prepare result
 	ret.SID = sl.SID
-	ret.Screen = scrn
-	ret.Wins = ws.Wins
-	ret.FS = fs
-	ret.Gain = totalwin
+	ret.State = og.State
 	ret.Wallet = props.Wallet
 
 	RetOk(c, ret)
@@ -611,7 +595,7 @@ func SpiGameDoubleup(c *gin.Context) {
 		return
 	}
 
-	var gain = og.game.GetGain()
+	var gain = og.Game.GetGain()
 	if gain == 0 {
 		Ret403(c, SEC_game_doubleup_nomoney, ErrNoMoney)
 		return
@@ -663,7 +647,8 @@ func SpiGameDoubleup(c *gin.Context) {
 
 	props.Wallet += multgain - gain
 
-	og.game.SetGain(multgain)
+	og.Game.SetGain(multgain)
+	og.WinScan.Reset()
 
 	// write doubleup result to log and get spin ID
 	var sl = Spinlog{
@@ -671,9 +656,7 @@ func SpiGameDoubleup(c *gin.Context) {
 		Gain:   multgain,
 		Wallet: props.Wallet,
 	}
-	var b []byte
-	b, _ = json.Marshal(og.game)
-	sl.Game = util.B2S(b)
+	_ = sl.MarshalState(&og.State)
 	if _, err = cfg.XormSpinlog.Insert(&sl); err != nil {
 		log.Printf("can not write to spin log: %s", err.Error())
 	}
@@ -714,7 +697,7 @@ func SpiGameCollect(c *gin.Context) {
 		return
 	}
 
-	if err = og.game.SetGain(0); err != nil {
+	if err = og.Game.SetGain(0); err != nil {
 		Ret403(c, SEC_prop_collect_denied, err)
 		return
 	}

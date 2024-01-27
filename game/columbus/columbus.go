@@ -273,7 +273,12 @@ func (g *Game) Spin(screen game.Screen) {
 }
 
 func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
-	g.Gain = sw.Gain()
+	if g.FS > 0 {
+		g.Gain += sw.Gain()
+	} else {
+		g.Gain = sw.Gain()
+	}
+
 	if g.FS > 0 {
 		g.FS--
 	}

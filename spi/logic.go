@@ -1,6 +1,7 @@
 package spi
 
 import (
+	"encoding/json"
 	"sync"
 	"time"
 
@@ -36,6 +37,13 @@ type User struct {
 	props  util.RWMap[uint64, *Props]
 }
 
+// State structure represents full current game state.
+type State struct {
+	Game         game.SlotGame `json:"game" yaml:"game" xml:"game"`
+	Scrn         game.Screen   `json:"scrn" yaml:"scrn" xml:"scrn"`
+	game.WinScan `yaml:",inline"`
+}
+
 // OpenGame is opened game for user with UID at club with CID.
 // Each instance of game have own GID. Alias - is game type identifier.
 type OpenGame struct {
@@ -43,7 +51,7 @@ type OpenGame struct {
 	CID   uint64 `xorm:"notnull" json:"cid" yaml:"cid" xml:"cid,attr"`
 	UID   uint64 `xorm:"notnull" json:"uid" yaml:"uid" xml:"uid,attr"`
 	Alias string `xorm:"notnull" json:"alias" yaml:"alias" xml:"alias"`
-	game  game.SlotGame
+	State `xorm:"-" yaml:",inline"`
 }
 
 func (OpenGame) TableName() string {
@@ -131,6 +139,25 @@ func GetAdmin(c *gin.Context, cid uint64) (*User, AL) {
 		return admin, admin.GAL | admin.GetAL(cid)
 	}
 	return nil, 0
+}
+
+func (sl *Spinlog) MarshalState(s *State) (err error) {
+	var b []byte
+	if b, err = json.Marshal(s.Game); err != nil {
+		return
+	}
+	sl.Game = util.B2S(b)
+	if b, err = json.Marshal(s.Scrn); err != nil {
+		return
+	}
+	sl.Screen = util.B2S(b)
+	if len(s.WinScan.Wins) > 0 {
+		if b, err = json.Marshal(s.WinScan.Wins); err != nil {
+			return
+		}
+		sl.Wins = util.B2S(b)
+	}
+	return
 }
 
 func init() {

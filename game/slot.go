@@ -47,7 +47,7 @@ type WinItem struct {
 
 // WinScan is full list of wins by all lines and scatters for some spin.
 type WinScan struct {
-	Wins []WinItem `json:"wins" yaml:"wins" xml:"wins"`
+	Wins []WinItem `json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
 }
 
 // Reset puts lines to pool and set array empty with saved capacity.

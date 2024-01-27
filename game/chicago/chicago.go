@@ -175,7 +175,12 @@ func (g *Game) Spin(screen game.Screen) {
 var MultChoose = []int{1, 1, 1, 2, 2, 2, 3, 3, 5, 10} // E = 3.0
 
 func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
-	g.Gain = sw.Gain()
+	if g.FS > 0 {
+		g.Gain += sw.Gain()
+	} else {
+		g.Gain = sw.Gain()
+	}
+
 	if g.FS > 0 {
 		g.FS--
 		g.Mult = MultChoose[rand.Intn(len(MultChoose))]

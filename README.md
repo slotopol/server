@@ -77,42 +77,42 @@ The response can be followed:
 curl -H "Content-Type: application/json" -d '{"email":"player@example.org","secret":"Et7oAm"}' -X POST localhost:8080/signin
 ```
 
-You can use token `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ3ODE4OTYyNTUsIm9yaWdfaWF0IjoxNzA2MDU2MjU1LCJ1aWQiOjN9.zpOQjWZxWrNB2tDfIc8JloX30jgO3HM9jkRXFrPjwZY` for test purpose, it given for user with UID=3 on 100 years.
+You can use token `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ3ODE4OTYyNTUsIm9yaWdfaWF0IjoxNzA2MDU2MjU1LCJ1aWQiOjN9.zpOQjWZxWrNB2tDfIc8JloX30jgO3HM9jkRXFrPjwZY` for test purpose, it given for user with UID=3 on 100 years. Replace `{{token}}` at samples below to this value.
 
-* Join to game. GID received at response will be used at all calls for access to this game instance. Also you will get initial screen, and user balance at this club.
+* Join to game. GID received at response will be used at all calls for access to this game instance. Also you will get initial game state, and user balance at this club.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ3ODE4OTYyNTUsIm9yaWdfaWF0IjoxNzA2MDU2MjU1LCJ1aWQiOjN9.zpOQjWZxWrNB2tDfIc8JloX30jgO3HM9jkRXFrPjwZY" -d '{"cid":1,"uid":3,"alias":"jokerdolphin"}' -X POST localhost:8080/game/join
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"cid":1,"uid":3,"alias":"jokerdolphin"}' -X POST localhost:8080/game/join
 ```
 
 * Change selected bet lines. Argument `sbl` is a bitset with selected lines, 1st bit in bitset means 1st line. So, value `62` sets lines 1, 2, 3, 4, 5.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ3ODE4OTYyNTUsIm9yaWdfaWF0IjoxNzA2MDU2MjU1LCJ1aWQiOjN9.zpOQjWZxWrNB2tDfIc8JloX30jgO3HM9jkRXFrPjwZY" -d '{"gid":1,"sbl":62}' -X POST localhost:8080/game/sbl/set
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1,"sbl":62}' -X POST localhost:8080/game/sbl/set
 ```
 
 * Make a spin. Spin returns `sid` - spin ID, by this ID it can be found at the log; `screen` with new symbols after spin; `wins` with list of win on each line if it was; `fs` - free spins remained; `gain` - total gain after spin, that can be gambled on double up; `wallet` - user balance after spin with won coins.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ3ODE4OTYyNTUsIm9yaWdfaWF0IjoxNzA2MDU2MjU1LCJ1aWQiOjN9.zpOQjWZxWrNB2tDfIc8JloX30jgO3HM9jkRXFrPjwZY" -d '{"gid":1}' -X POST localhost:8080/game/spin
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/game/spin
 ```
 
 * Double-up. If presents `gain` after spin, it can be multiplied by gamble. `mult` at argument is multiplier, and it will be `2` for red-black cards game. Returned `gain` will be multiplied on win, and zero on lose. `wallet` represents new balance of user.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ3ODE4OTYyNTUsIm9yaWdfaWF0IjoxNzA2MDU2MjU1LCJ1aWQiOjN9.zpOQjWZxWrNB2tDfIc8JloX30jgO3HM9jkRXFrPjwZY" -d '{"gid":1,"mult":2}' -X POST localhost:8080/game/doubleup
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1,"mult":2}' -X POST localhost:8080/game/doubleup
 ```
 
 * Collect the gain. After win on spin, or after double-up gain can be collected. In most cases it will be collected automatically on new spin.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ3ODE4OTYyNTUsIm9yaWdfaWF0IjoxNzA2MDU2MjU1LCJ1aWQiOjN9.zpOQjWZxWrNB2tDfIc8JloX30jgO3HM9jkRXFrPjwZY" -d '{"gid":1}' -X POST localhost:8080/game/collect
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/game/collect
 ```
 
 * Get current state of game.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ3ODE4OTYyNTUsIm9yaWdfaWF0IjoxNzA2MDU2MjU1LCJ1aWQiOjN9.zpOQjWZxWrNB2tDfIc8JloX30jgO3HM9jkRXFrPjwZY" -d '{"gid":1}' -X POST localhost:8080/game/state
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/game/state
 ```
 
 ## Work with user account
@@ -128,19 +128,19 @@ curl -H "Content-Type: application/json" -d '{"email":"rob@example.org","secret"
 * Rename user.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ3ODE4OTYyNTUsIm9yaWdfaWF0IjoxNzA2MDU2MjU1LCJ1aWQiOjN9.zpOQjWZxWrNB2tDfIc8JloX30jgO3HM9jkRXFrPjwZY" -d '{"uid":3,"name":"erigine"}' -X POST localhost:8080/user/rename
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"uid":3,"name":"erigine"}' -X POST localhost:8080/user/rename
 ```
 
 * Change secret key.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ3ODE4OTYyNTUsIm9yaWdfaWF0IjoxNzA2MDU2MjU1LCJ1aWQiOjN9.zpOQjWZxWrNB2tDfIc8JloX30jgO3HM9jkRXFrPjwZY" -d '{"uid":3,"oldsecret":"Et7oAm","newsecret":"pGjKsd"}' -X POST localhost:8080/user/secret
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"uid":3,"oldsecret":"Et7oAm","newsecret":"pGjKsd"}' -X POST localhost:8080/user/secret
 ```
 
 * Delete user. Delete-call removes account from database, move all remained user's coin to deposit, and removes all users games from database.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ3ODE4OTYyNTUsIm9yaWdfaWF0IjoxNzA2MDU2MjU1LCJ1aWQiOjN9.zpOQjWZxWrNB2tDfIc8JloX30jgO3HM9jkRXFrPjwZY" -d '{"uid":3,"secret":"Et7oAm"}' -X POST localhost:8080/user/delete
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"uid":3,"secret":"Et7oAm"}' -X POST localhost:8080/user/delete
 ```
 
 ---
