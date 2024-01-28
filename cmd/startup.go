@@ -22,7 +22,7 @@ var (
 )
 
 func InitStorage() (err error) {
-	if cfg.XormStorage, err = xorm.NewEngine(Cfg.XormDriverName, util.JoinPath(cfg.CfgPath, slotclubfile)); err != nil {
+	if cfg.XormStorage, err = xorm.NewEngine(Cfg.XormDriverName, util.JoinPath(cfg.SqlPath, slotclubfile)); err != nil {
 		return
 	}
 	cfg.XormStorage.SetMapper(names.GonicMapper{})
@@ -154,7 +154,7 @@ func InitStorage() (err error) {
 }
 
 func InitSpinlog() (err error) {
-	if cfg.XormSpinlog, err = xorm.NewEngine(Cfg.XormDriverName, util.JoinPath(cfg.CfgPath, slotspinfile)); err != nil {
+	if cfg.XormSpinlog, err = xorm.NewEngine(Cfg.XormDriverName, util.JoinPath(cfg.SqlPath, slotspinfile)); err != nil {
 		return
 	}
 	cfg.XormSpinlog.SetMapper(names.GonicMapper{})

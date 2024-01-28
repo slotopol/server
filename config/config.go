@@ -33,6 +33,8 @@ var (
 	CfgFile string
 	// Configuration path.
 	CfgPath string
+	// SQLite-files path
+	SqlPath string
 )
 
 var (
@@ -95,6 +97,7 @@ func InitConfig() {
 		ExePath = filepath.Dir(os.Args[0])
 	}
 
+	// Config path
 	if CfgFile != "" {
 		if ok, _ := FileExists(CfgFile); !ok {
 			cobra.CheckErr(ErrNoCfgFile)
@@ -136,6 +139,19 @@ func InitConfig() {
 		CfgPath = filepath.Dir(CfgFile)
 		fmt.Println("config path:", CfgPath)
 	}
+
+	// SQLite path
+	if SqlPath != "" {
+		cobra.CheckErr(os.MkdirAll(SqlPath, os.ModePerm))
+	} else {
+		if env, ok := os.LookupEnv("SQLPATH"); ok {
+			SqlPath = env
+			cobra.CheckErr(os.MkdirAll(SqlPath, os.ModePerm))
+		} else {
+			SqlPath = CfgPath
+		}
+	}
+	fmt.Println("sqlite path:", SqlPath)
 }
 
 // FileExists check up file existence.

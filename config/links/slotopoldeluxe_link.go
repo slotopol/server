@@ -5,15 +5,16 @@ package config
 import (
 	"context"
 
+	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/game/slotopoldeluxe"
 	"github.com/spf13/pflag"
 )
 
 func init() {
-	FlagsSetters = append(FlagsSetters, func(flags *pflag.FlagSet) {
+	cfg.FlagsSetters = append(cfg.FlagsSetters, func(flags *pflag.FlagSet) {
 		flags.Bool("slotopoldeluxe", false, "'Slotopol Deluxe' Megajack 5x3 slots")
 	})
-	ScatIters = append(ScatIters, func(flags *pflag.FlagSet, ctx context.Context) {
+	cfg.ScatIters = append(cfg.ScatIters, func(flags *pflag.FlagSet, ctx context.Context) {
 		if is, _ := flags.GetBool("slotopoldeluxe"); is {
 			var rn, _ = flags.GetString("reels")
 			slotopoldeluxe.CalcStat(ctx, rn)
@@ -23,10 +24,10 @@ func init() {
 	for _, alias := range []string{
 		"slotopoldeluxe",
 	} {
-		GameAliases[alias] = "slotopoldeluxe"
+		cfg.GameAliases[alias] = "slotopoldeluxe"
 	}
 
-	GameFactory["slotopoldeluxe"] = func(rd string) any {
+	cfg.GameFactory["slotopoldeluxe"] = func(rd string) any {
 		if _, ok := slotopoldeluxe.ReelsMap[rd]; ok {
 			return slotopoldeluxe.NewGame(rd)
 		}

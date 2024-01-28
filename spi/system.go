@@ -33,6 +33,7 @@ func SpiServInfo(c *gin.Context) {
 		"maxprocs":  runtime.GOMAXPROCS(0),
 		"exepath":   cfg.ExePath,
 		"cfgpath":   cfg.CfgPath,
+		"sqlpath":   cfg.SqlPath,
 	}
 	Negotiate(c, http.StatusOK, ret)
 }
