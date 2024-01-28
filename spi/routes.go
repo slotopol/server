@@ -7,7 +7,10 @@ import (
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"xorm.io/xorm"
 )
+
+type Session = xorm.Session
 
 var Offered = []string{
 	binding.MIMEJSON,
@@ -105,4 +108,7 @@ func Router(r *gin.Engine) {
 	ru.POST("/rename", SpiUserRename)
 	ru.POST("/secret", SpiUserSecret)
 	ru.POST("/delete", SpiUserDelete)
+	var rc = ra.Group("/club")
+	rc.POST("/rename", SpiClubRename)
+	rc.POST("/cashin", SpiClubCashin)
 }

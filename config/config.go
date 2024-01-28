@@ -1,15 +1,7 @@
 package config
 
 import (
-	"errors"
-	"fmt"
-	"os"
-	"path/filepath"
 	"time"
-
-	"github.com/slotopol/server/util"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 )
 
 var (
@@ -20,25 +12,6 @@ var (
 	// compiled binary build date, sets by compiler with command
 	//    go build -ldflags="-X 'github.com/slotopol/server/config.BuildTime=%buildtime%'"
 	BuildTime string
-)
-
-var (
-	// Developer mode, running at debugger.
-	DevMode bool
-	// AppName is name of this application without extension.
-	AppName = util.PathName(os.Args[0])
-	// Executable path.
-	ExePath string
-	// Configuration file with path.
-	CfgFile string
-	// Configuration path.
-	CfgPath string
-	// SQLite-files path
-	SqlPath string
-)
-
-var (
-	ErrNoCfgFile = errors.New("configyration file was not found")
 )
 
 type CfgJwtAuth struct {
@@ -81,87 +54,4 @@ var Cfg = &Config{
 	CfgXormDrv: CfgXormDrv{
 		XormDriverName: "sqlite3",
 	},
-}
-
-func InitConfig() {
-	var err error
-
-	if DevMode {
-		fmt.Println("*running in developer mode*")
-	}
-	fmt.Printf("version: %s, builton: %s\n", BuildVers, BuildTime)
-
-	if str, err := os.Executable(); err == nil {
-		ExePath = filepath.Dir(str)
-	} else {
-		ExePath = filepath.Dir(os.Args[0])
-	}
-
-	// Config path
-	if CfgFile != "" {
-		if ok, _ := FileExists(CfgFile); !ok {
-			cobra.CheckErr(ErrNoCfgFile)
-		}
-		// Use config file from the flag.
-		viper.SetConfigFile(CfgFile)
-	} else {
-		const cfgsub = "config"
-		// Search config in home directory with name "slot" (without extension).
-		viper.SetConfigName("slot")
-		viper.SetConfigType("yaml")
-		if env, ok := os.LookupEnv("CFGFILE"); ok {
-			viper.AddConfigPath(env)
-		}
-		viper.AddConfigPath(filepath.Join(ExePath, cfgsub))
-		viper.AddConfigPath(ExePath)
-		viper.AddConfigPath(cfgsub)
-		viper.AddConfigPath(".")
-		if home, err := os.UserHomeDir(); err == nil {
-			viper.AddConfigPath(filepath.Join(home, cfgsub))
-			viper.AddConfigPath(home)
-		}
-		if env, ok := os.LookupEnv("GOBIN"); ok {
-			viper.AddConfigPath(filepath.Join(env, cfgsub))
-			viper.AddConfigPath(env)
-		} else if env, ok := os.LookupEnv("GOPATH"); ok {
-			viper.AddConfigPath(filepath.Join(env, "bin", cfgsub))
-			viper.AddConfigPath(filepath.Join(env, "bin"))
-		}
-	}
-
-	viper.AutomaticEnv()
-
-	if err = viper.ReadInConfig(); err != nil {
-		fmt.Println("config file not found!")
-	} else {
-		cobra.CheckErr(viper.Unmarshal(&Cfg))
-		CfgFile = viper.ConfigFileUsed()
-		CfgPath = filepath.Dir(CfgFile)
-		fmt.Println("config path:", CfgPath)
-	}
-
-	// SQLite path
-	if SqlPath != "" {
-		cobra.CheckErr(os.MkdirAll(SqlPath, os.ModePerm))
-	} else {
-		if env, ok := os.LookupEnv("SQLPATH"); ok {
-			SqlPath = env
-			cobra.CheckErr(os.MkdirAll(SqlPath, os.ModePerm))
-		} else {
-			SqlPath = CfgPath
-		}
-	}
-	fmt.Println("sqlite path:", SqlPath)
-}
-
-// FileExists check up file existence.
-func FileExists(fpath string) (bool, error) {
-	var stat, err = os.Stat(fpath)
-	if err == nil {
-		return !stat.IsDir(), nil
-	}
-	if errors.Is(err, os.ErrNotExist) {
-		return false, nil
-	}
-	return false, err
 }

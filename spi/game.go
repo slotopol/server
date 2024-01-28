@@ -8,7 +8,6 @@ import (
 
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/util"
-	"xorm.io/xorm"
 
 	"github.com/gin-gonic/gin"
 	"github.com/slotopol/server/game"
@@ -93,7 +92,7 @@ func SpiGameJoin(c *gin.Context) {
 	// make game screen object
 	og.Game.Spin(og.Scrn)
 
-	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (_ interface{}, err error) {
+	if _, err = cfg.XormStorage.Transaction(func(session *Session) (_ interface{}, err error) {
 		if _, err = session.Insert(&og); err != nil {
 			Ret500(c, SEC_game_join_open, err)
 			return
@@ -553,16 +552,16 @@ func SpiGameSpin(c *gin.Context) {
 		if bank+float64(totalbet-totalwin) >= 0 || (bank < 0 && totalbet > totalwin) {
 			break
 		}
+		ws.Reset()
 		if n >= cfg.Cfg.MaxSpinAttempts {
 			Ret500(c, SEC_game_spin_badbank, ErrBadBank)
 			return
 		}
-		ws.Reset()
 		n++
 	}
 
 	// write gain and total bet as transaction
-	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (_ interface{}, err error) {
+	if _, err = cfg.XormStorage.Transaction(func(session *Session) (_ interface{}, err error) {
 		defer func() {
 			if err != nil {
 				session.Rollback()
@@ -597,18 +596,18 @@ func SpiGameSpin(c *gin.Context) {
 	og.WinScan = ws
 
 	// write spin result to log and get spin ID
-	var sl = Spinlog{
+	var rec = Spinlog{
 		GID:    arg.GID,
 		Gain:   og.Game.GetGain(),
 		Wallet: props.Wallet,
 	}
-	_ = sl.MarshalState(&og.State)
-	if _, err = cfg.XormSpinlog.Insert(&sl); err != nil {
+	_ = rec.MarshalState(&og.State)
+	if _, err = cfg.XormSpinlog.Insert(&rec); err != nil {
 		log.Printf("can not write to spin log: %s", err.Error())
 	}
 
 	// prepare result
-	ret.SID = sl.SID
+	ret.SID = rec.ID
 	ret.State = og.State
 	ret.Wallet = props.Wallet
 
@@ -699,7 +698,7 @@ func SpiGameDoubleup(c *gin.Context) {
 	}
 
 	// write gain and total bet as transaction
-	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (_ interface{}, err error) {
+	if _, err = cfg.XormStorage.Transaction(func(session *Session) (_ interface{}, err error) {
 		defer func() {
 			if err != nil {
 				session.Rollback()
@@ -734,13 +733,13 @@ func SpiGameDoubleup(c *gin.Context) {
 	og.WinScan.Reset()
 
 	// write doubleup result to log and get spin ID
-	var sl = Spinlog{
+	var rec = Spinlog{
 		GID:    arg.GID,
 		Gain:   multgain,
 		Wallet: props.Wallet,
 	}
-	_ = sl.MarshalState(&og.State)
-	if _, err = cfg.XormSpinlog.Insert(&sl); err != nil {
+	_ = rec.MarshalState(&og.State)
+	if _, err = cfg.XormSpinlog.Insert(&rec); err != nil {
 		log.Printf("can not write to spin log: %s", err.Error())
 	}
 

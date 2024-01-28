@@ -12,11 +12,12 @@ import (
 
 // Club means independent bank into which gambles some users.
 type Club struct {
-	CID  uint64  `xorm:"pk autoincr" json:"cid" yaml:"cid" xml:"cid,attr"`
-	Name string  `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
-	Bank float64 `xorm:"notnull" json:"bank" yaml:"bank" xml:"bank"` // users win/lost balance, in coins
-	Fund float64 `xorm:"notnull" json:"fund" yaml:"fund" xml:"fund"` // jackpot fund, in coins
-	Lock float64 `xorm:"notnull" json:"lock" yaml:"lock" xml:"lock"` // not changed deposit within games
+	CID   uint64    `xorm:"pk autoincr" json:"cid" yaml:"cid" xml:"cid,attr"`
+	CTime time.Time `xorm:"created 'ctime'" json:"ctime" yaml:"ctime" xml:"ctime"`
+	Name  string    `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
+	Bank  float64   `xorm:"notnull" json:"bank" yaml:"bank" xml:"bank"` // users win/lost balance, in coins
+	Fund  float64   `xorm:"notnull" json:"fund" yaml:"fund" xml:"fund"` // jackpot fund, in coins
+	Lock  float64   `xorm:"notnull" json:"lock" yaml:"lock" xml:"lock"` // not changed deposit within games
 
 	JptRate float64 `xorm:"'jptrate' notnull default 0.015" json:"jptrate" yaml:"jptrate" xml:"jptrate"`
 	GainRTP float64 `xorm:"'gainrtp' notnull default 95.00" json:"gainrtp" yaml:"gainrtp" xml:"gainrtp"`
@@ -28,11 +29,12 @@ type Club struct {
 // wallet with some coins balance in each Club. User can opens several
 // games without any limitation.
 type User struct {
-	UID    uint64 `xorm:"pk autoincr" json:"uid" yaml:"uid" xml:"uid,attr"`
-	Email  string `xorm:"notnull unique index" json:"email" yaml:"email" xml:"email"`
-	Secret string `xorm:"notnull" json:"secret" yaml:"secret" xml:"secret"` // auth password
-	Name   string `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
-	GAL    AL     `json:"gal,omitempty" yaml:"gal,omitempty" xml:"gal,omitempty"` // global access level
+	UID    uint64    `xorm:"pk autoincr" json:"uid" yaml:"uid" xml:"uid,attr"`
+	CTime  time.Time `xorm:"created 'ctime'" json:"ctime" yaml:"ctime" xml:"ctime"`
+	Email  string    `xorm:"notnull unique index" json:"email" yaml:"email" xml:"email"`
+	Secret string    `xorm:"notnull" json:"secret" yaml:"secret" xml:"secret"` // auth password
+	Name   string    `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
+	GAL    AL        `json:"gal,omitempty" yaml:"gal,omitempty" xml:"gal,omitempty"` // global access level
 	games  util.RWMap[uint64, OpenGame]
 	props  util.RWMap[uint64, *Props]
 }
@@ -47,10 +49,11 @@ type State struct {
 // OpenGame is opened game for user with UID at club with CID.
 // Each instance of game have own GID. Alias - is game type identifier.
 type OpenGame struct {
-	GID   uint64 `xorm:"pk autoincr" json:"gid" yaml:"gid" xml:"gid,attr"`
-	CID   uint64 `xorm:"notnull" json:"cid" yaml:"cid" xml:"cid,attr"`
-	UID   uint64 `xorm:"notnull" json:"uid" yaml:"uid" xml:"uid,attr"`
-	Alias string `xorm:"notnull" json:"alias" yaml:"alias" xml:"alias"`
+	GID   uint64    `xorm:"pk autoincr" json:"gid" yaml:"gid" xml:"gid,attr"`
+	CTime time.Time `xorm:"created 'ctime'" json:"ctime" yaml:"ctime" xml:"ctime"`
+	CID   uint64    `xorm:"notnull" json:"cid" yaml:"cid" xml:"cid,attr"`
+	UID   uint64    `xorm:"notnull" json:"uid" yaml:"uid" xml:"uid,attr"`
+	Alias string    `xorm:"notnull" json:"alias" yaml:"alias" xml:"alias"`
 	State `xorm:"-" yaml:",inline"`
 }
 
@@ -65,9 +68,9 @@ const (
 	ALban   AL = 1 << iota // user have no access to club
 	ALgame                 // can change club game settings
 	ALuser                 // can change user balance and move user money to/from club deposit
-	ALbank                 // can change club bank, fund, deposit
+	ALclub                 // can change club bank, fund, deposit
 	ALadmin                // can change same access levels to other users
-	ALall   = ALgame | ALuser | ALbank | ALadmin
+	ALall   = ALgame | ALuser | ALclub | ALadmin
 )
 
 // Props contains properties for user at some club.
@@ -80,23 +83,35 @@ type Props struct {
 }
 
 type Spinlog struct {
-	SID    uint64    `xorm:"pk autoincr" json:"sid" yaml:"sid" xml:"sid,attr"`
+	ID     uint64    `xorm:"pk autoincr" json:"id" yaml:"id" xml:"id,attr"`
+	CTime  time.Time `xorm:"created 'ctime'" json:"ctime" yaml:"ctime" xml:"ctime"`
 	GID    uint64    `xorm:"notnull" json:"gid" yaml:"gid" xml:"gid,attr"`
 	Game   string    `xorm:"notnull" json:"game" yaml:"game" xml:"game"`
 	Screen string    `xorm:"notnull" json:"screen,omitempty" yaml:"screen,omitempty" xml:"screen,omitempty"`
 	Wins   string    `json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
 	Gain   int       `xorm:"notnull" json:"gain" yaml:"gain" xml:"gain"`
 	Wallet int       `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"`
-	CTime  time.Time `xorm:"created" json:"ctime" yaml:"ctime" xml:"ctime"`
 }
 
 type Walletlog struct {
+	ID     uint64    `xorm:"pk autoincr" json:"id" yaml:"id" xml:"id,attr"`
+	CTime  time.Time `xorm:"created 'ctime'" json:"ctime" yaml:"ctime" xml:"ctime"`
 	CID    uint64    `xorm:"notnull index(bid)" json:"cid" yaml:"cid" xml:"cid,attr"`
 	UID    uint64    `xorm:"notnull index(bid)" json:"uid" yaml:"uid" xml:"uid,attr"`
 	AdmID  uint64    `xorm:"notnull" json:"admid" yaml:"admid" xml:"admid"`
 	Wallet int       `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"` // in coins
 	Addend int       `xorm:"notnull" json:"addend" yaml:"addend" xml:"addend"`
-	CTime  time.Time `xorm:"created" json:"ctime" yaml:"ctime" xml:"ctime"`
+}
+
+type Banklog struct {
+	ID      uint64    `xorm:"pk autoincr" json:"id" yaml:"id" xml:"id,attr"`
+	CTime   time.Time `xorm:"created 'ctime'" json:"ctime" yaml:"ctime" xml:"ctime"`
+	Bank    float64   `xorm:"notnull 'bank'" json:"bank" yaml:"bank" xml:"bank"`
+	Fund    float64   `xorm:"notnull 'fund'" json:"fund" yaml:"fund" xml:"fund"`
+	Lock    float64   `xorm:"notnull 'lock'" json:"lock" yaml:"lock" xml:"lock"`
+	BankSum float64   `xorm:"notnull 'banksum'" json:"banksum" yaml:"banksum" xml:"banksum" form:"banksum"`
+	FundSum float64   `xorm:"notnull 'fundsum'" json:"fundsum" yaml:"fundsum" xml:"fundsum" form:"fundsum"`
+	LockSum float64   `xorm:"notnull 'locksum'" json:"locksum" yaml:"locksum" xml:"locksum" form:"locksum"`
 }
 
 // All created clubs, by CID.

@@ -6,7 +6,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	cfg "github.com/slotopol/server/config"
-	"xorm.io/xorm"
 )
 
 // Changes 'Name' of given user.
@@ -16,7 +15,7 @@ func SpiUserRename(c *gin.Context) {
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
-		Name    string   `json:"name" yaml:"name" xml:"name,attr" form:"name"`
+		Name    string   `json:"name" yaml:"name" xml:"name" form:"name"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -145,7 +144,7 @@ func SpiUserDelete(c *gin.Context) {
 	}
 
 	// write gain and total bet as transaction
-	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (_ interface{}, err error) {
+	if _, err = cfg.XormStorage.Transaction(func(session *Session) (_ interface{}, err error) {
 		defer func() {
 			if err != nil {
 				session.Rollback()

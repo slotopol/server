@@ -32,7 +32,7 @@ func InitStorage() (err error) {
 
 	if err = session.Sync(
 		&spi.Club{}, &spi.User{}, &spi.Props{},
-		&spi.OpenGame{}, spi.Walletlog{},
+		&spi.OpenGame{}, spi.Walletlog{}, spi.Banklog{},
 	); err != nil {
 		return
 	}
@@ -66,7 +66,7 @@ func InitStorage() (err error) {
 				Email:  "dealer@example.org",
 				Secret: "jpTyD4",
 				Name:   "dealer",
-				GAL:    spi.ALuser,
+				GAL:    spi.ALgame,
 			},
 			{
 				UID:    3,
@@ -83,7 +83,7 @@ func InitStorage() (err error) {
 				UID:    2,
 				CID:    1,
 				Wallet: 12000,
-				Access: spi.ALgame | spi.ALuser,
+				Access: spi.ALuser | spi.ALclub,
 			},
 			{
 				UID:    3,

@@ -5,7 +5,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	cfg "github.com/slotopol/server/config"
-	"xorm.io/xorm"
 )
 
 // Returns balance at wallet for pointed user at pointed club.
@@ -128,14 +127,14 @@ func SpiPropsWalletAdd(c *gin.Context) {
 	}
 
 	// update wallet as transaction
-	if _, err = cfg.XormStorage.Transaction(func(session *xorm.Session) (_ interface{}, err error) {
+	if _, err = cfg.XormStorage.Transaction(func(session *Session) (_ interface{}, err error) {
 		defer func() {
 			if err != nil {
 				session.Rollback()
 			}
 		}()
 
-		var wl = Walletlog{
+		var rec = Walletlog{
 			CID:    arg.CID,
 			UID:    arg.UID,
 			AdmID:  admin.UID,
@@ -157,7 +156,7 @@ func SpiPropsWalletAdd(c *gin.Context) {
 			}
 		}
 
-		if _, err = session.Insert(&wl); err != nil {
+		if _, err = session.Insert(&rec); err != nil {
 			Ret500(c, SEC_prop_walletadd_sqllog, err)
 			return
 		}

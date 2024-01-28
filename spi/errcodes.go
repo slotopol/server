@@ -165,6 +165,26 @@ const (
 	SEC_game_delete_sqllock
 	SEC_prop_delete_sqlprops
 	SEC_prop_delete_sqlgames
+
+	// POST /club/rename
+	SEC_club_rename_nobind
+	SEC_club_rename_nouid
+	SEC_club_rename_noname
+	SEC_club_rename_noclub
+	SEC_club_rename_noaccess
+	SEC_club_rename_update
+
+	// POST /club/cashin
+	SEC_club_cashin_nobind
+	SEC_club_cashin_nouid
+	SEC_club_cashin_nosum
+	SEC_club_cashin_noclub
+	SEC_club_cashin_noaccess
+	SEC_club_cashin_bankout
+	SEC_club_cashin_fundout
+	SEC_club_cashin_lockout
+	SEC_game_cashin_sqlbank
+	SEC_game_cashin_sqllog
 )
 
 var (
@@ -177,7 +197,10 @@ var (
 	ErrNoClub    = errors.New("club with given ID does not found")
 	ErrNoUser    = errors.New("user with given ID does not found")
 	ErrNoWallet  = errors.New("wallet for given user and club does not found")
-	ErrNoMoney   = errors.New("not enough money")
+	ErrNoMoney   = errors.New("not enough money on balance")
+	ErrBankOut   = errors.New("not enough money at bank")
+	ErrFundOut   = errors.New("not enough money at jackpot fund")
+	ErrLockOut   = errors.New("not enough money at deposit")
 	ErrNoAccess  = errors.New("no access rights for this feature")
 	ErrNoSecret  = errors.New("password confirmation does not pass")
 	ErrNoMult    = errors.New("gamble multiplier not given")
