@@ -4,12 +4,14 @@
 # This file does not modified by server runtime.
 
 authentication:
-  # Private key for HS-256 JWT-tokens.
-  token-key: skJgM4NsbP3fs4k7vh0gfdkgGl8dJTszdLxZ1sQ9ksFnxbgvw2RsGH8xxddUV479
   # Access token time to live.
-  token-timeout: 24h # 1 day
+  access-ttl: 24h # 1 day
   # Refresh token time to live.
-  token-max-refresh: 72h # 3 days
+  refresh-ttl: 72h # 3 days
+  # Key for access HS-256 JWT-tokens.
+  access-key: skJgM4NsbP3fs4k7vh0gfdkgGl8dJTszdLxZ1sQ9ksFnxbgvw2RsGH8xxddUV479
+  # Key for refresh HS-256 JWT-tokens.
+  refresh-key: zxK4dUnuq3Lhd1Gzhpr3usI5lAzgvy2t3fmxld2spzz7a5nfv0hsksm9cheyutie
 gameplay:
   # Maximum value to add to wallet by one transaction.
   adjunct-limit: 100000

@@ -1,10 +1,11 @@
 package spi
 
 import (
+	"encoding/json"
 	"encoding/xml"
+	"fmt"
 	"net/http"
 
-	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"xorm.io/xorm"
@@ -32,27 +33,59 @@ func Negotiate(c *gin.Context, code int, data any) {
 	default:
 		c.JSON(code, data)
 	}
+	c.Abort()
 }
 
 func RetOk(c *gin.Context, data any) {
 	Negotiate(c, http.StatusOK, data)
 }
 
+type jerr struct {
+	error
+}
+
+// Unwrap returns inherited error object.
+func (err jerr) Unwrap() error {
+	return err.error
+}
+
+// MarshalJSON is standard JSON interface implementation to stream errors on Ajax.
+func (err jerr) MarshalJSON() ([]byte, error) {
+	return json.Marshal(err.Error())
+}
+
+// MarshalYAML is YAML marshaler interface implementation to stream errors on Ajax.
+func (err jerr) MarshalYAML() (any, error) {
+	return err.Error(), nil
+}
+
+// MarshalXML is XML marshaler interface implementation to stream errors on Ajax.
+func (err jerr) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	return e.EncodeElement(err.Error(), start)
+}
+
 type ajaxerr struct {
 	XMLName xml.Name `json:"-" yaml:"-" xml:"error"`
-	What    string   `json:"what" yaml:"what" xml:"what"`
+	What    jerr     `json:"what" yaml:"what" xml:"what"`
 	Code    int      `json:"code,omitempty" yaml:"code,omitempty" xml:"code,omitempty"`
 	UID     uint64   `json:"uid,omitempty" yaml:"uid,omitempty" xml:"uid,omitempty,attr"`
 }
 
+func (err ajaxerr) Error() string {
+	return fmt.Sprintf("what: %s, code: %d", err.What, err.Code)
+}
+
+func (err ajaxerr) Unwrap() error {
+	return err.What.error
+}
+
 func RetErr(c *gin.Context, status, code int, err error) {
-	var claims = jwt.ExtractClaims(c)
 	var uid uint64
-	if v, ok := claims[identityKey]; ok {
-		uid = uint64(v.(float64))
+	if uv, ok := c.Get(userKey); ok {
+		uid = uv.(*User).UID
 	}
 	Negotiate(c, status, ajaxerr{
-		What: err.Error(),
+		What: jerr{err},
 		Code: code,
 		UID:  uid,
 	})
@@ -60,6 +93,12 @@ func RetErr(c *gin.Context, status, code int, err error) {
 
 func Ret400(c *gin.Context, code int, err error) {
 	RetErr(c, http.StatusBadRequest, code, err)
+}
+
+func Ret401(c *gin.Context, code int, err error) {
+	c.Writer.Header().Add("WWW-Authenticate", realmBasic)
+	c.Writer.Header().Add("WWW-Authenticate", realmBearer)
+	RetErr(c, http.StatusUnauthorized, code, err)
 }
 
 func Ret403(c *gin.Context, code int, err error) {
@@ -75,7 +114,7 @@ func Ret500(c *gin.Context, code int, err error) {
 }
 
 func Router(r *gin.Engine) {
-	r.NoRoute(AuthMiddleware.MiddlewareFunc(), Handle404)
+	r.NoRoute(Auth(false), Handle404)
 	r.GET("/ping", SpiPing)
 	r.GET("/servinfo", SpiServInfo)
 	r.GET("/memusage", SpiMemUsage)
@@ -83,9 +122,9 @@ func Router(r *gin.Engine) {
 
 	// authorization
 	r.POST("/signup", SpiSignup)
-	r.POST("/signin", AuthMiddleware.LoginHandler)
-	r.GET("/refresh", AuthMiddleware.RefreshHandler)
-	var ra = r.Group("", AuthMiddleware.MiddlewareFunc())
+	r.POST("/signin", SpiSignin)
+	r.GET("/refresh", Auth(true), SpiRefresh)
+	var ra = r.Group("/", Auth(true))
 
 	//r.Use(gzip.Gzip(gzip.DefaultCompression))
 	var rg = ra.Group("/game")

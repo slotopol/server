@@ -146,14 +146,11 @@ func (user *User) InsertProps(props *Props) {
 	user.props.Set(props.CID, props)
 }
 
-// GetAdmin always returns User pointer for authorized requests.
-// And access level for it. Or returns nil pointer for not authorized request.
+// GetAdmin always returns User pointer for authorized
+// requests, and access level for it.
 func GetAdmin(c *gin.Context, cid uint64) (*User, AL) {
-	if v, ok := c.Get(identityKey); ok {
-		var admin = v.(*User)
-		return admin, admin.GAL | admin.GetAL(cid)
-	}
-	return nil, 0
+	var admin = c.MustGet(userKey).(*User)
+	return admin, admin.GAL | admin.GetAL(cid)
 }
 
 func (sl *Spinlog) MarshalState(s *State) (err error) {

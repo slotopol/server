@@ -69,7 +69,13 @@ The response can be followed:
 
 `/ping`, `/servinfo` and `/memusage`, `/signup` and `/signin` endpoints also does not expects authorization.
 
-## Authorization and join to game
+## Authorization
+
+There is supported basic authorization and bearer authorization (with JWT-tokens). Authorization data can be provided by 4 ways: in header `Authorization`, at query parameters, at cookies, and at post form.
+
+**Basic** expects credentials pair `email:password` encoded in unpadded base64 encoding for URL (see RFC 4648).
+
+**Bearer** works with two HS256 JWT tokens - access token and refresh token. Access token should be provided in all cases except `refresh` call. When access-token expires, it should be replaced to refresh-token for refresh-call.
 
 * Sign-in, and use token from response with any followed calls.
 
@@ -77,7 +83,15 @@ The response can be followed:
 curl -H "Content-Type: application/json" -d '{"email":"player@example.org","secret":"Et7oAm"}' -X POST localhost:8080/signin
 ```
 
-You can use token `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjQ3ODE4OTYyNTUsIm9yaWdfaWF0IjoxNzA2MDU2MjU1LCJ1aWQiOjN9.zpOQjWZxWrNB2tDfIc8JloX30jgO3HM9jkRXFrPjwZY` for test purpose, it given for user with UID=3 on 100 years. Replace `{{token}}` at samples below to this value.
+You can use token `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzbG90b3BvbCIsImV4cCI6NDg2NzQ0NzYxNywibmJmIjoxNzA2NjQ3NjE3LCJ1aWQiOjN9.6g2Hig9ErG8IbvzkPppry5F8HJsMunZPwuQzmetGh4c` for test purpose, it given for user with UID=3 on 100 years. Replace `{{token}}` at samples below to this value.
+
+* When you get 401 status code, use refresh-call with refresh-token to get new tokens pair.
+
+```sh
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -X GET localhost:8080/refresh
+```
+
+## Join and play the game
 
 * Join to game. GID received at response will be used at all calls for access to this game instance. Also you will get initial game state, and user balance at this club.
 

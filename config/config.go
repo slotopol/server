@@ -15,9 +15,10 @@ var (
 )
 
 type CfgJwtAuth struct {
-	TokenKey        string        `json:"token-key" yaml:"token-key" mapstructure:"token-key"`
-	TokenTimeout    time.Duration `json:"token-timeout" yaml:"token-timeout" mapstructure:"token-timeout"`
-	TokenMaxRefresh time.Duration `json:"token-max-refresh" yaml:"token-max-refresh" mapstructure:"token-max-refresh"`
+	AccessTTL  time.Duration `json:"access-ttl" yaml:"access-ttl" mapstructure:"access-ttl"`
+	RefreshTTL time.Duration `json:"refresh-ttl" yaml:"refresh-ttl" mapstructure:"refresh-ttl"`
+	AccessKey  string        `json:"access-key" yaml:"access-key" mapstructure:"access-key"`
+	RefreshKey string        `json:"refresh-key" yaml:"refresh-key" mapstructure:"refresh-key"`
 }
 
 type CfgGameplay struct {
@@ -43,9 +44,10 @@ type Config struct {
 // Inits default values if config is not found.
 var Cfg = &Config{
 	CfgJwtAuth: CfgJwtAuth{
-		TokenKey:        "skJgM4NsbP3fs4k7vh0gfdkgGl8dJTszdLxZ1sQ9ksFnxbgvw2RsGH8xxddUV479",
-		TokenTimeout:    1 * 24 * time.Hour,
-		TokenMaxRefresh: 3 * 24 * time.Hour,
+		AccessTTL:  1 * 24 * time.Hour,
+		RefreshTTL: 3 * 24 * time.Hour,
+		AccessKey:  "skJgM4NsbP3fs4k7vh0gfdkgGl8dJTszdLxZ1sQ9ksFnxbgvw2RsGH8xxddUV479",
+		RefreshKey: "zxK4dUnuq3Lhd1Gzhpr3usI5lAzgvy2t3fmxld2spzz7a5nfv0hsksm9cheyutie",
 	},
 	CfgGameplay: CfgGameplay{
 		AdjunctLimit:    100000,

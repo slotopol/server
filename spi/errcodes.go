@@ -6,13 +6,33 @@ const (
 	SECnull = iota
 
 	// authorization
-	SEC_unauthorized
+	SEC_auth_absent
+	SEC_auth_scheme
+	SEC_basic_decode
+	SEC_basic_nouser
+	SEC_basic_deny
+	SEC_token_baduid
+	SEC_token_malform
+	SEC_token_notsign
+	SEC_token_badclaims
+	SEC_token_expired
+	SEC_token_notyet
+	SEC_token_issuer
+	SEC_token_error
+
+	// 404
 	SEC_nourl
 
 	// POST /signup
 	SEC_signup_nobind
 	SEC_signup_smallsec
 	SEC_signup_insert
+
+	// POST /signin
+	SEC_signin_nobind
+	SEC_signin_smallsec
+	SEC_signin_nouser
+	SEC_signin_deny
 
 	// POST /game/join
 	SEC_game_join_nobind

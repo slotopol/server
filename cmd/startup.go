@@ -169,12 +169,6 @@ func InitSpinlog() (err error) {
 }
 
 func Init() (err error) {
-	spi.AuthMiddleware.Key = util.S2B(Cfg.TokenKey)
-	spi.AuthMiddleware.Timeout = Cfg.TokenTimeout
-	spi.AuthMiddleware.MaxRefresh = Cfg.TokenMaxRefresh
-	if err = spi.AuthMiddleware.MiddlewareInit(); err != nil {
-		return fmt.Errorf("auth middleware failure on init: %w", err)
-	}
 	if err = InitStorage(); err != nil {
 		return fmt.Errorf("can not init XORM records storage: %w", err)
 	}
