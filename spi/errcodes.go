@@ -30,9 +30,14 @@ const (
 
 	// POST /signin
 	SEC_signin_nobind
+	SEC_signin_nosecret
 	SEC_signin_smallsec
 	SEC_signin_nouser
-	SEC_signin_deny
+	SEC_signin_denypass
+	SEC_signin_sigtime
+	SEC_signin_timeout
+	SEC_signin_hs256
+	SEC_signin_denyhash
 
 	// POST /game/join
 	SEC_game_join_nobind
@@ -209,7 +214,6 @@ const (
 
 var (
 	Err404       = errors.New("page not found")
-	ErrSmallKey  = errors.New("password too small")
 	ErrNoUID     = errors.New("user ID does not provided")
 	ErrNoCID     = errors.New("club ID does not provided")
 	ErrNoGID     = errors.New("game ID does not provided")
@@ -222,7 +226,7 @@ var (
 	ErrFundOut   = errors.New("not enough money at jackpot fund")
 	ErrLockOut   = errors.New("not enough money at deposit")
 	ErrNoAccess  = errors.New("no access rights for this feature")
-	ErrNoSecret  = errors.New("password confirmation does not pass")
+	ErrNotConf   = errors.New("password confirmation does not pass")
 	ErrNoMult    = errors.New("gamble multiplier not given")
 	ErrBigMult   = errors.New("gamble multiplier too big")
 	ErrZero      = errors.New("given value is zero")

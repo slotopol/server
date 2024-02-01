@@ -88,7 +88,7 @@ func SpiUserSecret(c *gin.Context) {
 	}
 
 	if arg.OldSecret != user.Secret && al&ALadmin == 0 {
-		Ret403(c, SEC_prop_secret_nosecret, ErrNoSecret)
+		Ret403(c, SEC_prop_secret_nosecret, ErrNotConf)
 		return
 	}
 
@@ -139,7 +139,7 @@ func SpiUserDelete(c *gin.Context) {
 	}
 
 	if arg.Secret != user.Secret && al&ALadmin == 0 {
-		Ret403(c, SEC_prop_delete_nosecret, ErrNoSecret)
+		Ret403(c, SEC_prop_delete_nosecret, ErrNotConf)
 		return
 	}
 

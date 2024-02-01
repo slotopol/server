@@ -1,7 +1,10 @@
 package spi
 
 import (
+	"bytes"
+	"crypto/sha256"
 	"encoding/base64"
+	"encoding/hex"
 	"encoding/xml"
 	"errors"
 	"strings"
@@ -30,8 +33,13 @@ var (
 	ErrBadJwtID = errors.New("jwt-token id does not refer to registered user")
 	ErrNoAuth   = errors.New("authorization is required")
 	ErrNoScheme = errors.New("authorization does not have expected scheme")
+	ErrNoSecret = errors.New("expected password or SHA25 hash on it and current time as a nonce")
+	ErrSmallKey = errors.New("password too small")
 	ErrNoCred   = errors.New("user with given credentials does not registered")
-	ErrBadPass  = errors.New("password is incorrect")
+	ErrNotPass  = errors.New("password is incorrect")
+	ErrSigTime  = errors.New("signing time can not been recognized (time in RFC3339 expected)")
+	ErrSigOut   = errors.New("nonce is expired")
+	ErrBadHash  = errors.New("hash cannot be decoded in hexadecimal")
 )
 
 var (
@@ -154,7 +162,7 @@ func GetBasicAuth(credentials string) (user *User, code int, err error) {
 		return
 	}
 	if user.Secret != parts[1] {
-		err, code = ErrBadPass, SEC_basic_deny
+		err, code = ErrNotPass, SEC_basic_deny
 		return
 	}
 	return
@@ -289,7 +297,9 @@ func SpiSignin(c *gin.Context) {
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		Email   string   `json:"email" yaml:"email" xml:"email" form:"email" binding:"required"`
-		Secret  string   `json:"secret" yaml:"secret" xml:"secret" form:"secret" binding:"required"`
+		Secret  string   `json:"secret" yaml:"secret,omitempty" xml:"secret,omitempty" form:"secret"`
+		HS256   string   `json:"hs256,omitempty" yaml:"hs256,omitempty" xml:"hs256,omitempty" form:"hs256"`
+		SigTime string   `json:"sigtime,omitempty" yaml:"sigtime,omitempty" xml:"sigtime,omitempty" form:"sigtime"`
 	}
 	var ret AuthResp
 
@@ -316,9 +326,44 @@ func SpiSignin(c *gin.Context) {
 		Ret403(c, SEC_signin_nouser, ErrNoCred)
 		return
 	}
-	if arg.Secret != user.Secret {
-		Ret403(c, SEC_signin_deny, ErrBadPass)
+	if len(arg.SigTime) == 0 && len(arg.Secret) == 0 {
+		Ret400(c, SEC_signin_nosecret, ErrNoSecret)
 		return
+	}
+
+	if len(arg.Secret) > 0 {
+		if len(arg.Secret) < 6 {
+			Ret400(c, SEC_signup_smallsec, ErrSmallKey)
+			return
+		}
+		if arg.Secret != user.Secret {
+			Ret403(c, SEC_signin_denypass, ErrNotPass)
+			return
+		}
+	} else {
+		var sigtime time.Time
+		if sigtime, err = time.Parse(time.RFC3339, arg.SigTime); err != nil {
+			Ret400(c, SEC_signin_sigtime, ErrSigTime)
+			return
+		}
+		if time.Since(sigtime) > Cfg.NonceTimeout {
+			Ret403(c, SEC_signin_timeout, ErrSigOut)
+			return
+		}
+
+		var hs256 []byte
+		if hs256, err = hex.DecodeString(arg.HS256); err != nil {
+			Ret400(c, SEC_signin_hs256, ErrBadHash)
+			return
+		}
+
+		var h = sha256.New()
+		h.Write(util.S2B(arg.SigTime))
+		var master = h.Sum(util.S2B(user.Secret))
+		if !bytes.Equal(master, hs256) {
+			Ret403(c, SEC_signin_denyhash, ErrNotPass)
+			return
+		}
 	}
 
 	ret.Setup(user)

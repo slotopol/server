@@ -15,10 +15,11 @@ var (
 )
 
 type CfgJwtAuth struct {
-	AccessTTL  time.Duration `json:"access-ttl" yaml:"access-ttl" mapstructure:"access-ttl"`
-	RefreshTTL time.Duration `json:"refresh-ttl" yaml:"refresh-ttl" mapstructure:"refresh-ttl"`
-	AccessKey  string        `json:"access-key" yaml:"access-key" mapstructure:"access-key"`
-	RefreshKey string        `json:"refresh-key" yaml:"refresh-key" mapstructure:"refresh-key"`
+	AccessTTL    time.Duration `json:"access-ttl" yaml:"access-ttl" mapstructure:"access-ttl"`
+	RefreshTTL   time.Duration `json:"refresh-ttl" yaml:"refresh-ttl" mapstructure:"refresh-ttl"`
+	AccessKey    string        `json:"access-key" yaml:"access-key" mapstructure:"access-key"`
+	RefreshKey   string        `json:"refresh-key" yaml:"refresh-key" mapstructure:"refresh-key"`
+	NonceTimeout time.Duration `json:"nonce-timeout" yaml:"nonce-timeout" mapstructure:"nonce-timeout"`
 }
 
 type CfgGameplay struct {
@@ -44,10 +45,11 @@ type Config struct {
 // Inits default values if config is not found.
 var Cfg = &Config{
 	CfgJwtAuth: CfgJwtAuth{
-		AccessTTL:  1 * 24 * time.Hour,
-		RefreshTTL: 3 * 24 * time.Hour,
-		AccessKey:  "skJgM4NsbP3fs4k7vh0gfdkgGl8dJTszdLxZ1sQ9ksFnxbgvw2RsGH8xxddUV479",
-		RefreshKey: "zxK4dUnuq3Lhd1Gzhpr3usI5lAzgvy2t3fmxld2spzz7a5nfv0hsksm9cheyutie",
+		AccessTTL:    1 * 24 * time.Hour,
+		RefreshTTL:   3 * 24 * time.Hour,
+		AccessKey:    "skJgM4NsbP3fs4k7vh0gfdkgGl8dJTszdLxZ1sQ9ksFnxbgvw2RsGH8xxddUV479",
+		RefreshKey:   "zxK4dUnuq3Lhd1Gzhpr3usI5lAzgvy2t3fmxld2spzz7a5nfv0hsksm9cheyutie",
+		NonceTimeout: 150 * time.Second,
 	},
 	CfgGameplay: CfgGameplay{
 		AdjunctLimit:    100000,

@@ -77,6 +77,13 @@ There is supported basic authorization and bearer authorization (with JWT-tokens
 
 **Bearer** works with two HS256 JWT tokens - access token and refresh token. Access token should be provided in all cases except `refresh` call. When access-token expires, it should be replaced to refresh-token for refresh-call.
 
+In `\signin` call password can be given by two ways:
+
+1) Explicitly at field `secret` as is.
+2) By HMAC SHA256 hash and temporary public key.
+
+In second case it should be string in field `sigtime` with current time formatted in RFC3339 (can be with nanoseconds). And at field `hs256` it should be hexadecimal hash formed with algorithm SHA256 with this current time and password, i.e. sha256(sigtime+password). Allowed timeout for public key in 2m 30s.
+
 * Sign-in, and use token from response with any followed calls.
 
 ```sh
@@ -85,7 +92,7 @@ curl -H "Content-Type: application/json" -d '{"email":"player@example.org","secr
 
 You can use token `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzbG90b3BvbCIsImV4cCI6NDg2NzQ0NzYxNywibmJmIjoxNzA2NjQ3NjE3LCJ1aWQiOjN9.6g2Hig9ErG8IbvzkPppry5F8HJsMunZPwuQzmetGh4c` for test purpose, it given for user with UID=3 on 100 years. Replace `{{token}}` at samples below to this value.
 
-* When you get 401 status code, use refresh-call with refresh-token to get new tokens pair.
+* When your access token expires (you can get response with 401 status code), use refresh-call with refresh-token to get new tokens pair.
 
 ```sh
 curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -X GET localhost:8080/refresh

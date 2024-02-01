@@ -12,6 +12,8 @@ authentication:
   access-key: skJgM4NsbP3fs4k7vh0gfdkgGl8dJTszdLxZ1sQ9ksFnxbgvw2RsGH8xxddUV479
   # Key for refresh HS-256 JWT-tokens.
   refresh-key: zxK4dUnuq3Lhd1Gzhpr3usI5lAzgvy2t3fmxld2spzz7a5nfv0hsksm9cheyutie
+  # Validity timeout of the nonce with which the login hash is signed.
+  nonce-timeout: 2m30s
 gameplay:
   # Maximum value to add to wallet by one transaction.
   adjunct-limit: 100000
