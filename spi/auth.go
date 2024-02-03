@@ -183,7 +183,7 @@ func GetBearerAuth(tokenstr string) (user *User, code int, err error) {
 	if err == nil {
 		var ok bool
 		if user, ok = Users.Get(claims.UID); !ok {
-			err, code = ErrBadJwtID, SEC_token_baduid
+			err, code = ErrBadJwtID, SEC_token_nouser
 		}
 		return
 	}

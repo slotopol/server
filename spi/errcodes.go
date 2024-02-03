@@ -11,7 +11,7 @@ const (
 	SEC_basic_decode
 	SEC_basic_nouser
 	SEC_basic_deny
-	SEC_token_baduid
+	SEC_token_nouser
 	SEC_token_malform
 	SEC_token_notsign
 	SEC_token_badclaims
