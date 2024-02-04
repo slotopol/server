@@ -9,6 +9,7 @@ import (
 	"github.com/slotopol/server/util"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"xorm.io/xorm"
 )
 
 var (
@@ -24,6 +25,11 @@ var (
 	CfgPath string
 	// SQLite-files path.
 	SqlPath string
+)
+
+var (
+	XormStorage *xorm.Engine
+	XormSpinlog *xorm.Engine
 )
 
 var (

@@ -8,6 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/config/links"
 )
 
 // save server start time
@@ -60,9 +61,9 @@ func SpiMemUsage(c *gin.Context) {
 
 // Returns full list of all available games by game type IDs.
 func SpiGameList(c *gin.Context) {
-	var list = make([]string, len(cfg.GameAliases))
+	var list = make([]string, len(links.GameAliases))
 	var i int
-	for alias := range cfg.GameAliases {
+	for alias := range links.GameAliases {
 		list[i] = alias
 		i++
 	}

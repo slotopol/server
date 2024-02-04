@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/config/links"
 	"github.com/slotopol/server/util"
 
 	"github.com/gin-gonic/gin"
@@ -49,7 +50,7 @@ func SpiGameJoin(c *gin.Context) {
 
 	var alias = util.ToID(arg.Alias)
 	var gname string
-	if gname, ok = cfg.GameAliases[alias]; !ok {
+	if gname, ok = links.GameAliases[alias]; !ok {
 		Ret400(c, SEC_game_join_noalias, ErrNoAliase)
 		return
 	}
@@ -73,7 +74,7 @@ func SpiGameJoin(c *gin.Context) {
 		return
 	}
 
-	var maker = cfg.GameFactory[gname]
+	var maker = links.GameFactory[gname]
 	var slotgame = maker("96")
 	if slotgame == nil {
 		Ret400(c, SEC_game_join_noreels, ErrNoReels)

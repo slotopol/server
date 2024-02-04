@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/config/links"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -32,7 +33,7 @@ var scanCmd = &cobra.Command{
 		var ctx, cancel = context.WithCancel(context.Background())
 		defer cancel()
 
-		for _, iter := range cfg.ScatIters {
+		for _, iter := range links.ScatIters {
 			iter(flags, ctx)
 		}
 
@@ -50,7 +51,7 @@ func init() {
 	flags = scanCmd.Flags()
 	flags.StringVarP(&fReels, "reels", "r", "", "name of reels set to use")
 
-	for _, setter := range cfg.FlagsSetters {
+	for _, setter := range links.FlagsSetters {
 		setter(flags)
 	}
 }

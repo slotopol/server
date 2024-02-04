@@ -1,20 +1,19 @@
 //go:build !prod || full || novomatic
 
-package config
+package links
 
 import (
 	"context"
 
-	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/game/dolphinspearl"
 	"github.com/spf13/pflag"
 )
 
 func init() {
-	cfg.FlagsSetters = append(cfg.FlagsSetters, func(flags *pflag.FlagSet) {
+	FlagsSetters = append(FlagsSetters, func(flags *pflag.FlagSet) {
 		flags.Bool("dolphinspearl", false, "'Dolphins Pearl' Novomatic 5x3 slots")
 	})
-	cfg.ScatIters = append(cfg.ScatIters, func(flags *pflag.FlagSet, ctx context.Context) {
+	ScatIters = append(ScatIters, func(flags *pflag.FlagSet, ctx context.Context) {
 		if is, _ := flags.GetBool("dolphinspearl"); is {
 			var rn, _ = flags.GetString("reels")
 			if rn == "bon" {
@@ -44,10 +43,10 @@ func init() {
 		"themoneygame",
 		"unicornmagic",
 	} {
-		cfg.GameAliases[alias] = "dolphinspearl"
+		GameAliases[alias] = "dolphinspearl"
 	}
 
-	cfg.GameFactory["dolphinspearl"] = func(rd string) any {
+	GameFactory["dolphinspearl"] = func(rd string) any {
 		if _, ok := dolphinspearl.ReelsMap[rd]; ok {
 			return dolphinspearl.NewGame(rd)
 		}
