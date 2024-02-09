@@ -1,7 +1,7 @@
 package chicago
 
 import (
-	"math/rand"
+	"math/rand/v2"
 
 	"github.com/slotopol/server/game"
 )
@@ -183,7 +183,7 @@ func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
 
 	if g.FS > 0 {
 		g.FS--
-		g.Mult = MultChoose[rand.Intn(len(MultChoose))]
+		g.Mult = MultChoose[rand.N(len(MultChoose))]
 	} else {
 		g.Mult = 1
 	}

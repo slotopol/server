@@ -1,7 +1,6 @@
 package spi
 
 import (
-	"net/http"
 	"runtime"
 	"sort"
 	"time"
@@ -19,7 +18,7 @@ func SpiPing(c *gin.Context) {
 	var ret = gin.H{
 		"message": "pong",
 	}
-	Negotiate(c, http.StatusOK, ret)
+	RetOk(c, ret)
 }
 
 // Static service system information.
@@ -36,7 +35,7 @@ func SpiServInfo(c *gin.Context) {
 		"cfgpath":   cfg.CfgPath,
 		"sqlpath":   cfg.SqlPath,
 	}
-	Negotiate(c, http.StatusOK, ret)
+	RetOk(c, ret)
 }
 
 // Memory usage footprint.
@@ -56,7 +55,7 @@ func SpiMemUsage(c *gin.Context) {
 		"pausetotalns":  mem.PauseTotalNs,
 		"gccpufraction": mem.GCCPUFraction,
 	}
-	Negotiate(c, http.StatusOK, ret)
+	RetOk(c, ret)
 }
 
 // Returns full list of all available games by game type IDs.
@@ -70,5 +69,5 @@ func SpiGameList(c *gin.Context) {
 	sort.Slice(list, func(i, j int) bool {
 		return list[i] < list[j]
 	})
-	Negotiate(c, http.StatusOK, list)
+	RetOk(c, list)
 }

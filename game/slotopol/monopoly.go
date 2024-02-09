@@ -1,6 +1,6 @@
 package slotopol
 
-import "math/rand"
+import "math/rand/v2"
 
 type MonCell struct {
 	Mult int  `json:"mult" yaml:"mult" xml:"mult,attr"` // bet multiplier
@@ -45,7 +45,7 @@ func MonopolySpawn(bet int) (any, int) {
 
 	var pos = 0
 	for i := range res {
-		var dice = rand.Intn(6) + 1
+		var dice = rand.N(6) + 1
 		pos = (pos + dice) % len(Monopoly)
 		var mult int
 		if Monopoly[pos].Jump > 0 {

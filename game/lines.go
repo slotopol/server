@@ -1,6 +1,9 @@
 package game
 
-import "sync"
+import (
+	"math/bits"
+	"sync"
+)
 
 type Line interface {
 	At(x int) int   // returns symbol at position x, starts from 1
@@ -31,12 +34,7 @@ func MakeSBL(lines ...int) SBL {
 
 // Num returns number of selected lines in set.
 func (sbl SBL) Num() int {
-	var count SBL
-	for sbl > 0 {
-		count += sbl & 1
-		sbl >>= 1
-	}
-	return int(count)
+	return bits.OnesCount(uint(sbl))
 }
 
 // Next helps iterate lines numbers as followed:

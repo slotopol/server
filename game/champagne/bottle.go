@@ -1,6 +1,9 @@
 package champagne
 
-import "math/rand"
+import (
+	"math/rand/v2"
+	"slices"
+)
 
 // len = 36, count = 630, avr bottle gain = 90.555556, M = 193.65079365079
 var Bottles = [36]int{
@@ -19,21 +22,15 @@ type WinBottle struct {
 	Pay  int `json:"pay" yaml:"pay" xml:"pay,attr"`    // pay by this cell
 }
 
-func Shuffle[T any](src []T) []T {
-	var dst = make([]T, len(src))
-	var perm = rand.Perm(len(src))
-	for i, v := range perm {
-		dst[v] = src[i]
-	}
-	return dst
-}
-
 func ChampagneSpawn(bet int) (any, int) {
 	var res [5]WinBottle
 	var cash int
 
-	var p = Shuffle(Bottles[:])
-	for i := 0; i < 5; i++ {
+	var p = slices.Clone(Bottles[:])
+	rand.Shuffle(len(p), func(i, j int) {
+		p[i], p[j] = p[j], p[i]
+	})
+	for i := range res {
 		res[i].Mult = p[i]
 		res[i].Pay = bet * p[i]
 	}

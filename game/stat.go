@@ -102,7 +102,7 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, n int) {
 	var screen = g.NewScreen()
 	defer screen.Free()
 	var ws WinScan
-	for i := 0; i < n; i++ {
+	for range n {
 		g.Spin(screen)
 		g.Scanner(screen, &ws)
 		s.Update(&ws)

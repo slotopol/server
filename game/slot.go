@@ -2,7 +2,7 @@ package game
 
 import (
 	"errors"
-	"math/rand"
+	"math/rand/v2"
 	"sync"
 )
 
@@ -125,7 +125,7 @@ func (s *Screen5x3) At(x int, y int) Sym {
 }
 
 func (s *Screen5x3) SetCol(x int, reel []Sym, pos int) {
-	for y := 0; y < 3; y++ {
+	for y := range 3 {
 		s[x-1][y] = reel[(pos+y)%len(reel)]
 	}
 }
@@ -133,13 +133,13 @@ func (s *Screen5x3) SetCol(x int, reel []Sym, pos int) {
 func (s *Screen5x3) Spin(reels Reels) {
 	for x := 1; x <= 5; x++ {
 		var reel = reels.Reel(x)
-		var hit = rand.Intn(len(reel))
+		var hit = rand.N(len(reel))
 		s.SetCol(x, reel, hit)
 	}
 }
 
 func (s *Screen5x3) ScatNum(scat Sym) (n int) {
-	for x := 0; x < 5; x++ {
+	for x := range 5 {
 		var r = s[x]
 		if r[0] == scat || r[1] == scat || r[2] == scat {
 			n++
@@ -172,7 +172,7 @@ func (s *Screen5x3) ScatNumCont(scat Sym) (n int) {
 
 func (s *Screen5x3) ScatPos(scat Sym) Line {
 	var l = NewLine5x()
-	for x := 0; x < 5; x++ {
+	for x := range 5 {
 		var r = s[x]
 		if r[0] == scat {
 			l[x] = 1

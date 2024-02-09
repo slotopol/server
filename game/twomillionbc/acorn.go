@@ -1,6 +1,6 @@
 package twomillionbc
 
-import "math/rand"
+import "math/rand/v2"
 
 // Average gain = 11
 var Acorn = [...]int{
@@ -8,6 +8,6 @@ var Acorn = [...]int{
 }
 
 func AcornSpawn(acornbet int) (pay int) {
-	var mult = Acorn[rand.Intn(len(Acorn))]
+	var mult = Acorn[rand.N(len(Acorn))]
 	return acornbet * mult
 }

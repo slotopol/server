@@ -1,6 +1,6 @@
 package slotopol
 
-import "math/rand"
+import "math/rand/v2"
 
 // Average gain = 106
 var Eldorado = []int{
@@ -32,50 +32,11 @@ type WinElSeg struct {
 	Pay  int `json:"pay" yaml:"pay" xml:"pay,attr"`    // pay by this segment
 }
 
-func Eldorado1Spawn(bet int) (any, int) {
-	var res = make([]WinElSeg, 1)
-	var cash int
-	for i := range res {
-		var n = rand.Intn(len(Eldorado))
-		res[i].Mult = Eldorado[n]
-		res[i].Pos = n + 1
-		res[i].Pay = bet * Eldorado[n]
-		cash += Eldorado[n]
-	}
-	return res, bet * cash
-}
-
-func Eldorado3Spawn(bet int) (any, int) {
-	var res = make([]WinElSeg, 3)
+func EldoradoSpawn(bet int, spins int) (any, int) {
+	var res = make([]WinElSeg, spins)
 	var pay int
 	for i := range res {
-		var n = rand.Intn(len(Eldorado))
-		res[i].Mult = Eldorado[n]
-		res[i].Pos = n + 1
-		res[i].Pay = bet * Eldorado[n]
-		pay += res[i].Pay
-	}
-	return res, pay
-}
-
-func Eldorado6Spawn(bet int) (any, int) {
-	var res = make([]WinElSeg, 6)
-	var pay int
-	for i := range res {
-		var n = rand.Intn(len(Eldorado))
-		res[i].Mult = Eldorado[n]
-		res[i].Pos = n + 1
-		res[i].Pay = bet * Eldorado[n]
-		pay += res[i].Pay
-	}
-	return res, pay
-}
-
-func Eldorado9Spawn(bet int) (any, int) {
-	var res = make([]WinElSeg, 9)
-	var pay int
-	for i := range res {
-		var n = rand.Intn(len(Eldorado))
+		var n = rand.N(len(Eldorado))
 		res[i].Mult = Eldorado[n]
 		res[i].Pos = n + 1
 		res[i].Pay = bet * Eldorado[n]

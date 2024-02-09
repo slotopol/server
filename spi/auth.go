@@ -206,6 +206,10 @@ func GetBearerAuth(tokenstr string) (user *User, code int, err error) {
 	return
 }
 
+func Handle404(c *gin.Context) {
+	Ret404(c, SEC_nourl, Err404)
+}
+
 type AuthResp struct {
 	XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
 	UID     uint64   `json:"uid" yaml:"uid" xml:"uid"`
@@ -246,10 +250,6 @@ func (r *AuthResp) Setup(user *User) {
 	}
 	r.Living = age.Format(time.RFC3339)
 	r.UID = user.UID
-}
-
-func Handle404(c *gin.Context) {
-	Ret404(c, SEC_nourl, Err404)
 }
 
 func SpiSignup(c *gin.Context) {

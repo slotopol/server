@@ -3,7 +3,7 @@ package spi
 import (
 	"encoding/xml"
 	"log"
-	"math/rand"
+	"math/rand/v2"
 	"net/http"
 
 	cfg "github.com/slotopol/server/config"

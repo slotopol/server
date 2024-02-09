@@ -1,6 +1,6 @@
 package twomillionbc
 
-import "math/rand"
+import "math/rand/v2"
 
 // Average gain = 175
 var DiamondLion = [...]int{
@@ -8,6 +8,6 @@ var DiamondLion = [...]int{
 }
 
 func DiamondLionSpawn(bet int) int {
-	var mult = DiamondLion[rand.Intn(len(DiamondLion))]
+	var mult = DiamondLion[rand.N(len(DiamondLion))]
 	return bet * mult
 }

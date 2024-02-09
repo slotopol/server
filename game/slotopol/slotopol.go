@@ -221,13 +221,13 @@ func (g *Game) Spawn(screen game.Screen, sw *game.WinScan) {
 	for i, wi := range sw.Wins {
 		switch wi.BID {
 		case mje1:
-			sw.Wins[i].Bon, sw.Wins[i].Pay = Eldorado1Spawn(g.Bet)
+			sw.Wins[i].Bon, sw.Wins[i].Pay = EldoradoSpawn(g.Bet, 1)
 		case mje3:
-			sw.Wins[i].Bon, sw.Wins[i].Pay = Eldorado3Spawn(g.Bet)
+			sw.Wins[i].Bon, sw.Wins[i].Pay = EldoradoSpawn(g.Bet, 3)
 		case mje6:
-			sw.Wins[i].Bon, sw.Wins[i].Pay = Eldorado6Spawn(g.Bet)
+			sw.Wins[i].Bon, sw.Wins[i].Pay = EldoradoSpawn(g.Bet, 6)
 		case mje9:
-			sw.Wins[i].Bon, sw.Wins[i].Pay = Eldorado9Spawn(g.Bet)
+			sw.Wins[i].Bon, sw.Wins[i].Pay = EldoradoSpawn(g.Bet, 9)
 		case mjm:
 			sw.Wins[i].Bon, sw.Wins[i].Pay = MonopolySpawn(g.Bet)
 		}
