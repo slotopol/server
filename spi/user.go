@@ -26,10 +26,6 @@ func SpiUserRename(c *gin.Context) {
 		Ret400(c, SEC_user_rename_nouid, ErrNoUID)
 		return
 	}
-	if arg.Name == "" {
-		Ret400(c, SEC_user_rename_noname, ErrNoData)
-		return
-	}
 
 	var user *User
 	if user, ok = Users.Get(arg.UID); !ok {

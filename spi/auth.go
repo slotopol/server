@@ -1,7 +1,7 @@
 package spi
 
 import (
-	"bytes"
+	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/hex"
@@ -307,7 +307,11 @@ func SpiSignin(c *gin.Context) {
 		Ret400(c, SEC_signin_nobind, err)
 		return
 	}
-	if len(arg.Secret) < 6 {
+	if len(arg.SigTime) == 0 && len(arg.Secret) == 0 {
+		Ret400(c, SEC_signin_nosecret, ErrNoSecret)
+		return
+	}
+	if len(arg.Secret) > 0 && len(arg.Secret) < 6 {
 		Ret400(c, SEC_signin_smallsec, ErrSmallKey)
 		return
 	}
@@ -326,16 +330,8 @@ func SpiSignin(c *gin.Context) {
 		Ret403(c, SEC_signin_nouser, ErrNoCred)
 		return
 	}
-	if len(arg.SigTime) == 0 && len(arg.Secret) == 0 {
-		Ret400(c, SEC_signin_nosecret, ErrNoSecret)
-		return
-	}
 
 	if len(arg.Secret) > 0 {
-		if len(arg.Secret) < 6 {
-			Ret400(c, SEC_signup_smallsec, ErrSmallKey)
-			return
-		}
 		if arg.Secret != user.Secret {
 			Ret403(c, SEC_signin_denypass, ErrNotPass)
 			return
@@ -357,10 +353,10 @@ func SpiSignin(c *gin.Context) {
 			return
 		}
 
-		var h = sha256.New()
-		h.Write(util.S2B(arg.SigTime))
-		var master = h.Sum(util.S2B(user.Secret))
-		if !bytes.Equal(master, hs256) {
+		var h = hmac.New(sha256.New, util.S2B(arg.SigTime))
+		h.Write(util.S2B(user.Secret))
+		var master = h.Sum(nil)
+		if !hmac.Equal(master, hs256) {
 			Ret403(c, SEC_signin_denyhash, ErrNotPass)
 			return
 		}

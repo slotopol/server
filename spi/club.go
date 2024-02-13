@@ -15,7 +15,7 @@ func SpiClubRename(c *gin.Context) {
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid"`
-		Name    string   `json:"name" yaml:"name" xml:"name" form:"name"`
+		Name    string   `json:"name" yaml:"name" xml:"name" form:"name" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -23,11 +23,7 @@ func SpiClubRename(c *gin.Context) {
 		return
 	}
 	if arg.CID == 0 {
-		Ret400(c, SEC_club_rename_nouid, ErrNoUID)
-		return
-	}
-	if arg.Name == "" {
-		Ret400(c, SEC_club_rename_noname, ErrNoData)
+		Ret400(c, SEC_club_rename_nouid, ErrNoCID)
 		return
 	}
 
@@ -76,11 +72,11 @@ func SpiClubCashin(c *gin.Context) {
 		return
 	}
 	if arg.CID == 0 {
-		Ret400(c, SEC_club_cashin_nouid, ErrNoUID)
+		Ret400(c, SEC_club_cashin_nouid, ErrNoCID)
 		return
 	}
 	if arg.BankSum == 0 && arg.FundSum == 0 && arg.LockSum == 0 {
-		Ret400(c, SEC_club_cashin_nosum, ErrNoData)
+		Ret400(c, SEC_club_cashin_nosum, ErrNoAddSum)
 		return
 	}
 

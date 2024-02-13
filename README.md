@@ -77,12 +77,12 @@ There is supported basic authorization and bearer authorization (with JWT-tokens
 
 **Bearer** works with two HS256 JWT tokens - access token and refresh token. Access token should be provided in all cases except `refresh` call. When access-token expires, it should be replaced to refresh-token for refresh-call.
 
-In `\signin` call password can be given by two ways:
+In `/signin` call password can be given by two ways:
 
 1) Explicitly at field `secret` as is.
 2) By HMAC SHA256 hash and temporary public key.
 
-In second case it should be string in field `sigtime` with current time formatted in RFC3339 (can be with nanoseconds). And at field `hs256` it should be hexadecimal hash formed with algorithm SHA256 with this current time and password, i.e. sha256(sigtime+password). Allowed timeout for public key in 2m 30s.
+In second case it should be string in field `sigtime` with current time formatted in RFC3339 (can be with nanoseconds). And at field `hs256` it should be hexadecimal HMAC formed with algorithm SHA256 with this current time as a key, and password, i.e. sha256.hmac(sigtime, password). Allowed timeout for public key is 2m 30s.
 
 * Sign-in, and use token from response with any followed calls.
 

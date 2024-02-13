@@ -22,7 +22,7 @@ func SpiGameJoin(c *gin.Context) {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid"`
 		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
-		Alias   string   `json:"alias" yaml:"alias" xml:"alias" form:"alias"`
+		Alias   string   `json:"alias" yaml:"alias" xml:"alias" form:"alias" binding:"required"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -41,10 +41,6 @@ func SpiGameJoin(c *gin.Context) {
 	}
 	if arg.UID == 0 {
 		Ret400(c, SEC_game_join_nouid, ErrNoUID)
-		return
-	}
-	if arg.Alias == "" {
-		Ret400(c, SEC_game_join_nodata, ErrNoData)
 		return
 	}
 
@@ -269,7 +265,7 @@ func SpiGameBetSet(c *gin.Context) {
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
-		Bet     int      `json:"bet" yaml:"bet" xml:"bet"`
+		Bet     int      `json:"bet" yaml:"bet" xml:"bet" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -278,10 +274,6 @@ func SpiGameBetSet(c *gin.Context) {
 	}
 	if arg.GID == 0 {
 		Ret400(c, SEC_game_betset_nogid, ErrNoGID)
-		return
-	}
-	if arg.Bet == 0 {
-		Ret400(c, SEC_game_betset_nodata, ErrNoData)
 		return
 	}
 
@@ -351,7 +343,7 @@ func SpiGameSblSet(c *gin.Context) {
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
-		SBL     game.SBL `json:"sbl" yaml:"sbl" xml:"sbl"`
+		SBL     game.SBL `json:"sbl" yaml:"sbl" xml:"sbl" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -360,10 +352,6 @@ func SpiGameSblSet(c *gin.Context) {
 	}
 	if arg.GID == 0 {
 		Ret400(c, SEC_game_sblset_nogid, ErrNoGID)
-		return
-	}
-	if arg.SBL == 0 {
-		Ret400(c, SEC_game_sblset_nodata, ErrNoData)
 		return
 	}
 
@@ -433,7 +421,7 @@ func SpiGameReelsSet(c *gin.Context) {
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
-		RD      string   `json:"rd" yaml:"rd" xml:"rd"`
+		RD      string   `json:"rd" yaml:"rd" xml:"rd" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -442,10 +430,6 @@ func SpiGameReelsSet(c *gin.Context) {
 	}
 	if arg.GID == 0 {
 		Ret400(c, SEC_game_rdset_nogid, ErrNoGID)
-		return
-	}
-	if arg.RD == "" {
-		Ret400(c, SEC_game_rdset_nodata, ErrNoData)
 		return
 	}
 

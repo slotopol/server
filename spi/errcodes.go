@@ -43,7 +43,6 @@ const (
 	SEC_game_join_nobind
 	SEC_game_join_norid
 	SEC_game_join_nouid
-	SEC_game_join_nodata
 	SEC_game_join_noalias
 	SEC_game_join_noclub
 	SEC_game_join_nouser
@@ -76,7 +75,6 @@ const (
 	// POST /game/bet
 	SEC_game_betset_nobind
 	SEC_game_betset_nogid
-	SEC_game_betset_nodata
 	SEC_game_betset_notopened
 	SEC_prop_betset_noaccess
 	SEC_game_betset_badbet
@@ -90,7 +88,6 @@ const (
 	// POST /game/sbl
 	SEC_game_sblset_nobind
 	SEC_game_sblset_nogid
-	SEC_game_sblset_nodata
 	SEC_game_sblset_notopened
 	SEC_prop_sblset_noaccess
 	SEC_game_sblset_badlines
@@ -104,7 +101,6 @@ const (
 	// POST /game/reels/set
 	SEC_game_rdset_nobind
 	SEC_game_rdset_nogid
-	SEC_game_rdset_nodata
 	SEC_game_rdset_notopened
 	SEC_prop_rdset_noaccess
 	SEC_game_rdset_badreels
@@ -166,7 +162,6 @@ const (
 	// POST /user/rename
 	SEC_user_rename_nobind
 	SEC_user_rename_nouid
-	SEC_user_rename_noname
 	SEC_user_rename_nouser
 	SEC_prop_rename_noaccess
 	SEC_user_rename_update
@@ -194,7 +189,6 @@ const (
 	// POST /club/rename
 	SEC_club_rename_nobind
 	SEC_club_rename_nouid
-	SEC_club_rename_noname
 	SEC_club_rename_noclub
 	SEC_club_rename_noaccess
 	SEC_club_rename_update
@@ -217,10 +211,10 @@ var (
 	ErrNoUID     = errors.New("user ID does not provided")
 	ErrNoCID     = errors.New("club ID does not provided")
 	ErrNoGID     = errors.New("game ID does not provided")
-	ErrNoData    = errors.New("data does not provided or empty")
 	ErrNoClub    = errors.New("club with given ID does not found")
 	ErrNoUser    = errors.New("user with given ID does not found")
 	ErrNoWallet  = errors.New("wallet for given user and club does not found")
+	ErrNoAddSum  = errors.New("no sum to change balance of bank or fund or deposit")
 	ErrNoMoney   = errors.New("not enough money on balance")
 	ErrBankOut   = errors.New("not enough money at bank")
 	ErrFundOut   = errors.New("not enough money at jackpot fund")
