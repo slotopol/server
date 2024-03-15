@@ -1,4 +1,4 @@
-package dolphinspearl
+package arabiannights
 
 import (
 	"context"
