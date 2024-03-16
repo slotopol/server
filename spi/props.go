@@ -18,7 +18,7 @@ func SpiPropsWalletGet(c *gin.Context) {
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
-		Wallet  int      `json:"wallet" yaml:"wallet" xml:"wallet"`
+		Wallet  float64  `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -66,11 +66,11 @@ func SpiPropsWalletAdd(c *gin.Context) {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid"`
 		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
-		Addend  int      `json:"addend" yaml:"addend" xml:"addend"`
+		Addend  float64  `json:"addend" yaml:"addend" xml:"addend"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
-		Wallet  int      `json:"wallet" yaml:"wallet" xml:"wallet"`
+		Wallet  float64  `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {

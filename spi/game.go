@@ -28,7 +28,7 @@ func SpiGameJoin(c *gin.Context) {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
 		State   `yaml:",inline"`
-		Wallet  int `json:"wallet" yaml:"wallet" xml:"wallet"`
+		Wallet  float64 `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -177,7 +177,7 @@ func SpiGameState(c *gin.Context) {
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
 		State   `yaml:",inline"`
-		Wallet  int `json:"wallet" yaml:"wallet" xml:"wallet"`
+		Wallet  float64 `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -229,7 +229,7 @@ func SpiGameBetGet(c *gin.Context) {
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
-		Bet     int      `json:"bet" yaml:"bet" xml:"bet"`
+		Bet     float64  `json:"bet" yaml:"bet" xml:"bet"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -265,7 +265,7 @@ func SpiGameBetSet(c *gin.Context) {
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
-		Bet     int      `json:"bet" yaml:"bet" xml:"bet" binding:"required"`
+		Bet     float64  `json:"bet" yaml:"bet" xml:"bet" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -466,7 +466,7 @@ func SpiGameSpin(c *gin.Context) {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
 		SID     uint64   `json:"sid" yaml:"sid" xml:"sid,attr" form:"sid"`
 		State   `yaml:",inline"`
-		Wallet  int `json:"wallet" yaml:"wallet" xml:"wallet"`
+		Wallet  float64 `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -506,11 +506,11 @@ func SpiGameSpin(c *gin.Context) {
 		fs       = og.Game.FreeSpins()
 		bet      = og.Game.GetBet()
 		sbl      = og.Game.GetLines()
-		totalbet int
-		totalwin int
+		totalbet float64
+		totalwin float64
 	)
 	if fs == 0 {
-		totalbet = bet * sbl.Num()
+		totalbet = bet * float64(sbl.Num())
 	}
 
 	var props *Props
@@ -611,8 +611,8 @@ func SpiGameDoubleup(c *gin.Context) {
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
 		SID     uint64   `json:"sid" yaml:"sid" xml:"sid,attr" form:"sid"`
-		Gain    int      `json:"gain" yaml:"gain" xml:"gain"`
-		Wallet  int      `json:"wallet" yaml:"wallet" xml:"wallet"`
+		Gain    float64  `json:"gain" yaml:"gain" xml:"gain"`
+		Wallet  float64  `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -673,12 +673,12 @@ func SpiGameDoubleup(c *gin.Context) {
 	var rtp = club.GainRTP
 	club.mux.RUnlock()
 
-	var multgain int // new multiplied gain
-	if bank >= float64(gain*arg.Mult) {
+	var multgain float64 // new multiplied gain
+	if bank >= gain*float64(arg.Mult) {
 		var r = rand.Float64()
 		var side = 1 / float64(arg.Mult) * rtp / 100
 		if r < side {
-			multgain = gain * arg.Mult
+			multgain = gain * float64(arg.Mult)
 		}
 	}
 

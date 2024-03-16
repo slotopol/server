@@ -52,7 +52,7 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 	}()
 
 	var reshuf = float64(s.Reshuffles)
-	var lrtp, srtp = float64(s.LinePay) / reshuf / sbl * 100, float64(s.ScatPay) / reshuf * 100
+	var lrtp, srtp = s.LinePay / reshuf / sbl * 100, s.ScatPay / reshuf * 100
 	var rtpsym = lrtp + srtp
 	var qjazz = float64(s.BonusCount[jbonus]) / reshuf / sbl
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/total*100, g.SBL.Num(), dur)
@@ -101,7 +101,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 	}()
 
 	var reshuf = float64(s.Reshuffles)
-	var lrtp, srtp = float64(s.LinePay) / reshuf / sbl * 100, float64(s.ScatPay) / reshuf * 100
+	var lrtp, srtp = s.LinePay / reshuf / sbl * 100, s.ScatPay / reshuf * 100
 	var rtpsym = lrtp + srtp
 	var fgsum = float64(s.FGNum[2] + s.FGNum[3] + s.FGNum[4])
 	var fgpay = float64(s.FGPay) / fgsum

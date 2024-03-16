@@ -163,7 +163,7 @@ var ReelsMap = map[string]*game.Reels5x{
 }
 
 // Lined payment.
-var LinePay = [8][5]int{
+var LinePay = [8][5]float64{
 	{0, 0, 40, 400, 1000}, // seven
 	{0, 0, 20, 80, 400},   // bell
 	{0, 0, 20, 40, 200},   // melon
@@ -175,7 +175,7 @@ var LinePay = [8][5]int{
 }
 
 // Scatters payment.
-var ScatPay = [5]int{0, 0, 5, 20, 500} // star
+var ScatPay = [5]float64{0, 0, 5, 20, 500} // star
 
 const (
 	jid = 1 // jackpot ID
@@ -237,7 +237,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			}
 		}
 
-		var payw, payl int
+		var payw, payl float64
 		if numw > 0 {
 			payw = LinePay[wild-1][numw-1]
 		}

@@ -62,7 +62,7 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 	}()
 
 	var reshuf = float64(s.Reshuffles)
-	var lrtp, srtp = float64(s.LinePay) / reshuf / sbl * 100, float64(s.ScatPay) / reshuf * 100
+	var lrtp, srtp = s.LinePay / reshuf / sbl * 100, s.ScatPay / reshuf * 100
 	var rtpsym = lrtp + srtp
 	var q = float64(s.FreeCount) / reshuf
 	var sq = 1 / (1 - q)
@@ -113,7 +113,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 	}()
 
 	var reshuf = float64(s.Reshuffles)
-	var lrtp, srtp = float64(s.LinePay) / reshuf / sbl * 100, float64(s.ScatPay) / reshuf * 100
+	var lrtp, srtp = s.LinePay / reshuf / sbl * 100, s.ScatPay / reshuf * 100
 	var rtpsym = lrtp + srtp
 	var q = float64(s.FreeCount) / reshuf
 	var qmjc = float64(s.BonusCount[mjc]) / reshuf / sbl

@@ -139,7 +139,7 @@ var ReelsMap = map[string]*game.Reels5x{
 }
 
 // Lined payment.
-var LinePay = [13][5]int{
+var LinePay = [13][5]float64{
 	{0, 10, 250, 2500, 9000}, //  1 dolphin
 	{0, 2, 25, 125, 750},     //  2 stingray
 	{0, 2, 25, 125, 750},     //  3 crab
@@ -156,7 +156,7 @@ var LinePay = [13][5]int{
 }
 
 // Scatters payment.
-var ScatPay = [5]int{0, 2, 5, 20, 500} // 13 pearl
+var ScatPay = [5]float64{0, 2, 5, 20, 500} // 13 pearl
 
 // Scatter freespins table
 var ScatFreespin = [5]int{0, 0, 15, 15, 15} // 13 pearl
@@ -208,7 +208,7 @@ func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
-	var mm = 1 // mult mode
+	var mm float64 = 1 // mult mode
 	if g.FS > 0 {
 		mm = 3
 	}
@@ -235,7 +235,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			}
 		}
 
-		var payw, payl int
+		var payw, payl float64
 		if numw > 0 {
 			payw = LinePay[wild-1][numw-1]
 		}
@@ -268,7 +268,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 // Scatters calculation.
 func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 	if count := screen.ScatNum(scat); count >= 2 {
-		var mm = 1 // mult mode
+		var mm float64 = 1 // mult mode
 		if g.FS > 0 {
 			mm = 3
 		}

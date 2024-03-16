@@ -13,11 +13,11 @@ var Emje float64 // Eldorado game 1 spin calculated expectation
 
 // Eldorado expectation.
 func ExpEldorado() float64 {
-	var sum = 0
+	var sum float64
 	for _, v := range Eldorado {
 		sum += v
 	}
-	var E = float64(sum) / float64(len(Eldorado))
+	var E = sum / float64(len(Eldorado))
 	fmt.Printf("eldorado 1 spin: count = %d, E = %g\n", len(Eldorado), E)
 	return E
 }
@@ -26,9 +26,10 @@ var Emjm float64 // Monopoly game calculated expectation
 
 func ExpMonopoly() float64 {
 	var dices = [7]int{1, 1, 1, 1, 1, 1, 1}
-	var sumi, sumii, sumj int
+	var sumi, sumii, sumj float64
 	var count, zcount int = 6 * 6 * 6 * 6 * 6 * 6 * 6, 0
-	var pos, win int
+	var pos int
+	var win float64
 	for i1 := 1; i1 <= 6; i1++ {
 		for i2 := 1; i2 <= 6; i2++ {
 			for i3 := 1; i3 <= 6; i3++ {
@@ -45,7 +46,7 @@ func ExpMonopoly() float64 {
 										win = Monopoly[pos-1].Mult
 									}
 									if Monopoly[pos-1].Dice {
-										win *= dices[j]
+										win *= float64(dices[j])
 									}
 									if Monopoly[pos-1].Jump > 0 {
 										pos = Monopoly[pos-1].Jump
@@ -73,10 +74,10 @@ func ExpMonopoly() float64 {
 		}
 		dices[0] = dices[0]%6 + 1
 	}
-	var E = float64(sumi) / float64(count)
-	var v = float64(sumii)/float64(count) - E*E
+	var E = sumi / float64(count)
+	var v = sumii/float64(count) - E*E
 	var sigma = math.Sqrt(v)
-	fmt.Printf("monopoly: count = %d, sum = %d, zerocount = %d, p(zero) = 1/%d, E = %g\n", count, sumi, zcount, int(float64(count)/float64(zcount)), E)
+	fmt.Printf("monopoly: count = %d, sum = %g, zerocount = %d, p(zero) = 1/%d, E = %g\n", count, sumi, zcount, int(float64(count)/float64(zcount)), E)
 	fmt.Printf("monopoly: variance = %.6g, sigma = %.6g, limits = %.6g ... %.6g\n", v, sigma, E-sigma, E+sigma)
 	return E
 }
@@ -110,7 +111,7 @@ func CalcStat(ctx context.Context, rn string) float64 {
 	}()
 
 	var reshuf = float64(s.Reshuffles)
-	var lrtp, srtp = float64(s.LinePay) / reshuf / sbl * 100, float64(s.ScatPay) / reshuf * 100
+	var lrtp, srtp = s.LinePay / reshuf / sbl * 100, s.ScatPay / reshuf * 100
 	var rtpsym = lrtp + srtp
 	var qmje9 = float64(s.BonusCount[mje9]) / reshuf / sbl
 	var rtpmje9 = Emje * 9 * qmje9 * 100

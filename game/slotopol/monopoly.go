@@ -3,9 +3,9 @@ package slotopol
 import "math/rand/v2"
 
 type MonCell struct {
-	Mult int  `json:"mult" yaml:"mult" xml:"mult,attr"` // bet multiplier
-	Jump int  `json:"jump" yaml:"jump" xml:"jump,attr"` // jump position, or 0 if no jump
-	Dice bool `json:"dice" yaml:"dice" xml:"dice,attr"` // is here multiply on dice value
+	Mult float64 `json:"mult" yaml:"mult" xml:"mult,attr"` // bet multiplier
+	Jump int     `json:"jump" yaml:"jump" xml:"jump,attr"` // jump position, or 0 if no jump
+	Dice bool    `json:"dice" yaml:"dice" xml:"dice,attr"` // is here multiply on dice value
 }
 
 // count = 279936, sum = 80231330, avr = 286.60597422268, zerocount = 1, p(zero) = 0.00035722450845908%
@@ -35,26 +35,26 @@ var Monopoly = []MonCell{
 
 type WinMonCell struct {
 	MonCell `yaml:",inline"`
-	Pos     int `json:"pos" yaml:"pos" xml:"pos,attr"` // cell number, starts from 1
-	Pay     int `json:"pay" yaml:"pay" xml:"pay,attr"` // pay by this cell
+	Pos     int     `json:"pos" yaml:"pos" xml:"pos,attr"` // cell number, starts from 1
+	Pay     float64 `json:"pay" yaml:"pay" xml:"pay,attr"` // pay by this cell
 }
 
-func MonopolySpawn(bet int) (any, int) {
+func MonopolySpawn(bet float64) (any, float64) {
 	var res [7]WinMonCell
-	var cash int
+	var cash float64
 
 	var pos = 0
 	for i := range res {
 		var dice = rand.N(6) + 1
 		pos = (pos + dice) % len(Monopoly)
-		var mult int
+		var mult float64
 		if Monopoly[pos].Jump > 0 {
 			mult = Monopoly[Monopoly[pos].Jump-1].Mult
 		} else {
 			mult = Monopoly[pos].Mult
 		}
 		if Monopoly[pos].Dice {
-			mult *= dice
+			mult *= float64(dice)
 		}
 		res[i].Mult = mult
 		res[i].Jump = Monopoly[pos].Jump

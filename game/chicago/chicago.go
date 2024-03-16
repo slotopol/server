@@ -24,7 +24,7 @@ var ReelsMap = map[string]*game.Reels5x{
 }
 
 // Lined payment.
-var LinePay = [13][5]int{
+var LinePay = [13][5]float64{
 	{0, 10, 250, 2500, 10000}, //  1 chicago
 	{0, 0, 50, 500, 2000},     //  2 capone
 	{0, 0, 50, 500, 2000},     //  3 ness
@@ -41,7 +41,7 @@ var LinePay = [13][5]int{
 }
 
 // Scatters payment.
-var ScatPay = [5]int{0, 2, 5, 20, 100} // 13 cadillac
+var ScatPay = [5]float64{0, 2, 5, 20, 100} // 13 cadillac
 
 // Scatter freespins table
 var ScatFreespin = [5]int{0, 0, 12, 12, 12} // 13 cadillac
@@ -69,8 +69,8 @@ var Jackpot = [13][5]int{
 
 type Game struct {
 	game.Slot5x3 `yaml:",inline"`
-	FS           int `json:"fs" yaml:"fs" xml:"fs"`       // free spin number
-	Mult         int `json:"mult" yaml:"mult" xml:"mult"` // multiplier on freespins
+	FS           int     `json:"fs" yaml:"fs" xml:"fs"`       // free spin number
+	Mult         float64 `json:"mult" yaml:"mult" xml:"mult"` // multiplier on freespins
 }
 
 func NewGame(rd string) *Game {
@@ -122,7 +122,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			}
 		}
 
-		var payw, payl int
+		var payw, payl float64
 		if numw > 0 {
 			payw = LinePay[wild-1][numw-1]
 		}
@@ -172,7 +172,7 @@ func (g *Game) Spin(screen game.Screen) {
 	screen.Spin(ReelsMap[g.RD])
 }
 
-var MultChoose = []int{1, 1, 1, 2, 2, 2, 3, 3, 5, 10} // E = 3.0
+var MultChoose = []float64{1, 1, 1, 2, 2, 2, 3, 3, 5, 10} // E = 3.0
 
 func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
 	if g.FS > 0 {

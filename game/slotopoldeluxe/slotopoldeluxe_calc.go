@@ -38,7 +38,7 @@ func CalcStat(ctx context.Context, rn string) float64 {
 	}()
 
 	var reshuf = float64(s.Reshuffles)
-	var lrtp, srtp = float64(s.LinePay) / reshuf / sbl * 100, float64(s.ScatPay) / reshuf * 100
+	var lrtp, srtp = s.LinePay / reshuf / sbl * 100, s.ScatPay / reshuf * 100
 	var rtpsym = lrtp + srtp
 	var qmje1 = float64(s.BonusCount[mje1]) / reshuf / sbl
 	var rtpmje1 = slotopol.Emje * 1 * qmje1 * 100

@@ -33,7 +33,7 @@ var ReelsMap = map[string]*game.Reels5x{
 }
 
 // Lined payment.
-var LinePay = [12][5]int{
+var LinePay = [12][5]float64{
 	{0, 0, 0, 0, 0},           //  1 dollar
 	{0, 3, 5, 20, 100},        //  2 cherry
 	{0, 3, 5, 20, 100},        //  3 plum
@@ -49,7 +49,7 @@ var LinePay = [12][5]int{
 }
 
 // Scatters payment.
-var ScatPay = [5]int{0, 0, 0, 0, 1000} // 1 dollar
+var ScatPay = [5]float64{0, 0, 0, 0, 1000} // 1 dollar
 
 // Scatter freespins table
 var ScatFreespinReg = [5]int{0, 0, 15, 15, 15} // 1 dollar
@@ -144,7 +144,7 @@ func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
-	var mm = 1 // mult mode
+	var mm float64 = 1 // mult mode
 	if g.FS > 0 {
 		mm = 2
 	}
@@ -175,7 +175,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			}
 		}
 
-		var payw, payl int
+		var payw, payl float64
 		if numw > 0 {
 			payw = LinePay[wild-1][numw-1]
 		}

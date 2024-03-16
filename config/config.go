@@ -24,7 +24,7 @@ type CfgJwtAuth struct {
 
 type CfgGameplay struct {
 	// Maximum value to add to wallet by one transaction.
-	AdjunctLimit int `json:"adjunct-limit" yaml:"adjunct-limit" mapstructure:"adjunct-limit"`
+	AdjunctLimit float64 `json:"adjunct-limit" yaml:"adjunct-limit" mapstructure:"adjunct-limit"`
 	// Maximum number of spin attempts at bad bank balance.
 	MaxSpinAttempts int `json:"max-spin-attempts" yaml:"max-spin-attempts" mapstructure:"max-spin-attempts"`
 }

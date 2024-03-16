@@ -76,10 +76,10 @@ const (
 // Props contains properties for user at some club.
 // Any property can be zero by default, or if object does not created at DB.
 type Props struct {
-	CID    uint64 `xorm:"notnull index(bid)" json:"cid" yaml:"cid" xml:"cid,attr"`
-	UID    uint64 `xorm:"notnull index(bid)" json:"uid" yaml:"uid" xml:"uid,attr"`
-	Wallet int    `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"` // in coins
-	Access AL     `xorm:"notnull" json:"access" yaml:"access" xml:"access"`
+	CID    uint64  `xorm:"notnull index(bid)" json:"cid" yaml:"cid" xml:"cid,attr"`
+	UID    uint64  `xorm:"notnull index(bid)" json:"uid" yaml:"uid" xml:"uid,attr"`
+	Wallet float64 `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"` // in coins
+	Access AL      `xorm:"notnull" json:"access" yaml:"access" xml:"access"`
 }
 
 type Spinlog struct {
@@ -89,8 +89,8 @@ type Spinlog struct {
 	Game   string    `xorm:"notnull" json:"game" yaml:"game" xml:"game"`
 	Screen string    `xorm:"notnull" json:"screen,omitempty" yaml:"screen,omitempty" xml:"screen,omitempty"`
 	Wins   string    `json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
-	Gain   int       `xorm:"notnull" json:"gain" yaml:"gain" xml:"gain"`
-	Wallet int       `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"`
+	Gain   float64   `xorm:"notnull" json:"gain" yaml:"gain" xml:"gain"`
+	Wallet float64   `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"`
 }
 
 type Walletlog struct {
@@ -99,8 +99,8 @@ type Walletlog struct {
 	CID    uint64    `xorm:"notnull index(bid)" json:"cid" yaml:"cid" xml:"cid,attr"`
 	UID    uint64    `xorm:"notnull index(bid)" json:"uid" yaml:"uid" xml:"uid,attr"`
 	AdmID  uint64    `xorm:"notnull" json:"admid" yaml:"admid" xml:"admid"`
-	Wallet int       `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"` // in coins
-	Addend int       `xorm:"notnull" json:"addend" yaml:"addend" xml:"addend"`
+	Wallet float64   `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"` // in coins
+	Addend float64   `xorm:"notnull" json:"addend" yaml:"addend" xml:"addend"`
 }
 
 type Banklog struct {
@@ -128,7 +128,7 @@ func (user *User) Init() {
 	user.props.Init(0)
 }
 
-func (user *User) GetWallet(cid uint64) int {
+func (user *User) GetWallet(cid uint64) float64 {
 	if props, ok := user.props.Get(cid); ok {
 		return props.Wallet
 	}

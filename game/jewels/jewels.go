@@ -106,7 +106,7 @@ var ReelsMap = map[string]*game.Reels5x{
 }
 
 // Lined payment.
-var LinePay = [7][5]int{
+var LinePay = [7][5]float64{
 	{0, 0, 20, 200, 2000}, // crown
 	{0, 0, 15, 100, 500},  // gold
 	{0, 0, 15, 100, 500},  // money

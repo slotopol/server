@@ -3,7 +3,7 @@ package slotopol
 import "math/rand/v2"
 
 // Average gain = 106
-var Eldorado = []int{
+var Eldorado = []float64{
 	1000, // 1
 	10,   // 2
 	25,   // 3
@@ -27,19 +27,19 @@ var Eldorado = []int{
 }
 
 type WinElSeg struct {
-	Mult int `json:"mult" yaml:"mult" xml:"mult,attr"` // bet multiplier
-	Pos  int `json:"pos" yaml:"pos" xml:"pos,attr"`    // segment number, starts from 1
-	Pay  int `json:"pay" yaml:"pay" xml:"pay,attr"`    // pay by this segment
+	Pos  int     `json:"pos" yaml:"pos" xml:"pos,attr"`    // segment number, starts from 1
+	Pay  float64 `json:"pay" yaml:"pay" xml:"pay,attr"`    // pay by this segment
+	Mult float64 `json:"mult" yaml:"mult" xml:"mult,attr"` // bet multiplier
 }
 
-func EldoradoSpawn(bet int, spins int) (any, int) {
+func EldoradoSpawn(bet float64, spins int) (any, float64) {
 	var res = make([]WinElSeg, spins)
-	var pay int
+	var pay float64
 	for i := range res {
 		var n = rand.N(len(Eldorado))
-		res[i].Mult = Eldorado[n]
 		res[i].Pos = n + 1
 		res[i].Pay = bet * Eldorado[n]
+		res[i].Mult = Eldorado[n]
 		pay += res[i].Pay
 	}
 	return res, pay

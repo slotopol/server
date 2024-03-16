@@ -139,7 +139,7 @@ var ReelsMap = map[string]*game.Reels5x{
 }
 
 // Lined payment.
-var LinePay = [10][5]int{
+var LinePay = [10][5]float64{
 	{0, 10, 100, 1000, 5000}, //  1 columbus
 	{0, 5, 50, 200, 1000},    //  2 spain
 	{0, 5, 25, 100, 500},     //  3 necklace
@@ -221,7 +221,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			}
 		}
 
-		var payw, payl int
+		var payw, payl float64
 		if numw > 0 {
 			payw = LinePay[wild-1][numw-1]
 		}

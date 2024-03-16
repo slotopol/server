@@ -52,7 +52,7 @@ var ReelsMap = map[string]*game.Reels5x{
 }
 
 // Lined payment.
-var LinePay = [13][5]int{
+var LinePay = [13][5]float64{
 	{0, 30, 100, 300, 500}, //  1 girl
 	{0, 15, 75, 200, 400},  //  2 lion
 	{0, 10, 60, 150, 300},  //  3 bee
@@ -96,9 +96,9 @@ var Jackpot = [13][5]int{
 
 type Game struct {
 	game.Slot5x3 `yaml:",inline"`
-	FS           int `json:"fs" yaml:"fs" xml:"fs"` // free spin number
-	AN           int `json:"an" yaml:"an" xml:"an"` // acorns number
-	AB           int `json:"ab" yaml:"ab" xml:"ab"` // acorns bet
+	FS           int     `json:"fs" yaml:"fs" xml:"fs"` // free spin number
+	AN           int     `json:"an" yaml:"an" xml:"an"` // acorns number
+	AB           float64 `json:"ab" yaml:"ab" xml:"ab"` // acorns bet
 }
 
 func NewGame(rd string) *Game {
@@ -129,11 +129,10 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 		var syml, numl = screen.At(1, line.At(1)), 1
 		for x := 2; x <= 5; x++ {
 			var sx = screen.At(x, line.At(x))
-			if sx == syml {
-				numl++
-			} else {
+			if sx != syml {
 				break
 			}
+			numl++
 		}
 
 		if pay := LinePay[syml-1][numl-1]; pay > 0 {
@@ -195,7 +194,7 @@ func (g *Game) Spawn(screen game.Screen, sw *game.WinScan) {
 	for i, wi := range sw.Wins {
 		switch wi.BID {
 		case acbn:
-			sw.Wins[i].Pay = AcornSpawn(g.AB + g.Bet*g.SBL.Num())
+			sw.Wins[i].Pay = AcornSpawn(g.AB + g.Bet*float64(g.SBL.Num()))
 		case dlbn:
 			sw.Wins[i].Pay = DiamondLionSpawn(g.Bet)
 		}
@@ -207,7 +206,7 @@ func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
 		g.AN++
 		g.AN %= 3
 		if g.AN > 0 {
-			g.AB += g.Bet * g.SBL.Num()
+			g.AB += g.Bet * float64(g.SBL.Num())
 		} else {
 			g.AB = 0
 		}

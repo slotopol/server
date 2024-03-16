@@ -144,7 +144,7 @@ var ReelsMap = map[string]*game.Reels5x{
 }
 
 // Lined payment.
-var LinePay = [11][5]int{
+var LinePay = [11][5]float64{
 	{0, 10, 80, 1000, 5000}, //  1 bee
 	{0, 5, 30, 200, 1000},   //  2 snail
 	{0, 5, 25, 100, 500},    //  3 fly
@@ -159,7 +159,7 @@ var LinePay = [11][5]int{
 }
 
 // Scatters payment.
-var ScatPay = [5]int{0, 0, 2, 15, 50} // 10 note
+var ScatPay = [5]float64{0, 0, 2, 15, 50} // 10 note
 
 const (
 	jbonus = 1 // jazzbee freespins bonus
@@ -259,7 +259,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			numw++
 		}
 
-		var payw, payl int
+		var payw, payl float64
 		if numw > 0 {
 			payw = LinePay[wild-1][numw-1]
 		}

@@ -3,6 +3,7 @@ package game
 import (
 	"context"
 	"fmt"
+	"sync"
 	"sync/atomic"
 	"time"
 )
@@ -15,11 +16,12 @@ type Stater interface {
 // Stat is statistics calculation for slot reels.
 type Stat struct {
 	Reshuffles uint64
-	LinePay    uint64
-	ScatPay    uint64
+	LinePay    float64
+	ScatPay    float64
 	FreeCount  uint64
 	BonusCount [8]uint64
 	JackCount  [4]uint64
+	lpm, spm   sync.Mutex
 }
 
 func (s *Stat) Count() uint64 {
@@ -30,9 +32,13 @@ func (s *Stat) Update(sw *WinScan) {
 	for _, wi := range sw.Wins {
 		if wi.Pay > 0 {
 			if wi.Line > 0 {
-				atomic.AddUint64(&s.LinePay, uint64(wi.Pay*wi.Mult))
+				s.lpm.Lock()
+				s.LinePay += wi.Pay * wi.Mult
+				s.lpm.Unlock()
 			} else {
-				atomic.AddUint64(&s.ScatPay, uint64(wi.Pay*wi.Mult))
+				s.spm.Lock()
+				s.ScatPay += wi.Pay * wi.Mult
+				s.spm.Unlock()
 			}
 		}
 		if wi.Free > 0 {
@@ -56,7 +62,13 @@ func (s *Stat) Progress(ctx context.Context, steps *time.Ticker, sel, total floa
 			return
 		case <-steps.C:
 			var n = float64(atomic.LoadUint64(&s.Reshuffles))
-			var pays = (float64(atomic.LoadUint64(&s.LinePay))/sel + float64(atomic.LoadUint64(&s.ScatPay))) / n * 100
+			s.lpm.Lock()
+			var lp = s.LinePay
+			s.lpm.Unlock()
+			s.spm.Lock()
+			var sp = s.ScatPay
+			s.spm.Unlock()
+			var pays = (lp/sel + sp) / n * 100
 			fmt.Printf("processed %.1fm, ready %2.2f%%, symbols pays %2.2f%%\n", n/1e6, n/total*100, pays)
 		}
 	}

@@ -18,7 +18,7 @@ var ReelsMap = map[string]*game.Reels5x{
 }
 
 // Lined payment.
-var LinePay = [8][5]int{
+var LinePay = [8][5]float64{
 	{0, 0, 50, 500, 5000}, // crown
 	{0, 0, 30, 150, 500},  // gold
 	{0, 0, 30, 150, 500},  // money
@@ -30,7 +30,7 @@ var LinePay = [8][5]int{
 }
 
 // Scatters payment.
-var ScatPay = [5]int{0, 0, 2, 10, 50} // 8 euro
+var ScatPay = [5]float64{0, 0, 2, 10, 50} // 8 euro
 
 const (
 	jid = 1 // jackpot ID

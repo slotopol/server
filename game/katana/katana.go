@@ -113,7 +113,7 @@ var ReelsMap = map[string]*game.Reels5x{
 }
 
 // Lined payment.
-var LinePay = [12][5]int{
+var LinePay = [12][5]float64{
 	{0, 0, 100, 500, 1000}, // 1  shogun
 	{0, 0, 80, 250, 800},   // 2  geisha
 	{0, 0, 40, 200, 600},   // 3  general
@@ -129,7 +129,7 @@ var LinePay = [12][5]int{
 }
 
 // Scatters payment.
-var ScatPay = [5]int{0, 0, 2, 20, 200} // 12 katana
+var ScatPay = [5]float64{0, 0, 2, 20, 200} // 12 katana
 
 // Scatter freespins table
 var ScatFreespin = [5]int{0, 0, 10, 10, 10} // 12 katana
@@ -211,7 +211,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			}
 		}
 
-		var payw, payl int
+		var payw, payl float64
 		if numw > 0 {
 			payw = LinePay[wild-1][numw-1]
 		}

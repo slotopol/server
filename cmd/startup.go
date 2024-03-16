@@ -138,11 +138,11 @@ func InitStorage() (err error) {
 		offset += limit
 		for _, props := range chunk {
 			if !spi.Clubs.Has(props.CID) {
-				return fmt.Errorf("found props without club linkage, UID=%d, CID=%d, value=%d", props.UID, props.CID, props.Wallet)
+				return fmt.Errorf("found props without club linkage, UID=%d, CID=%d, value=%g", props.UID, props.CID, props.Wallet)
 			}
 			var user, ok = spi.Users.Get(props.UID)
 			if !ok {
-				return fmt.Errorf("found props without user linkage, UID=%d, CID=%d, value=%d", props.UID, props.CID, props.Wallet)
+				return fmt.Errorf("found props without user linkage, UID=%d, CID=%d, value=%g", props.UID, props.CID, props.Wallet)
 			}
 			user.InsertProps(props)
 		}

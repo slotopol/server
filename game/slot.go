@@ -33,16 +33,16 @@ type Screen interface {
 
 // WinItem describes win on each line or scatters.
 type WinItem struct {
-	Pay  int  `json:"pay,omitempty" yaml:"pay,omitempty" xml:"pay,omitempty,attr"`    // payment with selected bet
-	Mult int  `json:"mult,omitempty" yaml:"mult,omitempty" xml:"mult,omitempty,attr"` // multiplier for payment for free spins and other special cases
-	Sym  Sym  `json:"sym,omitempty" yaml:"sym,omitempty" xml:"sym,omitempty,attr"`    // win symbol
-	Num  int  `json:"num,omitempty" yaml:"num,omitempty" xml:"num,omitempty,attr"`    // number of win symbol
-	Line int  `json:"line,omitempty" yaml:"line,omitempty" xml:"line,omitempty,attr"` // line mumber (0 for scatters and not lined)
-	XY   Line `json:"xy" yaml:"xy" xml:"xy"`                                          // symbols positions on screen
-	Free int  `json:"free,omitempty" yaml:"free,omitempty" xml:"free,omitempty,attr"` // number of free spins remains
-	BID  int  `json:"bid,omitempty" yaml:"bid,omitempty" xml:"bid,omitempty,attr"`    // bonus identifier
-	Jack int  `json:"jack,omitempty" yaml:"jack,omitempty" xml:"jack,omitempty,attr"` // jackpot identifier
-	Bon  any  `json:"bon,omitempty" yaml:"bon,omitempty" xml:"bon,omitempty"`         // bonus game data
+	Pay  float64 `json:"pay,omitempty" yaml:"pay,omitempty" xml:"pay,omitempty,attr"`    // payment with selected bet
+	Mult float64 `json:"mult,omitempty" yaml:"mult,omitempty" xml:"mult,omitempty,attr"` // multiplier for payment for free spins and other special cases
+	Sym  Sym     `json:"sym,omitempty" yaml:"sym,omitempty" xml:"sym,omitempty,attr"`    // win symbol
+	Num  int     `json:"num,omitempty" yaml:"num,omitempty" xml:"num,omitempty,attr"`    // number of win symbol
+	Line int     `json:"line,omitempty" yaml:"line,omitempty" xml:"line,omitempty,attr"` // line mumber (0 for scatters and not lined)
+	XY   Line    `json:"xy" yaml:"xy" xml:"xy"`                                          // symbols positions on screen
+	Free int     `json:"free,omitempty" yaml:"free,omitempty" xml:"free,omitempty,attr"` // number of free spins remains
+	BID  int     `json:"bid,omitempty" yaml:"bid,omitempty" xml:"bid,omitempty,attr"`    // bonus identifier
+	Jack int     `json:"jack,omitempty" yaml:"jack,omitempty" xml:"jack,omitempty,attr"` // jackpot identifier
+	Bon  any     `json:"bon,omitempty" yaml:"bon,omitempty" xml:"bon,omitempty"`         // bonus game data
 }
 
 // WinScan is full list of wins by all lines and scatters for some spin.
@@ -59,8 +59,8 @@ func (ws *WinScan) Reset() {
 }
 
 // Total gain for spin.
-func (ws *WinScan) Gain() int {
-	var sum int
+func (ws *WinScan) Gain() float64 {
+	var sum float64
 	for _, wi := range ws.Wins {
 		sum += wi.Pay * wi.Mult
 	}
@@ -74,10 +74,10 @@ type SlotGame interface {
 	Spawn(screen Screen, sw *WinScan)   // setup bonus games to win results, constat function
 	Apply(screen Screen, sw *WinScan)   // update game state to spin results
 	FreeSpins() int                     // returns number of free spins remained, constat function
-	GetGain() int                       // returns gain for double up games, constat function
-	SetGain(gain int) error             // set gain to given value on double up games
-	GetBet() int                        // returns current bet, constat function
-	SetBet(int) error                   // set bet to given value
+	GetGain() float64                   // returns gain for double up games, constat function
+	SetGain(gain float64) error         // set gain to given value on double up games
+	GetBet() float64                    // returns current bet, constat function
+	SetBet(float64) error               // set bet to given value
 	GetLines() SBL                      // returns selected lines indexes, constat function
 	SetLines(SBL) error                 // setup selected lines indexes
 	GetReels() string                   // returns reels descriptor
@@ -236,12 +236,12 @@ var (
 
 // Slot5x3 is base struct for all slot games with screen 5x3.
 type Slot5x3 struct {
-	RD  string `json:"rd" yaml:"rd" xml:"rd"`    // reels descriptor
-	BLI string `json:"bli" yaml:"bli" xml:"bli"` // bet lines index
-	SBL SBL    `json:"sbl" yaml:"sbl" xml:"sbl"` // selected bet lines
-	Bet int    `json:"bet" yaml:"bet" xml:"bet"` // bet value
+	RD  string  `json:"rd" yaml:"rd" xml:"rd"`    // reels descriptor
+	BLI string  `json:"bli" yaml:"bli" xml:"bli"` // bet lines index
+	SBL SBL     `json:"sbl" yaml:"sbl" xml:"sbl"` // selected bet lines
+	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
-	Gain int `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"` // gain for double up games
+	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"` // gain for double up games
 }
 
 func (g *Slot5x3) NewScreen() Screen {
@@ -259,20 +259,20 @@ func (g *Slot5x3) FreeSpins() int {
 	return 0
 }
 
-func (g *Slot5x3) GetGain() int {
+func (g *Slot5x3) GetGain() float64 {
 	return g.Gain
 }
 
-func (g *Slot5x3) SetGain(gain int) error {
+func (g *Slot5x3) SetGain(gain float64) error {
 	g.Gain = gain
 	return nil
 }
 
-func (g *Slot5x3) GetBet() int {
+func (g *Slot5x3) GetBet() float64 {
 	return g.Bet
 }
 
-func (g *Slot5x3) SetBet(bet int) error {
+func (g *Slot5x3) SetBet(bet float64) error {
 	if bet < 1 {
 		return ErrBetEmpty
 	}

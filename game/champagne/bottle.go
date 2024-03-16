@@ -6,7 +6,7 @@ import (
 )
 
 // len = 36, count = 630, avr bottle gain = 90.555556, M = 193.65079365079
-var Bottles = [36]int{
+var Bottles = [36]float64{
 	10, 10, 10, 10, 10, 10, // 6
 	20, 20, 20, 20, 20, 20, // 6
 	30, 30, 30, 30, 30, 30, // 6
@@ -18,13 +18,13 @@ var Bottles = [36]int{
 }
 
 type WinBottle struct {
-	Mult int `json:"mult" yaml:"mult" xml:"mult,attr"` // bet multiplier
-	Pay  int `json:"pay" yaml:"pay" xml:"pay,attr"`    // pay by this cell
+	Mult float64 `json:"mult" yaml:"mult" xml:"mult,attr"` // bet multiplier
+	Pay  float64 `json:"pay" yaml:"pay" xml:"pay,attr"`    // pay by this cell
 }
 
-func ChampagneSpawn(bet int) (any, int) {
+func ChampagneSpawn(bet float64) (any, float64) {
 	var res [5]WinBottle
-	var cash int
+	var cash float64
 
 	var p = slices.Clone(Bottles[:])
 	rand.Shuffle(len(p), func(i, j int) {

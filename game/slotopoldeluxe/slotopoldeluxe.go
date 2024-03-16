@@ -78,7 +78,7 @@ var ReelsMap = map[string]*game.Reels5x{
 }
 
 // Lined payment.
-var LinePay = [13][5]int{
+var LinePay = [13][5]float64{
 	{0, 0, 0, 0, 0},           //  1 dollar
 	{0, 2, 5, 25, 100},        //  2 cherry
 	{0, 2, 5, 25, 100},        //  3 plum
@@ -95,7 +95,7 @@ var LinePay = [13][5]int{
 }
 
 // Scatters payment.
-var ScatPay = [5]int{0, 0, 2, 20, 1000} // 1 dollar
+var ScatPay = [5]float64{0, 0, 2, 20, 1000} // 1 dollar
 
 const (
 	mje1 = 1 // Eldorado9
@@ -174,7 +174,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 
 		var numw, numl = 0, 5
 		var syml game.Sym
-		var mw = 1 // mult wild
+		var mw float64 = 1 // mult wild
 		for x := 1; x <= 5; x++ {
 			var sx = screen.At(x, line.At(x))
 			if sx == wild {
@@ -196,7 +196,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			}
 		}
 
-		var payw, payl int
+		var payw, payl float64
 		if numw > 0 {
 			payw = LinePay[wild-1][numw-1]
 		}

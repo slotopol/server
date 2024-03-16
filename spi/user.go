@@ -108,10 +108,10 @@ func SpiUserDelete(c *gin.Context) {
 		Secret  string   `json:"secret" yaml:"secret" xml:"secret" form:"secret"`
 	}
 	var ret struct {
-		XMLName xml.Name       `json:"-" yaml:"-" xml:"ret"`
-		Wallets map[uint64]int `json:"wallets" yaml:"wallets" xml:"wallets"`
+		XMLName xml.Name           `json:"-" yaml:"-" xml:"ret"`
+		Wallets map[uint64]float64 `json:"wallets" yaml:"wallets" xml:"wallets"`
 	}
-	ret.Wallets = map[uint64]int{}
+	ret.Wallets = map[uint64]float64{}
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_user_delete_nobind, err)
