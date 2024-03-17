@@ -3,14 +3,14 @@ dofile(path.."reelgen.lua")
 
 local symset = {
 	1, --  1 oscar
-	2, --  2 popcorn
-	3, --  3 poster
+	1, --  2 popcorn
+	2, --  3 poster
 	4, --  4 a
-	4, --  5 dummy
-	4, --  6 maw
-	5, --  7 starship
-	5, --  8 heart
-	1, --  9 masks
+	5, --  5 dummy
+	6, --  6 maw
+	7, --  7 starship
+	7, --  8 heart
+	0, --  9 masks
 	1, -- 10 projector
 }
 
