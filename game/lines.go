@@ -275,6 +275,30 @@ var BetLinesNetEnt10 = Lineset5x{
 	{2, 1, 2, 1, 2}, // 10
 }
 
+// NetEnt 20 bet lines
+var BetLinesNetEnt20 = Lineset5x{
+	{2, 2, 2, 2, 2}, // 1
+	{1, 1, 1, 1, 1}, // 2
+	{3, 3, 3, 3, 3}, // 3
+	{1, 2, 3, 2, 1}, // 4
+	{3, 2, 1, 2, 3}, // 5
+	{1, 1, 2, 1, 1}, // 6
+	{3, 3, 2, 3, 3}, // 7
+	{2, 3, 3, 3, 2}, // 8
+	{2, 1, 1, 1, 2}, // 9
+	{2, 1, 2, 1, 2}, // 10
+	{2, 3, 2, 3, 2}, // 11
+	{1, 2, 1, 2, 1}, // 12
+	{3, 2, 3, 2, 3}, // 13
+	{2, 2, 1, 2, 2}, // 14
+	{2, 2, 3, 2, 2}, // 15
+	{1, 2, 2, 2, 1}, // 16
+	{3, 2, 2, 2, 3}, // 17
+	{1, 2, 3, 3, 3}, // 18
+	{3, 2, 1, 1, 1}, // 19
+	{1, 3, 1, 3, 1}, // 20
+}
+
 var BetLines5x = map[string]Lineset5x{
 	"mgj":   BetLinesMgj,
 	"nvm9":  BetLinesNvm9,
@@ -283,4 +307,5 @@ var BetLines5x = map[string]Lineset5x{
 	"bs25":  BetLinesBetSoft25,
 	"bs30":  BetLinesBetSoft30,
 	"ne10":  BetLinesNetEnt10,
+	"ne20":  BetLinesNetEnt20,
 }
