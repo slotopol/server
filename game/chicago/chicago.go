@@ -78,7 +78,7 @@ func NewGame(rd string) *Game {
 		Slot5x3: game.Slot5x3{
 			RD:  rd,
 			BLI: "nvm20",
-			SBL: game.MakeSBL(1),
+			SBL: game.MakeSblNum(20),
 			Bet: 1,
 		},
 		FS:   0,

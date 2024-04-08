@@ -216,7 +216,7 @@ func NewGame(rd string) *Game {
 		Slot5x3: game.Slot5x3{
 			RD:  rd,
 			BLI: "ne10",
-			SBL: game.MakeSBL(1),
+			SBL: game.MakeSblNum(5),
 			Bet: 1,
 		},
 		FS: 0,
@@ -232,25 +232,20 @@ func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
-	var mm float64 = 1 // mult mode
-	if g.FS > 0 {
-		mm = 3
-	}
-
 	var bl = game.BetLines5x[g.BLI]
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
 
 		var numw, numl = 0, 5
 		var syml game.Sym
-		var mw = mm // mult wild
+		var mw float64 = 1 // mult wild
 		for x := 1; x <= 5; x++ {
 			var sx = screen.At(x, line.At(x))
 			if sx == wild {
 				if syml == 0 {
 					numw = x
 				}
-				mw = 2 * mm
+				mw = 2
 			} else if syml == 0 && sx != scat {
 				syml = sx
 			} else if sx != syml {
@@ -266,16 +261,24 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 		if numl > 0 && syml > 0 {
 			payl = LinePay[syml-1][numl-1]
 		}
-		if payl*mw > payw*mm {
+		if payl*mw > payw {
+			var mm float64 = 1 // mult mode
+			if g.FS > 0 {
+				mm = 3
+			}
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Pay:  g.Bet * payl,
-				Mult: mw,
+				Mult: mw * mm,
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
 				XY:   line.CopyN(numl),
 			})
 		} else if payw > 0 {
+			var mm float64 = 1 // mult mode
+			if g.FS > 0 {
+				mm = 3
+			}
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Pay:  g.Bet * payw,
 				Mult: mm,

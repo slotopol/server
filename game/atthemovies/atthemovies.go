@@ -119,7 +119,7 @@ func NewGame(rd string) *Game {
 		Slot5x3: game.Slot5x3{
 			RD:  rd,
 			BLI: "bs25",
-			SBL: game.MakeSBL(1),
+			SBL: game.MakeSblNum(25),
 			Bet: 1,
 		},
 		FS: 0,
@@ -135,21 +135,16 @@ func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
-	var mm float64 = 1 // mult mode
-	if g.FS > 0 {
-		mm = 2
-	}
-
 	var bl = game.BetLines5x[g.BLI]
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
 
 		var syml, numl = screen.At(1, line.At(1)), 1
-		var mw = mm // mult wild
+		var mw float64 = 1 // mult wild
 		for x := 2; x <= 5; x++ {
 			var sx = screen.At(x, line.At(x))
 			if sx == wild {
-				mw = 2 * mm
+				mw = 2
 			} else if sx != syml {
 				break
 			}
@@ -157,9 +152,13 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 		}
 
 		if pay := LinePay[syml-1][numl-1]; pay > 0 {
+			var mm float64 = 1 // mult mode
+			if g.FS > 0 {
+				mm = 2
+			}
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Pay:  g.Bet * pay,
-				Mult: mw,
+				Mult: mw * mm,
 				Sym:  syml,
 				Num:  numl,
 				Line: li,

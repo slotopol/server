@@ -47,6 +47,7 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 		rn, reels = "96", &Reels964
 	}
 	var g = NewGame(rn)
+	g.SBL = game.MakeSblNum(1)
 	g.FS = 15 // set free spins mode
 	var sbl = float64(g.SBL.Num())
 	var s game.Stat
@@ -98,6 +99,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		rn, reels = "96", &Reels964
 	}
 	var g = NewGame(rn)
+	g.SBL = game.MakeSblNum(1)
 	g.FS = 0 // no free spins
 	var sbl = float64(g.SBL.Num())
 	var s game.Stat

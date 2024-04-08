@@ -23,13 +23,18 @@ type Lineset interface {
 // SBL is selected bet lines bitset.
 type SBL uint
 
-// MakeSBL creates lines set from slice of line indexes.
-func MakeSBL(lines ...int) SBL {
+// MakeSblSet creates lines set from slice of line indexes.
+func MakeSblSet(lines ...int) SBL {
 	var sbl SBL
 	for _, n := range lines {
 		sbl |= 1 << n
 	}
 	return sbl
+}
+
+// MakeSblNum creates lines set with first num lines.
+func MakeSblNum(num int) SBL {
+	return (1<<num - 1) << 1
 }
 
 // Num returns number of selected lines in set.
@@ -67,6 +72,11 @@ func (sbl *SBL) Toggle(n int) bool {
 	var bit SBL = 1 << n
 	*sbl ^= bit
 	return *sbl&bit > 0
+}
+
+// Sets first n lines.
+func (sbl *SBL) SetNum(n int) {
+	*sbl = (1<<n - 1) << 1
 }
 
 type Line5x [5]int
