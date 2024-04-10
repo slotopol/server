@@ -79,6 +79,57 @@ func (sbl *SBL) SetNum(n int) {
 	*sbl = (1<<n - 1) << 1
 }
 
+type Line3x [5]int
+
+var pooll3x = sync.Pool{
+	New: func() any {
+		return &Line3x{}
+	},
+}
+
+func NewLine3x() *Line3x {
+	return pooll3x.Get().(*Line3x)
+}
+
+func (l *Line3x) Free() {
+	pooll3x.Put(l)
+}
+
+func (l *Line3x) At(x int) int {
+	return l[x-1]
+}
+
+func (l *Line3x) Set(x, val int) {
+	l[x-1] = val
+}
+
+func (l *Line3x) Len() int {
+	return 3
+}
+
+func (l *Line3x) CopyN(num int) Line {
+	var dst = NewLine3x()
+	copy(dst[:num], l[:num])
+	for i := num; i < 3; i++ {
+		dst[i] = 0
+	}
+	return dst
+}
+
+type Lineset3x []Line5x
+
+func (ls Lineset3x) Cols() int {
+	return 3
+}
+
+func (ls Lineset3x) Line(n int) Line {
+	return &ls[n-1]
+}
+
+func (ls Lineset3x) Num() int {
+	return len(ls)
+}
+
 type Line5x [5]int
 
 var pooll5x = sync.Pool{
