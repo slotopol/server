@@ -74,6 +74,34 @@ func (s *Stat) Progress(ctx context.Context, steps *time.Ticker, sel, total floa
 	}
 }
 
+func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
+	var screen = g.NewScreen()
+	defer screen.Free()
+	var ws WinScan
+	var r1 = reels.Reel(1)
+	var r2 = reels.Reel(2)
+	var r3 = reels.Reel(3)
+	for i1 := range r1 {
+		screen.SetCol(1, r1, i1)
+		for i2 := range r2 {
+			screen.SetCol(2, r2, i2)
+			for i3 := range r3 {
+				screen.SetCol(3, r3, i3)
+				g.Scanner(screen, &ws)
+				s.Update(&ws)
+				ws.Reset()
+				if s.Count()&100 == 0 {
+					select {
+					case <-ctx.Done():
+						return
+					default:
+					}
+				}
+			}
+		}
+	}
+}
+
 func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	var screen = g.NewScreen()
 	defer screen.Free()

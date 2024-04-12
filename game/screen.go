@@ -19,6 +19,7 @@ type Screen interface {
 	ScatPos(scat Sym) Line             // returns line with scatters positions on the screen
 	ScatPosOdd(scat Sym) Line          // returns line with scatters positions on the screen on odd reels
 	ScatPosCont(scat Sym) Line         // returns line with continuous scatters positions on the screen
+	FillSym() Sym                      // returns symbol that filled whole screen, or 0
 	Free()                             // put object to pool
 }
 
@@ -149,6 +150,16 @@ func (s *Screen3x3) ScatPosCont(scat Sym) Line {
 	return l
 }
 
+func (s *Screen3x3) FillSym() Sym {
+	var sym = s[0][0]
+	if s[1][0] == sym && s[2][0] == sym &&
+		s[0][1] == sym && s[1][1] == sym && s[2][1] == sym &&
+		s[0][2] == sym && s[1][2] == sym && s[2][2] == sym {
+		return sym
+	}
+	return 0
+}
+
 // Screen for 5x3 slots.
 type Screen5x3 [5][3]Sym
 
@@ -274,4 +285,14 @@ func (s *Screen5x3) ScatPosCont(scat Sym) Line {
 		l[x] = 0
 	}
 	return l
+}
+
+func (s *Screen5x3) FillSym() Sym {
+	var sym = s[0][0]
+	if s[1][0] == sym && s[2][0] == sym && s[3][0] == sym && s[4][0] == sym &&
+		s[0][1] == sym && s[1][1] == sym && s[2][1] == sym && s[3][1] == sym && s[4][1] == sym &&
+		s[0][2] == sym && s[1][2] == sym && s[2][2] == sym && s[3][2] == sym && s[4][2] == sym {
+		return sym
+	}
+	return 0
 }

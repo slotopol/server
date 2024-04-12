@@ -106,7 +106,6 @@ var (
 // Slot5x3 is base struct for all slot games with screen 5x3.
 type Slot3x3 struct {
 	RD  string  `json:"rd" yaml:"rd" xml:"rd"`    // reels descriptor
-	BLI string  `json:"bli" yaml:"bli" xml:"bli"` // bet lines index
 	SBL SBL     `json:"sbl" yaml:"sbl" xml:"sbl"` // selected bet lines
 	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
@@ -157,19 +156,7 @@ func (g *Slot3x3) GetLines() SBL {
 }
 
 func (g *Slot3x3) SetLines(sbl SBL) error {
-	var bl = BetLines5x[g.BLI]
-	var mask SBL = (1<<len(bl) - 1) << 1
-	if sbl == 0 {
-		return ErrNoLineset
-	}
-	if sbl&^mask != 0 {
-		return ErrLinesetOut
-	}
-	if g.FreeSpins() > 0 {
-		return ErrNoFeature
-	}
-	g.SBL = sbl
-	return nil
+	return ErrNoFeature
 }
 
 func (g *Slot3x3) GetReels() string {
