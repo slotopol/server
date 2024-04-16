@@ -155,10 +155,6 @@ func (g *Slot3x3) GetLines() SBL {
 	return g.SBL
 }
 
-func (g *Slot3x3) SetLines(sbl SBL) error {
-	return ErrNoFeature
-}
-
 func (g *Slot3x3) GetReels() string {
 	return g.RD
 }
@@ -166,7 +162,6 @@ func (g *Slot3x3) GetReels() string {
 // Slot5x3 is base struct for all slot games with screen 5x3.
 type Slot5x3 struct {
 	RD  string  `json:"rd" yaml:"rd" xml:"rd"`    // reels descriptor
-	BLI string  `json:"bli" yaml:"bli" xml:"bli"` // bet lines index
 	SBL SBL     `json:"sbl" yaml:"sbl" xml:"sbl"` // selected bet lines
 	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
@@ -214,22 +209,6 @@ func (g *Slot5x3) SetBet(bet float64) error {
 
 func (g *Slot5x3) GetLines() SBL {
 	return g.SBL
-}
-
-func (g *Slot5x3) SetLines(sbl SBL) error {
-	var bl = BetLines5x[g.BLI]
-	var mask SBL = (1<<len(bl) - 1) << 1
-	if sbl == 0 {
-		return ErrNoLineset
-	}
-	if sbl&^mask != 0 {
-		return ErrLinesetOut
-	}
-	if g.FreeSpins() > 0 {
-		return ErrNoFeature
-	}
-	g.SBL = sbl
-	return nil
 }
 
 func (g *Slot5x3) GetReels() string {
@@ -286,10 +265,6 @@ func (g *Slot5x4) SetBet(bet float64) error {
 
 func (g *Slot5x4) GetLines() SBL {
 	return g.SBL
-}
-
-func (g *Slot5x4) SetLines(sbl SBL) error {
-	return ErrNoFeature
 }
 
 func (g *Slot5x4) GetReels() string {

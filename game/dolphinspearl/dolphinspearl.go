@@ -191,7 +191,6 @@ func NewGame(rd string) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
 			RD:  rd,
-			BLI: "nvm10",
 			SBL: game.MakeSblNum(5),
 			Bet: 1,
 		},
@@ -201,6 +200,8 @@ func NewGame(rd string) *Game {
 
 const wild, scat = 1, 13
 
+var bl = game.BetLinesNvm10
+
 func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
 	g.ScanLined(screen, ws)
 	g.ScanScatters(screen, ws)
@@ -208,7 +209,6 @@ func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
-	var bl = game.BetLines5x[g.BLI]
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
 
@@ -314,6 +314,21 @@ func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
 
 func (g *Game) FreeSpins() int {
 	return g.FS
+}
+
+func (g *Game) SetLines(sbl game.SBL) error {
+	var mask game.SBL = (1<<len(bl) - 1) << 1
+	if sbl == 0 {
+		return game.ErrNoLineset
+	}
+	if sbl&^mask != 0 {
+		return game.ErrLinesetOut
+	}
+	if g.FreeSpins() > 0 {
+		return game.ErrNoFeature
+	}
+	g.SBL = sbl
+	return nil
 }
 
 func (g *Game) SetReels(rd string) error {

@@ -412,14 +412,3 @@ var BetLinesNetEnt20 = Lineset5x{
 	{3, 2, 1, 1, 1}, // 19
 	{1, 3, 1, 3, 1}, // 20
 }
-
-var BetLines5x = map[string]Lineset5x{
-	"mgj":   BetLinesMgj,
-	"nvm9":  BetLinesNvm9,
-	"nvm10": BetLinesNvm10,
-	"nvm20": BetLinesNvm20,
-	"bs25":  BetLinesBetSoft25,
-	"bs30":  BetLinesBetSoft30,
-	"ne10":  BetLinesNetEnt10,
-	"ne20":  BetLinesNetEnt20,
-}
