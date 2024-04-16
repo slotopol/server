@@ -38,8 +38,10 @@ func init() {
 		"pharaonsgold2",
 		"pharaonsgold3",
 		"polarfox",
+		"ramses2",
 		"royaltreasures",
 		"secretforest",
+		"themingdynasty",
 		"themoneygame",
 		"unicornmagic",
 	} {

@@ -235,3 +235,63 @@ func (g *Slot5x3) SetLines(sbl SBL) error {
 func (g *Slot5x3) GetReels() string {
 	return g.RD
 }
+
+// Slot5x4 is base struct for all slot games with screen 5x4.
+type Slot5x4 struct {
+	RD  string  `json:"rd" yaml:"rd" xml:"rd"`    // reels descriptor
+	SBL SBL     `json:"sbl" yaml:"sbl" xml:"sbl"` // selected bet lines
+	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
+
+	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"` // gain for double up games
+}
+
+func (g *Slot5x4) NewScreen() Screen {
+	return NewScreen5x4()
+}
+
+func (g *Slot5x4) Spawn(screen Screen, sw *WinScan) {
+}
+
+func (g *Slot5x4) Apply(screen Screen, sw *WinScan) {
+	g.Gain = sw.Gain()
+}
+
+func (g *Slot5x4) FreeSpins() int {
+	return 0
+}
+
+func (g *Slot5x4) GetGain() float64 {
+	return g.Gain
+}
+
+func (g *Slot5x4) SetGain(gain float64) error {
+	g.Gain = gain
+	return nil
+}
+
+func (g *Slot5x4) GetBet() float64 {
+	return g.Bet
+}
+
+func (g *Slot5x4) SetBet(bet float64) error {
+	if bet < 1 {
+		return ErrBetEmpty
+	}
+	if g.FreeSpins() > 0 {
+		return ErrNoFeature
+	}
+	g.Bet = bet
+	return nil
+}
+
+func (g *Slot5x4) GetLines() SBL {
+	return g.SBL
+}
+
+func (g *Slot5x4) SetLines(sbl SBL) error {
+	return ErrNoFeature
+}
+
+func (g *Slot5x4) GetReels() string {
+	return g.RD
+}
