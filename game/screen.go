@@ -11,6 +11,7 @@ import (
 type Screen interface {
 	Dim() (int, int)                   // returns screen dimensions
 	At(x int, y int) Sym               // returns symbol at position (x, y), starts from (1, 1)
+	Pos(x int, line Line) Sym          // returns symbol at position (x, line(x)), starts from (1, 1)
 	SetCol(x int, reel []Sym, pos int) // setup column on screen with given reel at given position
 	Spin(reels Reels)                  // fill the screen with random hits on those reels
 	ScatNum(scat Sym) (n int)          // returns number of scatters on the screen
@@ -46,6 +47,10 @@ func (s *Screen3x3) Dim() (int, int) {
 
 func (s *Screen3x3) At(x int, y int) Sym {
 	return s[x-1][y-1]
+}
+
+func (s *Screen3x3) Pos(x int, line Line) Sym {
+	return s[x-1][line.At(x)-1]
 }
 
 func (s *Screen3x3) SetCol(x int, reel []Sym, pos int) {
@@ -185,6 +190,10 @@ func (s *Screen5x3) At(x int, y int) Sym {
 	return s[x-1][y-1]
 }
 
+func (s *Screen5x3) Pos(x int, line Line) Sym {
+	return s[x-1][line.At(x)-1]
+}
+
 func (s *Screen5x3) SetCol(x int, reel []Sym, pos int) {
 	for y := range 3 {
 		s[x-1][y] = reel[(pos+y)%len(reel)]
@@ -320,6 +329,10 @@ func (s *Screen5x4) Dim() (int, int) {
 
 func (s *Screen5x4) At(x int, y int) Sym {
 	return s[x-1][y-1]
+}
+
+func (s *Screen5x4) Pos(x int, line Line) Sym {
+	return s[x-1][line.At(x)-1]
 }
 
 func (s *Screen5x4) SetCol(x int, reel []Sym, pos int) {

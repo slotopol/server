@@ -105,7 +105,7 @@ func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
 		if sym := screen.FillSym(); sym >= 4 && sym <= 7 {
 			fm = 2
 		}
-		var sym1, sym2, sym3 = screen.At(1, line.At(1)), screen.At(2, line.At(2)), screen.At(3, line.At(3))
+		var sym1, sym2, sym3 = screen.Pos(1, line), screen.Pos(2, line), screen.Pos(3, line)
 		if sym1 == sym2 && sym1 == sym3 {
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Pay:  g.Bet * LinePay[sym1-1][2],

@@ -79,9 +79,9 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
 
-		var syml, numl = screen.At(1, line.At(1)), 1
+		var syml, numl = screen.Pos(1, line), 1
 		for x := 2; x <= 5; x++ {
-			var sx = screen.At(x, line.At(x))
+			var sx = screen.Pos(x, line)
 			if sx != syml {
 				break
 			}

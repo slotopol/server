@@ -218,7 +218,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 		/*var numw, numl int
 		var syml game.Sym
 		for x := 1; x <= 5; x++ {
-			var symx = screen.At(x, line.At(x))
+			var symx = screen.Pos(x, line)
 			if symx == wild {
 				if syml == 0 {
 					numw = x
@@ -240,13 +240,13 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 		var numw, numl int
 		var syml game.Sym
 		for x := 1; x <= 5; x++ {
-			var sx = screen.At(x, line.At(x))
+			var sx = screen.Pos(x, line)
 			if sx != wild {
 				if sx != scat && sx != jazz {
 					syml = sx
 					numl = numw + 1
 					for x := numl + 1; x <= 5; x++ {
-						var sx = screen.At(x, line.At(x))
+						var sx = screen.Pos(x, line)
 						if sx == syml || sx == wild {
 							numl++
 						} else {

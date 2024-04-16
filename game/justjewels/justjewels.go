@@ -76,22 +76,22 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
 
-		var syml = screen.At(3, line.At(3))
+		var syml = screen.Pos(3, line)
 		var xy = game.NewLine5x()
 		var numl = 1
 		xy.Set(3, line.At(3))
-		if screen.At(2, line.At(2)) == syml {
+		if screen.Pos(2, line) == syml {
 			xy.Set(2, line.At(2))
 			numl++
-			if screen.At(1, line.At(1)) == syml {
+			if screen.Pos(1, line) == syml {
 				xy.Set(1, line.At(1))
 				numl++
 			}
 		}
-		if screen.At(4, line.At(4)) == syml {
+		if screen.Pos(4, line) == syml {
 			xy.Set(4, line.At(4))
 			numl++
-			if screen.At(5, line.At(5)) == syml {
+			if screen.Pos(5, line) == syml {
 				xy.Set(5, line.At(5))
 				numl++
 			}
