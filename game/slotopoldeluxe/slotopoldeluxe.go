@@ -210,7 +210,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
-				XY:   line.CopyN(numl),
+				XY:   line.CopyL(numl),
 			})
 		} else if payw > 0 {
 			ws.Wins = append(ws.Wins, game.WinItem{
@@ -219,7 +219,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 				Sym:  wild,
 				Num:  numw,
 				Line: li,
-				XY:   line.CopyN(numw),
+				XY:   line.CopyL(numw),
 				Jack: slotopol.Jackpot[wild-1][numw-1],
 			})
 		} else if syml > 0 && numl > 0 && LineBonus[syml-1][numl-1] > 0 {
@@ -228,7 +228,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
-				XY:   line.CopyN(numl),
+				XY:   line.CopyL(numl),
 				BID:  LineBonus[syml-1][numl-1],
 			})
 		}

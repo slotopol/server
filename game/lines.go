@@ -11,7 +11,8 @@ type Line interface {
 	Len() int       // returns length of line
 	Free()          // put object to pool
 
-	CopyN(num int) Line
+	CopyL(num int) Line
+	CopyR(num int) Line
 }
 
 type Lineset interface {
@@ -107,10 +108,19 @@ func (l *Line3x) Len() int {
 	return 3
 }
 
-func (l *Line3x) CopyN(num int) Line {
+func (l *Line3x) CopyL(num int) Line {
 	var dst = NewLine3x()
 	copy(dst[:num], l[:num])
 	for i := num; i < 3; i++ {
+		dst[i] = 0
+	}
+	return dst
+}
+
+func (l *Line3x) CopyR(num int) Line {
+	var dst = NewLine3x()
+	copy(dst[3-num:], l[3-num:])
+	for i := 0; i < 3-num; i++ {
 		dst[i] = 0
 	}
 	return dst
@@ -158,10 +168,19 @@ func (l *Line5x) Len() int {
 	return 5
 }
 
-func (l *Line5x) CopyN(num int) Line {
+func (l *Line5x) CopyL(num int) Line {
 	var dst = NewLine5x()
 	copy(dst[:num], l[:num])
 	for i := num; i < 5; i++ {
+		dst[i] = 0
+	}
+	return dst
+}
+
+func (l *Line5x) CopyR(num int) Line {
+	var dst = NewLine5x()
+	copy(dst[5-num:], l[5-num:])
+	for i := 0; i < 5-num; i++ {
 		dst[i] = 0
 	}
 	return dst

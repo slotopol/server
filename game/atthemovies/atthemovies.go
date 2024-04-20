@@ -162,7 +162,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
-				XY:   line.CopyN(numl),
+				XY:   line.CopyL(numl),
 			})
 		}
 	}

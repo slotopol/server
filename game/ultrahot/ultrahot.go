@@ -113,7 +113,7 @@ func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
 				Sym:  sym1,
 				Num:  3,
 				Line: li,
-				XY:   line.CopyN(3),
+				XY:   line.CopyL(3),
 			})
 		}
 	}

@@ -177,9 +177,9 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			}
 		}
 
-		if pay := LinePay[syml-1][numl-1]; pay > 0 {
+		if numl >= 3 {
 			ws.Wins = append(ws.Wins, game.WinItem{
-				Pay:  g.Bet * pay,
+				Pay:  g.Bet * LinePay[syml-1][numl-1],
 				Mult: 1,
 				Sym:  syml,
 				Num:  numl,

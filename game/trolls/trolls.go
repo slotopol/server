@@ -317,7 +317,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
-				XY:   line.CopyN(numl),
+				XY:   line.CopyL(numl),
 			})
 		} else if payw > 0 {
 			var mm float64 = 1 // mult mode
@@ -330,7 +330,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 				Sym:  wild1,
 				Num:  numw,
 				Line: li,
-				XY:   line.CopyN(numw),
+				XY:   line.CopyL(numw),
 				Jack: Jackpot[wild1-1][numw-1],
 			})
 		}

@@ -34,7 +34,9 @@ type WinScan struct {
 // Reset puts lines to pool and set array empty with saved capacity.
 func (ws *WinScan) Reset() {
 	for _, wi := range ws.Wins {
-		wi.XY.Free()
+		if wi.XY != nil {
+			wi.XY.Free()
+		}
 	}
 	ws.Wins = ws.Wins[:0] // set it empty
 }
