@@ -107,13 +107,13 @@ var ReelsMap = map[string]*game.Reels5x{
 
 // Lined payment.
 var LinePay = [7][5]float64{
-	{0, 0, 20, 200, 2000}, // crown
-	{0, 0, 15, 100, 500},  // gold
-	{0, 0, 15, 100, 500},  // money
-	{0, 0, 10, 50, 200},   // ruby
-	{0, 0, 10, 50, 200},   // sapphire
-	{0, 0, 5, 25, 100},    // emerald
-	{0, 0, 5, 25, 100},    // amethyst
+	{0, 0, 20, 200, 2000}, // 1 crown
+	{0, 0, 15, 100, 500},  // 2 gold
+	{0, 0, 15, 100, 500},  // 3 money
+	{0, 0, 10, 50, 200},   // 4 ruby
+	{0, 0, 10, 50, 200},   // 5 sapphire
+	{0, 0, 5, 25, 100},    // 6 emerald
+	{0, 0, 5, 25, 100},    // 7 amethyst
 }
 
 const (

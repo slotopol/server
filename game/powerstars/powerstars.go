@@ -23,7 +23,7 @@ var Reels = game.Reels5x{
 	{6, 4, 7, 6, 5, 7, 3, 5, 2, 8, 4, 7, 2, 5, 6, 7, 3, 8, 5, 1, 2, 8, 3, 6, 4, 8, 7, 4, 5, 3, 6, 8, 1},
 }
 
-// Map with star chances.
+// Map with wild chances.
 var ChanceMap = map[string]float64{
 	// free spins: q = 0.036141, 1/q = 27.669, rtpfs = 470.021964%
 	// RTP = 69.063(sym) + q*470.02(fg) = 86.049978%

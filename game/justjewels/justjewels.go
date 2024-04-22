@@ -19,14 +19,14 @@ var ReelsMap = map[string]*game.Reels5x{
 
 // Lined payment.
 var LinePay = [8][5]float64{
-	{0, 0, 50, 500, 5000}, // crown
-	{0, 0, 30, 150, 500},  // gold
-	{0, 0, 30, 150, 500},  // money
-	{0, 0, 15, 50, 200},   // ruby
-	{0, 0, 15, 50, 200},   // sapphire
-	{0, 0, 10, 25, 150},   // emerald
-	{0, 0, 10, 25, 150},   // amethyst
-	{0, 0, 0, 0, 0},       // euro
+	{0, 0, 50, 500, 5000}, // 1 crown
+	{0, 0, 30, 150, 500},  // 2 gold
+	{0, 0, 30, 150, 500},  // 3 money
+	{0, 0, 15, 50, 200},   // 4 ruby
+	{0, 0, 15, 50, 200},   // 5 sapphire
+	{0, 0, 10, 25, 150},   // 6 emerald
+	{0, 0, 10, 25, 150},   // 7 amethyst
+	{0, 0, 0, 0, 0},       // 8 euro
 }
 
 // Scatters payment.
