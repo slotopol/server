@@ -34,7 +34,7 @@ func CalcStat(ctx context.Context, rn string) float64 {
 	}()
 
 	var reshuf = float64(s.Reshuffles)
-	var lrtp, srtp = s.LinePay / reshuf / sbl * 100, s.ScatPay / reshuf * 100
+	var lrtp, srtp = s.LinePay / reshuf / sbl * 100, s.ScatPay / reshuf / sbl * 100
 	var rtpsym = lrtp + srtp
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/total*100, g.SBL.Num(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",

@@ -240,7 +240,7 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 	if count := screen.ScatNum(scat); count >= 3 {
 		var pay = ScatPay[count-1]
 		ws.Wins = append(ws.Wins, game.WinItem{
-			Pay:  g.Bet * pay, // independent from selected lines
+			Pay:  g.Bet * float64(g.SBL.Num()) * pay,
 			Mult: 1,
 			Sym:  scat,
 			Num:  count,

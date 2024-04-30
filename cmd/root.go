@@ -8,7 +8,7 @@ import (
 )
 
 const rootShort = "Slots games backend"
-const rootLong = `This application performs all implemented tasks for slots games.`
+const rootLong = `This application implements web server and reels scanner for slots games.`
 
 var (
 	rootCmd = &cobra.Command{
