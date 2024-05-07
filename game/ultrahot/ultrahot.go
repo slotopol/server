@@ -73,14 +73,14 @@ var ReelsMap = map[string]*game.Reels3x{
 
 // Lined payment.
 var LinePay = [13][3]float64{
-	{0, 0, 750}, // 1 seven 1
-	{0, 0, 200}, // 2 star 4
-	{0, 0, 60},  // 3 bar 3
-	{0, 0, 40},  // 4 plum 6
-	{0, 0, 40},  // 5 orange 6
-	{0, 0, 40},  // 6 lemon 6
-	{0, 0, 40},  // 7 cherry 6
-	{0, 0, 5},   // 8 x 6
+	{0, 0, 750}, // 1 seven
+	{0, 0, 200}, // 2 star
+	{0, 0, 60},  // 3 bar
+	{0, 0, 40},  // 4 plum
+	{0, 0, 40},  // 5 orange
+	{0, 0, 40},  // 6 lemon
+	{0, 0, 40},  // 7 cherry
+	{0, 0, 5},   // 8 x
 }
 
 type Game struct {
@@ -98,7 +98,7 @@ func NewGame(rd string) *Game {
 }
 
 func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
-	var bl = game.BetLinesHot
+	var bl = game.BetLinesHot3
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
 		var fm float64 = 1 // fill mult

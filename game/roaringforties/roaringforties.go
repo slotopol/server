@@ -1,5 +1,7 @@
 package roaringforties
 
+// See: https://freeslotshub.com/novomatic/roaring-forties/
+
 import (
 	"github.com/slotopol/server/game"
 )

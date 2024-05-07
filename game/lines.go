@@ -203,12 +203,21 @@ func (ls Lineset5x) Num() int {
 // (1 ,1) symbol is on left top corner
 
 // Ultra Hot 3x3 bet lines
-var BetLinesHot = Lineset3x{
+var BetLinesHot3 = Lineset3x{
 	{2, 2, 2}, // 1
 	{1, 1, 1}, // 2
 	{3, 3, 3}, // 3
 	{1, 2, 3}, // 4
 	{3, 2, 1}, // 5
+}
+
+// Hot 5x3 bet lines
+var BetLinesHot5 = Lineset5x{
+	{2, 2, 2, 2, 2}, // 1
+	{1, 1, 1, 1, 1}, // 2
+	{3, 3, 3, 3, 3}, // 3
+	{1, 2, 3, 2, 1}, // 4
+	{3, 2, 1, 2, 3}, // 5
 }
 
 // Megajack 21 bet lines

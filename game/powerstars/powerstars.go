@@ -1,5 +1,7 @@
 package powerstars
 
+// See: https://freeslotshub.com/novomatic/power-stars/
+
 import (
 	"math/rand"
 
