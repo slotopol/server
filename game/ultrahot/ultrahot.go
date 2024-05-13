@@ -72,7 +72,7 @@ var ReelsMap = map[string]*game.Reels3x{
 }
 
 // Lined payment.
-var LinePay = [13][3]float64{
+var LinePay = [8][3]float64{
 	{0, 0, 750}, // 1 seven
 	{0, 0, 200}, // 2 star
 	{0, 0, 60},  // 3 bar
