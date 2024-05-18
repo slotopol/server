@@ -76,6 +76,9 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 	} else {
 		rtpfs = CalcStatBon(ctx, "bon")
 	}
+	if ctx.Err() != nil {
+		return 0
+	}
 	fmt.Printf("*regular reels calculations*\n")
 	var reels *game.Reels5x
 	if rn != "" {

@@ -2,7 +2,7 @@ package config
 
 import (
 	"errors"
-	"fmt"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -40,9 +40,9 @@ func InitConfig() {
 	var err error
 
 	if DevMode {
-		fmt.Println("*running in developer mode*")
+		log.Println("*running in developer mode*")
 	}
-	fmt.Printf("version: %s, builton: %s\n", BuildVers, BuildTime)
+	log.Printf("version: %s, builton: %s\n", BuildVers, BuildTime)
 
 	if str, err := os.Executable(); err == nil {
 		ExePath = filepath.Dir(str)
@@ -85,12 +85,12 @@ func InitConfig() {
 	viper.AutomaticEnv()
 
 	if err = viper.ReadInConfig(); err != nil {
-		fmt.Println("config file not found!")
+		log.Println("config file not found!")
 	} else {
 		cobra.CheckErr(viper.Unmarshal(&Cfg))
 		CfgFile = viper.ConfigFileUsed()
 		CfgPath = filepath.Dir(CfgFile)
-		fmt.Printf("config path: %s\n", CfgPath)
+		log.Printf("config path: %s\n", CfgPath)
 	}
 
 	// Detect SQLite path.
@@ -98,7 +98,7 @@ func InitConfig() {
 		SqlPath = LookupInLocations("SQLPATH", "sqlite", "slot-club.sqlite")
 	}
 	cobra.CheckErr(os.MkdirAll(SqlPath, os.ModePerm))
-	fmt.Printf("sqlite path: %s\n", SqlPath)
+	log.Printf("sqlite path: %s\n", SqlPath)
 }
 
 // DirExists check up directory existence.

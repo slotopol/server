@@ -1,7 +1,13 @@
 package cmd
 
 import (
+	"context"
+	"errors"
 	"fmt"
+	"log"
+	"os"
+	"os/signal"
+	"syscall"
 
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/spi"
@@ -168,12 +174,45 @@ func InitSpinlog() (err error) {
 	return
 }
 
-func Init() (err error) {
+func Init() (exitctx context.Context, err error) {
+	//var cancel context.CancelFunc
+	exitctx, cancel := context.WithCancel(context.Background())
+	go func() {
+		// Make exit signal on function exit.
+		defer cancel()
+
+		var sigint = make(chan os.Signal, 1)
+		var sigterm = make(chan os.Signal, 1)
+		// We'll accept graceful shutdowns when quit via SIGINT (Ctrl+C) or SIGTERM (Ctrl+/)
+		// SIGKILL, SIGQUIT will not be caught.
+		signal.Notify(sigint, syscall.SIGINT)
+		signal.Notify(sigterm, syscall.SIGTERM)
+		// Block until we receive our signal.
+		select {
+		case <-exitctx.Done():
+			if errors.Is(exitctx.Err(), context.DeadlineExceeded) {
+				log.Println("shutting down by timeout")
+			} else if errors.Is(exitctx.Err(), context.Canceled) {
+				log.Println("shutting down by cancel")
+			} else {
+				log.Printf("shutting down by %s\n", exitctx.Err().Error())
+			}
+		case <-sigint:
+			log.Println("shutting down by break")
+		case <-sigterm:
+			log.Println("shutting down by process termination")
+		}
+		signal.Stop(sigint)
+		signal.Stop(sigterm)
+	}()
+
 	if err = InitStorage(); err != nil {
-		return fmt.Errorf("can not init XORM records storage: %w", err)
+		err = fmt.Errorf("can not init XORM records storage: %w", err)
+		return
 	}
 	if err = InitSpinlog(); err != nil {
-		return fmt.Errorf("can not init XORM spins log storage: %w", err)
+		err = fmt.Errorf("can not init XORM spins log storage: %w", err)
+		return
 	}
 	return
 }

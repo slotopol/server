@@ -1,5 +1,7 @@
 package alwayshot
 
+// See: https://freeslotshub.com/novomatic/always-hot/
+
 import (
 	"github.com/slotopol/server/game"
 )

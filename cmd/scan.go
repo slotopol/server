@@ -26,15 +26,13 @@ var scanCmd = &cobra.Command{
 	Long:    scanLong,
 	Example: fmt.Sprintf(scanExmp, cfg.AppName),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
-		if err = Init(); err != nil {
+		var exitctx context.Context
+		if exitctx, err = Init(); err != nil {
 			return
 		}
 
-		var ctx, cancel = context.WithCancel(context.Background())
-		defer cancel()
-
 		for _, iter := range links.ScatIters {
-			iter(flags, ctx)
+			iter(flags, exitctx)
 		}
 
 		return

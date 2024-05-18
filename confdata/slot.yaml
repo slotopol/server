@@ -14,6 +14,28 @@ authentication:
   refresh-key: zxK4dUnuq3Lhd1Gzhpr3usI5lAzgvy2t3fmxld2spzz7a5nfv0hsksm9cheyutie
   # Validity timeout of the nonce with which the login hash is signed.
   nonce-timeout: 2m30s
+web-server: # See https://golang.org/pkg/net/http/#Server for details.
+  # List of network origins (IPv4 addresses, IPv4 CIDRs, IPv6 addresses
+  # or IPv6 CIDRs) from which to trust request's headers that contain
+  # alternative client IP when `(*gin.Engine).ForwardedByClientIP` is `true`.
+  trusted-proxies: 127.0.0.0/8
+  # List of address:port values for non-encrypted connections.
+  # Address is skipped in most common cases, port only remains.
+  port-http:
+  - :8080
+  # Maximum duration for reading the entire request, including the body.
+  read-timeout: 15s
+  # Amount of time allowed to read request headers.
+  read-header-timeout: 15s
+  # Maximum duration before timing out writes of the response.
+  write-timeout: 15s
+  # Maximum amount of time to wait for the next request when keep-alives are enabled.
+  idle-timeout: 60s
+  # Controls the maximum number of bytes the server will read parsing
+  # the request header's keys and values, including the request line, in bytes.
+  max-header-bytes: 1048576 # 1M
+  # Maximum duration to wait for graceful shutdown.
+  shutdown-timeout: 15s
 gameplay:
   # Maximum value to add to wallet by one transaction.
   adjunct-limit: 100000

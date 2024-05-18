@@ -71,6 +71,9 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 	Edlbn = ExpDiamondLion()
 	fmt.Printf("*bonus reels calculations*\n")
 	var rtpfs = CalcStatBon(ctx)
+	if ctx.Err() != nil {
+		return 0
+	}
 	fmt.Printf("*regular reels calculations*\n")
 	var reels *game.Reels5x
 	if rn != "" {

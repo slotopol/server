@@ -22,6 +22,26 @@ type CfgJwtAuth struct {
 	NonceTimeout time.Duration `json:"nonce-timeout" yaml:"nonce-timeout" mapstructure:"nonce-timeout"`
 }
 
+// CfgWebServ is web server settings.
+type CfgWebServ struct {
+	// List of network origins (IPv4 addresses, IPv4 CIDRs, IPv6 addresses or IPv6 CIDRs) from which to trust request's headers that contain alternative client IP when `(*gin.Engine).ForwardedByClientIP` is `true`.
+	TrustedProxies []string `json:"trusted-proxies" yaml:"trusted-proxies" mapstructure:"trusted-proxies"`
+	// List of address:port values for non-encrypted connections. Address is skipped in most common cases, port only remains.
+	PortHTTP []string `json:"port-http" yaml:"port-http" mapstructure:"port-http"`
+	// Maximum duration for reading the entire request, including the body.
+	ReadTimeout time.Duration `json:"read-timeout" yaml:"read-timeout" mapstructure:"read-timeout"`
+	// Amount of time allowed to read request headers.
+	ReadHeaderTimeout time.Duration `json:"read-header-timeout" yaml:"read-header-timeout" mapstructure:"read-header-timeout"`
+	// Maximum duration before timing out writes of the response.
+	WriteTimeout time.Duration `json:"write-timeout" yaml:"write-timeout" mapstructure:"write-timeout"`
+	// Maximum amount of time to wait for the next request when keep-alives are enabled.
+	IdleTimeout time.Duration `json:"idle-timeout" yaml:"idle-timeout" mapstructure:"idle-timeout"`
+	// Controls the maximum number of bytes the server will read parsing the request header's keys and values, including the request line, in bytes.
+	MaxHeaderBytes int `json:"max-header-bytes" yaml:"max-header-bytes" mapstructure:"max-header-bytes"`
+	// Maximum duration to wait for graceful shutdown.
+	ShutdownTimeout time.Duration `json:"shutdown-timeout" yaml:"shutdown-timeout" mapstructure:"shutdown-timeout"`
+}
+
 type CfgGameplay struct {
 	// Maximum value to add to wallet by one transaction.
 	AdjunctLimit float64 `json:"adjunct-limit" yaml:"adjunct-limit" mapstructure:"adjunct-limit"`
@@ -37,6 +57,7 @@ type CfgXormDrv struct {
 // Config is common service settings.
 type Config struct {
 	CfgJwtAuth  `json:"authentication" yaml:"authentication" mapstructure:"authentication"`
+	CfgWebServ  `json:"web-server" yaml:"web-server" mapstructure:"web-server"`
 	CfgGameplay `json:"gameplay" yaml:"xorm" mapstructure:"gameplay"`
 	CfgXormDrv  `json:"xorm" yaml:"xorm" mapstructure:"xorm"`
 }
@@ -50,6 +71,16 @@ var Cfg = &Config{
 		AccessKey:    "skJgM4NsbP3fs4k7vh0gfdkgGl8dJTszdLxZ1sQ9ksFnxbgvw2RsGH8xxddUV479",
 		RefreshKey:   "zxK4dUnuq3Lhd1Gzhpr3usI5lAzgvy2t3fmxld2spzz7a5nfv0hsksm9cheyutie",
 		NonceTimeout: 150 * time.Second,
+	},
+	CfgWebServ: CfgWebServ{
+		TrustedProxies:    []string{"127.0.0.0/8"},
+		PortHTTP:          []string{":8080"},
+		ReadTimeout:       15 * time.Second,
+		ReadHeaderTimeout: 15 * time.Second,
+		WriteTimeout:      15 * time.Second,
+		IdleTimeout:       60 * time.Second,
+		MaxHeaderBytes:    1 << 20,
+		ShutdownTimeout:   15 * time.Second,
 	},
 	CfgGameplay: CfgGameplay{
 		AdjunctLimit:    100000,
