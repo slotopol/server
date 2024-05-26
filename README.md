@@ -4,7 +4,7 @@
 [![GitHub release](https://img.shields.io/github/v/release/slotopol/server.svg)](https://github.com/slotopol/server/releases/latest)
 [![Hits-of-Code](https://hitsofcode.com/github/slotopol/server?branch=main)](https://hitsofcode.com/github/slotopol/server/view?branch=main)
 
-Slots games server. Provides functionality for Megajack, Novomatic, BetSoft, and some others slot games.
+Slots games server. Provides functionality for Megajack, Novomatic, BetSoft, and some others providers of slot games.
 
 # How to build
 
