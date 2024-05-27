@@ -31,7 +31,7 @@ var scanCmd = &cobra.Command{
 			return
 		}
 
-		for _, iter := range links.ScatIters {
+		for _, iter := range links.ScanIters {
 			iter(flags, exitctx)
 		}
 
@@ -49,6 +49,11 @@ func init() {
 	flags = scanCmd.Flags()
 	flags.StringVarP(&fReels, "reels", "r", "", "name of reels set to use")
 
+	for _, gi := range links.GameList {
+		for _, ga := range gi.Aliases {
+			flags.Bool(ga.ID, false, fmt.Sprintf("'%s' %s %dx%d videoslot", ga.Name, gi.Provider, gi.ScrnX, gi.ScrnY))
+		}
+	}
 	for _, setter := range links.FlagsSetters {
 		setter(flags)
 	}

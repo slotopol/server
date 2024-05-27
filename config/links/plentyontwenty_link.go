@@ -10,26 +10,28 @@ import (
 )
 
 func init() {
-	FlagsSetters = append(FlagsSetters, func(flags *pflag.FlagSet) {
-		flags.Bool("plentyontwenty", false, "'Plenty on Twenty' Novomatic 5x3 slots")
-	})
-	ScatIters = append(ScatIters, func(flags *pflag.FlagSet, ctx context.Context) {
-		if is, _ := flags.GetBool("plentyontwenty"); is {
-			var rn, _ = flags.GetString("reels")
-			plentyontwenty.CalcStat(ctx, rn)
-		}
-	})
-
-	for _, alias := range []string{
-		"plentyontwenty",
-	} {
-		GameAliases[alias] = "plentyontwenty"
+	var gi = GameInfo{
+		Aliases: []GameAlias{
+			{"plentyontwenty", "Plenty on Twenty"},
+		},
+		Provider: "Novomatic",
+		ScrnX:    5,
+		ScrnY:    3,
 	}
+	GameList = append(GameList, gi)
 
-	GameFactory["plentyontwenty"] = func(rd string) any {
-		if _, ok := plentyontwenty.ReelsMap[rd]; ok {
-			return plentyontwenty.NewGame(rd)
+	for _, ga := range gi.Aliases {
+		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
+			if is, _ := flags.GetBool(ga.ID); is {
+				var rn, _ = flags.GetString("reels")
+				plentyontwenty.CalcStat(ctx, rn)
+			}
+		})
+		GameFactory[ga.ID] = func(rd string) any {
+			if _, ok := plentyontwenty.ReelsMap[rd]; ok {
+				return plentyontwenty.NewGame(rd)
+			}
+			return nil
 		}
-		return nil
 	}
 }

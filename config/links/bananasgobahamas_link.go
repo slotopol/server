@@ -10,30 +10,32 @@ import (
 )
 
 func init() {
-	FlagsSetters = append(FlagsSetters, func(flags *pflag.FlagSet) {
-		flags.Bool("bananasgobahamas", false, "'Bananas Go Bahamas' Novomatic 5x3 slots")
-	})
-	ScatIters = append(ScatIters, func(flags *pflag.FlagSet, ctx context.Context) {
-		if is, _ := flags.GetBool("bananasgobahamas"); is {
-			var rn, _ = flags.GetString("reels")
-			if rn == "bon" {
-				bananasgobahamas.CalcStatBon(ctx)
-			} else {
-				bananasgobahamas.CalcStatReg(ctx, rn)
-			}
-		}
-	})
-
-	for _, alias := range []string{
-		"bananasgobahamas",
-	} {
-		GameAliases[alias] = "bananasgobahamas"
+	var gi = GameInfo{
+		Aliases: []GameAlias{
+			{"bananasgobahamas", "Bananas Go Bahamas"},
+		},
+		Provider: "Novomatic",
+		ScrnX:    5,
+		ScrnY:    3,
 	}
+	GameList = append(GameList, gi)
 
-	GameFactory["bananasgobahamas"] = func(rd string) any {
-		if _, ok := bananasgobahamas.ReelsMap[rd]; ok {
-			return bananasgobahamas.NewGame(rd)
+	for _, ga := range gi.Aliases {
+		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
+			if is, _ := flags.GetBool(ga.ID); is {
+				var rn, _ = flags.GetString("reels")
+				if rn == "bon" {
+					bananasgobahamas.CalcStatBon(ctx)
+				} else {
+					bananasgobahamas.CalcStatReg(ctx, rn)
+				}
+			}
+		})
+		GameFactory[ga.ID] = func(rd string) any {
+			if _, ok := bananasgobahamas.ReelsMap[rd]; ok {
+				return bananasgobahamas.NewGame(rd)
+			}
+			return nil
 		}
-		return nil
 	}
 }

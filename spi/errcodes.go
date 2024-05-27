@@ -43,10 +43,10 @@ const (
 	SEC_game_join_nobind
 	SEC_game_join_norid
 	SEC_game_join_nouid
-	SEC_game_join_noalias
 	SEC_game_join_noclub
 	SEC_game_join_nouser
 	SEC_prop_join_noaccess
+	SEC_game_join_noalias
 	SEC_game_join_noreels
 	SEC_game_join_open
 	SEC_game_join_props

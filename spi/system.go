@@ -60,9 +60,9 @@ func SpiMemUsage(c *gin.Context) {
 
 // Returns full list of all available games by game type IDs.
 func SpiGameList(c *gin.Context) {
-	var list = make([]string, len(links.GameAliases))
+	var list = make([]string, len(links.GameFactory))
 	var i int
-	for alias := range links.GameAliases {
+	for alias := range links.GameFactory {
 		list[i] = alias
 		i++
 	}

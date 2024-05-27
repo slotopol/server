@@ -10,29 +10,31 @@ import (
 )
 
 func init() {
-	FlagsSetters = append(FlagsSetters, func(flags *pflag.FlagSet) {
-		flags.Bool("trolls", false, "'Trolls' NetEnt 5x3 slots")
-	})
-	ScatIters = append(ScatIters, func(flags *pflag.FlagSet, ctx context.Context) {
-		if is, _ := flags.GetBool("trolls"); is {
-			var rn, _ = flags.GetString("reels")
-			trolls.CalcStatReg(ctx, rn)
-		}
-	})
-
-	for _, alias := range []string{
-		"trolls",
-		"excalibur",
-		"pandorasbox",
-		"wildwitches",
-	} {
-		GameAliases[alias] = "trolls"
+	var gi = GameInfo{
+		Aliases: []GameAlias{
+			{"trolls", "Trolls"},
+			{"excalibur", "Excalibur"},
+			{"pandorasbox", "Pandora's Box"},
+			{"wildwitches", "Wild Witches"},
+		},
+		Provider: "NetEnt",
+		ScrnX:    5,
+		ScrnY:    3,
 	}
+	GameList = append(GameList, gi)
 
-	GameFactory["trolls"] = func(rd string) any {
-		if _, ok := trolls.ReelsMap[rd]; ok {
-			return trolls.NewGame(rd)
+	for _, ga := range gi.Aliases {
+		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
+			if is, _ := flags.GetBool(ga.ID); is {
+				var rn, _ = flags.GetString("reels")
+				trolls.CalcStatReg(ctx, rn)
+			}
+		})
+		GameFactory[ga.ID] = func(rd string) any {
+			if _, ok := trolls.ReelsMap[rd]; ok {
+				return trolls.NewGame(rd)
+			}
+			return nil
 		}
-		return nil
 	}
 }

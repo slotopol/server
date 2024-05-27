@@ -10,26 +10,28 @@ import (
 )
 
 func init() {
-	FlagsSetters = append(FlagsSetters, func(flags *pflag.FlagSet) {
-		flags.Bool("firejoker", false, "'Fire Joker' Play'n GO 5x3 slots")
-	})
-	ScatIters = append(ScatIters, func(flags *pflag.FlagSet, ctx context.Context) {
-		if is, _ := flags.GetBool("firejoker"); is {
-			var rn, _ = flags.GetString("reels")
-			firejoker.CalcStatReg(ctx, rn)
-		}
-	})
-
-	for _, alias := range []string{
-		"firejoker",
-	} {
-		GameAliases[alias] = "firejoker"
+	var gi = GameInfo{
+		Aliases: []GameAlias{
+			{"firejoker", "Fire Joker"},
+		},
+		Provider: "Play'n GO",
+		ScrnX:    5,
+		ScrnY:    3,
 	}
+	GameList = append(GameList, gi)
 
-	GameFactory["firejoker"] = func(rd string) any {
-		if _, ok := firejoker.ReelsMap[rd]; ok {
-			return firejoker.NewGame(rd)
+	for _, ga := range gi.Aliases {
+		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
+			if is, _ := flags.GetBool(ga.ID); is {
+				var rn, _ = flags.GetString("reels")
+				firejoker.CalcStatReg(ctx, rn)
+			}
+		})
+		GameFactory[ga.ID] = func(rd string) any {
+			if _, ok := firejoker.ReelsMap[rd]; ok {
+				return firejoker.NewGame(rd)
+			}
+			return nil
 		}
-		return nil
 	}
 }

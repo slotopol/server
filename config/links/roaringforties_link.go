@@ -10,26 +10,28 @@ import (
 )
 
 func init() {
-	FlagsSetters = append(FlagsSetters, func(flags *pflag.FlagSet) {
-		flags.Bool("roaringforties", false, "'Roaring Forties' Novomatic 5x4 slots")
-	})
-	ScatIters = append(ScatIters, func(flags *pflag.FlagSet, ctx context.Context) {
-		if is, _ := flags.GetBool("roaringforties"); is {
-			var rn, _ = flags.GetString("reels")
-			roaringforties.CalcStat(ctx, rn)
-		}
-	})
-
-	for _, alias := range []string{
-		"roaringforties",
-	} {
-		GameAliases[alias] = "roaringforties"
+	var gi = GameInfo{
+		Aliases: []GameAlias{
+			{"roaringforties", "Roaring Forties"},
+		},
+		Provider: "Novomatic",
+		ScrnX:    5,
+		ScrnY:    4,
 	}
+	GameList = append(GameList, gi)
 
-	GameFactory["roaringforties"] = func(rd string) any {
-		if _, ok := roaringforties.ReelsMap[rd]; ok {
-			return roaringforties.NewGame(rd)
+	for _, ga := range gi.Aliases {
+		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
+			if is, _ := flags.GetBool(ga.ID); is {
+				var rn, _ = flags.GetString("reels")
+				roaringforties.CalcStat(ctx, rn)
+			}
+		})
+		GameFactory[ga.ID] = func(rd string) any {
+			if _, ok := roaringforties.ReelsMap[rd]; ok {
+				return roaringforties.NewGame(rd)
+			}
+			return nil
 		}
-		return nil
 	}
 }

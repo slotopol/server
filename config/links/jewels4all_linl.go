@@ -10,26 +10,28 @@ import (
 )
 
 func init() {
-	FlagsSetters = append(FlagsSetters, func(flags *pflag.FlagSet) {
-		flags.Bool("jewels4all", false, "'Jewels 4 All' Novomatic 5x3 slots")
-	})
-	ScatIters = append(ScatIters, func(flags *pflag.FlagSet, ctx context.Context) {
-		if is, _ := flags.GetBool("jewels4all"); is {
-			var rn, _ = flags.GetString("reels")
-			jewels4all.CalcStat(ctx, rn)
-		}
-	})
-
-	for _, alias := range []string{
-		"jewels4all",
-	} {
-		GameAliases[alias] = "jewels4all"
+	var gi = GameInfo{
+		Aliases: []GameAlias{
+			{"jewels4all", "Jewels 4 All"},
+		},
+		Provider: "Novomatic",
+		ScrnX:    5,
+		ScrnY:    3,
 	}
+	GameList = append(GameList, gi)
 
-	GameFactory["jewels4all"] = func(rd string) any {
-		if _, ok := jewels4all.ChanceMap[rd]; ok {
-			return jewels4all.NewGame(rd)
+	for _, ga := range gi.Aliases {
+		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
+			if is, _ := flags.GetBool(ga.ID); is {
+				var rn, _ = flags.GetString("reels")
+				jewels4all.CalcStat(ctx, rn)
+			}
+		})
+		GameFactory[ga.ID] = func(rd string) any {
+			if _, ok := jewels4all.ChanceMap[rd]; ok {
+				return jewels4all.NewGame(rd)
+			}
+			return nil
 		}
-		return nil
 	}
 }

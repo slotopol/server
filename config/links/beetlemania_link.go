@@ -10,32 +10,34 @@ import (
 )
 
 func init() {
-	FlagsSetters = append(FlagsSetters, func(flags *pflag.FlagSet) {
-		flags.Bool("beetlemania", false, "'Beetle Mania' Novomatic 5x3 slots")
-	})
-	ScatIters = append(ScatIters, func(flags *pflag.FlagSet, ctx context.Context) {
-		if is, _ := flags.GetBool("beetlemania"); is {
-			var rn, _ = flags.GetString("reels")
-			if rn == "bon" || rn == "bonu" {
-				beetlemania.CalcStatBon(ctx, rn)
-			} else {
-				beetlemania.CalcStatReg(ctx, rn)
-			}
-		}
-	})
-
-	for _, alias := range []string{
-		"beetlemania",
-		"beetlemaniadeluxe",
-		"hottarget",
-	} {
-		GameAliases[alias] = "beetlemania"
+	var gi = GameInfo{
+		Aliases: []GameAlias{
+			{"beetlemania", "Beetle Mania"},
+			{"beetlemaniadeluxe", "Beetle Mania Deluxe"},
+			{"hottarget", "Hot Target"},
+		},
+		Provider: "Novomatic",
+		ScrnX:    5,
+		ScrnY:    3,
 	}
+	GameList = append(GameList, gi)
 
-	GameFactory["beetlemania"] = func(rd string) any {
-		if _, ok := beetlemania.ReelsMap[rd]; ok {
-			return beetlemania.NewGame(rd)
+	for _, ga := range gi.Aliases {
+		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
+			if is, _ := flags.GetBool(ga.ID); is {
+				var rn, _ = flags.GetString("reels")
+				if rn == "bon" || rn == "bonu" {
+					beetlemania.CalcStatBon(ctx, rn)
+				} else {
+					beetlemania.CalcStatReg(ctx, rn)
+				}
+			}
+		})
+		GameFactory[ga.ID] = func(rd string) any {
+			if _, ok := beetlemania.ReelsMap[rd]; ok {
+				return beetlemania.NewGame(rd)
+			}
+			return nil
 		}
-		return nil
 	}
 }

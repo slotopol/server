@@ -10,30 +10,32 @@ import (
 )
 
 func init() {
-	FlagsSetters = append(FlagsSetters, func(flags *pflag.FlagSet) {
-		flags.Bool("deserttreasure", false, "'Desert Treasure' Playtech 5x3 slots")
-	})
-	ScatIters = append(ScatIters, func(flags *pflag.FlagSet, ctx context.Context) {
-		if is, _ := flags.GetBool("deserttreasure"); is {
-			var rn, _ = flags.GetString("reels")
-			if rn == "bon" {
-				deserttreasure.CalcStatBon(ctx)
-			} else {
-				deserttreasure.CalcStatReg(ctx, rn)
-			}
-		}
-	})
-
-	for _, alias := range []string{
-		"deserttreasure",
-	} {
-		GameAliases[alias] = "deserttreasure"
+	var gi = GameInfo{
+		Aliases: []GameAlias{
+			{"deserttreasure", "Desert Treasure"},
+		},
+		Provider: "Playtech",
+		ScrnX:    5,
+		ScrnY:    3,
 	}
+	GameList = append(GameList, gi)
 
-	GameFactory["deserttreasure"] = func(rd string) any {
-		if _, ok := deserttreasure.ReelsMap[rd]; ok {
-			return deserttreasure.NewGame(rd)
+	for _, ga := range gi.Aliases {
+		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
+			if is, _ := flags.GetBool(ga.ID); is {
+				var rn, _ = flags.GetString("reels")
+				if rn == "bon" {
+					deserttreasure.CalcStatBon(ctx)
+				} else {
+					deserttreasure.CalcStatReg(ctx, rn)
+				}
+			}
+		})
+		GameFactory[ga.ID] = func(rd string) any {
+			if _, ok := deserttreasure.ReelsMap[rd]; ok {
+				return deserttreasure.NewGame(rd)
+			}
+			return nil
 		}
-		return nil
 	}
 }

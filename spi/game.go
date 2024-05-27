@@ -44,13 +44,6 @@ func SpiGameJoin(c *gin.Context) {
 		return
 	}
 
-	var alias = util.ToID(arg.Alias)
-	var gname string
-	if gname, ok = links.GameAliases[alias]; !ok {
-		Ret400(c, SEC_game_join_noalias, ErrNoAliase)
-		return
-	}
-
 	var club *Club
 	if club, ok = Clubs.Get(arg.CID); !ok {
 		Ret404(c, SEC_game_join_noclub, ErrNoClub)
@@ -70,7 +63,12 @@ func SpiGameJoin(c *gin.Context) {
 		return
 	}
 
-	var maker = links.GameFactory[gname]
+	var alias = util.ToID(arg.Alias)
+	var maker, has = links.GameFactory[alias]
+	if !has {
+		Ret400(c, SEC_game_join_noalias, ErrNoAliase)
+		return
+	}
 	var slotgame = maker("96")
 	if slotgame == nil {
 		Ret400(c, SEC_game_join_noreels, ErrNoReels)

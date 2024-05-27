@@ -10,30 +10,32 @@ import (
 )
 
 func init() {
-	FlagsSetters = append(FlagsSetters, func(flags *pflag.FlagSet) {
-		flags.Bool("katana", false, "'Katana' Novomatic 5x3 slots")
-	})
-	ScatIters = append(ScatIters, func(flags *pflag.FlagSet, ctx context.Context) {
-		if is, _ := flags.GetBool("katana"); is {
-			var rn, _ = flags.GetString("reels")
-			if rn == "bon" {
-				katana.CalcStatBon(ctx)
-			} else {
-				katana.CalcStatReg(ctx, rn)
-			}
-		}
-	})
-
-	for _, alias := range []string{
-		"katana",
-	} {
-		GameAliases[alias] = "katana"
+	var gi = GameInfo{
+		Aliases: []GameAlias{
+			{"katana", "Katana"},
+		},
+		Provider: "Novomatic",
+		ScrnX:    5,
+		ScrnY:    3,
 	}
+	GameList = append(GameList, gi)
 
-	GameFactory["katana"] = func(rd string) any {
-		if _, ok := katana.ReelsMap[rd]; ok {
-			return katana.NewGame(rd)
+	for _, ga := range gi.Aliases {
+		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
+			if is, _ := flags.GetBool(ga.ID); is {
+				var rn, _ = flags.GetString("reels")
+				if rn == "bon" {
+					katana.CalcStatBon(ctx)
+				} else {
+					katana.CalcStatReg(ctx, rn)
+				}
+			}
+		})
+		GameFactory[ga.ID] = func(rd string) any {
+			if _, ok := katana.ReelsMap[rd]; ok {
+				return katana.NewGame(rd)
+			}
+			return nil
 		}
-		return nil
 	}
 }
