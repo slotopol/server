@@ -64,6 +64,6 @@ require (
 // Advice: add to file `.vscode/settings.json` followed lines:
 // {
 //     "gopls": {
-//         "buildFlags": ["-tags", "full novomatic megajack betsoft netent playngo playtech"],
+//         "buildFlags": ["-tags", "full megajack novomatic netent betsoft playtech playngo"],
 //     }
 // }

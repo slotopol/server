@@ -11,7 +11,11 @@ import (
 	"github.com/spf13/pflag"
 )
 
-var flags *pflag.FlagSet
+var scanflags *pflag.FlagSet
+
+var (
+	fReels string
+)
 
 const scanShort = "Slots reels scanning"
 const scanLong = `Calculate RTP (Return to Player) percentage for specified slot game reels.`
@@ -32,29 +36,25 @@ var scanCmd = &cobra.Command{
 		}
 
 		for _, iter := range links.ScanIters {
-			iter(flags, exitctx)
+			iter(scanflags, exitctx)
 		}
 
 		return
 	},
 }
 
-var (
-	fReels string
-)
-
 func init() {
 	rootCmd.AddCommand(scanCmd)
 
-	flags = scanCmd.Flags()
-	flags.StringVarP(&fReels, "reels", "r", "", "name of reels set to use")
+	scanflags = scanCmd.Flags()
+	scanflags.StringVarP(&fReels, "reels", "r", "", "name of reels set to use")
 
 	for _, gi := range links.GameList {
 		for _, ga := range gi.Aliases {
-			flags.Bool(ga.ID, false, fmt.Sprintf("'%s' %s %dx%d videoslot", ga.Name, gi.Provider, gi.ScrnX, gi.ScrnY))
+			scanflags.Bool(ga.ID, false, fmt.Sprintf("'%s' %s %dx%d videoslot", ga.Name, gi.Provider, gi.ScrnX, gi.ScrnY))
 		}
 	}
 	for _, setter := range links.FlagsSetters {
-		setter(flags)
+		setter(scanflags)
 	}
 }

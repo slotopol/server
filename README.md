@@ -61,10 +61,10 @@ First of all you can get a list of games supported by server. This call can be w
 curl -H "Content-Type: application/json" -X GET localhost:8080/gamelist
 ```
 
-The response can be followed:
+Response has array with available algorithms descriptions. Each structure has a list of games aliases, than shares one algorithm, as at the example:
 
 ```json
-["attila","bananasgobahamas","bananasplash","beetlemania","beetlemaniadeluxe","champagne","chicago","columbus","columbusdeluxe","dolphinspearl","dolphinspearldeluxe","dynastyofming","gryphonsgold","hottarget","jewels","jokerdolphin","justjewels","katana","kingofcards","luckyladyscharm","luckyladyscharmdeluxe","marcopolo","pharaonsgold2","pharaonsgold3","plentyontwenty","polarfox","royaltreasures","secretforest","sizzlinghot","sizzlinghotdeluxe","slotopol","slotopoldeluxe","themoneygame","unicornmagic"]
+{"aliases":[{"id":"trolls","name":"Trolls"},{"id":"excalibur","name":"Excalibur"},{"id":"pandorasbox","name":"Pandora's Box"},{"id":"wildwitches","name":"Wild Witches"}],"provider":"NetEnt","scrnx":5,"scrny":3}
 ```
 
 `/ping`, `/servinfo` and `/memusage`, `/signup` and `/signin` endpoints also does not expects authorization.

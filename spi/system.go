@@ -2,7 +2,6 @@ package spi
 
 import (
 	"runtime"
-	"sort"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -60,14 +59,5 @@ func SpiMemUsage(c *gin.Context) {
 
 // Returns full list of all available games by game type IDs.
 func SpiGameList(c *gin.Context) {
-	var list = make([]string, len(links.GameFactory))
-	var i int
-	for alias := range links.GameFactory {
-		list[i] = alias
-		i++
-	}
-	sort.Slice(list, func(i, j int) bool {
-		return list[i] < list[j]
-	})
-	RetOk(c, list)
+	RetOk(c, links.GameList)
 }
