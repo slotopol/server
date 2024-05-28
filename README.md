@@ -61,10 +61,10 @@ First of all you can get a list of games supported by server. This call can be w
 curl -H "Content-Type: application/json" -X GET localhost:8080/gamelist
 ```
 
-Response has array with available algorithms descriptions. Each structure has a list of games aliases, than shares one algorithm, as at the example:
+Response has array with available algorithms descriptions. Each structure has a list of games aliases, that shares one algorithm. Field `rtplist` has the list of reels with predefined RTP. There is example of structure with info:
 
 ```json
-{"aliases":[{"id":"trolls","name":"Trolls"},{"id":"excalibur","name":"Excalibur"},{"id":"pandorasbox","name":"Pandora's Box"},{"id":"wildwitches","name":"Wild Witches"}],"provider":"NetEnt","scrnx":5,"scrny":3}
+{"aliases":[{"id":"trolls","name":"Trolls"},{"id":"excalibur","name":"Excalibur"},{"id":"pandorasbox","name":"Pandora's Box"},{"id":"wildwitches","name":"Wild Witches"}],"provider":"NetEnt","scrnx":5,"scrny":3,"rtplist":["88","89","92","93","94","95","97","98","102","110"]}
 ```
 
 `/ping`, `/servinfo` and `/memusage`, `/signup` and `/signin` endpoints also does not expects authorization.

@@ -71,10 +71,10 @@ var Reels957 = game.Reels5x{
 
 // Map with available reels.
 var ReelsMap = map[string]*game.Reels5x{
-	"104": &Reels104, // original
-	"99":  &Reels986,
-	"97":  &Reels970,
 	"96":  &Reels957,
+	"97":  &Reels970,
+	"99":  &Reels986,
+	"104": &Reels104, // original
 }
 
 // Lined payment.

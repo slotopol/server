@@ -17,6 +17,9 @@ func init() {
 		Provider: "Play'n GO",
 		ScrnX:    5,
 		ScrnY:    3,
+		RtpList: []string{
+			"83", "89", "92", "95", "97", "100", "109",
+		},
 	}
 	GameList = append(GameList, gi)
 
