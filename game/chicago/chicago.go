@@ -183,14 +183,16 @@ func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
 
 	if g.FS > 0 {
 		g.FS--
-		g.Mult = MultChoose[rand.N(len(MultChoose))]
-	} else {
-		g.Mult = 1
 	}
 	for _, wi := range sw.Wins {
 		if wi.Free > 0 {
 			g.FS += wi.Free
 		}
+	}
+	if g.FS > 0 {
+		g.Mult = MultChoose[rand.N(len(MultChoose))]
+	} else {
+		g.Mult = 1
 	}
 }
 

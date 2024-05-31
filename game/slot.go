@@ -98,6 +98,7 @@ func (r *Reels5x) Reshuffles() int {
 }
 
 var (
+	ErrNoWay      = errors.New("no way to here")
 	ErrBetEmpty   = errors.New("bet is empty")
 	ErrNoLineset  = errors.New("lines set is empty")
 	ErrLinesetOut = errors.New("lines set is out of range bet lines")

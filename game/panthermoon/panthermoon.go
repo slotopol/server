@@ -202,7 +202,7 @@ func NewGame(rd string) *Game {
 
 const wild, scat = 1, 13
 
-var bl = game.BetLinesNvm15
+var bl = game.BetLinesPlt15
 
 func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
 	g.ScanLined(screen, ws)
