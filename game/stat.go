@@ -19,6 +19,7 @@ type Stat struct {
 	LinePay    float64
 	ScatPay    float64
 	FreeCount  uint64
+	FreeHits   uint64
 	BonusCount [8]uint64
 	JackCount  [4]uint64
 	lpm, spm   sync.Mutex
@@ -43,6 +44,7 @@ func (s *Stat) Update(sw *WinScan) {
 		}
 		if wi.Free > 0 {
 			atomic.AddUint64(&s.FreeCount, uint64(wi.Free))
+			atomic.AddUint64(&s.FreeHits, 1)
 		}
 		if wi.BID > 0 {
 			atomic.AddUint64(&s.BonusCount[wi.BID], 1)

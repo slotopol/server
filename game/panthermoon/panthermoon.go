@@ -9,6 +9,7 @@ import (
 // reels lengths [30, 43, 43, 43, 43], total reshuffles 102564030
 // symbols: 39.772(lined) + 11.288(scatter) = 51.059855%
 // free spins 5868450, q = 0.057217, sq = 1/(1-q) = 1.060690
+// free games frequency: 1/262.16
 // RTP = 51.06(sym) + 0.057217*618.88(fg) = 86.470777%
 var ReelsReg86 = game.Reels5x{
 	{6, 11, 1, 9, 12, 8, 11, 7, 2, 11, 6, 8, 11, 4, 7, 9, 13, 10, 9, 3, 7, 5, 11, 9, 6, 11, 9, 10, 4, 7},
@@ -21,6 +22,7 @@ var ReelsReg86 = game.Reels5x{
 // reels lengths [30, 43, 43, 43, 43], total reshuffles 102564030
 // symbols: 41.45(lined) + 11.288(scatter) = 52.738002%
 // free spins 5868450, q = 0.057217, sq = 1/(1-q) = 1.060690
+// free games frequency: 1/262.16
 // RTP = 52.738(sym) + 0.057217*618.88(fg) = 88.148924%
 var ReelsReg88 = game.Reels5x{
 	{6, 11, 1, 9, 12, 8, 11, 7, 2, 11, 6, 8, 11, 4, 7, 9, 13, 10, 9, 3, 7, 5, 11, 9, 6, 11, 9, 10, 4, 7},
@@ -33,6 +35,7 @@ var ReelsReg88 = game.Reels5x{
 // reels lengths [30, 43, 43, 43, 43], total reshuffles 102564030
 // symbols: 43.667(lined) + 11.288(scatter) = 54.954656%
 // free spins 5868450, q = 0.057217, sq = 1/(1-q) = 1.060690
+// free games frequency: 1/262.16
 // RTP = 54.955(sym) + 0.057217*618.88(fg) = 90.365578%
 var ReelsReg90 = game.Reels5x{
 	{6, 11, 1, 9, 12, 8, 11, 7, 2, 11, 5, 8, 11, 4, 7, 9, 13, 10, 9, 3, 7, 5, 10, 8, 6, 11, 9, 10, 4, 7},
@@ -45,6 +48,7 @@ var ReelsReg90 = game.Reels5x{
 // reels lengths [30, 43, 43, 43, 43], total reshuffles 102564030
 // symbols: 45.775(lined) + 11.288(scatter) = 57.062817%
 // free spins 5868450, q = 0.057217, sq = 1/(1-q) = 1.060690
+// free games frequency: 1/262.16
 // RTP = 57.063(sym) + 0.057217*618.88(fg) = 92.473739%
 var ReelsReg92 = game.Reels5x{
 	{6, 11, 1, 9, 12, 8, 11, 7, 2, 11, 6, 8, 9, 4, 7, 9, 13, 10, 9, 3, 7, 5, 11, 9, 10, 11, 9, 10, 4, 7},
@@ -57,6 +61,7 @@ var ReelsReg92 = game.Reels5x{
 // reels lengths [30, 43, 43, 43, 43], total reshuffles 102564030
 // symbols: 47.537(lined) + 11.288(scatter) = 58.825038%
 // free spins 5868450, q = 0.057217, sq = 1/(1-q) = 1.060690
+// free games frequency: 1/262.16
 // RTP = 58.825(sym) + 0.057217*618.88(fg) = 94.235960%
 var ReelsReg94 = game.Reels5x{
 	{6, 11, 1, 9, 12, 8, 11, 7, 2, 11, 6, 8, 9, 4, 7, 9, 13, 10, 9, 3, 7, 5, 11, 8, 10, 11, 5, 10, 4, 7},
@@ -69,6 +74,7 @@ var ReelsReg94 = game.Reels5x{
 // reels lengths [30, 43, 43, 43, 43], total reshuffles 102564030
 // symbols: 48.704(lined) + 11.288(scatter) = 59.992083%
 // free spins 5868450, q = 0.057217, sq = 1/(1-q) = 1.060690
+// free games frequency: 1/262.16
 // RTP = 59.992(sym) + 0.057217*618.88(fg) = 95.403005%
 var ReelsReg95 = game.Reels5x{
 	{6, 11, 1, 9, 12, 8, 11, 7, 2, 11, 6, 8, 9, 4, 7, 9, 13, 10, 9, 3, 10, 5, 11, 8, 10, 11, 5, 10, 4, 7},
@@ -81,6 +87,7 @@ var ReelsReg95 = game.Reels5x{
 // reels lengths [30, 43, 43, 43, 43], total reshuffles 102564030
 // symbols: 49.703(lined) + 11.288(scatter) = 60.991139%
 // free spins 5868450, q = 0.057217, sq = 1/(1-q) = 1.060690
+// free games frequency: 1/262.16
 // RTP = 60.991(sym) + 0.057217*618.88(fg) = 96.402061%
 var ReelsReg96 = game.Reels5x{
 	{6, 11, 1, 9, 12, 8, 11, 7, 2, 11, 6, 8, 9, 4, 7, 9, 13, 10, 9, 3, 10, 5, 11, 8, 10, 11, 5, 10, 4, 7},
@@ -93,6 +100,7 @@ var ReelsReg96 = game.Reels5x{
 // reels lengths [30, 43, 43, 43, 43], total reshuffles 102564030
 // symbols: 50.702(lined) + 11.288(scatter) = 61.990173%
 // free spins 5868450, q = 0.057217, sq = 1/(1-q) = 1.060690
+// free games frequency: 1/262.16
 // RTP = 61.99(sym) + 0.057217*618.88(fg) = 97.401095%
 var ReelsReg97 = game.Reels5x{
 	{6, 11, 1, 9, 12, 8, 6, 7, 2, 11, 6, 8, 9, 4, 7, 9, 13, 10, 9, 3, 10, 5, 11, 8, 10, 11, 5, 10, 4, 7},
@@ -105,6 +113,7 @@ var ReelsReg97 = game.Reels5x{
 // reels lengths [30, 32, 32, 32, 32], total reshuffles 31457280
 // symbols: 54.789(lined) + 18.01(scatter) = 72.799053%
 // free spins 3489480, q = 0.11093, sq = 1/(1-q) = 1.124768
+// free games frequency: 1/135.22
 // RTP = 72.799(sym) + 0.11093*618.88(fg) = 141.450303%
 var ReelsReg141 = game.Reels5x{
 	{6, 11, 1, 9, 12, 8, 6, 7, 2, 11, 6, 8, 9, 4, 7, 9, 13, 10, 9, 3, 10, 5, 11, 8, 10, 11, 5, 10, 4, 7},
@@ -117,6 +126,7 @@ var ReelsReg141 = game.Reels5x{
 // reels lengths [33, 36, 36, 36, 36], total reshuffles 55427328
 // symbols: 226.63(lined) + 144.15(scatter) = 370.783105%
 // free spins 22219920, q = 0.40088, sq = 1/(1-q) = 1.669125
+// free games frequency: 1/37.417
 // RTP = sq*rtp(sym) = 1.6691*370.78 = 618.883497%
 var ReelsBon = game.Reels5x{
 	{6, 11, 1, 9, 12, 5, 11, 8, 2, 7, 6, 10, 12, 4, 7, 9, 13, 10, 9, 3, 7, 5, 10, 9, 2, 8, 11, 10, 3, 8, 11, 4, 7},

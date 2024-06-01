@@ -118,6 +118,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 	fmt.Printf("free games numbers: [0, 0, %d, %d, %d]\n", s.FGNum[2], s.FGNum[3], s.FGNum[4])
 	fmt.Printf("free games %g, q = %.6f\n", fgsum, q)
+	fmt.Printf("free games frequency: 1/%.5g\n", reshuf/float64(s.FreeHits))
 	fmt.Printf("average pay by freespins start %.6f\n", fgpay)
 	fmt.Printf("rtpbon = (fgpay+rtpfs*10)*2^10/8 = %.6f\n", rtpbon)
 	if s.JackCount[jid] > 0 {

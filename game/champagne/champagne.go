@@ -9,6 +9,7 @@ import (
 // reels lengths [32, 32, 32, 32, 32], total reshuffles 33554432
 // symbols: 135.5(lined) + 0.7242(scatter) = 136.224294%
 // free games 7171740, q = 0.21373, sq = 1/(1-q) = 1.271835
+// free games frequency: 1/140.36
 // champagne bonuses: count 11025, rtp = 6.362796%
 // jackpots: count 32, frequency 1/1048576
 // RTP = sq*(rtp(sym)+rtp(mjc)) = 1.2718*(136.22+6.3628) = 181.347256%
@@ -16,6 +17,7 @@ import (
 // reels lengths [32, 32, 32, 32, 32], total reshuffles 33554432
 // symbols: 69.974(lined) + 0.7242(scatter) = 70.698214%
 // free games 3585870, q = 0.106867
+// free games frequency: 1/140.36
 // champagne bonuses: count 11025, rtp = 6.362796%
 // jackpots: count 32, frequency 1/1048576
 // RTP = rtp(sym) + rtp(mjc) + q*rtp(fg) = 70.698 + 6.3628 + 0.10687*181.35 = 96.441093%

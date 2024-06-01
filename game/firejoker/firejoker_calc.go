@@ -114,6 +114,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 	fmt.Printf("free spins %d, q = %.6f\n", s.FreeCount, q)
+	fmt.Printf("free games frequency: 1/%.5g\n", reshuf/float64(s.FreeHits))
 	fmt.Printf("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, q, rtpfs, rtp)
 	return rtp
 }

@@ -7,6 +7,7 @@ import (
 // reels lengths [19, 20, 20, 20, 101], total reshuffles 15352000
 // symbols: 54.944(lined) + 0(scatter) = 54.943884%
 // free spins 1964628, q = 0.12797, sq = 1/(1-q) = 1.146752
+// free games frequency: 1/36.719
 // acorn bonuses: count 152000, rtp = 10.891089%
 // diamond lion bonuses: count 8080, rtp = 9.210526%
 // RTP = 54.944(sym) + 10.891(acorn) + 9.2105(dl) + 0.12797*138.6(fg) = 92.783055%
@@ -21,6 +22,7 @@ var ReelsReg93 = game.Reels5x{
 // reels lengths [20, 21, 21, 21, 93], total reshuffles 17225460
 // symbols: 60.224(lined) + 0(scatter) = 60.223855%
 // free spins 1811808, q = 0.10518, sq = 1/(1-q) = 1.117546
+// free games frequency: 1/44.175
 // acorn bonuses: count 185220, rtp = 11.827957%
 // diamond lion bonuses: count 7812, rtp = 7.936508%
 // RTP = 60.224(sym) + 11.828(acorn) + 7.9365(dl) + 0.10518*138.6(fg) = 94.567051%
@@ -35,6 +37,7 @@ var ReelsReg95 = game.Reels5x{
 // reels lengths [43, 43, 43, 43, 43], total reshuffles 147008443
 // symbols: 93.09(lined) + 0(scatter) = 93.090022%
 // free spins 48274380, q = 0.32838, sq = 1/(1-q) = 1.488933
+// free games frequency: 1/15.311
 // RTP = sq*rtp(sym) = 1.4889*93.09 = 138.604842%
 var ReelsBon = game.Reels5x{
 	{4, 10, 3, 7, 1, 9, 5, 7, 5, 9, 11, 2, 5, 1, 6, 1, 10, 4, 4, 6, 11, 5, 3, 7, 6, 2, 3, 6, 8, 4, 10, 1, 10, 7, 8, 2, 11, 8, 2, 9, 3, 9, 8},

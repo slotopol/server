@@ -9,6 +9,7 @@ import (
 // reels lengths [35, 35, 35, 35, 35], total reshuffles 52521875
 // symbols: 65.165(lined) + 14.402(scatter) = 79.567228%
 // free spins 3476196, q = 0.066186, sq = 1/(1-q) = 1.070877
+// free games frequency: 1/181.31
 // RTP = 79.567(sym) + 0.066186*85.207(fg)*3 = 96.485616%
 var ReelsReg96 = game.Reels5x{
 	{11, 10, 4, 8, 6, 7, 3, 8, 5, 10, 2, 12, 11, 4, 9, 13, 6, 11, 2, 7, 6, 9, 5, 8, 3, 12, 4, 7, 2, 10, 1, 9, 5, 12, 3},
