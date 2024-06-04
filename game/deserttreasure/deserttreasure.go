@@ -256,7 +256,17 @@ func NewGame(rd string) *Game {
 
 const wild, scat = 1, 2
 
-var bl = game.BetLinesPlt9
+var bl = game.Lineset5x{
+	{2, 2, 2, 2, 2}, // 1
+	{1, 1, 1, 1, 1}, // 2
+	{3, 3, 3, 3, 3}, // 3
+	{1, 2, 3, 2, 1}, // 4
+	{3, 2, 1, 2, 3}, // 5
+	{1, 1, 2, 3, 3}, // 6
+	{3, 3, 2, 1, 1}, // 7
+	{2, 1, 2, 3, 2}, // 8
+	{2, 3, 2, 1, 2}, // 9
+}
 
 func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
 	g.ScanLined(screen, ws)

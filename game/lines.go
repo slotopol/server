@@ -211,15 +211,6 @@ var BetLinesHot3 = Lineset3x{
 	{3, 2, 1}, // 5
 }
 
-// Hot 5x3 bet lines
-var BetLinesHot5 = Lineset5x{
-	{2, 2, 2, 2, 2}, // 1
-	{1, 1, 1, 1, 1}, // 2
-	{3, 3, 3, 3, 3}, // 3
-	{1, 2, 3, 2, 1}, // 4
-	{3, 2, 1, 2, 3}, // 5
-}
-
 // Megajack 21 bet lines
 var BetLinesMgj = Lineset5x{
 	{2, 2, 2, 2, 2}, // 1
@@ -439,19 +430,6 @@ var BetLinesNetEnt20 = Lineset5x{
 	{1, 2, 3, 3, 3}, // 18
 	{3, 2, 1, 1, 1}, // 19
 	{1, 3, 1, 3, 1}, // 20
-}
-
-// Playtech 9 bet lines
-var BetLinesPlt9 = Lineset5x{
-	{2, 2, 2, 2, 2}, // 1
-	{1, 1, 1, 1, 1}, // 2
-	{3, 3, 3, 3, 3}, // 3
-	{1, 2, 3, 2, 1}, // 4
-	{3, 2, 1, 2, 3}, // 5
-	{1, 1, 2, 3, 3}, // 6
-	{3, 3, 2, 1, 1}, // 7
-	{2, 1, 2, 3, 2}, // 8
-	{2, 3, 2, 1, 2}, // 9
 }
 
 // Playtech 15 bet lines
