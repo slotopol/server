@@ -5,7 +5,7 @@ package links
 import (
 	"context"
 
-	"github.com/slotopol/server/game/twomillionbc"
+	twomillionbc "github.com/slotopol/server/game/2millionbc"
 	"github.com/spf13/pflag"
 )
 
