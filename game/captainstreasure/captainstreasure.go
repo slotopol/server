@@ -1,5 +1,7 @@
 package captainstreasure
 
+// See: https://freeslotshub.com/playtech/captains-treasure/
+
 import "github.com/slotopol/server/game"
 
 // reels lengths [32, 42, 42, 42, 32], total reshuffles 75866112
