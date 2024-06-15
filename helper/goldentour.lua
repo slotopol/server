@@ -35,14 +35,7 @@ local reel = MakeReel(symset)
 print("reel length: " .. #reel)
 ShuffleReel(reel)
 local iter = CorrectReel(reel, neighbours)
-if iter > 1 then
-	if iter >= 1000 then
-		print"too many neighbours shuffle iterations"
-	else
-		print(iter.." iterations")
-	end
-end
-RrintReel(reel)
+RrintReel(reel, iter)
 
 -- bonus game calculation
 local golf = {

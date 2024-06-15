@@ -83,7 +83,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 			return 0
 		}
 	} else {
-		rn, reels = "93", &ReelsReg93
+		rn, reels = "96", &ReelsReg96
 	}
 	var g = NewGame(rn)
 	g.SBL = game.MakeSblNum(1)
@@ -118,9 +118,6 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 	fmt.Printf("free games frequency: 1/%.5g\n", reshuf/float64(s.FreeHits))
 	fmt.Printf("acorn bonuses: frequency 1/%d, rtp = %.6f%%\n", len(reels.Reel(5)), rtpacbn)
 	fmt.Printf("diamond lion bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount[dlbn]), rtpdlbn)
-	if s.JackCount[jid] > 0 {
-		fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(reshuf/float64(s.JackCount[jid])))
-	}
 	fmt.Printf("RTP = %.5g(sym) + %.5g(acorn) + %.5g(dl) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, rtpacbn, rtpdlbn, q, rtpfs, rtp)
 	return rtp
 }

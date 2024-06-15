@@ -67,7 +67,15 @@ function CorrectReel(reel, neighbours)
 	return iter
 end
 
-function RrintReel(reel)
+function RrintReel(reel, iter)
+	if iter > 1 then
+		if iter >= 1000 then
+			print"too many neighbours shuffle iterations"
+			return
+		else
+			print(iter.." iterations")
+		end
+	end
 	io.write("{")
 	for i = 1, #reel do
 		io.write(reel[i] .. ", ")
