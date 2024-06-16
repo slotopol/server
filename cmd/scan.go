@@ -1,10 +1,9 @@
 package cmd
 
 import (
-	"context"
 	"fmt"
 
-	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/config"
 	"github.com/slotopol/server/config/links"
 
 	"github.com/spf13/cobra"
@@ -28,12 +27,9 @@ var scanCmd = &cobra.Command{
 	Aliases: []string{"calc"},
 	Short:   scanShort,
 	Long:    scanLong,
-	Example: fmt.Sprintf(scanExmp, cfg.AppName),
+	Example: fmt.Sprintf(scanExmp, config.AppName),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
-		var exitctx context.Context
-		if exitctx, err = Init(); err != nil {
-			return
-		}
+		var exitctx = Startup()
 
 		for _, iter := range links.ScanIters {
 			iter(scanflags, exitctx)

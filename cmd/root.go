@@ -20,8 +20,6 @@ var (
 )
 
 func init() {
-	cobra.OnInitialize(config.InitConfig)
-
 	var flags = rootCmd.PersistentFlags()
 	flags.StringVarP(&config.CfgFile, "config", "c", "", "config file (default is config/slot.yaml at executable location)")
 	flags.StringVarP(&config.SqlPath, "sqlite", "q", "", "sqlite databases path (default same as config file path)")

@@ -27,6 +27,40 @@ var (
 	Cfg = cfg.Cfg
 )
 
+func Startup() (exitctx context.Context) {
+	//var cancel context.CancelFunc
+	exitctx, cancel := context.WithCancel(context.Background())
+	go func() {
+		// Make exit signal on function exit.
+		defer cancel()
+
+		var sigint = make(chan os.Signal, 1)
+		var sigterm = make(chan os.Signal, 1)
+		// We'll accept graceful shutdowns when quit via SIGINT (Ctrl+C) or SIGTERM (Ctrl+/)
+		// SIGKILL, SIGQUIT will not be caught.
+		signal.Notify(sigint, syscall.SIGINT)
+		signal.Notify(sigterm, syscall.SIGTERM)
+		// Block until we receive our signal.
+		select {
+		case <-exitctx.Done():
+			if errors.Is(exitctx.Err(), context.DeadlineExceeded) {
+				log.Println("shutting down by timeout")
+			} else if errors.Is(exitctx.Err(), context.Canceled) {
+				log.Println("shutting down by cancel")
+			} else {
+				log.Printf("shutting down by %s\n", exitctx.Err().Error())
+			}
+		case <-sigint:
+			log.Println("shutting down by break")
+		case <-sigterm:
+			log.Println("shutting down by process termination")
+		}
+		signal.Stop(sigint)
+		signal.Stop(sigterm)
+	}()
+	return
+}
+
 func InitStorage() (err error) {
 	if cfg.XormStorage, err = xorm.NewEngine(Cfg.XormDriverName, util.JoinPath(cfg.SqlPath, slotclubfile)); err != nil {
 		return
@@ -174,38 +208,7 @@ func InitSpinlog() (err error) {
 	return
 }
 
-func Init() (exitctx context.Context, err error) {
-	//var cancel context.CancelFunc
-	exitctx, cancel := context.WithCancel(context.Background())
-	go func() {
-		// Make exit signal on function exit.
-		defer cancel()
-
-		var sigint = make(chan os.Signal, 1)
-		var sigterm = make(chan os.Signal, 1)
-		// We'll accept graceful shutdowns when quit via SIGINT (Ctrl+C) or SIGTERM (Ctrl+/)
-		// SIGKILL, SIGQUIT will not be caught.
-		signal.Notify(sigint, syscall.SIGINT)
-		signal.Notify(sigterm, syscall.SIGTERM)
-		// Block until we receive our signal.
-		select {
-		case <-exitctx.Done():
-			if errors.Is(exitctx.Err(), context.DeadlineExceeded) {
-				log.Println("shutting down by timeout")
-			} else if errors.Is(exitctx.Err(), context.Canceled) {
-				log.Println("shutting down by cancel")
-			} else {
-				log.Printf("shutting down by %s\n", exitctx.Err().Error())
-			}
-		case <-sigint:
-			log.Println("shutting down by break")
-		case <-sigterm:
-			log.Println("shutting down by process termination")
-		}
-		signal.Stop(sigint)
-		signal.Stop(sigterm)
-	}()
-
+func Init() (err error) {
 	if err = InitStorage(); err != nil {
 		err = fmt.Errorf("can not init XORM records storage: %w", err)
 		return
