@@ -33,8 +33,6 @@ var listCmd = &cobra.Command{
 		var num, alg int
 		var prov = map[string]int{}
 		for _, gi := range links.GameList {
-			prov[gi.Provider] += len(gi.Aliases)
-			alg++
 			if prv, _ := listflags.GetBool(util.ToID(gi.Provider)); prv || fAllPrv {
 				num += len(gi.Aliases)
 			}
@@ -44,6 +42,8 @@ var listCmd = &cobra.Command{
 		var i int
 		for _, gi := range links.GameList {
 			if prv, _ := listflags.GetBool(util.ToID(gi.Provider)); prv || fAllPrv {
+				prov[gi.Provider] += len(gi.Aliases)
+				alg++
 				for _, ga := range gi.Aliases {
 					list[i] = fmt.Sprintf("'%s' %s %dx%d videoslot", ga.Name, gi.Provider, gi.ScrnX, gi.ScrnY)
 					i++

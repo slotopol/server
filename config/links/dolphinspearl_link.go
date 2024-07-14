@@ -14,6 +14,7 @@ func init() {
 		Aliases: []GameAlias{
 			{"dolphinspearl", "Dolphins Pearl"},
 			{"dolphinspearldeluxe", "Dolphins Pearl Deluxe"},
+			{"dolphintreasure", "Dolphin Treasure"}, // See: https://freeslotshub.com/aristocrat/dolphin-treasure/
 			{"attila", "Attila"},
 			{"bananasplash", "Banana Splash"},
 			{"dynastyofming", "Dynasty Of Ming"},
