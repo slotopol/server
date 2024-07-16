@@ -61,8 +61,8 @@ type SlotGame interface {
 	SetGain(gain float64) error         // set gain to given value on double up games
 	GetBet() float64                    // returns current bet, constat function
 	SetBet(float64) error               // set bet to given value
-	GetLines() SBL                      // returns selected lines indexes, constat function
-	SetLines(SBL) error                 // setup selected lines indexes
+	GetLines() SBL                      // returns selected bet lines indexes, constat function
+	SetLines(SBL) error                 // setup selected bet lines indexes
 	GetReels() string                   // returns reels descriptor
 	SetReels(rd string) error           // setup reels descriptor
 }

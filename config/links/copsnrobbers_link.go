@@ -5,20 +5,20 @@ package links
 import (
 	"context"
 
-	"github.com/slotopol/server/game/fortuneteller"
+	"github.com/slotopol/server/game/copsnrobbers"
 	"github.com/spf13/pflag"
 )
 
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{"fortuneteller", "Fortune Teller"},
+			{"copsnrobbers", "Cops'n'Robbers"},
 		},
 		Provider: "Play'n GO",
 		ScrnX:    5,
 		ScrnY:    3,
 		RtpList: []string{
-			"85", "87", "89", "90", "91", "92", "94", "95", "96", "98", "99", "112", "126",
+			"86", "88", "90", "92", "93", "94", "95", "96", "97", "98", "99", "112", "bon",
 		},
 	}
 	GameList = append(GameList, gi)
@@ -27,12 +27,16 @@ func init() {
 		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
 			if is, _ := flags.GetBool(ga.ID); is {
 				var rn, _ = flags.GetString("reels")
-				fortuneteller.CalcStatReg(ctx, rn)
+				if rn == "bon" {
+					copsnrobbers.CalcStatBon(ctx)
+				} else {
+					copsnrobbers.CalcStatReg(ctx, rn)
+				}
 			}
 		})
 		GameFactory[ga.ID] = func(rd string) any {
-			if _, ok := fortuneteller.ReelsMap[rd]; ok {
-				return fortuneteller.NewGame(rd)
+			if _, ok := copsnrobbers.ReelsMap[rd]; ok {
+				return copsnrobbers.NewGame(rd)
 			}
 			return nil
 		}
