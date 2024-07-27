@@ -97,7 +97,7 @@ func CalcStat(ctx context.Context, rn string) float64 {
 		rn, reels = "100", &Reels100
 	}
 	var g = NewGame(rn)
-	g.SBL = game.MakeSblNum(1)
+	g.SBL = game.MakeBitNum(1)
 	var sbl = float64(g.SBL.Num())
 	var s game.Stat
 

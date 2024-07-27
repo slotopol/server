@@ -107,7 +107,7 @@ func NewGame(rd string) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
 			RD:  rd,
-			SBL: game.MakeSblNum(5),
+			SBL: game.MakeBitNum(5),
 			Bet: 1,
 		},
 	}
@@ -233,8 +233,8 @@ func (g *Game) FreeSpins() int {
 	return max(g.PRW[1], g.PRW[2], g.PRW[3])
 }
 
-func (g *Game) SetLines(sbl game.SBL) error {
-	var mask game.SBL = (1<<len(bl) - 1) << 1
+func (g *Game) SetLines(sbl game.Bitset) error {
+	var mask game.Bitset = (1<<len(bl) - 1) << 1
 	if sbl == 0 {
 		return game.ErrNoLineset
 	}

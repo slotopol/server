@@ -21,63 +21,63 @@ type Lineset interface {
 	Num() int      // returns number lines in set
 }
 
-// SBL is selected bet lines bitset.
-type SBL uint64
+// Bitset is selected bet lines bitset.
+type Bitset uint64
 
-// MakeSblSet creates lines set from slice of line indexes.
-func MakeSblSet(lines ...int) SBL {
-	var sbl SBL
+// MakeBitset creates lines set from slice of line indexes.
+func MakeBitset(lines ...int) Bitset {
+	var bs Bitset
 	for _, n := range lines {
-		sbl |= 1 << n
+		bs |= 1 << n
 	}
-	return sbl
+	return bs
 }
 
-// MakeSblNum creates lines set with first num lines.
-func MakeSblNum(num int) SBL {
+// MakeBitNum creates lines set with first num lines.
+func MakeBitNum(num int) Bitset {
 	return (1<<num - 1) << 1
 }
 
 // Num returns number of selected lines in set.
-func (sbl SBL) Num() int {
-	return bits.OnesCount64(uint64(sbl))
+func (bs Bitset) Num() int {
+	return bits.OnesCount64(uint64(bs))
 }
 
 // Next helps iterate lines numbers as followed:
 //
-//	for n := sbl.Next(0); n != 0; n = sbl.Next(n) {}
-func (sbl SBL) Next(n int) int {
-	sbl >>= n + 1
-	for sbl > 0 {
+//	for n := bs.Next(0); n != 0; n = bs.Next(n) {}
+func (bs Bitset) Next(n int) int {
+	bs >>= n + 1
+	for bs > 0 {
 		n++
-		if sbl&1 > 0 {
+		if bs&1 > 0 {
 			return n
 		}
-		sbl >>= 1
+		bs >>= 1
 	}
 	return 0
 }
 
 // Is checks that line with given number is set.
-func (sbl SBL) Is(n int) bool {
-	return sbl&1<<n > 0
+func (bs Bitset) Is(n int) bool {
+	return bs&1<<n > 0
 }
 
 // Set line with given number.
-func (sbl *SBL) Set(n int) {
-	*sbl |= 1 << n
+func (bs *Bitset) Set(n int) {
+	*bs |= 1 << n
 }
 
 // Toggle line with given number and return whether it set.
-func (sbl *SBL) Toggle(n int) bool {
-	var bit SBL = 1 << n
-	*sbl ^= bit
-	return *sbl&bit > 0
+func (bs *Bitset) Toggle(n int) bool {
+	var bit Bitset = 1 << n
+	*bs ^= bit
+	return *bs&bit > 0
 }
 
 // Sets first n lines.
-func (sbl *SBL) SetNum(n int) {
-	*sbl = (1<<n - 1) << 1
+func (bs *Bitset) SetNum(n int) {
+	*bs = (1<<n - 1) << 1
 }
 
 type Line3x [5]int

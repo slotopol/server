@@ -63,7 +63,7 @@ func CalcStatBon(ctx context.Context, rn string) (rtp float64) {
 		rn, reels = "92", &Reels92
 	}
 	var g = NewGame(rn)
-	g.SBL = game.MakeSblNum(1)
+	g.SBL = game.MakeBitNum(1)
 
 	for gs := game.Sym(1); gs <= 7; gs++ {
 		rtp += CalcStatSym(ctx, g, reels, gs)
@@ -90,7 +90,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		rn, reels = "92", &Reels92
 	}
 	var g = NewGame(rn)
-	g.SBL = game.MakeSblNum(1)
+	g.SBL = game.MakeBitNum(1)
 	var sbl = float64(g.SBL.Num())
 	var s game.Stat
 

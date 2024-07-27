@@ -112,7 +112,7 @@ func NewGame(rd string) *Game {
 	return &Game{
 		Slot3x3: game.Slot3x3{
 			RD:  rd,
-			SBL: game.MakeSblNum(5),
+			SBL: game.MakeBitNum(5),
 			Bet: 1,
 		},
 	}
@@ -140,7 +140,7 @@ func (g *Game) Spin(screen game.Screen) {
 	screen.Spin(ReelsMap[g.RD])
 }
 
-func (g *Game) SetLines(sbl game.SBL) error {
+func (g *Game) SetLines(sbl game.Bitset) error {
 	return game.ErrNoFeature
 }
 

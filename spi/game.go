@@ -306,8 +306,8 @@ func SpiGameSblGet(c *gin.Context) {
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
 	}
 	var ret struct {
-		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
-		SBL     game.SBL `json:"sbl" yaml:"sbl" xml:"sbl"`
+		XMLName xml.Name    `json:"-" yaml:"-" xml:"ret"`
+		SBL     game.Bitset `json:"sbl" yaml:"sbl" xml:"sbl"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -341,9 +341,9 @@ func SpiGameSblSet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
-		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
-		SBL     game.SBL `json:"sbl" yaml:"sbl" xml:"sbl" binding:"required"`
+		XMLName xml.Name    `json:"-" yaml:"-" xml:"arg"`
+		GID     uint64      `json:"gid" yaml:"gid" xml:"gid,attr"`
+		SBL     game.Bitset `json:"sbl" yaml:"sbl" xml:"sbl" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {

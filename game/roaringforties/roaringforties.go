@@ -130,7 +130,7 @@ func NewGame(rd string) *Game {
 	return &Game{
 		Slot5x4: game.Slot5x4{
 			RD:  rd,
-			SBL: game.MakeSblNum(40),
+			SBL: game.MakeBitNum(40),
 			Bet: 1,
 		},
 	}
@@ -190,8 +190,8 @@ func (g *Game) Spin(screen game.Screen) {
 	screen.Spin(ReelsMap[g.RD])
 }
 
-func (g *Game) SetLines(sbl game.SBL) error {
-	var mask game.SBL = (1<<len(bl) - 1) << 1
+func (g *Game) SetLines(sbl game.Bitset) error {
+	var mask game.Bitset = (1<<len(bl) - 1) << 1
 	if sbl == 0 {
 		return game.ErrNoLineset
 	}

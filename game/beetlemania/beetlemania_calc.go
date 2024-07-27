@@ -37,7 +37,7 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 		rn, reels = "bon", &ReelsBon
 	}
 	var g = NewGame(rn)
-	g.SBL = game.MakeSblNum(5)
+	g.SBL = game.MakeBitNum(5)
 	g.FS = 10 // set free spins mode
 	var sbl = float64(g.SBL.Num())
 	var s Stat
@@ -90,7 +90,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		rn, reels = "92", &ReelsReg92
 	}
 	var g = NewGame(rn)
-	g.SBL = game.MakeSblNum(5)
+	g.SBL = game.MakeBitNum(5)
 	var sbl = float64(g.SBL.Num())
 	var s Stat
 
