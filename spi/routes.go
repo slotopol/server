@@ -121,6 +121,7 @@ func Router(r *gin.Engine) {
 	r.GET("/gamelist", SpiGameList)
 
 	// authorization
+	r.GET("/signis", SpiSignis)
 	r.POST("/signup", SpiSignup)
 	r.POST("/signin", SpiSignin)
 	r.GET("/refresh", Auth(true), SpiRefresh)

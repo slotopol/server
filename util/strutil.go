@@ -11,7 +11,7 @@ func B2S(b []byte) string {
 }
 
 // S2B converts string to bytes slice without memory allocation.
-func S2B(s string) (b []byte) {
+func S2B(s string) []byte {
 	return unsafe.Slice(unsafe.StringData(s), len(s))
 }
 

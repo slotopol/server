@@ -23,6 +23,10 @@ const (
 	// 404
 	SEC_nourl
 
+	// GET /signis
+	SEC_signis_nobind
+	SEC_signis_exist
+
 	// POST /signup
 	SEC_signup_nobind
 	SEC_signup_smallsec

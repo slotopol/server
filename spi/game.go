@@ -174,6 +174,7 @@ func SpiGameState(c *gin.Context) {
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
 		State   `yaml:",inline"`
 		Wallet  float64 `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
@@ -211,6 +212,7 @@ func SpiGameState(c *gin.Context) {
 		return
 	}
 
+	ret.GID = arg.GID
 	ret.State = og.State
 	ret.Wallet = props.Wallet
 
@@ -462,6 +464,7 @@ func SpiGameSpin(c *gin.Context) {
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
 		SID     uint64   `json:"sid" yaml:"sid" xml:"sid,attr" form:"sid"`
 		State   `yaml:",inline"`
 		Wallet  float64 `json:"wallet" yaml:"wallet" xml:"wallet"`
@@ -590,6 +593,7 @@ func SpiGameSpin(c *gin.Context) {
 	}
 
 	// prepare result
+	ret.GID = arg.GID
 	ret.SID = rec.ID
 	ret.State = og.State
 	ret.Wallet = props.Wallet

@@ -252,6 +252,36 @@ func (r *AuthResp) Setup(user *User) {
 	r.UID = user.UID
 }
 
+func SpiSignis(c *gin.Context) {
+	var err error
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		Email   string   `json:"email" yaml:"email" xml:"email" form:"email" binding:"required"`
+	}
+	var ret struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, SEC_signis_nobind, err)
+		return
+	}
+
+	var email = util.ToLower(arg.Email)
+
+	var user = &User{
+		Email: email,
+	}
+	if _, err = cfg.XormStorage.Get(user); err != nil {
+		Ret500(c, SEC_signis_exist, err)
+		return
+	}
+
+	ret.UID = user.UID
+	RetOk(c, ret)
+}
+
 func SpiSignup(c *gin.Context) {
 	var err error
 	var arg struct {

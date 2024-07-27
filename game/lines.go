@@ -22,7 +22,7 @@ type Lineset interface {
 }
 
 // SBL is selected bet lines bitset.
-type SBL uint
+type SBL uint64
 
 // MakeSblSet creates lines set from slice of line indexes.
 func MakeSblSet(lines ...int) SBL {
@@ -40,7 +40,7 @@ func MakeSblNum(num int) SBL {
 
 // Num returns number of selected lines in set.
 func (sbl SBL) Num() int {
-	return bits.OnesCount(uint(sbl))
+	return bits.OnesCount64(uint64(sbl))
 }
 
 // Next helps iterate lines numbers as followed:
