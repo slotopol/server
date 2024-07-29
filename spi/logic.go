@@ -100,7 +100,7 @@ type Walletlog struct {
 	UID    uint64    `xorm:"notnull index(bid)" json:"uid" yaml:"uid" xml:"uid,attr"`
 	AdmID  uint64    `xorm:"notnull" json:"admid" yaml:"admid" xml:"admid"`
 	Wallet float64   `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"` // in coins
-	Addend float64   `xorm:"notnull" json:"addend" yaml:"addend" xml:"addend"`
+	Sum    float64   `xorm:"notnull" json:"sum" yaml:"sum" xml:"sum"`
 }
 
 type Banklog struct {

@@ -44,11 +44,13 @@ func InitConfig() {
 	}
 	log.Printf("version: %s, builton: %s\n", BuildVers, BuildTime)
 
-	if str, err := os.Executable(); err == nil {
-		ExePath = filepath.Dir(str)
-	} else {
-		ExePath = filepath.Dir(os.Args[0])
-	}
+	ExePath = func() string {
+		if str, err := os.Executable(); err == nil {
+			return filepath.Dir(str)
+		} else {
+			return filepath.Dir(os.Args[0])
+		}
+	}()
 
 	// Config path
 	if CfgFile != "" {

@@ -26,8 +26,6 @@ var webCmd = &cobra.Command{
 	Long:    webLong,
 	Example: fmt.Sprintf(webExmp, config.AppName),
 	RunE: func(cmd *cobra.Command, args []string) (err error) {
-		cobra.OnInitialize(config.InitConfig)
-
 		if config.DevMode {
 			gin.SetMode(gin.DebugMode)
 		} else {

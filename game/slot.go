@@ -144,7 +144,7 @@ func (g *Slot3x3) GetBet() float64 {
 }
 
 func (g *Slot3x3) SetBet(bet float64) error {
-	if bet < 1 {
+	if bet <= 0 {
 		return ErrBetEmpty
 	}
 	if g.FreeSpins() > 0 {
@@ -200,7 +200,7 @@ func (g *Slot5x3) GetBet() float64 {
 }
 
 func (g *Slot5x3) SetBet(bet float64) error {
-	if bet < 1 {
+	if bet <= 0 {
 		return ErrBetEmpty
 	}
 	if g.FreeSpins() > 0 {
@@ -256,7 +256,7 @@ func (g *Slot5x4) GetBet() float64 {
 }
 
 func (g *Slot5x4) SetBet(bet float64) error {
-	if bet < 1 {
+	if bet <= 0 {
 		return ErrBetEmpty
 	}
 	if g.FreeSpins() > 0 {

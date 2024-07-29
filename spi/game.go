@@ -612,6 +612,7 @@ func SpiGameDoubleup(c *gin.Context) {
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
 		SID     uint64   `json:"sid" yaml:"sid" xml:"sid,attr" form:"sid"`
 		Gain    float64  `json:"gain" yaml:"gain" xml:"gain"`
 		Wallet  float64  `json:"wallet" yaml:"wallet" xml:"wallet"`
@@ -731,6 +732,7 @@ func SpiGameDoubleup(c *gin.Context) {
 	}
 
 	// prepare result
+	ret.GID = arg.GID
 	ret.Gain = multgain
 	ret.Wallet = props.Wallet
 

@@ -58,7 +58,7 @@ func SpiPropsWalletGet(c *gin.Context) {
 	RetOk(c, ret)
 }
 
-// Adds some coins to user wallet. Addend can be < 0 to remove some coins.
+// Adds some coins to user wallet. Sum can be < 0 to remove some coins.
 func SpiPropsWalletAdd(c *gin.Context) {
 	var err error
 	var ok bool
@@ -66,7 +66,7 @@ func SpiPropsWalletAdd(c *gin.Context) {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid"`
 		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
-		Addend  float64  `json:"addend" yaml:"addend" xml:"addend"`
+		Sum     float64  `json:"sum" yaml:"sum" xml:"sum"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -85,11 +85,11 @@ func SpiPropsWalletAdd(c *gin.Context) {
 		Ret400(c, SEC_prop_walletadd_nouid, ErrNoUID)
 		return
 	}
-	if arg.Addend == 0 {
+	if arg.Sum == 0 {
 		Ret400(c, SEC_prop_walletadd_noadd, ErrZero)
 		return
 	}
-	if arg.Addend > cfg.Cfg.AdjunctLimit || arg.Addend < -cfg.Cfg.AdjunctLimit {
+	if arg.Sum > cfg.Cfg.AdjunctLimit || arg.Sum < -cfg.Cfg.AdjunctLimit {
 		Ret400(c, SEC_prop_walletadd_limit, ErrTooBig)
 		return
 	}
@@ -115,7 +115,7 @@ func SpiPropsWalletAdd(c *gin.Context) {
 			UID: arg.UID,
 		}
 	}
-	if props.Wallet+arg.Addend < 0 {
+	if props.Wallet+arg.Sum < 0 {
 		Ret403(c, SEC_prop_walletadd_nomoney, ErrNoMoney)
 		return
 	}
@@ -138,18 +138,18 @@ func SpiPropsWalletAdd(c *gin.Context) {
 			CID:    arg.CID,
 			UID:    arg.UID,
 			AdmID:  admin.UID,
-			Wallet: props.Wallet + arg.Addend,
-			Addend: arg.Addend,
+			Wallet: props.Wallet + arg.Sum,
+			Sum:    arg.Sum,
 		}
 
 		if hasprops {
 			const sql = `UPDATE props SET wallet=wallet+? WHERE uid=? AND cid=?`
-			if _, err = session.Exec(sql, arg.Addend, props.UID, props.CID); err != nil {
+			if _, err = session.Exec(sql, arg.Sum, props.UID, props.CID); err != nil {
 				Ret500(c, SEC_prop_walletadd_sqlupdate, err)
 				return
 			}
 		} else {
-			props.Wallet = arg.Addend
+			props.Wallet = arg.Sum
 			if _, err = session.Insert(props); err != nil {
 				Ret500(c, SEC_prop_walletadd_sqlinsert, err)
 				return
@@ -168,7 +168,7 @@ func SpiPropsWalletAdd(c *gin.Context) {
 
 	// make changes to memory data
 	if hasprops {
-		props.Wallet += arg.Addend
+		props.Wallet += arg.Sum
 	} else {
 		user.props.Set(props.CID, props)
 	}
