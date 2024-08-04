@@ -218,8 +218,10 @@ const (
 
 type Game struct {
 	game.Slot5x3 `yaml:",inline"`
-	FS           int     `json:"fs" yaml:"fs" xml:"fs"` // free spin number
-	M            float64 `json:"m" yaml:"m" xml:"m"`    // multiplier for free spins, if them ended by "got away"
+	// free spin number
+	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
+	// multiplier for free spins, if them ended by "got away"
+	M float64 `json:"m,omitempty" yaml:"m,omitempty" xml:"m,omitempty"`
 }
 
 func NewGame(rd string) *Game {
@@ -230,7 +232,7 @@ func NewGame(rd string) *Game {
 			Bet: 1,
 		},
 		FS: 0,
-		M:  1,
+		M:  0,
 	}
 }
 
@@ -286,18 +288,26 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			payl = LinePay[syml-1][numl-1]
 		}
 		if payl*mw > payw {
+			var mm float64 = 1 // mult mode
+			if g.FS > 0 {
+				mm = g.M
+			}
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Pay:  g.Bet * payl,
-				Mult: mw * g.M,
+				Mult: mw * mm,
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
 				XY:   line.CopyL(numl),
 			})
 		} else if payw > 0 {
+			var mm float64 = 1 // mult mode
+			if g.FS > 0 {
+				mm = g.M
+			}
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Pay:  g.Bet * payw,
-				Mult: g.M,
+				Mult: mm,
 				Sym:  wild,
 				Num:  numw,
 				Line: li,
@@ -343,16 +353,18 @@ func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
 	if g.FS > 0 {
 		g.FS--
 		if g.FS == 0 {
-			g.M = 1 // no multiplier on regular games
+			g.M = 0 // no multiplier on regular games
 		}
 	} else { // free spins can not be nested
 		for _, wi := range sw.Wins {
 			if wi.Free > 0 {
-				g.FS += wi.Free
+				g.FS = wi.Free
+				if rand.Float64() <= Pfs {
+					g.M = 2
+				} else {
+					g.M = 1
+				}
 			}
-		}
-		if g.FS > 0 && rand.Float64() <= Pfs {
-			g.M = 2
 		}
 	}
 }

@@ -70,8 +70,10 @@ var Jackpot = [13][5]int{
 
 type Game struct {
 	game.Slot5x3 `yaml:",inline"`
-	FS           int     `json:"fs" yaml:"fs" xml:"fs"`       // free spin number
-	Mult         float64 `json:"mult" yaml:"mult" xml:"mult"` // multiplier on freespins
+	// free spin number
+	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
+	// multiplier on freespins
+	M float64 `json:"m,omitempty" yaml:"m,omitempty" xml:"m,omitempty"`
 }
 
 func NewGame(rd string) *Game {
@@ -81,8 +83,8 @@ func NewGame(rd string) *Game {
 			SBL: game.MakeBitNum(20),
 			Bet: 1,
 		},
-		FS:   0,
-		Mult: 1,
+		FS: 0,
+		M:  0,
 	}
 }
 
@@ -97,8 +99,9 @@ func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
-	var mm = g.Mult // mult mode
+	var mm float64 = 1 // mult mode
 	if g.FS > 0 {
+		mm = g.M
 		ws.Wins = append(ws.Wins, game.WinItem{
 			Mult: mm,
 		})
@@ -156,7 +159,10 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 // Scatters calculation.
 func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 	if count := screen.ScatNum(scat); count >= 2 {
-		var mm = g.Mult // mult mode
+		var mm float64 = 1 // mult mode
+		if g.FS > 0 {
+			mm = g.M
+		}
 		var pay, fs = ScatPay[count-1], ScatFreespin[count-1]
 		ws.Wins = append(ws.Wins, game.WinItem{
 			Pay:  g.Bet * float64(g.SBL.Num()) * pay,
@@ -191,9 +197,9 @@ func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
 		}
 	}
 	if g.FS > 0 {
-		g.Mult = MultChoose[rand.N(len(MultChoose))]
+		g.M = MultChoose[rand.N(len(MultChoose))]
 	} else {
-		g.Mult = 1
+		g.M = 0
 	}
 }
 

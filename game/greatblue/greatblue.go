@@ -184,8 +184,10 @@ func (s *Seashells) SetupShell(shell string) {
 
 type Game struct {
 	game.Slot5x3 `yaml:",inline"`
-	FS           int     `json:"fs" yaml:"fs" xml:"fs"`       // free spin number
-	Mult         float64 `json:"mult" yaml:"mult" xml:"mult"` // multiplier on freespins
+	// free spin number
+	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
+	// multiplier on freespins
+	M float64 `json:"m,omitempty" yaml:"m,omitempty" xml:"m,omitempty"`
 }
 
 func NewGame(rd string) *Game {
@@ -195,8 +197,8 @@ func NewGame(rd string) *Game {
 			SBL: game.MakeBitNum(25),
 			Bet: 1,
 		},
-		FS:   0,
-		Mult: 1,
+		FS: 0,
+		M:  0,
 	}
 }
 
@@ -240,18 +242,26 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			payl = LinePay[syml-1][numl-1]
 		}
 		if payl*mw > payw {
+			var mm float64 = 1 // mult mode
+			if g.FS > 0 {
+				mm = g.M
+			}
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Pay:  g.Bet * payl,
-				Mult: mw * g.Mult,
+				Mult: mw * mm,
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
 				XY:   line.CopyL(numl),
 			})
 		} else if payw > 0 {
+			var mm float64 = 1 // mult mode
+			if g.FS > 0 {
+				mm = g.M
+			}
 			ws.Wins = append(ws.Wins, game.WinItem{
 				Pay:  g.Bet * payw,
-				Mult: g.Mult,
+				Mult: mm,
 				Sym:  wild,
 				Num:  numw,
 				Line: li,
@@ -265,9 +275,9 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 	if count := screen.ScatNum(scat); count >= 2 {
 		var pay, fs = ScatPay[count-1], 0
-		var mm float64 = 1
+		var mm float64 = 1 // mult mode
 		if g.FS > 0 {
-			mm, fs = g.Mult, 15
+			mm, fs = g.M, 15
 		} else if count >= 3 {
 			fs = 8
 		}
@@ -327,13 +337,13 @@ func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
 				g.FS += wi.Free
 			} else {
 				var bon = wi.Bon.(Seashells)
-				g.Mult = bon.Mult
 				g.FS = bon.Free
+				g.M = bon.Mult
 			}
 		}
 	}
 	if g.FS == 0 {
-		g.Mult = 1
+		g.M = 0
 	}
 }
 
