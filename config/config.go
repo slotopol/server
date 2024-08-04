@@ -50,8 +50,12 @@ type CfgGameplay struct {
 }
 
 type CfgXormDrv struct {
-	// Provides XORM driver name.
-	XormDriverName string `json:"xorm-driver-name" yaml:"xorm-driver-name" mapstructure:"xorm-driver-name"`
+	// Provides driver name to create XORM engine.
+	DriverName string `json:"driver-name" yaml:"driver-name" mapstructure:"driver-name"`
+	// Data source name for 'club' database to create XORM engine.
+	ClubSourceName string `json:"club-source-name" yaml:"club-source-name" mapstructure:"club-source-name"`
+	// Data source name for 'spin' database to create XORM engine.
+	SpinSourceName string `json:"spin-source-name" yaml:"spin-source-name" mapstructure:"spin-source-name"`
 }
 
 // Config is common service settings.
@@ -87,6 +91,8 @@ var Cfg = &Config{
 		MaxSpinAttempts: 300,
 	},
 	CfgXormDrv: CfgXormDrv{
-		XormDriverName: "sqlite3",
+		DriverName:     "sqlite3",
+		ClubSourceName: "slot-club.sqlite",
+		SpinSourceName: "slot-spin.sqlite",
 	},
 }

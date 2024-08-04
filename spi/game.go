@@ -104,7 +104,7 @@ func SpiGameJoin(c *gin.Context) {
 				return
 			}
 
-			user.props.Set(arg.CID, props)
+			user.InsertProps(props)
 		}
 
 		return
@@ -695,13 +695,13 @@ func SpiGameDoubleup(c *gin.Context) {
 
 		const sql1 = `UPDATE club SET bank=bank-? WHERE cid=?`
 		if _, err = session.Exec(sql1, multgain-gain, club.CID); err != nil {
-			Ret500(c, SEC_game_spin_sqlbank, err)
+			Ret500(c, SEC_game_doubleup_sqlbank, err)
 			return
 		}
 
 		const sql2 = `UPDATE props SET wallet=wallet+? WHERE uid=? AND cid=?`
 		if _, err = session.Exec(sql2, multgain-gain, props.UID, props.CID); err != nil {
-			Ret500(c, SEC_game_spin_sqlupdate, err)
+			Ret500(c, SEC_game_doubleup_sqlupdate, err)
 			return
 		}
 

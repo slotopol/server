@@ -170,7 +170,7 @@ func SpiPropsWalletAdd(c *gin.Context) {
 	if hasprops {
 		props.Wallet += arg.Sum
 	} else {
-		user.props.Set(props.CID, props)
+		user.InsertProps(props)
 	}
 
 	ret.Wallet = props.Wallet

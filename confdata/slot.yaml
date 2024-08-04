@@ -42,5 +42,9 @@ gameplay:
   # Maximum number of spin attempts at bad bank balance.
   max-spin-attempts: 300
 xorm:
-  # Provides XORM driver name.
-  xorm-driver-name: sqlite3
+  # Provides driver name to create XORM engine.
+  driver-name: sqlite3
+  # Data source name for 'club' database to create XORM engine.
+  club-source-name: slot-club.sqlite
+  # Data source name for 'spin' database to create XORM engine.
+  spin-source-name: slot-spin.sqlite

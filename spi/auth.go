@@ -33,6 +33,7 @@ var (
 	ErrBadJwtID = errors.New("jwt-token id does not refer to registered user")
 	ErrNoAuth   = errors.New("authorization is required")
 	ErrNoScheme = errors.New("authorization does not have expected scheme")
+	ErrNoEmail  = errors.New("email or user ID should be provided")
 	ErrNoSecret = errors.New("expected password or SHA25 hash on it and current time as a nonce")
 	ErrSmallKey = errors.New("password too small")
 	ErrNoCred   = errors.New("user with given credentials does not registered")
@@ -213,6 +214,7 @@ func Handle404(c *gin.Context) {
 type AuthResp struct {
 	XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
 	UID     uint64   `json:"uid" yaml:"uid" xml:"uid"`
+	Email   string   `json:"email" yaml:"email" xml:"email"`
 	Access  string   `json:"access" yaml:"access" xml:"access"`
 	Refrsh  string   `json:"refrsh" yaml:"refrsh" xml:"refrsh"`
 	Expire  string   `json:"expire" yaml:"expire" xml:"expire"`
@@ -250,35 +252,49 @@ func (r *AuthResp) Setup(user *User) {
 	}
 	r.Living = age.Format(time.RFC3339)
 	r.UID = user.UID
+	r.Email = user.Email
 }
 
 func SpiSignis(c *gin.Context) {
 	var err error
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		Email   string   `json:"email" yaml:"email" xml:"email" form:"email" binding:"required"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid" form:"uid"`
+		Email   string   `json:"email" yaml:"email" xml:"email" form:"email"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
 		UID     uint64   `json:"uid" yaml:"uid" xml:"uid"`
+		Email   string   `json:"email" yaml:"email" xml:"email"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_signis_nobind, err)
 		return
 	}
-
-	var email = util.ToLower(arg.Email)
-
-	var user = &User{
-		Email: email,
-	}
-	if _, err = cfg.XormStorage.Get(user); err != nil {
-		Ret500(c, SEC_signis_exist, err)
+	if arg.UID == 0 && arg.Email == "" {
+		Ret400(c, SEC_signis_noemail, ErrNoEmail)
 		return
 	}
 
-	ret.UID = user.UID
+	var email = util.ToLower(arg.Email)
+
+	if arg.UID != 0 {
+		if user, ok := Users.Get(arg.UID); ok {
+			ret.UID = user.UID
+			ret.Email = user.Email
+		}
+	} else {
+		Users.Range(func(uid uint64, u *User) bool {
+			if u.Email != email {
+				return true
+			}
+			ret.UID = u.UID
+			ret.Email = u.Email
+			return false
+		})
+	}
+
 	RetOk(c, ret)
 }
 
@@ -293,6 +309,7 @@ func SpiSignup(c *gin.Context) {
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
 		UID     uint64   `json:"uid" yaml:"uid" xml:"uid"`
+		Email   string   `json:"email" yaml:"email" xml:"email"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -315,10 +332,11 @@ func SpiSignup(c *gin.Context) {
 		Ret500(c, SEC_signup_insert, err)
 		return
 	}
-
+	user.Init()
 	Users.Set(user.UID, user)
 
 	ret.UID = user.UID
+	ret.Email = email
 	RetOk(c, ret)
 }
 
@@ -326,7 +344,8 @@ func SpiSignin(c *gin.Context) {
 	var err error
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		Email   string   `json:"email" yaml:"email" xml:"email" form:"email" binding:"required"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid" form:"uid"`
+		Email   string   `json:"email" yaml:"email" xml:"email" form:"email"`
 		Secret  string   `json:"secret" yaml:"secret,omitempty" xml:"secret,omitempty" form:"secret"`
 		HS256   string   `json:"hs256,omitempty" yaml:"hs256,omitempty" xml:"hs256,omitempty" form:"hs256"`
 		SigTime string   `json:"sigtime,omitempty" yaml:"sigtime,omitempty" xml:"sigtime,omitempty" form:"sigtime"`
@@ -335,6 +354,10 @@ func SpiSignin(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_signin_nobind, err)
+		return
+	}
+	if arg.UID == 0 && arg.Email == "" {
+		Ret400(c, SEC_signin_noemail, ErrNoEmail)
 		return
 	}
 	if len(arg.SigTime) == 0 && len(arg.Secret) == 0 {
@@ -349,13 +372,17 @@ func SpiSignin(c *gin.Context) {
 	var email = util.ToLower(arg.Email)
 
 	var user *User
-	Users.Range(func(uid uint64, u *User) bool {
-		if u.Email != email {
-			return true
-		}
-		user = u
-		return false
-	})
+	if arg.UID != 0 {
+		user, _ = Users.Get(arg.UID)
+	} else {
+		Users.Range(func(uid uint64, u *User) bool {
+			if u.Email != email {
+				return true
+			}
+			user = u
+			return false
+		})
+	}
 	if user == nil {
 		Ret403(c, SEC_signin_nouser, ErrNoCred)
 		return

@@ -25,7 +25,7 @@ const (
 
 	// GET /signis
 	SEC_signis_nobind
-	SEC_signis_exist
+	SEC_signis_noemail
 
 	// POST /signup
 	SEC_signup_nobind
@@ -34,6 +34,7 @@ const (
 
 	// POST /signin
 	SEC_signin_nobind
+	SEC_signin_noemail
 	SEC_signin_nosecret
 	SEC_signin_smallsec
 	SEC_signin_nouser
@@ -133,6 +134,8 @@ const (
 	SEC_prop_doubleup_noaccess
 	SEC_game_doubleup_noprops
 	SEC_game_doubleup_nomoney
+	SEC_game_doubleup_sqlbank
+	SEC_game_doubleup_sqlupdate
 
 	// POST /game/collect
 	SEC_game_collect_nobind

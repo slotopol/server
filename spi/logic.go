@@ -20,7 +20,7 @@ type Club struct {
 	Lock  float64   `xorm:"notnull" json:"lock" yaml:"lock" xml:"lock"` // not changed deposit within games
 
 	JptRate float64 `xorm:"'jptrate' notnull default 0.015" json:"jptrate" yaml:"jptrate" xml:"jptrate"`
-	GainRTP float64 `xorm:"'gainrtp' notnull default 95.00" json:"gainrtp" yaml:"gainrtp" xml:"gainrtp"`
+	GainRTP float64 `xorm:"'gainrtp' notnull default 95" json:"gainrtp" yaml:"gainrtp" xml:"gainrtp"`
 
 	mux sync.RWMutex
 }
@@ -88,7 +88,7 @@ type Spinlog struct {
 	GID    uint64    `xorm:"notnull" json:"gid" yaml:"gid" xml:"gid,attr"`
 	Game   string    `xorm:"notnull" json:"game" yaml:"game" xml:"game"`
 	Screen string    `xorm:"notnull" json:"screen,omitempty" yaml:"screen,omitempty" xml:"screen,omitempty"`
-	Wins   string    `json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
+	Wins   string    `xorm:"text" json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
 	Gain   float64   `xorm:"notnull" json:"gain" yaml:"gain" xml:"gain"`
 	Wallet float64   `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"`
 }

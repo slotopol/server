@@ -13,14 +13,10 @@ import (
 	"github.com/slotopol/server/spi"
 	"github.com/slotopol/server/util"
 
+	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/mattn/go-sqlite3"
 	"xorm.io/xorm"
 	"xorm.io/xorm/names"
-)
-
-const (
-	slotclubfile = "slot-club.sqlite"
-	slotspinfile = "slot-spin.sqlite"
 )
 
 var (
@@ -62,7 +58,12 @@ func Startup() (exitctx context.Context) {
 }
 
 func InitStorage() (err error) {
-	if cfg.XormStorage, err = xorm.NewEngine(Cfg.XormDriverName, util.JoinPath(cfg.SqlPath, slotclubfile)); err != nil {
+	if Cfg.DriverName == "sqlite3" {
+		cfg.XormStorage, err = xorm.NewEngine(Cfg.DriverName, util.JoinPath(cfg.SqlPath, Cfg.ClubSourceName))
+	} else {
+		cfg.XormStorage, err = xorm.NewEngine(Cfg.DriverName, Cfg.ClubSourceName)
+	}
+	if err != nil {
 		return
 	}
 	cfg.XormStorage.SetMapper(names.GonicMapper{})
@@ -194,7 +195,12 @@ func InitStorage() (err error) {
 }
 
 func InitSpinlog() (err error) {
-	if cfg.XormSpinlog, err = xorm.NewEngine(Cfg.XormDriverName, util.JoinPath(cfg.SqlPath, slotspinfile)); err != nil {
+	if Cfg.DriverName == "sqlite3" {
+		cfg.XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, util.JoinPath(cfg.SqlPath, Cfg.SpinSourceName))
+	} else {
+		cfg.XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, Cfg.SpinSourceName)
+	}
+	if err != nil {
 		return
 	}
 	cfg.XormSpinlog.SetMapper(names.GonicMapper{})
