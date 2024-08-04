@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"strings"
 	"syscall"
 
 	cfg "github.com/slotopol/server/config"
@@ -22,6 +23,13 @@ import (
 var (
 	Cfg = cfg.Cfg
 )
+
+var (
+	ErrNoClubName = errors.New("name of 'club' database does not provided at data source name")
+	ErrNoSpinName = errors.New("name of 'spin' database does not provided at data source name")
+)
+
+const sqlnewdb = "CREATE DATABASE IF NOT EXISTS `%s`"
 
 func Startup() (exitctx context.Context) {
 	//var cancel context.CancelFunc
@@ -58,6 +66,21 @@ func Startup() (exitctx context.Context) {
 }
 
 func InitStorage() (err error) {
+	if Cfg.DriverName != "sqlite3" {
+		var c = strings.Split(Cfg.ClubSourceName, "@/")
+		if len(c) < 2 {
+			return ErrNoClubName
+		}
+		var engine *xorm.Engine
+		if engine, err = xorm.NewEngine(Cfg.DriverName, c[0]+"@/"); err != nil {
+			return
+		}
+		defer engine.Close()
+		if _, err = engine.Exec(fmt.Sprintf(sqlnewdb, c[1])); err != nil {
+			return
+		}
+	}
+
 	if Cfg.DriverName == "sqlite3" {
 		cfg.XormStorage, err = xorm.NewEngine(Cfg.DriverName, util.JoinPath(cfg.SqlPath, Cfg.ClubSourceName))
 	} else {
@@ -195,6 +218,21 @@ func InitStorage() (err error) {
 }
 
 func InitSpinlog() (err error) {
+	if Cfg.DriverName != "sqlite3" {
+		var c = strings.Split(Cfg.SpinSourceName, "@/")
+		if len(c) < 2 {
+			return ErrNoSpinName
+		}
+		var engine *xorm.Engine
+		if engine, err = xorm.NewEngine(Cfg.DriverName, c[0]+"@/"); err != nil {
+			return
+		}
+		defer engine.Close()
+		if _, err = engine.Exec(fmt.Sprintf(sqlnewdb, c[1])); err != nil {
+			return
+		}
+	}
+
 	if Cfg.DriverName == "sqlite3" {
 		cfg.XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, util.JoinPath(cfg.SqlPath, Cfg.SpinSourceName))
 	} else {

@@ -28,14 +28,12 @@ var scanCmd = &cobra.Command{
 	Short:   scanShort,
 	Long:    scanLong,
 	Example: fmt.Sprintf(scanExmp, config.AppName),
-	RunE: func(cmd *cobra.Command, args []string) (err error) {
+	Run: func(cmd *cobra.Command, args []string) {
 		var exitctx = Startup()
 
 		for _, iter := range links.ScanIters {
 			iter(scanflags, exitctx)
 		}
-
-		return
 	},
 }
 

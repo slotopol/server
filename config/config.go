@@ -51,10 +51,15 @@ type CfgGameplay struct {
 
 type CfgXormDrv struct {
 	// Provides driver name to create XORM engine.
+	// It can be "sqlite3" or "mysql".
 	DriverName string `json:"driver-name" yaml:"driver-name" mapstructure:"driver-name"`
 	// Data source name for 'club' database to create XORM engine.
+	// For sqlite3 it should be database file name (slot-club.sqlite),
+	// for mysql it should match to pattern user:password@/slot_club.
 	ClubSourceName string `json:"club-source-name" yaml:"club-source-name" mapstructure:"club-source-name"`
 	// Data source name for 'spin' database to create XORM engine.
+	// For sqlite3 it should be database file name (slot-spin.sqlite),
+	// for mysql it should match to pattern user:password@/slot_spin.
 	SpinSourceName string `json:"spin-source-name" yaml:"spin-source-name" mapstructure:"spin-source-name"`
 }
 

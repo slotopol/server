@@ -25,7 +25,9 @@ var webCmd = &cobra.Command{
 	Short:   webShort,
 	Long:    webLong,
 	Example: fmt.Sprintf(webExmp, config.AppName),
-	RunE: func(cmd *cobra.Command, args []string) (err error) {
+	Run: func(cmd *cobra.Command, args []string) {
+		var err error
+
 		if config.DevMode {
 			gin.SetMode(gin.DebugMode)
 		} else {
@@ -34,6 +36,7 @@ var webCmd = &cobra.Command{
 
 		var exitctx = Startup()
 		if err = Init(); err != nil {
+			log.Fatalln(err.Error())
 			return
 		}
 
@@ -89,8 +92,6 @@ var webCmd = &cobra.Command{
 			log.Println(err.Error())
 			return
 		}
-
-		return nil
 	},
 }
 

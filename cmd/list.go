@@ -29,7 +29,7 @@ var listCmd = &cobra.Command{
 	Short:   listShort,
 	Long:    listLong,
 	Example: fmt.Sprintf(listExmp, cfg.AppName),
-	RunE: func(cmd *cobra.Command, args []string) (err error) {
+	Run: func(cmd *cobra.Command, args []string) {
 		var num, alg int
 		var prov = map[string]int{}
 		for _, gi := range links.GameList {
@@ -65,7 +65,6 @@ var listCmd = &cobra.Command{
 				fmt.Printf("%s: %d games\n", p, n)
 			}
 		}
-		return
 	},
 }
 

@@ -43,8 +43,13 @@ gameplay:
   max-spin-attempts: 300
 xorm:
   # Provides driver name to create XORM engine.
+  # It can be "sqlite3" or "mysql".
   driver-name: sqlite3
   # Data source name for 'club' database to create XORM engine.
+  # For sqlite3 it should be database file name (slot-club.sqlite),
+  # for mysql it should match to pattern user:password@/slot_club.
   club-source-name: slot-club.sqlite
   # Data source name for 'spin' database to create XORM engine.
+  # For sqlite3 it should be database file name (slot-spin.sqlite),
+  # for mysql it should match to pattern user:password@/slot_spin.
   spin-source-name: slot-spin.sqlite
