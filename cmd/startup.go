@@ -81,7 +81,6 @@ func InitStorage() (err error) {
 		if _, err = engine.Exec(fmt.Sprintf(sqlnewdb, c2[0])); err != nil {
 			return
 		}
-		log.Printf("'%s' database created", c2[0])
 	}
 
 	if Cfg.DriverName == "sqlite3" {
@@ -235,7 +234,6 @@ func InitSpinlog() (err error) {
 		if _, err = engine.Exec(fmt.Sprintf(sqlnewdb, c2[0])); err != nil {
 			return
 		}
-		log.Printf("'%s' database created", c2[0])
 	}
 
 	if Cfg.DriverName == "sqlite3" {
@@ -251,7 +249,7 @@ func InitSpinlog() (err error) {
 	var session = cfg.XormSpinlog.NewSession()
 	defer session.Close()
 
-	if err = session.Sync(&spi.Spinlog{}); err != nil {
+	if err = session.Sync(&spi.Spinlog{}, &spi.Multlog{}); err != nil {
 		return
 	}
 	var i64 int64
@@ -259,6 +257,10 @@ func InitSpinlog() (err error) {
 		return
 	}
 	spi.SpinCounter = uint64(i64)
+	if i64, err = cfg.XormSpinlog.Count(&spi.Multlog{}); err != nil {
+		return
+	}
+	spi.MultCounter = uint64(i64)
 	return
 }
 
@@ -270,6 +272,9 @@ func SqlLoop(exitctx context.Context, d time.Duration) {
 		case <-ticker.C:
 			if err := spi.SpinBuf.Flush(cfg.XormSpinlog, d); err != nil {
 				log.Printf("can not write to spin log: %s", err.Error())
+			}
+			if err := spi.MultBuf.Flush(cfg.XormSpinlog, d); err != nil {
+				log.Printf("can not write to mult log: %s", err.Error())
 			}
 		case <-exitctx.Done():
 			return
@@ -288,12 +293,14 @@ func Init() (err error) {
 	}
 
 	spi.SpinBuf.Init(Cfg.SpinlogBufferSize)
+	spi.MultBuf.Init(Cfg.SpinlogBufferSize)
 	return
 }
 
 func Done() (err error) {
 	return errors.Join(
 		spi.SpinBuf.Flush(cfg.XormSpinlog, 0),
+		spi.MultBuf.Flush(cfg.XormSpinlog, 0),
 		cfg.XormStorage.Close(),
 		cfg.XormSpinlog.Close(),
 	)

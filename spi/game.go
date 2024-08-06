@@ -15,7 +15,10 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-var SpinBuf util.SqlBuf[Spinlog]
+var (
+	SpinBuf util.SqlBuf[Spinlog]
+	MultBuf util.SqlBuf[Multlog]
+)
 
 // Joins to game and creates new instance of game.
 func SpiGameJoin(c *gin.Context) {
@@ -467,8 +470,8 @@ func SpiGameSpin(c *gin.Context) {
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		SID     uint64   `json:"sid" yaml:"sid" xml:"sid,attr"`
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
-		SID     uint64   `json:"sid" yaml:"sid" xml:"sid,attr" form:"sid"`
 		State   `yaml:",inline"`
 		Wallet  float64 `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
@@ -600,8 +603,8 @@ func SpiGameSpin(c *gin.Context) {
 	}()
 
 	// prepare result
-	ret.GID = arg.GID
 	ret.SID = sid
+	ret.GID = arg.GID
 	ret.State = og.State
 	ret.Wallet = props.Wallet
 
@@ -619,8 +622,8 @@ func SpiGameDoubleup(c *gin.Context) {
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		ID      uint64   `json:"id" yaml:"id" xml:"id,attr"`
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
-		SID     uint64   `json:"sid" yaml:"sid" xml:"sid,attr" form:"sid"`
 		Gain    float64  `json:"gain" yaml:"gain" xml:"gain"`
 		Wallet  float64  `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
@@ -672,8 +675,8 @@ func SpiGameDoubleup(c *gin.Context) {
 		return
 	}
 
-	var gain = og.Game.GetGain()
-	if gain == 0 {
+	var risk = og.Game.GetGain()
+	if risk == 0 {
 		Ret403(c, SEC_game_doubleup_nomoney, ErrNoMoney)
 		return
 	}
@@ -684,11 +687,11 @@ func SpiGameDoubleup(c *gin.Context) {
 	club.mux.RUnlock()
 
 	var multgain float64 // new multiplied gain
-	if bank >= gain*float64(arg.Mult) {
+	if bank >= risk*float64(arg.Mult) {
 		var r = rand.Float64()
 		var side = 1 / float64(arg.Mult) * rtp / 100
 		if r < side {
-			multgain = gain * float64(arg.Mult)
+			multgain = risk * float64(arg.Mult)
 		}
 	}
 
@@ -701,13 +704,13 @@ func SpiGameDoubleup(c *gin.Context) {
 		}()
 
 		const sql1 = `UPDATE club SET bank=bank-? WHERE cid=?`
-		if _, err = session.Exec(sql1, multgain-gain, club.CID); err != nil {
+		if _, err = session.Exec(sql1, multgain-risk, club.CID); err != nil {
 			Ret500(c, SEC_game_doubleup_sqlbank, err)
 			return
 		}
 
 		const sql2 = `UPDATE props SET wallet=wallet+? WHERE uid=? AND cid=?`
-		if _, err = session.Exec(sql2, multgain-gain, props.UID, props.CID); err != nil {
+		if _, err = session.Exec(sql2, multgain-risk, props.UID, props.CID); err != nil {
 			Ret500(c, SEC_game_doubleup_sqlupdate, err)
 			return
 		}
@@ -719,32 +722,33 @@ func SpiGameDoubleup(c *gin.Context) {
 
 	// make changes to memory data
 	club.mux.Lock()
-	club.Bank -= float64(multgain - gain)
+	club.Bank -= float64(multgain - risk)
 	club.mux.Unlock()
 
-	props.Wallet += multgain - gain
+	props.Wallet += multgain - risk
 
 	og.Game.SetGain(multgain)
 	og.WinScan.Reset()
 
 	// write doubleup result to log and get spin ID
-	var sid = atomic.AddUint64(&SpinCounter, 1)
+	var id = atomic.AddUint64(&MultCounter, 1)
 	go func() {
-		var rec = Spinlog{
-			SID:    sid,
+		var rec = Multlog{
+			ID:     id,
 			GID:    arg.GID,
+			Mult:   arg.Mult,
+			Risk:   risk,
 			Gain:   multgain,
 			Wallet: props.Wallet,
 		}
-		_ = rec.MarshalState(&og.State)
-		if err = SpinBuf.Push(rec, cfg.XormSpinlog); err != nil {
-			log.Printf("can not write to spin log: %s", err.Error())
+		if err = MultBuf.Push(rec, cfg.XormSpinlog); err != nil {
+			log.Printf("can not write to mult log: %s", err.Error())
 		}
 	}()
 
 	// prepare result
+	ret.ID = id
 	ret.GID = arg.GID
-	ret.SID = sid
 	ret.Gain = multgain
 	ret.Wallet = props.Wallet
 

@@ -40,7 +40,7 @@ var webCmd = &cobra.Command{
 			log.Fatalln(err.Error())
 			return
 		}
-		go SqlLoop(exitctx, 2*time.Second)
+		go SqlLoop(exitctx, 2500*time.Millisecond)
 
 		var r = gin.New()
 		r.SetTrustedProxies(Cfg.TrustedProxies)
