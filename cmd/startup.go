@@ -9,6 +9,7 @@ import (
 	"os/signal"
 	"strings"
 	"syscall"
+	"time"
 
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/spi"
@@ -67,18 +68,20 @@ func Startup() (exitctx context.Context) {
 
 func InitStorage() (err error) {
 	if Cfg.DriverName != "sqlite3" {
-		var c = strings.Split(Cfg.ClubSourceName, "@/")
-		if len(c) < 2 {
+		var c1 = strings.Split(Cfg.ClubSourceName, "@/")
+		if len(c1) < 2 {
 			return ErrNoClubName
 		}
+		var c2 = strings.Split(c1[1], "?")
 		var engine *xorm.Engine
-		if engine, err = xorm.NewEngine(Cfg.DriverName, c[0]+"@/"); err != nil {
+		if engine, err = xorm.NewEngine(Cfg.DriverName, c1[0]+"@/"); err != nil {
 			return
 		}
 		defer engine.Close()
-		if _, err = engine.Exec(fmt.Sprintf(sqlnewdb, c[1])); err != nil {
+		if _, err = engine.Exec(fmt.Sprintf(sqlnewdb, c2[0])); err != nil {
 			return
 		}
+		log.Printf("'%s' database created", c2[0])
 	}
 
 	if Cfg.DriverName == "sqlite3" {
@@ -219,18 +222,20 @@ func InitStorage() (err error) {
 
 func InitSpinlog() (err error) {
 	if Cfg.DriverName != "sqlite3" {
-		var c = strings.Split(Cfg.SpinSourceName, "@/")
-		if len(c) < 2 {
+		var c1 = strings.Split(Cfg.SpinSourceName, "@/")
+		if len(c1) < 2 {
 			return ErrNoSpinName
 		}
+		var c2 = strings.Split(c1[1], "?")
 		var engine *xorm.Engine
-		if engine, err = xorm.NewEngine(Cfg.DriverName, c[0]+"@/"); err != nil {
+		if engine, err = xorm.NewEngine(Cfg.DriverName, c1[0]+"@/"); err != nil {
 			return
 		}
 		defer engine.Close()
-		if _, err = engine.Exec(fmt.Sprintf(sqlnewdb, c[1])); err != nil {
+		if _, err = engine.Exec(fmt.Sprintf(sqlnewdb, c2[0])); err != nil {
 			return
 		}
+		log.Printf("'%s' database created", c2[0])
 	}
 
 	if Cfg.DriverName == "sqlite3" {
@@ -249,7 +254,27 @@ func InitSpinlog() (err error) {
 	if err = session.Sync(&spi.Spinlog{}); err != nil {
 		return
 	}
+	var i64 int64
+	if i64, err = cfg.XormSpinlog.Count(&spi.Spinlog{}); err != nil {
+		return
+	}
+	spi.SpinCounter = uint64(i64)
 	return
+}
+
+func SqlLoop(exitctx context.Context, d time.Duration) {
+	var ticker = time.NewTicker(d)
+	defer ticker.Stop()
+	for {
+		select {
+		case <-ticker.C:
+			if err := spi.SpinBuf.Flush(cfg.XormSpinlog, d); err != nil {
+				log.Printf("can not write to spin log: %s", err.Error())
+			}
+		case <-exitctx.Done():
+			return
+		}
+	}
 }
 
 func Init() (err error) {
@@ -261,5 +286,15 @@ func Init() (err error) {
 		err = fmt.Errorf("can not init XORM spins log storage: %w", err)
 		return
 	}
+
+	spi.SpinBuf.Init(Cfg.SpinlogBufferSize)
 	return
+}
+
+func Done() (err error) {
+	return errors.Join(
+		spi.SpinBuf.Flush(cfg.XormSpinlog, 0),
+		cfg.XormStorage.Close(),
+		cfg.XormSpinlog.Close(),
+	)
 }

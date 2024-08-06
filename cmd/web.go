@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/slotopol/server/config"
 	"github.com/slotopol/server/spi"
@@ -39,6 +40,7 @@ var webCmd = &cobra.Command{
 			log.Fatalln(err.Error())
 			return
 		}
+		go SqlLoop(exitctx, 2*time.Second)
 
 		var r = gin.New()
 		r.SetTrustedProxies(Cfg.TrustedProxies)
@@ -90,6 +92,10 @@ var webCmd = &cobra.Command{
 		}
 		if err = wg.Wait(); err != nil {
 			log.Println(err.Error())
+			return
+		}
+		if err = Done(); err != nil {
+			log.Fatalln(err.Error())
 			return
 		}
 	},

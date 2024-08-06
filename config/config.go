@@ -61,6 +61,8 @@ type CfgXormDrv struct {
 	// For sqlite3 it should be database file name (slot-spin.sqlite),
 	// for mysql it should match to pattern user:password@/slot_spin.
 	SpinSourceName string `json:"spin-source-name" yaml:"spin-source-name" mapstructure:"spin-source-name"`
+	// Size of buffer for spinlog items to group inserting to database.
+	SpinlogBufferSize int `json:"spinlog-buffer-size" yaml:"spinlog-buffer-size" mapstructure:"spinlog-buffer-size"`
 }
 
 // Config is common service settings.
@@ -96,8 +98,9 @@ var Cfg = &Config{
 		MaxSpinAttempts: 300,
 	},
 	CfgXormDrv: CfgXormDrv{
-		DriverName:     "sqlite3",
-		ClubSourceName: "slot-club.sqlite",
-		SpinSourceName: "slot-spin.sqlite",
+		DriverName:        "sqlite3",
+		ClubSourceName:    "slot-club.sqlite",
+		SpinSourceName:    "slot-spin.sqlite",
+		SpinlogBufferSize: 24,
 	},
 }

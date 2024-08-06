@@ -53,3 +53,5 @@ xorm:
   # For sqlite3 it should be database file name (slot-spin.sqlite),
   # for mysql it should match to pattern user:password@/slot_spin.
   spin-source-name: slot-spin.sqlite
+  # Size of buffer for spinlog items to group inserting to database.
+  spinlog-buffer-size: 24

@@ -83,7 +83,7 @@ type Props struct {
 }
 
 type Spinlog struct {
-	ID     uint64    `xorm:"pk autoincr" json:"id" yaml:"id" xml:"id,attr"`
+	SID    uint64    `xorm:"pk" json:"sid" yaml:"sid" xml:"sid,attr"`
 	CTime  time.Time `xorm:"created 'ctime'" json:"ctime" yaml:"ctime" xml:"ctime"`
 	GID    uint64    `xorm:"notnull" json:"gid" yaml:"gid" xml:"gid,attr"`
 	Game   string    `xorm:"notnull" json:"game" yaml:"game" xml:"game"`
@@ -92,6 +92,8 @@ type Spinlog struct {
 	Gain   float64   `xorm:"notnull" json:"gain" yaml:"gain" xml:"gain"`
 	Wallet float64   `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"`
 }
+
+var SpinCounter uint64
 
 type Walletlog struct {
 	ID     uint64    `xorm:"pk autoincr" json:"id" yaml:"id" xml:"id,attr"`

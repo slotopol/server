@@ -5,6 +5,7 @@ import (
 	"log"
 	"math/rand/v2"
 	"net/http"
+	"sync/atomic"
 
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/config/links"
@@ -13,6 +14,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/slotopol/server/game"
 )
+
+var SpinBuf util.SqlBuf[Spinlog]
 
 // Joins to game and creates new instance of game.
 func SpiGameJoin(c *gin.Context) {
@@ -582,19 +585,23 @@ func SpiGameSpin(c *gin.Context) {
 	og.WinScan = ws
 
 	// write spin result to log and get spin ID
-	var rec = Spinlog{
-		GID:    arg.GID,
-		Gain:   og.Game.GetGain(),
-		Wallet: props.Wallet,
-	}
-	_ = rec.MarshalState(&og.State)
-	if _, err = cfg.XormSpinlog.Insert(&rec); err != nil {
-		log.Printf("can not write to spin log: %s", err.Error())
-	}
+	var sid = atomic.AddUint64(&SpinCounter, 1)
+	go func() {
+		var rec = Spinlog{
+			SID:    sid,
+			GID:    arg.GID,
+			Gain:   og.Game.GetGain(),
+			Wallet: props.Wallet,
+		}
+		_ = rec.MarshalState(&og.State)
+		if err = SpinBuf.Push(rec, cfg.XormSpinlog); err != nil {
+			log.Printf("can not write to spin log: %s", err.Error())
+		}
+	}()
 
 	// prepare result
 	ret.GID = arg.GID
-	ret.SID = rec.ID
+	ret.SID = sid
 	ret.State = og.State
 	ret.Wallet = props.Wallet
 
@@ -721,18 +728,23 @@ func SpiGameDoubleup(c *gin.Context) {
 	og.WinScan.Reset()
 
 	// write doubleup result to log and get spin ID
-	var rec = Spinlog{
-		GID:    arg.GID,
-		Gain:   multgain,
-		Wallet: props.Wallet,
-	}
-	_ = rec.MarshalState(&og.State)
-	if _, err = cfg.XormSpinlog.Insert(&rec); err != nil {
-		log.Printf("can not write to spin log: %s", err.Error())
-	}
+	var sid = atomic.AddUint64(&SpinCounter, 1)
+	go func() {
+		var rec = Spinlog{
+			SID:    sid,
+			GID:    arg.GID,
+			Gain:   multgain,
+			Wallet: props.Wallet,
+		}
+		_ = rec.MarshalState(&og.State)
+		if err = SpinBuf.Push(rec, cfg.XormSpinlog); err != nil {
+			log.Printf("can not write to spin log: %s", err.Error())
+		}
+	}()
 
 	// prepare result
 	ret.GID = arg.GID
+	ret.SID = sid
 	ret.Gain = multgain
 	ret.Wallet = props.Wallet
 
