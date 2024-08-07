@@ -98,7 +98,7 @@ func InitStorage() (err error) {
 
 	if err = session.Sync(
 		&spi.Club{}, &spi.User{}, &spi.Props{},
-		&spi.OpenGame{}, spi.Walletlog{}, spi.Banklog{},
+		&spi.Story{}, spi.Walletlog{}, spi.Banklog{},
 	); err != nil {
 		return
 	}

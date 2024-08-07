@@ -170,7 +170,7 @@ func SpiUserDelete(c *gin.Context) {
 			return
 		}
 
-		if _, err = session.Where("uid=?", arg.UID).Delete(&OpenGame{}); err != nil {
+		if _, err = session.Where("uid=?", arg.UID).Delete(&Scene{}); err != nil {
 			Ret500(c, SEC_prop_delete_sqlgames, err)
 			return
 		}
@@ -188,8 +188,8 @@ func SpiUserDelete(c *gin.Context) {
 		}
 		return true
 	})
-	user.games.Range(func(gid uint64, og OpenGame) bool {
-		OpenGames.Delete(gid)
+	user.games.Range(func(gid uint64, scene *Scene) bool {
+		Scenes.Delete(gid)
 		return true
 	})
 	Users.Delete(arg.UID)

@@ -6,7 +6,7 @@
 
 Slots games server. Provides functionality for Megajack, Novomatic, NetEnt, BetSoft, and some others providers of slot games.
 
-# How to build
+# How to build from sources
 
 1. Install [Golang](https://go.dev/dl/) of last version.
 2. Clone project and download dependencies.
@@ -47,9 +47,11 @@ slot_win_x64 list --all
 
 **Database.** Service reads common database tables on start and store to database only changes. Service instance oriented on monopoly usage of it's database.
 
+Now it can be used embedded *sqlite* database engine or *MySQL* database, its configured at `slot.yaml` settings file, and by default sqlite is used. Embedded sqlite engine useful for instance started on portable storage, same as flash drive, and can serve small sets of players, several dozen players at the same time. For big number of players it should be used dedicated server with MySQL.
+
 **Clubs.** There is can be served several clubs. Each club have its own undepended bank, jackpot fund with rate to this fund from spins, and deposit. Bank of club is current balance of club to which arrives coins from users spins, and from which they gets a wins. There is have linkage of users wins to bank: if bank have not enough coins to pay the win during users spins, this win combination will be skipped. Deposit of club does not used in games, it can be useful to transfer the coins from bank to fix the yield.
 
-**Users accounts.** Accounts have registrations data only. Each account can be associated with several clubs. Each user can have individual balance to gamble for each club, and individual access rights.
+**Users accounts.** Accounts have registrations data only. Each account can be associated with several clubs. Each user can have individual balance to gamble for each club, and individual access rights at each club.
 
 # How to use HTTP API
 

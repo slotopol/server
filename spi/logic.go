@@ -35,30 +35,28 @@ type User struct {
 	Secret string    `xorm:"notnull" json:"secret" yaml:"secret" xml:"secret"` // auth password
 	Name   string    `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
 	GAL    AL        `json:"gal,omitempty" yaml:"gal,omitempty" xml:"gal,omitempty"` // global access level
-	games  util.RWMap[uint64, OpenGame]
+	games  util.RWMap[uint64, *Scene]
 	props  util.RWMap[uint64, *Props]
 }
 
-// State structure represents full current game state.
-type State struct {
+// Story is opened game for user with UID at club with CID.
+// Each instance of game have own GID. Alias - is game type identifier.
+type Story struct {
+	GID   uint64    `xorm:"pk autoincr" json:"gid" yaml:"gid" xml:"gid,attr"`
+	CTime time.Time `xorm:"created 'ctime'" json:"ctime" yaml:"ctime" xml:"ctime"`
+	Alias string    `xorm:"notnull" json:"alias" yaml:"alias" xml:"alias"`
+	CID   uint64    `xorm:"notnull" json:"cid" yaml:"cid" xml:"cid,attr"`
+	UID   uint64    `xorm:"notnull" json:"uid" yaml:"uid" xml:"uid,attr"`
+	Flow  bool      `xorm:"notnull" json:"flow" yaml:"flow" xml:"flow,attr"`
+}
+
+// Scene represents game with all the connected environment.
+type Scene struct {
+	Story        `yaml:",inline"`
+	SID          uint64        `json:"sid" yaml:"sid" xml:"sid,attr"`
 	Game         game.SlotGame `json:"game" yaml:"game" xml:"game"`
 	Scrn         game.Screen   `json:"scrn" yaml:"scrn" xml:"scrn"`
 	game.WinScan `yaml:",inline"`
-}
-
-// OpenGame is opened game for user with UID at club with CID.
-// Each instance of game have own GID. Alias - is game type identifier.
-type OpenGame struct {
-	GID   uint64    `xorm:"pk autoincr" json:"gid" yaml:"gid" xml:"gid,attr"`
-	CTime time.Time `xorm:"created 'ctime'" json:"ctime" yaml:"ctime" xml:"ctime"`
-	CID   uint64    `xorm:"notnull" json:"cid" yaml:"cid" xml:"cid,attr"`
-	UID   uint64    `xorm:"notnull" json:"uid" yaml:"uid" xml:"uid,attr"`
-	Alias string    `xorm:"notnull" json:"alias" yaml:"alias" xml:"alias"`
-	State `xorm:"-" yaml:",inline"`
-}
-
-func (OpenGame) TableName() string {
-	return "game"
 }
 
 // Access level.
@@ -134,8 +132,8 @@ var Clubs util.RWMap[uint64, *Club]
 // All registered users, by UID.
 var Users util.RWMap[uint64, *User]
 
-// All opened games, by GID.
-var OpenGames util.RWMap[uint64, OpenGame]
+// All scenes, by GID.
+var Scenes util.RWMap[uint64, *Scene]
 
 func (user *User) Init() {
 	user.games.Init(0)
@@ -167,18 +165,18 @@ func GetAdmin(c *gin.Context, cid uint64) (*User, AL) {
 	return admin, admin.GAL | admin.GetAL(cid)
 }
 
-func (sl *Spinlog) MarshalState(s *State) (err error) {
+func (sl *Spinlog) MarshalState(scene *Scene) (err error) {
 	var b []byte
-	if b, err = json.Marshal(s.Game); err != nil {
+	if b, err = json.Marshal(scene.Game); err != nil {
 		return
 	}
 	sl.Game = util.B2S(b)
-	if b, err = json.Marshal(s.Scrn); err != nil {
+	if b, err = json.Marshal(scene.Scrn); err != nil {
 		return
 	}
 	sl.Screen = util.B2S(b)
-	if len(s.WinScan.Wins) > 0 {
-		if b, err = json.Marshal(s.WinScan.Wins); err != nil {
+	if len(scene.WinScan.Wins) > 0 {
+		if b, err = json.Marshal(scene.WinScan.Wins); err != nil {
 			return
 		}
 		sl.Wins = util.B2S(b)
@@ -189,5 +187,5 @@ func (sl *Spinlog) MarshalState(s *State) (err error) {
 func init() {
 	Clubs.Init(0)
 	Users.Init(0)
-	OpenGames.Init(0)
+	Scenes.Init(0)
 }

@@ -31,10 +31,11 @@ func SpiGameJoin(c *gin.Context) {
 		Alias   string   `json:"alias" yaml:"alias" xml:"alias" form:"alias" binding:"required"`
 	}
 	var ret struct {
-		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
-		State   `yaml:",inline"`
-		Wallet  float64 `json:"wallet" yaml:"wallet" xml:"wallet"`
+		XMLName xml.Name      `json:"-" yaml:"-" xml:"ret"`
+		GID     uint64        `json:"gid" yaml:"gid" xml:"gid,attr"`
+		Game    game.SlotGame `json:"game" yaml:"game" xml:"game"`
+		Scrn    game.Screen   `json:"scrn" yaml:"scrn" xml:"scrn"`
+		Wallet  float64       `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -81,20 +82,21 @@ func SpiGameJoin(c *gin.Context) {
 		return
 	}
 
-	var og = OpenGame{
-		CID:   arg.CID,
-		UID:   arg.UID,
-		Alias: alias,
-		State: State{
-			Game: slotgame.(game.SlotGame),
-			Scrn: slotgame.(game.SlotGame).NewScreen(),
+	var scene = &Scene{
+		Story: Story{
+			Alias: alias,
+			CID:   arg.CID,
+			UID:   arg.UID,
+			Flow:  true,
 		},
+		Game: slotgame.(game.SlotGame),
+		Scrn: slotgame.(game.SlotGame).NewScreen(),
 	}
 	// make game screen object
-	og.Game.Spin(og.Scrn)
+	scene.Game.Spin(scene.Scrn)
 
 	if _, err = cfg.XormStorage.Transaction(func(session *Session) (_ interface{}, err error) {
-		if _, err = session.Insert(&og); err != nil {
+		if _, err = session.Insert(&scene.Story); err != nil {
 			Ret500(c, SEC_game_join_open, err)
 			return
 		}
@@ -118,11 +120,12 @@ func SpiGameJoin(c *gin.Context) {
 		return
 	}
 
-	OpenGames.Set(og.GID, og)
-	user.games.Set(og.GID, og)
+	Scenes.Set(scene.GID, scene)
+	user.games.Set(scene.GID, scene)
 
-	ret.GID = og.GID
-	ret.State = og.State
+	ret.GID = scene.GID
+	ret.Game = scene.Game
+	ret.Scrn = scene.Scrn
 	ret.Wallet = user.GetWallet(arg.CID)
 
 	RetOk(c, ret)
@@ -146,25 +149,31 @@ func SpiGamePart(c *gin.Context) {
 		return
 	}
 
-	var og OpenGame
-	if og, ok = OpenGames.Get(arg.GID); !ok {
+	var scene *Scene
+	if scene, ok = Scenes.Get(arg.GID); !ok {
 		Ret404(c, SEC_game_part_notopened, ErrNotOpened)
 		return
 	}
 
 	var user *User
-	if user, ok = Users.Get(og.UID); !ok {
+	if user, ok = Users.Get(scene.UID); !ok {
 		Ret500(c, SEC_game_part_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.CID)
+	var admin, al = GetAdmin(c, scene.CID)
 	if admin != user && al&ALgame == 0 {
 		Ret403(c, SEC_prop_part_noaccess, ErrNoAccess)
 		return
 	}
 
-	OpenGames.Delete(arg.GID)
+	scene.Flow = false
+	if _, err = cfg.XormStorage.ID(arg.GID).Cols("flow").Update(&scene.Story); err != nil {
+		Ret500(c, SEC_prop_part_update, err)
+		return
+	}
+
+	Scenes.Delete(arg.GID)
 	user.games.Delete(arg.GID)
 
 	c.Status(http.StatusOK)
@@ -179,10 +188,12 @@ func SpiGameState(c *gin.Context) {
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
 	}
 	var ret struct {
-		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
-		State   `yaml:",inline"`
-		Wallet  float64 `json:"wallet" yaml:"wallet" xml:"wallet"`
+		XMLName      xml.Name      `json:"-" yaml:"-" xml:"ret"`
+		GID          uint64        `json:"gid" yaml:"gid" xml:"gid,attr"`
+		Game         game.SlotGame `json:"game" yaml:"game" xml:"game"`
+		Scrn         game.Screen   `json:"scrn" yaml:"scrn" xml:"scrn"`
+		game.WinScan `yaml:",inline"`
+		Wallet       float64 `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -194,32 +205,34 @@ func SpiGameState(c *gin.Context) {
 		return
 	}
 
-	var og OpenGame
-	if og, ok = OpenGames.Get(arg.GID); !ok {
+	var scene *Scene
+	if scene, ok = Scenes.Get(arg.GID); !ok {
 		Ret404(c, SEC_game_state_notopened, ErrNotOpened)
 		return
 	}
 
 	var user *User
-	if user, ok = Users.Get(og.UID); !ok {
+	if user, ok = Users.Get(scene.UID); !ok {
 		Ret500(c, SEC_game_state_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.CID)
+	var admin, al = GetAdmin(c, scene.CID)
 	if admin != user && al&ALgame == 0 {
 		Ret403(c, SEC_prop_state_noaccess, ErrNoAccess)
 		return
 	}
 
 	var props *Props
-	if props, ok = user.props.Get(og.CID); !ok {
+	if props, ok = user.props.Get(scene.CID); !ok {
 		Ret500(c, SEC_game_state_noprops, ErrNoWallet)
 		return
 	}
 
 	ret.GID = arg.GID
-	ret.State = og.State
+	ret.Game = scene.Game
+	ret.Scrn = scene.Scrn
+	ret.WinScan = scene.WinScan
 	ret.Wallet = props.Wallet
 
 	RetOk(c, ret)
@@ -247,19 +260,19 @@ func SpiGameBetGet(c *gin.Context) {
 		return
 	}
 
-	var og OpenGame
-	if og, ok = OpenGames.Get(arg.GID); !ok {
+	var scene *Scene
+	if scene, ok = Scenes.Get(arg.GID); !ok {
 		Ret404(c, SEC_game_betget_notopened, ErrNotOpened)
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.CID)
-	if admin.UID != og.UID && al&ALgame == 0 {
+	var admin, al = GetAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&ALgame == 0 {
 		Ret403(c, SEC_prop_betget_noaccess, ErrNoAccess)
 		return
 	}
 
-	ret.Bet = og.Game.GetBet()
+	ret.Bet = scene.Game.GetBet()
 
 	RetOk(c, ret)
 }
@@ -283,19 +296,19 @@ func SpiGameBetSet(c *gin.Context) {
 		return
 	}
 
-	var og OpenGame
-	if og, ok = OpenGames.Get(arg.GID); !ok {
+	var scene *Scene
+	if scene, ok = Scenes.Get(arg.GID); !ok {
 		Ret404(c, SEC_game_betset_notopened, ErrNotOpened)
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.CID)
-	if admin.UID != og.UID && al&ALgame == 0 {
+	var admin, al = GetAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&ALgame == 0 {
 		Ret403(c, SEC_prop_betset_noaccess, ErrNoAccess)
 		return
 	}
 
-	if err = og.Game.SetBet(arg.Bet); err != nil {
+	if err = scene.Game.SetBet(arg.Bet); err != nil {
 		Ret403(c, SEC_game_betset_badbet, err)
 		return
 	}
@@ -325,19 +338,19 @@ func SpiGameSblGet(c *gin.Context) {
 		return
 	}
 
-	var og OpenGame
-	if og, ok = OpenGames.Get(arg.GID); !ok {
+	var scene *Scene
+	if scene, ok = Scenes.Get(arg.GID); !ok {
 		Ret404(c, SEC_game_sblget_notopened, ErrNotOpened)
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.CID)
-	if admin.UID != og.UID && al&ALgame == 0 {
+	var admin, al = GetAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&ALgame == 0 {
 		Ret403(c, SEC_prop_sblget_noaccess, ErrNoAccess)
 		return
 	}
 
-	ret.SBL = og.Game.GetLines()
+	ret.SBL = scene.Game.GetLines()
 
 	RetOk(c, ret)
 }
@@ -361,19 +374,19 @@ func SpiGameSblSet(c *gin.Context) {
 		return
 	}
 
-	var og OpenGame
-	if og, ok = OpenGames.Get(arg.GID); !ok {
+	var scene *Scene
+	if scene, ok = Scenes.Get(arg.GID); !ok {
 		Ret404(c, SEC_game_sblset_notopened, ErrNotOpened)
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.CID)
-	if admin.UID != og.UID && al&ALgame == 0 {
+	var admin, al = GetAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&ALgame == 0 {
 		Ret403(c, SEC_prop_sblset_noaccess, ErrNoAccess)
 		return
 	}
 
-	if err = og.Game.SetLines(arg.SBL); err != nil {
+	if err = scene.Game.SetLines(arg.SBL); err != nil {
 		Ret403(c, SEC_game_sblset_badlines, err)
 		return
 	}
@@ -403,19 +416,19 @@ func SpiGameReelsGet(c *gin.Context) {
 		return
 	}
 
-	var og OpenGame
-	if og, ok = OpenGames.Get(arg.GID); !ok {
+	var scene *Scene
+	if scene, ok = Scenes.Get(arg.GID); !ok {
 		Ret404(c, SEC_game_rdget_notopened, ErrNotOpened)
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.CID)
-	if admin.UID != og.UID && al&ALgame == 0 {
+	var admin, al = GetAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&ALgame == 0 {
 		Ret403(c, SEC_prop_rdget_noaccess, ErrNoAccess)
 		return
 	}
 
-	ret.RD = og.Game.GetReels()
+	ret.RD = scene.Game.GetReels()
 
 	RetOk(c, ret)
 }
@@ -439,20 +452,20 @@ func SpiGameReelsSet(c *gin.Context) {
 		return
 	}
 
-	var og OpenGame
-	if og, ok = OpenGames.Get(arg.GID); !ok {
+	var scene *Scene
+	if scene, ok = Scenes.Get(arg.GID); !ok {
 		Ret404(c, SEC_game_rdset_notopened, ErrNotOpened)
 		return
 	}
 
 	// only game admin can change reels
-	var _, al = GetAdmin(c, og.CID)
+	var _, al = GetAdmin(c, scene.CID)
 	if al&ALgame == 0 {
 		Ret403(c, SEC_prop_rdset_noaccess, ErrNoAccess)
 		return
 	}
 
-	if err = og.Game.SetReels(arg.RD); err != nil {
+	if err = scene.Game.SetReels(arg.RD); err != nil {
 		Ret403(c, SEC_game_rdset_badreels, err)
 		return
 	}
@@ -469,11 +482,12 @@ func SpiGameSpin(c *gin.Context) {
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
 	}
 	var ret struct {
-		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
-		SID     uint64   `json:"sid" yaml:"sid" xml:"sid,attr"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
-		State   `yaml:",inline"`
-		Wallet  float64 `json:"wallet" yaml:"wallet" xml:"wallet"`
+		XMLName      xml.Name      `json:"-" yaml:"-" xml:"ret"`
+		SID          uint64        `json:"sid" yaml:"sid" xml:"sid,attr"`
+		Game         game.SlotGame `json:"game" yaml:"game" xml:"game"`
+		Scrn         game.Screen   `json:"scrn" yaml:"scrn" xml:"scrn"`
+		game.WinScan `yaml:",inline"`
+		Wallet       float64 `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -485,34 +499,34 @@ func SpiGameSpin(c *gin.Context) {
 		return
 	}
 
-	var og OpenGame
-	if og, ok = OpenGames.Get(arg.GID); !ok {
+	var scene *Scene
+	if scene, ok = Scenes.Get(arg.GID); !ok {
 		Ret404(c, SEC_game_spin_notopened, ErrNotOpened)
 		return
 	}
 
 	var club *Club
-	if club, ok = Clubs.Get(og.CID); !ok {
+	if club, ok = Clubs.Get(scene.CID); !ok {
 		Ret500(c, SEC_game_spin_noclub, ErrNoClub)
 		return
 	}
 
 	var user *User
-	if user, ok = Users.Get(og.UID); !ok {
+	if user, ok = Users.Get(scene.UID); !ok {
 		Ret500(c, SEC_game_spin_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.CID)
-	if admin.UID != og.UID && al&ALgame == 0 {
+	var admin, al = GetAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&ALgame == 0 {
 		Ret403(c, SEC_prop_spin_noaccess, ErrNoAccess)
 		return
 	}
 
 	var (
-		fs       = og.Game.FreeSpins()
-		bet      = og.Game.GetBet()
-		sbl      = og.Game.GetLines()
+		fs       = scene.Game.FreeSpins()
+		bet      = scene.Game.GetBet()
+		sbl      = scene.Game.GetLines()
 		totalbet float64
 		totalwin float64
 	)
@@ -521,7 +535,7 @@ func SpiGameSpin(c *gin.Context) {
 	}
 
 	var props *Props
-	if props, ok = user.props.Get(og.CID); !ok {
+	if props, ok = user.props.Get(scene.CID); !ok {
 		Ret500(c, SEC_game_spin_noprops, ErrNoWallet)
 		return
 	}
@@ -537,9 +551,9 @@ func SpiGameSpin(c *gin.Context) {
 	var ws game.WinScan
 	var n = 0
 	for {
-		og.Game.Spin(og.Scrn)
-		og.Game.Scanner(og.Scrn, &ws)
-		og.Game.Spawn(og.Scrn, &ws)
+		scene.Game.Spin(scene.Scrn)
+		scene.Game.Scanner(scene.Scrn, &ws)
+		scene.Game.Spawn(scene.Scrn, &ws)
 		totalwin = ws.Gain()
 		if bank+float64(totalbet-totalwin) >= 0 || (bank < 0 && totalbet > totalwin) {
 			break
@@ -583,20 +597,21 @@ func SpiGameSpin(c *gin.Context) {
 	club.mux.Unlock()
 
 	props.Wallet += totalwin - totalbet
-	og.Game.Apply(og.Scrn, &ws)
-	og.WinScan.Reset() // throw old wins
-	og.WinScan = ws
+	scene.Game.Apply(scene.Scrn, &ws)
+	scene.WinScan.Reset() // throw old wins
+	scene.WinScan = ws
 
 	// write spin result to log and get spin ID
 	var sid = atomic.AddUint64(&SpinCounter, 1)
+	scene.SID = sid
 	go func() {
 		var rec = Spinlog{
 			SID:    sid,
 			GID:    arg.GID,
-			Gain:   og.Game.GetGain(),
+			Gain:   scene.Game.GetGain(),
 			Wallet: props.Wallet,
 		}
-		_ = rec.MarshalState(&og.State)
+		_ = rec.MarshalState(scene)
 		if err = SpinBuf.Push(rec, cfg.XormSpinlog); err != nil {
 			log.Printf("can not write to spin log: %s", err.Error())
 		}
@@ -604,8 +619,9 @@ func SpiGameSpin(c *gin.Context) {
 
 	// prepare result
 	ret.SID = sid
-	ret.GID = arg.GID
-	ret.State = og.State
+	ret.Game = scene.Game
+	ret.Scrn = scene.Scrn
+	ret.WinScan = scene.WinScan
 	ret.Wallet = props.Wallet
 
 	RetOk(c, ret)
@@ -623,7 +639,6 @@ func SpiGameDoubleup(c *gin.Context) {
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
 		ID      uint64   `json:"id" yaml:"id" xml:"id,attr"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
 		Gain    float64  `json:"gain" yaml:"gain" xml:"gain"`
 		Wallet  float64  `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
@@ -645,37 +660,37 @@ func SpiGameDoubleup(c *gin.Context) {
 		return
 	}
 
-	var og OpenGame
-	if og, ok = OpenGames.Get(arg.GID); !ok {
+	var scene *Scene
+	if scene, ok = Scenes.Get(arg.GID); !ok {
 		Ret404(c, SEC_game_doubleup_notopened, ErrNotOpened)
 		return
 	}
 
 	var club *Club
-	if club, ok = Clubs.Get(og.CID); !ok {
+	if club, ok = Clubs.Get(scene.CID); !ok {
 		Ret500(c, SEC_game_doubleup_noclub, ErrNoClub)
 		return
 	}
 
 	var user *User
-	if user, ok = Users.Get(og.UID); !ok {
+	if user, ok = Users.Get(scene.UID); !ok {
 		Ret500(c, SEC_game_doubleup_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.CID)
-	if admin.UID != og.UID && al&ALgame == 0 {
+	var admin, al = GetAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&ALgame == 0 {
 		Ret403(c, SEC_prop_doubleup_noaccess, ErrNoAccess)
 		return
 	}
 
 	var props *Props
-	if props, ok = user.props.Get(og.CID); !ok {
+	if props, ok = user.props.Get(scene.CID); !ok {
 		Ret500(c, SEC_game_doubleup_noprops, ErrNoWallet)
 		return
 	}
 
-	var risk = og.Game.GetGain()
+	var risk = scene.Game.GetGain()
 	if risk == 0 {
 		Ret403(c, SEC_game_doubleup_nomoney, ErrNoMoney)
 		return
@@ -727,8 +742,8 @@ func SpiGameDoubleup(c *gin.Context) {
 
 	props.Wallet += multgain - risk
 
-	og.Game.SetGain(multgain)
-	og.WinScan.Reset()
+	scene.Game.SetGain(multgain)
+	scene.WinScan.Reset()
 
 	// write doubleup result to log and get spin ID
 	var id = atomic.AddUint64(&MultCounter, 1)
@@ -748,7 +763,6 @@ func SpiGameDoubleup(c *gin.Context) {
 
 	// prepare result
 	ret.ID = id
-	ret.GID = arg.GID
 	ret.Gain = multgain
 	ret.Wallet = props.Wallet
 
@@ -772,19 +786,19 @@ func SpiGameCollect(c *gin.Context) {
 		return
 	}
 
-	var og OpenGame
-	if og, ok = OpenGames.Get(arg.GID); !ok {
+	var scene *Scene
+	if scene, ok = Scenes.Get(arg.GID); !ok {
 		Ret404(c, SEC_game_collect_notopened, ErrNotOpened)
 		return
 	}
 
-	var admin, al = GetAdmin(c, og.CID)
-	if admin.UID != og.UID && al&ALgame == 0 {
+	var admin, al = GetAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&ALgame == 0 {
 		Ret403(c, SEC_prop_collect_noaccess, ErrNoAccess)
 		return
 	}
 
-	if err = og.Game.SetGain(0); err != nil {
+	if err = scene.Game.SetGain(0); err != nil {
 		Ret403(c, SEC_prop_collect_denied, err)
 		return
 	}

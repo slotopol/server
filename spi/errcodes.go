@@ -62,6 +62,7 @@ const (
 	SEC_game_part_notopened
 	SEC_game_part_nouser
 	SEC_prop_part_noaccess
+	SEC_prop_part_update
 
 	// POST /game/state
 	SEC_game_state_nobind
