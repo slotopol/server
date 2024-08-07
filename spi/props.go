@@ -127,13 +127,7 @@ func SpiPropsWalletAdd(c *gin.Context) {
 	}
 
 	// update wallet as transaction
-	if _, err = cfg.XormStorage.Transaction(func(session *Session) (_ interface{}, err error) {
-		defer func() {
-			if err != nil {
-				session.Rollback()
-			}
-		}()
-
+	if err = SafeTransaction(cfg.XormStorage, func(session *Session) (err error) {
 		var rec = Walletlog{
 			CID:    arg.CID,
 			UID:    arg.UID,

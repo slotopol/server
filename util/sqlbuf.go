@@ -41,7 +41,7 @@ func (sb *SqlBuf[T]) Flush(engine *xorm.Engine, d time.Duration) (err error) {
 	return
 }
 
-func (sb *SqlBuf[T]) Push(val T, engine *xorm.Engine) (err error) {
+func (sb *SqlBuf[T]) Put(engine *xorm.Engine, val T) (err error) {
 	sb.mux.Lock()
 	defer sb.mux.Unlock()
 	sb.buf = append(sb.buf, val)

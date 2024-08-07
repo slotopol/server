@@ -173,6 +173,9 @@ func InitStorage() (err error) {
 		offset += limit
 		for _, club := range chunk {
 			spi.Clubs.Set(club.CID, club)
+			var bat = &spi.SqlBank{}
+			bat.Init(club.CID, Cfg.BankBufferSize)
+			spi.BankBat[club.CID] = bat
 		}
 		if limit > len(chunk) {
 			break
@@ -270,6 +273,11 @@ func SqlLoop(exitctx context.Context, d time.Duration) {
 	for {
 		select {
 		case <-ticker.C:
+			for cid, bat := range spi.BankBat {
+				if err := bat.Flush(cfg.XormStorage, d); err != nil {
+					log.Printf("can not update bank for cid=%d: %s", cid, err.Error())
+				}
+			}
 			if err := spi.SpinBuf.Flush(cfg.XormSpinlog, d); err != nil {
 				log.Printf("can not write to spin log: %s", err.Error())
 			}
@@ -298,10 +306,13 @@ func Init() (err error) {
 }
 
 func Done() (err error) {
-	return errors.Join(
-		spi.SpinBuf.Flush(cfg.XormSpinlog, 0),
-		spi.MultBuf.Flush(cfg.XormSpinlog, 0),
-		cfg.XormStorage.Close(),
-		cfg.XormSpinlog.Close(),
-	)
+	var errs []error
+	for _, bat := range spi.BankBat {
+		errs = append(errs, bat.Flush(cfg.XormStorage, 0))
+	}
+	errs = append(errs, spi.SpinBuf.Flush(cfg.XormSpinlog, 0))
+	errs = append(errs, spi.MultBuf.Flush(cfg.XormSpinlog, 0))
+	errs = append(errs, cfg.XormStorage.Close())
+	errs = append(errs, cfg.XormSpinlog.Close())
+	return errors.Join(errs...)
 }

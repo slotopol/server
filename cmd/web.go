@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"time"
 
 	"github.com/slotopol/server/config"
 	"github.com/slotopol/server/spi"
@@ -40,7 +39,7 @@ var webCmd = &cobra.Command{
 			log.Fatalln(err.Error())
 			return
 		}
-		go SqlLoop(exitctx, 2500*time.Millisecond)
+		go SqlLoop(exitctx, Cfg.SqlFlushTick)
 
 		var r = gin.New()
 		r.SetTrustedProxies(Cfg.TrustedProxies)

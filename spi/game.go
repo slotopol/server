@@ -18,6 +18,7 @@ import (
 var (
 	SpinBuf util.SqlBuf[Spinlog]
 	MultBuf util.SqlBuf[Multlog]
+	BankBat = map[uint64]*SqlBank{}
 )
 
 // Joins to game and creates new instance of game.
@@ -95,7 +96,7 @@ func SpiGameJoin(c *gin.Context) {
 	// make game screen object
 	scene.Game.Spin(scene.Scrn)
 
-	if _, err = cfg.XormStorage.Transaction(func(session *Session) (_ interface{}, err error) {
+	if err = SafeTransaction(cfg.XormStorage, func(session *Session) (err error) {
 		if _, err = session.Insert(&scene.Story); err != nil {
 			Ret500(c, SEC_game_join_open, err)
 			return
@@ -528,7 +529,7 @@ func SpiGameSpin(c *gin.Context) {
 		bet      = scene.Game.GetBet()
 		sbl      = scene.Game.GetLines()
 		totalbet float64
-		totalwin float64
+		banksum  float64
 	)
 	if fs == 0 {
 		totalbet = bet * float64(sbl.Num())
@@ -554,8 +555,8 @@ func SpiGameSpin(c *gin.Context) {
 		scene.Game.Spin(scene.Scrn)
 		scene.Game.Scanner(scene.Scrn, &wins)
 		scene.Game.Spawn(scene.Scrn, wins)
-		totalwin = wins.Gain()
-		if bank+float64(totalbet-totalwin) >= 0 || (bank < 0 && totalbet > totalwin) {
+		banksum = totalbet - wins.Gain()
+		if bank+banksum >= 0 || (bank < 0 && banksum > 0) {
 			break
 		}
 		wins.Reset()
@@ -567,36 +568,19 @@ func SpiGameSpin(c *gin.Context) {
 	}
 
 	// write gain and total bet as transaction
-	if _, err = cfg.XormStorage.Transaction(func(session *Session) (_ interface{}, err error) {
-		defer func() {
-			if err != nil {
-				session.Rollback()
-			}
-		}()
-
-		const sql1 = `UPDATE club SET bank=bank+? WHERE cid=?`
-		if _, err = session.Exec(sql1, totalbet-totalwin, club.CID); err != nil {
-			Ret500(c, SEC_game_spin_sqlbank, err)
-			return
-		}
-
-		const sql2 = `UPDATE props SET wallet=wallet+? WHERE uid=? AND cid=?`
-		if _, err = session.Exec(sql2, totalwin-totalbet, props.UID, props.CID); err != nil {
-			Ret500(c, SEC_game_spin_sqlupdate, err)
-			return
-		}
-
-		return
-	}); err != nil {
+	if Cfg.BankBufferSize > 1 {
+		go BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum)
+	} else if err = BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum); err != nil {
+		Ret500(c, SEC_game_spin_sqlbank, err)
 		return
 	}
 
 	// make changes to memory data
 	club.mux.Lock()
-	club.Bank += float64(totalbet - totalwin)
+	club.Bank += banksum
 	club.mux.Unlock()
 
-	props.Wallet += totalwin - totalbet
+	props.Wallet -= banksum
 	scene.Game.Apply(scene.Scrn, wins)
 	scene.Wins.Reset() // throw old wins
 	scene.Wins = wins
@@ -612,7 +596,7 @@ func SpiGameSpin(c *gin.Context) {
 			Wallet: props.Wallet,
 		}
 		_ = rec.MarshalState(scene)
-		if err = SpinBuf.Push(rec, cfg.XormSpinlog); err != nil {
+		if err = SpinBuf.Put(cfg.XormSpinlog, rec); err != nil {
 			log.Printf("can not write to spin log: %s", err.Error())
 		}
 	}()
@@ -709,38 +693,22 @@ func SpiGameDoubleup(c *gin.Context) {
 			multgain = risk * float64(arg.Mult)
 		}
 	}
+	var banksum = risk - multgain
 
 	// write gain and total bet as transaction
-	if _, err = cfg.XormStorage.Transaction(func(session *Session) (_ interface{}, err error) {
-		defer func() {
-			if err != nil {
-				session.Rollback()
-			}
-		}()
-
-		const sql1 = `UPDATE club SET bank=bank-? WHERE cid=?`
-		if _, err = session.Exec(sql1, multgain-risk, club.CID); err != nil {
-			Ret500(c, SEC_game_doubleup_sqlbank, err)
-			return
-		}
-
-		const sql2 = `UPDATE props SET wallet=wallet+? WHERE uid=? AND cid=?`
-		if _, err = session.Exec(sql2, multgain-risk, props.UID, props.CID); err != nil {
-			Ret500(c, SEC_game_doubleup_sqlupdate, err)
-			return
-		}
-
-		return
-	}); err != nil {
+	if Cfg.BankBufferSize > 1 {
+		go BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum)
+	} else if err = BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum); err != nil {
+		Ret500(c, SEC_game_doubleup_sqlbank, err)
 		return
 	}
 
 	// make changes to memory data
 	club.mux.Lock()
-	club.Bank -= float64(multgain - risk)
+	club.Bank += banksum
 	club.mux.Unlock()
 
-	props.Wallet += multgain - risk
+	props.Wallet -= banksum
 
 	scene.Game.SetGain(multgain)
 	scene.Wins.Reset()
@@ -756,7 +724,7 @@ func SpiGameDoubleup(c *gin.Context) {
 			Gain:   multgain,
 			Wallet: props.Wallet,
 		}
-		if err = MultBuf.Push(rec, cfg.XormSpinlog); err != nil {
+		if err = MultBuf.Put(cfg.XormSpinlog, rec); err != nil {
 			log.Printf("can not write to mult log: %s", err.Error())
 		}
 	}()

@@ -54,7 +54,12 @@ type CfgXormDrv struct {
 	// For sqlite3 it should be database file name (slot-spin.sqlite),
 	// for mysql it should match to pattern user:password@/slot_spin.
 	SpinSourceName string `json:"spin-source-name" yaml:"spin-source-name" mapstructure:"spin-source-name"`
-	// Size of buffer for spinlog items to group inserting to database.
+	// Duration between flushes of SQL batching buffers.
+	SqlFlushTick time.Duration `json:"sql-flush-tick" yaml:"sql-flush-tick" mapstructure:"sql-flush-tick"`
+	// Maximum number of users at each club to group wallets updates to database.
+	// If size is 1, update will be sequential with error code expecting.
+	BankBufferSize int `json:"bank-buffer-size" yaml:"bank-buffer-size" mapstructure:"bank-buffer-size"`
+	// Maximum size of buffer for spinlog items to group inserting to database.
 	SpinlogBufferSize int `json:"spinlog-buffer-size" yaml:"spinlog-buffer-size" mapstructure:"spinlog-buffer-size"`
 }
 
@@ -97,7 +102,9 @@ var Cfg = &Config{
 		DriverName:        "sqlite3",
 		ClubSourceName:    "slot-club.sqlite",
 		SpinSourceName:    "slot-spin.sqlite",
-		SpinlogBufferSize: 24,
+		SqlFlushTick:      2500 * time.Millisecond,
+		BankBufferSize:    25,
+		SpinlogBufferSize: 50,
 	},
 	CfgGameplay: CfgGameplay{
 		AdjunctLimit:    100000,

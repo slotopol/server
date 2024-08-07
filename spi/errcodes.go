@@ -122,7 +122,6 @@ const (
 	SEC_game_spin_nomoney
 	SEC_game_spin_badbank
 	SEC_game_spin_sqlbank
-	SEC_game_spin_sqlupdate
 
 	// POST /game/doubleup
 	SEC_game_doubleup_nobind
@@ -136,7 +135,6 @@ const (
 	SEC_game_doubleup_noprops
 	SEC_game_doubleup_nomoney
 	SEC_game_doubleup_sqlbank
-	SEC_game_doubleup_sqlupdate
 
 	// POST /game/collect
 	SEC_game_collect_nobind

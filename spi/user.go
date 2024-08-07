@@ -140,13 +140,7 @@ func SpiUserDelete(c *gin.Context) {
 	}
 
 	// write gain and total bet as transaction
-	if _, err = cfg.XormStorage.Transaction(func(session *Session) (_ interface{}, err error) {
-		defer func() {
-			if err != nil {
-				session.Rollback()
-			}
-		}()
-
+	if err = SafeTransaction(cfg.XormStorage, func(session *Session) (err error) {
 		if _, err = session.ID(arg.UID).Delete(user); err != nil {
 			Ret500(c, SEC_prop_delete_sqluser, err)
 			return

@@ -119,24 +119,16 @@ func SpiClubCashin(c *gin.Context) {
 		FundSum: arg.FundSum,
 		LockSum: arg.LockSum,
 	}
-	if _, err = cfg.XormStorage.Transaction(func(session *Session) (_ interface{}, err error) {
-		defer func() {
-			if err != nil {
-				session.Rollback()
-			}
-		}()
-
+	if err = SafeTransaction(cfg.XormStorage, func(session *Session) (err error) {
 		const sql1 = `UPDATE club SET bank=bank+?, fund=fund+?, lock=lock+? WHERE cid=?`
 		if _, err = session.Exec(sql1, arg.BankSum, arg.FundSum, arg.LockSum, club.CID); err != nil {
 			Ret500(c, SEC_game_cashin_sqlbank, err)
 			return
 		}
-
 		if _, err = session.Insert(&rec); err != nil {
 			Ret500(c, SEC_game_cashin_sqllog, err)
 			return
 		}
-
 		return
 	}); err != nil {
 		return

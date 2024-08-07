@@ -49,20 +49,20 @@ func (wins Wins) Gain() float64 {
 }
 
 type SlotGame interface {
-	NewScreen() Screen                 // returns new empty screen object for this game, constat function
-	Scanner(screen Screen, wins *Wins) // scan given screen and append result to sw, constat function
-	Spin(screen Screen)                // fill the screen with random hits on those reels, constat function
-	Spawn(screen Screen, wins Wins)    // setup bonus games to win results, constat function
-	Apply(screen Screen, wins Wins)    // update game state to spin results
-	FreeSpins() int                    // returns number of free spins remained, constat function
-	GetGain() float64                  // returns gain for double up games, constat function
-	SetGain(gain float64) error        // set gain to given value on double up games
-	GetBet() float64                   // returns current bet, constat function
-	SetBet(float64) error              // set bet to given value
-	GetLines() Bitset                  // returns selected bet lines indexes, constat function
-	SetLines(Bitset) error             // setup selected bet lines indexes
-	GetReels() string                  // returns reels descriptor
-	SetReels(rd string) error          // setup reels descriptor
+	NewScreen() Screen     // returns new empty screen object for this game, constat function
+	Scanner(Screen, *Wins) // scan given screen and append result to wins, constat function
+	Spin(Screen)           // fill the screen with random hits on those reels, constat function
+	Spawn(Screen, Wins)    // setup bonus games to wins results, constat function
+	Apply(Screen, Wins)    // update game state to spin results
+	FreeSpins() int        // returns number of free spins remained, constat function
+	GetGain() float64      // returns gain for double up games, constat function
+	SetGain(float64) error // set gain to given value on double up games
+	GetBet() float64       // returns current bet, constat function
+	SetBet(float64) error  // set bet to given value
+	GetLines() Bitset      // returns selected bet lines indexes, constat function
+	SetLines(Bitset) error // setup selected bet lines indexes
+	GetReels() string      // returns reels descriptor
+	SetReels(string) error // setup reels descriptor
 }
 
 // Reels for 3-reels slots.
