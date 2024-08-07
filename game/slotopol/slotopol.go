@@ -126,13 +126,13 @@ const wild, scat = 11, 1
 
 var bl = game.BetLinesMgj
 
-func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
-	g.ScanLined(screen, ws)
-	g.ScanScatters(screen, ws)
+func (g *Game) Scanner(screen game.Screen, wins *game.Wins) {
+	g.ScanLined(screen, wins)
+	g.ScanScatters(screen, wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
+func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
 
@@ -168,7 +168,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			payl = LinePay[syml-1][numl-1]
 		}
 		if payl*mw > payw {
-			ws.Wins = append(ws.Wins, game.WinItem{
+			*wins = append(*wins, game.WinItem{
 				Pay:  g.Bet * payl,
 				Mult: mw,
 				Sym:  syml,
@@ -177,7 +177,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 				XY:   line.CopyL(numl),
 			})
 		} else if payw > 0 {
-			ws.Wins = append(ws.Wins, game.WinItem{
+			*wins = append(*wins, game.WinItem{
 				Pay:  g.Bet * payw,
 				Mult: 1,
 				Sym:  wild,
@@ -187,7 +187,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 				Jack: Jackpot[wild-1][numw-1],
 			})
 		} else if syml > 0 && numl > 0 && LineBonus[syml-1][numl-1] > 0 {
-			ws.Wins = append(ws.Wins, game.WinItem{
+			*wins = append(*wins, game.WinItem{
 				Mult: 1,
 				Sym:  syml,
 				Num:  numl,
@@ -200,10 +200,10 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
+func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 	if count := screen.ScatNum(scat); count >= 2 {
 		var pay = ScatPay[count-1]
-		ws.Wins = append(ws.Wins, game.WinItem{
+		*wins = append(*wins, game.WinItem{
 			Pay:  g.Bet * float64(g.SBL.Num()) * pay,
 			Mult: 1,
 			Sym:  scat,
@@ -217,19 +217,19 @@ func (g *Game) Spin(screen game.Screen) {
 	screen.Spin(ReelsMap[g.RD])
 }
 
-func (g *Game) Spawn(screen game.Screen, sw *game.WinScan) {
-	for i, wi := range sw.Wins {
+func (g *Game) Spawn(screen game.Screen, wins game.Wins) {
+	for i, wi := range wins {
 		switch wi.BID {
 		case mje1:
-			sw.Wins[i].Bon, sw.Wins[i].Pay = EldoradoSpawn(g.Bet, 1)
+			wins[i].Bon, wins[i].Pay = EldoradoSpawn(g.Bet, 1)
 		case mje3:
-			sw.Wins[i].Bon, sw.Wins[i].Pay = EldoradoSpawn(g.Bet, 3)
+			wins[i].Bon, wins[i].Pay = EldoradoSpawn(g.Bet, 3)
 		case mje6:
-			sw.Wins[i].Bon, sw.Wins[i].Pay = EldoradoSpawn(g.Bet, 6)
+			wins[i].Bon, wins[i].Pay = EldoradoSpawn(g.Bet, 6)
 		case mje9:
-			sw.Wins[i].Bon, sw.Wins[i].Pay = EldoradoSpawn(g.Bet, 9)
+			wins[i].Bon, wins[i].Pay = EldoradoSpawn(g.Bet, 9)
 		case mjm:
-			sw.Wins[i].Bon, sw.Wins[i].Pay = MonopolySpawn(g.Bet)
+			wins[i].Bon, wins[i].Pay = MonopolySpawn(g.Bet)
 		}
 	}
 }

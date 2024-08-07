@@ -26,45 +26,43 @@ type WinItem struct {
 	Bon  any     `json:"bon,omitempty" yaml:"bon,omitempty" xml:"bon,omitempty"`         // bonus game data
 }
 
-// WinScan is full list of wins by all lines and scatters for some spin.
-type WinScan struct {
-	Wins []WinItem `json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
-}
+// Wins is full list of wins by all lines and scatters for some spin.
+type Wins []WinItem
 
 // Reset puts lines to pool and set array empty with saved capacity.
-func (ws *WinScan) Reset() {
-	for _, wi := range ws.Wins {
+func (wins *Wins) Reset() {
+	for _, wi := range *wins {
 		if wi.XY != nil {
 			wi.XY.Free()
 		}
 	}
-	ws.Wins = ws.Wins[:0] // set it empty
+	*wins = (*wins)[:0] // set it empty
 }
 
 // Total gain for spin.
-func (ws *WinScan) Gain() float64 {
+func (wins Wins) Gain() float64 {
 	var sum float64
-	for _, wi := range ws.Wins {
+	for _, wi := range wins {
 		sum += wi.Pay * wi.Mult
 	}
 	return sum
 }
 
 type SlotGame interface {
-	NewScreen() Screen                  // returns new empty screen object for this game, constat function
-	Scanner(screen Screen, sw *WinScan) // scan given screen and append result to sw, constat function
-	Spin(screen Screen)                 // fill the screen with random hits on those reels, constat function
-	Spawn(screen Screen, sw *WinScan)   // setup bonus games to win results, constat function
-	Apply(screen Screen, sw *WinScan)   // update game state to spin results
-	FreeSpins() int                     // returns number of free spins remained, constat function
-	GetGain() float64                   // returns gain for double up games, constat function
-	SetGain(gain float64) error         // set gain to given value on double up games
-	GetBet() float64                    // returns current bet, constat function
-	SetBet(float64) error               // set bet to given value
-	GetLines() Bitset                   // returns selected bet lines indexes, constat function
-	SetLines(Bitset) error              // setup selected bet lines indexes
-	GetReels() string                   // returns reels descriptor
-	SetReels(rd string) error           // setup reels descriptor
+	NewScreen() Screen                 // returns new empty screen object for this game, constat function
+	Scanner(screen Screen, wins *Wins) // scan given screen and append result to sw, constat function
+	Spin(screen Screen)                // fill the screen with random hits on those reels, constat function
+	Spawn(screen Screen, wins Wins)    // setup bonus games to win results, constat function
+	Apply(screen Screen, wins Wins)    // update game state to spin results
+	FreeSpins() int                    // returns number of free spins remained, constat function
+	GetGain() float64                  // returns gain for double up games, constat function
+	SetGain(gain float64) error        // set gain to given value on double up games
+	GetBet() float64                   // returns current bet, constat function
+	SetBet(float64) error              // set bet to given value
+	GetLines() Bitset                  // returns selected bet lines indexes, constat function
+	SetLines(Bitset) error             // setup selected bet lines indexes
+	GetReels() string                  // returns reels descriptor
+	SetReels(rd string) error          // setup reels descriptor
 }
 
 // Reels for 3-reels slots.
@@ -119,11 +117,11 @@ func (g *Slot3x3) NewScreen() Screen {
 	return NewScreen3x3()
 }
 
-func (g *Slot3x3) Spawn(screen Screen, sw *WinScan) {
+func (g *Slot3x3) Spawn(screen Screen, wins Wins) {
 }
 
-func (g *Slot3x3) Apply(screen Screen, sw *WinScan) {
-	g.Gain = sw.Gain()
+func (g *Slot3x3) Apply(screen Screen, wins Wins) {
+	g.Gain = wins.Gain()
 }
 
 func (g *Slot3x3) FreeSpins() int {
@@ -175,11 +173,11 @@ func (g *Slot5x3) NewScreen() Screen {
 	return NewScreen5x3()
 }
 
-func (g *Slot5x3) Spawn(screen Screen, sw *WinScan) {
+func (g *Slot5x3) Spawn(screen Screen, wins Wins) {
 }
 
-func (g *Slot5x3) Apply(screen Screen, sw *WinScan) {
-	g.Gain = sw.Gain()
+func (g *Slot5x3) Apply(screen Screen, wins Wins) {
+	g.Gain = wins.Gain()
 }
 
 func (g *Slot5x3) FreeSpins() int {
@@ -231,11 +229,11 @@ func (g *Slot5x4) NewScreen() Screen {
 	return NewScreen5x4()
 }
 
-func (g *Slot5x4) Spawn(screen Screen, sw *WinScan) {
+func (g *Slot5x4) Spawn(screen Screen, wins Wins) {
 }
 
-func (g *Slot5x4) Apply(screen Screen, sw *WinScan) {
-	g.Gain = sw.Gain()
+func (g *Slot5x4) Apply(screen Screen, wins Wins) {
+	g.Gain = wins.Gain()
 }
 
 func (g *Slot5x4) FreeSpins() int {

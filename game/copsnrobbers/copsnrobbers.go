@@ -250,15 +250,15 @@ var bl = game.Lineset5x{
 	{3, 3, 2, 1, 1}, // 9
 }
 
-func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
-	g.ScanLined(screen, ws)
+func (g *Game) Scanner(screen game.Screen, wins *game.Wins) {
+	g.ScanLined(screen, wins)
 	if g.FS == 0 {
-		g.ScanScatters(screen, ws)
+		g.ScanScatters(screen, wins)
 	}
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
+func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
 
@@ -292,7 +292,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			if g.FS > 0 {
 				mm = g.M
 			}
-			ws.Wins = append(ws.Wins, game.WinItem{
+			*wins = append(*wins, game.WinItem{
 				Pay:  g.Bet * payl,
 				Mult: mw * mm,
 				Sym:  syml,
@@ -305,7 +305,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			if g.FS > 0 {
 				mm = g.M
 			}
-			ws.Wins = append(ws.Wins, game.WinItem{
+			*wins = append(*wins, game.WinItem{
 				Pay:  g.Bet * payw,
 				Mult: mm,
 				Sym:  wild,
@@ -318,13 +318,13 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
+func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 	if count := screen.ScatNum(scat); count >= 2 {
 		var pay, fs = ScatPay[count-1], 0
 		if count >= 3 {
 			fs = ScatRand[rand.N(len(ScatRand))]
 		}
-		ws.Wins = append(ws.Wins, game.WinItem{
+		*wins = append(*wins, game.WinItem{
 			Pay:  g.Bet * float64(g.SBL.Num()) * pay,
 			Mult: 1,
 			Sym:  scat,
@@ -343,11 +343,11 @@ func (g *Game) Spin(screen game.Screen) {
 	}
 }
 
-func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
+func (g *Game) Apply(screen game.Screen, wins game.Wins) {
 	if g.FS > 0 {
-		g.Gain += sw.Gain()
+		g.Gain += wins.Gain()
 	} else {
-		g.Gain = sw.Gain()
+		g.Gain = wins.Gain()
 	}
 
 	if g.FS > 0 {
@@ -356,7 +356,7 @@ func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
 			g.M = 0 // no multiplier on regular games
 		}
 	} else { // free spins can not be nested
-		for _, wi := range sw.Wins {
+		for _, wi := range wins {
 			if wi.Free > 0 {
 				g.FS = wi.Free
 				if rand.Float64() <= Pfs {

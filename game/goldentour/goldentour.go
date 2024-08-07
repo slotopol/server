@@ -61,13 +61,13 @@ var bl = game.Lineset5x{
 const golfbon = 1
 const wild, scat1, scat2, scat3 = 1, 9, 10, 11
 
-func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
-	g.ScanLined(screen, ws)
-	g.ScanScatters(screen, ws)
+func (g *Game) Scanner(screen game.Screen, wins *game.Wins) {
+	g.ScanLined(screen, wins)
+	g.ScanScatters(screen, wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
+func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
 
@@ -95,7 +95,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 
 		if numl > 0 && syml > 0 {
 			if pay := LinePay[syml-1][numl-1]; pay > 0 {
-				ws.Wins = append(ws.Wins, game.WinItem{
+				*wins = append(*wins, game.WinItem{
 					Pay:  g.Bet * pay,
 					Mult: 1,
 					Sym:  syml,
@@ -106,7 +106,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			}
 		} else if numw > 0 {
 			if pay := LinePay[wild-1][numw-1]; pay > 0 {
-				ws.Wins = append(ws.Wins, game.WinItem{
+				*wins = append(*wins, game.WinItem{
 					Pay:  g.Bet * pay,
 					Mult: 1,
 					Sym:  wild,
@@ -142,7 +142,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 
 			if numr > 0 && symr > 0 {
 				if pay := LinePay[symr-1][numr-1]; pay > 0 {
-					ws.Wins = append(ws.Wins, game.WinItem{
+					*wins = append(*wins, game.WinItem{
 						Pay:  g.Bet * pay,
 						Mult: 1,
 						Sym:  symr,
@@ -153,7 +153,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 				}
 			} else if numw > 0 {
 				if pay := LinePay[wild-1][numw-1]; pay > 0 {
-					ws.Wins = append(ws.Wins, game.WinItem{
+					*wins = append(*wins, game.WinItem{
 						Pay:  g.Bet * pay,
 						Mult: 1,
 						Sym:  wild,
@@ -168,9 +168,9 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
+func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 	if count := screen.ScatNum(scat1); count >= 3 {
-		ws.Wins = append(ws.Wins, game.WinItem{
+		*wins = append(*wins, game.WinItem{
 			Mult: 1,
 			Sym:  scat1,
 			Num:  count,
@@ -178,7 +178,7 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 			BID:  golfbon,
 		})
 	} else if count := screen.ScatNum(scat2); count >= 3 {
-		ws.Wins = append(ws.Wins, game.WinItem{
+		*wins = append(*wins, game.WinItem{
 			Mult: 1,
 			Sym:  scat2,
 			Num:  count,
@@ -186,7 +186,7 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 			BID:  golfbon,
 		})
 	} else if count := screen.ScatNum(scat3); count >= 3 {
-		ws.Wins = append(ws.Wins, game.WinItem{
+		*wins = append(*wins, game.WinItem{
 			Mult: 1,
 			Sym:  scat3,
 			Num:  count,
@@ -200,11 +200,11 @@ func (g *Game) Spin(screen game.Screen) {
 	screen.Spin(ReelsMap[g.RD])
 }
 
-func (g *Game) Spawn(screen game.Screen, sw *game.WinScan) {
-	for i, wi := range sw.Wins {
+func (g *Game) Spawn(screen game.Screen, wins game.Wins) {
+	for i, wi := range wins {
 		switch wi.BID {
 		case golfbon:
-			sw.Wins[i].Pay = GolfSpawn(g.Bet * float64(g.SBL.Num()))
+			wins[i].Pay = GolfSpawn(g.Bet * float64(g.SBL.Num()))
 		}
 	}
 }

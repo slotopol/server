@@ -10,7 +10,7 @@ import (
 
 type Stater interface {
 	Count() uint64
-	Update(sw *WinScan)
+	Update(wins Wins)
 }
 
 // Stat is statistics calculation for slot reels.
@@ -29,8 +29,8 @@ func (s *Stat) Count() uint64 {
 	return atomic.LoadUint64(&s.Reshuffles)
 }
 
-func (s *Stat) Update(sw *WinScan) {
-	for _, wi := range sw.Wins {
+func (s *Stat) Update(wins Wins) {
+	for _, wi := range wins {
 		if wi.Pay > 0 {
 			if wi.Line > 0 {
 				s.lpm.Lock()
@@ -79,7 +79,7 @@ func (s *Stat) Progress(ctx context.Context, steps *time.Ticker, sel, total floa
 func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	var screen = g.NewScreen()
 	defer screen.Free()
-	var ws WinScan
+	var wins Wins
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)
 	var r3 = reels.Reel(3)
@@ -89,9 +89,9 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 			screen.SetCol(2, r2, i2)
 			for i3 := range r3 {
 				screen.SetCol(3, r3, i3)
-				g.Scanner(screen, &ws)
-				s.Update(&ws)
-				ws.Reset()
+				g.Scanner(screen, &wins)
+				s.Update(wins)
+				wins.Reset()
 				if s.Count()&100 == 0 {
 					select {
 					case <-ctx.Done():
@@ -107,7 +107,7 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	var screen = g.NewScreen()
 	defer screen.Free()
-	var ws WinScan
+	var wins Wins
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)
 	var r3 = reels.Reel(3)
@@ -123,9 +123,9 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 					screen.SetCol(4, r4, i4)
 					for i5 := range r5 {
 						screen.SetCol(5, r5, i5)
-						g.Scanner(screen, &ws)
-						s.Update(&ws)
-						ws.Reset()
+						g.Scanner(screen, &wins)
+						s.Update(wins)
+						wins.Reset()
 						if s.Count()&100 == 0 {
 							select {
 							case <-ctx.Done():
@@ -143,12 +143,12 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 func MonteCarlo(ctx context.Context, s Stater, g SlotGame, n int) {
 	var screen = g.NewScreen()
 	defer screen.Free()
-	var ws WinScan
+	var wins Wins
 	for range n {
 		g.Spin(screen)
-		g.Scanner(screen, &ws)
-		s.Update(&ws)
-		ws.Reset()
+		g.Scanner(screen, &wins)
+		s.Update(wins)
+		wins.Reset()
 		if s.Count()&100 == 0 {
 			select {
 			case <-ctx.Done():

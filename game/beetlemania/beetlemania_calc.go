@@ -16,12 +16,12 @@ type Stat struct {
 	FGPay uint64
 }
 
-func (s *Stat) Update(sw *game.WinScan) {
-	s.Stat.Update(sw)
-	if len(sw.Wins) > 0 {
-		if wi := sw.Wins[len(sw.Wins)-1]; wi.Free > 0 {
+func (s *Stat) Update(wins game.Wins) {
+	s.Stat.Update(wins)
+	if len(wins) > 0 {
+		if wi := wins[len(wins)-1]; wi.Free > 0 {
 			atomic.AddUint64(&s.FGNum[wi.Num-1], 1)
-			atomic.AddUint64(&s.FGPay, uint64(sw.Gain()))
+			atomic.AddUint64(&s.FGPay, uint64(wins.Gain()))
 		}
 	}
 }

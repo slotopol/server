@@ -78,12 +78,12 @@ const wild = 8
 
 var bl = game.BetLinesNvm10
 
-func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
-	g.ScanLined(screen, ws)
+func (g *Game) Scanner(screen game.Screen, wins *game.Wins) {
+	g.ScanLined(screen, wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
+func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 	var scrnwild game.Screen5x3 = *screen.(*game.Screen5x3)
 	for x := 1; x <= 5; x++ {
 		for y := 1; y <= 3; y++ {
@@ -134,7 +134,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 		}
 
 		if num >= 3 {
-			ws.Wins = append(ws.Wins, game.WinItem{
+			*wins = append(*wins, game.WinItem{
 				Pay:  g.Bet * LinePay[sym3-1][num-1],
 				Mult: 1,
 				Sym:  sym3,

@@ -199,13 +199,13 @@ const scat, acorn, diamond = 11, 12, 13
 
 var bl = game.BetLinesBetSoft30
 
-func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
-	g.ScanLined(screen, ws)
-	g.ScanScatters(screen, ws)
+func (g *Game) Scanner(screen game.Screen, wins *game.Wins) {
+	g.ScanLined(screen, wins)
+	g.ScanScatters(screen, wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
+func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
 
@@ -219,7 +219,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 		}
 
 		if pay := LinePay[syml-1][numl-1]; pay > 0 {
-			ws.Wins = append(ws.Wins, game.WinItem{
+			*wins = append(*wins, game.WinItem{
 				Pay:  g.Bet * pay,
 				Mult: 1,
 				Sym:  syml,
@@ -229,7 +229,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			})
 		}
 		if syml == diamond && numl >= 3 {
-			ws.Wins = append(ws.Wins, game.WinItem{
+			*wins = append(*wins, game.WinItem{
 				Mult: 1,
 				Sym:  diamond,
 				Num:  numl,
@@ -242,10 +242,10 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
+func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 	if count := screen.ScatNum(scat); count >= 3 {
 		var fs = ScatFreespin[count-1]
-		ws.Wins = append(ws.Wins, game.WinItem{
+		*wins = append(*wins, game.WinItem{
 			Sym:  scat,
 			Num:  count,
 			XY:   screen.ScatPos(scat),
@@ -255,7 +255,7 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 
 	if screen.At(5, 1) == acorn || screen.At(5, 2) == acorn || screen.At(5, 3) == acorn {
 		if (g.AN+1)%3 == 0 {
-			ws.Wins = append(ws.Wins, game.WinItem{
+			*wins = append(*wins, game.WinItem{
 				Mult: 1,
 				Sym:  acorn,
 				Num:  1,
@@ -273,18 +273,18 @@ func (g *Game) Spin(screen game.Screen) {
 	}
 }
 
-func (g *Game) Spawn(screen game.Screen, sw *game.WinScan) {
-	for i, wi := range sw.Wins {
+func (g *Game) Spawn(screen game.Screen, wins game.Wins) {
+	for i, wi := range wins {
 		switch wi.BID {
 		case acbn:
-			sw.Wins[i].Pay = AcornSpawn(g.AB + g.Bet*float64(g.SBL.Num()))
+			wins[i].Pay = AcornSpawn(g.AB + g.Bet*float64(g.SBL.Num()))
 		case dlbn:
-			sw.Wins[i].Pay = DiamondLionSpawn(g.Bet)
+			wins[i].Pay = DiamondLionSpawn(g.Bet)
 		}
 	}
 }
 
-func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
+func (g *Game) Apply(screen game.Screen, wins game.Wins) {
 	if screen.At(5, 1) == acorn || screen.At(5, 2) == acorn || screen.At(5, 3) == acorn {
 		g.AN++
 		g.AN %= 3
@@ -296,15 +296,15 @@ func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
 	}
 
 	if g.FS > 0 {
-		g.Gain += sw.Gain()
+		g.Gain += wins.Gain()
 	} else {
-		g.Gain = sw.Gain()
+		g.Gain = wins.Gain()
 	}
 
 	if g.FS > 0 {
 		g.FS--
 	}
-	for _, wi := range sw.Wins {
+	for _, wi := range wins {
 		if wi.Free > 0 {
 			g.FS += wi.Free
 		}

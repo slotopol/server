@@ -36,12 +36,7 @@ web-server: # See https://golang.org/pkg/net/http/#Server for details.
   max-header-bytes: 1048576 # 1M
   # Maximum duration to wait for graceful shutdown.
   shutdown-timeout: 15s
-gameplay:
-  # Maximum value to add to wallet by one transaction.
-  adjunct-limit: 100000
-  # Maximum number of spin attempts at bad bank balance.
-  max-spin-attempts: 300
-xorm:
+database:
   # Provides driver name to create XORM engine.
   # It can be "sqlite3" or "mysql".
   driver-name: sqlite3
@@ -55,3 +50,8 @@ xorm:
   spin-source-name: slot-spin.sqlite
   # Size of buffer for spinlog items to group inserting to database.
   spinlog-buffer-size: 24
+gameplay:
+  # Maximum value to add to wallet by one transaction.
+  adjunct-limit: 100000
+  # Maximum number of spin attempts at bad bank balance.
+  max-spin-attempts: 300

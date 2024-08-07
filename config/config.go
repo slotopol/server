@@ -42,13 +42,6 @@ type CfgWebServ struct {
 	ShutdownTimeout time.Duration `json:"shutdown-timeout" yaml:"shutdown-timeout" mapstructure:"shutdown-timeout"`
 }
 
-type CfgGameplay struct {
-	// Maximum value to add to wallet by one transaction.
-	AdjunctLimit float64 `json:"adjunct-limit" yaml:"adjunct-limit" mapstructure:"adjunct-limit"`
-	// Maximum number of spin attempts at bad bank balance.
-	MaxSpinAttempts int `json:"max-spin-attempts" yaml:"max-spin-attempts" mapstructure:"max-spin-attempts"`
-}
-
 type CfgXormDrv struct {
 	// Provides driver name to create XORM engine.
 	// It can be "sqlite3" or "mysql".
@@ -65,12 +58,19 @@ type CfgXormDrv struct {
 	SpinlogBufferSize int `json:"spinlog-buffer-size" yaml:"spinlog-buffer-size" mapstructure:"spinlog-buffer-size"`
 }
 
+type CfgGameplay struct {
+	// Maximum value to add to wallet by one transaction.
+	AdjunctLimit float64 `json:"adjunct-limit" yaml:"adjunct-limit" mapstructure:"adjunct-limit"`
+	// Maximum number of spin attempts at bad bank balance.
+	MaxSpinAttempts int `json:"max-spin-attempts" yaml:"max-spin-attempts" mapstructure:"max-spin-attempts"`
+}
+
 // Config is common service settings.
 type Config struct {
 	CfgJwtAuth  `json:"authentication" yaml:"authentication" mapstructure:"authentication"`
 	CfgWebServ  `json:"web-server" yaml:"web-server" mapstructure:"web-server"`
+	CfgXormDrv  `json:"database" yaml:"database" mapstructure:"database"`
 	CfgGameplay `json:"gameplay" yaml:"xorm" mapstructure:"gameplay"`
-	CfgXormDrv  `json:"xorm" yaml:"xorm" mapstructure:"xorm"`
 }
 
 // Instance of common service settings.
@@ -93,14 +93,14 @@ var Cfg = &Config{
 		MaxHeaderBytes:    1 << 20,
 		ShutdownTimeout:   15 * time.Second,
 	},
-	CfgGameplay: CfgGameplay{
-		AdjunctLimit:    100000,
-		MaxSpinAttempts: 300,
-	},
 	CfgXormDrv: CfgXormDrv{
 		DriverName:        "sqlite3",
 		ClubSourceName:    "slot-club.sqlite",
 		SpinSourceName:    "slot-spin.sqlite",
 		SpinlogBufferSize: 24,
+	},
+	CfgGameplay: CfgGameplay{
+		AdjunctLimit:    100000,
+		MaxSpinAttempts: 300,
 	},
 }

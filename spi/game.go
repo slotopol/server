@@ -188,12 +188,12 @@ func SpiGameState(c *gin.Context) {
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
 	}
 	var ret struct {
-		XMLName      xml.Name      `json:"-" yaml:"-" xml:"ret"`
-		GID          uint64        `json:"gid" yaml:"gid" xml:"gid,attr"`
-		Game         game.SlotGame `json:"game" yaml:"game" xml:"game"`
-		Scrn         game.Screen   `json:"scrn" yaml:"scrn" xml:"scrn"`
-		game.WinScan `yaml:",inline"`
-		Wallet       float64 `json:"wallet" yaml:"wallet" xml:"wallet"`
+		XMLName xml.Name      `json:"-" yaml:"-" xml:"ret"`
+		GID     uint64        `json:"gid" yaml:"gid" xml:"gid,attr"`
+		Game    game.SlotGame `json:"game" yaml:"game" xml:"game"`
+		Scrn    game.Screen   `json:"scrn" yaml:"scrn" xml:"scrn"`
+		Wins    game.Wins     `json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
+		Wallet  float64       `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -232,7 +232,7 @@ func SpiGameState(c *gin.Context) {
 	ret.GID = arg.GID
 	ret.Game = scene.Game
 	ret.Scrn = scene.Scrn
-	ret.WinScan = scene.WinScan
+	ret.Wins = scene.Wins
 	ret.Wallet = props.Wallet
 
 	RetOk(c, ret)
@@ -482,12 +482,12 @@ func SpiGameSpin(c *gin.Context) {
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
 	}
 	var ret struct {
-		XMLName      xml.Name      `json:"-" yaml:"-" xml:"ret"`
-		SID          uint64        `json:"sid" yaml:"sid" xml:"sid,attr"`
-		Game         game.SlotGame `json:"game" yaml:"game" xml:"game"`
-		Scrn         game.Screen   `json:"scrn" yaml:"scrn" xml:"scrn"`
-		game.WinScan `yaml:",inline"`
-		Wallet       float64 `json:"wallet" yaml:"wallet" xml:"wallet"`
+		XMLName xml.Name      `json:"-" yaml:"-" xml:"ret"`
+		SID     uint64        `json:"sid" yaml:"sid" xml:"sid,attr"`
+		Game    game.SlotGame `json:"game" yaml:"game" xml:"game"`
+		Scrn    game.Screen   `json:"scrn" yaml:"scrn" xml:"scrn"`
+		Wins    game.Wins     `json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
+		Wallet  float64       `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -548,17 +548,17 @@ func SpiGameSpin(c *gin.Context) {
 	club.mux.RLock()
 	var bank = club.Bank
 	club.mux.RUnlock()
-	var ws game.WinScan
+	var wins game.Wins
 	var n = 0
 	for {
 		scene.Game.Spin(scene.Scrn)
-		scene.Game.Scanner(scene.Scrn, &ws)
-		scene.Game.Spawn(scene.Scrn, &ws)
-		totalwin = ws.Gain()
+		scene.Game.Scanner(scene.Scrn, &wins)
+		scene.Game.Spawn(scene.Scrn, wins)
+		totalwin = wins.Gain()
 		if bank+float64(totalbet-totalwin) >= 0 || (bank < 0 && totalbet > totalwin) {
 			break
 		}
-		ws.Reset()
+		wins.Reset()
 		if n >= cfg.Cfg.MaxSpinAttempts {
 			Ret500(c, SEC_game_spin_badbank, ErrBadBank)
 			return
@@ -597,9 +597,9 @@ func SpiGameSpin(c *gin.Context) {
 	club.mux.Unlock()
 
 	props.Wallet += totalwin - totalbet
-	scene.Game.Apply(scene.Scrn, &ws)
-	scene.WinScan.Reset() // throw old wins
-	scene.WinScan = ws
+	scene.Game.Apply(scene.Scrn, wins)
+	scene.Wins.Reset() // throw old wins
+	scene.Wins = wins
 
 	// write spin result to log and get spin ID
 	var sid = atomic.AddUint64(&SpinCounter, 1)
@@ -621,7 +621,7 @@ func SpiGameSpin(c *gin.Context) {
 	ret.SID = sid
 	ret.Game = scene.Game
 	ret.Scrn = scene.Scrn
-	ret.WinScan = scene.WinScan
+	ret.Wins = scene.Wins
 	ret.Wallet = props.Wallet
 
 	RetOk(c, ret)
@@ -743,7 +743,7 @@ func SpiGameDoubleup(c *gin.Context) {
 	props.Wallet += multgain - risk
 
 	scene.Game.SetGain(multgain)
-	scene.WinScan.Reset()
+	scene.Wins.Reset()
 
 	// write doubleup result to log and get spin ID
 	var id = atomic.AddUint64(&MultCounter, 1)

@@ -11,7 +11,7 @@ import (
 func BruteForce5x(ctx context.Context, s game.Stater, g game.SlotGame, reels game.Reels, x, y int) {
 	var screen = g.NewScreen()
 	defer screen.Free()
-	var ws game.WinScan
+	var wins game.Wins
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)
 	var r3 = reels.Reel(3)
@@ -32,12 +32,12 @@ func BruteForce5x(ctx context.Context, s game.Stater, g game.SlotGame, reels gam
 							sym = screen.At(x, y)
 							screen.Set(x, y, wild)
 						}
-						g.Scanner(screen, &ws)
+						g.Scanner(screen, &wins)
 						if x > 0 {
 							screen.Set(x, y, sym)
 						}
-						s.Update(&ws)
-						ws.Reset()
+						s.Update(wins)
+						wins.Reset()
 						if s.Count()&100 == 0 {
 							select {
 							case <-ctx.Done():

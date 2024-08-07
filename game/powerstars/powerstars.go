@@ -117,12 +117,12 @@ const wild = 9
 
 var bl = game.BetLinesNvm10
 
-func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
-	g.ScanLined(screen, ws)
+func (g *Game) Scanner(screen game.Screen, wins *game.Wins) {
+	g.ScanLined(screen, wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
+func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 	var reelwild [5]bool
 	var fs int
 	for x := 2; x <= 4; x++ {
@@ -168,7 +168,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 		}
 
 		if payl > payr {
-			ws.Wins = append(ws.Wins, game.WinItem{
+			*wins = append(*wins, game.WinItem{
 				Pay:  g.Bet * payl,
 				Mult: 1,
 				Sym:  syml,
@@ -177,7 +177,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 				XY:   line.CopyL(numl),
 			})
 		} else if payr > 0 {
-			ws.Wins = append(ws.Wins, game.WinItem{
+			*wins = append(*wins, game.WinItem{
 				Pay:  g.Bet * payr,
 				Mult: 1,
 				Sym:  symr,
@@ -187,7 +187,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			})
 		}
 		if fs > 0 {
-			ws.Wins = append(ws.Wins, game.WinItem{
+			*wins = append(*wins, game.WinItem{
 				Sym:  wild,
 				Free: fs,
 			})
@@ -208,11 +208,11 @@ func (g *Game) Spin(screen game.Screen) {
 	}
 }
 
-func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
+func (g *Game) Apply(screen game.Screen, wins game.Wins) {
 	if g.FreeSpins() > 0 {
-		g.Gain += sw.Gain()
+		g.Gain += wins.Gain()
 	} else {
-		g.Gain = sw.Gain()
+		g.Gain = wins.Gain()
 	}
 
 	for x := 2; x <= 4; x++ {

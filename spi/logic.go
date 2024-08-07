@@ -52,11 +52,11 @@ type Story struct {
 
 // Scene represents game with all the connected environment.
 type Scene struct {
-	Story        `yaml:",inline"`
-	SID          uint64        `json:"sid" yaml:"sid" xml:"sid,attr"`
-	Game         game.SlotGame `json:"game" yaml:"game" xml:"game"`
-	Scrn         game.Screen   `json:"scrn" yaml:"scrn" xml:"scrn"`
-	game.WinScan `yaml:",inline"`
+	Story `yaml:",inline"`
+	SID   uint64        `json:"sid" yaml:"sid" xml:"sid,attr"`
+	Game  game.SlotGame `json:"game" yaml:"game" xml:"game"`
+	Scrn  game.Screen   `json:"scrn" yaml:"scrn" xml:"scrn"`
+	Wins  game.Wins     `json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
 }
 
 // Access level.
@@ -175,8 +175,8 @@ func (sl *Spinlog) MarshalState(scene *Scene) (err error) {
 		return
 	}
 	sl.Screen = util.B2S(b)
-	if len(scene.WinScan.Wins) > 0 {
-		if b, err = json.Marshal(scene.WinScan.Wins); err != nil {
+	if len(scene.Wins) > 0 {
+		if b, err = json.Marshal(scene.Wins); err != nil {
 			return
 		}
 		sl.Wins = util.B2S(b)

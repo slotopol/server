@@ -206,13 +206,13 @@ const wild, scat = 1, 13
 
 var bl = game.BetLinesPlt30
 
-func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
-	g.ScanLined(screen, ws)
-	g.ScanScatters(screen, ws)
+func (g *Game) Scanner(screen game.Screen, wins *game.Wins) {
+	g.ScanLined(screen, wins)
+	g.ScanScatters(screen, wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
+func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
 
@@ -246,7 +246,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			if g.FS > 0 {
 				mm = g.M
 			}
-			ws.Wins = append(ws.Wins, game.WinItem{
+			*wins = append(*wins, game.WinItem{
 				Pay:  g.Bet * payl,
 				Mult: mw * mm,
 				Sym:  syml,
@@ -259,7 +259,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			if g.FS > 0 {
 				mm = g.M
 			}
-			ws.Wins = append(ws.Wins, game.WinItem{
+			*wins = append(*wins, game.WinItem{
 				Pay:  g.Bet * payw,
 				Mult: mm,
 				Sym:  wild,
@@ -272,7 +272,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
+func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 	if count := screen.ScatNum(scat); count >= 2 {
 		var pay, fs = ScatPay[count-1], 0
 		var mm float64 = 1 // mult mode
@@ -281,7 +281,7 @@ func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
 		} else if count >= 3 {
 			fs = 8
 		}
-		ws.Wins = append(ws.Wins, game.WinItem{
+		*wins = append(*wins, game.WinItem{
 			Pay:  g.Bet * float64(g.SBL.Num()) * pay,
 			Mult: mm,
 			Sym:  scat,
@@ -296,12 +296,12 @@ func (g *Game) Spin(screen game.Screen) {
 	screen.Spin(ReelsMap[g.RD])
 }
 
-func (g *Game) Spawn(screen game.Screen, sw *game.WinScan) {
+func (g *Game) Spawn(screen game.Screen, wins game.Wins) {
 	if g.FS > 0 {
 		return
 	}
-	for i := range sw.Wins {
-		if wi := &sw.Wins[i]; wi.Sym == scat {
+	for i := range wins {
+		if wi := &wins[i]; wi.Sym == scat {
 			var idx = []string{"x5", "x8", "7", "10", "15"}
 			rand.Shuffle(len(idx), func(i, j int) {
 				idx[i], idx[j] = idx[j], idx[i]
@@ -321,17 +321,17 @@ func (g *Game) Spawn(screen game.Screen, sw *game.WinScan) {
 	}
 }
 
-func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
+func (g *Game) Apply(screen game.Screen, wins game.Wins) {
 	if g.FS > 0 {
-		g.Gain += sw.Gain()
+		g.Gain += wins.Gain()
 	} else {
-		g.Gain = sw.Gain()
+		g.Gain = wins.Gain()
 	}
 
 	if g.FS > 0 {
 		g.FS--
 	}
-	for _, wi := range sw.Wins {
+	for _, wi := range wins {
 		if wi.Sym == scat {
 			if g.FS > 0 {
 				g.FS += wi.Free

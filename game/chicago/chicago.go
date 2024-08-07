@@ -92,17 +92,17 @@ const wild, scat = 1, 13
 
 var bl = game.BetLinesNvm20
 
-func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
-	g.ScanLined(screen, ws)
-	g.ScanScatters(screen, ws)
+func (g *Game) Scanner(screen game.Screen, wins *game.Wins) {
+	g.ScanLined(screen, wins)
+	g.ScanScatters(screen, wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
+func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 	var mm float64 = 1 // mult mode
 	if g.FS > 0 {
 		mm = g.M
-		ws.Wins = append(ws.Wins, game.WinItem{
+		*wins = append(*wins, game.WinItem{
 			Mult: mm,
 		})
 	}
@@ -134,7 +134,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 			payl = LinePay[syml-1][numl-1]
 		}
 		if payl > payw {
-			ws.Wins = append(ws.Wins, game.WinItem{
+			*wins = append(*wins, game.WinItem{
 				Pay:  g.Bet * payl,
 				Mult: mm,
 				Sym:  syml,
@@ -143,7 +143,7 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 				XY:   line.CopyL(numl),
 			})
 		} else if payw > 0 {
-			ws.Wins = append(ws.Wins, game.WinItem{
+			*wins = append(*wins, game.WinItem{
 				Pay:  g.Bet * payw,
 				Mult: mm,
 				Sym:  wild,
@@ -157,14 +157,14 @@ func (g *Game) ScanLined(screen game.Screen, ws *game.WinScan) {
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen game.Screen, ws *game.WinScan) {
+func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 	if count := screen.ScatNum(scat); count >= 2 {
 		var mm float64 = 1 // mult mode
 		if g.FS > 0 {
 			mm = g.M
 		}
 		var pay, fs = ScatPay[count-1], ScatFreespin[count-1]
-		ws.Wins = append(ws.Wins, game.WinItem{
+		*wins = append(*wins, game.WinItem{
 			Pay:  g.Bet * float64(g.SBL.Num()) * pay,
 			Mult: mm,
 			Sym:  scat,
@@ -181,17 +181,17 @@ func (g *Game) Spin(screen game.Screen) {
 
 var MultChoose = []float64{1, 1, 1, 2, 2, 2, 3, 3, 5, 10} // E = 3.0
 
-func (g *Game) Apply(screen game.Screen, sw *game.WinScan) {
+func (g *Game) Apply(screen game.Screen, wins game.Wins) {
 	if g.FS > 0 {
-		g.Gain += sw.Gain()
+		g.Gain += wins.Gain()
 	} else {
-		g.Gain = sw.Gain()
+		g.Gain = wins.Gain()
 	}
 
 	if g.FS > 0 {
 		g.FS--
 	}
-	for _, wi := range sw.Wins {
+	for _, wi := range wins {
 		if wi.Free > 0 {
 			g.FS += wi.Free
 		}

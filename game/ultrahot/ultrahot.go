@@ -97,7 +97,7 @@ func NewGame(rd string) *Game {
 	}
 }
 
-func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
+func (g *Game) Scanner(screen game.Screen, wins *game.Wins) {
 	var bl = game.BetLinesHot3
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
@@ -107,7 +107,7 @@ func (g *Game) Scanner(screen game.Screen, ws *game.WinScan) {
 		}
 		var sym1, sym2, sym3 = screen.Pos(1, line), screen.Pos(2, line), screen.Pos(3, line)
 		if sym1 == sym2 && sym1 == sym3 {
-			ws.Wins = append(ws.Wins, game.WinItem{
+			*wins = append(*wins, game.WinItem{
 				Pay:  g.Bet * LinePay[sym1-1][2],
 				Mult: fm,
 				Sym:  sym1,
