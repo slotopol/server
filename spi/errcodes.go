@@ -64,13 +64,13 @@ const (
 	SEC_prop_part_noaccess
 	SEC_prop_part_update
 
-	// POST /game/state
-	SEC_game_state_nobind
-	SEC_game_state_nogid
-	SEC_game_state_notopened
-	SEC_game_state_nouser
+	// POST /game/info
+	SEC_game_info_nobind
+	SEC_game_info_nogid
+	SEC_game_info_notopened
+	SEC_game_info_nouser
 	SEC_prop_state_noaccess
-	SEC_game_state_noprops
+	SEC_game_info_noprops
 
 	// POST /game/bet
 	SEC_game_betget_nobind
@@ -191,6 +191,16 @@ const (
 	SEC_game_delete_sqllock
 	SEC_prop_delete_sqlprops
 	SEC_prop_delete_sqlgames
+
+	// POST /club/is
+	SEC_club_is_nobind
+	SEC_club_is_nouid
+
+	// POST /club/info
+	SEC_club_info_nobind
+	SEC_club_info_nouid
+	SEC_club_info_noclub
+	SEC_club_info_noaccess
 
 	// POST /club/rename
 	SEC_club_rename_nobind

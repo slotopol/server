@@ -131,7 +131,7 @@ func Router(r *gin.Engine) {
 	var rg = ra.Group("/game")
 	rg.POST("/join", SpiGameJoin)
 	rg.POST("/part", SpiGamePart)
-	rg.POST("/state", SpiGameState)
+	rg.POST("/info", SpiGameInfo)
 	rg.POST("/bet/get", SpiGameBetGet)
 	rg.POST("/bet/set", SpiGameBetSet)
 	rg.POST("/sbl/get", SpiGameSblGet)
@@ -149,6 +149,8 @@ func Router(r *gin.Engine) {
 	ru.POST("/secret", SpiUserSecret)
 	ru.POST("/delete", SpiUserDelete)
 	var rc = ra.Group("/club")
+	rc.POST("/is", SpiClubIs)
+	rc.POST("/info", SpiClubInfo)
 	rc.POST("/rename", SpiClubRename)
 	rc.POST("/cashin", SpiClubCashin)
 }

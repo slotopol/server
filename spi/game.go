@@ -180,8 +180,8 @@ func SpiGamePart(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-// Returns full state of game with given GID, and balance on wallet.
-func SpiGameState(c *gin.Context) {
+// Returns full info of game scene with given GID, and balance on wallet.
+func SpiGameInfo(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -191,6 +191,10 @@ func SpiGameState(c *gin.Context) {
 	var ret struct {
 		XMLName xml.Name      `json:"-" yaml:"-" xml:"ret"`
 		GID     uint64        `json:"gid" yaml:"gid" xml:"gid,attr"`
+		Alias   string        `json:"alias" yaml:"alias" xml:"alias"`
+		CID     uint64        `json:"cid" yaml:"cid" xml:"cid,attr"`
+		UID     uint64        `json:"uid" yaml:"uid" xml:"uid,attr"`
+		SID     uint64        `json:"sid" yaml:"sid" xml:"sid,attr"`
 		Game    game.SlotGame `json:"game" yaml:"game" xml:"game"`
 		Scrn    game.Screen   `json:"scrn" yaml:"scrn" xml:"scrn"`
 		Wins    game.Wins     `json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
@@ -198,23 +202,23 @@ func SpiGameState(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_game_state_nobind, err)
+		Ret400(c, SEC_game_info_nobind, err)
 		return
 	}
 	if arg.GID == 0 {
-		Ret400(c, SEC_game_state_nogid, ErrNoGID)
+		Ret400(c, SEC_game_info_nogid, ErrNoGID)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_game_state_notopened, ErrNotOpened)
+		Ret404(c, SEC_game_info_notopened, ErrNotOpened)
 		return
 	}
 
 	var user *User
 	if user, ok = Users.Get(scene.UID); !ok {
-		Ret500(c, SEC_game_state_nouser, ErrNoUser)
+		Ret500(c, SEC_game_info_nouser, ErrNoUser)
 		return
 	}
 
@@ -226,11 +230,15 @@ func SpiGameState(c *gin.Context) {
 
 	var props *Props
 	if props, ok = user.props.Get(scene.CID); !ok {
-		Ret500(c, SEC_game_state_noprops, ErrNoWallet)
+		Ret500(c, SEC_game_info_noprops, ErrNoWallet)
 		return
 	}
 
 	ret.GID = arg.GID
+	ret.Alias = scene.Alias
+	ret.CID = scene.CID
+	ret.UID = scene.UID
+	ret.SID = scene.SID
 	ret.Game = scene.Game
 	ret.Scrn = scene.Scrn
 	ret.Wins = scene.Wins

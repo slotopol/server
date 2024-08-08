@@ -138,10 +138,10 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d
 curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/game/collect
 ```
 
-* Get current state of game.
+* Get information about whole current game scene.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/game/state
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/game/info
 ```
 
 ## Work with user account

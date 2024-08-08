@@ -8,6 +8,102 @@ import (
 	cfg "github.com/slotopol/server/config"
 )
 
+// Returns current club state.
+func SpiClubIs(c *gin.Context) {
+	var err error
+	var ok bool
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid"`
+		Name    string   `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty" form:"name"`
+	}
+	var ret struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr"`
+		Name    string   `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, SEC_club_is_nobind, err)
+		return
+	}
+	if arg.CID == 0 {
+		Ret400(c, SEC_club_is_nouid, ErrNoCID)
+		return
+	}
+
+	if arg.CID != 0 {
+		var club *Club
+		if club, ok = Clubs.Get(arg.CID); ok {
+			ret.CID = club.CID
+			ret.Name = club.Name
+		}
+	} else {
+		Clubs.Range(func(cid uint64, club *Club) bool {
+			if club.Name != arg.Name {
+				return true
+			}
+			ret.CID = club.CID
+			ret.Name = club.Name
+			return false
+		})
+	}
+
+	RetOk(c, ret)
+}
+
+// Returns current club state.
+func SpiClubInfo(c *gin.Context) {
+	var err error
+	var ok bool
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid"`
+	}
+	var ret struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		Name    string   `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
+		Bank    float64  `json:"bank" yaml:"bank" xml:"bank"` // users win/lost balance, in coins
+		Fund    float64  `json:"fund" yaml:"fund" xml:"fund"` // jackpot fund, in coins
+		Lock    float64  `json:"lock" yaml:"lock" xml:"lock"` // not changed deposit within games
+
+		JptRate float64 `json:"jptrate" yaml:"jptrate" xml:"jptrate"`
+		GainRTP float64 `json:"gainrtp" yaml:"gainrtp" xml:"gainrtp"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, SEC_club_info_nobind, err)
+		return
+	}
+	if arg.CID == 0 {
+		Ret400(c, SEC_club_info_nouid, ErrNoCID)
+		return
+	}
+
+	var club *Club
+	if club, ok = Clubs.Get(arg.CID); !ok {
+		Ret500(c, SEC_club_info_noclub, ErrNoClub)
+		return
+	}
+
+	var _, al = GetAdmin(c, arg.CID)
+	if al&ALclub == 0 {
+		Ret403(c, SEC_club_info_noaccess, ErrNoAccess)
+		return
+	}
+
+	club.mux.Lock()
+	ret.Name = club.Name
+	ret.Bank = club.Bank
+	ret.Fund = club.Fund
+	ret.Lock = club.Lock
+	ret.JptRate = club.JptRate
+	ret.GainRTP = club.GainRTP
+	club.mux.Unlock()
+
+	RetOk(c, ret)
+}
+
 // Rename the club.
 func SpiClubRename(c *gin.Context) {
 	var err error
@@ -43,7 +139,10 @@ func SpiClubRename(c *gin.Context) {
 		Ret500(c, SEC_club_rename_update, err)
 		return
 	}
+
+	club.mux.Lock()
 	club.Name = arg.Name
+	club.mux.Unlock()
 
 	c.Status(http.StatusOK)
 }

@@ -14,6 +14,7 @@ import (
 type Club struct {
 	CID   uint64    `xorm:"pk autoincr" json:"cid" yaml:"cid" xml:"cid,attr"`
 	CTime time.Time `xorm:"created 'ctime'" json:"ctime" yaml:"ctime" xml:"ctime"`
+	UTime time.Time `xorm:"updated 'utime'" json:"utime" yaml:"utime" xml:"utime"`
 	Name  string    `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
 	Bank  float64   `xorm:"notnull" json:"bank" yaml:"bank" xml:"bank"` // users win/lost balance, in coins
 	Fund  float64   `xorm:"notnull" json:"fund" yaml:"fund" xml:"fund"` // jackpot fund, in coins
@@ -31,6 +32,7 @@ type Club struct {
 type User struct {
 	UID    uint64    `xorm:"pk autoincr" json:"uid" yaml:"uid" xml:"uid,attr"`
 	CTime  time.Time `xorm:"created 'ctime'" json:"ctime" yaml:"ctime" xml:"ctime"`
+	UTime  time.Time `xorm:"updated 'utime'" json:"utime" yaml:"utime" xml:"utime"`
 	Email  string    `xorm:"notnull unique index" json:"email" yaml:"email" xml:"email"`
 	Secret string    `xorm:"notnull" json:"secret" yaml:"secret" xml:"secret"` // auth password
 	Name   string    `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
@@ -44,6 +46,7 @@ type User struct {
 type Story struct {
 	GID   uint64    `xorm:"pk autoincr" json:"gid" yaml:"gid" xml:"gid,attr"`
 	CTime time.Time `xorm:"created 'ctime'" json:"ctime" yaml:"ctime" xml:"ctime"`
+	UTime time.Time `xorm:"updated 'utime'" json:"utime" yaml:"utime" xml:"utime"`
 	Alias string    `xorm:"notnull" json:"alias" yaml:"alias" xml:"alias"`
 	CID   uint64    `xorm:"notnull" json:"cid" yaml:"cid" xml:"cid,attr"`
 	UID   uint64    `xorm:"notnull" json:"uid" yaml:"uid" xml:"uid,attr"`
@@ -74,10 +77,12 @@ const (
 // Props contains properties for user at some club.
 // Any property can be zero by default, or if object does not created at DB.
 type Props struct {
-	CID    uint64  `xorm:"notnull index(bid)" json:"cid" yaml:"cid" xml:"cid,attr"`
-	UID    uint64  `xorm:"notnull index(bid)" json:"uid" yaml:"uid" xml:"uid,attr"`
-	Wallet float64 `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"` // in coins
-	Access AL      `xorm:"notnull" json:"access" yaml:"access" xml:"access"`
+	CID    uint64    `xorm:"notnull index(bid)" json:"cid" yaml:"cid" xml:"cid,attr"`
+	UID    uint64    `xorm:"notnull index(bid)" json:"uid" yaml:"uid" xml:"uid,attr"`
+	CTime  time.Time `xorm:"created 'ctime'" json:"ctime" yaml:"ctime" xml:"ctime"`
+	UTime  time.Time `xorm:"updated 'utime'" json:"utime" yaml:"utime" xml:"utime"`
+	Wallet float64   `xorm:"notnull default 0" json:"wallet" yaml:"wallet" xml:"wallet"` // in coins
+	Access AL        `xorm:"notnull default 0" json:"access" yaml:"access" xml:"access"`
 }
 
 type Spinlog struct {
