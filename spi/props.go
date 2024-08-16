@@ -107,9 +107,8 @@ func SpiPropsWalletAdd(c *gin.Context) {
 		return
 	}
 
-	var props *Props
-	var hasprops bool
-	if props, hasprops = user.props.Get(arg.CID); !hasprops {
+	var props, hasprops = user.props.Get(arg.CID)
+	if !hasprops {
 		props = &Props{
 			CID: arg.CID,
 			UID: arg.UID,
@@ -127,43 +126,14 @@ func SpiPropsWalletAdd(c *gin.Context) {
 	}
 
 	// update wallet as transaction
-	if err = SafeTransaction(cfg.XormStorage, func(session *Session) (err error) {
-		var rec = Walletlog{
-			CID:    arg.CID,
-			UID:    arg.UID,
-			AdmID:  admin.UID,
-			Wallet: props.Wallet + arg.Sum,
-			Sum:    arg.Sum,
-		}
-
-		if hasprops {
-			const sql = `UPDATE props SET wallet=wallet+? WHERE uid=? AND cid=?`
-			if _, err = session.Exec(sql, arg.Sum, props.UID, props.CID); err != nil {
-				Ret500(c, SEC_prop_walletadd_sqlupdate, err)
-				return
-			}
-		} else {
-			props.Wallet = arg.Sum
-			if _, err = session.Insert(props); err != nil {
-				Ret500(c, SEC_prop_walletadd_sqlinsert, err)
-				return
-			}
-		}
-
-		if _, err = session.Insert(&rec); err != nil {
-			Ret500(c, SEC_prop_walletadd_sqllog, err)
-			return
-		}
-
-		return
-	}); err != nil {
+	if err = BankBat[arg.CID].Add(cfg.XormStorage, arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum, !hasprops); err != nil {
+		Ret500(c, SEC_prop_walletadd_sql, err)
 		return
 	}
 
 	// make changes to memory data
-	if hasprops {
-		props.Wallet += arg.Sum
-	} else {
+	props.Wallet += arg.Sum
+	if !hasprops {
 		user.InsertProps(props)
 	}
 

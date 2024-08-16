@@ -52,7 +52,9 @@ database:
   sql-flush-tick: 2500ms
   # Maximum number of users at each club to group wallets updates to database.
   # If size is 1, update will be sequential with error code expecting.
-  bank-buffer-size: 25
+  bank-buffer-size: 40
+  # Maximum size of buffer for walletlog items to group inserting to database.
+  walletlog-buffer-size: 30
   # Maximum size of buffer for spinlog items to group inserting to database.
   spinlog-buffer-size: 50
 gameplay:

@@ -59,6 +59,8 @@ type CfgXormDrv struct {
 	// Maximum number of users at each club to group wallets updates to database.
 	// If size is 1, update will be sequential with error code expecting.
 	BankBufferSize int `json:"bank-buffer-size" yaml:"bank-buffer-size" mapstructure:"bank-buffer-size"`
+	// Maximum size of buffer for walletlog items to group inserting to database.
+	WalletlogBufferSize int `json:"walletlog-buffer-size" yaml:"walletlog-buffer-size" mapstructure:"walletlog-buffer-size"`
 	// Maximum size of buffer for spinlog items to group inserting to database.
 	SpinlogBufferSize int `json:"spinlog-buffer-size" yaml:"spinlog-buffer-size" mapstructure:"spinlog-buffer-size"`
 }
@@ -99,12 +101,13 @@ var Cfg = &Config{
 		ShutdownTimeout:   15 * time.Second,
 	},
 	CfgXormDrv: CfgXormDrv{
-		DriverName:        "sqlite3",
-		ClubSourceName:    "slot-club.sqlite",
-		SpinSourceName:    "slot-spin.sqlite",
-		SqlFlushTick:      2500 * time.Millisecond,
-		BankBufferSize:    25,
-		SpinlogBufferSize: 50,
+		DriverName:          "sqlite3",
+		ClubSourceName:      "slot-club.sqlite",
+		SpinSourceName:      "slot-spin.sqlite",
+		SqlFlushTick:        2500 * time.Millisecond,
+		BankBufferSize:      40,
+		WalletlogBufferSize: 30,
+		SpinlogBufferSize:   50,
 	},
 	CfgGameplay: CfgGameplay{
 		AdjunctLimit:    100000,

@@ -174,7 +174,7 @@ func InitStorage() (err error) {
 		for _, club := range chunk {
 			spi.Clubs.Set(club.CID, club)
 			var bat = &spi.SqlBank{}
-			bat.Init(club.CID, Cfg.BankBufferSize)
+			bat.Init(club.CID, Cfg.BankBufferSize, Cfg.WalletlogBufferSize)
 			spi.BankBat[club.CID] = bat
 		}
 		if limit > len(chunk) {

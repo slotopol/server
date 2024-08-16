@@ -161,9 +161,7 @@ const (
 	SEC_prop_walletadd_nouser
 	SEC_prop_walletadd_nomoney
 	SEC_prop_walletadd_noaccess
-	SEC_prop_walletadd_sqlupdate
-	SEC_prop_walletadd_sqlinsert
-	SEC_prop_walletadd_sqllog
+	SEC_prop_walletadd_sql
 
 	// POST /user/rename
 	SEC_user_rename_nobind
