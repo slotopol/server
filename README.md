@@ -55,11 +55,11 @@ Now it can be used embedded *sqlite* database engine or *MySQL* database, its co
 
 # How to use HTTP API
 
-Any API endpoints can receive data in JSON, XML, YAML, or TOML format, depended by `Content-Type` header. If `Content-Type` header not given, JSON will be used to decode as default. `Accept` header if it given, defined response data format. If it absent, will be used same format as at request.
+Any API endpoints can receive data in JSON, XML, YAML, or TOML format, depended by `Content-Type` header. If `Content-Type` header not given, JSON will be used to decode as default. `Accept` header if it given, defines response data format. If it absent, same format as at request will be used.
 
 In most cases used `POST`-method of HTTP.
 
-Any error response have HTTP status >= 400 and object at body contains `what` field with message and unique source point error `code`.
+If any response have HTTP status >= 400, body in this case contains error object with `what` field with message and unique source point error `code`.
 
 ## Without authorization
 
@@ -95,7 +95,7 @@ In second case it should be string in field `sigtime` with current time formatte
 * Sign-in, and use token from response with any followed calls.
 
 ```sh
-curl -H "Content-Type: application/json" -d '{"email":"player@example.org","secret":"Et7oAm"}' -X POST localhost:8080/signin
+curl -H "Content-Type: application/json" -d '{"email":"player@example.org","secret":"iVI05M"}' -X POST localhost:8080/signin
 ```
 
 You can use token `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzbG90b3BvbCIsImV4cCI6NDg2NzQ0NzYxNywibmJmIjoxNzA2NjQ3NjE3LCJ1aWQiOjN9.6g2Hig9ErG8IbvzkPppry5F8HJsMunZPwuQzmetGh4c` for test purpose, it given for user with UID=3 on 100 years. Replace `{{token}}` at samples below to this value.
@@ -151,7 +151,7 @@ Any calls for some user account can be done by another user with admin access le
 * Register new user. E-mail and secret key (password) are expected, name can be omitted. Receives user ID on success.
 
 ```sh
-curl -H "Content-Type: application/json" -d '{"email":"rob@example.org","secret":"jpTyD4","name":"rob"}' -X POST localhost:8080/signup
+curl -H "Content-Type: application/json" -d '{"email":"rob@example.org","secret":"LtpkAr","name":"rob"}' -X POST localhost:8080/signup
 ```
 
 * Rename user.
@@ -163,13 +163,13 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d
 * Change secret key.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"uid":3,"oldsecret":"Et7oAm","newsecret":"pGjKsd"}' -X POST localhost:8080/user/secret
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"uid":3,"oldsecret":"iVI05M","newsecret":"pGjKsd"}' -X POST localhost:8080/user/secret
 ```
 
 * Delete user. Delete-call removes account from database, move all remained user's coin to deposit, and removes all users games from database.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"uid":3,"secret":"Et7oAm"}' -X POST localhost:8080/user/delete
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"uid":3,"secret":"iVI05M"}' -X POST localhost:8080/user/delete
 ```
 
 ---

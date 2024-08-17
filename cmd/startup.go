@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"bytes"
 	"context"
 	"errors"
 	"fmt"
@@ -108,57 +109,18 @@ func InitStorage() (err error) {
 		return
 	}
 	if ok {
-		if _, err = session.Insert(&spi.Club{
-			CID:     1,
-			Bank:    10000,
-			Fund:    1000000,
-			Lock:    0,
-			Name:    "virtual",
-			JptRate: 0.015,
-			GainRTP: 95.00,
-		}); err != nil {
-			return
+		var body []byte
+		if body, err = os.ReadFile(util.JoinFilePath(cfg.CfgPath, "slot-club-init.sql")); err != nil {
+			log.Printf("can not open SQL-file with initial settings: %s", err.Error())
+			err = nil // remove error
 		}
-		if _, err = session.Insert(&[]spi.User{
-			{
-				UID:    1,
-				Email:  "admin@example.org",
-				Secret: "pGjkSD",
-				Name:   "admin",
-				GAL:    spi.ALall,
-			},
-			{
-				UID:    2,
-				Email:  "dealer@example.org",
-				Secret: "jpTyD4",
-				Name:   "dealer",
-				GAL:    spi.ALgame,
-			},
-			{
-				UID:    3,
-				Email:  "player@example.org",
-				Secret: "Et7oAm",
-				Name:   "player",
-				GAL:    0,
-			},
-		}); err != nil {
-			return
-		}
-		if _, err = session.Insert(&[]spi.Props{
-			{
-				UID:    2,
-				CID:    1,
-				Wallet: 12000,
-				Access: spi.ALuser | spi.ALclub,
-			},
-			{
-				UID:    3,
-				CID:    1,
-				Wallet: 1000,
-				Access: 0,
-			},
-		}); err != nil {
-			return
+		var list = bytes.Split(body, []byte{';'})
+		for _, cmd := range list {
+			if cmd = bytes.TrimSpace(cmd); len(cmd) > 0 {
+				if _, err = cfg.XormStorage.Exec(util.B2S(cmd)); err != nil {
+					return
+				}
+			}
 		}
 	}
 

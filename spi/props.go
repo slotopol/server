@@ -126,7 +126,9 @@ func SpiPropsWalletAdd(c *gin.Context) {
 	}
 
 	// update wallet as transaction
-	if err = BankBat[arg.CID].Add(cfg.XormStorage, arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum, !hasprops); err != nil {
+	if Cfg.WalletlogBufferSize > 1 {
+		go BankBat[arg.CID].Add(cfg.XormStorage, arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum, !hasprops)
+	} else if err = BankBat[arg.CID].Add(cfg.XormStorage, arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum, !hasprops); err != nil {
 		Ret500(c, SEC_prop_walletadd_sql, err)
 		return
 	}
