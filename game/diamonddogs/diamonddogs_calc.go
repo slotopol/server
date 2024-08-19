@@ -3,6 +3,7 @@ package diamonddogs
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/slotopol/server/game"
@@ -12,7 +13,7 @@ const Ene12 = 3 * 100
 
 func CalcStatBon(ctx context.Context) float64 {
 	var reels = &ReelsBon
-	var g = NewGame("bon")
+	var g = NewGame(93)
 	g.SBL = game.MakeBitNum(1)
 	g.FS = 10 // set free spins mode
 	var sbl = float64(g.SBL.Num())
@@ -52,15 +53,14 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 	}
 	fmt.Printf("*regular reels calculations*\n")
 	var reels *game.Reels5x
-	if rn != "" {
-		var ok bool
-		if reels, ok = ReelsMap[rn]; !ok {
-			return 0
-		}
+	var mrtp float64
+	if mrtp, _ = strconv.ParseFloat(rn, 64); mrtp != 0 {
+		var _, r = FindReels(mrtp)
+		reels = r.(*game.Reels5x)
 	} else {
-		rn, reels = "93", &ReelsReg93
+		mrtp, reels = 93, &ReelsReg93
 	}
-	var g = NewGame(rn)
+	var g = NewGame(mrtp)
 	g.SBL = game.MakeBitNum(1)
 	var sbl = float64(g.SBL.Num())
 	var s game.Stat

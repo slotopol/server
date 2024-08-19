@@ -1,6 +1,10 @@
 package diamonddogs
 
-import "github.com/slotopol/server/game"
+import (
+	"math"
+
+	"github.com/slotopol/server/game"
+)
 
 // reels lengths [35, 35, 35, 36, 36], total reshuffles 55566000
 // symbols: 32.588(lined) + 13.69(scatter) = 46.278440%
@@ -170,19 +174,27 @@ var ReelsBon = game.Reels5x{
 }
 
 // Map with available reels.
-var ReelsMap = map[string]*game.Reels5x{
-	"88":  &ReelsReg88,
-	"90":  &ReelsReg90,
-	"93":  &ReelsReg93,
-	"94":  &ReelsReg94,
-	"95":  &ReelsReg95,
-	"96":  &ReelsReg96,
-	"97":  &ReelsReg97,
-	"98":  &ReelsReg98,
-	"99":  &ReelsReg99,
-	"100": &ReelsReg100,
-	"110": &ReelsReg110,
-	"bon": &ReelsBon,
+var reelsmap = map[float64]*game.Reels5x{
+	88.445592:  &ReelsReg88,
+	90.494694:  &ReelsReg90,
+	92.965833:  &ReelsReg93,
+	93.970689:  &ReelsReg94,
+	95.187455:  &ReelsReg95,
+	96.015333:  &ReelsReg96,
+	97.330346:  &ReelsReg97,
+	97.995018:  &ReelsReg98,
+	99.281511:  &ReelsReg99,
+	99.813172:  &ReelsReg100,
+	110.026666: &ReelsReg110,
+}
+
+func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
+	for p, r := range reelsmap {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			rtp, reels = p, r
+		}
+	}
+	return
 }
 
 // Lined payment.
@@ -216,10 +228,10 @@ type Game struct {
 	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
 }
 
-func NewGame(rd string) *Game {
+func NewGame(rtp float64) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RD:  rd,
+			RTP: rtp,
 			SBL: game.MakeBitNum(25),
 			Bet: 1,
 		},
@@ -327,7 +339,8 @@ func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 
 func (g *Game) Spin(screen game.Screen) {
 	if g.FS == 0 {
-		screen.Spin(ReelsMap[g.RD])
+		var _, reels = FindReels(g.RTP)
+		screen.Spin(reels)
 	} else {
 		screen.Spin(&ReelsBon)
 	}
@@ -375,13 +388,5 @@ func (g *Game) SetLines(sbl game.Bitset) error {
 		return game.ErrNoFeature
 	}
 	g.SBL = sbl
-	return nil
-}
-
-func (g *Game) SetReels(rd string) error {
-	if _, ok := ReelsMap[rd]; !ok {
-		return game.ErrNoReels
-	}
-	g.RD = rd
 	return nil
 }

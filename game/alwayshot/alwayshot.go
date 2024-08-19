@@ -3,6 +3,8 @@ package alwayshot
 // See: https://freeslotshub.com/novomatic/always-hot/
 
 import (
+	"math"
+
 	"github.com/slotopol/server/game"
 )
 
@@ -79,16 +81,25 @@ var Reels110 = game.Reels3x{
 }
 
 // Map with available reels.
-var ReelsMap = map[string]*game.Reels3x{
-	"80":  &Reels80,
-	"85":  &Reels85,
-	"88":  &Reels88,
-	"91":  &Reels91,
-	"93":  &Reels93,
-	"94":  &Reels94,
-	"96":  &Reels96,
-	"99":  &Reels99,
-	"110": &Reels110,
+var reelsmap = map[float64]*game.Reels3x{
+	79.963992:  &Reels80,
+	85.289796:  &Reels85,
+	88.127632:  &Reels88,
+	90.723731:  &Reels91,
+	93.440550:  &Reels93,
+	94.069309:  &Reels94,
+	96.071341:  &Reels96,
+	98.789911:  &Reels99,
+	110.166845: &Reels110,
+}
+
+func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
+	for p, r := range reelsmap {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			rtp, reels = p, r
+		}
+	}
+	return
 }
 
 // Lined payment.
@@ -108,10 +119,10 @@ type Game struct {
 	game.Slot3x3 `yaml:",inline"`
 }
 
-func NewGame(rd string) *Game {
+func NewGame(rtp float64) *Game {
 	return &Game{
 		Slot3x3: game.Slot3x3{
-			RD:  rd,
+			RTP: rtp,
 			SBL: game.MakeBitNum(5),
 			Bet: 1,
 		},
@@ -137,17 +148,10 @@ func (g *Game) Scanner(screen game.Screen, wins *game.Wins) {
 }
 
 func (g *Game) Spin(screen game.Screen) {
-	screen.Spin(ReelsMap[g.RD])
+	var _, reels = FindReels(g.RTP)
+	screen.Spin(reels)
 }
 
 func (g *Game) SetLines(sbl game.Bitset) error {
 	return game.ErrNoFeature
-}
-
-func (g *Game) SetReels(rd string) error {
-	if _, ok := ReelsMap[rd]; !ok {
-		return game.ErrNoReels
-	}
-	g.RD = rd
-	return nil
 }

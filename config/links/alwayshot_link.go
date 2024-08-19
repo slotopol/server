@@ -4,6 +4,7 @@ package links
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/slotopol/server/game/alwayshot"
 	"github.com/spf13/pflag"
@@ -31,10 +32,8 @@ func init() {
 			}
 		})
 		GameFactory[ga.ID] = func(rd string) any {
-			if _, ok := alwayshot.ReelsMap[rd]; ok {
-				return alwayshot.NewGame(rd)
-			}
-			return nil
+			var rtp, _ = strconv.ParseFloat(rd, 64)
+			return alwayshot.NewGame(rtp)
 		}
 	}
 }

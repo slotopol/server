@@ -4,6 +4,7 @@ package links
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/slotopol/server/game/roaringforties"
 	"github.com/spf13/pflag"
@@ -31,10 +32,8 @@ func init() {
 			}
 		})
 		GameFactory[ga.ID] = func(rd string) any {
-			if _, ok := roaringforties.ReelsMap[rd]; ok {
-				return roaringforties.NewGame(rd)
-			}
-			return nil
+			var rtp, _ = strconv.ParseFloat(rd, 64)
+			return roaringforties.NewGame(rtp)
 		}
 	}
 }

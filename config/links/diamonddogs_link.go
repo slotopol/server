@@ -4,6 +4,7 @@ package links
 
 import (
 	"context"
+	"strconv"
 
 	"github.com/slotopol/server/game/diamonddogs"
 	"github.com/spf13/pflag"
@@ -36,10 +37,8 @@ func init() {
 			}
 		})
 		GameFactory[ga.ID] = func(rd string) any {
-			if _, ok := diamonddogs.ReelsMap[rd]; ok {
-				return diamonddogs.NewGame(rd)
-			}
-			return nil
+			var rtp, _ = strconv.ParseFloat(rd, 64)
+			return diamonddogs.NewGame(rtp)
 		}
 	}
 }

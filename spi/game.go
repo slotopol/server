@@ -413,7 +413,7 @@ func SpiGameReelsGet(c *gin.Context) {
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
-		RD      string   `json:"rd" yaml:"rd" xml:"rd"`
+		RTP     float64  `json:"rtp" yaml:"rtp" xml:"rtp"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -437,7 +437,7 @@ func SpiGameReelsGet(c *gin.Context) {
 		return
 	}
 
-	ret.RD = scene.Game.GetReels()
+	ret.RTP = scene.Game.GetRTP()
 
 	RetOk(c, ret)
 }
@@ -449,7 +449,7 @@ func SpiGameReelsSet(c *gin.Context) {
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
-		RD      string   `json:"rd" yaml:"rd" xml:"rd" binding:"required"`
+		RTP     float64  `json:"rtp" yaml:"rtp" xml:"rtp" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -474,7 +474,7 @@ func SpiGameReelsSet(c *gin.Context) {
 		return
 	}
 
-	if err = scene.Game.SetReels(arg.RD); err != nil {
+	if err = scene.Game.SetRTP(arg.RTP); err != nil {
 		Ret403(c, SEC_game_rdset_badreels, err)
 		return
 	}
