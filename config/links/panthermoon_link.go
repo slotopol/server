@@ -36,10 +36,7 @@ func init() {
 			}
 		})
 		GameFactory[ga.ID] = func(rd string) any {
-			if _, ok := panthermoon.ReelsMap[rd]; ok {
-				return panthermoon.NewGame(rd)
-			}
-			return nil
+			return panthermoon.NewGame(Atof(rd))
 		}
 	}
 }

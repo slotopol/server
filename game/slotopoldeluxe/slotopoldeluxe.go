@@ -1,40 +1,26 @@
 package slotopoldeluxe
 
 import (
+	"math"
+
 	"github.com/slotopol/server/game"
 	"github.com/slotopol/server/game/slotopol"
 )
 
-// Original reels.
-// symbols: 81.213(lined) + 2.7777(scatter) = 83.990312%
-// spin1 bonuses: count1 28672, rtp = 9.057617%
-// spin3 bonuses: count3 3328, rtp = 3.153992%
-// spin6 bonuses: count6 768, rtp = 1.455688%
-// monopoly bonuses: count 6912, rtp = 5.903901%
-// jackpots: count 32, frequency 1/1048576
-// RTP = 83.99(sym) + 13.667(mje) + 5.9039(mjm) = 103.561510%
-var Reels104 = game.Reels5x{
-	{1, 2, 13, 4, 13, 3, 13, 5, 9, 7, 8, 13, 10, 13, 12, 11, 13, 12, 11, 13, 13, 2, 4, 5, 2, 6, 7, 9, 8, 3, 10, 6},
-	{13, 2, 12, 9, 13, 2, 5, 6, 9, 7, 13, 10, 12, 13, 11, 12, 13, 11, 12, 13, 3, 4, 5, 2, 8, 7, 10, 4, 6, 8, 3, 1},
-	{2, 1, 12, 3, 4, 5, 2, 6, 7, 10, 8, 4, 3, 13, 12, 11, 13, 12, 11, 13, 12, 3, 5, 13, 9, 6, 7, 10, 13, 8, 9, 13},
-	{1, 2, 12, 4, 3, 6, 4, 2, 7, 8, 10, 5, 13, 12, 11, 13, 12, 11, 13, 12, 9, 4, 5, 3, 13, 6, 10, 7, 13, 8, 9, 13},
-	{1, 2, 12, 4, 3, 5, 12, 6, 7, 10, 8, 12, 9, 13, 12, 11, 13, 12, 11, 13, 12, 3, 4, 5, 2, 6, 7, 10, 13, 8, 9, 5},
-}
-
 // reels lengths [32, 32, 32, 32, 32], total reshuffles 33554432
-// symbols: 79.254(lined) + 2.7777(scatter) = 82.031429%
+// symbols: 76.288(lined) + 2.7777(scatter) = 79.065740%
 // spin1 bonuses: count1 20736, rtp = 6.550598%
 // spin3 bonuses: count3 3120, rtp = 2.956867%
 // spin6 bonuses: count6 720, rtp = 1.364708%
 // monopoly bonuses: count 6720, rtp = 5.739904%
 // jackpots: count 32, frequency 1/1048576
-// RTP = 82.031(sym) + 10.872(mje) + 5.7399(mjm) = 98.643506%
-var Reels986 = game.Reels5x{
+// RTP = 79.066(sym) + 10.872(mje) + 5.7399(mjm) = 95.677817%
+var Reels957 = game.Reels5x{
 	{1, 5, 13, 4, 13, 3, 13, 5, 9, 7, 8, 13, 10, 13, 12, 11, 13, 12, 11, 13, 13, 2, 4, 5, 2, 6, 7, 9, 8, 3, 10, 6},
 	{13, 2, 12, 9, 13, 4, 5, 6, 9, 7, 13, 10, 12, 13, 11, 13, 13, 11, 12, 13, 3, 4, 5, 2, 8, 7, 10, 4, 6, 8, 3, 1},
 	{2, 1, 12, 3, 4, 5, 2, 6, 7, 10, 8, 4, 5, 13, 12, 11, 13, 12, 11, 13, 12, 3, 5, 13, 9, 6, 7, 10, 13, 8, 9, 13},
-	{1, 2, 12, 4, 3, 6, 4, 2, 7, 8, 10, 5, 13, 12, 11, 13, 12, 11, 13, 12, 9, 4, 5, 3, 12, 6, 10, 7, 13, 8, 9, 13},
-	{1, 2, 12, 4, 3, 5, 12, 6, 7, 10, 8, 12, 9, 13, 12, 11, 13, 12, 11, 13, 12, 3, 4, 5, 2, 6, 7, 10, 13, 8, 9, 5},
+	{1, 2, 12, 4, 3, 6, 4, 2, 7, 8, 3, 5, 13, 12, 11, 13, 12, 11, 13, 12, 2, 4, 5, 3, 12, 6, 10, 7, 13, 8, 9, 13},
+	{1, 2, 12, 4, 3, 5, 12, 6, 7, 3, 8, 12, 2, 13, 12, 11, 13, 12, 11, 13, 12, 3, 4, 5, 2, 6, 7, 10, 13, 8, 9, 5},
 }
 
 // reels lengths [32, 32, 32, 32, 32], total reshuffles 33554432
@@ -54,27 +40,52 @@ var Reels970 = game.Reels5x{
 }
 
 // reels lengths [32, 32, 32, 32, 32], total reshuffles 33554432
-// symbols: 76.288(lined) + 2.7777(scatter) = 79.065740%
+// symbols: 79.254(lined) + 2.7777(scatter) = 82.031429%
 // spin1 bonuses: count1 20736, rtp = 6.550598%
 // spin3 bonuses: count3 3120, rtp = 2.956867%
 // spin6 bonuses: count6 720, rtp = 1.364708%
 // monopoly bonuses: count 6720, rtp = 5.739904%
 // jackpots: count 32, frequency 1/1048576
-// RTP = 79.066(sym) + 10.872(mje) + 5.7399(mjm) = 95.677817%
-var Reels957 = game.Reels5x{
+// RTP = 82.031(sym) + 10.872(mje) + 5.7399(mjm) = 98.643506%
+var Reels986 = game.Reels5x{
 	{1, 5, 13, 4, 13, 3, 13, 5, 9, 7, 8, 13, 10, 13, 12, 11, 13, 12, 11, 13, 13, 2, 4, 5, 2, 6, 7, 9, 8, 3, 10, 6},
 	{13, 2, 12, 9, 13, 4, 5, 6, 9, 7, 13, 10, 12, 13, 11, 13, 13, 11, 12, 13, 3, 4, 5, 2, 8, 7, 10, 4, 6, 8, 3, 1},
 	{2, 1, 12, 3, 4, 5, 2, 6, 7, 10, 8, 4, 5, 13, 12, 11, 13, 12, 11, 13, 12, 3, 5, 13, 9, 6, 7, 10, 13, 8, 9, 13},
-	{1, 2, 12, 4, 3, 6, 4, 2, 7, 8, 3, 5, 13, 12, 11, 13, 12, 11, 13, 12, 2, 4, 5, 3, 12, 6, 10, 7, 13, 8, 9, 13},
-	{1, 2, 12, 4, 3, 5, 12, 6, 7, 3, 8, 12, 2, 13, 12, 11, 13, 12, 11, 13, 12, 3, 4, 5, 2, 6, 7, 10, 13, 8, 9, 5},
+	{1, 2, 12, 4, 3, 6, 4, 2, 7, 8, 10, 5, 13, 12, 11, 13, 12, 11, 13, 12, 9, 4, 5, 3, 12, 6, 10, 7, 13, 8, 9, 13},
+	{1, 2, 12, 4, 3, 5, 12, 6, 7, 10, 8, 12, 9, 13, 12, 11, 13, 12, 11, 13, 12, 3, 4, 5, 2, 6, 7, 10, 13, 8, 9, 5},
+}
+
+// Original reels.
+// symbols: 81.213(lined) + 2.7777(scatter) = 83.990312%
+// spin1 bonuses: count1 28672, rtp = 9.057617%
+// spin3 bonuses: count3 3328, rtp = 3.153992%
+// spin6 bonuses: count6 768, rtp = 1.455688%
+// monopoly bonuses: count 6912, rtp = 5.903901%
+// jackpots: count 32, frequency 1/1048576
+// RTP = 83.99(sym) + 13.667(mje) + 5.9039(mjm) = 103.561510%
+var Reels104 = game.Reels5x{
+	{1, 2, 13, 4, 13, 3, 13, 5, 9, 7, 8, 13, 10, 13, 12, 11, 13, 12, 11, 13, 13, 2, 4, 5, 2, 6, 7, 9, 8, 3, 10, 6},
+	{13, 2, 12, 9, 13, 2, 5, 6, 9, 7, 13, 10, 12, 13, 11, 12, 13, 11, 12, 13, 3, 4, 5, 2, 8, 7, 10, 4, 6, 8, 3, 1},
+	{2, 1, 12, 3, 4, 5, 2, 6, 7, 10, 8, 4, 3, 13, 12, 11, 13, 12, 11, 13, 12, 3, 5, 13, 9, 6, 7, 10, 13, 8, 9, 13},
+	{1, 2, 12, 4, 3, 6, 4, 2, 7, 8, 10, 5, 13, 12, 11, 13, 12, 11, 13, 12, 9, 4, 5, 3, 13, 6, 10, 7, 13, 8, 9, 13},
+	{1, 2, 12, 4, 3, 5, 12, 6, 7, 10, 8, 12, 9, 13, 12, 11, 13, 12, 11, 13, 12, 3, 4, 5, 2, 6, 7, 10, 13, 8, 9, 5},
 }
 
 // Map with available reels.
-var ReelsMap = map[string]*game.Reels5x{
-	"96":  &Reels957,
-	"97":  &Reels970,
-	"99":  &Reels986,
-	"104": &Reels104, // original
+var reelsmap = map[float64]*game.Reels5x{
+	95.677817:  &Reels957,
+	96.994365:  &Reels970,
+	98.643506:  &Reels986,
+	103.561510: &Reels104, // original
+}
+
+func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
+	for p, r := range reelsmap {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			rtp, reels = p, r
+		}
+	}
+	return
 }
 
 // Lined payment.
@@ -127,10 +138,10 @@ type Game struct {
 	game.Slot5x3 `yaml:",inline"`
 }
 
-func NewGame(rd string) *Game {
+func NewGame(rtp float64) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RD:  rd,
+			RTP: rtp,
 			SBL: game.MakeBitNum(5),
 			Bet: 1,
 		},
@@ -250,7 +261,8 @@ func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 }
 
 func (g *Game) Spin(screen game.Screen) {
-	screen.Spin(ReelsMap[g.RD])
+	var _, reels = FindReels(g.RTP)
+	screen.Spin(reels)
 }
 
 func (g *Game) Spawn(screen game.Screen, wins game.Wins) {
@@ -282,13 +294,5 @@ func (g *Game) SetLines(sbl game.Bitset) error {
 		return game.ErrNoFeature
 	}
 	g.SBL = sbl
-	return nil
-}
-
-func (g *Game) SetReels(rd string) error {
-	if _, ok := ReelsMap[rd]; !ok {
-		return game.ErrNoReels
-	}
-	g.RD = rd
 	return nil
 }

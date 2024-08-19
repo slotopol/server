@@ -3,6 +3,7 @@ package powerstars
 // See: https://freeslotshub.com/novomatic/power-stars/
 
 import (
+	"math"
 	"math/rand"
 
 	"github.com/slotopol/server/game"
@@ -26,40 +27,49 @@ var Reels = game.Reels5x{
 }
 
 // Map with wild chances.
-var ChanceMap = map[string]float64{
+var chancemap = map[float64]float64{
 	// free spins: q = 0.036141, 1/q = 27.669, rtpfs = 470.021964%
 	// RTP = 69.063(sym) + q*470.02(fg) = 86.049978%
-	"86": 1 / 82.,
+	86.049978: 1 / 82.,
 	// free spins: q = 0.039995, 1/q = 25.003, rtpfs = 473.142683%
 	// RTP = 69.063(sym) + q*473.14(fg) = 87.986326%
-	"88": 1 / 74.,
+	87.986326: 1 / 74.,
 	// free spins: q = 0.044111, 1/q = 22.67, rtpfs = 476.496465%
 	// RTP = 69.063(sym) + q*476.5(fg) = 90.081711%
-	"90": 1 / 67.,
+	90.081711: 1 / 67.,
 	// free spins: q = 0.046146, 1/q = 21.67, rtpfs = 478.162925%
 	// RTP = 69.063(sym) + q*478.16(fg) = 91.128401%
-	"91": 1 / 64.,
+	91.128401: 1 / 64.,
 	// free spins: q = 0.047611, 1/q = 21.004, rtpfs = 479.365362%
 	// RTP = 69.063(sym) + q*479.37(fg) = 91.885902%
-	"92": 1 / 62.,
+	91.885902: 1 / 62.,
 	// free spins: q = 0.051714, 1/q = 19.337, rtpfs = 482.749000%
 	// RTP = 69.063(sym) + q*482.75(fg) = 94.027604%
-	"94": 1 / 57.,
+	94.027604: 1 / 57.,
 	// free spins: q = 0.05356, 1/q = 18.671, rtpfs = 484.278763%
 	// RTP = 69.063(sym) + q*484.28(fg) = 95.000746%
-	"95": 1 / 55.,
+	95.000746: 1 / 55.,
 	// free spins: q = 0.055542, 1/q = 18.004, rtpfs = 485.926793%
 	// RTP = 69.063(sym) + q*485.93(fg) = 96.052493%
-	"96": 1 / 53.,
+	96.052493: 1 / 53.,
 	// free spins: q = 0.058808, 1/q = 17.004, rtpfs = 488.652432%
 	// RTP = 69.063(sym) + q*488.65(fg) = 97.799579%
-	"98": 1 / 50.,
+	97.799579: 1 / 50.,
 	// free spins: q = 0.062481, 1/q = 16.005, rtpfs = 491.735591%
 	// RTP = 69.063(sym) + q*491.74(fg) = 99.787205%
-	"100": 1 / 47.,
+	99.787205: 1 / 47.,
 	// free spins: q = 0.083289, 1/q = 12.006, rtpfs = 509.549567%
 	// RTP = 69.063(sym) + q*509.55(fg) = 111.502592%
-	"112": 1 / 35.,
+	111.502592: 1 / 35.,
+}
+
+func FindChance(mrtp float64) (rtp float64, chance float64) {
+	for p, c := range chancemap {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			rtp, chance = p, c
+		}
+	}
+	return
 }
 
 // Returns the probability of getting at least one star on the 3 reels,
@@ -103,10 +113,10 @@ type Game struct {
 	PRW          [5]int `json:"prw" yaml:"prw" xml:"prw"` // pinned reel wild
 }
 
-func NewGame(rd string) *Game {
+func NewGame(rtp float64) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RD:  rd,
+			RTP: rtp,
 			SBL: game.MakeBitNum(5),
 			Bet: 1,
 		},
@@ -198,7 +208,7 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 func (g *Game) Spin(screen game.Screen) {
 	screen.Spin(&Reels)
 	if g.FreeSpins() == 0 {
-		var wc = ChanceMap[g.RD] // wild chance
+		var _, wc = FindChance(g.RTP) // wild chance
 		for x := 2; x <= 4; x++ {
 			if rand.Float64() < wc {
 				var y = rand.Intn(3) + 1
@@ -245,13 +255,5 @@ func (g *Game) SetLines(sbl game.Bitset) error {
 		return game.ErrNoFeature
 	}
 	g.SBL = sbl
-	return nil
-}
-
-func (g *Game) SetReels(rd string) error {
-	if _, ok := ChanceMap[rd]; !ok {
-		return game.ErrNoReels
-	}
-	g.RD = rd
 	return nil
 }

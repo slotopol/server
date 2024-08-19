@@ -4,7 +4,6 @@ package links
 
 import (
 	"context"
-	"strconv"
 
 	"github.com/slotopol/server/game/ultrahot"
 	"github.com/spf13/pflag"
@@ -32,8 +31,7 @@ func init() {
 			}
 		})
 		GameFactory[ga.ID] = func(rd string) any {
-			var rtp, _ = strconv.ParseFloat(rd, 64)
-			return ultrahot.NewGame(rtp)
+			return ultrahot.NewGame(Atof(rd))
 		}
 	}
 }

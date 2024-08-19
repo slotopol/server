@@ -2,6 +2,7 @@ package links
 
 import (
 	"context"
+	"strconv"
 
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/spf13/pflag"
@@ -27,3 +28,8 @@ var FlagsSetters = []func(*pflag.FlagSet){}
 var ScanIters = []func(*pflag.FlagSet, context.Context){}
 
 var GameFactory = map[string]func(string) any{}
+
+func Atof(s string) (f float64) {
+	f, _ = strconv.ParseFloat(s, 64)
+	return
+}

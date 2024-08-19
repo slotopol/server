@@ -1,6 +1,8 @@
 package trolls
 
 import (
+	"math"
+
 	"github.com/slotopol/server/game"
 )
 
@@ -135,17 +137,26 @@ var Reels110 = game.Reels5x{
 }
 
 // Map with available reels.
-var ReelsMap = map[string]*game.Reels5x{
-	"88":  &Reels88,
-	"89":  &Reels89,
-	"92":  &Reels92,
-	"93":  &Reels93,
-	"94":  &Reels94,
-	"95":  &Reels95,
-	"97":  &Reels97,
-	"98":  &Reels98,
-	"102": &Reels102,
-	"110": &Reels110,
+var reelsmap = map[float64]*game.Reels5x{
+	87.788791:  &Reels88,
+	89.230191:  &Reels89,
+	91.925079:  &Reels92,
+	93.061471:  &Reels93,
+	93.903358:  &Reels94,
+	95.183523:  &Reels95,
+	96.648500:  &Reels97,
+	98.193276:  &Reels98,
+	101.929305: &Reels102,
+	110.298257: &Reels110,
+}
+
+func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
+	for p, r := range reelsmap {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			rtp, reels = p, r
+		}
+	}
+	return
 }
 
 // Lined payment.
@@ -200,10 +211,10 @@ type Game struct {
 	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
 }
 
-func NewGame(rd string) *Game {
+func NewGame(rtp float64) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RD:  rd,
+			RTP: rtp,
 			SBL: game.MakeBitNum(20),
 			Bet: 1,
 		},
@@ -308,7 +319,8 @@ func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 }
 
 func (g *Game) Spin(screen game.Screen) {
-	screen.Spin(ReelsMap[g.RD])
+	var _, reels = FindReels(g.RTP)
+	screen.Spin(reels)
 }
 
 func (g *Game) Apply(screen game.Screen, wins game.Wins) {
@@ -344,13 +356,5 @@ func (g *Game) SetLines(sbl game.Bitset) error {
 		return game.ErrNoFeature
 	}
 	g.SBL = sbl
-	return nil
-}
-
-func (g *Game) SetReels(rd string) error {
-	if _, ok := ReelsMap[rd]; !ok {
-		return game.ErrNoReels
-	}
-	g.RD = rd
 	return nil
 }

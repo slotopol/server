@@ -34,10 +34,7 @@ func init() {
 			}
 		})
 		GameFactory[ga.ID] = func(rd string) any {
-			if _, ok := trolls.ReelsMap[rd]; ok {
-				return trolls.NewGame(rd)
-			}
-			return nil
+			return trolls.NewGame(Atof(rd))
 		}
 	}
 }

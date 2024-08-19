@@ -3,6 +3,7 @@ package plentyontwenty
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/slotopol/server/game"
@@ -10,15 +11,14 @@ import (
 
 func CalcStat(ctx context.Context, rn string) float64 {
 	var reels *game.Reels5x
-	if rn != "" {
-		var ok bool
-		if reels, ok = ReelsMap[rn]; !ok {
-			return 0
-		}
+	var mrtp float64
+	if mrtp, _ = strconv.ParseFloat(rn, 64); mrtp != 0 {
+		var _, r = FindReels(mrtp)
+		reels = r.(*game.Reels5x)
 	} else {
-		rn, reels = "92", &Reels92
+		mrtp, reels = 92, &Reels92
 	}
-	var g = NewGame(rn)
+	var g = NewGame(mrtp)
 	g.SBL = game.MakeBitNum(1)
 	var sbl = float64(g.SBL.Num())
 	var s game.Stat

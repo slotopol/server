@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math"
+	"strconv"
 	"time"
 
 	"github.com/slotopol/server/game"
@@ -88,15 +89,14 @@ func CalcStat(ctx context.Context, rn string) float64 {
 	Emjm = ExpMonopoly()
 	fmt.Printf("*reels calculations*\n")
 	var reels *game.Reels5x
-	if rn != "" {
-		var ok bool
-		if reels, ok = ReelsMap[rn]; !ok {
-			return 0
-		}
+	var mrtp float64
+	if mrtp, _ = strconv.ParseFloat(rn, 64); mrtp != 0 {
+		var _, r = FindReels(mrtp)
+		reels = r.(*game.Reels5x)
 	} else {
-		rn, reels = "100", &Reels100
+		mrtp, reels = 100, &Reels100
 	}
-	var g = NewGame(rn)
+	var g = NewGame(mrtp)
 	g.SBL = game.MakeBitNum(1)
 	var sbl = float64(g.SBL.Num())
 	var s game.Stat

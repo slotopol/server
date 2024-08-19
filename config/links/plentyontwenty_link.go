@@ -31,10 +31,7 @@ func init() {
 			}
 		})
 		GameFactory[ga.ID] = func(rd string) any {
-			if _, ok := plentyontwenty.ReelsMap[rd]; ok {
-				return plentyontwenty.NewGame(rd)
-			}
-			return nil
+			return plentyontwenty.NewGame(Atof(rd))
 		}
 	}
 }

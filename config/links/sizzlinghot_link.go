@@ -32,10 +32,7 @@ func init() {
 			}
 		})
 		GameFactory[ga.ID] = func(rd string) any {
-			if _, ok := sizzlinghot.ReelsMap[rd]; ok {
-				return sizzlinghot.NewGame(rd)
-			}
-			return nil
+			return sizzlinghot.NewGame(Atof(rd))
 		}
 	}
 }

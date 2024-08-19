@@ -1,6 +1,8 @@
 package plentyontwenty
 
 import (
+	"math"
+
 	"github.com/slotopol/server/game"
 )
 
@@ -145,21 +147,30 @@ var Reels123 = game.Reels5x{
 }
 
 // Map with available reels.
-var ReelsMap = map[string]*game.Reels5x{
-	"87":  &Reels87,
-	"88":  &Reels88,
-	"89":  &Reels89,
-	"90":  &Reels90,
-	"91":  &Reels91,
-	"92":  &Reels92,
-	"93":  &Reels93,
-	"94":  &Reels94,
-	"95":  &Reels95,
-	"96":  &Reels96,
-	"99":  &Reels99,
-	"100": &Reels100,
-	"111": &Reels111,
-	"123": &Reels123,
+var reelsmap = map[float64]*game.Reels5x{
+	87.290058:  &Reels87,
+	88.020691:  &Reels88,
+	89.357108:  &Reels89,
+	90.142947:  &Reels90,
+	91.222125:  &Reels91,
+	91.809957:  &Reels92,
+	92.546929:  &Reels93,
+	94.464473:  &Reels94,
+	94.891642:  &Reels95,
+	96.320186:  &Reels96,
+	98.770288:  &Reels99,
+	100.415437: &Reels100,
+	110.800453: &Reels111,
+	123.483457: &Reels123,
+}
+
+func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
+	for p, r := range reelsmap {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			rtp, reels = p, r
+		}
+	}
+	return
 }
 
 // Lined payment.
@@ -197,10 +208,10 @@ type Game struct {
 	game.Slot5x3 `yaml:",inline"`
 }
 
-func NewGame(rd string) *Game {
+func NewGame(rtp float64) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RD:  rd,
+			RTP: rtp,
 			SBL: game.MakeBitNum(20),
 			Bet: 1,
 		},
@@ -282,7 +293,8 @@ func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 }
 
 func (g *Game) Spin(screen game.Screen) {
-	screen.Spin(ReelsMap[g.RD])
+	var _, reels = FindReels(g.RTP)
+	screen.Spin(reels)
 }
 
 func (g *Game) SetLines(sbl game.Bitset) error {
@@ -297,13 +309,5 @@ func (g *Game) SetLines(sbl game.Bitset) error {
 		return game.ErrNoFeature
 	}
 	g.SBL = sbl
-	return nil
-}
-
-func (g *Game) SetReels(rd string) error {
-	if _, ok := ReelsMap[rd]; !ok {
-		return game.ErrNoReels
-	}
-	g.RD = rd
 	return nil
 }

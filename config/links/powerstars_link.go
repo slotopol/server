@@ -31,10 +31,7 @@ func init() {
 			}
 		})
 		GameFactory[ga.ID] = func(rd string) any {
-			if _, ok := powerstars.ChanceMap[rd]; ok {
-				return powerstars.NewGame(rd)
-			}
-			return nil
+			return powerstars.NewGame(Atof(rd))
 		}
 	}
 }
