@@ -27,7 +27,7 @@ var FlagsSetters = []func(*pflag.FlagSet){}
 
 var ScanIters = []func(*pflag.FlagSet, context.Context){}
 
-var GameFactory = map[string]func(string) any{}
+var GameFactory = map[string]func(float64) any{}
 
 func Atof(s string) (f float64) {
 	f, _ = strconv.ParseFloat(s, 64)

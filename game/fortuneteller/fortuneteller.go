@@ -3,7 +3,11 @@ package fortuneteller
 // See: https://freeslotshub.com/playngo/fortune-teller/
 // See: https://www.youtube.com/watch?v=bFQq3cCz9XY
 
-import "github.com/slotopol/server/game"
+import (
+	"math"
+
+	"github.com/slotopol/server/game"
+)
 
 // *bonus games calculations*
 // total = 64, E = 40.703125
@@ -292,20 +296,29 @@ var Reels126 = game.Reels5x{
 }
 
 // Map with available reels.
-var ReelsMap = map[string]*game.Reels5x{
-	"85":  &Reels85,
-	"87":  &Reels87,
-	"89":  &Reels89,
-	"90":  &Reels90,
-	"91":  &Reels91,
-	"92":  &Reels92,
-	"94":  &Reels94,
-	"95":  &Reels95,
-	"96":  &Reels96,
-	"98":  &Reels98,
-	"99":  &Reels99,
-	"112": &Reels112,
-	"126": &Reels126,
+var reelsmap = map[float64]*game.Reels5x{
+	84.943404:  &Reels85,
+	86.666500:  &Reels87,
+	88.934078:  &Reels89,
+	90.368933:  &Reels90,
+	91.321872:  &Reels91,
+	92.255956:  &Reels92,
+	93.722785:  &Reels94,
+	94.735834:  &Reels95,
+	96.295851:  &Reels96,
+	98.027078:  &Reels98,
+	99.127201:  &Reels99,
+	112.180642: &Reels112,
+	125.921083: &Reels126,
+}
+
+func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
+	for p, r := range reelsmap {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			rtp, reels = p, r
+		}
+	}
+	return
 }
 
 // Lined payment.
@@ -340,10 +353,10 @@ type Game struct {
 	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
 }
 
-func NewGame(rd string) *Game {
+func NewGame(rtp float64) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RD:  rd,
+			RTP: rtp,
 			SBL: game.MakeBitNum(20),
 			Bet: 1,
 		},
@@ -527,7 +540,8 @@ func (g *Game) ScanScattersBon(screen game.Screen, wins *game.Wins) {
 }
 
 func (g *Game) Spin(screen game.Screen) {
-	screen.Spin(ReelsMap[g.RD])
+	var _, reels = FindReels(g.RTP)
+	screen.Spin(reels)
 }
 
 func (g *Game) Apply(screen game.Screen, wins game.Wins) {
@@ -563,13 +577,5 @@ func (g *Game) SetLines(sbl game.Bitset) error {
 		return game.ErrNoFeature
 	}
 	g.SBL = sbl
-	return nil
-}
-
-func (g *Game) SetReels(rd string) error {
-	if _, ok := ReelsMap[rd]; !ok {
-		return game.ErrNoReels
-	}
-	g.RD = rd
 	return nil
 }

@@ -63,7 +63,6 @@ type SlotGame interface {
 	SetLines(Bitset) error // setup selected bet lines indexes
 	GetRTP() float64       // returns master RTP
 	SetRTP(float64) error  // setup master RTP
-	//SetReels(string) error // setup reels descriptor
 }
 
 // Reels for 3-reels slots.
@@ -172,7 +171,6 @@ func (g *Slot3x3) SetRTP(rtp float64) error {
 
 // Slot5x3 is base struct for all slot games with screen 5x3.
 type Slot5x3 struct {
-	RD  string  `json:"rd" yaml:"rd" xml:"rd"`    // reels descriptor
 	RTP float64 `json:"rtp" yaml:"rtp" xml:"rtp"` // master RTP
 	SBL Bitset  `json:"sbl" yaml:"sbl" xml:"sbl"` // selected bet lines
 	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value

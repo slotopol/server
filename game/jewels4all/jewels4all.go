@@ -1,6 +1,11 @@
 package jewels4all
 
-import "github.com/slotopol/server/game"
+import (
+	"math"
+	"math/rand/v2"
+
+	"github.com/slotopol/server/game"
+)
 
 // RTP(no eu) = 67.344781%
 // RTP(eu at y=1,5) = 1706.345577%
@@ -15,21 +20,30 @@ var Reels = game.Reels5x{
 }
 
 // Map with wild chances.
-var ChanceMap = map[string]float64{
+var chancemap = map[float64]float64{
 	// RTP = 67.345(sym) + wc*5373.9(eu) = 90.019449%
-	"90": 1 / 237.,
+	90.019449: 1 / 237.,
 	// RTP = 67.345(sym) + wc*5373.9(eu) = 91.995681%
-	"92": 1 / 218.,
+	91.995681: 1 / 218.,
 	// RTP = 67.345(sym) + wc*5373.9(eu) = 93.948228%
-	"94": 1 / 202.,
+	93.948228: 1 / 202.,
 	// RTP = 67.345(sym) + wc*5373.9(eu) = 96.082194%
-	"96": 1 / 187.,
+	96.082194: 1 / 187.,
 	// RTP = 67.345(sym) + wc*5373.9(eu) = 98.052760%
-	"98": 1 / 175.,
+	98.052760: 1 / 175.,
 	// RTP = 67.345(sym) + wc*5373.9(eu) = 99.913849%
-	"100": 1 / 165.,
+	99.913849: 1 / 165.,
 	// RTP = 67.345(sym) + wc*5373.9(eu) = 110.335951%
-	"110": 1 / 125.,
+	110.335951: 1 / 125.,
+}
+
+func FindChance(mrtp float64) (rtp float64, chance float64) {
+	for p, c := range chancemap {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			rtp, chance = p, c
+		}
+	}
+	return
 }
 
 // Lined payment.
@@ -64,10 +78,10 @@ type Game struct {
 	game.Slot5x3 `yaml:",inline"`
 }
 
-func NewGame(rd string) *Game {
+func NewGame(rtp float64) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RD:  rd,
+			RTP: rtp,
 			SBL: game.MakeBitNum(5),
 			Bet: 1,
 		},
@@ -150,6 +164,11 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 
 func (g *Game) Spin(screen game.Screen) {
 	screen.Spin(&Reels)
+	var _, wc = FindChance(g.RTP) // wild chance
+	if rand.Float64() < wc {
+		var x, y = rand.N(5) + 1, rand.N(3) + 1
+		screen.Set(x, y, wild)
+	}
 }
 
 func (g *Game) SetLines(sbl game.Bitset) error {
@@ -164,13 +183,5 @@ func (g *Game) SetLines(sbl game.Bitset) error {
 		return game.ErrNoFeature
 	}
 	g.SBL = sbl
-	return nil
-}
-
-func (g *Game) SetReels(rd string) error {
-	if _, ok := ChanceMap[rd]; !ok {
-		return game.ErrNoReels
-	}
-	g.RD = rd
 	return nil
 }

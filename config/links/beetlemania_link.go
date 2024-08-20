@@ -37,11 +37,8 @@ func init() {
 				}
 			}
 		})
-		GameFactory[ga.ID] = func(rd string) any {
-			if _, ok := beetlemania.ReelsMap[rd]; ok {
-				return beetlemania.NewGame(rd)
-			}
-			return nil
+		GameFactory[ga.ID] = func(rtp float64) any {
+			return beetlemania.NewGame(rtp)
 		}
 	}
 }

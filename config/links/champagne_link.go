@@ -30,11 +30,8 @@ func init() {
 				champagne.CalcStatReg(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rd string) any {
-			if _, ok := champagne.ReelsMap[rd]; ok {
-				return champagne.NewGame(rd)
-			}
-			return nil
+		GameFactory[ga.ID] = func(rtp float64) any {
+			return champagne.NewGame(rtp)
 		}
 	}
 }

@@ -4,7 +4,7 @@ package powerstars
 
 import (
 	"math"
-	"math/rand"
+	"math/rand/v2"
 
 	"github.com/slotopol/server/game"
 )
@@ -211,7 +211,7 @@ func (g *Game) Spin(screen game.Screen) {
 		var _, wc = FindChance(g.RTP) // wild chance
 		for x := 2; x <= 4; x++ {
 			if rand.Float64() < wc {
-				var y = rand.Intn(3) + 1
+				var y = rand.N(3) + 1
 				screen.Set(x, y, wild)
 			}
 		}

@@ -1,6 +1,10 @@
 package justjewels
 
-import "github.com/slotopol/server/game"
+import (
+	"math"
+
+	"github.com/slotopol/server/game"
+)
 
 // reels lengths [39, 39, 39, 39, 39], total reshuffles 90224199
 // RTP = 114.75(lined) + 8.0152(scatter) = 122.764204%
@@ -13,8 +17,17 @@ var Reels123 = game.Reels5x{
 }
 
 // Map with available reels.
-var ReelsMap = map[string]*game.Reels5x{
-	"123": &Reels123, // minimum possible percentage
+var reelsmap = map[float64]*game.Reels5x{
+	122.764204: &Reels123, // minimum possible percentage
+}
+
+func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
+	for p, r := range reelsmap {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			rtp, reels = p, r
+		}
+	}
+	return
 }
 
 // Lined payment.
@@ -52,10 +65,10 @@ type Game struct {
 	game.Slot5x3 `yaml:",inline"`
 }
 
-func NewGame(rd string) *Game {
+func NewGame(rtp float64) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RD:  rd,
+			RTP: rtp,
 			SBL: game.MakeBitNum(5),
 			Bet: 1,
 		},
@@ -127,7 +140,8 @@ func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 }
 
 func (g *Game) Spin(screen game.Screen) {
-	screen.Spin(ReelsMap[g.RD])
+	var _, reels = FindReels(g.RTP)
+	screen.Spin(reels)
 }
 
 func (g *Game) SetLines(sbl game.Bitset) error {
@@ -142,13 +156,5 @@ func (g *Game) SetLines(sbl game.Bitset) error {
 		return game.ErrNoFeature
 	}
 	g.SBL = sbl
-	return nil
-}
-
-func (g *Game) SetReels(rd string) error {
-	if _, ok := ReelsMap[rd]; !ok {
-		return game.ErrNoReels
-	}
-	g.RD = rd
 	return nil
 }

@@ -30,11 +30,8 @@ func init() {
 				fortuneteller.CalcStatReg(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rd string) any {
-			if _, ok := fortuneteller.ReelsMap[rd]; ok {
-				return fortuneteller.NewGame(rd)
-			}
-			return nil
+		GameFactory[ga.ID] = func(rtp float64) any {
+			return fortuneteller.NewGame(rtp)
 		}
 	}
 }

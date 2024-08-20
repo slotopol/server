@@ -30,11 +30,8 @@ func init() {
 				jewels.CalcStat(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rd string) any {
-			if _, ok := jewels.ReelsMap[rd]; ok {
-				return jewels.NewGame(rd)
-			}
-			return nil
+		GameFactory[ga.ID] = func(rtp float64) any {
+			return jewels.NewGame(rtp)
 		}
 	}
 }

@@ -31,8 +31,8 @@ func init() {
 				sizzlinghot.CalcStat(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rd string) any {
-			return sizzlinghot.NewGame(Atof(rd))
+		GameFactory[ga.ID] = func(rtp float64) any {
+			return sizzlinghot.NewGame(rtp)
 		}
 	}
 }

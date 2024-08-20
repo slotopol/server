@@ -30,11 +30,8 @@ func init() {
 				jewels4all.CalcStat(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rd string) any {
-			if _, ok := jewels4all.ChanceMap[rd]; ok {
-				return jewels4all.NewGame(rd)
-			}
-			return nil
+		GameFactory[ga.ID] = func(rtp float64) any {
+			return jewels4all.NewGame(rtp)
 		}
 	}
 }

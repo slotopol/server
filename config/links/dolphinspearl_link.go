@@ -52,8 +52,8 @@ func init() {
 				}
 			}
 		})
-		GameFactory[ga.ID] = func(rd string) any {
-			return dolphinspearl.NewGame(Atof(rd))
+		GameFactory[ga.ID] = func(rtp float64) any {
+			return dolphinspearl.NewGame(rtp)
 		}
 	}
 }

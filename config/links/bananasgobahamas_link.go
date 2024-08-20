@@ -34,11 +34,8 @@ func init() {
 				}
 			}
 		})
-		GameFactory[ga.ID] = func(rd string) any {
-			if _, ok := bananasgobahamas.ReelsMap[rd]; ok {
-				return bananasgobahamas.NewGame(rd)
-			}
-			return nil
+		GameFactory[ga.ID] = func(rtp float64) any {
+			return bananasgobahamas.NewGame(rtp)
 		}
 	}
 }

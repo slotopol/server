@@ -30,8 +30,8 @@ func init() {
 				alwayshot.CalcStat(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rd string) any {
-			return alwayshot.NewGame(Atof(rd))
+		GameFactory[ga.ID] = func(rtp float64) any {
+			return alwayshot.NewGame(rtp)
 		}
 	}
 }

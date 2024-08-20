@@ -35,8 +35,8 @@ func init() {
 				}
 			}
 		})
-		GameFactory[ga.ID] = func(rd string) any {
-			return diamonddogs.NewGame(Atof(rd))
+		GameFactory[ga.ID] = func(rtp float64) any {
+			return diamonddogs.NewGame(rtp)
 		}
 	}
 }

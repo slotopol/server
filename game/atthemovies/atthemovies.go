@@ -1,6 +1,10 @@
 package atthemovies
 
-import "github.com/slotopol/server/game"
+import (
+	"math"
+
+	"github.com/slotopol/server/game"
+)
 
 // reels lengths [36, 37, 36, 37, 36], total reshuffles 63872064
 // symbols: 75.457(lined) + 10.499(scatter) = 85.955963%
@@ -68,12 +72,21 @@ var Reels100 = game.Reels5x{
 }
 
 // Map with available reels.
-var ReelsMap = map[string]*game.Reels5x{
-	"93":  &Reels93,
-	"94":  &Reels94,
-	"95":  &Reels95,
-	"97":  &Reels97,
-	"100": &Reels100,
+var reelsmap = map[float64]*game.Reels5x{
+	93.182595:  &Reels93,
+	94.141528:  &Reels94,
+	95.215851:  &Reels95,
+	97.124497:  &Reels97,
+	100.387712: &Reels100,
+}
+
+func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
+	for p, r := range reelsmap {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			rtp, reels = p, r
+		}
+	}
+	return
 }
 
 // Lined payment.
@@ -120,10 +133,10 @@ type Game struct {
 	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
 }
 
-func NewGame(rd string) *Game {
+func NewGame(rtp float64) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RD:  rd,
+			RTP: rtp,
 			SBL: game.MakeBitNum(25),
 			Bet: 1,
 		},
@@ -194,7 +207,8 @@ func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 }
 
 func (g *Game) Spin(screen game.Screen) {
-	screen.Spin(ReelsMap[g.RD])
+	var _, reels = FindReels(g.RTP)
+	screen.Spin(reels)
 }
 
 func (g *Game) Apply(screen game.Screen, wins game.Wins) {
@@ -230,13 +244,5 @@ func (g *Game) SetLines(sbl game.Bitset) error {
 		return game.ErrNoFeature
 	}
 	g.SBL = sbl
-	return nil
-}
-
-func (g *Game) SetReels(rd string) error {
-	if _, ok := ReelsMap[rd]; !ok {
-		return game.ErrNoReels
-	}
-	g.RD = rd
 	return nil
 }

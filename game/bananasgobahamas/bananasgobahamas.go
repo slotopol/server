@@ -1,6 +1,8 @@
 package bananasgobahamas
 
 import (
+	"math"
+
 	"github.com/slotopol/server/game"
 )
 
@@ -109,15 +111,23 @@ var ReelsBon = game.Reels5x{
 }
 
 // Map with available reels.
-var ReelsMap = map[string]*game.Reels5x{
-	"90":  &ReelsReg90,
-	"92":  &ReelsReg92,
-	"94":  &ReelsReg94,
-	"95":  &ReelsReg95,
-	"96":  &ReelsReg96,
-	"97":  &ReelsReg97,
-	"175": &ReelsReg175,
-	"bon": &ReelsBon,
+var reelsmap = map[float64]*game.Reels5x{
+	90.142004:  &ReelsReg90,
+	92.203515:  &ReelsReg92,
+	94.479229:  &ReelsReg94,
+	95.364527:  &ReelsReg95,
+	96.411777:  &ReelsReg96,
+	97.381751:  &ReelsReg97,
+	175.266200: &ReelsReg175,
+}
+
+func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
+	for p, r := range reelsmap {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			rtp, reels = p, r
+		}
+	}
+	return
 }
 
 // Lined payment.
@@ -170,10 +180,10 @@ type Game struct {
 	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
 }
 
-func NewGame(rd string) *Game {
+func NewGame(rtp float64) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RD:  rd,
+			RTP: rtp,
 			SBL: game.MakeBitNum(5),
 			Bet: 1,
 		},
@@ -260,7 +270,8 @@ func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 
 func (g *Game) Spin(screen game.Screen) {
 	if g.FS == 0 {
-		screen.Spin(ReelsMap[g.RD])
+		var _, reels = FindReels(g.RTP)
+		screen.Spin(reels)
 	} else {
 		screen.Spin(&ReelsBon)
 	}
@@ -299,13 +310,5 @@ func (g *Game) SetLines(sbl game.Bitset) error {
 		return game.ErrNoFeature
 	}
 	g.SBL = sbl
-	return nil
-}
-
-func (g *Game) SetReels(rd string) error {
-	if _, ok := ReelsMap[rd]; !ok {
-		return game.ErrNoReels
-	}
-	g.RD = rd
 	return nil
 }

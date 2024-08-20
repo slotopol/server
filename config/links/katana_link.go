@@ -34,8 +34,8 @@ func init() {
 				}
 			}
 		})
-		GameFactory[ga.ID] = func(rd string) any {
-			return katana.NewGame(Atof(rd))
+		GameFactory[ga.ID] = func(rtp float64) any {
+			return katana.NewGame(rtp)
 		}
 	}
 }

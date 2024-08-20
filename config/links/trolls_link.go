@@ -33,8 +33,8 @@ func init() {
 				trolls.CalcStatReg(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rd string) any {
-			return trolls.NewGame(Atof(rd))
+		GameFactory[ga.ID] = func(rtp float64) any {
+			return trolls.NewGame(rtp)
 		}
 	}
 }

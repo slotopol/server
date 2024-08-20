@@ -30,11 +30,8 @@ func init() {
 				captainstreasure.CalcStat(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rd string) any {
-			if _, ok := captainstreasure.ReelsMap[rd]; ok {
-				return captainstreasure.NewGame(rd)
-			}
-			return nil
+		GameFactory[ga.ID] = func(rtp float64) any {
+			return captainstreasure.NewGame(rtp)
 		}
 	}
 }

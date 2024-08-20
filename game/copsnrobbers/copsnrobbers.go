@@ -3,6 +3,7 @@ package copsnrobbers
 // See: https://freeslotshub.com/playngo/cop-the-lot/
 
 import (
+	"math"
 	"math/rand/v2"
 
 	"github.com/slotopol/server/game"
@@ -175,20 +176,28 @@ var ReelsBon = game.Reels5x{
 }
 
 // Map with available reels.
-var ReelsMap = map[string]*game.Reels5x{
-	"86":  &ReelsReg86,
-	"88":  &ReelsReg88,
-	"90":  &ReelsReg90,
-	"92":  &ReelsReg92,
-	"93":  &ReelsReg93,
-	"94":  &ReelsReg94,
-	"95":  &ReelsReg95,
-	"96":  &ReelsReg96,
-	"97":  &ReelsReg97,
-	"98":  &ReelsReg98,
-	"99":  &ReelsReg99,
-	"112": &ReelsReg112,
-	"bon": &ReelsBon,
+var reelsmap = map[float64]*game.Reels5x{
+	85.735488:  &ReelsReg86,
+	87.731983:  &ReelsReg88,
+	89.981874:  &ReelsReg90,
+	92.498333:  &ReelsReg92,
+	93.201139:  &ReelsReg93,
+	94.064159:  &ReelsReg94,
+	95.370270:  &ReelsReg95,
+	96.340230:  &ReelsReg96,
+	97.173502:  &ReelsReg97,
+	97.900684:  &ReelsReg98,
+	98.947310:  &ReelsReg99,
+	111.850209: &ReelsReg112,
+}
+
+func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
+	for p, r := range reelsmap {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			rtp, reels = p, r
+		}
+	}
+	return
 }
 
 // Lined payment.
@@ -224,10 +233,10 @@ type Game struct {
 	M float64 `json:"m,omitempty" yaml:"m,omitempty" xml:"m,omitempty"`
 }
 
-func NewGame(rd string) *Game {
+func NewGame(rtp float64) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RD:  rd,
+			RTP: rtp,
 			SBL: game.MakeBitNum(9),
 			Bet: 1,
 		},
@@ -337,7 +346,8 @@ func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 
 func (g *Game) Spin(screen game.Screen) {
 	if g.FS == 0 {
-		screen.Spin(ReelsMap[g.RD])
+		var _, reels = FindReels(g.RTP)
+		screen.Spin(reels)
 	} else {
 		screen.Spin(&ReelsBon)
 	}
@@ -385,13 +395,5 @@ func (g *Game) SetLines(sbl game.Bitset) error {
 		return game.ErrNoFeature
 	}
 	g.SBL = sbl
-	return nil
-}
-
-func (g *Game) SetReels(rd string) error {
-	if _, ok := ReelsMap[rd]; !ok {
-		return game.ErrNoReels
-	}
-	g.RD = rd
 	return nil
 }

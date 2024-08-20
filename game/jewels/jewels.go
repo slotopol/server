@@ -1,6 +1,10 @@
 package jewels
 
-import "github.com/slotopol/server/game"
+import (
+	"math"
+
+	"github.com/slotopol/server/game"
+)
 
 // reels lengths [27, 27, 27, 27, 27], total reshuffles 14348907
 // RTP = 88.89513326694501%
@@ -93,16 +97,25 @@ var Reels118 = game.Reels5x{
 }
 
 // Map with available reels.
-var ReelsMap = map[string]*game.Reels5x{
-	"89":  &Reels89,
-	"90":  &Reels90,
-	"91":  &Reels91,
-	"93":  &Reels93,
-	"95":  &Reels95,
-	"96":  &Reels96,
-	"98":  &Reels98,
-	"100": &Reels100,
-	"118": &Reels118,
+var reelsmap = map[float64]*game.Reels5x{
+	88.89513326694501:  &Reels89,
+	89.84989867172462:  &Reels90,
+	91.00109755497654:  &Reels91,
+	92.98564740740741:  &Reels93,
+	95.01621102640111:  &Reels95,
+	96.0811008:         &Reels96,
+	97.61364863405679:  &Reels98,
+	99.78647812896236:  &Reels100,
+	117.80805616707323: &Reels118,
+}
+
+func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
+	for p, r := range reelsmap {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			rtp, reels = p, r
+		}
+	}
+	return
 }
 
 // Lined payment.
@@ -135,10 +148,10 @@ type Game struct {
 	game.Slot5x3 `yaml:",inline"`
 }
 
-func NewGame(rd string) *Game {
+func NewGame(rtp float64) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RD:  rd,
+			RTP: rtp,
 			SBL: game.MakeBitNum(5),
 			Bet: 1,
 		},
@@ -193,7 +206,8 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 }
 
 func (g *Game) Spin(screen game.Screen) {
-	screen.Spin(ReelsMap[g.RD])
+	var _, reels = FindReels(g.RTP)
+	screen.Spin(reels)
 }
 
 func (g *Game) SetLines(sbl game.Bitset) error {
@@ -208,13 +222,5 @@ func (g *Game) SetLines(sbl game.Bitset) error {
 		return game.ErrNoFeature
 	}
 	g.SBL = sbl
-	return nil
-}
-
-func (g *Game) SetReels(rd string) error {
-	if _, ok := ReelsMap[rd]; !ok {
-		return game.ErrNoReels
-	}
-	g.RD = rd
 	return nil
 }

@@ -3,6 +3,7 @@ package jewels4all
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"time"
 
 	"github.com/slotopol/server/game"
@@ -54,7 +55,7 @@ func BruteForce5x(ctx context.Context, s game.Stater, g game.SlotGame, reels gam
 
 func CalcStatEuro(ctx context.Context, x, y int) float64 {
 	var reels = &Reels
-	var g = NewGame("92")
+	var g = NewGame(95)
 	g.SBL = game.MakeBitNum(1)
 	var sbl = float64(g.SBL.Num())
 	var s game.Stat
@@ -83,13 +84,10 @@ func CalcStatEuro(ctx context.Context, x, y int) float64 {
 
 func CalcStat(ctx context.Context, rn string) (rtp float64) {
 	var wc float64
-	if rn != "" {
-		var ok bool
-		if wc, ok = ChanceMap[rn]; !ok {
-			return 0
-		}
+	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
+		_, wc = FindChance(mrtp) // wild chance
 	} else {
-		wc, rn = ChanceMap["95"], "95"
+		_, wc = FindChance(95)
 	}
 
 	var b = 1 / wc

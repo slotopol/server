@@ -77,7 +77,7 @@ func SpiGameJoin(c *gin.Context) {
 		Ret400(c, SEC_game_join_noalias, ErrNoAliase)
 		return
 	}
-	var slotgame = maker("96")
+	var slotgame = maker(club.GainRTP)
 	if slotgame == nil {
 		Ret400(c, SEC_game_join_noreels, ErrNoReels)
 		return

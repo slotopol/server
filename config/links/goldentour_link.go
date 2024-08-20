@@ -30,11 +30,8 @@ func init() {
 				goldentour.CalcStat(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rd string) any {
-			if _, ok := goldentour.ReelsMap[rd]; ok {
-				return goldentour.NewGame(rd)
-			}
-			return nil
+		GameFactory[ga.ID] = func(rtp float64) any {
+			return goldentour.NewGame(rtp)
 		}
 	}
 }

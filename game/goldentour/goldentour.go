@@ -2,7 +2,11 @@ package goldentour
 
 // See: https://freeslotshub.com/playtech/golden-tour/
 
-import "github.com/slotopol/server/game"
+import (
+	"math"
+
+	"github.com/slotopol/server/game"
+)
 
 // reels lengths [32, 46, 54, 46, 32], total reshuffles 117006336
 // golf bonuses: count 1264896, rtp = 17.296786%
@@ -17,8 +21,17 @@ var Reels145 = game.Reels5x{
 }
 
 // Map with available reels.
-var ReelsMap = map[string]*game.Reels5x{
-	"145": &Reels145,
+var reelsmap = map[float64]*game.Reels5x{
+	144.868028: &Reels145,
+}
+
+func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
+	for p, r := range reelsmap {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			rtp, reels = p, r
+		}
+	}
+	return
 }
 
 // Lined payment.
@@ -40,10 +53,10 @@ type Game struct {
 	game.Slot5x3 `yaml:",inline"`
 }
 
-func NewGame(rd string) *Game {
+func NewGame(rtp float64) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RD:  rd,
+			RTP: rtp,
 			SBL: game.MakeBitNum(5),
 			Bet: 1,
 		},
@@ -197,7 +210,8 @@ func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 }
 
 func (g *Game) Spin(screen game.Screen) {
-	screen.Spin(ReelsMap[g.RD])
+	var _, reels = FindReels(g.RTP)
+	screen.Spin(reels)
 }
 
 func (g *Game) Spawn(screen game.Screen, wins game.Wins) {
@@ -221,13 +235,5 @@ func (g *Game) SetLines(sbl game.Bitset) error {
 		return game.ErrNoFeature
 	}
 	g.SBL = sbl
-	return nil
-}
-
-func (g *Game) SetReels(rd string) error {
-	if _, ok := ReelsMap[rd]; !ok {
-		return game.ErrNoReels
-	}
-	g.RD = rd
 	return nil
 }

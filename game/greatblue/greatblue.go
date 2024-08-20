@@ -3,6 +3,7 @@ package greatblue
 // See: https://freeslotshub.com/playtech/great-blue/
 
 import (
+	"math"
 	"math/rand/v2"
 
 	"github.com/slotopol/server/game"
@@ -129,15 +130,24 @@ var Reels108 = game.Reels5x{
 }
 
 // Map with available reels.
-var ReelsMap = map[string]*game.Reels5x{
-	"87":  &Reels87,
-	"89":  &Reels89,
-	"92":  &Reels92,
-	"94":  &Reels94,
-	"96":  &Reels96,
-	"97":  &Reels97,
-	"100": &Reels100,
-	"108": &Reels108,
+var reelsmap = map[float64]*game.Reels5x{
+	87.023352:  &Reels87,
+	88.828983:  &Reels89,
+	92.162519:  &Reels92,
+	93.871960:  &Reels94,
+	96.335718:  &Reels96,
+	97.245122:  &Reels97,
+	100.024241: &Reels100,
+	107.982338: &Reels108,
+}
+
+func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
+	for p, r := range reelsmap {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			rtp, reels = p, r
+		}
+	}
+	return
 }
 
 // Lined payment.
@@ -190,10 +200,10 @@ type Game struct {
 	M float64 `json:"m,omitempty" yaml:"m,omitempty" xml:"m,omitempty"`
 }
 
-func NewGame(rd string) *Game {
+func NewGame(rtp float64) *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RD:  rd,
+			RTP: rtp,
 			SBL: game.MakeBitNum(25),
 			Bet: 1,
 		},
@@ -293,7 +303,8 @@ func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 }
 
 func (g *Game) Spin(screen game.Screen) {
-	screen.Spin(ReelsMap[g.RD])
+	var _, reels = FindReels(g.RTP)
+	screen.Spin(reels)
 }
 
 func (g *Game) Spawn(screen game.Screen, wins game.Wins) {
@@ -363,13 +374,5 @@ func (g *Game) SetLines(sbl game.Bitset) error {
 		return game.ErrNoFeature
 	}
 	g.SBL = sbl
-	return nil
-}
-
-func (g *Game) SetReels(rd string) error {
-	if _, ok := ReelsMap[rd]; !ok {
-		return game.ErrNoReels
-	}
-	g.RD = rd
 	return nil
 }
