@@ -18,9 +18,10 @@ func init() {
 		Provider: "Playtech",
 		ScrnX:    5,
 		ScrnY:    3,
-		RtpList: []string{
-			"87", "89", "92", "94", "96", "97", "100", "108",
-		},
+	}
+	gi.RtpList = make([]float64, 0, len(greatblue.ReelsMap))
+	for rtp := range greatblue.ReelsMap {
+		gi.RtpList = append(gi.RtpList, rtp)
 	}
 	GameList = append(GameList, gi)
 

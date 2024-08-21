@@ -21,12 +21,12 @@ var Reels145 = game.Reels5x{
 }
 
 // Map with available reels.
-var reelsmap = map[float64]*game.Reels5x{
+var ReelsMap = map[float64]*game.Reels5x{
 	144.868028: &Reels145,
 }
 
 func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
-	for p, r := range reelsmap {
+	for p, r := range ReelsMap {
 		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
 			rtp, reels = p, r
 		}

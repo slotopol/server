@@ -21,7 +21,7 @@ type Club struct {
 	Lock  float64   `xorm:"notnull" json:"lock" yaml:"lock" xml:"lock"` // not changed deposit within games
 
 	JptRate float64 `xorm:"'jptrate' notnull default 0.015" json:"jptrate" yaml:"jptrate" xml:"jptrate"`
-	GainRTP float64 `xorm:"'gainrtp' notnull default 95" json:"gainrtp" yaml:"gainrtp" xml:"gainrtp"`
+	MRTP    float64 `xorm:"'mrtp' notnull default 95" json:"mrtp" yaml:"mrtp" xml:"mrtp"` // master RTP
 
 	mux sync.RWMutex
 }
@@ -83,6 +83,7 @@ type Props struct {
 	UTime  time.Time `xorm:"updated 'utime'" json:"utime" yaml:"utime" xml:"utime"`      // update time
 	Wallet float64   `xorm:"notnull default 0" json:"wallet" yaml:"wallet" xml:"wallet"` // in coins
 	Access AL        `xorm:"notnull default 0" json:"access" yaml:"access" xml:"access"` // access level
+	MRTP   float64   `xorm:"notnull default 0" json:"mrtp" yaml:"mrtp" xml:"mrtp"`       // personal master RTP
 }
 
 type Spinlog struct {
@@ -159,6 +160,13 @@ func (user *User) GetAL(cid uint64) AL {
 	return 0
 }
 
+func (user *User) GetRTP(cid uint64) float64 {
+	if props, ok := user.props.Get(cid); ok {
+		return props.MRTP
+	}
+	return 0
+}
+
 func (user *User) InsertProps(props *Props) {
 	user.props.Set(props.CID, props)
 }
@@ -168,6 +176,16 @@ func (user *User) InsertProps(props *Props) {
 func GetAdmin(c *gin.Context, cid uint64) (*User, AL) {
 	var admin = c.MustGet(userKey).(*User)
 	return admin, admin.GAL | admin.GetAL(cid)
+}
+
+func GetRTP(user *User, club *Club) float64 {
+	if prtp := user.GetRTP(club.CID); prtp != 0 {
+		return prtp
+	}
+	if club.MRTP != 0 {
+		return club.MRTP
+	}
+	return 92 // default RTP if no others found
 }
 
 func (sl *Spinlog) MarshalState(scene *Scene) (err error) {

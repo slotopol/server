@@ -77,7 +77,8 @@ func SpiGameJoin(c *gin.Context) {
 		Ret400(c, SEC_game_join_noalias, ErrNoAliase)
 		return
 	}
-	var slotgame = maker(club.GainRTP)
+	var rtp = GetRTP(user, club)
+	var slotgame = maker(rtp)
 	if slotgame == nil {
 		Ret400(c, SEC_game_join_noreels, ErrNoReels)
 		return
@@ -690,7 +691,7 @@ func SpiGameDoubleup(c *gin.Context) {
 
 	club.mux.RLock()
 	var bank = club.Bank
-	var rtp = club.GainRTP
+	var rtp = GetRTP(user, club)
 	club.mux.RUnlock()
 
 	var multgain float64 // new multiplied gain

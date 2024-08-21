@@ -19,9 +19,10 @@ func init() {
 		Provider: "Novomatic",
 		ScrnX:    5,
 		ScrnY:    3,
-		RtpList: []string{
-			"85", "88", "90", "92", "94", "95", "96", "97", "143", "bon",
-		},
+	}
+	gi.RtpList = make([]float64, 0, len(columbus.ReelsMap))
+	for rtp := range columbus.ReelsMap {
+		gi.RtpList = append(gi.RtpList, rtp)
 	}
 	GameList = append(GameList, gi)
 

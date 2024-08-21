@@ -17,9 +17,10 @@ func init() {
 		Provider: "Play'n GO",
 		ScrnX:    5,
 		ScrnY:    3,
-		RtpList: []string{
-			"85", "87", "89", "90", "91", "92", "94", "95", "96", "98", "99", "112", "126",
-		},
+	}
+	gi.RtpList = make([]float64, 0, len(fortuneteller.ReelsMap))
+	for rtp := range fortuneteller.ReelsMap {
+		gi.RtpList = append(gi.RtpList, rtp)
 	}
 	GameList = append(GameList, gi)
 

@@ -17,9 +17,10 @@ func init() {
 		Provider: "BetSoft",
 		ScrnX:    5,
 		ScrnY:    3,
-		RtpList: []string{
-			"91", "93", "94", "96", "97", "100", "114", "bon",
-		},
+	}
+	gi.RtpList = make([]float64, 0, len(twomillionbc.ReelsMap))
+	for rtp := range twomillionbc.ReelsMap {
+		gi.RtpList = append(gi.RtpList, rtp)
 	}
 	GameList = append(GameList, gi)
 

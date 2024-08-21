@@ -68,7 +68,7 @@ func SpiClubInfo(c *gin.Context) {
 		Lock    float64  `json:"lock" yaml:"lock" xml:"lock"` // not changed deposit within games
 
 		JptRate float64 `json:"jptrate" yaml:"jptrate" xml:"jptrate"`
-		GainRTP float64 `json:"gainrtp" yaml:"gainrtp" xml:"gainrtp"`
+		MRTP    float64 `json:"mrtp" yaml:"mrtp" xml:"mrtp"` // master RTP
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -98,7 +98,7 @@ func SpiClubInfo(c *gin.Context) {
 	ret.Fund = club.Fund
 	ret.Lock = club.Lock
 	ret.JptRate = club.JptRate
-	ret.GainRTP = club.GainRTP
+	ret.MRTP = club.MRTP
 	club.mux.Unlock()
 
 	RetOk(c, ret)

@@ -18,7 +18,7 @@ type GameInfo struct {
 	Provider string      `json:"provider" yaml:"provider" xml:"provider"`
 	ScrnX    int         `json:"scrnx" yaml:"scrnx" xml:"scrnx"`
 	ScrnY    int         `json:"scrny" yaml:"scrny" xml:"scrny"`
-	RtpList  []string    `json:"rtplist" yaml:"rtplist" xml:"rtplist"`
+	RtpList  []float64   `json:"rtplist" yaml:"rtplist" xml:"rtplist"`
 }
 
 var GameList = []GameInfo{}

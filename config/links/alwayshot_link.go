@@ -17,9 +17,10 @@ func init() {
 		Provider: "Novomatic",
 		ScrnX:    3,
 		ScrnY:    3,
-		RtpList: []string{
-			"80", "85", "88", "91", "93", "94", "96", "99", "110",
-		},
+	}
+	gi.RtpList = make([]float64, 0, len(alwayshot.ReelsMap))
+	for rtp := range alwayshot.ReelsMap {
+		gi.RtpList = append(gi.RtpList, rtp)
 	}
 	GameList = append(GameList, gi)
 

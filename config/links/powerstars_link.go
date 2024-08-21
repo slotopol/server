@@ -17,9 +17,10 @@ func init() {
 		Provider: "Novomatic",
 		ScrnX:    5,
 		ScrnY:    3,
-		RtpList: []string{
-			"86", "88", "90", "91", "92", "94", "95", "96", "98", "100", "112",
-		},
+	}
+	gi.RtpList = make([]float64, 0, len(powerstars.ChanceMap))
+	for rtp := range powerstars.ChanceMap {
+		gi.RtpList = append(gi.RtpList, rtp)
 	}
 	GameList = append(GameList, gi)
 

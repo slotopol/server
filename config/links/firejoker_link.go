@@ -17,9 +17,10 @@ func init() {
 		Provider: "Play'n GO",
 		ScrnX:    5,
 		ScrnY:    3,
-		RtpList: []string{
-			"83", "89", "92", "95", "97", "100", "109",
-		},
+	}
+	gi.RtpList = make([]float64, 0, len(firejoker.ReelsMap))
+	for rtp := range firejoker.ReelsMap {
+		gi.RtpList = append(gi.RtpList, rtp)
 	}
 	GameList = append(GameList, gi)
 

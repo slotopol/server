@@ -18,9 +18,10 @@ func init() {
 		Provider: "NetEnt",
 		ScrnX:    5,
 		ScrnY:    3,
-		RtpList: []string{
-			"88", "90", "93", "94", "95", "96", "97", "98", "99", "100", "110", "bon",
-		},
+	}
+	gi.RtpList = make([]float64, 0, len(diamonddogs.ReelsMap))
+	for rtp := range diamonddogs.ReelsMap {
+		gi.RtpList = append(gi.RtpList, rtp)
 	}
 	GameList = append(GameList, gi)
 

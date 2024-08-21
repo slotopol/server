@@ -17,9 +17,10 @@ func init() {
 		Provider: "Novomatic",
 		ScrnX:    5,
 		ScrnY:    3,
-		RtpList: []string{
-			"90", "92", "94", "96", "98", "100", "110",
-		},
+	}
+	gi.RtpList = make([]float64, 0, len(jewels4all.ChanceMap))
+	for rtp := range jewels4all.ChanceMap {
+		gi.RtpList = append(gi.RtpList, rtp)
 	}
 	GameList = append(GameList, gi)
 

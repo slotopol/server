@@ -19,10 +19,10 @@ func init() {
 		Provider: "Novomatic",
 		ScrnX:    5,
 		ScrnY:    3,
-		RtpList: []string{
-			"88", "90", "92", "94", "95", "96", "97", "100", "bon",
-			"88u", "90u", "94u", "96u", "bonu",
-		},
+	}
+	gi.RtpList = make([]float64, 0, len(beetlemania.ReelsMap))
+	for rtp := range beetlemania.ReelsMap {
+		gi.RtpList = append(gi.RtpList, rtp)
 	}
 	GameList = append(GameList, gi)
 

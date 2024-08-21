@@ -17,9 +17,10 @@ func init() {
 		Provider: "Playtech",
 		ScrnX:    5,
 		ScrnY:    3,
-		RtpList: []string{
-			"84", "86", "89", "90", "91", "92", "93", "94", "95", "96", "97", "99", "100", "112", "bon",
-		},
+	}
+	gi.RtpList = make([]float64, 0, len(deserttreasure.ReelsMap))
+	for rtp := range deserttreasure.ReelsMap {
+		gi.RtpList = append(gi.RtpList, rtp)
 	}
 	GameList = append(GameList, gi)
 

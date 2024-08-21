@@ -27,7 +27,7 @@ var Reels = game.Reels5x{
 }
 
 // Map with wild chances.
-var chancemap = map[float64]float64{
+var ChanceMap = map[float64]float64{
 	// free spins: q = 0.036141, 1/q = 27.669, rtpfs = 470.021964%
 	// RTP = 69.063(sym) + q*470.02(fg) = 86.049978%
 	86.049978: 1 / 82.,
@@ -64,7 +64,7 @@ var chancemap = map[float64]float64{
 }
 
 func FindChance(mrtp float64) (rtp float64, chance float64) {
-	for p, c := range chancemap {
+	for p, c := range ChanceMap {
 		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
 			rtp, chance = p, c
 		}
