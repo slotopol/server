@@ -53,8 +53,8 @@ func init() {
 				}
 			}
 		})
-		GameFactory[ga.ID] = func(rtp float64) any {
-			return dolphinspearl.NewGame(rtp)
+		GameFactory[ga.ID] = func() any {
+			return dolphinspearl.NewGame()
 		}
 	}
 }

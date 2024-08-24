@@ -11,14 +11,13 @@ import (
 
 func CalcStat(ctx context.Context, rn string) float64 {
 	var reels *game.Reels5x
-	var mrtp float64
-	if mrtp, _ = strconv.ParseFloat(rn, 64); mrtp != 0 {
+	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
 		var _, r = FindReels(mrtp)
 		reels = r.(*game.Reels5x)
 	} else {
-		mrtp, reels = 123, &Reels123
+		reels = &Reels123
 	}
-	var g = NewGame(mrtp)
+	var g = NewGame()
 	g.SBL = game.MakeBitNum(1)
 	var sbl = float64(g.SBL.Num())
 	var s game.Stat

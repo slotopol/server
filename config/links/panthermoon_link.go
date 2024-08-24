@@ -36,8 +36,8 @@ func init() {
 				}
 			}
 		})
-		GameFactory[ga.ID] = func(rtp float64) any {
-			return panthermoon.NewGame(rtp)
+		GameFactory[ga.ID] = func() any {
+			return panthermoon.NewGame()
 		}
 	}
 }

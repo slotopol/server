@@ -11,7 +11,7 @@ import (
 
 func CalcStatBon(ctx context.Context) float64 {
 	var reels = &ReelsBon
-	var g = NewGame(92)
+	var g = NewGame()
 	g.SBL = game.MakeBitNum(1)
 	g.FS = 10 // set free spins mode
 	var sbl = float64(g.SBL.Num())
@@ -51,14 +51,13 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 	}
 	fmt.Printf("*regular reels calculations*\n")
 	var reels *game.Reels5x
-	var mrtp float64
-	if mrtp, _ = strconv.ParseFloat(rn, 64); mrtp != 0 {
+	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
 		var _, r = FindReels(mrtp)
 		reels = r.(*game.Reels5x)
 	} else {
-		mrtp, reels = 92, &ReelsReg92
+		reels = &ReelsReg92
 	}
-	var g = NewGame(mrtp)
+	var g = NewGame()
 	g.SBL = game.MakeBitNum(1)
 	var sbl = float64(g.SBL.Num())
 	var s game.Stat

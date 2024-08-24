@@ -37,8 +37,8 @@ func init() {
 				}
 			}
 		})
-		GameFactory[ga.ID] = func(rtp float64) any {
-			return columbus.NewGame(rtp)
+		GameFactory[ga.ID] = func() any {
+			return columbus.NewGame()
 		}
 	}
 }

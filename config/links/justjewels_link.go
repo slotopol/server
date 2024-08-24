@@ -32,8 +32,8 @@ func init() {
 				justjewels.CalcStat(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rtp float64) any {
-			return justjewels.NewGame(rtp)
+		GameFactory[ga.ID] = func() any {
+			return justjewels.NewGame()
 		}
 	}
 }

@@ -31,8 +31,8 @@ func init() {
 				plentyontwenty.CalcStat(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rtp float64) any {
-			return plentyontwenty.NewGame(rtp)
+		GameFactory[ga.ID] = func() any {
+			return plentyontwenty.NewGame()
 		}
 	}
 }

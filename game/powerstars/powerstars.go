@@ -113,10 +113,9 @@ type Game struct {
 	PRW          [5]int `json:"prw" yaml:"prw" xml:"prw"` // pinned reel wild
 }
 
-func NewGame(rtp float64) *Game {
+func NewGame() *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RTP: rtp,
 			SBL: game.MakeBitNum(5),
 			Bet: 1,
 		},
@@ -205,10 +204,10 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 	}
 }
 
-func (g *Game) Spin(screen game.Screen) {
+func (g *Game) Spin(screen game.Screen, mrtp float64) {
 	screen.Spin(&Reels)
 	if g.FreeSpins() == 0 {
-		var _, wc = FindChance(g.RTP) // wild chance
+		var _, wc = FindChance(mrtp) // wild chance
 		for x := 2; x <= 4; x++ {
 			if rand.Float64() < wc {
 				var y = rand.N(3) + 1

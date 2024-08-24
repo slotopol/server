@@ -31,8 +31,8 @@ func init() {
 				fortuneteller.CalcStatReg(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rtp float64) any {
-			return fortuneteller.NewGame(rtp)
+		GameFactory[ga.ID] = func() any {
+			return fortuneteller.NewGame()
 		}
 	}
 }

@@ -77,8 +77,8 @@ func SpiGameJoin(c *gin.Context) {
 		Ret400(c, SEC_game_join_noalias, ErrNoAliase)
 		return
 	}
-	var rtp = GetRTP(user, club)
-	var slotgame = maker(rtp)
+
+	var slotgame = maker()
 	if slotgame == nil {
 		Ret400(c, SEC_game_join_noreels, ErrNoReels)
 		return
@@ -94,8 +94,12 @@ func SpiGameJoin(c *gin.Context) {
 		Game: slotgame.(game.SlotGame),
 		Scrn: slotgame.(game.SlotGame).NewScreen(),
 	}
+
 	// make game screen object
-	scene.Game.Spin(scene.Scrn)
+	club.mux.RLock()
+	var rtp = GetRTP(user, club)
+	club.mux.RUnlock()
+	scene.Game.Spin(scene.Scrn, rtp)
 
 	if err = SafeTransaction(cfg.XormStorage, func(session *Session) (err error) {
 		if _, err = session.Insert(&scene.Story); err != nil {
@@ -404,8 +408,8 @@ func SpiGameSblSet(c *gin.Context) {
 	c.Status(http.StatusOK)
 }
 
-// Returns reels descriptor for given GID.
-func SpiGameReelsGet(c *gin.Context) {
+// Returns master RTP for given GID.
+func SpiGameRtpGet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -432,19 +436,33 @@ func SpiGameReelsGet(c *gin.Context) {
 		return
 	}
 
+	var club *Club
+	if club, ok = Clubs.Get(scene.CID); !ok {
+		Ret500(c, SEC_game_rdget_noclub, ErrNoClub)
+		return
+	}
+
+	var user *User
+	if user, ok = Users.Get(scene.UID); !ok {
+		Ret500(c, SEC_game_rdget_nouser, ErrNoUser)
+		return
+	}
+
 	var admin, al = GetAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
 		Ret403(c, SEC_prop_rdget_noaccess, ErrNoAccess)
 		return
 	}
 
-	ret.RTP = scene.Game.GetRTP()
+	club.mux.RLock()
+	ret.RTP = GetRTP(user, club)
+	club.mux.RUnlock()
 
 	RetOk(c, ret)
 }
 
-// Set reels descriptor for given GID. Only game admin can change reels.
-func SpiGameReelsSet(c *gin.Context) {
+// Set master RTO for given GID. Only game admin can change RTP.
+func SpiGameRtpSet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -475,10 +493,10 @@ func SpiGameReelsSet(c *gin.Context) {
 		return
 	}
 
-	if err = scene.Game.SetRTP(arg.RTP); err != nil {
+	/*if err = scene.Game.SetRTP(arg.RTP); err != nil {
 		Ret403(c, SEC_game_rdset_badreels, err)
 		return
-	}
+	}*/
 
 	c.Status(http.StatusOK)
 }
@@ -554,14 +572,16 @@ func SpiGameSpin(c *gin.Context) {
 		return
 	}
 
-	// spin until gain less than bank value
 	club.mux.RLock()
 	var bank = club.Bank
+	var rtp = GetRTP(user, club)
 	club.mux.RUnlock()
+
+	// spin until gain less than bank value
 	var wins game.Wins
 	var n = 0
 	for {
-		scene.Game.Spin(scene.Scrn)
+		scene.Game.Spin(scene.Scrn, rtp)
 		scene.Game.Scanner(scene.Scrn, &wins)
 		scene.Game.Spawn(scene.Scrn, wins)
 		banksum = totalbet - wins.Gain()

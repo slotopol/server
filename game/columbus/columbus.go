@@ -196,10 +196,9 @@ type Game struct {
 	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
 }
 
-func NewGame(rtp float64) *Game {
+func NewGame() *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RTP: rtp,
 			SBL: game.MakeBitNum(5),
 			Bet: 1,
 		},
@@ -285,9 +284,9 @@ func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 	}
 }
 
-func (g *Game) Spin(screen game.Screen) {
+func (g *Game) Spin(screen game.Screen, mrtp float64) {
 	if g.FS == 0 {
-		var _, reels = FindReels(g.RTP)
+		var _, reels = FindReels(mrtp)
 		screen.Spin(reels)
 	} else {
 		screen.Spin(&ReelsBon)

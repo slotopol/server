@@ -31,8 +31,8 @@ func init() {
 				slotopoldeluxe.CalcStat(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rtp float64) any {
-			return slotopoldeluxe.NewGame(rtp)
+		GameFactory[ga.ID] = func() any {
+			return slotopoldeluxe.NewGame()
 		}
 	}
 }

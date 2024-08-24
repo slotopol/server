@@ -31,8 +31,8 @@ func init() {
 				powerstars.CalcStat(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rtp float64) any {
-			return powerstars.NewGame(rtp)
+		GameFactory[ga.ID] = func() any {
+			return powerstars.NewGame()
 		}
 	}
 }

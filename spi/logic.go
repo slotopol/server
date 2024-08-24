@@ -21,7 +21,7 @@ type Club struct {
 	Lock  float64   `xorm:"notnull" json:"lock" yaml:"lock" xml:"lock"` // not changed deposit within games
 
 	JptRate float64 `xorm:"'jptrate' notnull default 0.015" json:"jptrate" yaml:"jptrate" xml:"jptrate"`
-	MRTP    float64 `xorm:"'mrtp' notnull default 95" json:"mrtp" yaml:"mrtp" xml:"mrtp"` // master RTP
+	MRTP    float64 `xorm:"'mrtp' notnull default 0" json:"mrtp" yaml:"mrtp" xml:"mrtp"` // master RTP
 
 	mux sync.RWMutex
 }
@@ -179,8 +179,8 @@ func GetAdmin(c *gin.Context, cid uint64) (*User, AL) {
 }
 
 func GetRTP(user *User, club *Club) float64 {
-	if prtp := user.GetRTP(club.CID); prtp != 0 {
-		return prtp
+	if props, ok := user.props.Get(club.CID); ok {
+		return props.MRTP
 	}
 	if club.MRTP != 0 {
 		return club.MRTP

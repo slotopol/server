@@ -32,8 +32,8 @@ func init() {
 				greatblue.CalcStat(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rtp float64) any {
-			return greatblue.NewGame(rtp)
+		GameFactory[ga.ID] = func() any {
+			return greatblue.NewGame()
 		}
 	}
 }

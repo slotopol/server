@@ -37,14 +37,13 @@ func FirstSreespins() (fsavr1 float64, multavr float64) {
 
 func CalcStat(ctx context.Context, rn string) float64 {
 	var reels *game.Reels5x
-	var mrtp float64
-	if mrtp, _ = strconv.ParseFloat(rn, 64); mrtp != 0 {
+	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
 		var _, r = FindReels(mrtp)
 		reels = r.(*game.Reels5x)
 	} else {
-		mrtp, reels = 92, &Reels92
+		reels = &Reels92
 	}
-	var g = NewGame(mrtp)
+	var g = NewGame()
 	g.SBL = game.MakeBitNum(5)
 	var sbl = float64(g.SBL.Num())
 	var s game.Stat

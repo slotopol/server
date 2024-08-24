@@ -60,7 +60,7 @@ func BruteForce5x(ctx context.Context, s game.Stater, g game.SlotGame, reels gam
 
 func CalcStatStars(ctx context.Context, wc2, wc3, wc4 bool) float64 {
 	var reels = &Reels
-	var g = NewGame(95)
+	var g = NewGame()
 	g.SBL = game.MakeBitNum(1)
 	var sbl = float64(g.SBL.Num())
 	var s game.Stat

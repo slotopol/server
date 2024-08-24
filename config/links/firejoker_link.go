@@ -31,8 +31,8 @@ func init() {
 				firejoker.CalcStatReg(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rtp float64) any {
-			return firejoker.NewGame(rtp)
+		GameFactory[ga.ID] = func() any {
+			return firejoker.NewGame()
 		}
 	}
 }

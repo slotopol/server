@@ -31,8 +31,8 @@ func init() {
 				champagne.CalcStatReg(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rtp float64) any {
-			return champagne.NewGame(rtp)
+		GameFactory[ga.ID] = func() any {
+			return champagne.NewGame()
 		}
 	}
 }

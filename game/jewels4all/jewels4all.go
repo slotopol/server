@@ -78,10 +78,9 @@ type Game struct {
 	game.Slot5x3 `yaml:",inline"`
 }
 
-func NewGame(rtp float64) *Game {
+func NewGame() *Game {
 	return &Game{
 		Slot5x3: game.Slot5x3{
-			RTP: rtp,
 			SBL: game.MakeBitNum(5),
 			Bet: 1,
 		},
@@ -162,9 +161,9 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 	}
 }
 
-func (g *Game) Spin(screen game.Screen) {
+func (g *Game) Spin(screen game.Screen, mrtp float64) {
 	screen.Spin(&Reels)
-	var _, wc = FindChance(g.RTP) // wild chance
+	var _, wc = FindChance(mrtp) // wild chance
 	if rand.Float64() < wc {
 		var x, y = rand.N(5) + 1, rand.N(3) + 1
 		screen.Set(x, y, wild)

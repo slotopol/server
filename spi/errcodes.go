@@ -98,13 +98,15 @@ const (
 	SEC_prop_sblset_noaccess
 	SEC_game_sblset_badlines
 
-	// POST /game/reels/get
+	// POST /game/rtp/get
 	SEC_game_rdget_nobind
 	SEC_game_rdget_nogid
 	SEC_game_rdget_notopened
+	SEC_game_rdget_noclub
+	SEC_game_rdget_nouser
 	SEC_prop_rdget_noaccess
 
-	// POST /game/reels/set
+	// POST /game/rtp/set
 	SEC_game_rdset_nobind
 	SEC_game_rdset_nogid
 	SEC_game_rdset_notopened

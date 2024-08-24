@@ -31,8 +31,8 @@ func init() {
 				ultrahot.CalcStat(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rtp float64) any {
-			return ultrahot.NewGame(rtp)
+		GameFactory[ga.ID] = func() any {
+			return ultrahot.NewGame()
 		}
 	}
 }

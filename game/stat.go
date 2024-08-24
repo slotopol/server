@@ -140,12 +140,12 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	}
 }
 
-func MonteCarlo(ctx context.Context, s Stater, g SlotGame, n int) {
+func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels, n int) {
 	var screen = g.NewScreen()
 	defer screen.Free()
 	var wins Wins
 	for range n {
-		g.Spin(screen)
+		screen.Spin(reels)
 		g.Scanner(screen, &wins)
 		s.Update(wins)
 		wins.Reset()

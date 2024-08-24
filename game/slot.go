@@ -51,7 +51,7 @@ func (wins Wins) Gain() float64 {
 type SlotGame interface {
 	NewScreen() Screen     // returns new empty screen object for this game, constat function
 	Scanner(Screen, *Wins) // scan given screen and append result to wins, constat function
-	Spin(Screen)           // fill the screen with random hits on those reels, constat function
+	Spin(Screen, float64)  // fill the screen with random hits on reels closest to given RTP, constat function
 	Spawn(Screen, Wins)    // setup bonus games to wins results, constat function
 	Apply(Screen, Wins)    // update game state to spin results
 	FreeSpins() int        // returns number of free spins remained, constat function
@@ -61,8 +61,6 @@ type SlotGame interface {
 	SetBet(float64) error  // set bet to given value
 	GetLines() Bitset      // returns selected bet lines indexes, constat function
 	SetLines(Bitset) error // setup selected bet lines indexes
-	GetRTP() float64       // returns master RTP
-	SetRTP(float64) error  // setup master RTP
 }
 
 // Reels for 3-reels slots.
@@ -99,7 +97,6 @@ var (
 	ErrNoWay      = errors.New("no way to here")
 	ErrBetEmpty   = errors.New("bet is empty")
 	ErrNoLineset  = errors.New("lines set is empty")
-	ErrNoRtp      = errors.New("RTP not given")
 	ErrLinesetOut = errors.New("lines set is out of range bet lines")
 	ErrNoFeature  = errors.New("feature not available")
 	ErrNoReels    = errors.New("no reels for given descriptor")
@@ -107,7 +104,6 @@ var (
 
 // Slot5x3 is base struct for all slot games with screen 5x3.
 type Slot3x3 struct {
-	RTP float64 `json:"rtp" yaml:"rtp" xml:"rtp"` // master RTP
 	SBL Bitset  `json:"sbl" yaml:"sbl" xml:"sbl"` // selected bet lines
 	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
@@ -157,21 +153,8 @@ func (g *Slot3x3) GetLines() Bitset {
 	return g.SBL
 }
 
-func (g *Slot3x3) GetRTP() float64 {
-	return g.RTP
-}
-
-func (g *Slot3x3) SetRTP(rtp float64) error {
-	if rtp <= 0 {
-		return ErrNoRtp
-	}
-	g.RTP = rtp
-	return nil
-}
-
 // Slot5x3 is base struct for all slot games with screen 5x3.
 type Slot5x3 struct {
-	RTP float64 `json:"rtp" yaml:"rtp" xml:"rtp"` // master RTP
 	SBL Bitset  `json:"sbl" yaml:"sbl" xml:"sbl"` // selected bet lines
 	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
@@ -221,21 +204,8 @@ func (g *Slot5x3) GetLines() Bitset {
 	return g.SBL
 }
 
-func (g *Slot5x3) GetRTP() float64 {
-	return g.RTP
-}
-
-func (g *Slot5x3) SetRTP(rtp float64) error {
-	if rtp <= 0 {
-		return ErrNoRtp
-	}
-	g.RTP = rtp
-	return nil
-}
-
 // Slot5x4 is base struct for all slot games with screen 5x4.
 type Slot5x4 struct {
-	RTP float64 `json:"rtp" yaml:"rtp" xml:"rtp"` // master RTP
 	SBL Bitset  `json:"sbl" yaml:"sbl" xml:"sbl"` // selected bet lines
 	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
@@ -283,16 +253,4 @@ func (g *Slot5x4) SetBet(bet float64) error {
 
 func (g *Slot5x4) GetLines() Bitset {
 	return g.SBL
-}
-
-func (g *Slot5x4) GetRTP() float64 {
-	return g.RTP
-}
-
-func (g *Slot5x4) SetRTP(rtp float64) error {
-	if rtp <= 0 {
-		return ErrNoRtp
-	}
-	g.RTP = rtp
-	return nil
 }

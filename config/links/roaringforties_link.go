@@ -31,8 +31,8 @@ func init() {
 				roaringforties.CalcStat(ctx, rn)
 			}
 		})
-		GameFactory[ga.ID] = func(rtp float64) any {
-			return roaringforties.NewGame(rtp)
+		GameFactory[ga.ID] = func() any {
+			return roaringforties.NewGame()
 		}
 	}
 }
