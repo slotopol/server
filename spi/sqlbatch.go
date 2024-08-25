@@ -10,7 +10,8 @@ import (
 const (
 	sqlbank1 = `UPDATE club SET bank=bank+? WHERE cid=?`
 	sqlbank2 = `UPDATE props SET wallet=wallet+? WHERE uid=? AND cid=?`
-	sqlbank3 = `UPDATE props SET mrtp=? WHERE uid=? AND cid=?`
+	sqlbank3 = `UPDATE props SET access=? WHERE uid=? AND cid=?`
+	sqlbank4 = `UPDATE props SET mrtp=? WHERE uid=? AND cid=?`
 )
 
 func SafeTransaction(engine *xorm.Engine, f func(*Session) error) (err error) {
@@ -37,6 +38,7 @@ type SqlBank struct {
 	cid     uint64
 	banksum float64
 	usersum map[uint64]float64
+	useral  map[uint64]AL
 	userrtp map[uint64]float64
 	userins map[uint64]bool
 	usercap int
@@ -52,6 +54,7 @@ func (sb *SqlBank) Init(cid uint64, capacity, logsize int) {
 	sb.cid = cid
 	sb.banksum = 0
 	sb.usersum = make(map[uint64]float64, capacity)
+	sb.useral = make(map[uint64]AL, capacity)
 	sb.userrtp = make(map[uint64]float64, capacity)
 	sb.userins = make(map[uint64]bool, capacity)
 	sb.usercap = capacity
@@ -62,6 +65,7 @@ func (sb *SqlBank) Init(cid uint64, capacity, logsize int) {
 func (sb *SqlBank) clear() {
 	sb.banksum = 0
 	clear(sb.usersum)
+	clear(sb.useral)
 	clear(sb.userrtp)
 	clear(sb.userins)
 	sb.log = sb.log[:0]
@@ -78,11 +82,13 @@ func (sb *SqlBank) transaction(session *Session) (err error) {
 		var pins = make([]Props, 0, len(sb.userins))
 		for uid := range sb.userins {
 			var sum = sb.usersum[uid]
+			var al = sb.useral[uid]
 			var mrtp = sb.userrtp[uid]
 			var props = Props{
 				CID:    sb.cid,
 				UID:    uid,
 				Wallet: sum,
+				Access: al,
 				MRTP:   mrtp,
 			}
 			pins = append(pins, props)
@@ -98,9 +104,16 @@ func (sb *SqlBank) transaction(session *Session) (err error) {
 			}
 		}
 	}
+	for uid, access := range sb.useral {
+		if !sb.userins[uid] {
+			if _, err = session.Exec(sqlbank3, access, uid, sb.cid); err != nil {
+				return
+			}
+		}
+	}
 	for uid, mrtp := range sb.userrtp {
 		if !sb.userins[uid] {
-			if _, err = session.Exec(sqlbank3, mrtp, uid, sb.cid); err != nil {
+			if _, err = session.Exec(sqlbank4, mrtp, uid, sb.cid); err != nil {
 				return
 			}
 		}
@@ -142,6 +155,22 @@ func (sb *SqlBank) Add(engine *xorm.Engine, uid, aid uint64, wallet, sum float64
 		Sum:    sum,
 	})
 	if len(sb.usersum) >= sb.usercap || len(sb.log) >= sb.logsize {
+		if err = SafeTransaction(engine, sb.transaction); err != nil {
+			return
+		}
+		sb.clear()
+	}
+	return
+}
+
+func (sb *SqlBank) Access(engine *xorm.Engine, uid uint64, access AL, ins bool) (err error) {
+	sb.mux.Lock()
+	defer sb.mux.Unlock()
+	sb.useral[uid] = access
+	if ins {
+		sb.userins[uid] = ins
+	}
+	if len(sb.useral) >= sb.usercap {
 		if err = SafeTransaction(engine, sb.transaction); err != nil {
 			return
 		}

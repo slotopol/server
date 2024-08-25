@@ -534,14 +534,14 @@ func SpiGameSpin(c *gin.Context) {
 
 	club.mux.RLock()
 	var bank = club.Bank
-	var rtp = GetRTP(user, club)
+	var mrtp = GetRTP(user, club)
 	club.mux.RUnlock()
 
 	// spin until gain less than bank value
 	var wins game.Wins
 	var n = 0
 	for {
-		scene.Game.Spin(scene.Scrn, rtp)
+		scene.Game.Spin(scene.Scrn, mrtp)
 		scene.Game.Scanner(scene.Scrn, &wins)
 		scene.Game.Spawn(scene.Scrn, wins)
 		banksum = totalbet - wins.Gain()
@@ -581,6 +581,7 @@ func SpiGameSpin(c *gin.Context) {
 		var rec = Spinlog{
 			SID:    sid,
 			GID:    arg.GID,
+			MRTP:   mrtp,
 			Gain:   scene.Game.GetGain(),
 			Wallet: props.Wallet,
 		}
@@ -671,13 +672,13 @@ func SpiGameDoubleup(c *gin.Context) {
 
 	club.mux.RLock()
 	var bank = club.Bank
-	var rtp = GetRTP(user, club)
+	var mrtp = GetRTP(user, club)
 	club.mux.RUnlock()
 
 	var multgain float64 // new multiplied gain
 	if bank >= risk*float64(arg.Mult) {
 		var r = rand.Float64()
-		var side = 1 / float64(arg.Mult) * rtp / 100
+		var side = 1 / float64(arg.Mult) * mrtp / 100
 		if r < side {
 			multgain = risk * float64(arg.Mult)
 		}
@@ -708,6 +709,7 @@ func SpiGameDoubleup(c *gin.Context) {
 		var rec = Multlog{
 			ID:     id,
 			GID:    arg.GID,
+			MRTP:   mrtp,
 			Mult:   arg.Mult,
 			Risk:   risk,
 			Gain:   multgain,

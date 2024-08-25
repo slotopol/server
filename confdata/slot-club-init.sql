@@ -11,8 +11,8 @@ Users access levels (`gal` or `access` fields) are sum of followed ints:
   30 - all rights
 */
 
-INSERT INTO `club` (`cid`,`ctime`,`utime`,`name`,`bank`,`fund`,`lock`,`jptrate`,`gainrtp`) VALUES
-(1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,'virtual',10000,1000000,0,0.015,95);
+INSERT INTO `club` (`cid`,`ctime`,`utime`,`name`,`bank`,`fund`,`lock`,`jptrate`,`mrtp`) VALUES
+(1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,'virtual',10000,1000000,0,0.015,0);
 
 INSERT INTO `user` (`uid`,`ctime`,`utime`,`email`,`secret`,`name`,`gal`) VALUES
 (1,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP,'admin@example.org','0YBoaT','admin',30),

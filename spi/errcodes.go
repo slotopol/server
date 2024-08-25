@@ -158,7 +158,24 @@ const (
 	SEC_prop_walletadd_noaccess
 	SEC_prop_walletadd_sql
 
-	// POST /prop/wallet/get
+	// POST /prop/al/get
+	SEC_prop_alget_nobind
+	SEC_prop_alget_norid
+	SEC_prop_alget_nouid
+	SEC_prop_alget_noclub
+	SEC_prop_alget_nouser
+	SEC_prop_alget_noaccess
+
+	// POST /prop/al/set
+	SEC_prop_alset_nobind
+	SEC_prop_alset_norid
+	SEC_prop_alset_nouid
+	SEC_prop_alset_noclub
+	SEC_prop_alset_nouser
+	SEC_prop_alset_noaccess
+	SEC_prop_alset_sql
+
+	// POST /prop/rtp/get
 	SEC_prop_rtpget_nobind
 	SEC_prop_rtpget_norid
 	SEC_prop_rtpget_nouid

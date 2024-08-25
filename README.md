@@ -72,7 +72,7 @@ curl -X GET localhost:8080/gamelist
 Response has array with available algorithms descriptions. Each structure has a list of games aliases, that shares one algorithm. Field `rtplist` has the list of reels with predefined RTP. There is example of structure with info:
 
 ```json
-{"aliases":[{"id":"trolls","name":"Trolls"},{"id":"excalibur","name":"Excalibur"},{"id":"pandorasbox","name":"Pandora's Box"},{"id":"wildwitches","name":"Wild Witches"}],"provider":"NetEnt","scrnx":5,"scrny":3,"rtplist":["88","89","92","93","94","95","97","98","102","110"]}
+{"aliases":[{"id":"trolls","name":"Trolls"},{"id":"excalibur","name":"Excalibur"},{"id":"pandorasbox","name":"Pandora's Box"},{"id":"wildwitches","name":"Wild Witches"}],"provider":"NetEnt","scrnx":5,"scrny":3,"rtplist":[87.788791,89.230191,93.903358,95.183523,96.6485,98.193276,110.298257,91.925079,93.061471,101.929305]}
 ```
 
 `/ping`, `/servinfo` and `/memusage`, `/signis`, `/signup` and `/signin` endpoints also does not expects authorization.
@@ -88,7 +88,7 @@ There is supported basic authorization and bearer authorization (with JWT-tokens
 In `/signin` call password can be given by two ways:
 
 1) Explicitly at field `secret` as is.
-2) By HMAC SHA256 hash and temporary public key.
+2) By HMAC SHA256 hash and temporary public key (without send opened secret).
 
 In second case it should be string in field `sigtime` with current time formatted in RFC3339 (can be with nanoseconds). And at field `hs256` it should be hexadecimal HMAC formed with algorithm SHA256 with this current time as a key, and password, i.e. sha256.hmac(sigtime, password). Allowed timeout for public key is 2m 30s.
 
