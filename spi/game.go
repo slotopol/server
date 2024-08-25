@@ -461,46 +461,6 @@ func SpiGameRtpGet(c *gin.Context) {
 	RetOk(c, ret)
 }
 
-// Set master RTO for given GID. Only game admin can change RTP.
-func SpiGameRtpSet(c *gin.Context) {
-	var err error
-	var ok bool
-	var arg struct {
-		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
-		RTP     float64  `json:"rtp" yaml:"rtp" xml:"rtp" binding:"required"`
-	}
-
-	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_game_rdset_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_game_rdset_nogid, ErrNoGID)
-		return
-	}
-
-	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_game_rdset_notopened, ErrNotOpened)
-		return
-	}
-
-	// only game admin can change reels
-	var _, al = GetAdmin(c, scene.CID)
-	if al&ALgame == 0 {
-		Ret403(c, SEC_prop_rdset_noaccess, ErrNoAccess)
-		return
-	}
-
-	/*if err = scene.Game.SetRTP(arg.RTP); err != nil {
-		Ret403(c, SEC_game_rdset_badreels, err)
-		return
-	}*/
-
-	c.Status(http.StatusOK)
-}
-
 // Make a spin.
 func SpiGameSpin(c *gin.Context) {
 	var err error

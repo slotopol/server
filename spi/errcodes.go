@@ -72,26 +72,26 @@ const (
 	SEC_prop_state_noaccess
 	SEC_game_info_noprops
 
-	// POST /game/bet
+	// POST /game/bet/get
 	SEC_game_betget_nobind
 	SEC_game_betget_nogid
 	SEC_game_betget_notopened
 	SEC_prop_betget_noaccess
 
-	// POST /game/bet
+	// POST /game/bet/set
 	SEC_game_betset_nobind
 	SEC_game_betset_nogid
 	SEC_game_betset_notopened
 	SEC_prop_betset_noaccess
 	SEC_game_betset_badbet
 
-	// POST /game/sbl
+	// POST /game/sbl/get
 	SEC_game_sblget_nobind
 	SEC_game_sblget_nogid
 	SEC_game_sblget_notopened
 	SEC_prop_sblget_noaccess
 
-	// POST /game/sbl
+	// POST /game/sbl/set
 	SEC_game_sblset_nobind
 	SEC_game_sblset_nogid
 	SEC_game_sblset_notopened
@@ -105,13 +105,6 @@ const (
 	SEC_game_rdget_noclub
 	SEC_game_rdget_nouser
 	SEC_prop_rdget_noaccess
-
-	// POST /game/rtp/set
-	SEC_game_rdset_nobind
-	SEC_game_rdset_nogid
-	SEC_game_rdset_notopened
-	SEC_prop_rdset_noaccess
-	SEC_game_rdset_badreels
 
 	// POST /game/spin
 	SEC_game_spin_nobind
@@ -145,7 +138,7 @@ const (
 	SEC_prop_collect_noaccess
 	SEC_prop_collect_denied
 
-	// POST /prop/wallet
+	// POST /prop/wallet/get
 	SEC_prop_walletget_nobind
 	SEC_prop_walletget_norid
 	SEC_prop_walletget_nouid
@@ -153,7 +146,7 @@ const (
 	SEC_prop_walletget_nouser
 	SEC_prop_walletget_noaccess
 
-	// POST /prop/wallet
+	// POST /prop/wallet/add
 	SEC_prop_walletadd_nobind
 	SEC_prop_walletadd_norid
 	SEC_prop_walletadd_nouid
@@ -164,6 +157,23 @@ const (
 	SEC_prop_walletadd_nomoney
 	SEC_prop_walletadd_noaccess
 	SEC_prop_walletadd_sql
+
+	// POST /prop/wallet/get
+	SEC_prop_rtpget_nobind
+	SEC_prop_rtpget_norid
+	SEC_prop_rtpget_nouid
+	SEC_prop_rtpget_noclub
+	SEC_prop_rtpget_nouser
+	SEC_prop_rtpget_noaccess
+
+	// POST /prop/rtp/set
+	SEC_prop_rtpset_nobind
+	SEC_prop_rtpset_norid
+	SEC_prop_rtpset_nouid
+	SEC_prop_rtpset_noclub
+	SEC_prop_rtpset_nouser
+	SEC_prop_rtpset_noaccess
+	SEC_prop_rtpset_sql
 
 	// POST /user/rename
 	SEC_user_rename_nobind
