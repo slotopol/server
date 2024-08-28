@@ -53,8 +53,7 @@ const (
 	SEC_prop_join_noaccess
 	SEC_game_join_noalias
 	SEC_game_join_noreels
-	SEC_game_join_open
-	SEC_game_join_props
+	SEC_game_join_sql
 
 	// POST /game/part
 	SEC_game_part_nobind
@@ -62,7 +61,7 @@ const (
 	SEC_game_part_notopened
 	SEC_game_part_nouser
 	SEC_prop_part_noaccess
-	SEC_prop_part_update
+	SEC_prop_part_sql
 
 	// POST /game/info
 	SEC_game_info_nobind

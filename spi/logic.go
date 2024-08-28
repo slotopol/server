@@ -44,7 +44,7 @@ type User struct {
 // Story is opened game for user with UID at club with CID.
 // Each instance of game have own GID. Alias - is game type identifier.
 type Story struct {
-	GID   uint64    `xorm:"pk autoincr" json:"gid" yaml:"gid" xml:"gid,attr"`      // game ID
+	GID   uint64    `xorm:"pk" json:"gid" yaml:"gid" xml:"gid,attr"`               // game ID
 	CTime time.Time `xorm:"created 'ctime'" json:"ctime" yaml:"ctime" xml:"ctime"` // creation time
 	UTime time.Time `xorm:"updated 'utime'" json:"utime" yaml:"utime" xml:"utime"` // update time
 	Alias string    `xorm:"notnull" json:"alias" yaml:"alias" xml:"alias"`         // game type identifier
@@ -52,6 +52,8 @@ type Story struct {
 	UID   uint64    `xorm:"notnull" json:"uid" yaml:"uid" xml:"uid,attr"`          // user ID
 	Flow  bool      `xorm:"notnull" json:"flow" yaml:"flow" xml:"flow,attr"`       // game is not closed
 }
+
+var StoryCounter uint64 // last GID
 
 // Scene represents game with all the connected environment.
 type Scene struct {

@@ -127,7 +127,7 @@ func SpiPropsWalletAdd(c *gin.Context) {
 	}
 
 	// update wallet as transaction
-	if Cfg.WalletlogBufferSize > 1 {
+	if Cfg.ClubInsertBuffer > 1 {
 		go BankBat[arg.CID].Add(cfg.XormStorage, arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum, !hasprops)
 	} else if err = BankBat[arg.CID].Add(cfg.XormStorage, arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum, !hasprops); err != nil {
 		Ret500(c, SEC_prop_walletadd_sql, err)
@@ -249,7 +249,7 @@ func SpiPropsAlSet(c *gin.Context) {
 	_ = admin
 
 	// update access level as transaction
-	if Cfg.WalletlogBufferSize > 1 {
+	if Cfg.ClubInsertBuffer > 1 {
 		go BankBat[arg.CID].Access(cfg.XormStorage, arg.UID, arg.Access, !hasprops)
 	} else if err = BankBat[arg.CID].Access(cfg.XormStorage, arg.UID, arg.Access, !hasprops); err != nil {
 		Ret500(c, SEC_prop_rtpset_sql, err)
@@ -370,7 +370,7 @@ func SpiPropsRtpSet(c *gin.Context) {
 	_ = admin
 
 	// update master RTP as transaction
-	if Cfg.WalletlogBufferSize > 1 {
+	if Cfg.ClubInsertBuffer > 1 {
 		go BankBat[arg.CID].MRTP(cfg.XormStorage, arg.UID, arg.MRTP, !hasprops)
 	} else if err = BankBat[arg.CID].MRTP(cfg.XormStorage, arg.UID, arg.MRTP, !hasprops); err != nil {
 		Ret500(c, SEC_prop_rtpset_sql, err)

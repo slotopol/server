@@ -45,13 +45,15 @@ slot_win_x64 list --all
 
 # Architecture and logic
 
-**Database.** Service reads common database tables on start and store to database only changes. Service instance oriented on monopoly usage of it's database.
+**Database.** Service instance oriented on monopoly usage of it's database. It reads necessary database tables on start and avoids any `select` requests at all. Then it stores to database only changes and new data (`update` & `insert`). Those queries are buffered across API endpoints calls to increase performance with database conversations.
 
-Now it can be used embedded *sqlite* database engine or *MySQL* database, its configured at `slot.yaml` settings file, and by default sqlite is used. Embedded sqlite engine useful for instance started on portable storage, same as flash drive, and can serve small sets of players, several dozen players at the same time. For big number of players it should be used dedicated server with MySQL.
+It can be used embedded *sqlite* database engine or *MySQL* database, its configured at `slot.yaml` settings file, and by default sqlite is used. Embedded sqlite engine useful for instance started on portable storage, same as flash drive or external SSD, and can serve small sets of players, 50-500 players at the same time. For big number of players it should be used dedicated server with MySQL.
 
-**Clubs.** There is can be served several clubs. Each club have its own undepended bank, jackpot fund with rate to this fund from spins, and deposit. Bank of club is current balance of club to which arrives coins from users spins, and from which they gets a wins. There is have linkage of users wins to bank: if bank have not enough coins to pay the win during users spins, this win combination will be skipped. Deposit of club does not used in games, it can be useful to transfer the coins from bank to fix the yield.
+**Clubs.** There is can be served several clubs. Each club have its own undepended bank, jackpot fund with rate to this fund from spins, and deposit. Bank of club is current balance of club to which arrives coins from users spins, and from which they gets a wins. There is exist linkage of users wins to bank: if bank have not enough coins to pay the win during users spins, this win combination will be skipped. Deposit of club does not used in games, it can be useful to transfer the coins from bank to fix the yield.
 
-**Users accounts.** Accounts have registrations data only. Each account can be associated with several clubs. Each user can have individual balance to gamble for each club, and individual access rights at each club.
+**Users accounts.** Accounts have registrations data only. Each account can be associated with several clubs. Each user can have properties for each club with individual balance to gamble, individual access rights, and individual master RTP to choose reels at games.
+
+Each user can play several games at the same time. Each started game have game ID related to user ID and club ID. Any game actions ties to game ID.
 
 # How to use HTTP API
 

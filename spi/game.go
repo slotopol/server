@@ -19,6 +19,7 @@ var (
 	SpinBuf util.SqlBuf[Spinlog]
 	MultBuf util.SqlBuf[Multlog]
 	BankBat = map[uint64]*SqlBank{}
+	JoinBuf = SqlStory{}
 )
 
 // Joins to game and creates new instance of game.
@@ -84,8 +85,10 @@ func SpiGameJoin(c *gin.Context) {
 		return
 	}
 
+	var gid = atomic.AddUint64(&StoryCounter, 1)
 	var scene = &Scene{
 		Story: Story{
+			GID:   gid,
 			Alias: alias,
 			CID:   arg.CID,
 			UID:   arg.UID,
@@ -101,28 +104,11 @@ func SpiGameJoin(c *gin.Context) {
 	club.mux.RUnlock()
 	scene.Game.Spin(scene.Scrn, rtp)
 
-	if err = SafeTransaction(cfg.XormStorage, func(session *Session) (err error) {
-		if _, err = session.Insert(&scene.Story); err != nil {
-			Ret500(c, SEC_game_join_open, err)
-			return
-		}
-
-		// ensure that wallet record is exist
-		if !user.props.Has(arg.CID) {
-			var props = &Props{
-				CID: arg.CID,
-				UID: arg.UID,
-			}
-			if _, err = session.Insert(props); err != nil {
-				Ret500(c, SEC_game_join_props, err)
-				return
-			}
-
-			user.InsertProps(props)
-		}
-
-		return
-	}); err != nil {
+	// insert new story entry
+	if Cfg.ClubInsertBuffer > 1 {
+		go JoinBuf.Join(cfg.XormStorage, &scene.Story)
+	} else if err = JoinBuf.Join(cfg.XormStorage, &scene.Story); err != nil {
+		Ret500(c, SEC_game_join_sql, err)
 		return
 	}
 
@@ -173,12 +159,15 @@ func SpiGamePart(c *gin.Context) {
 		return
 	}
 
-	scene.Flow = false
-	if _, err = cfg.XormStorage.ID(arg.GID).Cols("flow").Update(&scene.Story); err != nil {
-		Ret500(c, SEC_prop_part_update, err)
+	// update story entry
+	if Cfg.ClubUpdateBuffer > 1 {
+		go JoinBuf.Flow(cfg.XormStorage, arg.GID, false)
+	} else if err = JoinBuf.Flow(cfg.XormStorage, arg.GID, false); err != nil {
+		Ret500(c, SEC_prop_part_sql, err)
 		return
 	}
 
+	scene.Flow = false
 	Scenes.Delete(arg.GID)
 	user.games.Delete(arg.GID)
 
@@ -557,7 +546,7 @@ func SpiGameSpin(c *gin.Context) {
 	}
 
 	// write gain and total bet as transaction
-	if Cfg.BankBufferSize > 1 {
+	if Cfg.ClubUpdateBuffer > 1 {
 		go BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum)
 	} else if err = BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum); err != nil {
 		Ret500(c, SEC_game_spin_sqlbank, err)
@@ -686,7 +675,7 @@ func SpiGameDoubleup(c *gin.Context) {
 	var banksum = risk - multgain
 
 	// write gain and total bet as transaction
-	if Cfg.BankBufferSize > 1 {
+	if Cfg.ClubUpdateBuffer > 1 {
 		go BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum)
 	} else if err = BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum); err != nil {
 		Ret500(c, SEC_game_doubleup_sqlbank, err)

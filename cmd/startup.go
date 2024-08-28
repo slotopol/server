@@ -117,7 +117,7 @@ func InitStorage() (err error) {
 		var list = bytes.Split(body, []byte{';'})
 		for _, cmd := range list {
 			if cmd = bytes.TrimSpace(cmd); len(cmd) > 0 {
-				if _, err = cfg.XormStorage.Exec(util.B2S(cmd)); err != nil {
+				if _, err = session.Exec(util.B2S(cmd)); err != nil {
 					return
 				}
 			}
@@ -136,7 +136,7 @@ func InitStorage() (err error) {
 		for _, club := range chunk {
 			spi.Clubs.Set(club.CID, club)
 			var bat = &spi.SqlBank{}
-			bat.Init(club.CID, Cfg.BankBufferSize, Cfg.WalletlogBufferSize)
+			bat.Init(club.CID, Cfg.ClubUpdateBuffer, Cfg.ClubInsertBuffer)
 			spi.BankBat[club.CID] = bat
 		}
 		if limit > len(chunk) {
@@ -181,6 +181,14 @@ func InitStorage() (err error) {
 			break
 		}
 	}
+
+	var i64 int64
+	if i64, err = session.Count(&spi.Story{}); err != nil {
+		return
+	}
+	spi.StoryCounter = uint64(i64)
+
+	spi.JoinBuf.Init(Cfg.ClubUpdateBuffer, Cfg.ClubInsertBuffer)
 	return
 }
 
@@ -218,14 +226,17 @@ func InitSpinlog() (err error) {
 		return
 	}
 	var i64 int64
-	if i64, err = cfg.XormSpinlog.Count(&spi.Spinlog{}); err != nil {
+	if i64, err = session.Count(&spi.Spinlog{}); err != nil {
 		return
 	}
 	spi.SpinCounter = uint64(i64)
-	if i64, err = cfg.XormSpinlog.Count(&spi.Multlog{}); err != nil {
+	if i64, err = session.Count(&spi.Multlog{}); err != nil {
 		return
 	}
 	spi.MultCounter = uint64(i64)
+
+	spi.SpinBuf.Init(Cfg.SpinInsertBuffer)
+	spi.MultBuf.Init(Cfg.SpinInsertBuffer)
 	return
 }
 
@@ -239,6 +250,9 @@ func SqlLoop(exitctx context.Context, d time.Duration) {
 				if err := bat.Flush(cfg.XormStorage, d); err != nil {
 					log.Printf("can not update bank for cid=%d: %s", cid, err.Error())
 				}
+			}
+			if err := spi.JoinBuf.Flush(cfg.XormStorage, d); err != nil {
+				log.Printf("can not write to story log: %s", err.Error())
 			}
 			if err := spi.SpinBuf.Flush(cfg.XormSpinlog, d); err != nil {
 				log.Printf("can not write to spin log: %s", err.Error())
@@ -261,9 +275,6 @@ func Init() (err error) {
 		err = fmt.Errorf("can not init XORM spins log storage: %w", err)
 		return
 	}
-
-	spi.SpinBuf.Init(Cfg.SpinlogBufferSize)
-	spi.MultBuf.Init(Cfg.SpinlogBufferSize)
 	return
 }
 
@@ -272,8 +283,11 @@ func Done() (err error) {
 	for _, bat := range spi.BankBat {
 		errs = append(errs, bat.Flush(cfg.XormStorage, 0))
 	}
+	errs = append(errs, spi.JoinBuf.Flush(cfg.XormStorage, 0))
+
 	errs = append(errs, spi.SpinBuf.Flush(cfg.XormSpinlog, 0))
 	errs = append(errs, spi.MultBuf.Flush(cfg.XormSpinlog, 0))
+
 	errs = append(errs, cfg.XormStorage.Close())
 	errs = append(errs, cfg.XormSpinlog.Close())
 	return errors.Join(errs...)

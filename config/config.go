@@ -56,13 +56,15 @@ type CfgXormDrv struct {
 	SpinSourceName string `json:"spin-source-name" yaml:"spin-source-name" mapstructure:"spin-source-name"`
 	// Duration between flushes of SQL batching buffers.
 	SqlFlushTick time.Duration `json:"sql-flush-tick" yaml:"sql-flush-tick" mapstructure:"sql-flush-tick"`
-	// Maximum number of users at each club to group wallets updates to database.
-	// If size is 1, update will be sequential with error code expecting.
-	BankBufferSize int `json:"bank-buffer-size" yaml:"bank-buffer-size" mapstructure:"bank-buffer-size"`
-	// Maximum size of buffer for walletlog items to group inserting to database.
-	WalletlogBufferSize int `json:"walletlog-buffer-size" yaml:"walletlog-buffer-size" mapstructure:"walletlog-buffer-size"`
-	// Maximum size of buffer for spinlog items to group inserting to database.
-	SpinlogBufferSize int `json:"spinlog-buffer-size" yaml:"spinlog-buffer-size" mapstructure:"spinlog-buffer-size"`
+	// Maximum size of buffer to group items to update across API-endpoints calls
+	// at club database. If it is 1, update will be sequential with error code expecting.
+	ClubUpdateBuffer int `json:"club-update-buffer" yaml:"club-update-buffer" mapstructure:"club-update-buffer"`
+	// Maximum size of buffer to insert new items grouped across
+	// API-endpoints calls at club database.
+	ClubInsertBuffer int `json:"club-insert-buffer" yaml:"club-insert-buffer" mapstructure:"club-insert-buffer"`
+	// Maximum size of buffer to insert new items grouped across
+	// API-endpoints calls at spin database.
+	SpinInsertBuffer int `json:"spin-insert-buffer" yaml:"spin-insert-buffer" mapstructure:"spin-insert-buffer"`
 }
 
 type CfgGameplay struct {
@@ -101,13 +103,13 @@ var Cfg = &Config{
 		ShutdownTimeout:   15 * time.Second,
 	},
 	CfgXormDrv: CfgXormDrv{
-		DriverName:          "sqlite3",
-		ClubSourceName:      "slot-club.sqlite",
-		SpinSourceName:      "slot-spin.sqlite",
-		SqlFlushTick:        2500 * time.Millisecond,
-		BankBufferSize:      40,
-		WalletlogBufferSize: 30,
-		SpinlogBufferSize:   50,
+		DriverName:       "sqlite3",
+		ClubSourceName:   "slot-club.sqlite",
+		SpinSourceName:   "slot-spin.sqlite",
+		SqlFlushTick:     2500 * time.Millisecond,
+		ClubUpdateBuffer: 40,
+		ClubInsertBuffer: 30,
+		SpinInsertBuffer: 50,
 	},
 	CfgGameplay: CfgGameplay{
 		AdjunctLimit:    100000,

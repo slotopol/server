@@ -8,10 +8,11 @@ import (
 )
 
 const (
-	sqlbank1 = `UPDATE club SET bank=bank+? WHERE cid=?`
-	sqlbank2 = `UPDATE props SET wallet=wallet+? WHERE uid=? AND cid=?`
-	sqlbank3 = `UPDATE props SET access=? WHERE uid=? AND cid=?`
-	sqlbank4 = `UPDATE props SET mrtp=? WHERE uid=? AND cid=?`
+	sqlbank1  = `UPDATE club SET bank=bank+? WHERE cid=?`
+	sqlbank2  = `UPDATE props SET wallet=wallet+? WHERE uid=? AND cid=?`
+	sqlbank3  = `UPDATE props SET access=? WHERE uid=? AND cid=?`
+	sqlbank4  = `UPDATE props SET mrtp=? WHERE uid=? AND cid=?`
+	sqlstory1 = `UPDATE story SET flow=? WHERE gid=?`
 )
 
 func SafeTransaction(engine *xorm.Engine, f func(*Session) error) (err error) {
@@ -41,9 +42,9 @@ type SqlBank struct {
 	useral  map[uint64]AL
 	userrtp map[uint64]float64
 	userins map[uint64]bool
+	log     []Walletlog
 	usercap int
 	logsize int
-	log     []Walletlog
 	lft     time.Time // last flush time
 	mux     sync.Mutex
 }
@@ -57,9 +58,9 @@ func (sb *SqlBank) Init(cid uint64, capacity, logsize int) {
 	sb.useral = make(map[uint64]AL, capacity)
 	sb.userrtp = make(map[uint64]float64, capacity)
 	sb.userins = make(map[uint64]bool, capacity)
+	sb.log = make([]Walletlog, 0, logsize)
 	sb.usercap = capacity
 	sb.logsize = logsize
-	sb.log = make([]Walletlog, 0, logsize)
 }
 
 func (sb *SqlBank) clear() {
@@ -206,6 +207,91 @@ func (sb *SqlBank) Flush(engine *xorm.Engine, d time.Duration) (err error) {
 			return
 		}
 		sb.clear()
+	}
+	return
+}
+
+type SqlStory struct {
+	flow    map[uint64]bool
+	log     []*Story
+	flowcap int
+	logsize int
+	lft     time.Time // last flush time
+	mux     sync.Mutex
+}
+
+func (ss *SqlStory) Init(capacity, logsize int) {
+	ss.mux.Lock()
+	defer ss.mux.Unlock()
+	ss.flow = make(map[uint64]bool, capacity)
+	ss.log = make([]*Story, 0, logsize)
+	ss.flowcap = capacity
+	ss.logsize = logsize
+}
+
+func (ss *SqlStory) clear() {
+	clear(ss.flow)
+	ss.log = ss.log[:0]
+	ss.lft = time.Now()
+}
+
+func (ss *SqlStory) transaction(session *Session) (err error) {
+	if len(ss.log) > 0 {
+		for _, s := range ss.log {
+			if f, ok := ss.flow[s.GID]; ok {
+				s.Flow = f
+				delete(ss.flow, s.GID)
+			}
+		}
+		if _, err = session.InsertMulti(&ss.log); err != nil {
+			return
+		}
+	}
+	for gid, flow := range ss.flow {
+		if _, err = session.Exec(sqlstory1, flow, gid); err != nil {
+			return
+		}
+	}
+	return
+}
+
+func (ss *SqlStory) Join(engine *xorm.Engine, s *Story) (err error) {
+	ss.mux.Lock()
+	defer ss.mux.Unlock()
+	ss.log = append(ss.log, s)
+	if len(ss.log) >= ss.logsize {
+		if err = SafeTransaction(engine, ss.transaction); err != nil {
+			return
+		}
+		ss.clear()
+	}
+	return
+}
+
+func (ss *SqlStory) Flow(engine *xorm.Engine, gid uint64, flow bool) (err error) {
+	ss.mux.Lock()
+	defer ss.mux.Unlock()
+	ss.flow[gid] = flow
+	if len(ss.flow) >= ss.flowcap {
+		if err = SafeTransaction(engine, ss.transaction); err != nil {
+			return
+		}
+		ss.clear()
+	}
+	return
+}
+
+func (ss *SqlStory) Flush(engine *xorm.Engine, d time.Duration) (err error) {
+	ss.mux.Lock()
+	defer ss.mux.Unlock()
+	if len(ss.flow) == 0 && len(ss.log) == 0 {
+		return
+	}
+	if d == 0 || time.Since(ss.lft) >= d {
+		if err = SafeTransaction(engine, ss.transaction); err != nil {
+			return
+		}
+		ss.clear()
 	}
 	return
 }
