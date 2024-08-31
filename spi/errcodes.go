@@ -30,7 +30,7 @@ const (
 	// POST /signup
 	SEC_signup_nobind
 	SEC_signup_smallsec
-	SEC_signup_insert
+	SEC_signup_sql
 
 	// POST /signin
 	SEC_signin_nobind

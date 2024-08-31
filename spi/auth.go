@@ -298,6 +298,8 @@ func SpiSignis(c *gin.Context) {
 	RetOk(c, ret)
 }
 
+const sqlnewprops = `INSERT INTO props (cid,uid,ctime,utime) SELECT cid,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP FROM club`
+
 func SpiSignup(c *gin.Context) {
 	var err error
 	var arg struct {
@@ -328,12 +330,41 @@ func SpiSignup(c *gin.Context) {
 		Secret: arg.Secret,
 		Name:   arg.Name,
 	}
-	if _, err = cfg.XormStorage.Insert(user); err != nil {
-		Ret500(c, SEC_signup_insert, err)
+	if err = SafeTransaction(cfg.XormStorage, func(session *Session) (err error) {
+		if _, err = session.Insert(user); err != nil {
+			return
+		}
+
+		if _, err = session.Exec(sqlnewprops, user.UID); err != nil {
+			return
+		}
+
+		var props = make([]Props, len(PropMaster))
+		copy(props, PropMaster)
+		for i := range props {
+			props[i].UID = user.UID
+			if _, err = session.Where("cid=? AND uid=?", props[i].CID, user.UID).Update(&props[i]); err != nil {
+				return
+			}
+		}
+
+		user.Init()
+		Users.Set(user.UID, user)
+		Clubs.Range(func(cid uint64, _ *Club) bool {
+			user.InsertProps(&Props{
+				CID: cid,
+				UID: user.UID,
+			})
+			return true
+		})
+		for i := range props {
+			user.InsertProps(&props[i])
+		}
+		return
+	}); err != nil {
+		Ret500(c, SEC_signup_sql, err)
 		return
 	}
-	user.Init()
-	Users.Set(user.UID, user)
 
 	ret.UID = user.UID
 	ret.Email = email

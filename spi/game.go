@@ -67,7 +67,7 @@ func SpiGameJoin(c *gin.Context) {
 	}
 
 	var admin, al = GetAdmin(c, arg.CID)
-	if admin != user && al&ALgame == 0 {
+	if (al&ALmem == 0) || (admin != user && al&ALgame == 0) {
 		Ret403(c, SEC_prop_join_noaccess, ErrNoAccess)
 		return
 	}

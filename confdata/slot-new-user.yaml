@@ -1,0 +1,15 @@
+
+# Properties list for new registered user.
+# Any new account gets this properties on create.
+# 'uid' field and times will be set to actual values.
+
+  # properies for "virtual" club
+- cid: 1
+  wallet: 1000
+  access: 1
+  mrtp: 0
+  # properties for "global" club
+- cid: 2
+  wallet: 0
+  access: 0
+  mrtp: 0

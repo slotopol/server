@@ -15,6 +15,7 @@ import (
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/spi"
 	"github.com/slotopol/server/util"
+	"gopkg.in/yaml.v3"
 
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/mattn/go-sqlite3"
@@ -122,6 +123,16 @@ func InitStorage() (err error) {
 				}
 			}
 		}
+	}
+
+	// Read properies master for new registered user
+	var body []byte
+	if body, err = os.ReadFile(util.JoinFilePath(cfg.CfgPath, "slot-new-user.yaml")); err != nil {
+		log.Printf("can not open YAML-file with properties initialization for new user: %s", err.Error())
+		err = nil // remove error
+	} else if err = yaml.Unmarshal(body, &spi.PropMaster); err != nil {
+		log.Printf("can not unmarshal 'slot-new-user.yaml': %s", err.Error())
+		err = nil // remove error
 	}
 
 	const limit = 256

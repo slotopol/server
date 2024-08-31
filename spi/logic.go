@@ -68,7 +68,7 @@ type Scene struct {
 type AL uint
 
 const (
-	ALban   AL = 1 << iota // user have no access to club
+	ALmem   AL = 1 << iota // user have access to club
 	ALgame                 // can change club game settings
 	ALuser                 // can change user balance and move user money to/from club deposit
 	ALclub                 // can change club bank, fund, deposit
@@ -87,6 +87,9 @@ type Props struct {
 	Access AL        `xorm:"notnull default 0" json:"access" yaml:"access" xml:"access"` // access level
 	MRTP   float64   `xorm:"notnull default 0" json:"mrtp" yaml:"mrtp" xml:"mrtp"`       // personal master RTP
 }
+
+// Properties master for new registered user.
+var PropMaster []Props
 
 type Spinlog struct {
 	SID    uint64    `xorm:"pk" json:"sid" yaml:"sid" xml:"sid,attr"`                                        // spin ID
