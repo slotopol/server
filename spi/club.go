@@ -8,6 +8,10 @@ import (
 	cfg "github.com/slotopol/server/config"
 )
 
+const (
+	sqlclub = `UPDATE club SET bank=bank+?, fund=fund+?, lock=lock+? utime=CURRENT_TIMESTAMP WHERE cid=?`
+)
+
 // Returns current club state.
 func SpiClubIs(c *gin.Context) {
 	var err error
@@ -219,13 +223,12 @@ func SpiClubCashin(c *gin.Context) {
 		LockSum: arg.LockSum,
 	}
 	if err = SafeTransaction(cfg.XormStorage, func(session *Session) (err error) {
-		const sql1 = `UPDATE club SET bank=bank+?, fund=fund+?, lock=lock+? WHERE cid=?`
-		if _, err = session.Exec(sql1, arg.BankSum, arg.FundSum, arg.LockSum, club.CID); err != nil {
-			Ret500(c, SEC_game_cashin_sqlbank, err)
+		if _, err = session.Exec(sqlclub, arg.BankSum, arg.FundSum, arg.LockSum, club.CID); err != nil {
+			Ret500(c, SEC_club_cashin_sqlbank, err)
 			return
 		}
 		if _, err = session.Insert(&rec); err != nil {
-			Ret500(c, SEC_game_cashin_sqllog, err)
+			Ret500(c, SEC_club_cashin_sqllog, err)
 			return
 		}
 		return

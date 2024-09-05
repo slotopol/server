@@ -28,6 +28,10 @@ const (
 	realmBearer = `JWT realm="slotopol", charset="UTF-8"`
 )
 
+const (
+	sqlnewprops = `INSERT INTO props (cid,uid,ctime,utime) SELECT cid,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP FROM club`
+)
+
 var (
 	ErrNoJwtID  = errors.New("jwt-token does not have user id")
 	ErrBadJwtID = errors.New("jwt-token id does not refer to registered user")
@@ -297,8 +301,6 @@ func SpiSignis(c *gin.Context) {
 
 	RetOk(c, ret)
 }
-
-const sqlnewprops = `INSERT INTO props (cid,uid,ctime,utime) SELECT cid,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP FROM club`
 
 func SpiSignup(c *gin.Context) {
 	var err error

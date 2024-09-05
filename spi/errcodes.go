@@ -50,7 +50,7 @@ const (
 	SEC_game_join_nouid
 	SEC_game_join_noclub
 	SEC_game_join_nouser
-	SEC_prop_join_noaccess
+	SEC_game_join_noaccess
 	SEC_game_join_noalias
 	SEC_game_join_noreels
 	SEC_game_join_sql
@@ -60,41 +60,41 @@ const (
 	SEC_game_part_nogid
 	SEC_game_part_notopened
 	SEC_game_part_nouser
-	SEC_prop_part_noaccess
-	SEC_prop_part_sql
+	SEC_game_part_noaccess
+	SEC_game_part_sql
 
 	// POST /game/info
 	SEC_game_info_nobind
 	SEC_game_info_nogid
 	SEC_game_info_notopened
 	SEC_game_info_nouser
-	SEC_prop_state_noaccess
+	SEC_game_info_noaccess
 	SEC_game_info_noprops
 
 	// POST /game/bet/get
 	SEC_game_betget_nobind
 	SEC_game_betget_nogid
 	SEC_game_betget_notopened
-	SEC_prop_betget_noaccess
+	SEC_game_betget_noaccess
 
 	// POST /game/bet/set
 	SEC_game_betset_nobind
 	SEC_game_betset_nogid
 	SEC_game_betset_notopened
-	SEC_prop_betset_noaccess
+	SEC_game_betset_noaccess
 	SEC_game_betset_badbet
 
 	// POST /game/sbl/get
 	SEC_game_sblget_nobind
 	SEC_game_sblget_nogid
 	SEC_game_sblget_notopened
-	SEC_prop_sblget_noaccess
+	SEC_game_sblget_noaccess
 
 	// POST /game/sbl/set
 	SEC_game_sblset_nobind
 	SEC_game_sblset_nogid
 	SEC_game_sblset_notopened
-	SEC_prop_sblset_noaccess
+	SEC_game_sblset_noaccess
 	SEC_game_sblset_badlines
 
 	// POST /game/rtp/get
@@ -103,7 +103,7 @@ const (
 	SEC_game_rdget_notopened
 	SEC_game_rdget_noclub
 	SEC_game_rdget_nouser
-	SEC_prop_rdget_noaccess
+	SEC_game_rdget_noaccess
 
 	// POST /game/spin
 	SEC_game_spin_nobind
@@ -111,7 +111,7 @@ const (
 	SEC_game_spin_notopened
 	SEC_game_spin_noclub
 	SEC_game_spin_nouser
-	SEC_prop_spin_noaccess
+	SEC_game_spin_noaccess
 	SEC_game_spin_noprops
 	SEC_game_spin_nomoney
 	SEC_game_spin_badbank
@@ -125,7 +125,7 @@ const (
 	SEC_game_doubleup_notopened
 	SEC_game_doubleup_noclub
 	SEC_game_doubleup_nouser
-	SEC_prop_doubleup_noaccess
+	SEC_game_doubleup_noaccess
 	SEC_game_doubleup_noprops
 	SEC_game_doubleup_nomoney
 	SEC_game_doubleup_sqlbank
@@ -134,8 +134,8 @@ const (
 	SEC_game_collect_nobind
 	SEC_game_collect_nogid
 	SEC_game_collect_notopened
-	SEC_prop_collect_noaccess
-	SEC_prop_collect_denied
+	SEC_game_collect_noaccess
+	SEC_game_collect_denied
 
 	// POST /prop/wallet/get
 	SEC_prop_walletget_nobind
@@ -153,8 +153,9 @@ const (
 	SEC_prop_walletadd_limit
 	SEC_prop_walletadd_noclub
 	SEC_prop_walletadd_nouser
-	SEC_prop_walletadd_nomoney
 	SEC_prop_walletadd_noaccess
+	SEC_prop_walletadd_noprops
+	SEC_prop_walletadd_nomoney
 	SEC_prop_walletadd_sql
 
 	// POST /prop/al/get
@@ -172,6 +173,8 @@ const (
 	SEC_prop_alset_noclub
 	SEC_prop_alset_nouser
 	SEC_prop_alset_noaccess
+	SEC_prop_alset_noprops
+	SEC_prop_alset_nolevel
 	SEC_prop_alset_sql
 
 	// POST /prop/rtp/get
@@ -189,13 +192,14 @@ const (
 	SEC_prop_rtpset_noclub
 	SEC_prop_rtpset_nouser
 	SEC_prop_rtpset_noaccess
+	SEC_prop_rtpset_noprops
 	SEC_prop_rtpset_sql
 
 	// POST /user/rename
 	SEC_user_rename_nobind
 	SEC_user_rename_nouid
 	SEC_user_rename_nouser
-	SEC_prop_rename_noaccess
+	SEC_user_rename_noaccess
 	SEC_user_rename_update
 
 	// POST /user/secret
@@ -203,20 +207,20 @@ const (
 	SEC_user_secret_nouid
 	SEC_user_secret_smallsec
 	SEC_user_secret_nouser
-	SEC_prop_secret_noaccess
-	SEC_prop_secret_nosecret
+	SEC_user_secret_noaccess
+	SEC_user_secret_nosecret
 	SEC_user_secret_update
 
 	// POST /user/delete
 	SEC_user_delete_nobind
 	SEC_user_delete_nouid
 	SEC_user_delete_nouser
-	SEC_prop_delete_noaccess
-	SEC_prop_delete_nosecret
-	SEC_prop_delete_sqluser
-	SEC_game_delete_sqllock
-	SEC_prop_delete_sqlprops
-	SEC_prop_delete_sqlgames
+	SEC_user_delete_noaccess
+	SEC_user_delete_nosecret
+	SEC_user_delete_sqluser
+	SEC_user_delete_sqllock
+	SEC_user_delete_sqlprops
+	SEC_user_delete_sqlgames
 
 	// POST /club/is
 	SEC_club_is_nobind
@@ -244,8 +248,8 @@ const (
 	SEC_club_cashin_bankout
 	SEC_club_cashin_fundout
 	SEC_club_cashin_lockout
-	SEC_game_cashin_sqlbank
-	SEC_game_cashin_sqllog
+	SEC_club_cashin_sqlbank
+	SEC_club_cashin_sqllog
 )
 
 var (
@@ -255,13 +259,14 @@ var (
 	ErrNoGID     = errors.New("game ID does not provided")
 	ErrNoClub    = errors.New("club with given ID does not found")
 	ErrNoUser    = errors.New("user with given ID does not found")
-	ErrNoWallet  = errors.New("wallet for given user and club does not found")
+	ErrNoProps   = errors.New("properties for given user and club does not found")
 	ErrNoAddSum  = errors.New("no sum to change balance of bank or fund or deposit")
 	ErrNoMoney   = errors.New("not enough money on balance")
 	ErrBankOut   = errors.New("not enough money at bank")
 	ErrFundOut   = errors.New("not enough money at jackpot fund")
 	ErrLockOut   = errors.New("not enough money at deposit")
 	ErrNoAccess  = errors.New("no access rights for this feature")
+	ErrNoLevel   = errors.New("admin have no privilege to modify specified access level to user")
 	ErrNotConf   = errors.New("password confirmation does not pass")
 	ErrNoMult    = errors.New("gamble multiplier not given")
 	ErrBigMult   = errors.New("gamble multiplier too big")

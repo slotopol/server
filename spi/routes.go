@@ -124,7 +124,7 @@ func Router(r *gin.Engine) {
 	r.GET("/signis", SpiSignis)
 	r.POST("/signup", SpiSignup)
 	r.POST("/signin", SpiSignin)
-	r.GET("/refresh", Auth(true), SpiRefresh)
+	r.Any("/refresh", Auth(true), SpiRefresh)
 	var ra = r.Group("/", Auth(true))
 
 	//r.Use(gzip.Gzip(gzip.DefaultCompression))
@@ -148,6 +148,7 @@ func Router(r *gin.Engine) {
 	rp.POST("/rtp/get", SpiPropsRtpGet)
 	rp.POST("/rtp/set", SpiPropsRtpSet)
 	var ru = ra.Group("/user")
+	ru.POST("/is", SpiSignis)
 	ru.POST("/rename", SpiUserRename)
 	ru.POST("/secret", SpiUserSecret)
 	ru.POST("/delete", SpiUserDelete)

@@ -8,6 +8,10 @@ import (
 	cfg "github.com/slotopol/server/config"
 )
 
+const (
+	sqllock = `UPDATE club SET lock=lock+? utime=CURRENT_TIMESTAMP WHERE cid=?`
+)
+
 // Changes 'Name' of given user.
 func SpiUserRename(c *gin.Context) {
 	var err error
@@ -35,7 +39,7 @@ func SpiUserRename(c *gin.Context) {
 
 	var admin, al = GetAdmin(c, 0)
 	if admin != user && al&ALadmin == 0 {
-		Ret403(c, SEC_prop_rename_noaccess, ErrNoAccess)
+		Ret403(c, SEC_user_rename_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -79,12 +83,12 @@ func SpiUserSecret(c *gin.Context) {
 
 	var admin, al = GetAdmin(c, 0)
 	if admin != user && al&ALadmin == 0 {
-		Ret403(c, SEC_prop_secret_noaccess, ErrNoAccess)
+		Ret403(c, SEC_user_secret_noaccess, ErrNoAccess)
 		return
 	}
 
 	if arg.OldSecret != user.Secret && al&ALadmin == 0 {
-		Ret403(c, SEC_prop_secret_nosecret, ErrNotConf)
+		Ret403(c, SEC_user_secret_nosecret, ErrNotConf)
 		return
 	}
 
@@ -130,27 +134,26 @@ func SpiUserDelete(c *gin.Context) {
 
 	var admin, al = GetAdmin(c, 0)
 	if admin != user && al&ALadmin == 0 {
-		Ret403(c, SEC_prop_delete_noaccess, ErrNoAccess)
+		Ret403(c, SEC_user_delete_noaccess, ErrNoAccess)
 		return
 	}
 
 	if arg.Secret != user.Secret && al&ALadmin == 0 {
-		Ret403(c, SEC_prop_delete_nosecret, ErrNotConf)
+		Ret403(c, SEC_user_delete_nosecret, ErrNotConf)
 		return
 	}
 
 	// write gain and total bet as transaction
 	if err = SafeTransaction(cfg.XormStorage, func(session *Session) (err error) {
 		if _, err = session.ID(arg.UID).Delete(user); err != nil {
-			Ret500(c, SEC_prop_delete_sqluser, err)
+			Ret500(c, SEC_user_delete_sqluser, err)
 			return
 		}
 
-		const sql1 = `UPDATE club SET lock=lock+? WHERE cid=?`
 		if user.props.Range(func(cid uint64, props *Props) bool {
 			if props.Wallet != 0 {
-				if _, err = session.Exec(sql1, props.Wallet, cid); err != nil {
-					Ret500(c, SEC_game_delete_sqllock, err)
+				if _, err = session.Exec(sqllock, props.Wallet, cid); err != nil {
+					Ret500(c, SEC_user_delete_sqllock, err)
 					return false
 				}
 			}
@@ -160,12 +163,12 @@ func SpiUserDelete(c *gin.Context) {
 		}
 
 		if _, err = session.Where("uid=?", arg.UID).Delete(&Props{}); err != nil {
-			Ret500(c, SEC_prop_delete_sqlprops, err)
+			Ret500(c, SEC_user_delete_sqlprops, err)
 			return
 		}
 
 		if _, err = session.Where("uid=?", arg.UID).Delete(&Scene{}); err != nil {
-			Ret500(c, SEC_prop_delete_sqlgames, err)
+			Ret500(c, SEC_user_delete_sqlgames, err)
 			return
 		}
 

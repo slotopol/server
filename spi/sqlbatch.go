@@ -8,10 +8,10 @@ import (
 )
 
 const (
-	sqlbank1  = `UPDATE club SET bank=bank+? WHERE cid=?`
-	sqlbank2  = `UPDATE props SET wallet=wallet+? WHERE uid=? AND cid=?`
-	sqlbank3  = `UPDATE props SET access=? WHERE uid=? AND cid=?`
-	sqlbank4  = `UPDATE props SET mrtp=? WHERE uid=? AND cid=?`
+	sqlbank1  = `UPDATE club SET bank=bank+? utime=CURRENT_TIMESTAMP WHERE cid=?`
+	sqlbank2  = `UPDATE props SET wallet=wallet+? utime=CURRENT_TIMESTAMP WHERE uid=? AND cid=?`
+	sqlbank3  = `UPDATE props SET access=? utime=CURRENT_TIMESTAMP WHERE uid=? AND cid=?`
+	sqlbank4  = `UPDATE props SET mrtp=? utime=CURRENT_TIMESTAMP WHERE uid=? AND cid=?`
 	sqlstory1 = `UPDATE story SET flow=? WHERE gid=?`
 )
 
@@ -41,7 +41,6 @@ type SqlBank struct {
 	usersum map[uint64]float64
 	useral  map[uint64]AL
 	userrtp map[uint64]float64
-	userins map[uint64]bool
 	log     []Walletlog
 	usercap int
 	logsize int
@@ -57,7 +56,6 @@ func (sb *SqlBank) Init(cid uint64, capacity, logsize int) {
 	sb.usersum = make(map[uint64]float64, capacity)
 	sb.useral = make(map[uint64]AL, capacity)
 	sb.userrtp = make(map[uint64]float64, capacity)
-	sb.userins = make(map[uint64]bool, capacity)
 	sb.log = make([]Walletlog, 0, logsize)
 	sb.usercap = capacity
 	sb.logsize = logsize
@@ -68,7 +66,6 @@ func (sb *SqlBank) clear() {
 	clear(sb.usersum)
 	clear(sb.useral)
 	clear(sb.userrtp)
-	clear(sb.userins)
 	sb.log = sb.log[:0]
 	sb.lft = time.Now()
 }
@@ -79,44 +76,19 @@ func (sb *SqlBank) transaction(session *Session) (err error) {
 			return
 		}
 	}
-	if len(sb.userins) > 0 {
-		var pins = make([]Props, 0, len(sb.userins))
-		for uid := range sb.userins {
-			var sum = sb.usersum[uid]
-			var al = sb.useral[uid]
-			var mrtp = sb.userrtp[uid]
-			var props = Props{
-				CID:    sb.cid,
-				UID:    uid,
-				Wallet: sum,
-				Access: al,
-				MRTP:   mrtp,
-			}
-			pins = append(pins, props)
-		}
-		if _, err = session.InsertMulti(&pins); err != nil {
+	for uid, sum := range sb.usersum {
+		if _, err = session.Exec(sqlbank2, sum, uid, sb.cid); err != nil {
 			return
 		}
 	}
-	for uid, sum := range sb.usersum {
-		if !sb.userins[uid] {
-			if _, err = session.Exec(sqlbank2, sum, uid, sb.cid); err != nil {
-				return
-			}
-		}
-	}
 	for uid, access := range sb.useral {
-		if !sb.userins[uid] {
-			if _, err = session.Exec(sqlbank3, access, uid, sb.cid); err != nil {
-				return
-			}
+		if _, err = session.Exec(sqlbank3, access, uid, sb.cid); err != nil {
+			return
 		}
 	}
 	for uid, mrtp := range sb.userrtp {
-		if !sb.userins[uid] {
-			if _, err = session.Exec(sqlbank4, mrtp, uid, sb.cid); err != nil {
-				return
-			}
+		if _, err = session.Exec(sqlbank4, mrtp, uid, sb.cid); err != nil {
+			return
 		}
 	}
 	if len(sb.log) > 0 {
@@ -141,13 +113,10 @@ func (sb *SqlBank) Put(engine *xorm.Engine, uid uint64, sum float64) (err error)
 	return
 }
 
-func (sb *SqlBank) Add(engine *xorm.Engine, uid, aid uint64, wallet, sum float64, ins bool) (err error) {
+func (sb *SqlBank) Add(engine *xorm.Engine, uid, aid uint64, wallet, sum float64) (err error) {
 	sb.mux.Lock()
 	defer sb.mux.Unlock()
 	sb.usersum[uid] += sum
-	if ins {
-		sb.userins[uid] = ins
-	}
 	sb.log = append(sb.log, Walletlog{
 		CID:    sb.cid,
 		UID:    uid,
@@ -164,13 +133,10 @@ func (sb *SqlBank) Add(engine *xorm.Engine, uid, aid uint64, wallet, sum float64
 	return
 }
 
-func (sb *SqlBank) Access(engine *xorm.Engine, uid uint64, access AL, ins bool) (err error) {
+func (sb *SqlBank) Access(engine *xorm.Engine, uid uint64, access AL) (err error) {
 	sb.mux.Lock()
 	defer sb.mux.Unlock()
 	sb.useral[uid] = access
-	if ins {
-		sb.userins[uid] = ins
-	}
 	if len(sb.useral) >= sb.usercap {
 		if err = SafeTransaction(engine, sb.transaction); err != nil {
 			return
@@ -180,13 +146,10 @@ func (sb *SqlBank) Access(engine *xorm.Engine, uid uint64, access AL, ins bool) 
 	return
 }
 
-func (sb *SqlBank) MRTP(engine *xorm.Engine, uid uint64, mrtp float64, ins bool) (err error) {
+func (sb *SqlBank) MRTP(engine *xorm.Engine, uid uint64, mrtp float64) (err error) {
 	sb.mux.Lock()
 	defer sb.mux.Unlock()
 	sb.userrtp[uid] = mrtp
-	if ins {
-		sb.userins[uid] = ins
-	}
 	if len(sb.userrtp) >= sb.usercap {
 		if err = SafeTransaction(engine, sb.transaction); err != nil {
 			return

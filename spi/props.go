@@ -108,37 +108,32 @@ func SpiPropsWalletAdd(c *gin.Context) {
 		return
 	}
 
-	var props, hasprops = user.props.Get(arg.CID)
-	if !hasprops {
-		props = &Props{
-			CID: arg.CID,
-			UID: arg.UID,
-		}
-	}
-	if props.Wallet+arg.Sum < 0 {
-		Ret403(c, SEC_prop_walletadd_nomoney, ErrNoMoney)
-		return
-	}
-
 	var admin, al = GetAdmin(c, arg.CID)
 	if al&ALuser == 0 {
 		Ret403(c, SEC_prop_walletadd_noaccess, ErrNoAccess)
 		return
 	}
 
+	var props *Props
+	if props, ok = user.props.Get(arg.CID); !ok {
+		Ret500(c, SEC_prop_walletadd_noprops, ErrNoProps)
+		return
+	}
+	if props.Wallet+arg.Sum < 0 {
+		Ret403(c, SEC_prop_walletadd_nomoney, ErrNoMoney)
+		return
+	}
+
 	// update wallet as transaction
 	if Cfg.ClubInsertBuffer > 1 {
-		go BankBat[arg.CID].Add(cfg.XormStorage, arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum, !hasprops)
-	} else if err = BankBat[arg.CID].Add(cfg.XormStorage, arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum, !hasprops); err != nil {
+		go BankBat[arg.CID].Add(cfg.XormStorage, arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum)
+	} else if err = BankBat[arg.CID].Add(cfg.XormStorage, arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum); err != nil {
 		Ret500(c, SEC_prop_walletadd_sql, err)
 		return
 	}
 
 	// make changes to memory data
 	props.Wallet += arg.Sum
-	if !hasprops {
-		user.InsertProps(props)
-	}
 
 	ret.Wallet = props.Wallet
 
@@ -233,14 +228,6 @@ func SpiPropsAlSet(c *gin.Context) {
 		return
 	}
 
-	var props, hasprops = user.props.Get(arg.CID)
-	if !hasprops {
-		props = &Props{
-			CID: arg.CID,
-			UID: arg.UID,
-		}
-	}
-
 	var admin, al = GetAdmin(c, arg.CID)
 	if al&ALadmin == 0 {
 		Ret403(c, SEC_prop_alset_noaccess, ErrNoAccess)
@@ -248,19 +235,26 @@ func SpiPropsAlSet(c *gin.Context) {
 	}
 	_ = admin
 
+	var props *Props
+	if props, ok = user.props.Get(arg.CID); !ok {
+		Ret500(c, SEC_prop_alset_noprops, ErrNoProps)
+		return
+	}
+	if al&arg.Access != arg.Access {
+		Ret403(c, SEC_prop_alset_nolevel, ErrNoLevel)
+		return
+	}
+
 	// update access level as transaction
 	if Cfg.ClubInsertBuffer > 1 {
-		go BankBat[arg.CID].Access(cfg.XormStorage, arg.UID, arg.Access, !hasprops)
-	} else if err = BankBat[arg.CID].Access(cfg.XormStorage, arg.UID, arg.Access, !hasprops); err != nil {
+		go BankBat[arg.CID].Access(cfg.XormStorage, arg.UID, arg.Access)
+	} else if err = BankBat[arg.CID].Access(cfg.XormStorage, arg.UID, arg.Access); err != nil {
 		Ret500(c, SEC_prop_rtpset_sql, err)
 		return
 	}
 
 	// make changes to memory data
 	props.Access = arg.Access
-	if !hasprops {
-		user.InsertProps(props)
-	}
 
 	c.Status(http.StatusOK)
 }
@@ -354,14 +348,6 @@ func SpiPropsRtpSet(c *gin.Context) {
 		return
 	}
 
-	var props, hasprops = user.props.Get(arg.CID)
-	if !hasprops {
-		props = &Props{
-			CID: arg.CID,
-			UID: arg.UID,
-		}
-	}
-
 	var admin, al = GetAdmin(c, arg.CID)
 	if al&ALgame == 0 {
 		Ret403(c, SEC_prop_rtpset_noaccess, ErrNoAccess)
@@ -369,19 +355,22 @@ func SpiPropsRtpSet(c *gin.Context) {
 	}
 	_ = admin
 
+	var props *Props
+	if props, ok = user.props.Get(arg.CID); !ok {
+		Ret500(c, SEC_prop_rtpset_noprops, ErrNoProps)
+		return
+	}
+
 	// update master RTP as transaction
 	if Cfg.ClubInsertBuffer > 1 {
-		go BankBat[arg.CID].MRTP(cfg.XormStorage, arg.UID, arg.MRTP, !hasprops)
-	} else if err = BankBat[arg.CID].MRTP(cfg.XormStorage, arg.UID, arg.MRTP, !hasprops); err != nil {
+		go BankBat[arg.CID].MRTP(cfg.XormStorage, arg.UID, arg.MRTP)
+	} else if err = BankBat[arg.CID].MRTP(cfg.XormStorage, arg.UID, arg.MRTP); err != nil {
 		Ret500(c, SEC_prop_rtpset_sql, err)
 		return
 	}
 
 	// make changes to memory data
 	props.MRTP = arg.MRTP
-	if !hasprops {
-		user.InsertProps(props)
-	}
 
 	c.Status(http.StatusOK)
 }

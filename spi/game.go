@@ -68,7 +68,7 @@ func SpiGameJoin(c *gin.Context) {
 
 	var admin, al = GetAdmin(c, arg.CID)
 	if (al&ALmem == 0) || (admin != user && al&ALgame == 0) {
-		Ret403(c, SEC_prop_join_noaccess, ErrNoAccess)
+		Ret403(c, SEC_game_join_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -155,7 +155,7 @@ func SpiGamePart(c *gin.Context) {
 
 	var admin, al = GetAdmin(c, scene.CID)
 	if admin != user && al&ALgame == 0 {
-		Ret403(c, SEC_prop_part_noaccess, ErrNoAccess)
+		Ret403(c, SEC_game_part_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -163,7 +163,7 @@ func SpiGamePart(c *gin.Context) {
 	if Cfg.ClubUpdateBuffer > 1 {
 		go JoinBuf.Flow(cfg.XormStorage, arg.GID, false)
 	} else if err = JoinBuf.Flow(cfg.XormStorage, arg.GID, false); err != nil {
-		Ret500(c, SEC_prop_part_sql, err)
+		Ret500(c, SEC_game_part_sql, err)
 		return
 	}
 
@@ -218,13 +218,13 @@ func SpiGameInfo(c *gin.Context) {
 
 	var admin, al = GetAdmin(c, scene.CID)
 	if admin != user && al&ALgame == 0 {
-		Ret403(c, SEC_prop_state_noaccess, ErrNoAccess)
+		Ret403(c, SEC_game_info_noaccess, ErrNoAccess)
 		return
 	}
 
 	var props *Props
 	if props, ok = user.props.Get(scene.CID); !ok {
-		Ret500(c, SEC_game_info_noprops, ErrNoWallet)
+		Ret500(c, SEC_game_info_noprops, ErrNoProps)
 		return
 	}
 
@@ -271,7 +271,7 @@ func SpiGameBetGet(c *gin.Context) {
 
 	var admin, al = GetAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_prop_betget_noaccess, ErrNoAccess)
+		Ret403(c, SEC_game_betget_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -307,7 +307,7 @@ func SpiGameBetSet(c *gin.Context) {
 
 	var admin, al = GetAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_prop_betset_noaccess, ErrNoAccess)
+		Ret403(c, SEC_game_betset_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -349,7 +349,7 @@ func SpiGameSblGet(c *gin.Context) {
 
 	var admin, al = GetAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_prop_sblget_noaccess, ErrNoAccess)
+		Ret403(c, SEC_game_sblget_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -385,7 +385,7 @@ func SpiGameSblSet(c *gin.Context) {
 
 	var admin, al = GetAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_prop_sblset_noaccess, ErrNoAccess)
+		Ret403(c, SEC_game_sblset_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -439,7 +439,7 @@ func SpiGameRtpGet(c *gin.Context) {
 
 	var admin, al = GetAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_prop_rdget_noaccess, ErrNoAccess)
+		Ret403(c, SEC_game_rdget_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -496,7 +496,7 @@ func SpiGameSpin(c *gin.Context) {
 
 	var admin, al = GetAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_prop_spin_noaccess, ErrNoAccess)
+		Ret403(c, SEC_game_spin_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -513,7 +513,7 @@ func SpiGameSpin(c *gin.Context) {
 
 	var props *Props
 	if props, ok = user.props.Get(scene.CID); !ok {
-		Ret500(c, SEC_game_spin_noprops, ErrNoWallet)
+		Ret500(c, SEC_game_spin_noprops, ErrNoProps)
 		return
 	}
 	if props.Wallet < totalbet {
@@ -643,13 +643,13 @@ func SpiGameDoubleup(c *gin.Context) {
 
 	var admin, al = GetAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_prop_doubleup_noaccess, ErrNoAccess)
+		Ret403(c, SEC_game_doubleup_noaccess, ErrNoAccess)
 		return
 	}
 
 	var props *Props
 	if props, ok = user.props.Get(scene.CID); !ok {
-		Ret500(c, SEC_game_doubleup_noprops, ErrNoWallet)
+		Ret500(c, SEC_game_doubleup_noprops, ErrNoProps)
 		return
 	}
 
@@ -742,12 +742,12 @@ func SpiGameCollect(c *gin.Context) {
 
 	var admin, al = GetAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_prop_collect_noaccess, ErrNoAccess)
+		Ret403(c, SEC_game_collect_noaccess, ErrNoAccess)
 		return
 	}
 
 	if err = scene.Game.SetGain(0); err != nil {
-		Ret403(c, SEC_prop_collect_denied, err)
+		Ret403(c, SEC_game_collect_denied, err)
 		return
 	}
 
