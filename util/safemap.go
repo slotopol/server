@@ -1,6 +1,7 @@
 package util
 
 import (
+	"iter"
 	"sync"
 )
 
@@ -68,23 +69,25 @@ func (rwm *RWMap[K, T]) GetAndDelete(key K) (ret T, ok bool) {
 	return
 }
 
-// Range makes copy of the state and then call given function for each pair
-// until `false` returned.
-func (rwm *RWMap[K, T]) Range(f func(K, T) bool) {
-	var buf []kvpair[K, T]
-	func() {
-		rwm.mux.RLock()
-		defer rwm.mux.RUnlock()
-		buf = make([]kvpair[K, T], len(rwm.m))
-		var i int
-		for k, v := range rwm.m {
-			buf[i].key, buf[i].val = k, v
-			i++
-		}
-	}() // unlock when copy is ready
-	for _, pair := range buf {
-		if !f(pair.key, pair.val) {
-			return
+// Items returns iterator for all key-value pairs. Iterator makes copy of
+// the state and then yields for each pair.
+func (rwm *RWMap[K, T]) Items() iter.Seq2[K, T] {
+	return func(yield func(K, T) bool) {
+		var buf []kvpair[K, T]
+		func() {
+			rwm.mux.RLock()
+			defer rwm.mux.RUnlock()
+			buf = make([]kvpair[K, T], len(rwm.m))
+			var i int
+			for k, v := range rwm.m {
+				buf[i].key, buf[i].val = k, v
+				i++
+			}
+		}() // unlock when copy is ready
+		for _, pair := range buf {
+			if !yield(pair.key, pair.val) {
+				return
+			}
 		}
 	}
 }
@@ -217,16 +220,18 @@ func (c *Cache[K, T]) Remove(key K) (ok bool) {
 	return
 }
 
-// Range makes copy of the state and then call given function for each pair
-// until `false` returned.
-func (c *Cache[K, T]) Range(f func(K, T) bool) {
-	c.mux.Lock()
-	var s = append([]kvpair[K, T]{}, c.seq...) // make non-nil copy
-	c.mux.Unlock()
+// Items returns iterator for all key-value pairs. Iterator makes copy of
+// the state and then yields for each pair.
+func (c *Cache[K, T]) Items() iter.Seq2[K, T] {
+	return func(yield func(K, T) bool) {
+		c.mux.Lock()
+		var s = append([]kvpair[K, T]{}, c.seq...) // make non-nil copy
+		c.mux.Unlock()
 
-	for _, pair := range s {
-		if !f(pair.key, pair.val) {
-			return
+		for _, pair := range s {
+			if !yield(pair.key, pair.val) {
+				return
+			}
 		}
 	}
 }
@@ -332,10 +337,9 @@ type Sizer interface {
 
 // CacheSize returns size of given cache.
 func CacheSize[K comparable, T Sizer](cache *Cache[K, T]) (size int64) {
-	cache.Range(func(key K, val T) bool {
+	for _, val := range cache.Items() {
 		size += val.Size()
-		return true
-	})
+	}
 	return
 }
 

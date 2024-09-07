@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	sqllock = `UPDATE club SET lock=lock+? utime=CURRENT_TIMESTAMP WHERE cid=?`
+	sqllock = `UPDATE club SET lock=lock+?, utime=CURRENT_TIMESTAMP WHERE cid=?`
 )
 
 // Changes 'Name' of given user.
@@ -150,16 +150,13 @@ func SpiUserDelete(c *gin.Context) {
 			return
 		}
 
-		if user.props.Range(func(cid uint64, props *Props) bool {
+		for cid, props := range user.props.Items() {
 			if props.Wallet != 0 {
 				if _, err = session.Exec(sqllock, props.Wallet, cid); err != nil {
 					Ret500(c, SEC_user_delete_sqllock, err)
-					return false
+					return
 				}
 			}
-			return true
-		}); err != nil {
-			return
 		}
 
 		if _, err = session.Where("uid=?", arg.UID).Delete(&Props{}); err != nil {
@@ -177,19 +174,17 @@ func SpiUserDelete(c *gin.Context) {
 		return
 	}
 
-	user.props.Range(func(cid uint64, props *Props) bool {
+	Users.Delete(arg.UID)
+	for cid, props := range user.props.Items() {
 		ret.Wallets[cid] = props.Wallet
 		if club, ok := Clubs.Get(cid); ok && props.Wallet != 0 {
 			club.Lock += float64(props.Wallet)
 			ret.Wallets[cid] = props.Wallet
 		}
-		return true
-	})
-	user.games.Range(func(gid uint64, scene *Scene) bool {
+	}
+	for gid := range user.games.Items() {
 		Scenes.Delete(gid)
-		return true
-	})
-	Users.Delete(arg.UID)
+	}
 
 	RetOk(c, ret)
 }

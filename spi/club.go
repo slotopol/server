@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	sqlclub = `UPDATE club SET bank=bank+?, fund=fund+?, lock=lock+? utime=CURRENT_TIMESTAMP WHERE cid=?`
+	sqlclub = `UPDATE club SET bank=bank+?, fund=fund+?, lock=lock+?, utime=CURRENT_TIMESTAMP WHERE cid=?`
 )
 
 // Returns current club state.
@@ -43,14 +43,13 @@ func SpiClubIs(c *gin.Context) {
 			ret.Name = club.Name
 		}
 	} else {
-		Clubs.Range(func(cid uint64, club *Club) bool {
-			if club.Name != arg.Name {
-				return true
+		for _, club := range Clubs.Items() {
+			if club.Name == arg.Name {
+				ret.CID = club.CID
+				ret.Name = club.Name
+				break
 			}
-			ret.CID = club.CID
-			ret.Name = club.Name
-			return false
-		})
+		}
 	}
 
 	RetOk(c, ret)

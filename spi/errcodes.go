@@ -44,98 +44,98 @@ const (
 	SEC_signin_hs256
 	SEC_signin_denyhash
 
-	// POST /game/join
-	SEC_game_join_nobind
-	SEC_game_join_norid
-	SEC_game_join_nouid
-	SEC_game_join_noclub
-	SEC_game_join_nouser
-	SEC_game_join_noaccess
-	SEC_game_join_noalias
-	SEC_game_join_noreels
-	SEC_game_join_sql
+	// POST /slot/join
+	SEC_slot_join_nobind
+	SEC_slot_join_norid
+	SEC_slot_join_nouid
+	SEC_slot_join_noclub
+	SEC_slot_join_nouser
+	SEC_slot_join_noaccess
+	SEC_slot_join_noalias
+	SEC_slot_join_noreels
+	SEC_slot_join_sql
 
-	// POST /game/part
-	SEC_game_part_nobind
-	SEC_game_part_nogid
-	SEC_game_part_notopened
-	SEC_game_part_nouser
-	SEC_game_part_noaccess
-	SEC_game_part_sql
+	// POST /slot/part
+	SEC_slot_part_nobind
+	SEC_slot_part_nogid
+	SEC_slot_part_notopened
+	SEC_slot_part_nouser
+	SEC_slot_part_noaccess
+	SEC_slot_part_sql
 
-	// POST /game/info
-	SEC_game_info_nobind
-	SEC_game_info_nogid
-	SEC_game_info_notopened
-	SEC_game_info_nouser
-	SEC_game_info_noaccess
-	SEC_game_info_noprops
+	// POST /slot/info
+	SEC_slot_info_nobind
+	SEC_slot_info_nogid
+	SEC_slot_info_notopened
+	SEC_slot_info_nouser
+	SEC_slot_info_noaccess
+	SEC_slot_info_noprops
 
-	// POST /game/bet/get
-	SEC_game_betget_nobind
-	SEC_game_betget_nogid
-	SEC_game_betget_notopened
-	SEC_game_betget_noaccess
+	// POST /slot/bet/get
+	SEC_slot_betget_nobind
+	SEC_slot_betget_nogid
+	SEC_slot_betget_notopened
+	SEC_slot_betget_noaccess
 
-	// POST /game/bet/set
-	SEC_game_betset_nobind
-	SEC_game_betset_nogid
-	SEC_game_betset_notopened
-	SEC_game_betset_noaccess
-	SEC_game_betset_badbet
+	// POST /slot/bet/set
+	SEC_slot_betset_nobind
+	SEC_slot_betset_nogid
+	SEC_slot_betset_notopened
+	SEC_slot_betset_noaccess
+	SEC_slot_betset_badbet
 
-	// POST /game/sbl/get
-	SEC_game_sblget_nobind
-	SEC_game_sblget_nogid
-	SEC_game_sblget_notopened
-	SEC_game_sblget_noaccess
+	// POST /slot/sbl/get
+	SEC_slot_sblget_nobind
+	SEC_slot_sblget_nogid
+	SEC_slot_sblget_notopened
+	SEC_slot_sblget_noaccess
 
-	// POST /game/sbl/set
-	SEC_game_sblset_nobind
-	SEC_game_sblset_nogid
-	SEC_game_sblset_notopened
-	SEC_game_sblset_noaccess
-	SEC_game_sblset_badlines
+	// POST /slot/sbl/set
+	SEC_slot_sblset_nobind
+	SEC_slot_sblset_nogid
+	SEC_slot_sblset_notopened
+	SEC_slot_sblset_noaccess
+	SEC_slot_sblset_badlines
 
-	// POST /game/rtp/get
-	SEC_game_rdget_nobind
-	SEC_game_rdget_nogid
-	SEC_game_rdget_notopened
-	SEC_game_rdget_noclub
-	SEC_game_rdget_nouser
-	SEC_game_rdget_noaccess
+	// POST /slot/rtp/get
+	SEC_slot_rdget_nobind
+	SEC_slot_rdget_nogid
+	SEC_slot_rdget_notopened
+	SEC_slot_rdget_noclub
+	SEC_slot_rdget_nouser
+	SEC_slot_rdget_noaccess
 
-	// POST /game/spin
-	SEC_game_spin_nobind
-	SEC_game_spin_nogid
-	SEC_game_spin_notopened
-	SEC_game_spin_noclub
-	SEC_game_spin_nouser
-	SEC_game_spin_noaccess
-	SEC_game_spin_noprops
-	SEC_game_spin_nomoney
-	SEC_game_spin_badbank
-	SEC_game_spin_sqlbank
+	// POST /slot/spin
+	SEC_slot_spin_nobind
+	SEC_slot_spin_nogid
+	SEC_slot_spin_notopened
+	SEC_slot_spin_noclub
+	SEC_slot_spin_nouser
+	SEC_slot_spin_noaccess
+	SEC_slot_spin_noprops
+	SEC_slot_spin_nomoney
+	SEC_slot_spin_badbank
+	SEC_slot_spin_sqlbank
 
-	// POST /game/doubleup
-	SEC_game_doubleup_nobind
-	SEC_game_doubleup_nogid
-	SEC_game_doubleup_nomult
-	SEC_game_doubleup_bigmult
-	SEC_game_doubleup_notopened
-	SEC_game_doubleup_noclub
-	SEC_game_doubleup_nouser
-	SEC_game_doubleup_noaccess
-	SEC_game_doubleup_noprops
-	SEC_game_doubleup_nomoney
-	SEC_game_doubleup_sqlbank
+	// POST /slot/doubleup
+	SEC_slot_doubleup_nobind
+	SEC_slot_doubleup_nogid
+	SEC_slot_doubleup_nomult
+	SEC_slot_doubleup_bigmult
+	SEC_slot_doubleup_notopened
+	SEC_slot_doubleup_noclub
+	SEC_slot_doubleup_nouser
+	SEC_slot_doubleup_noaccess
+	SEC_slot_doubleup_noprops
+	SEC_slot_doubleup_nomoney
+	SEC_slot_doubleup_sqlbank
 
-	// POST /game/collect
-	SEC_game_collect_nobind
-	SEC_game_collect_nogid
-	SEC_game_collect_notopened
-	SEC_game_collect_noaccess
-	SEC_game_collect_denied
+	// POST /slot/collect
+	SEC_slot_collect_nobind
+	SEC_slot_collect_nogid
+	SEC_slot_collect_notopened
+	SEC_slot_collect_noaccess
+	SEC_slot_collect_denied
 
 	// POST /prop/wallet/get
 	SEC_prop_walletget_nobind

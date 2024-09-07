@@ -7,7 +7,7 @@ import (
 	"github.com/slotopol/server/game/dolphinspearl"
 )
 
-// go test -v -bench ^BenchmarkSpin$ -benchmem -count=5 -cover ./game/dolphinspearl
+// go test -v -bench ^BenchmarkSpin$ -benchmem -count=5 -cover ./slot/dolphinspearl
 
 func BenchmarkSpin(b *testing.B) {
 	var g = dolphinspearl.NewGame()
@@ -16,7 +16,7 @@ func BenchmarkSpin(b *testing.B) {
 	var wins = make(game.Wins, 0, 10)
 
 	b.ResetTimer()
-	for i := 0; i < b.N; i++ {
+	for range b.N {
 		g.Spin(screen, 92)
 		g.Scanner(screen, &wins)
 		wins.Reset()

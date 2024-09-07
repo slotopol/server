@@ -155,13 +155,12 @@ func GetBasicAuth(credentials string) (user *User, code int, err error) {
 	var parts = strings.Split(util.B2S(decoded), ":")
 
 	var email = util.ToLower(parts[0])
-	Users.Range(func(uid uint64, u *User) bool {
-		if u.Email != email {
-			return true
+	for _, u := range Users.Items() {
+		if u.Email == email {
+			user = u
+			break
 		}
-		user = u
-		return false
-	})
+	}
 	if user == nil {
 		err, code = ErrNoCred, SEC_basic_nouser
 		return
@@ -289,14 +288,13 @@ func SpiSignis(c *gin.Context) {
 			ret.Email = user.Email
 		}
 	} else {
-		Users.Range(func(uid uint64, u *User) bool {
-			if u.Email != email {
-				return true
+		for _, u := range Users.Items() {
+			if u.Email == email {
+				ret.UID = u.UID
+				ret.Email = u.Email
+				break
 			}
-			ret.UID = u.UID
-			ret.Email = u.Email
-			return false
-		})
+		}
 	}
 
 	RetOk(c, ret)
@@ -351,17 +349,16 @@ func SpiSignup(c *gin.Context) {
 		}
 
 		user.Init()
-		Users.Set(user.UID, user)
-		Clubs.Range(func(cid uint64, _ *Club) bool {
+		for cid := range Clubs.Items() {
 			user.InsertProps(&Props{
 				CID: cid,
 				UID: user.UID,
 			})
-			return true
-		})
+		}
 		for i := range props {
 			user.InsertProps(&props[i])
 		}
+		Users.Set(user.UID, user)
 		return
 	}); err != nil {
 		Ret500(c, SEC_signup_sql, err)
@@ -408,13 +405,12 @@ func SpiSignin(c *gin.Context) {
 	if arg.UID != 0 {
 		user, _ = Users.Get(arg.UID)
 	} else {
-		Users.Range(func(uid uint64, u *User) bool {
-			if u.Email != email {
-				return true
+		for _, u := range Users.Items() {
+			if u.Email == email {
+				user = u
+				break
 			}
-			user = u
-			return false
-		})
+		}
 	}
 	if user == nil {
 		Ret403(c, SEC_signin_nouser, ErrNoCred)

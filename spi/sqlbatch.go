@@ -8,10 +8,10 @@ import (
 )
 
 const (
-	sqlbank1  = `UPDATE club SET bank=bank+? utime=CURRENT_TIMESTAMP WHERE cid=?`
-	sqlbank2  = `UPDATE props SET wallet=wallet+? utime=CURRENT_TIMESTAMP WHERE uid=? AND cid=?`
-	sqlbank3  = `UPDATE props SET access=? utime=CURRENT_TIMESTAMP WHERE uid=? AND cid=?`
-	sqlbank4  = `UPDATE props SET mrtp=? utime=CURRENT_TIMESTAMP WHERE uid=? AND cid=?`
+	sqlbank1  = `UPDATE club SET bank=bank+?, utime=CURRENT_TIMESTAMP WHERE cid=?`
+	sqlbank2  = `UPDATE props SET wallet=wallet+?, utime=CURRENT_TIMESTAMP WHERE uid=? AND cid=?`
+	sqlbank3  = `UPDATE props SET access=?, utime=CURRENT_TIMESTAMP WHERE uid=? AND cid=?`
+	sqlbank4  = `UPDATE props SET mrtp=?, utime=CURRENT_TIMESTAMP WHERE uid=? AND cid=?`
 	sqlstory1 = `UPDATE story SET flow=? WHERE gid=?`
 )
 
