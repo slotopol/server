@@ -251,26 +251,29 @@ func InitSpinlog() (err error) {
 	return
 }
 
-func SqlLoop(exitctx context.Context, d time.Duration) {
-	var ticker = time.NewTicker(d)
-	defer ticker.Stop()
+func SqlLoop(exitctx context.Context) {
+	var fd = Cfg.SqlFlushTick
+	var flush = time.Tick(fd)
+	var passers = time.Tick(time.Hour * 8)
 	for {
 		select {
-		case <-ticker.C:
+		case <-flush:
 			for cid, bat := range spi.BankBat {
-				if err := bat.Flush(cfg.XormStorage, d); err != nil {
+				if err := bat.Flush(cfg.XormStorage, fd); err != nil {
 					log.Printf("can not update bank for cid=%d: %s", cid, err.Error())
 				}
 			}
-			if err := spi.JoinBuf.Flush(cfg.XormStorage, d); err != nil {
+			if err := spi.JoinBuf.Flush(cfg.XormStorage, fd); err != nil {
 				log.Printf("can not write to story log: %s", err.Error())
 			}
-			if err := spi.SpinBuf.Flush(cfg.XormSpinlog, d); err != nil {
+			if err := spi.SpinBuf.Flush(cfg.XormSpinlog, fd); err != nil {
 				log.Printf("can not write to spin log: %s", err.Error())
 			}
-			if err := spi.MultBuf.Flush(cfg.XormSpinlog, d); err != nil {
+			if err := spi.MultBuf.Flush(cfg.XormSpinlog, fd); err != nil {
 				log.Printf("can not write to mult log: %s", err.Error())
 			}
+		case <-passers:
+			cfg.XormStorage.Where("ctime<? AND status=0", time.Now().Add(-time.Hour*3*24).Format(time.DateTime)).Delete(&spi.User{})
 		case <-exitctx.Done():
 			return
 		}

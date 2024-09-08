@@ -67,7 +67,7 @@ func CalcStatEuro(ctx context.Context, x, y int) float64 {
 		var t0 = time.Now()
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		go s.Progress(ctx2, time.NewTicker(2*time.Second), sbl, total)
+		go s.Progress(ctx2, time.Tick(2*time.Second), sbl, total)
 		BruteForce5x(ctx2, &s, g, reels, x, y)
 		return time.Since(t0)
 	}()

@@ -29,7 +29,7 @@ const (
 )
 
 const (
-	sqlnewprops = `INSERT INTO props (cid,uid,ctime,utime) SELECT cid,?,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP FROM club`
+	sqlnewprops = `INSERT INTO props (cid,uid) SELECT cid,? FROM club`
 )
 
 var (
@@ -41,6 +41,7 @@ var (
 	ErrNoSecret = errors.New("expected password or SHA25 hash on it and current time as a nonce")
 	ErrSmallKey = errors.New("password too small")
 	ErrNoCred   = errors.New("user with given credentials does not registered")
+	ErrActivate = errors.New("activation required for this account")
 	ErrNotPass  = errors.New("password is incorrect")
 	ErrSigTime  = errors.New("signing time can not been recognized (time in RFC3339 expected)")
 	ErrSigOut   = errors.New("nonce is expired")
@@ -325,10 +326,16 @@ func SpiSignup(c *gin.Context) {
 
 	var email = util.ToLower(arg.Email)
 
+	var status uint
+	if _, al := GetAdmin(c, 0); al&ALadmin != 0 {
+		status = 1
+	}
+
 	var user = &User{
 		Email:  email,
 		Secret: arg.Secret,
 		Name:   arg.Name,
+		Status: status,
 	}
 	if err = SafeTransaction(cfg.XormStorage, func(session *Session) (err error) {
 		if _, err = session.Insert(user); err != nil {
@@ -414,6 +421,11 @@ func SpiSignin(c *gin.Context) {
 	}
 	if user == nil {
 		Ret403(c, SEC_signin_nouser, ErrNoCred)
+		return
+	}
+
+	if user.Status == 0 {
+		Ret403(c, SEC_signin_activate, ErrActivate)
 		return
 	}
 

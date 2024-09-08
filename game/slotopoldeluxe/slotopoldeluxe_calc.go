@@ -32,7 +32,7 @@ func CalcStat(ctx context.Context, rn string) float64 {
 		var t0 = time.Now()
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		go s.Progress(ctx2, time.NewTicker(2*time.Second), sbl, total)
+		go s.Progress(ctx2, time.Tick(2*time.Second), sbl, total)
 		game.BruteForce5x(ctx2, &s, g, reels)
 		return time.Since(t0)
 	}()

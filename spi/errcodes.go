@@ -38,6 +38,7 @@ const (
 	SEC_signin_nosecret
 	SEC_signin_smallsec
 	SEC_signin_nouser
+	SEC_signin_activate
 	SEC_signin_denypass
 	SEC_signin_sigtime
 	SEC_signin_timeout

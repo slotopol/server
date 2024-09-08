@@ -56,13 +56,12 @@ func (s *Stat) Update(wins Wins) {
 	atomic.AddUint64(&s.Reshuffles, 1)
 }
 
-func (s *Stat) Progress(ctx context.Context, steps *time.Ticker, sel, total float64) {
+func (s *Stat) Progress(ctx context.Context, steps <-chan time.Time, sel, total float64) {
 	for {
 		select {
 		case <-ctx.Done():
-			steps.Stop()
 			return
-		case <-steps.C:
+		case <-steps:
 			var n = float64(atomic.LoadUint64(&s.Reshuffles))
 			s.lpm.Lock()
 			var lp = s.LinePay
