@@ -6,6 +6,7 @@ const (
 	SECnull = iota
 
 	// authorization
+
 	SEC_auth_absent
 	SEC_auth_scheme
 	SEC_basic_decode
@@ -21,24 +22,43 @@ const (
 	SEC_token_error
 
 	// 404
+
 	SEC_nourl
 
+	// 405
+
+	SEC_nomethod
+
 	// GET /signis
+
 	SEC_signis_nobind
 	SEC_signis_noemail
 
+	// GET /activate
+
+	SEC_activate_nobind
+	SEC_activate_noemail
+	SEC_activate_nouser
+	SEC_activate_oldcode
+	SEC_activate_badcode
+	SEC_activate_update
+
 	// POST /signup
+
 	SEC_signup_nobind
 	SEC_signup_smallsec
 	SEC_signup_sql
 
 	// POST /signin
+
 	SEC_signin_nobind
 	SEC_signin_noemail
 	SEC_signin_nosecret
 	SEC_signin_smallsec
 	SEC_signin_nouser
 	SEC_signin_activate
+	SEC_signin_oldcode
+	SEC_signin_badcode
 	SEC_signin_denypass
 	SEC_signin_sigtime
 	SEC_signin_timeout
@@ -46,6 +66,7 @@ const (
 	SEC_signin_denyhash
 
 	// POST /slot/join
+
 	SEC_slot_join_nobind
 	SEC_slot_join_norid
 	SEC_slot_join_nouid
@@ -57,6 +78,7 @@ const (
 	SEC_slot_join_sql
 
 	// POST /slot/part
+
 	SEC_slot_part_nobind
 	SEC_slot_part_nogid
 	SEC_slot_part_notopened
@@ -65,6 +87,7 @@ const (
 	SEC_slot_part_sql
 
 	// POST /slot/info
+
 	SEC_slot_info_nobind
 	SEC_slot_info_nogid
 	SEC_slot_info_notopened
@@ -73,12 +96,14 @@ const (
 	SEC_slot_info_noprops
 
 	// POST /slot/bet/get
+
 	SEC_slot_betget_nobind
 	SEC_slot_betget_nogid
 	SEC_slot_betget_notopened
 	SEC_slot_betget_noaccess
 
 	// POST /slot/bet/set
+
 	SEC_slot_betset_nobind
 	SEC_slot_betset_nogid
 	SEC_slot_betset_notopened
@@ -86,12 +111,14 @@ const (
 	SEC_slot_betset_badbet
 
 	// POST /slot/sbl/get
+
 	SEC_slot_sblget_nobind
 	SEC_slot_sblget_nogid
 	SEC_slot_sblget_notopened
 	SEC_slot_sblget_noaccess
 
 	// POST /slot/sbl/set
+
 	SEC_slot_sblset_nobind
 	SEC_slot_sblset_nogid
 	SEC_slot_sblset_notopened
@@ -99,6 +126,7 @@ const (
 	SEC_slot_sblset_badlines
 
 	// POST /slot/rtp/get
+
 	SEC_slot_rdget_nobind
 	SEC_slot_rdget_nogid
 	SEC_slot_rdget_notopened
@@ -107,6 +135,7 @@ const (
 	SEC_slot_rdget_noaccess
 
 	// POST /slot/spin
+
 	SEC_slot_spin_nobind
 	SEC_slot_spin_nogid
 	SEC_slot_spin_notopened
@@ -119,6 +148,7 @@ const (
 	SEC_slot_spin_sqlbank
 
 	// POST /slot/doubleup
+
 	SEC_slot_doubleup_nobind
 	SEC_slot_doubleup_nogid
 	SEC_slot_doubleup_nomult
@@ -132,6 +162,7 @@ const (
 	SEC_slot_doubleup_sqlbank
 
 	// POST /slot/collect
+
 	SEC_slot_collect_nobind
 	SEC_slot_collect_nogid
 	SEC_slot_collect_notopened
@@ -139,6 +170,7 @@ const (
 	SEC_slot_collect_denied
 
 	// POST /prop/wallet/get
+
 	SEC_prop_walletget_nobind
 	SEC_prop_walletget_norid
 	SEC_prop_walletget_nouid
@@ -147,6 +179,7 @@ const (
 	SEC_prop_walletget_noaccess
 
 	// POST /prop/wallet/add
+
 	SEC_prop_walletadd_nobind
 	SEC_prop_walletadd_norid
 	SEC_prop_walletadd_nouid
@@ -160,6 +193,7 @@ const (
 	SEC_prop_walletadd_sql
 
 	// POST /prop/al/get
+
 	SEC_prop_alget_nobind
 	SEC_prop_alget_norid
 	SEC_prop_alget_nouid
@@ -168,6 +202,7 @@ const (
 	SEC_prop_alget_noaccess
 
 	// POST /prop/al/set
+
 	SEC_prop_alset_nobind
 	SEC_prop_alset_norid
 	SEC_prop_alset_nouid
@@ -179,6 +214,7 @@ const (
 	SEC_prop_alset_sql
 
 	// POST /prop/rtp/get
+
 	SEC_prop_rtpget_nobind
 	SEC_prop_rtpget_norid
 	SEC_prop_rtpget_nouid
@@ -187,6 +223,7 @@ const (
 	SEC_prop_rtpget_noaccess
 
 	// POST /prop/rtp/set
+
 	SEC_prop_rtpset_nobind
 	SEC_prop_rtpset_norid
 	SEC_prop_rtpset_nouid
@@ -197,6 +234,7 @@ const (
 	SEC_prop_rtpset_sql
 
 	// POST /user/rename
+
 	SEC_user_rename_nobind
 	SEC_user_rename_nouid
 	SEC_user_rename_nouser
@@ -204,6 +242,7 @@ const (
 	SEC_user_rename_update
 
 	// POST /user/secret
+
 	SEC_user_secret_nobind
 	SEC_user_secret_nouid
 	SEC_user_secret_smallsec
@@ -213,6 +252,7 @@ const (
 	SEC_user_secret_update
 
 	// POST /user/delete
+
 	SEC_user_delete_nobind
 	SEC_user_delete_nouid
 	SEC_user_delete_nouser
@@ -224,16 +264,19 @@ const (
 	SEC_user_delete_sqlgames
 
 	// POST /club/is
+
 	SEC_club_is_nobind
 	SEC_club_is_nouid
 
 	// POST /club/info
+
 	SEC_club_info_nobind
 	SEC_club_info_nouid
 	SEC_club_info_noclub
 	SEC_club_info_noaccess
 
 	// POST /club/rename
+
 	SEC_club_rename_nobind
 	SEC_club_rename_nouid
 	SEC_club_rename_noclub
@@ -241,6 +284,7 @@ const (
 	SEC_club_rename_update
 
 	// POST /club/cashin
+
 	SEC_club_cashin_nobind
 	SEC_club_cashin_nouid
 	SEC_club_cashin_nosum
@@ -255,6 +299,7 @@ const (
 
 var (
 	Err404       = errors.New("page not found")
+	Err405       = errors.New("method not allowed")
 	ErrNoUID     = errors.New("user ID does not provided")
 	ErrNoCID     = errors.New("club ID does not provided")
 	ErrNoGID     = errors.New("game ID does not provided")

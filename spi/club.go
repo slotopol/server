@@ -89,7 +89,7 @@ func SpiClubInfo(c *gin.Context) {
 		return
 	}
 
-	var _, al = GetAdmin(c, arg.CID)
+	var _, al = MustAdmin(c, arg.CID)
 	if al&ALclub == 0 {
 		Ret403(c, SEC_club_info_noaccess, ErrNoAccess)
 		return
@@ -132,7 +132,7 @@ func SpiClubRename(c *gin.Context) {
 		return
 	}
 
-	var _, al = GetAdmin(c, arg.CID)
+	var _, al = MustAdmin(c, arg.CID)
 	if al&ALclub == 0 {
 		Ret403(c, SEC_club_rename_noaccess, ErrNoAccess)
 		return
@@ -188,7 +188,7 @@ func SpiClubCashin(c *gin.Context) {
 		return
 	}
 
-	var _, al = GetAdmin(c, arg.CID)
+	var _, al = MustAdmin(c, arg.CID)
 	if al&ALclub == 0 {
 		Ret403(c, SEC_club_cashin_noaccess, ErrNoAccess)
 		return

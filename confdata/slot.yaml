@@ -14,6 +14,8 @@ authentication:
   refresh-key: zxK4dUnuq3Lhd1Gzhpr3usI5lAzgvy2t3fmxld2spzz7a5nfv0hsksm9cheyutie
   # Validity timeout of the nonce with which the login hash is signed.
   nonce-timeout: 2m30s
+  # Verification code timeout for sign-up or sign-in.
+  code-timeout: 15m
 web-server: # See https://golang.org/pkg/net/http/#Server for details.
   # List of network origins (IPv4 addresses, IPv4 CIDRs, IPv6 addresses
   # or IPv6 CIDRs) from which to trust request's headers that contain
@@ -52,13 +54,13 @@ database:
   sql-flush-tick: 2500ms
   # Maximum size of buffer to group items to update across API-endpoints calls
   # at club database. If it is 1, update will be sequential with error code expecting.
-  club-update-buffer: 40
+  club-update-buffer: 200
   # Maximum size of buffer to insert new items grouped across
   # API-endpoints calls at club database.
-  club-insert-buffer: 30
+  club-insert-buffer: 150
   # Maximum size of buffer to insert new items grouped across
   # API-endpoints calls at spin database.
-  spin-insert-buffer: 50
+  spin-insert-buffer: 250
 gameplay:
   # Maximum value to add to wallet by one transaction.
   adjunct-limit: 100000

@@ -26,17 +26,26 @@ type Club struct {
 	mux sync.RWMutex
 }
 
+// User flag.
+type UF uint
+
+const (
+	UFactivated UF = 1 << iota // account is activated
+	UFsigncode                 // sign-in required code
+)
+
 // User means registration of somebody. Each user can have splitted
 // wallet with some coins balance in each Club. User can opens several
 // games without any limitation.
 type User struct {
-	UID    uint64    `xorm:"pk autoincr" json:"uid" yaml:"uid" xml:"uid,attr"`                                        // user ID
-	CTime  time.Time `xorm:"created 'ctime' notnull default CURRENT_TIMESTAMP" json:"ctime" yaml:"ctime" xml:"ctime"` // creation time
-	UTime  time.Time `xorm:"updated 'utime' notnull default CURRENT_TIMESTAMP" json:"utime" yaml:"utime" xml:"utime"` // update time
-	Email  string    `xorm:"notnull unique index" json:"email" yaml:"email" xml:"email"`
-	Secret string    `xorm:"notnull" json:"secret" yaml:"secret" xml:"secret"` // auth password
-	Name   string    `xorm:"notnull" json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
-	Status uint      `xorm:"notnull default 0" json:"status,omitempty" yaml:"status,omitempty" xml:"status,omitempty"` // account status
+	UID    uint64    `xorm:"pk autoincr" json:"uid" yaml:"uid" xml:"uid,attr"`                                         // user ID
+	CTime  time.Time `xorm:"created 'ctime' notnull default CURRENT_TIMESTAMP" json:"ctime" yaml:"ctime" xml:"ctime"`  // creation time
+	UTime  time.Time `xorm:"updated 'utime' notnull default CURRENT_TIMESTAMP" json:"utime" yaml:"utime" xml:"utime"`  // update time
+	Email  string    `xorm:"notnull unique index" json:"email" yaml:"email" xml:"email"`                               // unique user email
+	Secret string    `xorm:"notnull" json:"secret" yaml:"secret" xml:"secret"`                                         // auth password
+	Name   string    `xorm:"notnull" json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`                 // user name
+	Code   uint32    `xorm:"notnull default 0" json:"code,omitempty" yaml:"code,omitempty" xml:"code,omitempty"`       // verification code
+	Status UF        `xorm:"notnull default 0" json:"status,omitempty" yaml:"status,omitempty" xml:"status,omitempty"` // account status
 	GAL    AL        `xorm:"notnull default 0" json:"gal,omitempty" yaml:"gal,omitempty" xml:"gal,omitempty"`          // global access level
 	games  util.RWMap[uint64, *Scene]
 	props  util.RWMap[uint64, *Props]
@@ -179,9 +188,21 @@ func (user *User) InsertProps(props *Props) {
 	user.props.Set(props.CID, props)
 }
 
-// GetAdmin always returns User pointer for authorized
-// requests, and access level for it.
+// GetAdmin returns User pointer for authorized requests,
+// and access level for it. Or nil pointer for unauthorized requests.
+// It called after Auth(false) middleware.
 func GetAdmin(c *gin.Context, cid uint64) (*User, AL) {
+	if value, exists := c.Get(userKey); exists {
+		var admin = value.(*User)
+		return admin, admin.GAL | admin.GetAL(cid)
+	}
+	return nil, 0
+}
+
+// MustAdmin always returns User pointer for authorized
+// requests, and access level for it.
+// It called after Auth(true) middleware.
+func MustAdmin(c *gin.Context, cid uint64) (*User, AL) {
 	var admin = c.MustGet(userKey).(*User)
 	return admin, admin.GAL | admin.GetAL(cid)
 }

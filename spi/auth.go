@@ -7,6 +7,7 @@ import (
 	"encoding/hex"
 	"encoding/xml"
 	"errors"
+	"net/http"
 	"strings"
 	"time"
 
@@ -42,6 +43,8 @@ var (
 	ErrSmallKey = errors.New("password too small")
 	ErrNoCred   = errors.New("user with given credentials does not registered")
 	ErrActivate = errors.New("activation required for this account")
+	ErrOldCode  = errors.New("verification code expired")
+	ErrBadCode  = errors.New("verification code does not pass")
 	ErrNotPass  = errors.New("password is incorrect")
 	ErrSigTime  = errors.New("signing time can not been recognized (time in RFC3339 expected)")
 	ErrSigOut   = errors.New("nonce is expired")
@@ -215,6 +218,10 @@ func Handle404(c *gin.Context) {
 	Ret404(c, SEC_nourl, Err404)
 }
 
+func Handle405(c *gin.Context) {
+	RetErr(c, http.StatusMethodNotAllowed, SEC_nomethod, Err405)
+}
+
 type AuthResp struct {
 	XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
 	UID     uint64   `json:"uid" yaml:"uid" xml:"uid"`
@@ -301,6 +308,63 @@ func SpiSignis(c *gin.Context) {
 	RetOk(c, ret)
 }
 
+func SpiActivate(c *gin.Context) {
+	var err error
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid" form:"uid"`
+		Email   string   `json:"email" yaml:"email" xml:"email" form:"email"`
+		Code    uint32   `json:"code,omitempty" yaml:"code,omitempty" xml:"code,omitempty" form:"code"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, SEC_activate_nobind, err)
+		return
+	}
+	if arg.UID == 0 && arg.Email == "" {
+		Ret400(c, SEC_activate_noemail, ErrNoEmail)
+		return
+	}
+
+	var email = util.ToLower(arg.Email)
+
+	var user *User
+	if arg.UID != 0 {
+		user, _ = Users.Get(arg.UID)
+	} else {
+		for _, u := range Users.Items() {
+			if u.Email == email {
+				user = u
+				break
+			}
+		}
+	}
+	if user == nil {
+		Ret403(c, SEC_activate_nouser, ErrNoCred)
+		return
+	}
+
+	if _, al := GetAdmin(c, 0); al&ALadmin == 0 {
+		if time.Since(user.UTime) > Cfg.CodeTimeout {
+			Ret403(c, SEC_activate_oldcode, ErrOldCode)
+			return
+		}
+		if arg.Code != user.Code {
+			Ret403(c, SEC_activate_badcode, ErrBadCode)
+			return
+		}
+	}
+
+	if _, err = cfg.XormStorage.Cols("status").Update(&User{UID: user.UID, Status: user.Status | UFactivated}); err != nil {
+		Ret500(c, SEC_activate_update, err)
+		return
+	}
+
+	user.Status |= UFactivated
+
+	c.Status(http.StatusOK)
+}
+
 func SpiSignup(c *gin.Context) {
 	var err error
 	var arg struct {
@@ -326,9 +390,9 @@ func SpiSignup(c *gin.Context) {
 
 	var email = util.ToLower(arg.Email)
 
-	var status uint
+	var status UF
 	if _, al := GetAdmin(c, 0); al&ALadmin != 0 {
-		status = 1
+		status = UFactivated
 	}
 
 	var user = &User{
@@ -386,6 +450,7 @@ func SpiSignin(c *gin.Context) {
 		Secret  string   `json:"secret" yaml:"secret,omitempty" xml:"secret,omitempty" form:"secret"`
 		HS256   string   `json:"hs256,omitempty" yaml:"hs256,omitempty" xml:"hs256,omitempty" form:"hs256"`
 		SigTime string   `json:"sigtime,omitempty" yaml:"sigtime,omitempty" xml:"sigtime,omitempty" form:"sigtime"`
+		Code    uint32   `json:"code,omitempty" yaml:"code,omitempty" xml:"code,omitempty" form:"code"`
 	}
 	var ret AuthResp
 
@@ -424,9 +489,20 @@ func SpiSignin(c *gin.Context) {
 		return
 	}
 
-	if user.Status == 0 {
+	if user.Status&UFactivated == 0 {
 		Ret403(c, SEC_signin_activate, ErrActivate)
 		return
+	}
+
+	if user.Status&UFsigncode != 0 {
+		if time.Since(user.UTime) > Cfg.CodeTimeout {
+			Ret403(c, SEC_signin_oldcode, ErrOldCode)
+			return
+		}
+		if arg.Code != user.Code {
+			Ret403(c, SEC_signin_badcode, ErrBadCode)
+			return
+		}
 	}
 
 	if len(arg.Secret) > 0 {

@@ -43,6 +43,7 @@ var webCmd = &cobra.Command{
 
 		var r = gin.New()
 		r.SetTrustedProxies(Cfg.TrustedProxies)
+		r.HandleMethodNotAllowed = true
 		spi.Router(r)
 
 		// starts HTTP listeners

@@ -114,7 +114,10 @@ func Ret500(c *gin.Context, code int, err error) {
 }
 
 func Router(r *gin.Engine) {
-	r.NoRoute(Auth(false), Handle404)
+	r.NoRoute(Handle404)
+	r.NoMethod(Handle405)
+	//r.Use(gzip.Gzip(gzip.DefaultCompression))
+
 	r.GET("/ping", SpiPing)
 	r.GET("/servinfo", SpiServInfo)
 	r.GET("/memusage", SpiMemUsage)
@@ -122,12 +125,14 @@ func Router(r *gin.Engine) {
 
 	// authorization
 	r.GET("/signis", SpiSignis)
-	r.POST("/signup", SpiSignup)
+	r.GET("/activate", Auth(false), SpiActivate)
+	r.POST("/signup", Auth(false), SpiSignup)
 	r.POST("/signin", SpiSignin)
 	r.Any("/refresh", Auth(true), SpiRefresh)
+
 	var ra = r.Group("/", Auth(true))
 
-	//r.Use(gzip.Gzip(gzip.DefaultCompression))
+	// slot group
 	var rs = ra.Group("/slot")
 	rs.POST("/join", SpiSlotJoin)
 	rs.POST("/part", SpiSlotPart)
@@ -140,6 +145,8 @@ func Router(r *gin.Engine) {
 	rs.POST("/spin", SpiSlotSpin)
 	rs.POST("/doubleup", SpiSlotDoubleup)
 	rs.POST("/collect", SpiSlotCollect)
+
+	// properties group
 	var rp = ra.Group("/prop")
 	rp.POST("/wallet/get", SpiPropsWalletGet)
 	rp.POST("/wallet/add", SpiPropsWalletAdd)
@@ -147,11 +154,15 @@ func Router(r *gin.Engine) {
 	rp.POST("/al/set", SpiPropsAlSet)
 	rp.POST("/rtp/get", SpiPropsRtpGet)
 	rp.POST("/rtp/set", SpiPropsRtpSet)
+
+	// user group
 	var ru = ra.Group("/user")
 	ru.POST("/is", SpiSignis)
 	ru.POST("/rename", SpiUserRename)
 	ru.POST("/secret", SpiUserSecret)
 	ru.POST("/delete", SpiUserDelete)
+
+	// club group
 	var rc = ra.Group("/club")
 	rc.POST("/is", SpiClubIs)
 	rc.POST("/info", SpiClubInfo)

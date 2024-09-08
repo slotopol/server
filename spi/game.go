@@ -66,7 +66,7 @@ func SpiSlotJoin(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, arg.CID)
+	var admin, al = MustAdmin(c, arg.CID)
 	if (al&ALmem == 0) || (admin != user && al&ALgame == 0) {
 		Ret403(c, SEC_slot_join_noaccess, ErrNoAccess)
 		return
@@ -153,7 +153,7 @@ func SpiSlotPart(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, scene.CID)
+	var admin, al = MustAdmin(c, scene.CID)
 	if admin != user && al&ALgame == 0 {
 		Ret403(c, SEC_slot_part_noaccess, ErrNoAccess)
 		return
@@ -216,7 +216,7 @@ func SpiSlotInfo(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, scene.CID)
+	var admin, al = MustAdmin(c, scene.CID)
 	if admin != user && al&ALgame == 0 {
 		Ret403(c, SEC_slot_info_noaccess, ErrNoAccess)
 		return
@@ -269,7 +269,7 @@ func SpiSlotBetGet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, scene.CID)
+	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
 		Ret403(c, SEC_slot_betget_noaccess, ErrNoAccess)
 		return
@@ -305,7 +305,7 @@ func SpiSlotBetSet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, scene.CID)
+	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
 		Ret403(c, SEC_slot_betset_noaccess, ErrNoAccess)
 		return
@@ -347,7 +347,7 @@ func SpiSlotSblGet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, scene.CID)
+	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
 		Ret403(c, SEC_slot_sblget_noaccess, ErrNoAccess)
 		return
@@ -383,7 +383,7 @@ func SpiSlotSblSet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, scene.CID)
+	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
 		Ret403(c, SEC_slot_sblset_noaccess, ErrNoAccess)
 		return
@@ -437,7 +437,7 @@ func SpiSlotRtpGet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, scene.CID)
+	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
 		Ret403(c, SEC_slot_rdget_noaccess, ErrNoAccess)
 		return
@@ -494,7 +494,7 @@ func SpiSlotSpin(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, scene.CID)
+	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
 		Ret403(c, SEC_slot_spin_noaccess, ErrNoAccess)
 		return
@@ -641,7 +641,7 @@ func SpiSlotDoubleup(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, scene.CID)
+	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
 		Ret403(c, SEC_slot_doubleup_noaccess, ErrNoAccess)
 		return
@@ -740,7 +740,7 @@ func SpiSlotCollect(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, scene.CID)
+	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
 		Ret403(c, SEC_slot_collect_noaccess, ErrNoAccess)
 		return

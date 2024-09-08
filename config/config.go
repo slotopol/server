@@ -20,6 +20,7 @@ type CfgJwtAuth struct {
 	AccessKey    string        `json:"access-key" yaml:"access-key" mapstructure:"access-key"`
 	RefreshKey   string        `json:"refresh-key" yaml:"refresh-key" mapstructure:"refresh-key"`
 	NonceTimeout time.Duration `json:"nonce-timeout" yaml:"nonce-timeout" mapstructure:"nonce-timeout"`
+	CodeTimeout  time.Duration `json:"code-timeout" yaml:"code-timeout" mapstructure:"code-timeout"`
 }
 
 // CfgWebServ is web server settings.
@@ -91,6 +92,7 @@ var Cfg = &Config{
 		AccessKey:    "skJgM4NsbP3fs4k7vh0gfdkgGl8dJTszdLxZ1sQ9ksFnxbgvw2RsGH8xxddUV479",
 		RefreshKey:   "zxK4dUnuq3Lhd1Gzhpr3usI5lAzgvy2t3fmxld2spzz7a5nfv0hsksm9cheyutie",
 		NonceTimeout: 150 * time.Second,
+		CodeTimeout:  15 * time.Minute,
 	},
 	CfgWebServ: CfgWebServ{
 		TrustedProxies:    []string{"127.0.0.0/8"},
@@ -107,9 +109,9 @@ var Cfg = &Config{
 		ClubSourceName:   "slot-club.sqlite",
 		SpinSourceName:   "slot-spin.sqlite",
 		SqlFlushTick:     2500 * time.Millisecond,
-		ClubUpdateBuffer: 40,
-		ClubInsertBuffer: 30,
-		SpinInsertBuffer: 50,
+		ClubUpdateBuffer: 200,
+		ClubInsertBuffer: 150,
+		SpinInsertBuffer: 250,
 	},
 	CfgGameplay: CfgGameplay{
 		AdjunctLimit:    100000,

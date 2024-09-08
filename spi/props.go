@@ -48,7 +48,7 @@ func SpiPropsWalletGet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, arg.CID)
+	var admin, al = MustAdmin(c, arg.CID)
 	if admin != user && al&ALuser == 0 {
 		Ret403(c, SEC_prop_walletget_noaccess, ErrNoAccess)
 		return
@@ -108,7 +108,7 @@ func SpiPropsWalletAdd(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, arg.CID)
+	var admin, al = MustAdmin(c, arg.CID)
 	if al&ALuser == 0 {
 		Ret403(c, SEC_prop_walletadd_noaccess, ErrNoAccess)
 		return
@@ -180,7 +180,7 @@ func SpiPropsAlGet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, arg.CID)
+	var admin, al = MustAdmin(c, arg.CID)
 	if admin != user && al&ALadmin == 0 {
 		Ret403(c, SEC_prop_alget_noaccess, ErrNoAccess)
 		return
@@ -228,7 +228,7 @@ func SpiPropsAlSet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, arg.CID)
+	var admin, al = MustAdmin(c, arg.CID)
 	if al&ALadmin == 0 {
 		Ret403(c, SEC_prop_alset_noaccess, ErrNoAccess)
 		return
@@ -300,7 +300,7 @@ func SpiPropsRtpGet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, arg.CID)
+	var admin, al = MustAdmin(c, arg.CID)
 	if admin != user && al&ALgame == 0 {
 		Ret403(c, SEC_prop_rtpget_noaccess, ErrNoAccess)
 		return
@@ -348,7 +348,7 @@ func SpiPropsRtpSet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, arg.CID)
+	var admin, al = MustAdmin(c, arg.CID)
 	if al&ALgame == 0 {
 		Ret403(c, SEC_prop_rtpset_noaccess, ErrNoAccess)
 		return

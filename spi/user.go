@@ -37,7 +37,7 @@ func SpiUserRename(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, 0)
+	var admin, al = MustAdmin(c, 0)
 	if admin != user && al&ALadmin == 0 {
 		Ret403(c, SEC_user_rename_noaccess, ErrNoAccess)
 		return
@@ -81,7 +81,7 @@ func SpiUserSecret(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, 0)
+	var admin, al = MustAdmin(c, 0)
 	if admin != user && al&ALadmin == 0 {
 		Ret403(c, SEC_user_secret_noaccess, ErrNoAccess)
 		return
@@ -132,7 +132,7 @@ func SpiUserDelete(c *gin.Context) {
 		return
 	}
 
-	var admin, al = GetAdmin(c, 0)
+	var admin, al = MustAdmin(c, 0)
 	if admin != user && al&ALadmin == 0 {
 		Ret403(c, SEC_user_delete_noaccess, ErrNoAccess)
 		return
