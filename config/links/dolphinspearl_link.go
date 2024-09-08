@@ -35,10 +35,7 @@ func init() {
 		Provider: "Novomatic",
 		ScrnX:    5,
 		ScrnY:    3,
-	}
-	gi.RtpList = make([]float64, 0, len(dolphinspearl.ReelsMap))
-	for rtp := range dolphinspearl.ReelsMap {
-		gi.RtpList = append(gi.RtpList, rtp)
+		RtpList:  MakeRtpList(dolphinspearl.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 

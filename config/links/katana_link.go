@@ -17,10 +17,7 @@ func init() {
 		Provider: "Novomatic",
 		ScrnX:    5,
 		ScrnY:    3,
-	}
-	gi.RtpList = make([]float64, 0, len(katana.ReelsMap))
-	for rtp := range katana.ReelsMap {
-		gi.RtpList = append(gi.RtpList, rtp)
+		RtpList:  MakeRtpList(katana.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 

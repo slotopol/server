@@ -17,10 +17,7 @@ func init() {
 		Provider: "Megajack",
 		ScrnX:    5,
 		ScrnY:    3,
-	}
-	gi.RtpList = make([]float64, 0, len(slotopol.ReelsMap))
-	for rtp := range slotopol.ReelsMap {
-		gi.RtpList = append(gi.RtpList, rtp)
+		RtpList:  MakeRtpList(slotopol.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 

@@ -18,10 +18,7 @@ func init() {
 		Provider: "Playtech",
 		ScrnX:    5,
 		ScrnY:    3,
-	}
-	gi.RtpList = make([]float64, 0, len(panthermoon.ReelsMap))
-	for rtp := range panthermoon.ReelsMap {
-		gi.RtpList = append(gi.RtpList, rtp)
+		RtpList:  MakeRtpList(panthermoon.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 

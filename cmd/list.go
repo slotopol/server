@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"sort"
+	"strings"
 
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/config/links"
@@ -15,13 +16,17 @@ import (
 var listflags *pflag.FlagSet
 
 var (
-	fAllPrv bool
+	fAll, fRTP bool
 )
 
-const listShort = "List of games"
+const listShort = "List of available games released on server"
 const listLong = ``
 const listExmp = `Get the list of all available games:
-  %s list --all`
+  %[1]s list --all
+Get the list of available 'NetExt' and 'BetSoft' games only:
+  %[1]s list --netent --betsoft
+Get the list of available 'Play'n GO' games with RTP list for each:
+  %[1]s list --playngo --rtp`
 
 // listCmd represents the list command
 var listCmd = &cobra.Command{
@@ -33,7 +38,7 @@ var listCmd = &cobra.Command{
 		var num, alg int
 		var prov = map[string]int{}
 		for _, gi := range links.GameList {
-			if prv, _ := listflags.GetBool(util.ToID(gi.Provider)); prv || fAllPrv {
+			if prv, _ := listflags.GetBool(util.ToID(gi.Provider)); prv || fAll {
 				num += len(gi.Aliases)
 			}
 		}
@@ -41,11 +46,20 @@ var listCmd = &cobra.Command{
 		var list = make([]string, num)
 		var i int
 		for _, gi := range links.GameList {
-			if prv, _ := listflags.GetBool(util.ToID(gi.Provider)); prv || fAllPrv {
+			if prv, _ := listflags.GetBool(util.ToID(gi.Provider)); prv || fAll {
 				prov[gi.Provider] += len(gi.Aliases)
 				alg++
 				for _, ga := range gi.Aliases {
-					list[i] = fmt.Sprintf("'%s' %s %dx%d videoslot", ga.Name, gi.Provider, gi.ScrnX, gi.ScrnY)
+					var rtpinfo string
+					if fRTP && len(gi.RtpList) > 0 {
+						var rtpstr = make([]string, len(gi.RtpList))
+						for i, rtp := range gi.RtpList {
+							rtpstr[i] = fmt.Sprintf("%.2f", rtp)
+						}
+						rtpinfo = ", RTP: " + strings.Join(rtpstr, ", ")
+					}
+					var info = fmt.Sprintf("'%s' %s %dx%d videoslot%s", ga.Name, gi.Provider, gi.ScrnX, gi.ScrnY, rtpinfo)
+					list[i] = info
 					i++
 				}
 			}
@@ -74,7 +88,8 @@ func init() {
 	listflags = listCmd.Flags()
 	listflags.BoolP("name", "n", true, "list of provided games names")
 	listflags.BoolP("stat", "s", true, "summary statistics of provided games")
-	listflags.BoolVar(&fAllPrv, "all", false, "list games of all available providers")
+	listflags.BoolVar(&fAll, "all", false, "list games of all available providers")
+	listflags.BoolVar(&fRTP, "rtp", false, "RTP (Return to Player) percents list of available reels for each game")
 	listflags.Bool("megajack", false, "include games of 'Megajack' provider")
 	listflags.Bool("novomatic", false, "include games of 'Novomatic' provider")
 	listflags.Bool("netent", false, "include games of 'NetExt' provider")

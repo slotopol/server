@@ -17,7 +17,7 @@ import (
 const webShort = "Starts web-server"
 const webLong = ``
 const webExmp = `
-  %s web`
+  %[1]s web`
 
 // webCmd represents the web command
 var webCmd = &cobra.Command{

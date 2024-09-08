@@ -18,10 +18,7 @@ func init() {
 		Provider: "Novomatic",
 		ScrnX:    5,
 		ScrnY:    3,
-	}
-	gi.RtpList = make([]float64, 0, len(sizzlinghot.ReelsMap))
-	for rtp := range sizzlinghot.ReelsMap {
-		gi.RtpList = append(gi.RtpList, rtp)
+		RtpList:  MakeRtpList(sizzlinghot.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 

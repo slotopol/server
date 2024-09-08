@@ -20,10 +20,7 @@ func init() {
 		Provider: "NetEnt",
 		ScrnX:    5,
 		ScrnY:    3,
-	}
-	gi.RtpList = make([]float64, 0, len(trolls.ReelsMap))
-	for rtp := range trolls.ReelsMap {
-		gi.RtpList = append(gi.RtpList, rtp)
+		RtpList:  MakeRtpList(trolls.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 

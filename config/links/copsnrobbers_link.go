@@ -17,10 +17,7 @@ func init() {
 		Provider: "Play'n GO",
 		ScrnX:    5,
 		ScrnY:    3,
-	}
-	gi.RtpList = make([]float64, 0, len(copsnrobbers.ReelsMap))
-	for rtp := range copsnrobbers.ReelsMap {
-		gi.RtpList = append(gi.RtpList, rtp)
+		RtpList:  MakeRtpList(copsnrobbers.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 

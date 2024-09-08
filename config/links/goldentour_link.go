@@ -17,10 +17,7 @@ func init() {
 		Provider: "Playtech",
 		ScrnX:    5,
 		ScrnY:    3,
-	}
-	gi.RtpList = make([]float64, 0, len(goldentour.ReelsMap))
-	for rtp := range goldentour.ReelsMap {
-		gi.RtpList = append(gi.RtpList, rtp)
+		RtpList:  MakeRtpList(goldentour.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 

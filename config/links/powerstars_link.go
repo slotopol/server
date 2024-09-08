@@ -17,10 +17,7 @@ func init() {
 		Provider: "Novomatic",
 		ScrnX:    5,
 		ScrnY:    3,
-	}
-	gi.RtpList = make([]float64, 0, len(powerstars.ChanceMap))
-	for rtp := range powerstars.ChanceMap {
-		gi.RtpList = append(gi.RtpList, rtp)
+		RtpList:  MakeRtpList(powerstars.ChanceMap),
 	}
 	GameList = append(GameList, gi)
 

@@ -18,10 +18,7 @@ func init() {
 		Provider: "NetEnt",
 		ScrnX:    5,
 		ScrnY:    3,
-	}
-	gi.RtpList = make([]float64, 0, len(diamonddogs.ReelsMap))
-	for rtp := range diamonddogs.ReelsMap {
-		gi.RtpList = append(gi.RtpList, rtp)
+		RtpList:  MakeRtpList(diamonddogs.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 

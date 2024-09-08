@@ -16,10 +16,10 @@ var (
 	fReels string
 )
 
-const scanShort = "Slots reels scanning"
+const scanShort = "Slots games reels scanning"
 const scanLong = `Calculate RTP (Return to Player) percentage for specified slot game reels.`
-const scanExmp = `Scan reels for 'Slotopol' game:
-  %s scan --slotopol --reels=100`
+const scanExmp = `Scan reels for 'Slotopol' game for reels set nearest to 100%%:
+  %[1]s scan --slotopol --reels=100`
 
 // scanCmd represents the scan command
 var scanCmd = &cobra.Command{

@@ -18,10 +18,7 @@ func init() {
 		Provider: "Novomatic",
 		ScrnX:    5,
 		ScrnY:    3,
-	}
-	gi.RtpList = make([]float64, 0, len(justjewels.ReelsMap))
-	for rtp := range justjewels.ReelsMap {
-		gi.RtpList = append(gi.RtpList, rtp)
+		RtpList:  MakeRtpList(justjewels.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 

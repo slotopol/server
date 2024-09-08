@@ -2,6 +2,7 @@ package links
 
 import (
 	"context"
+	"sort"
 	"strconv"
 
 	_ "github.com/mattn/go-sqlite3"
@@ -32,4 +33,13 @@ var GameFactory = map[string]func() any{}
 func Atof(s string) (f float64) {
 	f, _ = strconv.ParseFloat(s, 64)
 	return
+}
+
+func MakeRtpList[T any](reelsmap map[float64]T) []float64 {
+	var list = make([]float64, 0, len(reelsmap))
+	for rtp := range reelsmap {
+		list = append(list, rtp)
+	}
+	sort.Float64s(list)
+	return list
 }
