@@ -16,6 +16,13 @@ authentication:
   nonce-timeout: 2m30s
   # Verification code timeout for sign-up or sign-in.
   code-timeout: 15m
+  # Hostname of SMTP-server to send emails with verification code.
+  smtp-host: smtp.freesmtpservers.com
+  # Port of SMTP-server for verification codes.
+  smtp-port: 25
+  # Credentials for SMTP-server.
+  smtp-user: codebot@example.com
+  smtp-pass: password
 web-server: # See https://golang.org/pkg/net/http/#Server for details.
   # List of network origins (IPv4 addresses, IPv4 CIDRs, IPv6 addresses
   # or IPv6 CIDRs) from which to trust request's headers that contain

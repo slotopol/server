@@ -34,6 +34,14 @@ const (
 	SEC_signis_nobind
 	SEC_signis_noemail
 
+	// GET /sendcode
+
+	SEC_sendcode_nobind
+	SEC_sendcode_noemail
+	SEC_sendcode_nouser
+	SEC_sendcode_update
+	SEC_sendcode_smtp
+
 	// GET /activate
 
 	SEC_activate_nobind
@@ -47,6 +55,7 @@ const (
 
 	SEC_signup_nobind
 	SEC_signup_smallsec
+	SEC_signup_smtp
 	SEC_signup_sql
 
 	// POST /signin

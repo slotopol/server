@@ -21,6 +21,10 @@ type CfgJwtAuth struct {
 	RefreshKey   string        `json:"refresh-key" yaml:"refresh-key" mapstructure:"refresh-key"`
 	NonceTimeout time.Duration `json:"nonce-timeout" yaml:"nonce-timeout" mapstructure:"nonce-timeout"`
 	CodeTimeout  time.Duration `json:"code-timeout" yaml:"code-timeout" mapstructure:"code-timeout"`
+	SmtpHost     string        `json:"smtp-host" yaml:"smtp-host" mapstructure:"smtp-host"`
+	SmtpPort     int           `json:"smtp-port" yaml:"smtp-port" mapstructure:"smtp-port"`
+	SmtpUser     string        `json:"smtp-user" yaml:"smtp-user" mapstructure:"smtp-user"`
+	SmtpPass     string        `json:"smtp-pass" yaml:"smtp-pass" mapstructure:"smtp-pass"`
 }
 
 // CfgWebServ is web server settings.
@@ -93,6 +97,10 @@ var Cfg = &Config{
 		RefreshKey:   "zxK4dUnuq3Lhd1Gzhpr3usI5lAzgvy2t3fmxld2spzz7a5nfv0hsksm9cheyutie",
 		NonceTimeout: 150 * time.Second,
 		CodeTimeout:  15 * time.Minute,
+		SmtpHost:     "smtp.freesmtpservers.com",
+		SmtpPort:     25,
+		SmtpUser:     "",
+		SmtpPass:     "",
 	},
 	CfgWebServ: CfgWebServ{
 		TrustedProxies:    []string{"127.0.0.0/8"},

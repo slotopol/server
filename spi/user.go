@@ -43,7 +43,7 @@ func SpiUserRename(c *gin.Context) {
 		return
 	}
 
-	if _, err = cfg.XormStorage.Cols("name").Update(&User{UID: arg.UID, Name: arg.Name}); err != nil {
+	if _, err = cfg.XormStorage.ID(user.UID).Cols("name").Update(&User{Name: arg.Name}); err != nil {
 		Ret500(c, SEC_user_rename_update, err)
 		return
 	}
@@ -92,7 +92,7 @@ func SpiUserSecret(c *gin.Context) {
 		return
 	}
 
-	if _, err = cfg.XormStorage.Cols("secret").Update(&User{UID: arg.UID, Secret: arg.NewSecret}); err != nil {
+	if _, err = cfg.XormStorage.ID(user.UID).Cols("secret").Update(&User{Secret: arg.NewSecret}); err != nil {
 		Ret500(c, SEC_user_secret_update, err)
 		return
 	}

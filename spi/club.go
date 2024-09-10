@@ -138,7 +138,7 @@ func SpiClubRename(c *gin.Context) {
 		return
 	}
 
-	if _, err = cfg.XormStorage.Cols("name").Update(&Club{CID: arg.CID, Name: arg.Name}); err != nil {
+	if _, err = cfg.XormStorage.ID(club.CID).Cols("name").Update(&Club{Name: arg.Name}); err != nil {
 		Ret500(c, SEC_club_rename_update, err)
 		return
 	}

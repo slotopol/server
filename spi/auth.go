@@ -3,10 +3,13 @@ package spi
 import (
 	"crypto/hmac"
 	"crypto/sha256"
+	"crypto/tls"
 	"encoding/base64"
 	"encoding/hex"
 	"encoding/xml"
 	"errors"
+	"fmt"
+	"math/rand/v2"
 	"net/http"
 	"strings"
 	"time"
@@ -15,6 +18,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/util"
+	gomail "gopkg.in/mail.v2"
 )
 
 const (
@@ -308,6 +312,65 @@ func SpiSignis(c *gin.Context) {
 	RetOk(c, ret)
 }
 
+func SpiSendCode(c *gin.Context) {
+	var err error
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid" form:"uid"`
+		Email   string   `json:"email" yaml:"email" xml:"email" form:"email"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, SEC_sendcode_nobind, err)
+		return
+	}
+	if arg.UID == 0 && arg.Email == "" {
+		Ret400(c, SEC_sendcode_noemail, ErrNoEmail)
+		return
+	}
+
+	var email = util.ToLower(arg.Email)
+
+	var user *User
+	if arg.UID != 0 {
+		user, _ = Users.Get(arg.UID)
+	} else {
+		for _, u := range Users.Items() {
+			if u.Email == email {
+				user = u
+				break
+			}
+		}
+	}
+	if user == nil {
+		Ret403(c, SEC_sendcode_nouser, ErrNoCred)
+		return
+	}
+
+	var code = rand.Uint32N(1000000) // 6 digits
+
+	if _, err = cfg.XormStorage.ID(user.UID).Cols("code").Update(&User{Code: code}); err != nil {
+		Ret500(c, SEC_sendcode_update, err)
+		return
+	}
+
+	var m = gomail.NewMessage()
+	m.SetHeader("From", Cfg.SmtpUser)
+	m.SetHeader("To", email)
+	m.SetHeader("Subject", "slotopol verification code")
+	m.SetBody("text/plain", fmt.Sprintf("Your Slotopol verification code is: %06d", code))
+	var d = gomail.NewDialer(Cfg.SmtpHost, Cfg.SmtpPort, Cfg.SmtpUser, Cfg.SmtpPass)
+	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
+	if err = d.DialAndSend(m); err != nil {
+		Ret500(c, SEC_sendcode_smtp, err)
+		return
+	}
+
+	user.Code = code
+
+	c.Status(http.StatusOK)
+}
+
 func SpiActivate(c *gin.Context) {
 	var err error
 	var arg struct {
@@ -355,7 +418,7 @@ func SpiActivate(c *gin.Context) {
 		}
 	}
 
-	if _, err = cfg.XormStorage.Cols("status").Update(&User{UID: user.UID, Status: user.Status | UFactivated}); err != nil {
+	if _, err = cfg.XormStorage.ID(user.UID).Cols("status").Update(&User{Status: user.Status | UFactivated}); err != nil {
 		Ret500(c, SEC_activate_update, err)
 		return
 	}
@@ -390,15 +453,30 @@ func SpiSignup(c *gin.Context) {
 
 	var email = util.ToLower(arg.Email)
 
+	var code uint32
 	var status UF
 	if _, al := GetAdmin(c, 0); al&ALadmin != 0 {
 		status = UFactivated
+	} else {
+		code = rand.Uint32N(1000000) // 6 digits
+		var m = gomail.NewMessage()
+		m.SetHeader("From", Cfg.SmtpUser)
+		m.SetHeader("To", email)
+		m.SetHeader("Subject", "slotopol verification code")
+		m.SetBody("text/plain", fmt.Sprintf("Your Slotopol verification code is: %06d", code))
+		var d = gomail.NewDialer(Cfg.SmtpHost, Cfg.SmtpPort, Cfg.SmtpUser, Cfg.SmtpPass)
+		d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
+		if err = d.DialAndSend(m); err != nil {
+			Ret500(c, SEC_signup_smtp, err)
+			return
+		}
 	}
 
 	var user = &User{
 		Email:  email,
 		Secret: arg.Secret,
 		Name:   arg.Name,
+		Code:   code,
 		Status: status,
 	}
 	if err = SafeTransaction(cfg.XormStorage, func(session *Session) (err error) {
