@@ -40,7 +40,7 @@ const (
 	SEC_sendcode_noemail
 	SEC_sendcode_nouser
 	SEC_sendcode_update
-	SEC_sendcode_smtp
+	SEC_sendcode_code
 
 	// GET /activate
 
@@ -55,7 +55,7 @@ const (
 
 	SEC_signup_nobind
 	SEC_signup_smallsec
-	SEC_signup_smtp
+	SEC_signup_code
 	SEC_signup_sql
 
 	// POST /signin

@@ -14,15 +14,31 @@ authentication:
   refresh-key: zxK4dUnuq3Lhd1Gzhpr3usI5lAzgvy2t3fmxld2spzz7a5nfv0hsksm9cheyutie
   # Validity timeout of the nonce with which the login hash is signed.
   nonce-timeout: 2m30s
+activation: # User account activation and verification
+  # Brevo API-key, see https://app.brevo.com/settings/keys/api.
+  brevo-api-key: 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
+  # Brevo API endpoint to post request to send email,
+  # see https://developers.brevo.com/docs/send-a-transactional-email.
+  brevo-email-endpoint: https://api.brevo.com/v3/smtp/email
+  # Name of sender at email.
+  sender-name: Slotopol server
+  # Email address of sender.
+  sender-email: slotopol.dev@gmail.com
+  # Email address of reply to, 'noreply' email prevent responses from users.
+  replyto-email: noreply@gmail.com
+  # Email subject.
+  email-subject: Slotopol verification code
+  # HTML-formatted template for email.
+  # It should be with '%06d' to show verification code.
+  email-html-content: |
+    <html>
+      <head></head>
+      <body>
+        <p>Your Slotopol verification code is: <b>%06d</b></p>
+      </body>
+    </html>
   # Verification code timeout for sign-up or sign-in.
   code-timeout: 15m
-  # Hostname of SMTP-server to send emails with verification code.
-  smtp-host: smtp.freesmtpservers.com
-  # Port of SMTP-server for verification codes.
-  smtp-port: 25
-  # Credentials for SMTP-server.
-  smtp-user: codebot@example.com
-  smtp-pass: password
 web-server: # See https://golang.org/pkg/net/http/#Server for details.
   # List of network origins (IPv4 addresses, IPv4 CIDRs, IPv6 addresses
   # or IPv6 CIDRs) from which to trust request's headers that contain

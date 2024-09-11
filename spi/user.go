@@ -2,7 +2,6 @@ package spi
 
 import (
 	"encoding/xml"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	cfg "github.com/slotopol/server/config"
@@ -49,7 +48,7 @@ func SpiUserRename(c *gin.Context) {
 	}
 	user.Name = arg.Name
 
-	c.Status(http.StatusOK)
+	Ret204(c)
 }
 
 func SpiUserSecret(c *gin.Context) {
@@ -98,7 +97,7 @@ func SpiUserSecret(c *gin.Context) {
 	}
 	user.Secret = arg.NewSecret
 
-	c.Status(http.StatusOK)
+	Ret204(c)
 }
 
 // Deletes registration, drops user and all linked records from database,

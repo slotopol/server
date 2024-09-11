@@ -2,7 +2,6 @@ package spi
 
 import (
 	"encoding/xml"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	cfg "github.com/slotopol/server/config"
@@ -147,7 +146,7 @@ func SpiClubRename(c *gin.Context) {
 	club.Name = arg.Name
 	club.mux.Unlock()
 
-	c.Status(http.StatusOK)
+	Ret204(c)
 }
 
 // Adding or withdrawing coins from club bank, fund and lock balances.

@@ -1,14 +1,16 @@
 package spi
 
 import (
+	"bytes"
 	"crypto/hmac"
 	"crypto/sha256"
-	"crypto/tls"
 	"encoding/base64"
 	"encoding/hex"
+	"encoding/json"
 	"encoding/xml"
 	"errors"
 	"fmt"
+	"io"
 	"math/rand/v2"
 	"net/http"
 	"strings"
@@ -18,7 +20,6 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/util"
-	gomail "gopkg.in/mail.v2"
 )
 
 const (
@@ -270,6 +271,72 @@ func (r *AuthResp) Setup(user *User) {
 	r.Email = user.Email
 }
 
+func sendcode(name, email string, code uint32) (err error) {
+	type person struct {
+		Name  string `json:"name,omitempty"`
+		Email string `json:"email"`
+	}
+	type content struct {
+		Sender  person   `json:"sender"`
+		ReplyTo person   `json:"replyTo"`
+		To      []person `json:"to"`
+		Subject string   `json:"subject,omitempty"`
+		Html    string   `json:"htmlContent,omitempty"`
+		Text    string   `json:"textContent,omitempty"`
+		Tags    []string `json:"tags,omitempty"`
+	}
+
+	const ct = "application/json"
+	var m = content{
+		Sender: person{
+			Name:  Cfg.SenderName,
+			Email: Cfg.SenderEmail,
+		},
+		ReplyTo: person{
+			Email: Cfg.ReplytoEmail,
+		},
+		To: []person{
+			{
+				Name:  name,
+				Email: email,
+			},
+		},
+		Subject: Cfg.EmailSubject,
+		Html:    fmt.Sprintf(Cfg.EmailHtmlContent, code),
+	}
+
+	var body []byte
+	if body, err = json.Marshal(m); err != nil {
+		return err
+	}
+
+	var req *http.Request
+	if req, err = http.NewRequest("POST", Cfg.BrevoEmailEndpoint, bytes.NewReader(body)); err != nil {
+		return err
+	}
+	req.Header.Set("api-key", Cfg.BrevoApiKey)
+	req.Header.Set("Content-Type", ct)
+	req.Header.Set("Accept", ct)
+
+	var resp *http.Response
+	if resp, err = http.DefaultClient.Do(req); err != nil {
+		return err
+	}
+	defer resp.Body.Close()
+
+	if body, err = io.ReadAll(resp.Body); err != nil {
+		return err
+	}
+	var rm map[string]string
+	if err = json.Unmarshal(body, &rm); err != nil {
+		return err
+	}
+	if msg, ok := rm["message"]; ok {
+		return errors.New(msg)
+	}
+	return
+}
+
 func SpiSignis(c *gin.Context) {
 	var err error
 	var arg struct {
@@ -354,21 +421,14 @@ func SpiSendCode(c *gin.Context) {
 		return
 	}
 
-	var m = gomail.NewMessage()
-	m.SetHeader("From", Cfg.SmtpUser)
-	m.SetHeader("To", email)
-	m.SetHeader("Subject", "slotopol verification code")
-	m.SetBody("text/plain", fmt.Sprintf("Your Slotopol verification code is: %06d", code))
-	var d = gomail.NewDialer(Cfg.SmtpHost, Cfg.SmtpPort, Cfg.SmtpUser, Cfg.SmtpPass)
-	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
-	if err = d.DialAndSend(m); err != nil {
-		Ret500(c, SEC_sendcode_smtp, err)
+	if err = sendcode(user.Name, user.Email, code); err != nil {
+		Ret500(c, SEC_sendcode_code, err)
 		return
 	}
 
 	user.Code = code
 
-	c.Status(http.StatusOK)
+	Ret204(c)
 }
 
 func SpiActivate(c *gin.Context) {
@@ -425,7 +485,7 @@ func SpiActivate(c *gin.Context) {
 
 	user.Status |= UFactivated
 
-	c.Status(http.StatusOK)
+	Ret204(c)
 }
 
 func SpiSignup(c *gin.Context) {
@@ -459,15 +519,8 @@ func SpiSignup(c *gin.Context) {
 		status = UFactivated
 	} else {
 		code = rand.Uint32N(1000000) // 6 digits
-		var m = gomail.NewMessage()
-		m.SetHeader("From", Cfg.SmtpUser)
-		m.SetHeader("To", email)
-		m.SetHeader("Subject", "slotopol verification code")
-		m.SetBody("text/plain", fmt.Sprintf("Your Slotopol verification code is: %06d", code))
-		var d = gomail.NewDialer(Cfg.SmtpHost, Cfg.SmtpPort, Cfg.SmtpUser, Cfg.SmtpPass)
-		d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
-		if err = d.DialAndSend(m); err != nil {
-			Ret500(c, SEC_signup_smtp, err)
+		if err = sendcode(arg.Name, email, code); err != nil {
+			Ret500(c, SEC_signup_code, err)
 			return
 		}
 	}

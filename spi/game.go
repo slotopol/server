@@ -4,7 +4,6 @@ import (
 	"encoding/xml"
 	"log"
 	"math/rand/v2"
-	"net/http"
 	"sync/atomic"
 
 	cfg "github.com/slotopol/server/config"
@@ -171,7 +170,7 @@ func SpiSlotPart(c *gin.Context) {
 	Scenes.Delete(arg.GID)
 	user.games.Delete(arg.GID)
 
-	c.Status(http.StatusOK)
+	Ret204(c)
 }
 
 // Returns full info of game scene with given GID, and balance on wallet.
@@ -316,7 +315,7 @@ func SpiSlotBetSet(c *gin.Context) {
 		return
 	}
 
-	c.Status(http.StatusOK)
+	Ret204(c)
 }
 
 // Returns selected bet lines bitset.
@@ -394,7 +393,7 @@ func SpiSlotSblSet(c *gin.Context) {
 		return
 	}
 
-	c.Status(http.StatusOK)
+	Ret204(c)
 }
 
 // Returns master RTP for given GID.
@@ -751,5 +750,5 @@ func SpiSlotCollect(c *gin.Context) {
 		return
 	}
 
-	c.Status(http.StatusOK)
+	RetOk(c, nil)
 }

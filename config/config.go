@@ -20,11 +20,17 @@ type CfgJwtAuth struct {
 	AccessKey    string        `json:"access-key" yaml:"access-key" mapstructure:"access-key"`
 	RefreshKey   string        `json:"refresh-key" yaml:"refresh-key" mapstructure:"refresh-key"`
 	NonceTimeout time.Duration `json:"nonce-timeout" yaml:"nonce-timeout" mapstructure:"nonce-timeout"`
-	CodeTimeout  time.Duration `json:"code-timeout" yaml:"code-timeout" mapstructure:"code-timeout"`
-	SmtpHost     string        `json:"smtp-host" yaml:"smtp-host" mapstructure:"smtp-host"`
-	SmtpPort     int           `json:"smtp-port" yaml:"smtp-port" mapstructure:"smtp-port"`
-	SmtpUser     string        `json:"smtp-user" yaml:"smtp-user" mapstructure:"smtp-user"`
-	SmtpPass     string        `json:"smtp-pass" yaml:"smtp-pass" mapstructure:"smtp-pass"`
+}
+
+type CfgSendCode struct {
+	BrevoApiKey        string        `json:"brevo-api-key" yaml:"brevo-api-key" mapstructure:"brevo-api-key"`
+	BrevoEmailEndpoint string        `json:"brevo-email-endpoint" yaml:"brevo-email-endpoint" mapstructure:"brevo-email-endpoint"`
+	SenderName         string        `json:"sender-name" yaml:"sender-name" mapstructure:"sender-name"`
+	SenderEmail        string        `json:"sender-email" yaml:"sender-email" mapstructure:"sender-email"`
+	ReplytoEmail       string        `json:"replyto-email" yaml:"replyto-email" mapstructure:"replyto-email"`
+	EmailSubject       string        `json:"email-subject" yaml:"email-subject" mapstructure:"email-subject"`
+	EmailHtmlContent   string        `json:"email-html-content" yaml:"email-html-content" mapstructure:"email-html-content"`
+	CodeTimeout        time.Duration `json:"code-timeout" yaml:"code-timeout" mapstructure:"code-timeout"`
 }
 
 // CfgWebServ is web server settings.
@@ -82,6 +88,7 @@ type CfgGameplay struct {
 // Config is common service settings.
 type Config struct {
 	CfgJwtAuth  `json:"authentication" yaml:"authentication" mapstructure:"authentication"`
+	CfgSendCode `json:"activation" yaml:"activation" mapstructure:"activation"`
 	CfgWebServ  `json:"web-server" yaml:"web-server" mapstructure:"web-server"`
 	CfgXormDrv  `json:"database" yaml:"database" mapstructure:"database"`
 	CfgGameplay `json:"gameplay" yaml:"xorm" mapstructure:"gameplay"`
@@ -96,11 +103,16 @@ var Cfg = &Config{
 		AccessKey:    "skJgM4NsbP3fs4k7vh0gfdkgGl8dJTszdLxZ1sQ9ksFnxbgvw2RsGH8xxddUV479",
 		RefreshKey:   "zxK4dUnuq3Lhd1Gzhpr3usI5lAzgvy2t3fmxld2spzz7a5nfv0hsksm9cheyutie",
 		NonceTimeout: 150 * time.Second,
-		CodeTimeout:  15 * time.Minute,
-		SmtpHost:     "smtp.freesmtpservers.com",
-		SmtpPort:     25,
-		SmtpUser:     "",
-		SmtpPass:     "",
+	},
+	CfgSendCode: CfgSendCode{
+		BrevoApiKey:        "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",
+		BrevoEmailEndpoint: "https://api.brevo.com/v3/smtp/email",
+		SenderName:         "Slotopol server",
+		SenderEmail:        "slotopol.dev@gmail.com",
+		ReplytoEmail:       "noreply@gmail.com",
+		EmailSubject:       "Slotopol verification code",
+		EmailHtmlContent:   "<html><head></head><body><p>Your Slotopol verification code is: <b>%06d</b></p></body></html>",
+		CodeTimeout:        15 * time.Minute,
 	},
 	CfgWebServ: CfgWebServ{
 		TrustedProxies:    []string{"127.0.0.0/8"},

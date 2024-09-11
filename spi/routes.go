@@ -40,6 +40,10 @@ func RetOk(c *gin.Context, data any) {
 	Negotiate(c, http.StatusOK, data)
 }
 
+func Ret204(c *gin.Context) {
+	c.Status(http.StatusNoContent)
+}
+
 type jerr struct {
 	error
 }

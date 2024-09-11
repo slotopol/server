@@ -2,7 +2,6 @@ package spi
 
 import (
 	"encoding/xml"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	cfg "github.com/slotopol/server/config"
@@ -256,7 +255,7 @@ func SpiPropsAlSet(c *gin.Context) {
 	// make changes to memory data
 	props.Access = arg.Access
 
-	c.Status(http.StatusOK)
+	Ret204(c)
 }
 
 // Returns master RTP for pointed user at pointed club.
@@ -372,5 +371,5 @@ func SpiPropsRtpSet(c *gin.Context) {
 	// make changes to memory data
 	props.MRTP = arg.MRTP
 
-	c.Status(http.StatusOK)
+	Ret204(c)
 }
