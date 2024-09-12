@@ -1,12 +1,10 @@
 package spi
 
 import (
-	"encoding/json"
 	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/slotopol/server/game"
 	"github.com/slotopol/server/util"
 )
 
@@ -68,10 +66,8 @@ var StoryCounter uint64 // last GID
 // Scene represents game with all the connected environment.
 type Scene struct {
 	Story `yaml:",inline"`
-	SID   uint64        `json:"sid" yaml:"sid" xml:"sid,attr"` // last spin ID
-	Game  game.SlotGame `json:"game" yaml:"game" xml:"game"`
-	Scrn  game.Screen   `json:"scrn" yaml:"scrn" xml:"scrn"`
-	Wins  game.Wins     `json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
+	SID   uint64 `json:"sid" yaml:"sid" xml:"sid,attr"` // last spin ID
+	Game  any    `json:"game" yaml:"game" xml:"game"`
 }
 
 // Access level.
@@ -215,25 +211,6 @@ func GetRTP(user *User, club *Club) float64 {
 		return club.MRTP
 	}
 	return 92 // default RTP if no others found
-}
-
-func (sl *Spinlog) MarshalState(scene *Scene) (err error) {
-	var b []byte
-	if b, err = json.Marshal(scene.Game); err != nil {
-		return
-	}
-	sl.Game = util.B2S(b)
-	if b, err = json.Marshal(scene.Scrn); err != nil {
-		return
-	}
-	sl.Screen = util.B2S(b)
-	if len(scene.Wins) > 0 {
-		if b, err = json.Marshal(scene.Wins); err != nil {
-			return
-		}
-		sl.Wins = util.B2S(b)
-	}
-	return
 }
 
 func init() {

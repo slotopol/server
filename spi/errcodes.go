@@ -74,41 +74,41 @@ const (
 	SEC_signin_hs256
 	SEC_signin_denyhash
 
-	// POST /slot/join
+	// POST /game/join
 
-	SEC_slot_join_nobind
-	SEC_slot_join_norid
-	SEC_slot_join_nouid
-	SEC_slot_join_noclub
-	SEC_slot_join_nouser
-	SEC_slot_join_noaccess
-	SEC_slot_join_noalias
-	SEC_slot_join_noreels
-	SEC_slot_join_sql
+	SEC_game_join_nobind
+	SEC_game_join_norid
+	SEC_game_join_nouid
+	SEC_game_join_noclub
+	SEC_game_join_nouser
+	SEC_game_join_noaccess
+	SEC_game_join_noalias
+	SEC_game_join_sql
 
-	// POST /slot/part
+	// POST /game/part
 
-	SEC_slot_part_nobind
-	SEC_slot_part_nogid
-	SEC_slot_part_notopened
-	SEC_slot_part_nouser
-	SEC_slot_part_noaccess
-	SEC_slot_part_sql
+	SEC_game_part_nobind
+	SEC_game_part_nogid
+	SEC_game_part_notopened
+	SEC_game_part_nouser
+	SEC_game_part_noaccess
+	SEC_game_part_sql
 
 	// POST /slot/info
 
-	SEC_slot_info_nobind
-	SEC_slot_info_nogid
-	SEC_slot_info_notopened
-	SEC_slot_info_nouser
-	SEC_slot_info_noaccess
-	SEC_slot_info_noprops
+	SEC_game_info_nobind
+	SEC_game_info_nogid
+	SEC_game_info_notopened
+	SEC_game_info_nouser
+	SEC_game_info_noaccess
+	SEC_game_info_noprops
 
 	// POST /slot/bet/get
 
 	SEC_slot_betget_nobind
 	SEC_slot_betget_nogid
 	SEC_slot_betget_notopened
+	SEC_slot_betget_notslot
 	SEC_slot_betget_noaccess
 
 	// POST /slot/bet/set
@@ -116,6 +116,7 @@ const (
 	SEC_slot_betset_nobind
 	SEC_slot_betset_nogid
 	SEC_slot_betset_notopened
+	SEC_slot_betset_notslot
 	SEC_slot_betset_noaccess
 	SEC_slot_betset_badbet
 
@@ -124,6 +125,7 @@ const (
 	SEC_slot_sblget_nobind
 	SEC_slot_sblget_nogid
 	SEC_slot_sblget_notopened
+	SEC_slot_sblget_notslot
 	SEC_slot_sblget_noaccess
 
 	// POST /slot/sbl/set
@@ -131,6 +133,7 @@ const (
 	SEC_slot_sblset_nobind
 	SEC_slot_sblset_nogid
 	SEC_slot_sblset_notopened
+	SEC_slot_sblset_notslot
 	SEC_slot_sblset_noaccess
 	SEC_slot_sblset_badlines
 
@@ -148,6 +151,7 @@ const (
 	SEC_slot_spin_nobind
 	SEC_slot_spin_nogid
 	SEC_slot_spin_notopened
+	SEC_slot_spin_notslot
 	SEC_slot_spin_noclub
 	SEC_slot_spin_nouser
 	SEC_slot_spin_noaccess
@@ -163,6 +167,7 @@ const (
 	SEC_slot_doubleup_nomult
 	SEC_slot_doubleup_bigmult
 	SEC_slot_doubleup_notopened
+	SEC_slot_doubleup_notslot
 	SEC_slot_doubleup_noclub
 	SEC_slot_doubleup_nouser
 	SEC_slot_doubleup_noaccess
@@ -175,6 +180,7 @@ const (
 	SEC_slot_collect_nobind
 	SEC_slot_collect_nogid
 	SEC_slot_collect_notopened
+	SEC_slot_collect_notslot
 	SEC_slot_collect_noaccess
 	SEC_slot_collect_denied
 
@@ -320,6 +326,7 @@ var (
 	ErrBankOut   = errors.New("not enough money at bank")
 	ErrFundOut   = errors.New("not enough money at jackpot fund")
 	ErrLockOut   = errors.New("not enough money at deposit")
+	ErrNotSlot   = errors.New("specified GID refers to non-slot game")
 	ErrNoAccess  = errors.New("no access rights for this feature")
 	ErrNoLevel   = errors.New("admin have no privilege to modify specified access level to user")
 	ErrNotConf   = errors.New("password confirmation does not pass")
@@ -328,7 +335,6 @@ var (
 	ErrZero      = errors.New("given value is zero")
 	ErrTooBig    = errors.New("given value exceeds the limit")
 	ErrNoAliase  = errors.New("no game alias")
-	ErrNoReels   = errors.New("no reels for given game with selected percentage")
 	ErrNotOpened = errors.New("game with given ID is not opened")
 	ErrBadBank   = errors.New("can not generate spin with current bank balance")
 )

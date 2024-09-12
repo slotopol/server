@@ -199,6 +199,11 @@ func InitStorage() (err error) {
 	}
 	spi.StoryCounter = uint64(i64)
 
+	// Close all games of previous server session
+	if _, err = session.Cols("flow").Update(&spi.Story{Flow: false}); err != nil {
+		return
+	}
+
 	spi.JoinBuf.Init(Cfg.ClubUpdateBuffer, Cfg.ClubInsertBuffer)
 	return
 }

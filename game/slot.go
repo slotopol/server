@@ -99,7 +99,6 @@ var (
 	ErrNoLineset  = errors.New("lines set is empty")
 	ErrLinesetOut = errors.New("lines set is out of range bet lines")
 	ErrNoFeature  = errors.New("feature not available")
-	ErrNoReels    = errors.New("no reels for given descriptor")
 )
 
 // Slot5x3 is base struct for all slot games with screen 5x3.

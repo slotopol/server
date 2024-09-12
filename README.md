@@ -77,7 +77,7 @@ Response has array with available algorithms descriptions. Each structure has a 
 {"aliases":[{"id":"trolls","name":"Trolls"},{"id":"excalibur","name":"Excalibur"},{"id":"pandorasbox","name":"Pandora's Box"},{"id":"wildwitches","name":"Wild Witches"}],"provider":"NetEnt","scrnx":5,"scrny":3,"rtplist":[87.788791,89.230191,93.903358,95.183523,96.6485,98.193276,110.298257,91.925079,93.061471,101.929305]}
 ```
 
-`/ping`, `/servinfo` and `/memusage`, `/signis`, `/signup` and `/signin` endpoints also does not expects authorization.
+`/ping`, `/servinfo` and `/memusage`, `/signis`, `/sendcode`, `/activate`, `/signup` and `/signin` endpoints also does not expects authorization.
 
 ## Authorization
 
@@ -113,7 +113,7 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -X
 * Join to game. GID received at response will be used at all calls for access to this game instance. Also you will get initial game state, and user balance at this club.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"cid":1,"uid":3,"alias":"jokerdolphin"}' -X POST localhost:8080/slot/join
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"cid":1,"uid":3,"alias":"jokerdolphin"}' -X POST localhost:8080/game/join
 ```
 
 * Change selected bet lines. Argument `sbl` is a bitset with selected lines, 1st bit in bitset means 1st line. So, value `62` sets lines 1, 2, 3, 4, 5.
@@ -140,15 +140,25 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d
 curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/slot/collect
 ```
 
-* Get information about whole current game scene.
+* Get information about current game scene.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/slot/info
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/game/info
+```
+
+* Part game.
+
+```sh
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/game/part
 ```
 
 ## Work with user account
 
-Any calls for some user account can be done by another user with admin access level.
+* Check up user account existence. It can be done by email or user identifier (`uid` parameter). Call returns true `uid` and `email` if account is found, or zero user identifier if account does not registered.
+
+```sh
+curl -X GET localhost:8080/signis?email=rob@example.org
+```
 
 * Register new user. E-mail and secret key (password) are expected, name can be omitted. Receives user ID on success.
 
@@ -156,10 +166,28 @@ Any calls for some user account can be done by another user with admin access le
 curl -H "Content-Type: application/json" -d '{"email":"rob@example.org","secret":"LtpkAr","name":"rob"}' -X POST localhost:8080/signup
 ```
 
+After registration new user account expects account activation by code sent to user email. Activation can be done by `/activate` endpoint call. If registration of new user was done with admin token, this new user account does not expects activation.
+
+* Activate new user account. It can be done by code sent to user account email. Activation should be done in 15 minutes timeout after registration. If timeout expired activation can be done with new code, sent to email by `/sendcode` endpoint call.
+
+```sh
+curl -X GET localhost:8080/activate?uid=3&code=048814
+```
+
+Instead `uid` parameter with user identifier can be used user `email`. If activation endpoint was called with admin token, activation code have no matter.
+
+* Send new activation code to user email.
+
+```sh
+curl -X GET localhost:8080/sendcode?uid=3
+```
+
+Instead `uid` parameter with user identifier can be used user `email`.
+
 * Rename user.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"uid":3,"name":"erigine"}' -X POST localhost:8080/user/rename
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"uid":3,"name":"erigone"}' -X POST localhost:8080/user/rename
 ```
 
 * Change secret key.
@@ -168,7 +196,7 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d
 curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"uid":3,"oldsecret":"iVI05M","newsecret":"pGjKsd"}' -X POST localhost:8080/user/secret
 ```
 
-* Delete user. Delete-call removes account from database, move all remained user's coin to deposit, and removes all users games from database.
+* Delete user. Delete-call removes account from database, move all remained user's coins to deposit, and removes all users games from database.
 
 ```sh
 curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"uid":3,"secret":"iVI05M"}' -X POST localhost:8080/user/delete

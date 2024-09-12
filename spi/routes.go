@@ -137,11 +137,14 @@ func Router(r *gin.Engine) {
 
 	var ra = r.Group("/", Auth(true))
 
+	// common game group
+	var rg = ra.Group("/game")
+	rg.POST("/join", SpiGameJoin)
+	rg.POST("/part", SpiGamePart)
+	rg.POST("/info", SpiGameInfo)
+
 	// slot group
 	var rs = ra.Group("/slot")
-	rs.POST("/join", SpiSlotJoin)
-	rs.POST("/part", SpiSlotPart)
-	rs.POST("/info", SpiSlotInfo)
 	rs.POST("/bet/get", SpiSlotBetGet)
 	rs.POST("/bet/set", SpiSlotBetSet)
 	rs.POST("/sbl/get", SpiSlotSblGet)
