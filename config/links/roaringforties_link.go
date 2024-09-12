@@ -5,7 +5,7 @@ package links
 import (
 	"context"
 
-	"github.com/slotopol/server/game/roaringforties"
+	slot "github.com/slotopol/server/game/slot/roaringforties"
 	"github.com/spf13/pflag"
 )
 
@@ -17,7 +17,7 @@ func init() {
 		Provider: "Novomatic",
 		ScrnX:    5,
 		ScrnY:    4,
-		RtpList:  MakeRtpList(roaringforties.ReelsMap),
+		RtpList:  MakeRtpList(slot.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 
@@ -25,11 +25,11 @@ func init() {
 		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
 			if is, _ := flags.GetBool(ga.ID); is {
 				var rn, _ = flags.GetString("reels")
-				roaringforties.CalcStat(ctx, rn)
+				slot.CalcStat(ctx, rn)
 			}
 		})
 		GameFactory[ga.ID] = func() any {
-			return roaringforties.NewGame()
+			return slot.NewGame()
 		}
 	}
 }

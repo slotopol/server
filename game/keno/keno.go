@@ -23,7 +23,7 @@ const (
 
 type KenoScreen [80]KB
 
-type KWins struct {
+type Wins struct {
 	Num  int
 	Pay  float64
 	Hits [20]int
@@ -39,6 +39,7 @@ type KenoGame interface {
 }
 
 var (
+	ErrBetEmpty      = errors.New("bet is empty")
 	ErrKenoNotEnough = errors.New("not enough numbers selected, minimum 2 expected")
 	ErrKenoTooMany   = errors.New("too many numbers selected, not more than 10 expected")
 	ErrKenoOutRange  = errors.New("some of given number is out of range 1..80")

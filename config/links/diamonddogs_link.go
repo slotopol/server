@@ -5,7 +5,7 @@ package links
 import (
 	"context"
 
-	"github.com/slotopol/server/game/diamonddogs"
+	slot "github.com/slotopol/server/game/slot/diamonddogs"
 	"github.com/spf13/pflag"
 )
 
@@ -18,7 +18,7 @@ func init() {
 		Provider: "NetEnt",
 		ScrnX:    5,
 		ScrnY:    3,
-		RtpList:  MakeRtpList(diamonddogs.ReelsMap),
+		RtpList:  MakeRtpList(slot.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 
@@ -27,14 +27,14 @@ func init() {
 			if is, _ := flags.GetBool(ga.ID); is {
 				var rn, _ = flags.GetString("reels")
 				if rn == "bon" {
-					diamonddogs.CalcStatBon(ctx)
+					slot.CalcStatBon(ctx)
 				} else {
-					diamonddogs.CalcStatReg(ctx, rn)
+					slot.CalcStatReg(ctx, rn)
 				}
 			}
 		})
 		GameFactory[ga.ID] = func() any {
-			return diamonddogs.NewGame()
+			return slot.NewGame()
 		}
 	}
 }

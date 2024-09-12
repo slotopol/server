@@ -5,12 +5,12 @@ package roaringforties
 import (
 	"math"
 
-	"github.com/slotopol/server/game"
+	slot "github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [58, 66, 66, 66, 58], total reshuffles 967136544
 // RTP = 81.412(lined) + 7.1905(scatter) = 88.602035%
-var Reels89 = game.Reels5x{
+var Reels89 = slot.Reels5x{
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6},
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6, 9, 9, 9, 9, 5, 6, 7, 8},
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6, 9, 9, 9, 9, 5, 6, 7, 8},
@@ -20,7 +20,7 @@ var Reels89 = game.Reels5x{
 
 // reels lengths [62, 62, 62, 62, 62], total reshuffles 916132832
 // RTP = 85.306(lined) + 7.462(scatter) = 92.768326%
-var Reels93 = game.Reels5x{
+var Reels93 = slot.Reels5x{
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6, 5, 6, 7, 8},
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6, 9, 9, 9, 9},
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6, 9, 9, 9, 9},
@@ -30,7 +30,7 @@ var Reels93 = game.Reels5x{
 
 // reels lengths [58, 66, 67, 66, 58], total reshuffles 981790128
 // RTP = 86.974(lined) + 7.114(scatter) = 94.088429%
-var Reels94 = game.Reels5x{
+var Reels94 = slot.Reels5x{
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6},
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6, 9, 9, 9, 9, 5, 6, 7, 8},
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6, 9, 9, 9, 9, 5, 6, 7, 8, 9},
@@ -40,7 +40,7 @@ var Reels94 = game.Reels5x{
 
 // reels lengths [58, 62, 62, 62, 58], total reshuffles 801735392
 // RTP = 87.193(lined) + 8.2264(scatter) = 95.419380%
-var Reels95 = game.Reels5x{
+var Reels95 = slot.Reels5x{
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6},
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6, 9, 9, 9, 9},
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6, 9, 9, 9, 9},
@@ -50,7 +50,7 @@ var Reels95 = game.Reels5x{
 
 // reels lengths [59, 62, 62, 62, 59], total reshuffles 829619768
 // RTP = 88.997(lined) + 8.0221(scatter) = 97.019081%
-var Reels97 = game.Reels5x{
+var Reels97 = slot.Reels5x{
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6, 1},
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6, 9, 9, 9, 9},
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6, 9, 9, 9, 9},
@@ -60,7 +60,7 @@ var Reels97 = game.Reels5x{
 
 // reels lengths [62, 67, 67, 67, 62], total reshuffles 1156132972
 // RTP = 94.287(lined) + 6.3129(scatter) = 100.599786%
-var Reels101 = game.Reels5x{
+var Reels101 = slot.Reels5x{
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6, 5, 6, 7, 8},
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6, 9, 9, 9, 9, 5, 6, 7, 8, 9},
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6, 9, 9, 9, 9, 5, 6, 7, 8, 9},
@@ -70,7 +70,7 @@ var Reels101 = game.Reels5x{
 
 // reels lengths [58, 63, 63, 63, 58], total reshuffles 841158108
 // RTP = 103.23(lined) + 7.9464(scatter) = 111.172239%
-var Reels111 = game.Reels5x{
+var Reels111 = slot.Reels5x{
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6},
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6, 9, 9, 9, 9, 9},
 	{8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 3, 3, 3, 3, 2, 2, 2, 2, 10, 5, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 7, 10, 4, 4, 4, 4, 8, 8, 8, 8, 6, 6, 6, 6, 9, 9, 9, 9, 9},
@@ -79,7 +79,7 @@ var Reels111 = game.Reels5x{
 }
 
 // Map with available reels.
-var ReelsMap = map[float64]*game.Reels5x{
+var ReelsMap = map[float64]*slot.Reels5x{
 	88.602035:  &Reels89,
 	92.768326:  &Reels93,
 	94.088429:  &Reels94,
@@ -89,7 +89,7 @@ var ReelsMap = map[float64]*game.Reels5x{
 	111.172239: &Reels111,
 }
 
-func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
+func FindReels(mrtp float64) (rtp float64, reels slot.Reels) {
 	for p, r := range ReelsMap {
 		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
 			rtp, reels = p, r
@@ -134,13 +134,13 @@ var Jackpot = [10][5]int{
 }
 
 type Game struct {
-	game.Slot5x4 `yaml:",inline"`
+	slot.Slot5x4 `yaml:",inline"`
 }
 
 func NewGame() *Game {
 	return &Game{
-		Slot5x4: game.Slot5x4{
-			SBL: game.MakeBitNum(40),
+		Slot5x4: slot.Slot5x4{
+			SBL: slot.MakeBitNum(40),
 			Bet: 1,
 		},
 	}
@@ -148,15 +148,15 @@ func NewGame() *Game {
 
 const wild, scat = 9, 10
 
-var bl = game.BetLinesNvm40
+var bl = slot.BetLinesNvm40
 
-func (g *Game) Scanner(screen game.Screen, wins *game.Wins) {
+func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)
 	g.ScanScatters(screen, wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
+func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
 
@@ -170,7 +170,7 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 		}
 
 		if pay := LinePay[syml-1][numl-1]; pay > 0 {
-			*wins = append(*wins, game.WinItem{
+			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * pay,
 				Mult: 1,
 				Sym:  syml,
@@ -183,10 +183,10 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
+func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 	if count := screen.ScatNum(scat); count >= 3 {
 		var pay = ScatPay[count-1]
-		*wins = append(*wins, game.WinItem{
+		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * float64(g.SBL.Num()) * pay,
 			Mult: 1,
 			Sym:  scat,
@@ -196,21 +196,21 @@ func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 	}
 }
 
-func (g *Game) Spin(screen game.Screen, mrtp float64) {
+func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 	var _, reels = FindReels(mrtp)
 	screen.Spin(reels)
 }
 
-func (g *Game) SetLines(sbl game.Bitset) error {
-	var mask game.Bitset = (1<<len(bl) - 1) << 1
+func (g *Game) SetLines(sbl slot.Bitset) error {
+	var mask slot.Bitset = (1<<len(bl) - 1) << 1
 	if sbl == 0 {
-		return game.ErrNoLineset
+		return slot.ErrNoLineset
 	}
 	if sbl&^mask != 0 {
-		return game.ErrLinesetOut
+		return slot.ErrLinesetOut
 	}
 	if g.FreeSpins() > 0 {
-		return game.ErrNoFeature
+		return slot.ErrNoFeature
 	}
 	g.SBL = sbl
 	return nil

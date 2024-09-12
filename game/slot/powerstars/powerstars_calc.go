@@ -6,13 +6,13 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/slotopol/server/game"
+	slot "github.com/slotopol/server/game/slot"
 )
 
-func BruteForce5x(ctx context.Context, s game.Stater, g game.SlotGame, reels game.Reels, wc2, wc3, wc4 bool) {
+func BruteForce5x(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, wc2, wc3, wc4 bool) {
 	var screen = g.NewScreen()
 	defer screen.Free()
-	var wins game.Wins
+	var wins slot.Wins
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)
 	var r3 = reels.Reel(3)
@@ -61,9 +61,9 @@ func BruteForce5x(ctx context.Context, s game.Stater, g game.SlotGame, reels gam
 func CalcStatStars(ctx context.Context, wc2, wc3, wc4 bool) float64 {
 	var reels = &Reels
 	var g = NewGame()
-	g.SBL = game.MakeBitNum(1)
+	g.SBL = slot.MakeBitNum(1)
 	var sbl = float64(g.SBL.Num())
-	var s game.Stat
+	var s slot.Stat
 
 	var wcsym = func(wc bool) byte {
 		if wc {

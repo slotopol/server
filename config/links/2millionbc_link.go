@@ -5,7 +5,7 @@ package links
 import (
 	"context"
 
-	twomillionbc "github.com/slotopol/server/game/2millionbc"
+	slot "github.com/slotopol/server/game/slot/2millionbc"
 	"github.com/spf13/pflag"
 )
 
@@ -17,7 +17,7 @@ func init() {
 		Provider: "BetSoft",
 		ScrnX:    5,
 		ScrnY:    3,
-		RtpList:  MakeRtpList(twomillionbc.ReelsMap),
+		RtpList:  MakeRtpList(slot.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 
@@ -26,14 +26,14 @@ func init() {
 			if is, _ := flags.GetBool(ga.ID); is {
 				var rn, _ = flags.GetString("reels")
 				if rn == "bon" {
-					twomillionbc.CalcStatBon(ctx)
+					slot.CalcStatBon(ctx)
 				} else {
-					twomillionbc.CalcStatReg(ctx, rn)
+					slot.CalcStatReg(ctx, rn)
 				}
 			}
 		})
 		GameFactory[ga.ID] = func() any {
-			return twomillionbc.NewGame()
+			return slot.NewGame()
 		}
 	}
 }

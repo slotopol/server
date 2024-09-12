@@ -3,7 +3,7 @@ package trolls
 import (
 	"math"
 
-	"github.com/slotopol/server/game"
+	slot "github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [39, 39, 40, 39, 39], total reshuffles 92537640
@@ -11,7 +11,7 @@ import (
 // free spins 3838590, q = 0.041481, sq = 1/(1-q) = 1.043277
 // free games frequency: 1/250.98
 // RTP = 77.701(sym) + 0.041481*243.19(fg) = 87.788791%
-var Reels88 = game.Reels5x{
+var Reels88 = slot.Reels5x{
 	{2, 11, 3, 10, 5, 8, 1, 7, 10, 9, 6, 2, 7, 8, 1, 12, 10, 4, 6, 10, 5, 7, 9, 4, 11, 3, 7, 14, 9, 4, 11, 6, 8, 2, 9, 11, 5, 3, 8},
 	{6, 11, 2, 5, 10, 14, 4, 5, 3, 7, 6, 4, 9, 3, 12, 9, 11, 3, 9, 8, 2, 5, 8, 1, 7, 10, 8, 9, 11, 10, 8, 2, 11, 10, 7, 4, 6, 1, 7},
 	{13, 11, 8, 3, 11, 2, 10, 4, 7, 9, 6, 2, 10, 6, 3, 7, 4, 14, 1, 8, 11, 5, 12, 10, 4, 9, 3, 11, 9, 1, 7, 2, 9, 7, 8, 5, 6, 8, 10, 5},
@@ -24,7 +24,7 @@ var Reels88 = game.Reels5x{
 // free spins 3637710, q = 0.044733, sq = 1/(1-q) = 1.046828
 // free games frequency: 1/232.99
 // RTP = 78.239(sym) + 0.044733*245.71(fg) = 89.230191%
-var Reels89 = game.Reels5x{
+var Reels89 = slot.Reels5x{
 	{9, 8, 7, 1, 11, 8, 4, 6, 7, 4, 6, 10, 5, 3, 6, 2, 5, 11, 10, 9, 4, 12, 2, 8, 1, 7, 9, 3, 14, 10, 7, 9, 3, 5, 11, 8, 10, 11},
 	{9, 10, 5, 3, 10, 11, 5, 10, 9, 11, 3, 8, 2, 6, 4, 7, 11, 2, 7, 9, 8, 12, 6, 7, 1, 11, 8, 5, 1, 6, 4, 14, 9, 3, 7, 10, 8, 4},
 	{8, 2, 6, 10, 9, 7, 8, 14, 2, 7, 5, 3, 11, 8, 1, 11, 7, 13, 9, 4, 11, 5, 9, 10, 5, 11, 8, 1, 9, 10, 4, 12, 3, 6, 10, 4, 7, 3, 6},
@@ -37,7 +37,7 @@ var Reels89 = game.Reels5x{
 // free spins 3442230, q = 0.048334, sq = 1/(1-q) = 1.050788
 // free games frequency: 1/215.89
 // RTP = 79.771(sym) + 0.048334*251.47(fg) = 91.925079%
-var Reels92 = game.Reels5x{
+var Reels92 = slot.Reels5x{
 	{4, 7, 5, 11, 6, 10, 11, 4, 7, 9, 3, 5, 11, 9, 2, 10, 7, 1, 8, 7, 5, 2, 8, 10, 3, 8, 4, 14, 9, 1, 6, 9, 12, 11, 6, 8, 10},
 	{4, 5, 10, 1, 7, 5, 2, 10, 14, 3, 8, 11, 7, 9, 8, 3, 11, 6, 10, 4, 9, 11, 12, 8, 9, 7, 2, 11, 4, 9, 6, 5, 1, 10, 7, 8, 6},
 	{7, 8, 5, 6, 8, 1, 9, 3, 14, 4, 11, 3, 13, 5, 11, 6, 2, 7, 10, 8, 9, 7, 10, 11, 4, 5, 1, 9, 10, 12, 2, 7, 4, 6, 11, 10, 8, 9},
@@ -50,7 +50,7 @@ var Reels92 = game.Reels5x{
 // free spins 3838590, q = 0.041481, sq = 1/(1-q) = 1.043277
 // free games frequency: 1/250.98
 // RTP = 82.368(sym) + 0.041481*257.8(fg) = 93.061471%
-var Reels93 = game.Reels5x{
+var Reels93 = slot.Reels5x{
 	{5, 6, 3, 7, 11, 4, 9, 7, 1, 9, 10, 5, 8, 4, 10, 2, 8, 11, 5, 3, 11, 7, 2, 11, 1, 10, 4, 8, 6, 12, 2, 6, 9, 14, 3, 8, 9, 10, 1},
 	{6, 3, 9, 12, 2, 7, 8, 1, 14, 11, 5, 9, 1, 7, 10, 11, 8, 4, 5, 7, 8, 4, 9, 3, 10, 2, 5, 1, 6, 9, 10, 4, 6, 3, 11, 8, 10, 11, 2},
 	{8, 5, 10, 11, 4, 6, 8, 4, 10, 6, 2, 13, 11, 2, 9, 10, 7, 6, 3, 8, 1, 11, 9, 2, 10, 3, 8, 1, 5, 7, 9, 3, 5, 7, 4, 9, 12, 1, 11, 14},
@@ -63,7 +63,7 @@ var Reels93 = game.Reels5x{
 // free spins 3442230, q = 0.048334, sq = 1/(1-q) = 1.050788
 // free games frequency: 1/215.89
 // RTP = 81.487(sym) + 0.048334*256.88(fg) = 93.903358%
-var Reels94 = game.Reels5x{
+var Reels94 = slot.Reels5x{
 	{2, 11, 5, 8, 3, 11, 4, 7, 1, 6, 10, 8, 6, 3, 9, 11, 7, 10, 5, 8, 4, 7, 2, 12, 3, 11, 8, 9, 4, 5, 10, 1, 9, 14, 6, 10, 9},
 	{1, 7, 3, 6, 9, 1, 7, 8, 11, 4, 6, 9, 10, 5, 3, 8, 9, 2, 14, 8, 5, 2, 10, 6, 8, 4, 11, 5, 4, 10, 12, 3, 11, 10, 7, 9, 11},
 	{8, 1, 11, 10, 5, 4, 6, 10, 9, 4, 7, 13, 11, 6, 1, 10, 5, 3, 9, 7, 2, 10, 11, 9, 3, 8, 11, 2, 8, 14, 4, 7, 8, 12, 9, 5, 6, 3},
@@ -76,7 +76,7 @@ var Reels94 = game.Reels5x{
 // free spins 3327480, q = 0.050688, sq = 1/(1-q) = 1.053394
 // free games frequency: 1/206.01
 // RTP = 82.042(sym) + 0.050688*259.27(fg) = 95.183523%
-var Reels95 = game.Reels5x{
+var Reels95 = slot.Reels5x{
 	{2, 11, 5, 8, 3, 11, 4, 7, 1, 6, 10, 8, 6, 3, 9, 11, 7, 10, 5, 8, 4, 7, 2, 12, 3, 11, 8, 9, 4, 5, 10, 1, 9, 14, 6, 10, 9},
 	{9, 2, 7, 5, 12, 6, 7, 9, 11, 8, 6, 14, 11, 4, 5, 1, 10, 9, 11, 3, 7, 10, 3, 9, 10, 8, 2, 10, 4, 8, 6, 4, 8, 11, 5, 1},
 	{12, 2, 6, 1, 10, 4, 13, 8, 10, 9, 3, 5, 11, 1, 9, 6, 11, 4, 5, 11, 8, 7, 2, 6, 7, 8, 5, 10, 9, 4, 11, 10, 3, 14, 9, 8, 7},
@@ -89,7 +89,7 @@ var Reels95 = game.Reels5x{
 // free spins 3252150, q = 0.052331, sq = 1/(1-q) = 1.055221
 // free games frequency: 1/199.64
 // RTP = 82.913(sym) + 0.052331*262.47(fg) = 96.648500%
-var Reels97 = game.Reels5x{
+var Reels97 = slot.Reels5x{
 	{11, 9, 3, 12, 2, 11, 4, 8, 2, 10, 5, 11, 10, 9, 8, 5, 6, 3, 9, 4, 7, 11, 10, 5, 6, 14, 9, 7, 1, 8, 7, 1, 6, 8, 10, 4},
 	{9, 2, 7, 5, 12, 6, 7, 9, 11, 8, 6, 14, 11, 4, 5, 1, 10, 9, 11, 3, 7, 10, 3, 9, 10, 8, 2, 10, 4, 8, 6, 4, 8, 11, 5, 1},
 	{12, 2, 6, 1, 10, 4, 13, 8, 10, 9, 3, 5, 11, 1, 9, 6, 11, 4, 5, 11, 8, 7, 2, 6, 7, 8, 5, 10, 9, 4, 11, 10, 3, 14, 9, 8, 7},
@@ -102,7 +102,7 @@ var Reels97 = game.Reels5x{
 // free spins 3214350, q = 0.053242, sq = 1/(1-q) = 1.056236
 // free games frequency: 1/196.28
 // RTP = 84.019(sym) + 0.053242*266.23(fg) = 98.193276%
-var Reels98 = game.Reels5x{
+var Reels98 = slot.Reels5x{
 	{2, 11, 5, 8, 3, 11, 4, 7, 1, 6, 10, 8, 6, 3, 9, 11, 7, 10, 5, 8, 4, 7, 2, 12, 3, 11, 8, 9, 4, 5, 10, 1, 9, 14, 6, 10, 9},
 	{3, 5, 10, 7, 8, 11, 6, 9, 3, 11, 1, 6, 2, 7, 9, 10, 5, 8, 4, 12, 10, 11, 2, 8, 1, 6, 14, 9, 5, 8, 7, 10, 4, 11, 9},
 	{2, 9, 8, 4, 5, 7, 9, 10, 12, 1, 7, 9, 11, 13, 6, 4, 8, 5, 11, 7, 10, 9, 14, 5, 2, 11, 8, 3, 6, 10, 1, 11, 8, 6, 3, 10},
@@ -115,7 +115,7 @@ var Reels98 = game.Reels5x{
 // free spins 3067470, q = 0.056781, sq = 1/(1-q) = 1.060200
 // free games frequency: 1/184.24
 // RTP = 86.337(sym) + 0.056781*274.6(fg) = 101.929305%
-var Reels102 = game.Reels5x{
+var Reels102 = slot.Reels5x{
 	{3, 7, 9, 8, 11, 4, 10, 14, 7, 5, 10, 2, 9, 1, 8, 10, 4, 8, 10, 6, 11, 5, 1, 7, 2, 6, 11, 5, 12, 3, 6, 9, 8, 11, 9},
 	{3, 5, 10, 7, 8, 11, 6, 9, 3, 11, 1, 6, 2, 7, 9, 10, 5, 8, 4, 12, 10, 11, 2, 8, 1, 6, 14, 9, 5, 8, 7, 10, 4, 11, 9},
 	{2, 9, 8, 4, 5, 7, 9, 10, 12, 1, 7, 9, 11, 13, 6, 4, 8, 5, 11, 7, 10, 9, 14, 5, 2, 11, 8, 3, 6, 10, 1, 11, 8, 6, 3, 10},
@@ -128,7 +128,7 @@ var Reels102 = game.Reels5x{
 // free spins 2888190, q = 0.061751, sq = 1/(1-q) = 1.065815
 // free games frequency: 1/169.65
 // RTP = 92.111(sym) + 0.061751*294.52(fg) = 110.298257%
-var Reels110 = game.Reels5x{
+var Reels110 = slot.Reels5x{
 	{1, 10, 7, 9, 5, 7, 4, 6, 2, 8, 6, 11, 3, 5, 1, 8, 10, 7, 2, 11, 5, 4, 14, 3, 9, 6, 8, 11, 10, 4, 9, 12, 10, 11},
 	{1, 11, 4, 6, 12, 9, 4, 5, 1, 8, 7, 5, 10, 6, 11, 2, 8, 6, 11, 3, 8, 5, 9, 2, 10, 4, 9, 10, 7, 14, 3, 11, 10, 7},
 	{4, 10, 7, 13, 6, 8, 3, 10, 2, 7, 6, 3, 11, 12, 5, 2, 11, 10, 9, 8, 4, 9, 5, 11, 1, 8, 10, 1, 9, 6, 4, 5, 14, 11, 7},
@@ -137,7 +137,7 @@ var Reels110 = game.Reels5x{
 }
 
 // Map with available reels.
-var ReelsMap = map[float64]*game.Reels5x{
+var ReelsMap = map[float64]*slot.Reels5x{
 	87.788791:  &Reels88,
 	89.230191:  &Reels89,
 	91.925079:  &Reels92,
@@ -150,7 +150,7 @@ var ReelsMap = map[float64]*game.Reels5x{
 	110.298257: &Reels110,
 }
 
-func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
+func FindReels(mrtp float64) (rtp float64, reels slot.Reels) {
 	for p, r := range ReelsMap {
 		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
 			rtp, reels = p, r
@@ -206,15 +206,15 @@ var Jackpot = [14][5]int{
 }
 
 type Game struct {
-	game.Slot5x3 `yaml:",inline"`
+	slot.Slot5x3 `yaml:",inline"`
 	// free spin number
 	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
 }
 
 func NewGame() *Game {
 	return &Game{
-		Slot5x3: game.Slot5x3{
-			SBL: game.MakeBitNum(20),
+		Slot5x3: slot.Slot5x3{
+			SBL: slot.MakeBitNum(20),
 			Bet: 1,
 		},
 		FS: 0,
@@ -223,20 +223,20 @@ func NewGame() *Game {
 
 const wild1, wild2, scat = 12, 13, 14
 
-var bl = game.BetLinesNetEnt20
+var bl = slot.BetLinesNetEnt20
 
-func (g *Game) Scanner(screen game.Screen, wins *game.Wins) {
+func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)
 	g.ScanScatters(screen, wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
+func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
 
 		var numw, numl = 0, 5
-		var syml game.Sym
+		var syml slot.Sym
 		var mw float64 = 1 // mult wild
 		for x := 1; x <= 5; x++ {
 			var sx = screen.Pos(x, line)
@@ -272,7 +272,7 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 			if g.FS > 0 {
 				mm = 3
 			}
-			*wins = append(*wins, game.WinItem{
+			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * payl,
 				Mult: mw * mm,
 				Sym:  syml,
@@ -285,7 +285,7 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 			if g.FS > 0 {
 				mm = 3
 			}
-			*wins = append(*wins, game.WinItem{
+			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * payw,
 				Mult: mm, // no multiplyer on line by double symbol
 				Sym:  wild1,
@@ -299,14 +299,14 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
+func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 	if count := screen.ScatNum(scat); count >= 2 {
 		var mm float64 = 1 // mult mode
 		if g.FS > 0 {
 			mm = 3
 		}
 		var pay, fs = ScatPay[count-1], ScatFreespin[count-1]
-		*wins = append(*wins, game.WinItem{
+		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * float64(g.SBL.Num()) * pay,
 			Mult: mm,
 			Sym:  scat,
@@ -317,12 +317,12 @@ func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 	}
 }
 
-func (g *Game) Spin(screen game.Screen, mrtp float64) {
+func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 	var _, reels = FindReels(mrtp)
 	screen.Spin(reels)
 }
 
-func (g *Game) Apply(screen game.Screen, wins game.Wins) {
+func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
 	if g.FS > 0 {
 		g.Gain += wins.Gain()
 	} else {
@@ -343,16 +343,16 @@ func (g *Game) FreeSpins() int {
 	return g.FS
 }
 
-func (g *Game) SetLines(sbl game.Bitset) error {
-	var mask game.Bitset = (1<<len(bl) - 1) << 1
+func (g *Game) SetLines(sbl slot.Bitset) error {
+	var mask slot.Bitset = (1<<len(bl) - 1) << 1
 	if sbl == 0 {
-		return game.ErrNoLineset
+		return slot.ErrNoLineset
 	}
 	if sbl&^mask != 0 {
-		return game.ErrLinesetOut
+		return slot.ErrLinesetOut
 	}
 	if g.FreeSpins() > 0 {
-		return game.ErrNoFeature
+		return slot.ErrNoFeature
 	}
 	g.SBL = sbl
 	return nil

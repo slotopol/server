@@ -5,7 +5,7 @@ package links
 import (
 	"context"
 
-	"github.com/slotopol/server/game/dolphinspearl"
+	slot "github.com/slotopol/server/game/slot/dolphinspearl"
 	"github.com/spf13/pflag"
 )
 
@@ -35,7 +35,7 @@ func init() {
 		Provider: "Novomatic",
 		ScrnX:    5,
 		ScrnY:    3,
-		RtpList:  MakeRtpList(dolphinspearl.ReelsMap),
+		RtpList:  MakeRtpList(slot.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 
@@ -44,14 +44,14 @@ func init() {
 			if is, _ := flags.GetBool(ga.ID); is {
 				var rn, _ = flags.GetString("reels")
 				if rn == "bon" {
-					dolphinspearl.CalcStatBon(ctx)
+					slot.CalcStatBon(ctx)
 				} else {
-					dolphinspearl.CalcStatReg(ctx, rn)
+					slot.CalcStatReg(ctx, rn)
 				}
 			}
 		})
 		GameFactory[ga.ID] = func() any {
-			return dolphinspearl.NewGame()
+			return slot.NewGame()
 		}
 	}
 }

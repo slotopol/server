@@ -3,12 +3,12 @@ package ultrahot
 import (
 	"math"
 
-	"github.com/slotopol/server/game"
+	slot "github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [37, 37, 37], total reshuffles 50653
 // RTP = 88.227746%
-var Reels88 = game.Reels3x{
+var Reels88 = slot.Reels3x{
 	{8, 8, 8, 1, 6, 6, 6, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 2, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 5, 5, 5},
 	{8, 8, 8, 1, 6, 6, 6, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 2, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 5, 5, 5},
 	{8, 8, 8, 1, 6, 6, 6, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 2, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 5, 5, 5},
@@ -16,7 +16,7 @@ var Reels88 = game.Reels3x{
 
 // reels lengths [44, 44, 44], total reshuffles 85184
 // RTP = 90.275169%
-var Reels90 = game.Reels3x{
+var Reels90 = slot.Reels3x{
 	{8, 8, 8, 6, 6, 6, 1, 3, 2, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 1, 2, 8, 3, 8, 5, 5, 5, 2},
 	{8, 8, 8, 6, 6, 6, 1, 3, 2, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 1, 2, 8, 3, 8, 5, 5, 5, 2},
 	{8, 8, 8, 6, 6, 6, 1, 3, 2, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 1, 2, 8, 3, 8, 5, 5, 5, 2},
@@ -24,7 +24,7 @@ var Reels90 = game.Reels3x{
 
 // reels lengths [43, 43, 43], total reshuffles 79507
 // RTP = 92.117675%
-var Reels92 = game.Reels3x{
+var Reels92 = slot.Reels3x{
 	{8, 8, 8, 6, 6, 6, 1, 3, 2, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 1, 2, 8, 8, 5, 5, 5, 2},
 	{8, 8, 8, 6, 6, 6, 1, 3, 2, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 1, 2, 8, 8, 5, 5, 5, 2},
 	{8, 8, 8, 6, 6, 6, 1, 3, 2, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 1, 2, 8, 8, 5, 5, 5, 2},
@@ -32,7 +32,7 @@ var Reels92 = game.Reels3x{
 
 // reels lengths [40, 40, 40], total reshuffles 64000
 // RTP = 93.062500%
-var Reels93 = game.Reels3x{
+var Reels93 = slot.Reels3x{
 	{8, 8, 8, 6, 6, 6, 1, 3, 2, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 1, 2, 5, 5, 5},
 	{8, 8, 8, 6, 6, 6, 1, 3, 2, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 1, 2, 5, 5, 5},
 	{8, 8, 8, 6, 6, 6, 1, 3, 2, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 1, 2, 5, 5, 5},
@@ -40,7 +40,7 @@ var Reels93 = game.Reels3x{
 
 // reels lengths [43, 43, 43], total reshuffles 79507
 // RTP = 95.658244%
-var Reels96 = game.Reels3x{
+var Reels96 = slot.Reels3x{
 	{8, 8, 8, 6, 6, 6, 1, 3, 2, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 1, 2, 8, 3, 5, 5, 5, 2},
 	{8, 8, 8, 6, 6, 6, 1, 3, 2, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 1, 2, 8, 3, 5, 5, 5, 2},
 	{8, 8, 8, 6, 6, 6, 1, 3, 2, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 1, 2, 8, 3, 5, 5, 5, 2},
@@ -48,7 +48,7 @@ var Reels96 = game.Reels3x{
 
 // reels lengths [45, 45, 45], total reshuffles 91125
 // RTP = 97.816187%
-var Reels98 = game.Reels3x{
+var Reels98 = slot.Reels3x{
 	{8, 8, 8, 6, 6, 6, 1, 3, 2, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 1, 2, 8, 3, 3, 3, 5, 5, 5, 2},
 	{8, 8, 8, 6, 6, 6, 1, 3, 2, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 1, 2, 8, 3, 3, 3, 5, 5, 5, 2},
 	{8, 8, 8, 6, 6, 6, 1, 3, 2, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 1, 2, 8, 3, 3, 3, 5, 5, 5, 2},
@@ -56,14 +56,14 @@ var Reels98 = game.Reels3x{
 
 // reels lengths [44, 44, 44], total reshuffles 85184
 // RTP = 110.648713%
-var Reels111 = game.Reels3x{
+var Reels111 = slot.Reels3x{
 	{8, 8, 8, 6, 6, 6, 1, 3, 2, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 1, 2, 8, 3, 2, 5, 5, 5, 2},
 	{8, 8, 8, 6, 6, 6, 1, 3, 2, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 1, 2, 8, 3, 2, 5, 5, 5, 2},
 	{8, 8, 8, 6, 6, 6, 1, 3, 2, 4, 4, 4, 7, 7, 7, 2, 8, 8, 8, 3, 3, 3, 6, 6, 6, 2, 5, 5, 5, 4, 4, 4, 7, 7, 7, 1, 2, 8, 3, 2, 5, 5, 5, 2},
 }
 
 // Map with available reels.
-var ReelsMap = map[float64]*game.Reels3x{
+var ReelsMap = map[float64]*slot.Reels3x{
 	88.227746:  &Reels88,
 	90.275169:  &Reels90,
 	92.117675:  &Reels92,
@@ -73,7 +73,7 @@ var ReelsMap = map[float64]*game.Reels3x{
 	110.648713: &Reels111,
 }
 
-func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
+func FindReels(mrtp float64) (rtp float64, reels slot.Reels) {
 	for p, r := range ReelsMap {
 		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
 			rtp, reels = p, r
@@ -95,20 +95,20 @@ var LinePay = [8][3]float64{
 }
 
 type Game struct {
-	game.Slot3x3 `yaml:",inline"`
+	slot.Slot3x3 `yaml:",inline"`
 }
 
 func NewGame() *Game {
 	return &Game{
-		Slot3x3: game.Slot3x3{
-			SBL: game.MakeBitNum(5),
+		Slot3x3: slot.Slot3x3{
+			SBL: slot.MakeBitNum(5),
 			Bet: 1,
 		},
 	}
 }
 
-func (g *Game) Scanner(screen game.Screen, wins *game.Wins) {
-	var bl = game.BetLinesHot3
+func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
+	var bl = slot.BetLinesHot3
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
 		var fm float64 = 1 // fill mult
@@ -117,7 +117,7 @@ func (g *Game) Scanner(screen game.Screen, wins *game.Wins) {
 		}
 		var sym1, sym2, sym3 = screen.Pos(1, line), screen.Pos(2, line), screen.Pos(3, line)
 		if sym1 == sym2 && sym1 == sym3 {
-			*wins = append(*wins, game.WinItem{
+			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * LinePay[sym1-1][2],
 				Mult: fm,
 				Sym:  sym1,
@@ -129,11 +129,11 @@ func (g *Game) Scanner(screen game.Screen, wins *game.Wins) {
 	}
 }
 
-func (g *Game) Spin(screen game.Screen, mrtp float64) {
+func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 	var _, reels = FindReels(mrtp)
 	screen.Spin(reels)
 }
 
-func (g *Game) SetLines(sbl game.Bitset) error {
-	return game.ErrNoFeature
+func (g *Game) SetLines(sbl slot.Bitset) error {
+	return slot.ErrNoFeature
 }

@@ -5,7 +5,7 @@ package links
 import (
 	"context"
 
-	"github.com/slotopol/server/game/goldentour"
+	slot "github.com/slotopol/server/game/slot/goldentour"
 	"github.com/spf13/pflag"
 )
 
@@ -17,7 +17,7 @@ func init() {
 		Provider: "Playtech",
 		ScrnX:    5,
 		ScrnY:    3,
-		RtpList:  MakeRtpList(goldentour.ReelsMap),
+		RtpList:  MakeRtpList(slot.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 
@@ -25,11 +25,11 @@ func init() {
 		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
 			if is, _ := flags.GetBool(ga.ID); is {
 				var rn, _ = flags.GetString("reels")
-				goldentour.CalcStat(ctx, rn)
+				slot.CalcStat(ctx, rn)
 			}
 		})
 		GameFactory[ga.ID] = func() any {
-			return goldentour.NewGame()
+			return slot.NewGame()
 		}
 	}
 }

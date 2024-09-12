@@ -6,7 +6,7 @@ import (
 	"math"
 	"math/rand/v2"
 
-	"github.com/slotopol/server/game"
+	slot "github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [33, 33, 33, 33, 33], total reshuffles 39135393
@@ -18,7 +18,7 @@ import (
 // RTP[-**] = 3261.763642%
 // RTP[*-*] = 1598.352673%
 // RTP[***] = 9366.391185%
-var Reels = game.Reels5x{
+var Reels = slot.Reels5x{
 	{2, 7, 8, 6, 4, 3, 7, 6, 5, 4, 8, 6, 7, 4, 1, 8, 6, 7, 5, 1, 8, 3, 2, 5, 6, 2, 3, 5, 4, 3, 8, 7, 5},
 	{5, 1, 8, 6, 4, 7, 3, 6, 8, 7, 5, 3, 7, 4, 5, 3, 8, 4, 6, 5, 3, 7, 8, 6, 2, 8, 1, 5, 6, 2, 4, 7, 2},
 	{5, 6, 8, 4, 7, 1, 8, 6, 4, 1, 3, 8, 2, 5, 4, 3, 8, 2, 3, 6, 7, 5, 2, 6, 7, 5, 4, 7, 5, 8, 6, 3, 7},
@@ -109,14 +109,14 @@ var Jackpot = [9][5]int{
 }
 
 type Game struct {
-	game.Slot5x3 `yaml:",inline"`
+	slot.Slot5x3 `yaml:",inline"`
 	PRW          [5]int `json:"prw" yaml:"prw" xml:"prw"` // pinned reel wild
 }
 
 func NewGame() *Game {
 	return &Game{
-		Slot5x3: game.Slot5x3{
-			SBL: game.MakeBitNum(5),
+		Slot5x3: slot.Slot5x3{
+			SBL: slot.MakeBitNum(5),
 			Bet: 1,
 		},
 	}
@@ -124,14 +124,14 @@ func NewGame() *Game {
 
 const wild = 9
 
-var bl = game.BetLinesNvm10
+var bl = slot.BetLinesNvm10
 
-func (g *Game) Scanner(screen game.Screen, wins *game.Wins) {
+func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
+func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	var reelwild [5]bool
 	var fs int
 	for x := 2; x <= 4; x++ {
@@ -150,7 +150,7 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
-		var syml, symr game.Sym
+		var syml, symr slot.Sym
 		var numl, numr int
 		var payl, payr float64
 
@@ -177,7 +177,7 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 		}
 
 		if payl > payr {
-			*wins = append(*wins, game.WinItem{
+			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * payl,
 				Mult: 1,
 				Sym:  syml,
@@ -186,7 +186,7 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 				XY:   line.CopyL(numl),
 			})
 		} else if payr > 0 {
-			*wins = append(*wins, game.WinItem{
+			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * payr,
 				Mult: 1,
 				Sym:  symr,
@@ -196,7 +196,7 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 			})
 		}
 		if fs > 0 {
-			*wins = append(*wins, game.WinItem{
+			*wins = append(*wins, slot.WinItem{
 				Sym:  wild,
 				Free: fs,
 			})
@@ -204,7 +204,7 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 	}
 }
 
-func (g *Game) Spin(screen game.Screen, mrtp float64) {
+func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 	screen.Spin(&Reels)
 	if g.FreeSpins() == 0 {
 		var _, wc = FindChance(mrtp) // wild chance
@@ -217,7 +217,7 @@ func (g *Game) Spin(screen game.Screen, mrtp float64) {
 	}
 }
 
-func (g *Game) Apply(screen game.Screen, wins game.Wins) {
+func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
 	if g.FreeSpins() > 0 {
 		g.Gain += wins.Gain()
 	} else {
@@ -242,16 +242,16 @@ func (g *Game) FreeSpins() int {
 	return max(g.PRW[1], g.PRW[2], g.PRW[3])
 }
 
-func (g *Game) SetLines(sbl game.Bitset) error {
-	var mask game.Bitset = (1<<len(bl) - 1) << 1
+func (g *Game) SetLines(sbl slot.Bitset) error {
+	var mask slot.Bitset = (1<<len(bl) - 1) << 1
 	if sbl == 0 {
-		return game.ErrNoLineset
+		return slot.ErrNoLineset
 	}
 	if sbl&^mask != 0 {
-		return game.ErrLinesetOut
+		return slot.ErrLinesetOut
 	}
 	if g.FreeSpins() > 0 {
-		return game.ErrNoFeature
+		return slot.ErrNoFeature
 	}
 	g.SBL = sbl
 	return nil

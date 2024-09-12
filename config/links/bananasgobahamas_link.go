@@ -5,7 +5,7 @@ package links
 import (
 	"context"
 
-	"github.com/slotopol/server/game/bananasgobahamas"
+	slot "github.com/slotopol/server/game/slot/bananasgobahamas"
 	"github.com/spf13/pflag"
 )
 
@@ -17,7 +17,7 @@ func init() {
 		Provider: "Novomatic",
 		ScrnX:    5,
 		ScrnY:    3,
-		RtpList:  MakeRtpList(bananasgobahamas.ReelsMap),
+		RtpList:  MakeRtpList(slot.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 
@@ -26,14 +26,14 @@ func init() {
 			if is, _ := flags.GetBool(ga.ID); is {
 				var rn, _ = flags.GetString("reels")
 				if rn == "bon" {
-					bananasgobahamas.CalcStatBon(ctx)
+					slot.CalcStatBon(ctx)
 				} else {
-					bananasgobahamas.CalcStatReg(ctx, rn)
+					slot.CalcStatReg(ctx, rn)
 				}
 			}
 		})
 		GameFactory[ga.ID] = func() any {
-			return bananasgobahamas.NewGame()
+			return slot.NewGame()
 		}
 	}
 }

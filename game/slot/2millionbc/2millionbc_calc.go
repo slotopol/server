@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/slotopol/server/game"
+	game "github.com/slotopol/server/game/slot"
 )
 
 var Eacbn float64

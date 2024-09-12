@@ -5,7 +5,7 @@ package links
 import (
 	"context"
 
-	"github.com/slotopol/server/game/trolls"
+	slot "github.com/slotopol/server/game/slot/trolls"
 	"github.com/spf13/pflag"
 )
 
@@ -20,7 +20,7 @@ func init() {
 		Provider: "NetEnt",
 		ScrnX:    5,
 		ScrnY:    3,
-		RtpList:  MakeRtpList(trolls.ReelsMap),
+		RtpList:  MakeRtpList(slot.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 
@@ -28,11 +28,11 @@ func init() {
 		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
 			if is, _ := flags.GetBool(ga.ID); is {
 				var rn, _ = flags.GetString("reels")
-				trolls.CalcStatReg(ctx, rn)
+				slot.CalcStatReg(ctx, rn)
 			}
 		})
 		GameFactory[ga.ID] = func() any {
-			return trolls.NewGame()
+			return slot.NewGame()
 		}
 	}
 }

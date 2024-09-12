@@ -6,21 +6,21 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/slotopol/server/game"
+	slot "github.com/slotopol/server/game/slot"
 )
 
 func CalcStat(ctx context.Context, rn string) float64 {
-	var reels *game.Reels3x
+	var reels *slot.Reels3x
 	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
 		var _, r = FindReels(mrtp)
-		reels = r.(*game.Reels3x)
+		reels = r.(*slot.Reels3x)
 	} else {
 		reels = &Reels93
 	}
 	var g = NewGame()
-	g.SBL = game.MakeBitNum(1)
+	g.SBL = slot.MakeBitNum(1)
 	var sbl = float64(g.SBL.Num())
-	var s game.Stat
+	var s slot.Stat
 
 	var total = float64(reels.Reshuffles())
 	var dur = func() time.Duration {
@@ -28,7 +28,7 @@ func CalcStat(ctx context.Context, rn string) float64 {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		go s.Progress(ctx2, time.Tick(2*time.Second), sbl, total)
-		game.BruteForce3x(ctx2, &s, g, reels)
+		slot.BruteForce3x(ctx2, &s, g, reels)
 		return time.Since(t0)
 	}()
 

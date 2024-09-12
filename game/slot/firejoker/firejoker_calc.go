@@ -6,13 +6,13 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/slotopol/server/game"
+	slot "github.com/slotopol/server/game/slot"
 )
 
-func BruteForce5x(ctx context.Context, s game.Stater, g game.SlotGame, reels game.Reels, gs game.Sym) {
+func BruteForce5x(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, gs slot.Sym) {
 	var screen = g.NewScreen()
 	defer screen.Free()
-	var wins game.Wins
+	var wins slot.Wins
 	for x := 2; x <= 4; x++ {
 		screen.Set(x, 1, gs)
 		screen.Set(x, 2, gs)
@@ -38,9 +38,9 @@ func BruteForce5x(ctx context.Context, s game.Stater, g game.SlotGame, reels gam
 	}
 }
 
-func CalcStatSym(ctx context.Context, g *Game, reels game.Reels, gs game.Sym) float64 {
+func CalcStatSym(ctx context.Context, g *Game, reels slot.Reels, gs slot.Sym) float64 {
 	var sbl = float64(g.SBL.Num())
-	var s game.Stat
+	var s slot.Stat
 
 	var ctx2, cancel2 = context.WithCancel(ctx)
 	defer cancel2()
@@ -54,17 +54,17 @@ func CalcStatSym(ctx context.Context, g *Game, reels game.Reels, gs game.Sym) fl
 }
 
 func CalcStatBon(ctx context.Context, rn string) (rtp float64) {
-	var reels *game.Reels5x
+	var reels *slot.Reels5x
 	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
 		var _, r = FindReels(mrtp)
-		reels = r.(*game.Reels5x)
+		reels = r.(*slot.Reels5x)
 	} else {
 		reels = &Reels92
 	}
 	var g = NewGame()
-	g.SBL = game.MakeBitNum(1)
+	g.SBL = slot.MakeBitNum(1)
 
-	for gs := game.Sym(1); gs <= 7; gs++ {
+	for gs := slot.Sym(1); gs <= 7; gs++ {
 		rtp += CalcStatSym(ctx, g, reels, gs)
 	}
 	rtp /= 7
@@ -79,17 +79,17 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		return 0
 	}
 	fmt.Printf("*regular reels calculations*\n")
-	var reels *game.Reels5x
+	var reels *slot.Reels5x
 	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
 		var _, r = FindReels(mrtp)
-		reels = r.(*game.Reels5x)
+		reels = r.(*slot.Reels5x)
 	} else {
 		reels = &Reels92
 	}
 	var g = NewGame()
-	g.SBL = game.MakeBitNum(1)
+	g.SBL = slot.MakeBitNum(1)
 	var sbl = float64(g.SBL.Num())
-	var s game.Stat
+	var s slot.Stat
 
 	var total = float64(reels.Reshuffles())
 	var dur = func() time.Duration {
@@ -97,7 +97,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		go s.Progress(ctx2, time.Tick(2*time.Second), sbl, total)
-		game.BruteForce5x(ctx2, &s, g, reels)
+		slot.BruteForce5x(ctx2, &s, g, reels)
 		return time.Since(t0)
 	}()
 

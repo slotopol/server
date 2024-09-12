@@ -8,16 +8,16 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/slotopol/server/game"
+	slot "github.com/slotopol/server/game/slot"
 )
 
 type Stat struct {
-	game.Stat
+	slot.Stat
 	FGNum [5]uint64
 	FGPay uint64
 }
 
-func (s *Stat) Update(wins game.Wins) {
+func (s *Stat) Update(wins slot.Wins) {
 	s.Stat.Update(wins)
 	if len(wins) > 0 {
 		if wi := wins[len(wins)-1]; wi.Free > 0 {
@@ -28,15 +28,15 @@ func (s *Stat) Update(wins game.Wins) {
 }
 
 func CalcStatBon(ctx context.Context, rn string) float64 {
-	var reels *game.Reels5x
+	var reels *slot.Reels5x
 	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
 		var _, r = FindReels(mrtp)
-		reels = r.(*game.Reels5x)
+		reels = r.(*slot.Reels5x)
 	} else {
 		reels = &ReelsReg92
 	}
 	var g = NewGame()
-	g.SBL = game.MakeBitNum(5)
+	g.SBL = slot.MakeBitNum(5)
 	g.FS = 10 // set free spins mode
 	var sbl = float64(g.SBL.Num())
 	var s Stat
@@ -47,7 +47,7 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		go s.Progress(ctx2, time.Tick(2*time.Second), sbl, total)
-		game.BruteForce5x(ctx2, &s, g, reels)
+		slot.BruteForce5x(ctx2, &s, g, reels)
 		return time.Since(t0)
 	}()
 
@@ -79,15 +79,15 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		return 0
 	}
 	fmt.Printf("*regular reels calculations*\n")
-	var reels *game.Reels5x
+	var reels *slot.Reels5x
 	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
 		var _, r = FindReels(mrtp)
-		reels = r.(*game.Reels5x)
+		reels = r.(*slot.Reels5x)
 	} else {
 		reels = &ReelsReg92
 	}
 	var g = NewGame()
-	g.SBL = game.MakeBitNum(5)
+	g.SBL = slot.MakeBitNum(5)
 	var sbl = float64(g.SBL.Num())
 	var s Stat
 
@@ -97,7 +97,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		go s.Progress(ctx2, time.Tick(2*time.Second), sbl, total)
-		game.BruteForce5x(ctx2, &s, g, reels)
+		slot.BruteForce5x(ctx2, &s, g, reels)
 		return time.Since(t0)
 	}()
 

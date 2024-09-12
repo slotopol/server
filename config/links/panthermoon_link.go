@@ -5,7 +5,7 @@ package links
 import (
 	"context"
 
-	"github.com/slotopol/server/game/panthermoon"
+	slot "github.com/slotopol/server/game/slot/panthermoon"
 	"github.com/spf13/pflag"
 )
 
@@ -18,7 +18,7 @@ func init() {
 		Provider: "Playtech",
 		ScrnX:    5,
 		ScrnY:    3,
-		RtpList:  MakeRtpList(panthermoon.ReelsMap),
+		RtpList:  MakeRtpList(slot.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 
@@ -27,14 +27,14 @@ func init() {
 			if is, _ := flags.GetBool(ga.ID); is {
 				var rn, _ = flags.GetString("reels")
 				if rn == "bon" {
-					panthermoon.CalcStatBon(ctx)
+					slot.CalcStatBon(ctx)
 				} else {
-					panthermoon.CalcStatReg(ctx, rn)
+					slot.CalcStatReg(ctx, rn)
 				}
 			}
 		})
 		GameFactory[ga.ID] = func() any {
-			return panthermoon.NewGame()
+			return slot.NewGame()
 		}
 	}
 }

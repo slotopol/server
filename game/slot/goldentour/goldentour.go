@@ -5,14 +5,14 @@ package goldentour
 import (
 	"math"
 
-	"github.com/slotopol/server/game"
+	slot "github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [32, 46, 54, 46, 32], total reshuffles 117006336
 // golf bonuses: count 1264896, rtp = 17.296786%
 // golf bonuses frequency: 1/92.503
 // RTP = 127.57(lined) + 0(scatter) + 17.297(golf) = 144.868028%
-var Reels145 = game.Reels5x{
+var Reels145 = slot.Reels5x{
 	{4, 6, 3, 7, 8, 2, 11, 5, 6, 4, 2, 10, 5, 8, 7, 4, 1, 7, 5, 4, 8, 7, 6, 8, 5, 6, 3, 7, 6, 5, 8, 9},
 	{11, 5, 3, 8, 7, 6, 2, 8, 7, 5, 8, 4, 7, 10, 8, 4, 7, 6, 5, 7, 8, 5, 6, 8, 7, 6, 3, 7, 5, 6, 8, 7, 6, 5, 8, 7, 4, 6, 8, 2, 6, 9, 8, 1, 4, 7},
 	{8, 6, 7, 8, 6, 7, 2, 6, 7, 8, 2, 7, 4, 8, 6, 4, 8, 7, 5, 6, 7, 5, 8, 1, 6, 8, 7, 5, 8, 4, 7, 6, 9, 7, 3, 4, 8, 7, 6, 8, 7, 5, 8, 6, 5, 8, 7, 5, 8, 6, 11, 8, 3, 10},
@@ -21,11 +21,11 @@ var Reels145 = game.Reels5x{
 }
 
 // Map with available reels.
-var ReelsMap = map[float64]*game.Reels5x{
+var ReelsMap = map[float64]*slot.Reels5x{
 	144.868028: &Reels145,
 }
 
-func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
+func FindReels(mrtp float64) (rtp float64, reels slot.Reels) {
 	for p, r := range ReelsMap {
 		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
 			rtp, reels = p, r
@@ -50,19 +50,19 @@ var LinePay = [11][5]float64{
 }
 
 type Game struct {
-	game.Slot5x3 `yaml:",inline"`
+	slot.Slot5x3 `yaml:",inline"`
 }
 
 func NewGame() *Game {
 	return &Game{
-		Slot5x3: game.Slot5x3{
-			SBL: game.MakeBitNum(5),
+		Slot5x3: slot.Slot5x3{
+			SBL: slot.MakeBitNum(5),
 			Bet: 1,
 		},
 	}
 }
 
-var bl = game.Lineset5x{
+var bl = slot.Lineset5x{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3
@@ -73,18 +73,18 @@ var bl = game.Lineset5x{
 const golfbon = 1
 const wild, scat1, scat2, scat3 = 1, 9, 10, 11
 
-func (g *Game) Scanner(screen game.Screen, wins *game.Wins) {
+func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)
 	g.ScanScatters(screen, wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
+func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
 
 		var numw, numl = 0, 5
-		var syml game.Sym
+		var syml slot.Sym
 		for x := 1; x <= 5; x++ {
 			var sx = screen.Pos(x, line)
 			if sx == wild {
@@ -107,7 +107,7 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 
 		if numl > 0 && syml > 0 {
 			if pay := LinePay[syml-1][numl-1]; pay > 0 {
-				*wins = append(*wins, game.WinItem{
+				*wins = append(*wins, slot.WinItem{
 					Pay:  g.Bet * pay,
 					Mult: 1,
 					Sym:  syml,
@@ -118,7 +118,7 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 			}
 		} else if numw > 0 {
 			if pay := LinePay[wild-1][numw-1]; pay > 0 {
-				*wins = append(*wins, game.WinItem{
+				*wins = append(*wins, slot.WinItem{
 					Pay:  g.Bet * pay,
 					Mult: 1,
 					Sym:  wild,
@@ -131,7 +131,7 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 
 		if numl < 5 {
 			var numw, numr = 0, 5 - numl
-			var symr game.Sym
+			var symr slot.Sym
 			for x := 5; x > numl; x-- {
 				var sx = screen.Pos(x, line)
 				if sx == wild {
@@ -154,7 +154,7 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 
 			if numr > 0 && symr > 0 {
 				if pay := LinePay[symr-1][numr-1]; pay > 0 {
-					*wins = append(*wins, game.WinItem{
+					*wins = append(*wins, slot.WinItem{
 						Pay:  g.Bet * pay,
 						Mult: 1,
 						Sym:  symr,
@@ -165,7 +165,7 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 				}
 			} else if numw > 0 {
 				if pay := LinePay[wild-1][numw-1]; pay > 0 {
-					*wins = append(*wins, game.WinItem{
+					*wins = append(*wins, slot.WinItem{
 						Pay:  g.Bet * pay,
 						Mult: 1,
 						Sym:  wild,
@@ -180,9 +180,9 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
+func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 	if count := screen.ScatNum(scat1); count >= 3 {
-		*wins = append(*wins, game.WinItem{
+		*wins = append(*wins, slot.WinItem{
 			Mult: 1,
 			Sym:  scat1,
 			Num:  count,
@@ -190,7 +190,7 @@ func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 			BID:  golfbon,
 		})
 	} else if count := screen.ScatNum(scat2); count >= 3 {
-		*wins = append(*wins, game.WinItem{
+		*wins = append(*wins, slot.WinItem{
 			Mult: 1,
 			Sym:  scat2,
 			Num:  count,
@@ -198,7 +198,7 @@ func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 			BID:  golfbon,
 		})
 	} else if count := screen.ScatNum(scat3); count >= 3 {
-		*wins = append(*wins, game.WinItem{
+		*wins = append(*wins, slot.WinItem{
 			Mult: 1,
 			Sym:  scat3,
 			Num:  count,
@@ -208,12 +208,12 @@ func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 	}
 }
 
-func (g *Game) Spin(screen game.Screen, mrtp float64) {
+func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 	var _, reels = FindReels(mrtp)
 	screen.Spin(reels)
 }
 
-func (g *Game) Spawn(screen game.Screen, wins game.Wins) {
+func (g *Game) Spawn(screen slot.Screen, wins slot.Wins) {
 	for i, wi := range wins {
 		switch wi.BID {
 		case golfbon:
@@ -222,16 +222,16 @@ func (g *Game) Spawn(screen game.Screen, wins game.Wins) {
 	}
 }
 
-func (g *Game) SetLines(sbl game.Bitset) error {
-	var mask game.Bitset = (1<<len(bl) - 1) << 1
+func (g *Game) SetLines(sbl slot.Bitset) error {
+	var mask slot.Bitset = (1<<len(bl) - 1) << 1
 	if sbl == 0 {
-		return game.ErrNoLineset
+		return slot.ErrNoLineset
 	}
 	if sbl&^mask != 0 {
-		return game.ErrLinesetOut
+		return slot.ErrLinesetOut
 	}
 	if g.FreeSpins() > 0 {
-		return game.ErrNoFeature
+		return slot.ErrNoFeature
 	}
 	g.SBL = sbl
 	return nil

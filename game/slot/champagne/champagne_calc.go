@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/slotopol/server/game"
+	slot "github.com/slotopol/server/game/slot"
 )
 
 var Emjc float64 // Bottle game calculated expectation
@@ -38,18 +38,18 @@ func ExpBottle() float64 {
 }
 
 func CalcStatBon(ctx context.Context, rn string) float64 {
-	var reels *game.Reels5x
+	var reels *slot.Reels5x
 	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
 		var _, r = FindReels(mrtp)
-		reels = r.(*game.Reels5x)
+		reels = r.(*slot.Reels5x)
 	} else {
 		reels = &Reels964
 	}
 	var g = NewGame()
-	g.SBL = game.MakeBitNum(1)
+	g.SBL = slot.MakeBitNum(1)
 	g.FS = 15 // set free spins mode
 	var sbl = float64(g.SBL.Num())
-	var s game.Stat
+	var s slot.Stat
 
 	var total = float64(reels.Reshuffles())
 	var dur = func() time.Duration {
@@ -57,7 +57,7 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		go s.Progress(ctx2, time.Tick(2*time.Second), sbl, total)
-		game.BruteForce5x(ctx2, &s, g, reels)
+		slot.BruteForce5x(ctx2, &s, g, reels)
 		return time.Since(t0)
 	}()
 
@@ -92,18 +92,18 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		return 0
 	}
 	fmt.Printf("*regular reels calculations*\n")
-	var reels *game.Reels5x
+	var reels *slot.Reels5x
 	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
 		var _, r = FindReels(mrtp)
-		reels = r.(*game.Reels5x)
+		reels = r.(*slot.Reels5x)
 	} else {
 		reels = &Reels964
 	}
 	var g = NewGame()
-	g.SBL = game.MakeBitNum(1)
+	g.SBL = slot.MakeBitNum(1)
 	g.FS = 0 // no free spins
 	var sbl = float64(g.SBL.Num())
-	var s game.Stat
+	var s slot.Stat
 
 	var total = float64(reels.Reshuffles())
 	var dur = func() time.Duration {
@@ -111,7 +111,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		go s.Progress(ctx2, time.Tick(2*time.Second), sbl, total)
-		game.BruteForce5x(ctx2, &s, g, reels)
+		slot.BruteForce5x(ctx2, &s, g, reels)
 		return time.Since(t0)
 	}()
 

@@ -5,7 +5,7 @@ package links
 import (
 	"context"
 
-	"github.com/slotopol/server/game/beetlemania"
+	slot "github.com/slotopol/server/game/slot/beetlemania"
 	"github.com/spf13/pflag"
 )
 
@@ -19,7 +19,7 @@ func init() {
 		Provider: "Novomatic",
 		ScrnX:    5,
 		ScrnY:    3,
-		RtpList:  MakeRtpList(beetlemania.ReelsMap),
+		RtpList:  MakeRtpList(slot.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 
@@ -28,14 +28,14 @@ func init() {
 			if is, _ := flags.GetBool(ga.ID); is {
 				var rn, _ = flags.GetString("reels")
 				if rn == "bon" || rn == "bonu" {
-					beetlemania.CalcStatBon(ctx, rn)
+					slot.CalcStatBon(ctx, rn)
 				} else {
-					beetlemania.CalcStatReg(ctx, rn)
+					slot.CalcStatReg(ctx, rn)
 				}
 			}
 		})
 		GameFactory[ga.ID] = func() any {
-			return beetlemania.NewGame()
+			return slot.NewGame()
 		}
 	}
 }

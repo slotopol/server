@@ -3,12 +3,12 @@ package justjewels
 import (
 	"math"
 
-	"github.com/slotopol/server/game"
+	slot "github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [39, 39, 39, 39, 39], total reshuffles 90224199
 // RTP = 114.75(lined) + 8.0152(scatter) = 122.764204%
-var Reels123 = game.Reels5x{
+var Reels123 = slot.Reels5x{
 	{1, 1, 1, 6, 6, 6, 2, 2, 2, 2, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 8, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 4, 4, 4},
 	{1, 1, 1, 6, 6, 6, 2, 2, 2, 2, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 8, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 4, 4, 4},
 	{1, 1, 1, 6, 6, 6, 2, 2, 2, 2, 5, 5, 5, 3, 3, 3, 3, 7, 7, 7, 8, 4, 4, 4, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 4, 4, 4},
@@ -17,11 +17,11 @@ var Reels123 = game.Reels5x{
 }
 
 // Map with available reels.
-var ReelsMap = map[float64]*game.Reels5x{
+var ReelsMap = map[float64]*slot.Reels5x{
 	122.764204: &Reels123, // minimum possible percentage
 }
 
-func FindReels(mrtp float64) (rtp float64, reels game.Reels) {
+func FindReels(mrtp float64) (rtp float64, reels slot.Reels) {
 	for p, r := range ReelsMap {
 		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
 			rtp, reels = p, r
@@ -62,13 +62,13 @@ var Jackpot = [8][5]int{
 }
 
 type Game struct {
-	game.Slot5x3 `yaml:",inline"`
+	slot.Slot5x3 `yaml:",inline"`
 }
 
 func NewGame() *Game {
 	return &Game{
-		Slot5x3: game.Slot5x3{
-			SBL: game.MakeBitNum(5),
+		Slot5x3: slot.Slot5x3{
+			SBL: slot.MakeBitNum(5),
 			Bet: 1,
 		},
 	}
@@ -76,20 +76,20 @@ func NewGame() *Game {
 
 const scat = 8
 
-var bl = game.BetLinesNvm10
+var bl = slot.BetLinesNvm10
 
-func (g *Game) Scanner(screen game.Screen, wins *game.Wins) {
+func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)
 	g.ScanScatters(screen, wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
+func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
 		var line = bl.Line(li)
 
 		var syml = screen.Pos(3, line)
-		var xy = game.NewLine5x()
+		var xy = slot.NewLine5x()
 		var numl = 1
 		xy.Set(3, line.At(3))
 		if screen.Pos(2, line) == syml {
@@ -110,7 +110,7 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 		}
 
 		if numl >= 3 {
-			*wins = append(*wins, game.WinItem{
+			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * LinePay[syml-1][numl-1],
 				Mult: 1,
 				Sym:  syml,
@@ -125,10 +125,10 @@ func (g *Game) ScanLined(screen game.Screen, wins *game.Wins) {
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
+func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 	if count := screen.ScatNum(scat); count >= 3 {
 		var pay = ScatPay[count-1]
-		*wins = append(*wins, game.WinItem{
+		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * float64(g.SBL.Num()) * pay,
 			Mult: 1,
 			Sym:  scat,
@@ -138,21 +138,21 @@ func (g *Game) ScanScatters(screen game.Screen, wins *game.Wins) {
 	}
 }
 
-func (g *Game) Spin(screen game.Screen, mrtp float64) {
+func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 	var _, reels = FindReels(mrtp)
 	screen.Spin(reels)
 }
 
-func (g *Game) SetLines(sbl game.Bitset) error {
-	var mask game.Bitset = (1<<len(bl) - 1) << 1
+func (g *Game) SetLines(sbl slot.Bitset) error {
+	var mask slot.Bitset = (1<<len(bl) - 1) << 1
 	if sbl == 0 {
-		return game.ErrNoLineset
+		return slot.ErrNoLineset
 	}
 	if sbl&^mask != 0 {
-		return game.ErrLinesetOut
+		return slot.ErrLinesetOut
 	}
 	if g.FreeSpins() > 0 {
-		return game.ErrNoFeature
+		return slot.ErrNoFeature
 	}
 	g.SBL = sbl
 	return nil
