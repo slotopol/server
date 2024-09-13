@@ -104,7 +104,7 @@ func SpiGameJoin(c *gin.Context) {
 	user.games.Set(scene.GID, scene)
 
 	type kwins = keno.Wins
-	type kscrn = keno.KenoScreen
+	type kscrn = keno.Screen
 
 	ret.GID = gid
 	ret.Game = anygame

@@ -48,6 +48,7 @@ func (wins Wins) Gain() float64 {
 	return sum
 }
 
+// SlotGame is common slots interface. Any slot game should implement this interface.
 type SlotGame interface {
 	NewScreen() Screen     // returns new empty screen object for this game, constat function
 	Scanner(Screen, *Wins) // scan given screen and append result to wins, constat function

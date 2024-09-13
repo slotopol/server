@@ -5,23 +5,23 @@ import (
 	"math/rand/v2"
 )
 
-type KenoPaytable [9][11]float64
+type KenoPaytable [11][11]float64
 
 func (kp *KenoPaytable) Pay(sel, win int) float64 {
-	return kp[sel-2][win]
+	return kp[sel][win]
 }
 
-// Keno ball type
-type KB byte
+// Keno spot type
+type KS byte
 
 const (
-	KBempty  KB = 0             // empty cell
-	KBsel    KB = 0x1           // cell with selection without hit
-	KBhit    KB = 0x2           // cell with hit without selection
-	KBselhit KB = KBsel | KBhit // win cell, hit and selection
+	KSempty  KS = 0             // empty cell
+	KSsel    KS = 0x1           // cell with selection without hit
+	KShit    KS = 0x2           // cell with hit without selection
+	KSselhit KS = KSsel | KShit // win cell, hit and selection
 )
 
-type KenoScreen [80]KB
+type Screen [80]KS
 
 type Wins struct {
 	Num  int
@@ -29,13 +29,14 @@ type Wins struct {
 	Hits [20]int
 }
 
+// KenoGame is common keno interface. Any keno game should implement this interface.
 type KenoGame interface {
-	Scanner(*KenoScreen, *Wins) // scan given screen and set result to wins, constat function
-	Spin(*KenoScreen, []int)    // fill the screen with random hits, constat function
-	GetBet() float64            // returns current bet, constat function
-	SetBet(float64) error       // set bet to given value
-	GetSel() []int              // returns current selected numbers, constat function
-	SetSel([]int) error         // set current selected numbers
+	Scanner(*Screen, *Wins) // scan given screen and set result to wins, constat function
+	Spin(*Screen, []int)    // fill the screen with random hits, constat function
+	GetBet() float64        // returns current bet, constat function
+	SetBet(float64) error   // set bet to given value
+	GetSel() []int          // returns current selected numbers, constat function
+	SetSel([]int) error     // set current selected numbers
 }
 
 var (
@@ -51,7 +52,7 @@ type Keno80 struct {
 	Sel []int   `json:"sel" yaml:"sel" xml:"sel"` // selected numbers
 }
 
-func (g *Keno80) Spin(ks *KenoScreen, hits []int) {
+func (g *Keno80) Spin(ks *Screen, hits []int) {
 	for i := range 80 {
 		hits[i] = i + 1
 	}
@@ -61,10 +62,10 @@ func (g *Keno80) Spin(ks *KenoScreen, hits []int) {
 
 	clear(ks[:])
 	for _, n := range g.Sel {
-		ks[n] = KBsel
+		ks[n] = KSsel
 	}
 	for i := range 20 {
-		ks[hits[i]] |= KBhit
+		ks[hits[i]] |= KShit
 	}
 }
 
@@ -103,4 +104,22 @@ func (g *Keno80) SetSel(sel []int) error {
 	}
 	g.Sel = sel
 	return nil
+}
+
+func Combin(n, r int) float64 {
+	var mi, mj float64 = 1, 1
+	var i, j float64 = float64(n), 1
+	for range r {
+		mi *= i
+		mj *= j
+		i--
+		j++
+	}
+	return mi / mj
+}
+
+var C_80_20 = Combin(80, 20)
+
+func Prob(n, r int) float64 {
+	return Combin(n, r) * Combin(80-n, 20-r) / C_80_20
 }

@@ -43,7 +43,7 @@ var listCmd = &cobra.Command{
 			}
 		}
 
-		var list = make([]string, num)
+		var gamelist = make([]string, num)
 		var i int
 		for _, gi := range links.GameList {
 			if prv, _ := listflags.GetBool(util.ToID(gi.Provider)); prv || fAll {
@@ -58,25 +58,35 @@ var listCmd = &cobra.Command{
 						}
 						rtpinfo = ", RTP: " + strings.Join(rtpstr, ", ")
 					}
-					var info = fmt.Sprintf("'%s' %s %dx%d videoslot%s", ga.Name, gi.Provider, gi.ScrnX, gi.ScrnY, rtpinfo)
-					list[i] = info
+					if gi.ScrnY > 0 {
+						gamelist[i] = fmt.Sprintf("'%s' %s %dx%d videoslot%s", ga.Name, gi.Provider, gi.ScrnX, gi.ScrnY, rtpinfo)
+					} else {
+						gamelist[i] = fmt.Sprintf("'%s' %s %d spots lottery%s", ga.Name, gi.Provider, gi.ScrnX, rtpinfo)
+					}
 					i++
 				}
 			}
 		}
+		var provlist = make([]string, len(prov))
+		i = 0
+		for p, n := range prov {
+			provlist[i] = fmt.Sprintf("%s: %d games", p, n)
+			i++
+		}
 
 		if is, _ := listflags.GetBool("name"); is {
-			sort.Strings(list)
 			fmt.Println()
-			for _, s := range list {
+			sort.Strings(gamelist)
+			for _, s := range gamelist {
 				fmt.Println(s)
 			}
 		}
 		if is, _ := listflags.GetBool("stat"); is {
 			fmt.Println()
 			fmt.Printf("total: %d games, %d algorithms, %d providers\n", num, alg, len(prov))
-			for p, n := range prov {
-				fmt.Printf("%s: %d games\n", p, n)
+			sort.Strings(provlist)
+			for _, s := range provlist {
+				fmt.Println(s)
 			}
 		}
 	},
