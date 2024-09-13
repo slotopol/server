@@ -1,0 +1,50 @@
+package firekeno
+
+import (
+	keno "github.com/slotopol/server/game/keno"
+)
+
+// RTP[ 2] = 92.088608%
+// RTP[ 3] = 91.601753%
+// RTP[ 4] = 91.739590%
+// RTP[ 5] = 92.202418%
+// RTP[ 6] = 91.995220%
+// RTP[ 7] = 92.491393%
+// RTP[ 8] = 92.041872%
+// RTP[ 9] = 92.045254%
+// RTP[10] = 92.053609%
+// RTP[game] = 92.028857%
+var Paytable = keno.KenoPaytable{
+	{0},                                //  0 sel
+	{0, 0},                             //  1 sel
+	{1, 0, 6},                          //  2 sel
+	{1, 0, 1, 26},                      //  3 sel
+	{1, 0, 0, 7, 100},                  //  4 sel
+	{1, 0, 0, 1, 15, 666},              //  5 sel
+	{2, 0, 0, 1, 2, 25, 2500},          //  6 sel
+	{3, 0, 0, 0, 3, 10, 100, 10000},    //  7 sel
+	{5, 0, 0, 0, 1, 4, 46, 666, 25000}, //  8 sel
+	{10, 0, 0, 0, 0, 3, 10, 100, 1000, 50000},     //  9 sel
+	{15, 0, 0, 0, 0, 1, 3, 25, 666, 1000, 100000}, // 10 sel
+}
+
+type Game struct {
+	keno.Keno80 `yaml:",inline"`
+}
+
+func NewGame() *Game {
+	return &Game{
+		Keno80: keno.Keno80{
+			Bet: 1,
+		},
+	}
+}
+
+func (g *Game) Scanner(scrn *keno.Screen, wins *keno.Wins) {
+	for i := range 80 {
+		if scrn[i] == keno.KSselhit {
+			wins.Num++
+		}
+	}
+	wins.Pay = Paytable[len(g.Sel)][wins.Num] * g.Bet
+}

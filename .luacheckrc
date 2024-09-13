@@ -5,6 +5,7 @@
 
 globals = {
 	"MakeReel", "ShuffleReel", "CorrectReel", "RrintReel",
+	"Combin", "KenoProb", "KenoProbTable", "KenoRTP",
 }
 
 read_globals = {

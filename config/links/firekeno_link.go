@@ -5,19 +5,19 @@ package links
 import (
 	"context"
 
-	keno "github.com/slotopol/server/game/keno/americankeno"
+	keno "github.com/slotopol/server/game/keno/firekeno"
 	"github.com/spf13/pflag"
 )
 
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{"americankeno", "American Keno"},
+			{"firekeno", "Fire Keno"},
 		},
-		Provider: "Aristocrat Pokies",
+		Provider: "Slotopol",
 		ScrnX:    80,
 		ScrnY:    0,
-		RtpList:  []float64{89.250235},
+		RtpList:  []float64{92.028857},
 	}
 	GameList = append(GameList, gi)
 
