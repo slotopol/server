@@ -103,6 +103,15 @@ const (
 	SEC_game_info_noaccess
 	SEC_game_info_noprops
 
+	// POST /game/rtp/get
+
+	SEC_game_rdget_nobind
+	SEC_game_rdget_nogid
+	SEC_game_rdget_notopened
+	SEC_game_rdget_noclub
+	SEC_game_rdget_nouser
+	SEC_game_rdget_noaccess
+
 	// POST /slot/bet/get
 
 	SEC_slot_betget_nobind
@@ -136,15 +145,6 @@ const (
 	SEC_slot_sblset_notslot
 	SEC_slot_sblset_noaccess
 	SEC_slot_sblset_badlines
-
-	// POST /slot/rtp/get
-
-	SEC_slot_rdget_nobind
-	SEC_slot_rdget_nogid
-	SEC_slot_rdget_notopened
-	SEC_slot_rdget_noclub
-	SEC_slot_rdget_nouser
-	SEC_slot_rdget_noaccess
 
 	// POST /slot/spin
 
@@ -183,6 +183,23 @@ const (
 	SEC_slot_collect_notslot
 	SEC_slot_collect_noaccess
 	SEC_slot_collect_denied
+
+	// POST /keno/bet/get
+
+	SEC_keno_betget_nobind
+	SEC_keno_betget_nogid
+	SEC_keno_betget_notopened
+	SEC_keno_betget_notslot
+	SEC_keno_betget_noaccess
+
+	// POST /keno/bet/set
+
+	SEC_keno_betset_nobind
+	SEC_keno_betset_nogid
+	SEC_keno_betset_notopened
+	SEC_keno_betset_notslot
+	SEC_keno_betset_noaccess
+	SEC_keno_betset_badbet
 
 	// POST /prop/wallet/get
 
@@ -327,6 +344,7 @@ var (
 	ErrFundOut   = errors.New("not enough money at jackpot fund")
 	ErrLockOut   = errors.New("not enough money at deposit")
 	ErrNotSlot   = errors.New("specified GID refers to non-slot game")
+	ErrNotKeno   = errors.New("specified GID refers to non-keno game")
 	ErrNoAccess  = errors.New("no access rights for this feature")
 	ErrNoLevel   = errors.New("admin have no privilege to modify specified access level to user")
 	ErrNotConf   = errors.New("password confirmation does not pass")

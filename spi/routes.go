@@ -142,6 +142,7 @@ func Router(r *gin.Engine) {
 	rg.POST("/join", SpiGameJoin)
 	rg.POST("/part", SpiGamePart)
 	rg.POST("/info", SpiGameInfo)
+	rg.POST("/rtp/get", SpiGameRtpGet)
 
 	// slot group
 	var rs = ra.Group("/slot")
@@ -149,10 +150,14 @@ func Router(r *gin.Engine) {
 	rs.POST("/bet/set", SpiSlotBetSet)
 	rs.POST("/sbl/get", SpiSlotSblGet)
 	rs.POST("/sbl/set", SpiSlotSblSet)
-	rs.POST("/rtp/get", SpiSlotRtpGet)
 	rs.POST("/spin", SpiSlotSpin)
 	rs.POST("/doubleup", SpiSlotDoubleup)
 	rs.POST("/collect", SpiSlotCollect)
+
+	// keno group
+	var rk = ra.Group("/keno")
+	rk.POST("/bet/get", SpiKenoBetGet)
+	rk.POST("/bet/set", SpiKenoBetSet)
 
 	// properties group
 	var rp = ra.Group("/prop")
