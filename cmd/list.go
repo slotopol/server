@@ -100,11 +100,15 @@ func init() {
 	listflags.BoolP("stat", "s", true, "summary statistics of provided games")
 	listflags.BoolVar(&fAll, "all", false, "list games of all available providers")
 	listflags.BoolVar(&fRTP, "rtp", false, "RTP (Return to Player) percents list of available reels for each game")
+	listflags.Bool("aristocratpokies", false, "include games of 'Aristocrat Pokies' provider")
 	listflags.Bool("megajack", false, "include games of 'Megajack' provider")
 	listflags.Bool("novomatic", false, "include games of 'Novomatic' provider")
 	listflags.Bool("netent", false, "include games of 'NetExt' provider")
 	listflags.Bool("betsoft", false, "include games of 'BetSoft' provider")
 	listflags.Bool("playtech", false, "include games of 'Playtech' provider")
 	listflags.Bool("playngo", false, "include games of 'Play'n GO' provider")
-	listCmd.MarkFlagsOneRequired("all", "megajack", "novomatic", "netent", "betsoft", "playtech", "playngo")
+	listflags.Bool("slotopol", false, "include games of this 'Slotopol' provider")
+	listCmd.MarkFlagsOneRequired("all",
+		"aristocratpokies", "megajack", "novomatic", "netent", "betsoft",
+		"playtech", "playngo", "slotopol")
 }
