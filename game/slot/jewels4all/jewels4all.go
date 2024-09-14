@@ -5,6 +5,7 @@ import (
 	"math/rand/v2"
 
 	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/util"
 )
 
 // RTP(no eu) = 67.344781%
@@ -81,7 +82,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{
-			SBL: slot.MakeBitNum(5),
+			SBL: util.MakeBitNum(5, 1),
 			Bet: 1,
 		},
 	}
@@ -110,7 +111,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 		}
 	}
 
-	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
+	for li := range g.SBL.Bits() {
 		var line = bl.Line(li)
 
 		var sym3 = scrnwild.Pos(3, line)

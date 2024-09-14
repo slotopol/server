@@ -7,6 +7,7 @@ import (
 	"time"
 
 	game "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/util"
 )
 
 var Eacbn float64
@@ -36,7 +37,7 @@ func ExpDiamondLion() float64 {
 func CalcStatBon(ctx context.Context) float64 {
 	var reels = &ReelsBon
 	var g = NewGame()
-	g.SBL = game.MakeBitNum(1)
+	g.SBL = util.MakeBitNum(1, 1)
 	g.FS = 4 // set free spins mode
 	var sbl = float64(g.SBL.Num())
 	var s game.Stat
@@ -85,7 +86,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		reels = &ReelsReg96
 	}
 	var g = NewGame()
-	g.SBL = game.MakeBitNum(1)
+	g.SBL = util.MakeBitNum(1, 1)
 	var sbl = float64(g.SBL.Num())
 	var s game.Stat
 

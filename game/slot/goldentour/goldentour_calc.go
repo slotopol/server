@@ -7,6 +7,7 @@ import (
 	"time"
 
 	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/util"
 )
 
 var Egolfbn float64
@@ -33,7 +34,7 @@ func CalcStat(ctx context.Context, rn string) float64 {
 		reels = &Reels145
 	}
 	var g = NewGame()
-	g.SBL = slot.MakeBitNum(1)
+	g.SBL = util.MakeBitNum(1, 1)
 	var sbl = float64(g.SBL.Num())
 	var s slot.Stat
 

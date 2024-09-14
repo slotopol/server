@@ -2,6 +2,8 @@ package game
 
 import (
 	"errors"
+
+	"github.com/slotopol/server/util"
 )
 
 type Sym byte // symbol type
@@ -47,6 +49,8 @@ func (wins Wins) Gain() float64 {
 	}
 	return sum
 }
+
+type Bitset = util.Bitset64
 
 // SlotGame is common slots interface. Any slot game should implement this interface.
 type SlotGame interface {

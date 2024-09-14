@@ -6,6 +6,7 @@ import (
 	"math"
 
 	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/util"
 )
 
 // reels lengths [58, 66, 66, 66, 58], total reshuffles 967136544
@@ -140,7 +141,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x4: slot.Slot5x4{
-			SBL: slot.MakeBitNum(40),
+			SBL: util.MakeBitNum(40, 1),
 			Bet: 1,
 		},
 	}
@@ -157,7 +158,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
-	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
+	for li := range g.SBL.Bits() {
 		var line = bl.Line(li)
 
 		var syml, numl = screen.Pos(1, line), 1

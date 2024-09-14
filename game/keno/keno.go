@@ -3,6 +3,8 @@ package game
 import (
 	"errors"
 	"math/rand/v2"
+
+	"github.com/slotopol/server/util"
 )
 
 type KenoPaytable [11][11]float64
@@ -29,14 +31,16 @@ type Wins struct {
 	Hits [20]int
 }
 
+type Bitset = util.Bitset128
+
 // KenoGame is common keno interface. Any keno game should implement this interface.
 type KenoGame interface {
 	Scanner(*Screen, *Wins) // scan given screen and set result to wins, constat function
 	Spin(*Screen, []int)    // fill the screen with random hits, constat function
 	GetBet() float64        // returns current bet, constat function
 	SetBet(float64) error   // set bet to given value
-	GetSel() []int          // returns current selected numbers, constat function
-	SetSel([]int) error     // set current selected numbers
+	GetSel() Bitset         // returns current selected numbers, constat function
+	SetSel(Bitset) error    // set current selected numbers
 }
 
 var (
@@ -44,12 +48,11 @@ var (
 	ErrKenoNotEnough = errors.New("not enough numbers selected, minimum 2 expected")
 	ErrKenoTooMany   = errors.New("too many numbers selected, not more than 10 expected")
 	ErrKenoOutRange  = errors.New("some of given number is out of range 1..80")
-	ErrKenoRepeat    = errors.New("some numbers are repeated")
 )
 
 type Keno80 struct {
 	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
-	Sel []int   `json:"sel" yaml:"sel" xml:"sel"` // selected numbers
+	Sel Bitset  `json:"sel" yaml:"sel" xml:"sel"` // selected numbers
 }
 
 func (g *Keno80) Spin(ks *Screen, hits []int) {
@@ -81,26 +84,21 @@ func (g *Keno80) SetBet(bet float64) error {
 	return nil
 }
 
-func (g *Keno80) GetSel() []int {
+func (g *Keno80) GetSel() Bitset {
 	return g.Sel
 }
 
-func (g *Keno80) SetSel(sel []int) error {
+func (g *Keno80) SetSel(sel Bitset) error {
 	if len(sel) < 2 {
 		return ErrKenoNotEnough
 	}
 	if len(sel) > 10 {
 		return ErrKenoTooMany
 	}
-	var m = make(map[int]struct{}, len(sel))
-	for _, n := range sel {
+	for n := range sel.Bits() {
 		if n < 1 || n > 80 {
 			return ErrKenoOutRange
 		}
-		if _, ok := m[n]; ok {
-			return ErrKenoRepeat
-		}
-		m[n] = struct{}{}
 	}
 	g.Sel = sel
 	return nil

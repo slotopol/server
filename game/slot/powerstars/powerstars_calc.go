@@ -7,6 +7,7 @@ import (
 	"time"
 
 	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/util"
 )
 
 func BruteForce5x(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, wc2, wc3, wc4 bool) {
@@ -61,7 +62,7 @@ func BruteForce5x(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slo
 func CalcStatStars(ctx context.Context, wc2, wc3, wc4 bool) float64 {
 	var reels = &Reels
 	var g = NewGame()
-	g.SBL = slot.MakeBitNum(1)
+	g.SBL = util.MakeBitNum(1, 1)
 	var sbl = float64(g.SBL.Num())
 	var s slot.Stat
 

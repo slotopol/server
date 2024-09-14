@@ -7,6 +7,7 @@ import (
 	"time"
 
 	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/util"
 )
 
 func FirstSreespins() (fsavr1 float64, multavr float64) {
@@ -44,7 +45,7 @@ func CalcStat(ctx context.Context, rn string) float64 {
 		reels = &Reels92
 	}
 	var g = NewGame()
-	g.SBL = slot.MakeBitNum(5)
+	g.SBL = util.MakeBitNum(5, 1)
 	var sbl = float64(g.SBL.Num())
 	var s slot.Stat
 

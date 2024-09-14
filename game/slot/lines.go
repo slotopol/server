@@ -1,7 +1,6 @@
 package game
 
 import (
-	"math/bits"
 	"sync"
 )
 
@@ -19,65 +18,6 @@ type Lineset interface {
 	Cols() int     // returns number of columns
 	Line(int) Line // returns line with given number, starts from 1
 	Num() int      // returns number lines in set
-}
-
-// Bitset is selected bet lines bitset.
-type Bitset uint64
-
-// MakeBitset creates lines set from slice of line indexes.
-func MakeBitset(lines ...int) Bitset {
-	var bs Bitset
-	for _, n := range lines {
-		bs |= 1 << n
-	}
-	return bs
-}
-
-// MakeBitNum creates lines set with first num lines.
-func MakeBitNum(num int) Bitset {
-	return (1<<num - 1) << 1
-}
-
-// Num returns number of selected lines in set.
-func (bs Bitset) Num() int {
-	return bits.OnesCount64(uint64(bs))
-}
-
-// Next helps iterate lines numbers as followed:
-//
-//	for n := bs.Next(0); n != 0; n = bs.Next(n) {}
-func (bs Bitset) Next(n int) int {
-	bs >>= n + 1
-	for bs > 0 {
-		n++
-		if bs&1 > 0 {
-			return n
-		}
-		bs >>= 1
-	}
-	return 0
-}
-
-// Is checks that line with given number is set.
-func (bs Bitset) Is(n int) bool {
-	return bs&1<<n > 0
-}
-
-// Set line with given number.
-func (bs *Bitset) Set(n int) {
-	*bs |= 1 << n
-}
-
-// Toggle line with given number and return whether it set.
-func (bs *Bitset) Toggle(n int) bool {
-	var bit Bitset = 1 << n
-	*bs ^= bit
-	return *bs&bit > 0
-}
-
-// Sets first n lines.
-func (bs *Bitset) SetNum(n int) {
-	*bs = (1<<n - 1) << 1
 }
 
 type Line3x [5]int

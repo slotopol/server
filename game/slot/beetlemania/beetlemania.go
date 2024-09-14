@@ -4,6 +4,7 @@ import (
 	"math"
 
 	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/util"
 )
 
 var ReelsReg88 = slot.Reels5x{
@@ -203,7 +204,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{
-			SBL: slot.MakeBitNum(5),
+			SBL: util.MakeBitNum(5, 1),
 			Bet: 1,
 		},
 		FS: 0,
@@ -222,7 +223,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
-	for li := g.SBL.Next(0); li != 0; li = g.SBL.Next(li) {
+	for li := range g.SBL.Bits() {
 		var line = bl.Line(li)
 
 		/*var numw, numl int
