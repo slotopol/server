@@ -117,7 +117,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{
-			SBL: util.MakeBitNum(5, 1),
+			Sel: util.MakeBitNum(5, 1),
 			Bet: 1,
 		},
 	}
@@ -149,7 +149,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 		}
 	}
 
-	for li := range g.SBL.Bits() {
+	for li := range g.Sel.Bits() {
 		var line = bl.Line(li)
 		var syml, symr slot.Sym
 		var numl, numr int
@@ -243,17 +243,17 @@ func (g *Game) FreeSpins() int {
 	return max(g.PRW[1], g.PRW[2], g.PRW[3])
 }
 
-func (g *Game) SetLines(sbl slot.Bitset) error {
+func (g *Game) SetSel(sel slot.Bitset) error {
 	var mask slot.Bitset = (1<<len(bl) - 1) << 1
-	if sbl == 0 {
+	if sel == 0 {
 		return slot.ErrNoLineset
 	}
-	if sbl&^mask != 0 {
+	if sel&^mask != 0 {
 		return slot.ErrLinesetOut
 	}
 	if g.FreeSpins() > 0 {
 		return slot.ErrNoFeature
 	}
-	g.SBL = sbl
+	g.Sel = sel
 	return nil
 }

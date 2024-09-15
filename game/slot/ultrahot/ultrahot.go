@@ -102,7 +102,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot3x3: slot.Slot3x3{
-			SBL: util.MakeBitNum(5, 1),
+			Sel: util.MakeBitNum(5, 1),
 			Bet: 1,
 		},
 	}
@@ -110,7 +110,7 @@ func NewGame() *Game {
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	var bl = slot.BetLinesHot3
-	for li := range g.SBL.Bits() {
+	for li := range g.Sel.Bits() {
 		var line = bl.Line(li)
 		var fm float64 = 1 // fill mult
 		if sym := screen.FillSym(); sym >= 4 && sym <= 7 {
@@ -135,6 +135,6 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 	screen.Spin(reels)
 }
 
-func (g *Game) SetLines(sbl slot.Bitset) error {
+func (g *Game) SetSel(sel slot.Bitset) error {
 	return slot.ErrNoFeature
 }

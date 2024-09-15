@@ -204,7 +204,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{
-			SBL: util.MakeBitNum(25, 1),
+			Sel: util.MakeBitNum(25, 1),
 			Bet: 1,
 		},
 		FS: 0,
@@ -223,7 +223,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
-	for li := range g.SBL.Bits() {
+	for li := range g.Sel.Bits() {
 		var line = bl.Line(li)
 
 		var numw, numl = 0, 5
@@ -292,7 +292,7 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 			fs = 8
 		}
 		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * float64(g.SBL.Num()) * pay,
+			Pay:  g.Bet * float64(g.Sel.Num()) * pay,
 			Mult: mm,
 			Sym:  scat,
 			Num:  count,
@@ -362,17 +362,17 @@ func (g *Game) FreeSpins() int {
 	return g.FS
 }
 
-func (g *Game) SetLines(sbl slot.Bitset) error {
+func (g *Game) SetSel(sel slot.Bitset) error {
 	var mask slot.Bitset = (1<<len(bl) - 1) << 1
-	if sbl == 0 {
+	if sel == 0 {
 		return slot.ErrNoLineset
 	}
-	if sbl&^mask != 0 {
+	if sel&^mask != 0 {
 		return slot.ErrLinesetOut
 	}
 	if g.FreeSpins() > 0 {
 		return slot.ErrNoFeature
 	}
-	g.SBL = sbl
+	g.Sel = sel
 	return nil
 }

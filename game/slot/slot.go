@@ -64,8 +64,8 @@ type SlotGame interface {
 	SetGain(float64) error // set gain to given value on double up games
 	GetBet() float64       // returns current bet, constat function
 	SetBet(float64) error  // set bet to given value
-	GetLines() Bitset      // returns selected bet lines indexes, constat function
-	SetLines(Bitset) error // setup selected bet lines indexes
+	GetSel() Bitset        // returns selected bet lines indexes, constat function
+	SetSel(Bitset) error   // setup selected bet lines indexes
 }
 
 // Reels for 3-reels slots.
@@ -108,7 +108,7 @@ var (
 
 // Slot5x3 is base struct for all slot games with screen 5x3.
 type Slot3x3 struct {
-	SBL Bitset  `json:"sbl" yaml:"sbl" xml:"sbl"` // selected bet lines
+	Sel Bitset  `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
 	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
 	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"` // gain for double up games
@@ -153,13 +153,13 @@ func (g *Slot3x3) SetBet(bet float64) error {
 	return nil
 }
 
-func (g *Slot3x3) GetLines() Bitset {
-	return g.SBL
+func (g *Slot3x3) GetSel() Bitset {
+	return g.Sel
 }
 
 // Slot5x3 is base struct for all slot games with screen 5x3.
 type Slot5x3 struct {
-	SBL Bitset  `json:"sbl" yaml:"sbl" xml:"sbl"` // selected bet lines
+	Sel Bitset  `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
 	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
 	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"` // gain for double up games
@@ -204,13 +204,13 @@ func (g *Slot5x3) SetBet(bet float64) error {
 	return nil
 }
 
-func (g *Slot5x3) GetLines() Bitset {
-	return g.SBL
+func (g *Slot5x3) GetSel() Bitset {
+	return g.Sel
 }
 
 // Slot5x4 is base struct for all slot games with screen 5x4.
 type Slot5x4 struct {
-	SBL Bitset  `json:"sbl" yaml:"sbl" xml:"sbl"` // selected bet lines
+	Sel Bitset  `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
 	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
 	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"` // gain for double up games
@@ -255,6 +255,6 @@ func (g *Slot5x4) SetBet(bet float64) error {
 	return nil
 }
 
-func (g *Slot5x4) GetLines() Bitset {
-	return g.SBL
+func (g *Slot5x4) GetSel() Bitset {
+	return g.Sel
 }

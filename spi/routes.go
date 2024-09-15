@@ -148,8 +148,8 @@ func Router(r *gin.Engine) {
 	var rs = ra.Group("/slot")
 	rs.POST("/bet/get", SpiSlotBetGet)
 	rs.POST("/bet/set", SpiSlotBetSet)
-	rs.POST("/sbl/get", SpiSlotSblGet)
-	rs.POST("/sbl/set", SpiSlotSblSet)
+	rs.POST("/sel/get", SpiSlotSelGet)
+	rs.POST("/sel/set", SpiSlotSelSet)
 	rs.POST("/spin", SpiSlotSpin)
 	rs.POST("/doubleup", SpiSlotDoubleup)
 	rs.POST("/collect", SpiSlotCollect)
@@ -158,6 +158,8 @@ func Router(r *gin.Engine) {
 	var rk = ra.Group("/keno")
 	rk.POST("/bet/get", SpiKenoBetGet)
 	rk.POST("/bet/set", SpiKenoBetSet)
+	rk.POST("/sel/get", SpiKenoSelGet)
+	rk.POST("/sel/set", SpiKenoSelSet)
 
 	// properties group
 	var rp = ra.Group("/prop")

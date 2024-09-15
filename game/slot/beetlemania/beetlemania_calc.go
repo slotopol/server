@@ -37,9 +37,9 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 		reels = &ReelsReg92
 	}
 	var g = NewGame()
-	g.SBL = util.MakeBitNum(5, 1)
+	g.Sel = util.MakeBitNum(5, 1)
 	g.FS = 10 // set free spins mode
-	var sbl = float64(g.SBL.Num())
+	var sln = float64(g.Sel.Num())
 	var s Stat
 
 	var total = float64(reels.Reshuffles())
@@ -47,16 +47,16 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 		var t0 = time.Now()
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		go s.Progress(ctx2, time.Tick(2*time.Second), sbl, total)
+		go s.Progress(ctx2, time.Tick(2*time.Second), sln, total)
 		slot.BruteForce5x(ctx2, &s, g, reels)
 		return time.Since(t0)
 	}()
 
 	var reshuf = float64(s.Reshuffles)
-	var lrtp, srtp = s.LinePay / reshuf / sbl * 100, s.ScatPay / reshuf / sbl * 100
+	var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
 	var rtpsym = lrtp + srtp
-	var qjazz = float64(s.BonusCount[jbonus]) / reshuf / sbl
-	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/total*100, g.SBL.Num(), dur)
+	var qjazz = float64(s.BonusCount[jbonus]) / reshuf / sln
+	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/total*100, g.Sel.Num(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
@@ -88,8 +88,8 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		reels = &ReelsReg92
 	}
 	var g = NewGame()
-	g.SBL = util.MakeBitNum(5, 1)
-	var sbl = float64(g.SBL.Num())
+	g.Sel = util.MakeBitNum(5, 1)
+	var sln = float64(g.Sel.Num())
 	var s Stat
 
 	var total = float64(reels.Reshuffles())
@@ -97,20 +97,20 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		var t0 = time.Now()
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		go s.Progress(ctx2, time.Tick(2*time.Second), sbl, total)
+		go s.Progress(ctx2, time.Tick(2*time.Second), sln, total)
 		slot.BruteForce5x(ctx2, &s, g, reels)
 		return time.Since(t0)
 	}()
 
 	var reshuf = float64(s.Reshuffles)
-	var lrtp, srtp = s.LinePay / reshuf / sbl * 100, s.ScatPay / reshuf / sbl * 100
+	var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
 	var rtpsym = lrtp + srtp
 	var fgsum = float64(s.FGNum[2] + s.FGNum[3] + s.FGNum[4])
 	var fgpay = float64(s.FGPay) / fgsum
 	var rtpbon = (fgpay + rtpfs*10/100) * math.Pow(2, 1.25)
 	var q = fgsum / total
 	var rtp = rtpsym + q*rtpbon
-	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/total*100, g.SBL.Num(), dur)
+	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/total*100, g.Sel.Num(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)

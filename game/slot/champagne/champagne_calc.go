@@ -47,9 +47,9 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 		reels = &Reels964
 	}
 	var g = NewGame()
-	g.SBL = util.MakeBitNum(1, 1)
+	g.Sel = util.MakeBitNum(1, 1)
 	g.FS = 15 // set free spins mode
-	var sbl = float64(g.SBL.Num())
+	var sln = float64(g.Sel.Num())
 	var s slot.Stat
 
 	var total = float64(reels.Reshuffles())
@@ -57,20 +57,20 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 		var t0 = time.Now()
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		go s.Progress(ctx2, time.Tick(2*time.Second), sbl, total)
+		go s.Progress(ctx2, time.Tick(2*time.Second), sln, total)
 		slot.BruteForce5x(ctx2, &s, g, reels)
 		return time.Since(t0)
 	}()
 
 	var reshuf = float64(s.Reshuffles)
-	var lrtp, srtp = s.LinePay / reshuf / sbl * 100, s.ScatPay / reshuf / sbl * 100
+	var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
 	var rtpsym = lrtp + srtp
 	var q = float64(s.FreeCount) / reshuf
 	var sq = 1 / (1 - q)
-	var qmjc = float64(s.BonusCount[mjc]) / reshuf / sbl
+	var qmjc = float64(s.BonusCount[mjc]) / reshuf / sln
 	var rtpmjc = Emjc * qmjc * 100
 	var rtp = sq * (rtpsym + rtpmjc)
-	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/total*100, g.SBL.Num(), dur)
+	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/total*100, g.Sel.Num(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
@@ -101,9 +101,9 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		reels = &Reels964
 	}
 	var g = NewGame()
-	g.SBL = util.MakeBitNum(1, 1)
+	g.Sel = util.MakeBitNum(1, 1)
 	g.FS = 0 // no free spins
-	var sbl = float64(g.SBL.Num())
+	var sln = float64(g.Sel.Num())
 	var s slot.Stat
 
 	var total = float64(reels.Reshuffles())
@@ -111,19 +111,19 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		var t0 = time.Now()
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		go s.Progress(ctx2, time.Tick(2*time.Second), sbl, total)
+		go s.Progress(ctx2, time.Tick(2*time.Second), sln, total)
 		slot.BruteForce5x(ctx2, &s, g, reels)
 		return time.Since(t0)
 	}()
 
 	var reshuf = float64(s.Reshuffles)
-	var lrtp, srtp = s.LinePay / reshuf / sbl * 100, s.ScatPay / reshuf / sbl * 100
+	var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
 	var rtpsym = lrtp + srtp
 	var q = float64(s.FreeCount) / reshuf
-	var qmjc = float64(s.BonusCount[mjc]) / reshuf / sbl
+	var qmjc = float64(s.BonusCount[mjc]) / reshuf / sln
 	var rtpmjc = Emjc * qmjc * 100
 	var rtp = rtpsym + rtpmjc + q*rtpfs
-	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/total*100, g.SBL.Num(), dur)
+	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/total*100, g.Sel.Num(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)

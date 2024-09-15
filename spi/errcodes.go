@@ -129,22 +129,22 @@ const (
 	SEC_slot_betset_noaccess
 	SEC_slot_betset_badbet
 
-	// POST /slot/sbl/get
+	// POST /slot/sel/get
 
-	SEC_slot_sblget_nobind
-	SEC_slot_sblget_nogid
-	SEC_slot_sblget_notopened
-	SEC_slot_sblget_notslot
-	SEC_slot_sblget_noaccess
+	SEC_slot_selget_nobind
+	SEC_slot_selget_nogid
+	SEC_slot_selget_notopened
+	SEC_slot_selget_notslot
+	SEC_slot_selget_noaccess
 
-	// POST /slot/sbl/set
+	// POST /slot/sel/set
 
-	SEC_slot_sblset_nobind
-	SEC_slot_sblset_nogid
-	SEC_slot_sblset_notopened
-	SEC_slot_sblset_notslot
-	SEC_slot_sblset_noaccess
-	SEC_slot_sblset_badlines
+	SEC_slot_selset_nobind
+	SEC_slot_selset_nogid
+	SEC_slot_selset_notopened
+	SEC_slot_selset_notslot
+	SEC_slot_selset_noaccess
+	SEC_slot_selset_badlines
 
 	// POST /slot/spin
 
@@ -200,6 +200,23 @@ const (
 	SEC_keno_betset_notslot
 	SEC_keno_betset_noaccess
 	SEC_keno_betset_badbet
+
+	// POST /keno/sel/get
+
+	SEC_keno_selget_nobind
+	SEC_keno_selget_nogid
+	SEC_keno_selget_notopened
+	SEC_keno_selget_notslot
+	SEC_keno_selget_noaccess
+
+	// POST /keno/sel/set
+
+	SEC_keno_selset_nobind
+	SEC_keno_selset_nogid
+	SEC_keno_selset_notopened
+	SEC_keno_selset_notslot
+	SEC_keno_selset_noaccess
+	SEC_keno_selset_badlines
 
 	// POST /prop/wallet/get
 
