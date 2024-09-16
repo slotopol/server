@@ -9,7 +9,7 @@ import (
 type Bitset64 uint64
 
 // MakeBitset creates bits set from slice of integer indexes.
-func MakeBitset(indexes ...int) Bitset64 {
+func MakeBitset64(indexes ...int) Bitset64 {
 	var bs Bitset64
 	for _, n := range indexes {
 		bs |= 1 << n
@@ -18,7 +18,7 @@ func MakeBitset(indexes ...int) Bitset64 {
 }
 
 // MakeBitNum creates bits set with first num bits.
-func MakeBitNum(count, from int) Bitset64 {
+func MakeBitNum64(count, from int) Bitset64 {
 	return (1<<count - 1) << from
 }
 
@@ -46,39 +46,47 @@ func (bs Bitset64) Is(n int) bool {
 }
 
 // Set bit with given number.
-func (bs *Bitset64) Set(n int) {
+func (bs *Bitset64) Set(n int) *Bitset64 {
 	*bs |= 1 << n
+	return bs
 }
 
 // Res resets bit with given number.
-func (bs *Bitset64) Res(n int) {
+func (bs *Bitset64) Res(n int) *Bitset64 {
 	*bs &^= 1 << n
+	return bs
 }
 
 // Toggle bit with given number.
-func (bs *Bitset64) Toggle(n int) {
+func (bs *Bitset64) Toggle(n int) *Bitset64 {
 	*bs ^= 1 << n
+	return bs
 }
 
 // Sets first n bits.
-func (bs *Bitset64) SetNum(count, from int) {
+func (bs *Bitset64) SetNum(count, from int) *Bitset64 {
 	*bs = (1<<count - 1) << from
+	return bs
 }
 
-func (bs *Bitset64) And(mask Bitset64) {
+func (bs *Bitset64) And(mask Bitset64) *Bitset64 {
 	*bs &= mask
+	return bs
 }
 
-func (bs *Bitset64) Or(mask Bitset64) {
+func (bs *Bitset64) Or(mask Bitset64) *Bitset64 {
 	*bs |= mask
+	return bs
 }
 
-func (bs *Bitset64) AndNot(mask Bitset64) {
+func (bs *Bitset64) AndNot(mask Bitset64) *Bitset64 {
 	*bs &^= mask
+	return bs
 }
 
-func (bs *Bitset64) Xor(mask Bitset64) {
+func (bs *Bitset64) Xor(mask Bitset64) *Bitset64 {
 	*bs ^= mask
+	return bs
 }
 
 func (bs Bitset64) IsZero() bool {
@@ -132,31 +140,35 @@ func (bs *Bitset128) Is(n int) bool {
 }
 
 // Set bit with given number.
-func (bs *Bitset128) Set(n int) {
+func (bs *Bitset128) Set(n int) *Bitset128 {
 	bs[n/64] |= 1 << (n % 64)
+	return bs
 }
 
 // Res resets bit with given number.
-func (bs *Bitset128) Res(n int) {
+func (bs *Bitset128) Res(n int) *Bitset128 {
 	bs[n/64] &^= 1 << (n % 64)
+	return bs
 }
 
 // Toggle bit with given number.
-func (bs *Bitset128) Toggle(n int) {
+func (bs *Bitset128) Toggle(n int) *Bitset128 {
 	bs[n/64] ^= 1 << (n % 64)
+	return bs
 }
 
 // LShift implements left shift of bitset.
-func (bs *Bitset128) LShift(count int) {
+func (bs *Bitset128) LShift(count int) *Bitset128 {
 	var c uint64
 	for i, u := range bs {
 		bs[i] = (u << count) | c
 		c = u >> (64 - count)
 	}
+	return bs
 }
 
 // Sets first n bits.
-func (bs *Bitset128) SetNum(count, from int) {
+func (bs *Bitset128) SetNum(count, from int) *Bitset128 {
 	var i int
 	for i = 0; i < count/64; i++ {
 		bs[i] = 0xffffffffffffffff
@@ -165,30 +177,35 @@ func (bs *Bitset128) SetNum(count, from int) {
 	if from > 0 {
 		bs.LShift(from)
 	}
+	return bs
 }
 
-func (bs *Bitset128) And(mask Bitset128) {
+func (bs *Bitset128) And(mask Bitset128) *Bitset128 {
 	for i, u := range mask {
 		bs[i] &= u
 	}
+	return bs
 }
 
-func (bs *Bitset128) Or(mask Bitset128) {
+func (bs *Bitset128) Or(mask Bitset128) *Bitset128 {
 	for i, u := range mask {
 		bs[i] |= u
 	}
+	return bs
 }
 
-func (bs *Bitset128) AndNot(mask Bitset128) {
+func (bs *Bitset128) AndNot(mask Bitset128) *Bitset128 {
 	for i, u := range mask {
 		bs[i] &^= u
 	}
+	return bs
 }
 
-func (bs *Bitset128) Xor(mask Bitset128) {
+func (bs *Bitset128) Xor(mask Bitset128) *Bitset128 {
 	for i, u := range mask {
 		bs[i] ^= u
 	}
+	return bs
 }
 
 func (bs *Bitset128) IsZero() bool {

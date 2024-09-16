@@ -7,7 +7,6 @@ import (
 	"time"
 
 	slot "github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/util"
 )
 
 func BruteForce5x(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, gs slot.Sym) {
@@ -63,7 +62,7 @@ func CalcStatBon(ctx context.Context, rn string) (rtp float64) {
 		reels = &Reels92
 	}
 	var g = NewGame()
-	g.Sel = util.MakeBitNum(1, 1)
+	g.Sel.SetNum(1, 1)
 
 	for gs := slot.Sym(1); gs <= 7; gs++ {
 		rtp += CalcStatSym(ctx, g, reels, gs)
@@ -88,8 +87,8 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		reels = &Reels92
 	}
 	var g = NewGame()
-	g.Sel = util.MakeBitNum(1, 1)
-	var sln = float64(g.Sel.Num())
+	var sln float64 = 1
+	g.Sel.SetNum(int(sln), 1)
 	var s slot.Stat
 
 	var total = float64(reels.Reshuffles())

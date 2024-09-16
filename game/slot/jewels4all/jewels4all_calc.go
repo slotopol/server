@@ -7,7 +7,6 @@ import (
 	"time"
 
 	slot "github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/util"
 )
 
 func BruteForce5x(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, x, y int) {
@@ -57,8 +56,8 @@ func BruteForce5x(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slo
 func CalcStatEuro(ctx context.Context, x, y int) float64 {
 	var reels = &Reels
 	var g = NewGame()
-	g.Sel = util.MakeBitNum(1, 1)
-	var sln = float64(g.Sel.Num())
+	var sln float64 = 1
+	g.Sel.SetNum(int(sln), 1)
 	var s slot.Stat
 
 	fmt.Printf("calculations of euro at [%d,%d]\n", x, y)

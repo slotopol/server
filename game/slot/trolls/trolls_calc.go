@@ -7,7 +7,6 @@ import (
 	"time"
 
 	slot "github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/util"
 )
 
 func CalcStatReg(ctx context.Context, rn string) float64 {
@@ -19,8 +18,8 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		reels = &Reels92
 	}
 	var g = NewGame()
-	g.Sel = util.MakeBitNum(1, 1)
-	var sln = float64(g.Sel.Num())
+	var sln float64 = 1
+	g.Sel.SetNum(int(sln), 1)
 	var s slot.Stat
 
 	var total = float64(reels.Reshuffles())

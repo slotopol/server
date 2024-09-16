@@ -52,6 +52,8 @@ func (wins Wins) Gain() float64 {
 
 type Bitset = util.Bitset64
 
+var MakeBitNum = util.MakeBitNum64
+
 // SlotGame is common slots interface. Any slot game should implement this interface.
 type SlotGame interface {
 	NewScreen() Screen     // returns new empty screen object for this game, constat function

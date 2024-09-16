@@ -7,8 +7,8 @@ import (
 	"github.com/slotopol/server/util"
 )
 
-func ExampleMakeBitset() {
-	fmt.Printf("bitset(1, 2, 3, 5, 14, 8) is 0b%016b", util.MakeBitset(1, 2, 3, 5, 14, 8))
+func ExampleMakeBitset64() {
+	fmt.Printf("bitset(1, 2, 3, 5, 14, 8) is 0b%016b", util.MakeBitset64(1, 2, 3, 5, 14, 8))
 	// Output:
 	// bitset(1, 2, 3, 5, 14, 8) is 0b0100000100101110
 }
@@ -20,8 +20,8 @@ func ExampleMakeBitset128() {
 	// bitset(1, 2, 3, 5, 14, 8, 63, 64, 65, 125, 127) is 0xa000000000000003800000000000412e
 }
 
-func ExampleMakeBitNum() {
-	fmt.Printf("bitnum(7, 3) is %b", util.MakeBitNum(7, 3))
+func ExampleMakeBitNum64() {
+	fmt.Printf("bitnum(7, 3) is %b", util.MakeBitNum64(7, 3))
 	// Output:
 	// bitnum(7, 3) is 1111111000
 }

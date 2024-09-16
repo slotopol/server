@@ -7,7 +7,6 @@ import (
 	"math/rand/v2"
 
 	slot "github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/util"
 )
 
 // reels lengths [33, 33, 33, 33, 33], total reshuffles 39135393
@@ -117,7 +116,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{
-			Sel: util.MakeBitNum(5, 1),
+			Sel: slot.MakeBitNum(5, 1),
 			Bet: 1,
 		},
 	}
@@ -244,11 +243,10 @@ func (g *Game) FreeSpins() int {
 }
 
 func (g *Game) SetSel(sel slot.Bitset) error {
-	var mask slot.Bitset = (1<<len(bl) - 1) << 1
-	if sel == 0 {
+	if sel.IsZero() {
 		return slot.ErrNoLineset
 	}
-	if sel&^mask != 0 {
+	if bs := sel; !bs.AndNot(slot.MakeBitNum(len(bl), 1)).IsZero() {
 		return slot.ErrLinesetOut
 	}
 	if g.FreeSpins() > 0 {

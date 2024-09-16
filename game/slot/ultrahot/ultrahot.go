@@ -4,7 +4,6 @@ import (
 	"math"
 
 	slot "github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/util"
 )
 
 // reels lengths [37, 37, 37], total reshuffles 50653
@@ -102,7 +101,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot3x3: slot.Slot3x3{
-			Sel: util.MakeBitNum(5, 1),
+			Sel: slot.MakeBitNum(5, 1),
 			Bet: 1,
 		},
 	}

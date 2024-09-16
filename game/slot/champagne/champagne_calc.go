@@ -7,7 +7,6 @@ import (
 	"time"
 
 	slot "github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/util"
 )
 
 var Emjc float64 // Bottle game calculated expectation
@@ -47,9 +46,9 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 		reels = &Reels964
 	}
 	var g = NewGame()
-	g.Sel = util.MakeBitNum(1, 1)
+	var sln float64 = 1
+	g.Sel.SetNum(int(sln), 1)
 	g.FS = 15 // set free spins mode
-	var sln = float64(g.Sel.Num())
 	var s slot.Stat
 
 	var total = float64(reels.Reshuffles())
@@ -101,9 +100,9 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		reels = &Reels964
 	}
 	var g = NewGame()
-	g.Sel = util.MakeBitNum(1, 1)
+	var sln float64 = 1
+	g.Sel.SetNum(int(sln), 1)
 	g.FS = 0 // no free spins
-	var sln = float64(g.Sel.Num())
 	var s slot.Stat
 
 	var total = float64(reels.Reshuffles())

@@ -25,13 +25,15 @@ const (
 
 type Screen [80]KS
 
+type Bitset = util.Bitset128
+
+var MakeBitNum = util.MakeBitNum128
+
 type Wins struct {
 	Num  int
 	Pay  float64
 	Hits [20]int
 }
-
-type Bitset = util.Bitset128
 
 // KenoGame is common keno interface. Any keno game should implement this interface.
 type KenoGame interface {

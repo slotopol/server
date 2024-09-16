@@ -9,7 +9,6 @@ import (
 	"time"
 
 	slot "github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/util"
 )
 
 type Stat struct {
@@ -37,9 +36,9 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 		reels = &ReelsReg92
 	}
 	var g = NewGame()
-	g.Sel = util.MakeBitNum(5, 1)
+	var sln float64 = 5
+	g.Sel.SetNum(int(sln), 1)
 	g.FS = 10 // set free spins mode
-	var sln = float64(g.Sel.Num())
 	var s Stat
 
 	var total = float64(reels.Reshuffles())
@@ -88,8 +87,8 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		reels = &ReelsReg92
 	}
 	var g = NewGame()
-	g.Sel = util.MakeBitNum(5, 1)
-	var sln = float64(g.Sel.Num())
+	var sln float64 = 5
+	g.Sel.SetNum(int(sln), 1)
 	var s Stat
 
 	var total = float64(reels.Reshuffles())

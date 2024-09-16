@@ -4,7 +4,6 @@ import (
 	"math"
 
 	slot "github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/util"
 )
 
 // Original reels.
@@ -70,7 +69,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{
-			Sel: util.MakeBitNum(5, 1),
+			Sel: slot.MakeBitNum(5, 1),
 			Bet: 1,
 		},
 	}
