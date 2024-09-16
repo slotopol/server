@@ -14,7 +14,7 @@ import (
 // RTP[ 9] = 98.085519%
 // RTP[10] = 97.950344%
 // RTP[game] = 97.980099%
-var Paytable = keno.KenoPaytable{
+var Paytable = keno.Paytable{
 	{0},                                   //  0 sel
 	{0, 0},                                //  1 sel
 	{0, 1, 10},                            //  2 sel
@@ -41,6 +41,7 @@ func NewGame() *Game {
 }
 
 func (g *Game) Scanner(scrn *keno.Screen, wins *keno.Wins) {
+	wins.Num = 0
 	for i := range 80 {
 		if scrn[i] == keno.KSselhit {
 			wins.Num++

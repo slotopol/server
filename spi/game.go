@@ -100,28 +100,21 @@ func SpiGameJoin(c *gin.Context) {
 	Scenes.Set(scene.GID, scene)
 	user.games.Set(scene.GID, scene)
 
-	type kwins = keno.Wins
-	type kscrn = keno.Screen
-
 	ret.GID = gid
 	ret.Game = anygame
-	var scrn slot.Screen
+	// make game screen object
+	club.mux.RLock()
+	var rtp = GetRTP(user, club)
+	club.mux.RUnlock()
 	switch game := anygame.(type) {
 	case slot.SlotGame:
-		scrn = game.NewScreen()
-
-		// make game screen object
-		club.mux.RLock()
-		var rtp = GetRTP(user, club)
-		club.mux.RUnlock()
+		var scrn = game.NewScreen()
 		game.Spin(scrn, rtp)
 		ret.Scrn = scrn
-
 	case keno.KenoGame:
-		var ks kscrn
-		var kw kwins
-		game.Spin(&ks, kw.Hits[:])
-		ret.Scrn = &ks
+		var scrn keno.Screen
+		game.Spin(&scrn, rtp)
+		ret.Scrn = &scrn
 	}
 	ret.Wallet = user.GetWallet(arg.CID)
 

@@ -304,7 +304,6 @@ func SpiSlotSpin(c *gin.Context) {
 	club.mux.Lock()
 	club.Bank += banksum
 	club.mux.Unlock()
-
 	props.Wallet -= banksum
 	game.Apply(scrn, wins)
 

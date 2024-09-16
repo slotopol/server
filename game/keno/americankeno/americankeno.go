@@ -16,7 +16,7 @@ import (
 // RTP[ 9] = 90.589102%
 // RTP[10] = 90.212487%
 // RTP[game] = 89.250235%
-var Paytable = keno.KenoPaytable{
+var Paytable = keno.Paytable{
 	{0},                                     //  0 sel
 	{0, 0},                                  //  1 sel
 	{1, 0, 5},                               //  2 sel

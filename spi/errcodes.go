@@ -218,6 +218,20 @@ const (
 	SEC_keno_selset_noaccess
 	SEC_keno_selset_badlines
 
+	// POST /keno/spin
+
+	SEC_keno_spin_nobind
+	SEC_keno_spin_nogid
+	SEC_keno_spin_notopened
+	SEC_keno_spin_notslot
+	SEC_keno_spin_noclub
+	SEC_keno_spin_nouser
+	SEC_keno_spin_noaccess
+	SEC_keno_spin_noprops
+	SEC_keno_spin_nomoney
+	SEC_keno_spin_badbank
+	SEC_keno_spin_sqlbank
+
 	// POST /prop/wallet/get
 
 	SEC_prop_walletget_nobind

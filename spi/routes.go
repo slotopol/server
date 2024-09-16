@@ -160,6 +160,7 @@ func Router(r *gin.Engine) {
 	rk.POST("/bet/set", SpiKenoBetSet)
 	rk.POST("/sel/get", SpiKenoSelGet)
 	rk.POST("/sel/set", SpiKenoSelSet)
+	rk.POST("/spin", SpiKenoSpin)
 
 	// properties group
 	var rp = ra.Group("/prop")

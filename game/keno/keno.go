@@ -7,9 +7,9 @@ import (
 	"github.com/slotopol/server/util"
 )
 
-type KenoPaytable [11][11]float64
+type Paytable [11][11]float64
 
-func (kp *KenoPaytable) Pay(sel, win int) float64 {
+func (kp *Paytable) Pay(sel, win int) float64 {
 	return kp[sel][win]
 }
 
@@ -30,15 +30,14 @@ type Bitset = util.Bitset128
 var MakeBitNum = util.MakeBitNum128
 
 type Wins struct {
-	Num  int
-	Pay  float64
-	Hits [20]int
+	Num int
+	Pay float64
 }
 
 // KenoGame is common keno interface. Any keno game should implement this interface.
 type KenoGame interface {
-	Scanner(*Screen, *Wins) // scan given screen and set result to wins, constat function
-	Spin(*Screen, []int)    // fill the screen with random hits, constat function
+	Scanner(*Screen, *Wins) // scan given screen and append result to wins, constat function
+	Spin(*Screen, float64)  // fill the screen with random hits on reels closest to given RTP, constat function
 	GetBet() float64        // returns current bet, constat function
 	SetBet(float64) error   // set bet to given value
 	GetSel() Bitset         // returns current selected numbers, constat function
@@ -57,7 +56,8 @@ type Keno80 struct {
 	Sel Bitset  `json:"sel" yaml:"sel" xml:"sel"` // selected numbers
 }
 
-func (g *Keno80) Spin(ks *Screen, hits []int) {
+func (g *Keno80) Spin(scrn *Screen, _ float64) {
+	var hits [80]int
 	for i := range 80 {
 		hits[i] = i + 1
 	}
@@ -65,12 +65,12 @@ func (g *Keno80) Spin(ks *Screen, hits []int) {
 		hits[i], hits[j] = hits[j], hits[i]
 	})
 
-	clear(ks[:])
+	clear(scrn[:])
 	for _, n := range g.Sel {
-		ks[n] = KSsel
+		scrn[n] = KSsel
 	}
 	for i := range 20 {
-		ks[hits[i]] |= KShit
+		scrn[hits[i]] |= KShit
 	}
 }
 
