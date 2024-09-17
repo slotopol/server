@@ -30,8 +30,8 @@ type Bitset = util.Bitset128
 var MakeBitNum = util.MakeBitNum128
 
 type Wins struct {
-	Num int
-	Pay float64
+	Num int     `json:"num" yaml:"num" xml:"num,attr"`
+	Pay float64 `json:"pay" yaml:"pay" xml:"pay,attr"`
 }
 
 // KenoGame is common keno interface. Any keno game should implement this interface.
@@ -66,11 +66,11 @@ func (g *Keno80) Spin(scrn *Screen, _ float64) {
 	})
 
 	clear(scrn[:])
-	for _, n := range g.Sel {
-		scrn[n] = KSsel
+	for n := range g.Sel.Bits() {
+		scrn[n-1] = KSsel
 	}
 	for i := range 20 {
-		scrn[hits[i]] |= KShit
+		scrn[hits[i]-1] |= KShit
 	}
 }
 

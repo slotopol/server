@@ -334,10 +334,8 @@ func SpiKenoSpin(c *gin.Context) {
 	}
 
 	var (
-		bet      = game.GetBet()
-		sel      = game.GetSel()
-		totalbet = bet * float64(sel.Num())
-		banksum  float64
+		bet     = game.GetBet()
+		banksum float64
 	)
 
 	var props *Props
@@ -345,7 +343,7 @@ func SpiKenoSpin(c *gin.Context) {
 		Ret500(c, SEC_keno_spin_noprops, ErrNoProps)
 		return
 	}
-	if props.Wallet < totalbet {
+	if props.Wallet < bet {
 		Ret403(c, SEC_keno_spin_nomoney, ErrNoMoney)
 		return
 	}
@@ -362,7 +360,7 @@ func SpiKenoSpin(c *gin.Context) {
 	for {
 		game.Spin(&scrn, mrtp)
 		game.Scanner(&scrn, &wins)
-		banksum = totalbet - wins.Pay
+		banksum = bet - wins.Pay
 		if bank+banksum >= 0 || (bank < 0 && banksum > 0) {
 			break
 		}

@@ -48,5 +48,5 @@ func (g *Game) Scanner(scrn *keno.Screen, wins *keno.Wins) {
 			wins.Num++
 		}
 	}
-	wins.Pay = Paytable[len(g.Sel)][wins.Num] * g.Bet
+	wins.Pay = Paytable[g.Sel.Num()][wins.Num] * g.Bet
 }
