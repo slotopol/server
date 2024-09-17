@@ -100,7 +100,7 @@ func SpiKenoBetSet(c *gin.Context) {
 	Ret204(c)
 }
 
-// Returns selected numvers bitset.
+// Returns selected numbers bitset.
 func SpiKenoSelGet(c *gin.Context) {
 	var err error
 	var ok bool
@@ -182,6 +182,97 @@ func SpiKenoSelSet(c *gin.Context) {
 
 	if err = game.SetSel(arg.Sel); err != nil {
 		Ret403(c, SEC_keno_selset_badlines, err)
+		return
+	}
+
+	Ret204(c)
+}
+
+// Returns selected numbers slice.
+func SpiKenoSelGetSlice(c *gin.Context) {
+	var err error
+	var ok bool
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
+	}
+	var ret struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		Sel     []int    `json:"sel" yaml:"sel" xml:"sel"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, SEC_keno_selgetslice_nobind, err)
+		return
+	}
+	if arg.GID == 0 {
+		Ret400(c, SEC_keno_selgetslice_nogid, ErrNoGID)
+		return
+	}
+
+	var scene *Scene
+	if scene, ok = Scenes.Get(arg.GID); !ok {
+		Ret404(c, SEC_keno_selgetslice_notopened, ErrNotOpened)
+		return
+	}
+	var game keno.KenoGame
+	if game, ok = scene.Game.(keno.KenoGame); !ok {
+		Ret403(c, SEC_keno_selgetslice_notslot, ErrNotSlot)
+		return
+	}
+
+	var admin, al = MustAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&ALgame == 0 {
+		Ret403(c, SEC_keno_selgetslice_noaccess, ErrNoAccess)
+		return
+	}
+
+	var bs = game.GetSel()
+	ret.Sel = bs.Expand()
+
+	RetOk(c, ret)
+}
+
+// Set selected numbers slice.
+func SpiKenoSelSetSlice(c *gin.Context) {
+	var err error
+	var ok bool
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
+		Sel     []int    `json:"sel" yaml:"sel" xml:"sel" binding:"required"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, SEC_keno_selsetslice_nobind, err)
+		return
+	}
+	if arg.GID == 0 {
+		Ret400(c, SEC_keno_selsetslice_nogid, ErrNoGID)
+		return
+	}
+
+	var scene *Scene
+	if scene, ok = Scenes.Get(arg.GID); !ok {
+		Ret404(c, SEC_keno_selsetslice_notopened, ErrNotOpened)
+		return
+	}
+	var game keno.KenoGame
+	if game, ok = scene.Game.(keno.KenoGame); !ok {
+		Ret403(c, SEC_keno_selsetslice_notslot, ErrNotSlot)
+		return
+	}
+
+	var admin, al = MustAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&ALgame == 0 {
+		Ret403(c, SEC_keno_selsetslice_noaccess, ErrNoAccess)
+		return
+	}
+
+	var bs keno.Bitset
+	bs.Pack(arg.Sel)
+	if err = game.SetSel(bs); err != nil {
+		Ret403(c, SEC_keno_selsetslice_badlines, err)
 		return
 	}
 

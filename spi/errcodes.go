@@ -146,6 +146,23 @@ const (
 	SEC_slot_selset_noaccess
 	SEC_slot_selset_badlines
 
+	// POST /slot/sel/getslice
+
+	SEC_slot_selgetslice_nobind
+	SEC_slot_selgetslice_nogid
+	SEC_slot_selgetslice_notopened
+	SEC_slot_selgetslice_notslot
+	SEC_slot_selgetslice_noaccess
+
+	// POST /slot/sel/setslice
+
+	SEC_slot_selsetslice_nobind
+	SEC_slot_selsetslice_nogid
+	SEC_slot_selsetslice_notopened
+	SEC_slot_selsetslice_notslot
+	SEC_slot_selsetslice_noaccess
+	SEC_slot_selsetslice_badlines
+
 	// POST /slot/spin
 
 	SEC_slot_spin_nobind
@@ -217,6 +234,23 @@ const (
 	SEC_keno_selset_notslot
 	SEC_keno_selset_noaccess
 	SEC_keno_selset_badlines
+
+	// POST /keno/sel/getslice
+
+	SEC_keno_selgetslice_nobind
+	SEC_keno_selgetslice_nogid
+	SEC_keno_selgetslice_notopened
+	SEC_keno_selgetslice_notslot
+	SEC_keno_selgetslice_noaccess
+
+	// POST /keno/sel/setslice
+
+	SEC_keno_selsetslice_nobind
+	SEC_keno_selsetslice_nogid
+	SEC_keno_selsetslice_notopened
+	SEC_keno_selsetslice_notslot
+	SEC_keno_selsetslice_noaccess
+	SEC_keno_selsetslice_badlines
 
 	// POST /keno/spin
 

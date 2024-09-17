@@ -9,12 +9,9 @@ import (
 type Bitset64 uint64
 
 // MakeBitset creates bits set from slice of integer indexes.
-func MakeBitset64(indexes ...int) Bitset64 {
-	var bs Bitset64
-	for _, n := range indexes {
-		bs |= 1 << n
-	}
-	return bs
+func MakeBitset64(idx ...int) (bs Bitset64) {
+	bs.Pack(idx)
+	return
 }
 
 // MakeBitNum creates bits set with first num bits.
@@ -63,10 +60,27 @@ func (bs *Bitset64) Toggle(n int) *Bitset64 {
 	return bs
 }
 
-// Sets first n bits.
+// SetNum sets first n bits.
 func (bs *Bitset64) SetNum(count, from int) *Bitset64 {
 	*bs = (1<<count - 1) << from
 	return bs
+}
+
+// Pack sets bits by slice of integer indexes.
+func (bs *Bitset64) Pack(idx []int) *Bitset64 {
+	for _, n := range idx {
+		*bs |= 1 << n
+	}
+	return bs
+}
+
+// Expand returns bitset converted to slice with integer indexes.
+func (bs *Bitset64) Expand() []int {
+	var idx = make([]int, 0, bs.Num())
+	for i := range bs.Bits() {
+		idx = append(idx, i)
+	}
+	return idx
 }
 
 func (bs *Bitset64) And(mask Bitset64) *Bitset64 {
@@ -97,12 +111,9 @@ func (bs Bitset64) IsZero() bool {
 type Bitset128 [2]uint64
 
 // MakeBitset128 creates bits set from slice of integer indexes.
-func MakeBitset128(indexes ...int) Bitset128 {
-	var bs Bitset128
-	for _, n := range indexes {
-		bs[n/64] |= 1 << (n % 64)
-	}
-	return bs
+func MakeBitset128(idx ...int) (bs Bitset128) {
+	bs.Pack(idx)
+	return
 }
 
 // MakeBitNum128 creates bits set with first num bits.
@@ -167,7 +178,7 @@ func (bs *Bitset128) LShift(count int) *Bitset128 {
 	return bs
 }
 
-// Sets first n bits.
+// SetNum sets first n bits.
 func (bs *Bitset128) SetNum(count, from int) *Bitset128 {
 	var i int
 	for i = 0; i < count/64; i++ {
@@ -178,6 +189,23 @@ func (bs *Bitset128) SetNum(count, from int) *Bitset128 {
 		bs.LShift(from)
 	}
 	return bs
+}
+
+// Pack sets bits by slice of integer indexes.
+func (bs *Bitset128) Pack(idx []int) *Bitset128 {
+	for _, n := range idx {
+		bs[n/64] |= 1 << (n % 64)
+	}
+	return bs
+}
+
+// Expand returns bitset converted to slice with integer indexes.
+func (bs *Bitset128) Expand() []int {
+	var idx = make([]int, 0, bs.Num())
+	for i := range bs.Bits() {
+		idx = append(idx, i)
+	}
+	return idx
 }
 
 func (bs *Bitset128) And(mask Bitset128) *Bitset128 {

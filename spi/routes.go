@@ -150,6 +150,8 @@ func Router(r *gin.Engine) {
 	rs.POST("/bet/set", SpiSlotBetSet)
 	rs.POST("/sel/get", SpiSlotSelGet)
 	rs.POST("/sel/set", SpiSlotSelSet)
+	rs.POST("/sel/getslice", SpiSlotSelGetSlice)
+	rs.POST("/sel/setslice", SpiSlotSelSetSlice)
 	rs.POST("/spin", SpiSlotSpin)
 	rs.POST("/doubleup", SpiSlotDoubleup)
 	rs.POST("/collect", SpiSlotCollect)
@@ -160,6 +162,8 @@ func Router(r *gin.Engine) {
 	rk.POST("/bet/set", SpiKenoBetSet)
 	rk.POST("/sel/get", SpiKenoSelGet)
 	rk.POST("/sel/set", SpiKenoSelSet)
+	rk.POST("/sel/getslice", SpiKenoSelGetSlice)
+	rk.POST("/sel/setslice", SpiKenoSelSetSlice)
 	rk.POST("/spin", SpiKenoSpin)
 
 	// properties group

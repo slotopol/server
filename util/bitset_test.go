@@ -2,6 +2,7 @@ package util_test
 
 import (
 	"fmt"
+	"slices"
 	"testing"
 
 	"github.com/slotopol/server/util"
@@ -323,6 +324,79 @@ func TestBitset128_SetNum(t *testing.T) {
 		var bs util.Bitset128
 		bs.SetNum(v.count, v.from)
 		if bs != v.bs {
+			t.Errorf("test #%d, bitset does not equal to pattern", tn+1)
+		}
+	}
+}
+
+var packtest64 = []struct {
+	idx []int
+	bs  util.Bitset64
+}{
+	{[]int{0, 1, 2}, 0b111},                           // test #1
+	{[]int{3, 4, 5, 6, 7, 8, 9}, 0b1111111000},        // test #2
+	{[]int{1, 2, 3, 5, 14, 8}, 0b0100_0001_0010_1110}, // test #3
+}
+
+var packtest128 = []struct {
+	idx []int
+	bs  util.Bitset128
+}{
+	{ // test #1
+		[]int{0, 1, 2},
+		util.Bitset128{0b111, 0},
+	},
+	{ // test #2
+		[]int{3, 4, 5, 6, 7, 8, 9},
+		util.Bitset128{0b1111111000, 0},
+	},
+	{ // test #3
+		[]int{1, 2, 3, 5, 14, 8},
+		util.Bitset128{0b0100_0001_0010_1110, 0},
+	},
+	{ // test #4
+		[]int{1, 2, 3, 5, 14, 8, 63, 64, 65, 125, 127},
+		util.Bitset128{0x800000000000412e, 0xa000_0000_0000_0003},
+	},
+}
+
+func TestBitset64_Pack(t *testing.T) {
+	for tn, v := range packtest64 {
+		var bs util.Bitset64
+		bs.Pack(v.idx)
+		if bs != v.bs {
+			t.Errorf("test #%d, bitset does not equal to pattern", tn+1)
+		}
+	}
+}
+
+func TestBitset128_Pack(t *testing.T) {
+	for tn, v := range packtest128 {
+		var bs util.Bitset128
+		bs.Pack(v.idx)
+		if bs != v.bs {
+			t.Errorf("test #%d, bitset does not equal to pattern", tn+1)
+		}
+	}
+}
+
+func TestBitset64_Expand(t *testing.T) {
+	for tn, v := range packtest64 {
+		var idx = v.bs.Expand()
+		var vidx = append([]int{}, v.idx...)
+		slices.Sort(vidx)
+		if !slices.Equal(idx, vidx) {
+			t.Errorf("test #%d, bitset does not equal to pattern", tn+1)
+		}
+	}
+}
+
+func TestBitset128_Expand(t *testing.T) {
+	for tn, v := range packtest128 {
+		var idx = v.bs.Expand()
+		var vidx = append([]int{}, v.idx...)
+		slices.Sort(vidx)
+		if !slices.Equal(idx, vidx) {
 			t.Errorf("test #%d, bitset does not equal to pattern", tn+1)
 		}
 	}
