@@ -12,8 +12,8 @@ import (
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{"sizzlinghot", "Sizzling Hot"},
-			{"sizzlinghotdeluxe", "Sizzling Hot Deluxe"},
+			{ID: "sizzlinghot", Name: "Sizzling Hot"},
+			{ID: "sizzlinghotdeluxe", Name: "Sizzling Hot Deluxe"},
 		},
 		Provider: "Novomatic",
 		ScrnX:    5,

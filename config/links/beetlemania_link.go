@@ -12,9 +12,9 @@ import (
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{"beetlemania", "Beetle Mania"},
-			{"beetlemaniadeluxe", "Beetle Mania Deluxe"},
-			{"hottarget", "Hot Target"},
+			{ID: "beetlemania", Name: "Beetle Mania"},
+			{ID: "beetlemaniadeluxe", Name: "Beetle Mania Deluxe"},
+			{ID: "hottarget", Name: "Hot Target"},
 		},
 		Provider: "Novomatic",
 		ScrnX:    5,

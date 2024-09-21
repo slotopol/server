@@ -12,8 +12,8 @@ import (
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{"justjewels", "Just Jewels"},
-			{"justjewelsdeluxe", "Just Jewels Deluxe"},
+			{ID: "justjewels", Name: "Just Jewels"},
+			{ID: "justjewelsdeluxe", Name: "Just Jewels Deluxe"},
 		},
 		Provider: "Novomatic",
 		ScrnX:    5,

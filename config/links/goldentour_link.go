@@ -12,7 +12,7 @@ import (
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{"goldentour", "Golden Tour"},
+			{ID: "goldentour", Name: "Golden Tour"},
 		},
 		Provider: "Playtech",
 		ScrnX:    5,

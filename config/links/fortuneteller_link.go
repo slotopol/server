@@ -12,7 +12,7 @@ import (
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{"fortuneteller", "Fortune Teller"},
+			{ID: "fortuneteller", Name: "Fortune Teller"},
 		},
 		Provider: "Play'n GO",
 		ScrnX:    5,

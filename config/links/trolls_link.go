@@ -12,10 +12,10 @@ import (
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{"trolls", "Trolls"},
-			{"excalibur", "Excalibur"},
-			{"pandorasbox", "Pandora's Box"},
-			{"wildwitches", "Wild Witches"},
+			{ID: "trolls", Name: "Trolls"},
+			{ID: "excalibur", Name: "Excalibur"},
+			{ID: "pandorasbox", Name: "Pandora's Box"},
+			{ID: "wildwitches", Name: "Wild Witches"},
 		},
 		Provider: "NetEnt",
 		ScrnX:    5,

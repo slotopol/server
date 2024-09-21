@@ -12,8 +12,8 @@ import (
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{"panthermoon", "Panther Moon"},
-			{"safariheat", "Safari Heat"},
+			{ID: "panthermoon", Name: "Panther Moon"},
+			{ID: "safariheat", Name: "Safari Heat"},
 		},
 		Provider: "Playtech",
 		ScrnX:    5,

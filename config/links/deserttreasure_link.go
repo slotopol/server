@@ -12,7 +12,7 @@ import (
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{"deserttreasure", "Desert Treasure"},
+			{ID: "deserttreasure", Name: "Desert Treasure"},
 		},
 		Provider: "Playtech",
 		ScrnX:    5,

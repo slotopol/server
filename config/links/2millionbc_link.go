@@ -12,7 +12,7 @@ import (
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{"2millionbc", "2 Million B.C."},
+			{ID: "2millionbc", Name: "2 Million B.C."},
 		},
 		Provider: "BetSoft",
 		ScrnX:    5,

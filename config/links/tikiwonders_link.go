@@ -12,8 +12,8 @@ import (
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{"tikiwonders", "Tiki Wonders"},
-			{"geishawonders", "Geisha Wonders"},
+			{ID: "tikiwonders", Name: "Tiki Wonders"},
+			{ID: "geishawonders", Name: "Geisha Wonders"},
 		},
 		Provider: "NetEnt",
 		ScrnX:    5,

@@ -12,8 +12,8 @@ import (
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{"diamonddogs", "Diamond Dogs"},
-			{"voodoovibes", "Voodoo Vibes"},
+			{ID: "diamonddogs", Name: "Diamond Dogs"},
+			{ID: "voodoovibes", Name: "Voodoo Vibes"},
 		},
 		Provider: "NetEnt",
 		ScrnX:    5,

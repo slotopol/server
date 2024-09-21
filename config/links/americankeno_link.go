@@ -12,7 +12,7 @@ import (
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{"americankeno", "American Keno"},
+			{ID: "americankeno", Name: "American Keno"},
 		},
 		Provider: "Aristocrat Pokies",
 		ScrnX:    80,

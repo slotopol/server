@@ -12,8 +12,8 @@ import (
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{"greatblue", "Great Blue"}, // see: https://freeslotshub.com/playtech/great-blue/
-			{"irishluck", "Irish Luck"}, // see: https://freeslotshub.com/playtech/irish-luck/
+			{ID: "greatblue", Name: "Great Blue"}, // see: https://freeslotshub.com/playtech/great-blue/
+			{ID: "irishluck", Name: "Irish Luck"}, // see: https://freeslotshub.com/playtech/irish-luck/
 		},
 		Provider: "Playtech",
 		ScrnX:    5,

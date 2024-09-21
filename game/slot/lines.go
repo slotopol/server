@@ -1,6 +1,7 @@
 package game
 
 import (
+	"encoding/json"
 	"sync"
 )
 
@@ -18,6 +19,50 @@ type Lineset interface {
 	Cols() int     // returns number of columns
 	Line(int) Line // returns line with given number, starts from 1
 	Num() int      // returns number lines in set
+}
+
+type Linex [8]int8
+
+func (l *Linex) At(x int8) int8 {
+	return l[x-1]
+}
+
+func (l *Linex) Set(x, val int8) {
+	l[x-1] = val
+}
+
+func (l *Linex) Len() int8 {
+	var i int8
+	for i = 7; i > 0; i-- {
+		if l[i] > 0 {
+			return i + 1
+		}
+	}
+	return 0
+}
+
+func (l *Linex) Copy(src *Linex, pos, num int) {
+	clear(l[:])
+	var x1, x2 int
+	if num >= 0 {
+		x1, x2 = pos-1, pos-1+num
+	} else {
+		x1, x2 = pos+num, pos
+	}
+	copy(l[x1:x2], src[x1:x2])
+}
+
+func (l *Linex) CopyL(src *Linex, num int) {
+	copy(l[:num], src[:num])
+}
+
+func (l *Linex) CopyR5(src *Linex, num int) {
+	clear(l[:])
+	copy(l[5-num:5], src[5-num:5])
+}
+
+func (l Linex) MarshalJSON() ([]byte, error) {
+	return json.Marshal(l[:l.Len()])
 }
 
 type Line3x [5]int

@@ -12,7 +12,7 @@ import (
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{"slotopoldeluxe", "Slotopol Deluxe"},
+			{ID: "slotopoldeluxe", Name: "Slotopol Deluxe"},
 		},
 		Provider: "Megajack",
 		ScrnX:    5,

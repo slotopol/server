@@ -12,7 +12,7 @@ import (
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{"jewels4all", "Jewels 4 All"},
+			{ID: "jewels4all", Name: "Jewels 4 All"},
 		},
 		Provider: "Novomatic",
 		ScrnX:    5,

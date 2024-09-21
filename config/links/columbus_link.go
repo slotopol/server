@@ -12,9 +12,9 @@ import (
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{"columbus", "Columbus"},
-			{"columbusdeluxe", "Columbus Deluxe"},
-			{"marcopolo", "Marco Polo"},
+			{ID: "columbus", Name: "Columbus"},
+			{ID: "columbusdeluxe", Name: "Columbus Deluxe"},
+			{ID: "marcopolo", Name: "Marco Polo"},
 		},
 		Provider: "Novomatic",
 		ScrnX:    5,
