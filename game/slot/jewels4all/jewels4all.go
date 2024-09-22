@@ -70,11 +70,11 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 		}
 	}
 
-	for li := range g.Sel.Bits() {
-		var line = bl.Line(li)
+	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
+		var line = bl[li-1]
 
 		var sym3 = scrnwild.Pos(3, line)
-		var xy = slot.NewLine5x()
+		var xy slot.Linex
 		var num = 1
 		xy.Set(3, line.At(3))
 		if sym2 := scrnwild.Pos(2, line); sym2 == sym3 || sym2 == wild || sym3 == wild {
@@ -115,8 +115,6 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 				Line: li,
 				XY:   xy,
 			})
-		} else {
-			xy.Free()
 		}
 	}
 }

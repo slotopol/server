@@ -73,8 +73,8 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
-	for li := range g.Sel.Bits() {
-		var line = bl.Line(li)
+	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
+		var line = bl[li-1]
 
 		/*var numw, numl int
 		var syml slot.Sym
@@ -153,7 +153,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 // Scatters calculation.
 func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 	if g.FS > 0 {
-		var y int
+		var y int8
 		if screen.At(3, 1) == jazz {
 			y = 1
 		} else if screen.At(3, 1) == jazz {
@@ -163,7 +163,7 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 		} else {
 			return // ignore scatters on freespins
 		}
-		var xy = slot.NewLine5x()
+		var xy slot.Linex
 		xy.Set(3, y)
 		*wins = append(*wins, slot.WinItem{
 			Mult: 1,

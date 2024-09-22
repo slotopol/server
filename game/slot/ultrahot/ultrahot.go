@@ -31,8 +31,8 @@ func NewGame() *Game {
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	var bl = slot.BetLinesHot3
-	for li := range g.Sel.Bits() {
-		var line = bl.Line(li)
+	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
+		var line = bl[li-1]
 		var fm float64 = 1 // fill mult
 		if sym := screen.FillSym(); sym >= 4 && sym <= 7 {
 			fm = 2

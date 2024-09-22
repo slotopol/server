@@ -21,7 +21,7 @@ type WinItem struct {
 	Sym  Sym     `json:"sym,omitempty" yaml:"sym,omitempty" xml:"sym,omitempty,attr"`    // win symbol
 	Num  int     `json:"num,omitempty" yaml:"num,omitempty" xml:"num,omitempty,attr"`    // number of win symbol
 	Line int     `json:"line,omitempty" yaml:"line,omitempty" xml:"line,omitempty,attr"` // line mumber (0 for scatters and not lined)
-	XY   Line    `json:"xy" yaml:"xy" xml:"xy"`                                          // symbols positions on screen
+	XY   Linex   `json:"xy" yaml:"xy" xml:"xy"`                                          // symbols positions on screen
 	Free int     `json:"free,omitempty" yaml:"free,omitempty" xml:"free,omitempty,attr"` // number of free spins remains
 	BID  int     `json:"bid,omitempty" yaml:"bid,omitempty" xml:"bid,omitempty,attr"`    // bonus identifier
 	Jack int     `json:"jack,omitempty" yaml:"jack,omitempty" xml:"jack,omitempty,attr"` // jackpot identifier
@@ -33,11 +33,6 @@ type Wins []WinItem
 
 // Reset puts lines to pool and set array empty with saved capacity.
 func (wins *Wins) Reset() {
-	for _, wi := range *wins {
-		if wi.XY != nil {
-			wi.XY.Free()
-		}
-	}
 	*wins = (*wins)[:0] // set it empty
 }
 

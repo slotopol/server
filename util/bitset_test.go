@@ -78,6 +78,72 @@ func TestBitset128_Num(t *testing.T) {
 	}
 }
 
+func TestBitset64_Next(t *testing.T) {
+	var test = []struct {
+		bs util.Bitset64
+		a  []int
+	}{
+		{0x3, []int{0, 1}}, // test #1
+		{0b0100_1111_0010_1000, []int{3, 5, 8, 9, 10, 11, 14}}, // test #2
+		{0xc000_0000_0000_0001, []int{0, 62, 63}},              // test #3
+	}
+	for tn, v := range test {
+		var i int
+		for n := v.bs.Next(-1); n != -1; n = v.bs.Next(n) {
+			if n != v.a[i] {
+				t.Errorf("test #%d, expected %d number, get %d at position %d", tn+1, v.a[i], n, i)
+			}
+			i++
+		}
+		if i != len(v.a) {
+			t.Errorf("test #%d, expected %d iterations, gets %d", tn+1, len(v.a), i)
+		}
+	}
+}
+
+func TestBitset128_Next(t *testing.T) {
+	var test = []struct {
+		bs util.Bitset128
+		a  []int
+	}{
+		{ // test #1
+			util.Bitset128{0x3, 0},
+			[]int{0, 1},
+		},
+		{ // test #2
+			util.Bitset128{0b0100_1111_0010_1000, 0},
+			[]int{3, 5, 8, 9, 10, 11, 14},
+		},
+		{ // test #3
+			util.Bitset128{0xc000_0000_0000_0001, 0},
+			[]int{0, 62, 63},
+		},
+		{ // test #4
+			util.Bitset128{0x4F28, 0xAD16},
+			[]int{
+				3, 5, 8, 9, 10, 11, 14,
+				64 + 1, 64 + 2, 64 + 4, 64 + 8, 64 + 10, 64 + 11, 64 + 13, 64 + 15,
+			},
+		},
+		{ // test #5
+			util.Bitset128{0xc000_0000_0000_0001, 0xa000_0000_0400_0001},
+			[]int{0, 62, 63, 64, 90, 125, 127},
+		},
+	}
+	for tn, v := range test {
+		var i int
+		for n := v.bs.Next(-1); n != -1; n = v.bs.Next(n) {
+			if n != v.a[i] {
+				t.Errorf("test #%d, expected %d number, get %d at position %d", tn+1, v.a[i], n, i)
+			}
+			i++
+		}
+		if i != len(v.a) {
+			t.Errorf("test #%d, expected %d iterations, gets %d", tn+1, len(v.a), i)
+		}
+	}
+}
+
 func TestBitset64_Bits(t *testing.T) {
 	var test = []struct {
 		bs util.Bitset64
@@ -96,7 +162,7 @@ func TestBitset64_Bits(t *testing.T) {
 			i++
 		}
 		if i != len(v.a) {
-			t.Errorf("test #%d, expected %d iterations, gets %d", tn+1, i, len(v.a))
+			t.Errorf("test #%d, expected %d iterations, gets %d", tn+1, len(v.a), i)
 		}
 	}
 }
@@ -139,7 +205,7 @@ func TestBitset128_Bits(t *testing.T) {
 			i++
 		}
 		if i != len(v.a) {
-			t.Errorf("test #%d, expected %d iterations, gets %d", tn+1, i, len(v.a))
+			t.Errorf("test #%d, expected %d iterations, gets %d", tn+1, len(v.a), i)
 		}
 	}
 }

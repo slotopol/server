@@ -34,7 +34,7 @@ func NewGame() *Game {
 	}
 }
 
-var bl = slot.Lineset5x{
+var bl = []slot.Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3
@@ -52,8 +52,8 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
-	for li := range g.Sel.Bits() {
-		var line = bl.Line(li)
+	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
+		var line = bl[li-1]
 
 		var numw, numl = 0, 5
 		var syml slot.Sym
@@ -132,7 +132,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 						Sym:  symr,
 						Num:  numr,
 						Line: li,
-						XY:   line.CopyR(numr),
+						XY:   line.CopyR5(numr),
 					})
 				}
 			} else if numw > 0 {
@@ -143,7 +143,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 						Sym:  wild,
 						Num:  numw,
 						Line: li,
-						XY:   line.CopyR(numw),
+						XY:   line.CopyR5(numw),
 					})
 				}
 			}

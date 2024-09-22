@@ -78,8 +78,8 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 		}
 	}
 
-	for li := range g.Sel.Bits() {
-		var line = bl.Line(li)
+	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
+		var line = bl[li-1]
 		var syml, symr slot.Sym
 		var numl, numr int
 		var payl, payr float64

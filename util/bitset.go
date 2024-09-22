@@ -24,6 +24,21 @@ func (bs Bitset64) Num() int {
 	return bits.OnesCount64(uint64(bs))
 }
 
+// Next helps iterate bits with no allocations as followed:
+//
+//	for n := bs.Next(-1); n != -1; n = bs.Next(n) {}
+func (bs Bitset64) Next(n int) int {
+	n++
+	bs >>= n
+	if bs > 0 {
+		for ; bs&1 == 0; n++ {
+			bs >>= 1
+		}
+		return n
+	}
+	return -1
+}
+
 // Bits iterates over ones in bitset.
 func (bs Bitset64) Bits() iter.Seq[int] {
 	return func(yield func(int) bool) {
@@ -128,6 +143,31 @@ func (bs *Bitset128) Num() (count int) {
 		count += bits.OnesCount64(u)
 	}
 	return
+}
+
+// Next helps iterate bits with no allocations as followed:
+//
+//	for n := bs.Next(-1); n != -1; n = bs.Next(n) {}
+func (bs *Bitset128) Next(n int) int {
+	n++
+	var i = n / 64
+	if i >= len(bs) {
+		return -1
+	}
+	var u = bs[i] >> (n % 64)
+	for {
+		if u > 0 {
+			for ; u&1 == 0; n++ {
+				u >>= 1
+			}
+			return n
+		}
+		i++
+		if i >= len(bs) {
+			return -1
+		}
+		u, n = bs[i], i*64
+	}
 }
 
 // Bits iterates over ones in bitset.

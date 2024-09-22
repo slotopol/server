@@ -34,8 +34,8 @@ func NewGame() *Game {
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	var bl = slot.BetLinesHot3
-	for li := range g.Sel.Bits() {
-		var line = bl.Line(li)
+	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
+		var line = bl[li-1]
 		var sym1, sym2, sym3 = screen.Pos(1, line), screen.Pos(2, line), screen.Pos(3, line)
 		if sym1 == sym2 && sym1 == sym3 {
 			*wins = append(*wins, slot.WinItem{

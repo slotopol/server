@@ -2,38 +2,20 @@ package game
 
 import (
 	"encoding/json"
-	"sync"
 )
-
-type Line interface {
-	At(x int) int   // returns symbol at position x, starts from 1
-	Set(x, val int) // set value at position x
-	Len() int       // returns length of line
-	Free()          // put object to pool
-
-	CopyL(num int) Line
-	CopyR(num int) Line
-}
-
-type Lineset interface {
-	Cols() int     // returns number of columns
-	Line(int) Line // returns line with given number, starts from 1
-	Num() int      // returns number lines in set
-}
 
 type Linex [8]int8
 
-func (l *Linex) At(x int8) int8 {
+func (l *Linex) At(x int) int8 {
 	return l[x-1]
 }
 
-func (l *Linex) Set(x, val int8) {
+func (l *Linex) Set(x int, val int8) {
 	l[x-1] = val
 }
 
-func (l *Linex) Len() int8 {
-	var i int8
-	for i = 7; i > 0; i-- {
+func (l *Linex) Len() int {
+	for i := 7; i >= 0; i-- {
 		if l[i] > 0 {
 			return i + 1
 		}
@@ -41,154 +23,35 @@ func (l *Linex) Len() int8 {
 	return 0
 }
 
-func (l *Linex) Copy(src *Linex, pos, num int) {
-	clear(l[:])
+func (l *Linex) Copy(pos, num int) (dst Linex) {
 	var x1, x2 int
 	if num >= 0 {
 		x1, x2 = pos-1, pos-1+num
 	} else {
 		x1, x2 = pos+num, pos
 	}
-	copy(l[x1:x2], src[x1:x2])
+	copy(dst[x1:x2], l[x1:x2])
+	return
 }
 
-func (l *Linex) CopyL(src *Linex, num int) {
-	copy(l[:num], src[:num])
+func (l *Linex) CopyL(num int) (dst Linex) {
+	copy(dst[:num], l[:num])
+	return
 }
 
-func (l *Linex) CopyR5(src *Linex, num int) {
-	clear(l[:])
-	copy(l[5-num:5], src[5-num:5])
+func (l *Linex) CopyR5(num int) (dst Linex) {
+	copy(dst[5-num:5], l[5-num:5])
+	return
 }
 
 func (l Linex) MarshalJSON() ([]byte, error) {
 	return json.Marshal(l[:l.Len()])
 }
 
-type Line3x [5]int
-
-var pooll3x = sync.Pool{
-	New: func() any {
-		return &Line3x{}
-	},
-}
-
-func NewLine3x() *Line3x {
-	return pooll3x.Get().(*Line3x)
-}
-
-func (l *Line3x) Free() {
-	pooll3x.Put(l)
-}
-
-func (l *Line3x) At(x int) int {
-	return l[x-1]
-}
-
-func (l *Line3x) Set(x, val int) {
-	l[x-1] = val
-}
-
-func (l *Line3x) Len() int {
-	return 3
-}
-
-func (l *Line3x) CopyL(num int) Line {
-	var dst = NewLine3x()
-	copy(dst[:num], l[:num])
-	for i := num; i < 3; i++ {
-		dst[i] = 0
-	}
-	return dst
-}
-
-func (l *Line3x) CopyR(num int) Line {
-	var dst = NewLine3x()
-	copy(dst[3-num:], l[3-num:])
-	for i := 0; i < 3-num; i++ {
-		dst[i] = 0
-	}
-	return dst
-}
-
-type Lineset3x []Line5x
-
-func (ls Lineset3x) Cols() int {
-	return 3
-}
-
-func (ls Lineset3x) Line(n int) Line {
-	return &ls[n-1]
-}
-
-func (ls Lineset3x) Num() int {
-	return len(ls)
-}
-
-type Line5x [5]int
-
-var pooll5x = sync.Pool{
-	New: func() any {
-		return &Line5x{}
-	},
-}
-
-func NewLine5x() *Line5x {
-	return pooll5x.Get().(*Line5x)
-}
-
-func (l *Line5x) Free() {
-	pooll5x.Put(l)
-}
-
-func (l *Line5x) At(x int) int {
-	return l[x-1]
-}
-
-func (l *Line5x) Set(x, val int) {
-	l[x-1] = val
-}
-
-func (l *Line5x) Len() int {
-	return 5
-}
-
-func (l *Line5x) CopyL(num int) Line {
-	var dst = NewLine5x()
-	copy(dst[:num], l[:num])
-	for i := num; i < 5; i++ {
-		dst[i] = 0
-	}
-	return dst
-}
-
-func (l *Line5x) CopyR(num int) Line {
-	var dst = NewLine5x()
-	copy(dst[5-num:], l[5-num:])
-	for i := 0; i < 5-num; i++ {
-		dst[i] = 0
-	}
-	return dst
-}
-
-type Lineset5x []Line5x
-
-func (ls Lineset5x) Cols() int {
-	return 5
-}
-
-func (ls Lineset5x) Line(n int) Line {
-	return &ls[n-1]
-}
-
-func (ls Lineset5x) Num() int {
-	return len(ls)
-}
-
 // (1 ,1) symbol is on left top corner
 
 // Ultra Hot 3x3 bet lines
-var BetLinesHot3 = Lineset3x{
+var BetLinesHot3 = []Linex{
 	{2, 2, 2}, // 1
 	{1, 1, 1}, // 2
 	{3, 3, 3}, // 3
@@ -197,7 +60,7 @@ var BetLinesHot3 = Lineset3x{
 }
 
 // Megajack 21 bet lines
-var BetLinesMgj = Lineset5x{
+var BetLinesMgj = []Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3
@@ -222,7 +85,7 @@ var BetLinesMgj = Lineset5x{
 }
 
 // Novomatic 9 bet lines (old versions of games)
-var BetLinesNvm9 = Lineset5x{
+var BetLinesNvm9 = []Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3
@@ -235,7 +98,7 @@ var BetLinesNvm9 = Lineset5x{
 }
 
 // Novomatic 10 bet lines (deluxe versions of games)
-var BetLinesNvm10 = Lineset5x{
+var BetLinesNvm10 = []Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3
@@ -249,7 +112,7 @@ var BetLinesNvm10 = Lineset5x{
 }
 
 // Novomatic 20 bet lines (new games)
-var BetLinesNvm20 = Lineset5x{
+var BetLinesNvm20 = []Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3
@@ -273,7 +136,7 @@ var BetLinesNvm20 = Lineset5x{
 }
 
 // Novomatic 40 bet lines (screen 5x4)
-var BetLinesNvm40 = Lineset5x{
+var BetLinesNvm40 = []Linex{
 	{1, 1, 1, 1, 1}, // 1
 	{2, 2, 2, 2, 2}, // 2
 	{3, 3, 3, 3, 3}, // 3
@@ -317,7 +180,7 @@ var BetLinesNvm40 = Lineset5x{
 }
 
 // BetSoft 25 bet lines
-var BetLinesBetSoft25 = Lineset5x{
+var BetLinesBetSoft25 = []Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3
@@ -346,7 +209,7 @@ var BetLinesBetSoft25 = Lineset5x{
 }
 
 // BetSoft 30 bet lines
-var BetLinesBetSoft30 = Lineset5x{
+var BetLinesBetSoft30 = []Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3
@@ -380,7 +243,7 @@ var BetLinesBetSoft30 = Lineset5x{
 }
 
 // NetEnt 10 bet lines
-var BetLinesNetEnt10 = Lineset5x{
+var BetLinesNetEnt10 = []Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3
@@ -394,7 +257,7 @@ var BetLinesNetEnt10 = Lineset5x{
 }
 
 // NetEnt 20 bet lines
-var BetLinesNetEnt20 = Lineset5x{
+var BetLinesNetEnt20 = []Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3
@@ -418,7 +281,7 @@ var BetLinesNetEnt20 = Lineset5x{
 }
 
 // Playtech 15 bet lines
-var BetLinesPlt15 = Lineset5x{
+var BetLinesPlt15 = []Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3
@@ -437,7 +300,7 @@ var BetLinesPlt15 = Lineset5x{
 }
 
 // Playtech 30 bet lines
-var BetLinesPlt30 = Lineset5x{
+var BetLinesPlt30 = []Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3

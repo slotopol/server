@@ -69,8 +69,8 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
-	for li := range g.Sel.Bits() {
-		var line = bl.Line(li)
+	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
+		var line = bl[li-1]
 
 		var syml, numl = screen.Pos(1, line), 1
 		var mw float64 = 1 // mult wild

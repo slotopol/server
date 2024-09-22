@@ -10,17 +10,17 @@ import (
 // (1 ,1) symbol is on left top corner.
 type Screen interface {
 	Dim() (int, int)                   // returns screen dimensions
-	At(x int, y int) Sym               // returns symbol at position (x, y), starts from (1, 1)
-	Pos(x int, line Line) Sym          // returns symbol at position (x, line(x)), starts from (1, 1)
-	Set(x int, y int, sym Sym)         // setup symbol at given position
+	At(x, y int) Sym                   // returns symbol at position (x, y), starts from (1, 1)
+	Pos(x int, line Linex) Sym         // returns symbol at position (x, line(x)), starts from (1, 1)
+	Set(x, y int, sym Sym)             // setup symbol at given position
 	SetCol(x int, reel []Sym, pos int) // setup column on screen with given reel at given position
 	Spin(reels Reels)                  // fill the screen with random hits on those reels
 	ScatNum(scat Sym) (n int)          // returns number of scatters on the screen
 	ScatNumOdd(scat Sym) (n int)       // returns number of scatters on the screen on odd reels
 	ScatNumCont(scat Sym) (n int)      // returns number of continuous scatters on the screen
-	ScatPos(scat Sym) Line             // returns line with scatters positions on the screen
-	ScatPosOdd(scat Sym) Line          // returns line with scatters positions on the screen on odd reels
-	ScatPosCont(scat Sym) Line         // returns line with continuous scatters positions on the screen
+	ScatPos(scat Sym) Linex            // returns line with scatters positions on the screen
+	ScatPosOdd(scat Sym) Linex         // returns line with scatters positions on the screen on odd reels
+	ScatPosCont(scat Sym) Linex        // returns line with continuous scatters positions on the screen
 	FillSym() Sym                      // returns symbol that filled whole screen, or 0
 	Free()                             // put object to pool
 }
@@ -46,15 +46,15 @@ func (s *Screen3x3) Dim() (int, int) {
 	return 3, 3
 }
 
-func (s *Screen3x3) At(x int, y int) Sym {
+func (s *Screen3x3) At(x, y int) Sym {
 	return s[x-1][y-1]
 }
 
-func (s *Screen3x3) Pos(x int, line Line) Sym {
+func (s *Screen3x3) Pos(x int, line Linex) Sym {
 	return s[x-1][line.At(x)-1]
 }
 
-func (s *Screen3x3) Set(x int, y int, sym Sym) {
+func (s *Screen3x3) Set(x, y int, sym Sym) {
 	s[x-1][y-1] = sym
 }
 
@@ -104,8 +104,8 @@ func (s *Screen3x3) ScatNumCont(scat Sym) (n int) {
 	return
 }
 
-func (s *Screen3x3) ScatPos(scat Sym) Line {
-	var l = NewLine3x()
+func (s *Screen3x3) ScatPos(scat Sym) Linex {
+	var l Linex
 	for x := range 3 {
 		var r = s[x]
 		if r[0] == scat {
@@ -121,8 +121,8 @@ func (s *Screen3x3) ScatPos(scat Sym) Line {
 	return l
 }
 
-func (s *Screen3x3) ScatPosOdd(scat Sym) Line {
-	var l = NewLine3x()
+func (s *Screen3x3) ScatPosOdd(scat Sym) Linex {
+	var l Linex
 	for x := 0; x < 3; x += 2 {
 		var r = s[x]
 		if r[0] == scat {
@@ -139,8 +139,8 @@ func (s *Screen3x3) ScatPosOdd(scat Sym) Line {
 	return l
 }
 
-func (s *Screen3x3) ScatPosCont(scat Sym) Line {
-	var l = NewLine3x()
+func (s *Screen3x3) ScatPosCont(scat Sym) Linex {
+	var l Linex
 	var x int
 	for x = 0; x < 3; x++ {
 		var r = s[x]
@@ -191,15 +191,15 @@ func (s *Screen5x3) Dim() (int, int) {
 	return 5, 3
 }
 
-func (s *Screen5x3) At(x int, y int) Sym {
+func (s *Screen5x3) At(x, y int) Sym {
 	return s[x-1][y-1]
 }
 
-func (s *Screen5x3) Pos(x int, line Line) Sym {
+func (s *Screen5x3) Pos(x int, line Linex) Sym {
 	return s[x-1][line.At(x)-1]
 }
 
-func (s *Screen5x3) Set(x int, y int, sym Sym) {
+func (s *Screen5x3) Set(x, y int, sym Sym) {
 	s[x-1][y-1] = sym
 }
 
@@ -249,8 +249,8 @@ func (s *Screen5x3) ScatNumCont(scat Sym) (n int) {
 	return
 }
 
-func (s *Screen5x3) ScatPos(scat Sym) Line {
-	var l = NewLine5x()
+func (s *Screen5x3) ScatPos(scat Sym) Linex {
+	var l Linex
 	for x := range 5 {
 		var r = s[x]
 		if r[0] == scat {
@@ -266,8 +266,8 @@ func (s *Screen5x3) ScatPos(scat Sym) Line {
 	return l
 }
 
-func (s *Screen5x3) ScatPosOdd(scat Sym) Line {
-	var l = NewLine5x()
+func (s *Screen5x3) ScatPosOdd(scat Sym) Linex {
+	var l Linex
 	for x := 0; x < 5; x += 2 {
 		var r = s[x]
 		if r[0] == scat {
@@ -284,8 +284,8 @@ func (s *Screen5x3) ScatPosOdd(scat Sym) Line {
 	return l
 }
 
-func (s *Screen5x3) ScatPosCont(scat Sym) Line {
-	var l = NewLine5x()
+func (s *Screen5x3) ScatPosCont(scat Sym) Linex {
+	var l Linex
 	var x int
 	for x = 0; x < 5; x++ {
 		var r = s[x]
@@ -336,15 +336,15 @@ func (s *Screen5x4) Dim() (int, int) {
 	return 5, 4
 }
 
-func (s *Screen5x4) At(x int, y int) Sym {
+func (s *Screen5x4) At(x, y int) Sym {
 	return s[x-1][y-1]
 }
 
-func (s *Screen5x4) Pos(x int, line Line) Sym {
+func (s *Screen5x4) Pos(x int, line Linex) Sym {
 	return s[x-1][line.At(x)-1]
 }
 
-func (s *Screen5x4) Set(x int, y int, sym Sym) {
+func (s *Screen5x4) Set(x, y int, sym Sym) {
 	s[x-1][y-1] = sym
 }
 
@@ -394,8 +394,8 @@ func (s *Screen5x4) ScatNumCont(scat Sym) (n int) {
 	return
 }
 
-func (s *Screen5x4) ScatPos(scat Sym) Line {
-	var l = NewLine5x()
+func (s *Screen5x4) ScatPos(scat Sym) Linex {
+	var l Linex
 	for x := range 5 {
 		var r = s[x]
 		if r[0] == scat {
@@ -413,8 +413,8 @@ func (s *Screen5x4) ScatPos(scat Sym) Line {
 	return l
 }
 
-func (s *Screen5x4) ScatPosOdd(scat Sym) Line {
-	var l = NewLine5x()
+func (s *Screen5x4) ScatPosOdd(scat Sym) Linex {
+	var l Linex
 	for x := 0; x < 5; x += 2 {
 		var r = s[x]
 		if r[0] == scat {
@@ -433,8 +433,8 @@ func (s *Screen5x4) ScatPosOdd(scat Sym) Line {
 	return l
 }
 
-func (s *Screen5x4) ScatPosCont(scat Sym) Line {
-	var l = NewLine5x()
+func (s *Screen5x4) ScatPosCont(scat Sym) Linex {
+	var l Linex
 	var x int
 	for x = 0; x < 5; x++ {
 		var r = s[x]
