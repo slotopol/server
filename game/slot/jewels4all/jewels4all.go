@@ -58,8 +58,9 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	var scrnwild slot.Screen5x3 = *screen.(*slot.Screen5x3)
-	for x := 1; x <= 5; x++ {
-		for y := 1; y <= 3; y++ {
+	var x, y slot.Pos
+	for x = 1; x <= 5; x++ {
+		for y = 1; y <= 3; y++ {
 			if screen.At(x, y) == wild {
 				for i := max(0, x-2); i <= min(4, x); i++ {
 					for j := max(0, y-2); j <= min(2, y); j++ {
@@ -73,9 +74,9 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
 		var line = bl[li-1]
 
+		var num slot.Pos = 1
 		var sym3 = scrnwild.Pos(3, line)
 		var xy slot.Linex
-		var num = 1
 		xy.Set(3, line.At(3))
 		if sym2 := scrnwild.Pos(2, line); sym2 == sym3 || sym2 == wild || sym3 == wild {
 			if sym3 == wild {
@@ -123,7 +124,7 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 	screen.Spin(&Reels)
 	var _, wc = FindChance(mrtp) // wild chance
 	if rand.Float64() < wc {
-		var x, y = rand.N(5) + 1, rand.N(3) + 1
+		var x, y = rand.N[slot.Pos](5) + 1, rand.N[slot.Pos](3) + 1
 		screen.Set(x, y, wild)
 	}
 }

@@ -63,8 +63,10 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
 		var line = bl[li-1]
 
-		var syml, numl = screen.Pos(1, line), 1
-		for x := 2; x <= 5; x++ {
+		var numl slot.Pos = 1
+		var syml = screen.Pos(1, line)
+		var x slot.Pos
+		for x = 2; x <= 5; x++ {
 			var sx = screen.Pos(x, line)
 			if sx != syml {
 				break
@@ -119,8 +121,9 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 		reel = reels.Reel(1)
 		hit = rand.N(len(reel))
 		screen.SetCol(1, reel, hit)
-		var gs = slot.Sym(rand.N(7) + 1)
-		for x := 2; x <= 4; x++ {
+		var gs = rand.N[slot.Sym](7) + 1
+		var x slot.Pos
+		for x = 2; x <= 4; x++ {
 			screen.Set(x, 1, gs)
 			screen.Set(x, 2, gs)
 			screen.Set(x, 3, gs)

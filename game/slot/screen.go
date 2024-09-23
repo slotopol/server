@@ -9,15 +9,15 @@ import (
 // It can be with dimensions 3x1, 3x3, 5x3, 5x4 or others.
 // (1 ,1) symbol is on left top corner.
 type Screen interface {
-	Dim() (int, int)                   // returns screen dimensions
-	At(x, y int) Sym                   // returns symbol at position (x, y), starts from (1, 1)
-	Pos(x int, line Linex) Sym         // returns symbol at position (x, line(x)), starts from (1, 1)
-	Set(x, y int, sym Sym)             // setup symbol at given position
-	SetCol(x int, reel []Sym, pos int) // setup column on screen with given reel at given position
+	Dim() (Pos, Pos)                   // returns screen dimensions
+	At(x, y Pos) Sym                   // returns symbol at position (x, y), starts from (1, 1)
+	Pos(x Pos, line Linex) Sym         // returns symbol at position (x, line(x)), starts from (1, 1)
+	Set(x, y Pos, sym Sym)             // setup symbol at given position
+	SetCol(x Pos, reel []Sym, pos int) // setup column on screen with given reel at given position
 	Spin(reels Reels)                  // fill the screen with random hits on those reels
-	ScatNum(scat Sym) (n int)          // returns number of scatters on the screen
-	ScatNumOdd(scat Sym) (n int)       // returns number of scatters on the screen on odd reels
-	ScatNumCont(scat Sym) (n int)      // returns number of continuous scatters on the screen
+	ScatNum(scat Sym) (n Pos)          // returns number of scatters on the screen
+	ScatNumOdd(scat Sym) (n Pos)       // returns number of scatters on the screen on odd reels
+	ScatNumCont(scat Sym) (n Pos)      // returns number of continuous scatters on the screen
 	ScatPos(scat Sym) Linex            // returns line with scatters positions on the screen
 	ScatPosOdd(scat Sym) Linex         // returns line with scatters positions on the screen on odd reels
 	ScatPosCont(scat Sym) Linex        // returns line with continuous scatters positions on the screen
@@ -42,37 +42,38 @@ func (s *Screen3x3) Free() {
 	pools3x3.Put(s)
 }
 
-func (s *Screen3x3) Dim() (int, int) {
+func (s *Screen3x3) Dim() (Pos, Pos) {
 	return 3, 3
 }
 
-func (s *Screen3x3) At(x, y int) Sym {
+func (s *Screen3x3) At(x, y Pos) Sym {
 	return s[x-1][y-1]
 }
 
-func (s *Screen3x3) Pos(x int, line Linex) Sym {
+func (s *Screen3x3) Pos(x Pos, line Linex) Sym {
 	return s[x-1][line.At(x)-1]
 }
 
-func (s *Screen3x3) Set(x, y int, sym Sym) {
+func (s *Screen3x3) Set(x, y Pos, sym Sym) {
 	s[x-1][y-1] = sym
 }
 
-func (s *Screen3x3) SetCol(x int, reel []Sym, pos int) {
+func (s *Screen3x3) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range 3 {
 		s[x-1][y] = reel[(pos+y)%len(reel)]
 	}
 }
 
 func (s *Screen3x3) Spin(reels Reels) {
-	for x := 1; x <= 3; x++ {
+	var x Pos
+	for x = 1; x <= 3; x++ {
 		var reel = reels.Reel(x)
 		var hit = rand.N(len(reel))
 		s.SetCol(x, reel, hit)
 	}
 }
 
-func (s *Screen3x3) ScatNum(scat Sym) (n int) {
+func (s *Screen3x3) ScatNum(scat Sym) (n Pos) {
 	for x := range 3 {
 		var r = s[x]
 		if r[0] == scat || r[1] == scat || r[2] == scat {
@@ -82,7 +83,7 @@ func (s *Screen3x3) ScatNum(scat Sym) (n int) {
 	return
 }
 
-func (s *Screen3x3) ScatNumOdd(scat Sym) (n int) {
+func (s *Screen3x3) ScatNumOdd(scat Sym) (n Pos) {
 	for x := 0; x < 3; x += 2 {
 		var r = s[x]
 		if r[0] == scat || r[1] == scat || r[2] == scat {
@@ -92,7 +93,7 @@ func (s *Screen3x3) ScatNumOdd(scat Sym) (n int) {
 	return
 }
 
-func (s *Screen3x3) ScatNumCont(scat Sym) (n int) {
+func (s *Screen3x3) ScatNumCont(scat Sym) (n Pos) {
 	for x := 0; x < 3; x++ {
 		var r = s[x]
 		if r[0] == scat || r[1] == scat || r[2] == scat {
@@ -187,37 +188,38 @@ func (s *Screen5x3) Free() {
 	pools5x3.Put(s)
 }
 
-func (s *Screen5x3) Dim() (int, int) {
+func (s *Screen5x3) Dim() (Pos, Pos) {
 	return 5, 3
 }
 
-func (s *Screen5x3) At(x, y int) Sym {
+func (s *Screen5x3) At(x, y Pos) Sym {
 	return s[x-1][y-1]
 }
 
-func (s *Screen5x3) Pos(x int, line Linex) Sym {
+func (s *Screen5x3) Pos(x Pos, line Linex) Sym {
 	return s[x-1][line.At(x)-1]
 }
 
-func (s *Screen5x3) Set(x, y int, sym Sym) {
+func (s *Screen5x3) Set(x, y Pos, sym Sym) {
 	s[x-1][y-1] = sym
 }
 
-func (s *Screen5x3) SetCol(x int, reel []Sym, pos int) {
+func (s *Screen5x3) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range 3 {
 		s[x-1][y] = reel[(pos+y)%len(reel)]
 	}
 }
 
 func (s *Screen5x3) Spin(reels Reels) {
-	for x := 1; x <= 5; x++ {
+	var x Pos
+	for x = 1; x <= 5; x++ {
 		var reel = reels.Reel(x)
 		var hit = rand.N(len(reel))
 		s.SetCol(x, reel, hit)
 	}
 }
 
-func (s *Screen5x3) ScatNum(scat Sym) (n int) {
+func (s *Screen5x3) ScatNum(scat Sym) (n Pos) {
 	for x := range 5 {
 		var r = s[x]
 		if r[0] == scat || r[1] == scat || r[2] == scat {
@@ -227,7 +229,7 @@ func (s *Screen5x3) ScatNum(scat Sym) (n int) {
 	return
 }
 
-func (s *Screen5x3) ScatNumOdd(scat Sym) (n int) {
+func (s *Screen5x3) ScatNumOdd(scat Sym) (n Pos) {
 	for x := 0; x < 5; x += 2 {
 		var r = s[x]
 		if r[0] == scat || r[1] == scat || r[2] == scat {
@@ -237,7 +239,7 @@ func (s *Screen5x3) ScatNumOdd(scat Sym) (n int) {
 	return
 }
 
-func (s *Screen5x3) ScatNumCont(scat Sym) (n int) {
+func (s *Screen5x3) ScatNumCont(scat Sym) (n Pos) {
 	for x := 0; x < 5; x++ {
 		var r = s[x]
 		if r[0] == scat || r[1] == scat || r[2] == scat {
@@ -332,37 +334,38 @@ func (s *Screen5x4) Free() {
 	pools5x4.Put(s)
 }
 
-func (s *Screen5x4) Dim() (int, int) {
+func (s *Screen5x4) Dim() (Pos, Pos) {
 	return 5, 4
 }
 
-func (s *Screen5x4) At(x, y int) Sym {
+func (s *Screen5x4) At(x, y Pos) Sym {
 	return s[x-1][y-1]
 }
 
-func (s *Screen5x4) Pos(x int, line Linex) Sym {
+func (s *Screen5x4) Pos(x Pos, line Linex) Sym {
 	return s[x-1][line.At(x)-1]
 }
 
-func (s *Screen5x4) Set(x, y int, sym Sym) {
+func (s *Screen5x4) Set(x, y Pos, sym Sym) {
 	s[x-1][y-1] = sym
 }
 
-func (s *Screen5x4) SetCol(x int, reel []Sym, pos int) {
+func (s *Screen5x4) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range 4 {
 		s[x-1][y] = reel[(pos+y)%len(reel)]
 	}
 }
 
 func (s *Screen5x4) Spin(reels Reels) {
-	for x := 1; x <= 5; x++ {
+	var x Pos
+	for x = 1; x <= 5; x++ {
 		var reel = reels.Reel(x)
 		var hit = rand.N(len(reel))
 		s.SetCol(x, reel, hit)
 	}
 }
 
-func (s *Screen5x4) ScatNum(scat Sym) (n int) {
+func (s *Screen5x4) ScatNum(scat Sym) (n Pos) {
 	for x := range 5 {
 		var r = s[x]
 		if r[0] == scat || r[1] == scat || r[2] == scat || r[3] == scat {
@@ -372,7 +375,7 @@ func (s *Screen5x4) ScatNum(scat Sym) (n int) {
 	return
 }
 
-func (s *Screen5x4) ScatNumOdd(scat Sym) (n int) {
+func (s *Screen5x4) ScatNumOdd(scat Sym) (n Pos) {
 	for x := 0; x < 5; x += 2 {
 		var r = s[x]
 		if r[0] == scat || r[1] == scat || r[2] == scat || r[3] == scat {
@@ -382,7 +385,7 @@ func (s *Screen5x4) ScatNumOdd(scat Sym) (n int) {
 	return
 }
 
-func (s *Screen5x4) ScatNumCont(scat Sym) (n int) {
+func (s *Screen5x4) ScatNumCont(scat Sym) (n Pos) {
 	for x := 0; x < 5; x++ {
 		var r = s[x]
 		if r[0] == scat || r[1] == scat || r[2] == scat || r[3] == scat {

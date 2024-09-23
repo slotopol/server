@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 )
 
-type Linex [8]int8
+type Linex [8]Pos
 
-func (l *Linex) At(x int) int8 {
+func (l *Linex) At(x Pos) Pos {
 	return l[x-1]
 }
 
-func (l *Linex) Set(x int, val int8) {
+func (l *Linex) Set(x Pos, val Pos) {
 	l[x-1] = val
 }
 
@@ -23,8 +23,8 @@ func (l *Linex) Len() int {
 	return 0
 }
 
-func (l *Linex) Copy(pos, num int) (dst Linex) {
-	var x1, x2 int
+func (l *Linex) Copy(pos, num Pos) (dst Linex) {
+	var x1, x2 Pos
 	if num >= 0 {
 		x1, x2 = pos-1, pos-1+num
 	} else {
@@ -34,12 +34,12 @@ func (l *Linex) Copy(pos, num int) (dst Linex) {
 	return
 }
 
-func (l *Linex) CopyL(num int) (dst Linex) {
+func (l *Linex) CopyL(num Pos) (dst Linex) {
 	copy(dst[:num], l[:num])
 	return
 }
 
-func (l *Linex) CopyR5(num int) (dst Linex) {
+func (l *Linex) CopyR5(num Pos) (dst Linex) {
 	copy(dst[5-num:5], l[5-num:5])
 	return
 }

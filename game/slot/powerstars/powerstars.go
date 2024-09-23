@@ -64,11 +64,12 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	var reelwild [5]bool
 	var fs int
-	for x := 2; x <= 4; x++ {
+	var x, y slot.Pos
+	for x = 2; x <= 4; x++ {
 		if g.PRW[x-1] > 0 {
 			reelwild[x-1] = true
 		} else {
-			for y := 1; y <= 3; y++ {
+			for y = 1; y <= 3; y++ {
 				if screen.At(x, y) == wild {
 					reelwild[x-1] = true
 					fs = 1
@@ -81,11 +82,11 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
 		var line = bl[li-1]
 		var syml, symr slot.Sym
-		var numl, numr int
+		var numl, numr slot.Pos
 		var payl, payr float64
 
 		syml, numl = screen.Pos(1, line), 1
-		for x := 2; x <= 5; x++ {
+		for x = 2; x <= 5; x++ {
 			var sx = screen.Pos(x, line)
 			if sx != syml && !reelwild[x-1] {
 				break
@@ -96,7 +97,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 
 		if numl < 4 {
 			symr, numr = screen.Pos(5, line), 1
-			for x := 4; x >= 2; x-- {
+			for x = 4; x >= 2; x-- {
 				var sx = screen.Pos(x, line)
 				if sx != symr && !reelwild[x-1] {
 					break
@@ -138,9 +139,10 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 	screen.Spin(&Reels)
 	if g.FreeSpins() == 0 {
 		var _, wc = FindChance(mrtp) // wild chance
-		for x := 2; x <= 4; x++ {
+		var x, y slot.Pos
+		for x = 2; x <= 4; x++ {
 			if rand.Float64() < wc {
-				var y = rand.N(3) + 1
+				y = rand.N[slot.Pos](3) + 1
 				screen.Set(x, y, wild)
 			}
 		}
@@ -154,11 +156,12 @@ func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
 		g.Gain = wins.Gain()
 	}
 
-	for x := 2; x <= 4; x++ {
+	var x, y slot.Pos
+	for x = 2; x <= 4; x++ {
 		if g.PRW[x-1] > 0 {
 			g.PRW[x-1]--
 		} else {
-			for y := 1; y <= 3; y++ {
+			for y = 1; y <= 3; y++ {
 				if screen.At(x, y) == wild {
 					g.PRW[x-1] = 1
 					break

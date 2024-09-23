@@ -9,7 +9,7 @@ import (
 	slot "github.com/slotopol/server/game/slot"
 )
 
-func BruteForce5x(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, x, y int) {
+func BruteForce5x(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, x, y slot.Pos) {
 	var screen = g.NewScreen()
 	defer screen.Free()
 	var wins slot.Wins
@@ -53,7 +53,7 @@ func BruteForce5x(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slo
 	}
 }
 
-func CalcStatEuro(ctx context.Context, x, y int) float64 {
+func CalcStatEuro(ctx context.Context, x, y slot.Pos) float64 {
 	var reels = &Reels
 	var g = NewGame()
 	var sln float64 = 1
@@ -94,8 +94,9 @@ func CalcStat(ctx context.Context, rn string) (rtp float64) {
 	fmt.Printf("wild chance %.5g, b = %.5g\n", wc, b)
 	var rtp00 = CalcStatEuro(ctx, 0, 0)
 	var rtpeu float64
-	for x := 1; x <= 5; x++ {
-		for y := 1; y <= 3; y++ {
+	var x, y slot.Pos
+	for x = 1; x <= 5; x++ {
+		for y = 1; y <= 3; y++ {
 			rtpeu += CalcStatEuro(ctx, x, y)
 		}
 	}

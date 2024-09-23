@@ -80,10 +80,11 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
 		var line = bl[li-1]
 
-		var numw, numl = 0, 5
+		var numw, numl slot.Pos = 0, 5
 		var syml slot.Sym
+		var x slot.Pos
 		var mw float64 = 1 // mult wild
-		for x := 1; x <= 5; x++ {
+		for x = 1; x <= 5; x++ {
 			var sx = screen.Pos(x, line)
 			if sx == wild {
 				if syml == 0 {

@@ -414,7 +414,7 @@ func SpiSendCode(c *gin.Context) {
 		return
 	}
 
-	var code = rand.Uint32N(1000000) // 6 digits
+	var code = rand.N[uint32](1000000) // 6 digits
 
 	if _, err = cfg.XormStorage.ID(user.UID).Cols("code").Update(&User{Code: code}); err != nil {
 		Ret500(c, SEC_sendcode_update, err)
@@ -518,7 +518,7 @@ func SpiSignup(c *gin.Context) {
 	if _, al := GetAdmin(c, 0); al&ALadmin != 0 {
 		status = UFactivated
 	} else {
-		code = rand.Uint32N(1000000) // 6 digits
+		code = rand.N[uint32](1000000) // 6 digits
 		if err = sendcode(arg.Name, email, code); err != nil {
 			Ret500(c, SEC_signup_code, err)
 			return

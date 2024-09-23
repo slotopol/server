@@ -14,7 +14,7 @@ func init() {
 		Aliases: []GameAlias{
 			{ID: "americankeno", Name: "American Keno"},
 		},
-		Provider: "Aristocrat Pokies",
+		Provider: "Aristocrat",
 		ScrnX:    80,
 		ScrnY:    0,
 		RtpList:  []float64{89.250235},

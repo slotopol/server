@@ -61,9 +61,11 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
 		var line = bl[li-1]
 
-		var syml, numl = screen.Pos(1, line), 1
+		var numl slot.Pos = 1
+		var syml = screen.Pos(1, line)
+		var x slot.Pos
 		var mw float64 = 1 // mult wild
-		for x := 2; x <= 5; x++ {
+		for x = 2; x <= 5; x++ {
 			var sx = screen.Pos(x, line)
 			if sx == wild {
 				mw = 2
@@ -85,9 +87,11 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 		}
 
 		if numl < 5 {
-			var symr, numr = screen.Pos(5, line), 1
+			var numr slot.Pos = 1
+			var symr = screen.Pos(5, line)
+			var x slot.Pos
 			var mw float64 = 1 // mult wild
-			for x := 4; x > numl; x-- {
+			for x = 4; x > numl; x-- {
 				var sx = screen.Pos(x, line)
 				if sx == wild {
 					mw = 2

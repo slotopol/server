@@ -13,7 +13,8 @@ func BruteForce5x(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slo
 	var screen = g.NewScreen()
 	defer screen.Free()
 	var wins slot.Wins
-	for x := 2; x <= 4; x++ {
+	var x slot.Pos
+	for x = 2; x <= 4; x++ {
 		screen.Set(x, 1, gs)
 		screen.Set(x, 2, gs)
 		screen.Set(x, 3, gs)

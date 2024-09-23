@@ -98,9 +98,10 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 			}
 		}*/
 
-		var numw, numl int
+		var numw, numl slot.Pos
 		var syml slot.Sym
-		for x := 1; x <= 5; x++ {
+		var x slot.Pos
+		for x = 1; x <= 5; x++ {
 			var sx = screen.Pos(x, line)
 			if sx != wild {
 				if sx != scat && sx != jazz {
@@ -153,7 +154,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 // Scatters calculation.
 func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 	if g.FS > 0 {
-		var y int8
+		var y slot.Pos
 		if screen.At(3, 1) == jazz {
 			y = 1
 		} else if screen.At(3, 1) == jazz {

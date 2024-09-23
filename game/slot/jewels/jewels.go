@@ -54,9 +54,9 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
 		var line = bl[li-1]
 
+		var numl slot.Pos = 1
 		var syml = screen.Pos(3, line)
 		var xy slot.Linex
-		var numl = 1
 		xy.Set(3, line.At(3))
 		if screen.Pos(2, line) == syml {
 			xy.Set(2, line.At(2))

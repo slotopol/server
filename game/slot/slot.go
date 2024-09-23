@@ -6,11 +6,14 @@ import (
 	"github.com/slotopol/server/util"
 )
 
-type Sym byte // symbol type
+type (
+	Sym byte // symbol type
+	Pos int8 // screen or line position
+)
 
 type Reels interface {
 	Cols() int          // returns number of columns
-	Reel(col int) []Sym // returns reel at given column, index from
+	Reel(col Pos) []Sym // returns reel at given column, index from
 	Reshuffles() int    // returns total number of reshuffles
 }
 
@@ -19,7 +22,7 @@ type WinItem struct {
 	Pay  float64 `json:"pay,omitempty" yaml:"pay,omitempty" xml:"pay,omitempty,attr"`    // payment with selected bet
 	Mult float64 `json:"mult,omitempty" yaml:"mult,omitempty" xml:"mult,omitempty,attr"` // multiplier for payment for free spins and other special cases
 	Sym  Sym     `json:"sym,omitempty" yaml:"sym,omitempty" xml:"sym,omitempty,attr"`    // win symbol
-	Num  int     `json:"num,omitempty" yaml:"num,omitempty" xml:"num,omitempty,attr"`    // number of win symbol
+	Num  Pos     `json:"num,omitempty" yaml:"num,omitempty" xml:"num,omitempty,attr"`    // number of win symbol
 	Line int     `json:"line,omitempty" yaml:"line,omitempty" xml:"line,omitempty,attr"` // line mumber (0 for scatters and not lined)
 	XY   Linex   `json:"xy" yaml:"xy" xml:"xy"`                                          // symbols positions on screen
 	Free int     `json:"free,omitempty" yaml:"free,omitempty" xml:"free,omitempty,attr"` // number of free spins remains
@@ -72,7 +75,7 @@ func (r *Reels3x) Cols() int {
 	return 3
 }
 
-func (r *Reels3x) Reel(col int) []Sym {
+func (r *Reels3x) Reel(col Pos) []Sym {
 	return r[col-1]
 }
 
@@ -87,7 +90,7 @@ func (r *Reels5x) Cols() int {
 	return 5
 }
 
-func (r *Reels5x) Reel(col int) []Sym {
+func (r *Reels5x) Reel(col Pos) []Sym {
 	return r[col-1]
 }
 
