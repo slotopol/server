@@ -89,7 +89,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 }
 
 func (g *Game) Spin(screen slot.Screen, mrtp float64) {
-	var _, reels = FindReels(mrtp)
+	var _, reels = slot.FindReels(ReelsMap, mrtp)
 	screen.Spin(reels)
 }
 

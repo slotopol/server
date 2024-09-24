@@ -12,8 +12,7 @@ import (
 func CalcStat(ctx context.Context, rn string) float64 {
 	var reels *slot.Reels5x
 	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
-		var _, r = FindReels(mrtp)
-		reels = r.(*slot.Reels5x)
+		_, reels = slot.FindReels(ReelsMap, mrtp)
 	} else {
 		reels = &Reels95
 	}

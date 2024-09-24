@@ -2,6 +2,7 @@ package game
 
 import (
 	"errors"
+	"math"
 
 	"github.com/slotopol/server/util"
 )
@@ -96,6 +97,15 @@ func (r *Reels5x) Reel(col Pos) []Sym {
 
 func (r *Reels5x) Reshuffles() uint64 {
 	return uint64(len(r[0])) * uint64(len(r[1])) * uint64(len(r[2])) * uint64(len(r[3])) * uint64(len(r[4]))
+}
+
+func FindReels[T any](reelsmap map[float64]T, mrtp float64) (rtp float64, reels T) {
+	for p, r := range reelsmap {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			rtp, reels = p, r
+		}
+	}
+	return
 }
 
 var (

@@ -1,8 +1,6 @@
 package alwayshot
 
 import (
-	"math"
-
 	slot "github.com/slotopol/server/game/slot"
 )
 
@@ -89,13 +87,4 @@ var ReelsMap = map[float64]*slot.Reels3x{
 	96.071341:  &Reels96,
 	98.789911:  &Reels99,
 	110.166845: &Reels110,
-}
-
-func FindReels(mrtp float64) (rtp float64, reels slot.Reels) {
-	for p, r := range ReelsMap {
-		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
-			rtp, reels = p, r
-		}
-	}
-	return
 }

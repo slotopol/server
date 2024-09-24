@@ -30,8 +30,7 @@ func (s *Stat) Update(wins slot.Wins) {
 func CalcStatBon(ctx context.Context, rn string) float64 {
 	var reels *slot.Reels5x
 	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
-		var _, r = FindReels(mrtp)
-		reels = r.(*slot.Reels5x)
+		_, reels = slot.FindReels(ReelsMap, mrtp)
 	} else {
 		reels = &ReelsReg92
 	}
@@ -81,8 +80,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 	fmt.Printf("*regular reels calculations*\n")
 	var reels *slot.Reels5x
 	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
-		var _, r = FindReels(mrtp)
-		reels = r.(*slot.Reels5x)
+		_, reels = slot.FindReels(ReelsMap, mrtp)
 	} else {
 		reels = &ReelsReg92
 	}

@@ -1,8 +1,6 @@
 package plentyontwenty
 
 import (
-	"math"
-
 	slot "github.com/slotopol/server/game/slot"
 )
 
@@ -162,13 +160,4 @@ var ReelsMap = map[float64]*slot.Reels5x{
 	100.415437: &Reels100,
 	110.800453: &Reels111,
 	123.483457: &Reels123,
-}
-
-func FindReels(mrtp float64) (rtp float64, reels slot.Reels) {
-	for p, r := range ReelsMap {
-		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
-			rtp, reels = p, r
-		}
-	}
-	return
 }

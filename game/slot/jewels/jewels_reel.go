@@ -1,8 +1,6 @@
 package jewels
 
 import (
-	"math"
-
 	slot "github.com/slotopol/server/game/slot"
 )
 
@@ -107,13 +105,4 @@ var ReelsMap = map[float64]*slot.Reels5x{
 	97.61364863405679:  &Reels98,
 	99.78647812896236:  &Reels100,
 	117.80805616707323: &Reels118,
-}
-
-func FindReels(mrtp float64) (rtp float64, reels slot.Reels) {
-	for p, r := range ReelsMap {
-		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
-			rtp, reels = p, r
-		}
-	}
-	return
 }

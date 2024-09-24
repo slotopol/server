@@ -1,8 +1,6 @@
 package arabiannights
 
 import (
-	"math"
-
 	slot "github.com/slotopol/server/game/slot"
 )
 
@@ -175,13 +173,4 @@ var ReelsMap = map[float64]*slot.Reels5x{
 	97.115046:  &ReelsReg97,
 	99.192298:  &ReelsReg99,
 	106.935121: &ReelsReg107,
-}
-
-func FindReels(mrtp float64) (rtp float64, reels slot.Reels) {
-	for p, r := range ReelsMap {
-		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
-			rtp, reels = p, r
-		}
-	}
-	return
 }

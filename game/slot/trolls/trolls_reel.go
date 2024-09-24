@@ -1,8 +1,6 @@
 package trolls
 
 import (
-	"math"
-
 	slot "github.com/slotopol/server/game/slot"
 )
 
@@ -148,13 +146,4 @@ var ReelsMap = map[float64]*slot.Reels5x{
 	98.193276:  &Reels98,
 	101.929305: &Reels102,
 	110.298257: &Reels110,
-}
-
-func FindReels(mrtp float64) (rtp float64, reels slot.Reels) {
-	for p, r := range ReelsMap {
-		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
-			rtp, reels = p, r
-		}
-	}
-	return
 }

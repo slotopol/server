@@ -1,8 +1,6 @@
 package captainstreasure
 
 import (
-	"math"
-
 	slot "github.com/slotopol/server/game/slot"
 )
 
@@ -118,13 +116,4 @@ var ReelsMap = map[float64]*slot.Reels5x{
 	98.880793:  &Reels99,
 	99.636996:  &Reels100,
 	111.944212: &Reels112,
-}
-
-func FindReels(mrtp float64) (rtp float64, reels slot.Reels) {
-	for p, r := range ReelsMap {
-		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
-			rtp, reels = p, r
-		}
-	}
-	return
 }

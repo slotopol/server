@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"time"
 
-	game "github.com/slotopol/server/game/slot"
+	slot "github.com/slotopol/server/game/slot"
 )
 
 var Eacbn float64
@@ -39,7 +39,7 @@ func CalcStatBon(ctx context.Context) float64 {
 	var sln float64 = 1
 	g.Sel.SetNum(int(sln), 1)
 	g.FS = 4 // set free spins mode
-	var s game.Stat
+	var s slot.Stat
 
 	var total = float64(reels.Reshuffles())
 	var dur = func() time.Duration {
@@ -47,7 +47,7 @@ func CalcStatBon(ctx context.Context) float64 {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		go s.Progress(ctx2, time.Tick(2*time.Second), sln, total)
-		game.BruteForce5x(ctx2, &s, g, reels)
+		slot.BruteForce5x(ctx2, &s, g, reels)
 		return time.Since(t0)
 	}()
 
@@ -77,17 +77,16 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		return 0
 	}
 	fmt.Printf("*regular reels calculations*\n")
-	var reels *game.Reels5x
+	var reels *slot.Reels5x
 	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
-		var _, r = FindReels(mrtp)
-		reels = r.(*game.Reels5x)
+		_, reels = slot.FindReels(ReelsMap, mrtp)
 	} else {
 		reels = &ReelsReg96
 	}
 	var g = NewGame()
 	var sln float64 = 1
 	g.Sel.SetNum(int(sln), 1)
-	var s game.Stat
+	var s slot.Stat
 
 	var total = float64(reels.Reshuffles())
 	var dur = func() time.Duration {
@@ -95,7 +94,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		go s.Progress(ctx2, time.Tick(2*time.Second), sln, total)
-		game.BruteForce5x(ctx2, &s, g, reels)
+		slot.BruteForce5x(ctx2, &s, g, reels)
 		return time.Since(t0)
 	}()
 

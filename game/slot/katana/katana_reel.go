@@ -1,8 +1,6 @@
 package katana
 
 import (
-	"math"
-
 	slot "github.com/slotopol/server/game/slot"
 )
 
@@ -111,13 +109,4 @@ var ReelsMap = map[float64]*slot.Reels5x{
 	95.385457: &ReelsReg95,
 	97.092546: &ReelsReg97,
 	99.970895: &ReelsReg100,
-}
-
-func FindReels(mrtp float64) (rtp float64, reels slot.Reels) {
-	for p, r := range ReelsMap {
-		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
-			rtp, reels = p, r
-		}
-	}
-	return
 }

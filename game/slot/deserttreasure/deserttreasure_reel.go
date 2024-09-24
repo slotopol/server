@@ -1,8 +1,6 @@
 package deserttreasure
 
 import (
-	"math"
-
 	slot "github.com/slotopol/server/game/slot"
 )
 
@@ -217,13 +215,4 @@ var ReelsMap = map[float64]*slot.Reels5x{
 	99.048105:  &ReelsReg99,
 	99.566962:  &ReelsReg100,
 	111.577963: &ReelsReg112,
-}
-
-func FindReels(mrtp float64) (rtp float64, reels slot.Reels) {
-	for p, r := range ReelsMap {
-		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
-			rtp, reels = p, r
-		}
-	}
-	return
 }
