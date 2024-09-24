@@ -1,34 +1,35 @@
-//go:build !prod || full || keno || aristocrat
+//go:build !prod || full || aristocrat
 
 package links
 
 import (
 	"context"
 
-	keno "github.com/slotopol/server/game/keno/americankeno"
+	slot "github.com/slotopol/server/game/slot/indiandreaming"
 	"github.com/spf13/pflag"
 )
 
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{ID: "americankeno", Name: "American Keno"},
+			{ID: "indiandreaming", Name: "Indian Dreaming"},
 		},
 		Provider: "Aristocrat",
-		ScrnX:    80,
-		ScrnY:    0,
-		RtpList:  []float64{89.250235},
+		ScrnX:    5,
+		ScrnY:    3,
+		RtpList:  MakeRtpList(slot.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 
 	for _, ga := range gi.Aliases {
 		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
 			if is, _ := flags.GetBool(ga.ID); is {
-				keno.CalcStat(ctx)
+				var rn, _ = flags.GetString("reels")
+				slot.CalcStatReg(ctx, rn)
 			}
 		})
 		GameFactory[ga.ID] = func() any {
-			return keno.NewGame()
+			return slot.NewGame()
 		}
 	}
 }

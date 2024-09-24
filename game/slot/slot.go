@@ -14,7 +14,7 @@ type (
 type Reels interface {
 	Cols() int          // returns number of columns
 	Reel(col Pos) []Sym // returns reel at given column, index from
-	Reshuffles() int    // returns total number of reshuffles
+	Reshuffles() uint64 // returns total number of reshuffles
 }
 
 // WinItem describes win on each line or scatters.
@@ -79,8 +79,8 @@ func (r *Reels3x) Reel(col Pos) []Sym {
 	return r[col-1]
 }
 
-func (r *Reels3x) Reshuffles() int {
-	return len(r[0]) * len(r[1]) * len(r[2])
+func (r *Reels3x) Reshuffles() uint64 {
+	return uint64(len(r[0])) * uint64(len(r[1])) * uint64(len(r[2]))
 }
 
 // Reels for 5-reels slots.
@@ -94,8 +94,8 @@ func (r *Reels5x) Reel(col Pos) []Sym {
 	return r[col-1]
 }
 
-func (r *Reels5x) Reshuffles() int {
-	return len(r[0]) * len(r[1]) * len(r[2]) * len(r[3]) * len(r[4])
+func (r *Reels5x) Reshuffles() uint64 {
+	return uint64(len(r[0])) * uint64(len(r[1])) * uint64(len(r[2])) * uint64(len(r[3])) * uint64(len(r[4]))
 }
 
 var (

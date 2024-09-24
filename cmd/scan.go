@@ -12,10 +12,6 @@ import (
 
 var scanflags *pflag.FlagSet
 
-var (
-	fReels string
-)
-
 const scanShort = "Slots games reels scanning"
 const scanLong = `Calculate RTP (Return to Player) percentage for specified slot game reels.`
 const scanExmp = `Scan reels for 'Slotopol' game for reels set nearest to 100%%:
@@ -41,7 +37,7 @@ func init() {
 	rootCmd.AddCommand(scanCmd)
 
 	scanflags = scanCmd.Flags()
-	scanflags.StringVarP(&fReels, "reels", "r", "", "name of reels set to use")
+	scanflags.StringP("reels", "r", "", "name of reels set to use")
 
 	for _, gi := range links.GameList {
 		for _, ga := range gi.Aliases {

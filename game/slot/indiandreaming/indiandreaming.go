@@ -7,7 +7,7 @@ import (
 )
 
 // Lined payment.
-var LinePay = [13][5]float64{
+var LinePay = [12][5]float64{
 	{},                     //  1 wild
 	{},                     //  2 scatter
 	{0, 0, 100, 200, 5000}, //  3 cash catcher
@@ -52,58 +52,55 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
-	var syml slot.Sym
-	var x, y slot.Pos
-	var pool [243]slot.WinItem
-	for syml = 3; syml <= 12; syml++ {
-		clear(pool[:])
-		var wn = 0
-		for y = 1; y <= 3; y++ {
-			var sx = screen.At(1, y)
-			if sx == syml || sx == wild {
-				pool[wn].Num++
-				if sx == syml {
-					pool[wn].Sym = syml
-				}
-				pool[wn].XY.Set(1, y)
-				wn++
-			}
-		}
-		for x = 2; x <= 5; x++ {
-			var wx = wn
-			var yi = 0
-			for y = 1; y <= 3; y++ {
-				var sx = screen.At(x, y)
-				if sx == syml || sx == wild {
-					if yi > 0 {
-						copy(pool[wx*yi:], pool[:wx])
+	var mwm float64 = 1 // mult wild mode
+	if g.FS > 0 {
+		mwm = 5
+	}
+	var line slot.Linex
+	for line[0] = 1; line[0] <= 3; line[0]++ {
+		for line[1] = 1; line[1] <= 3; line[1]++ {
+		loop3:
+			for line[2] = 1; line[2] <= 3; line[2]++ {
+			loop4:
+				for line[3] = 1; line[3] <= 3; line[3]++ {
+				loop5:
+					for line[4] = 1; line[4] <= 3; line[4]++ {
+						var numl slot.Pos = 5
+						var syml slot.Sym
+						var mw float64 = 1 // mult wild
+						var x slot.Pos
+						for x = 1; x <= 5; x++ {
+							var sx = screen.Pos(x, line)
+							if sx == wild {
+								mw = mwm
+							} else if syml == 0 && sx != scat {
+								syml = sx
+							} else if sx != syml {
+								numl = x - 1
+								break
+							}
+						}
+
+						if numl >= 3 && syml > 0 {
+							// var li = (int(line[0])-1)*81 + (int(line[1])-1)*27 + (int(line[2])-1)*9 + (int(line[line[4]])-1)*3 + int(line[5])
+							*wins = append(*wins, slot.WinItem{
+								Pay:  g.Bet * LinePay[syml-1][numl-1],
+								Mult: mw,
+								Sym:  syml,
+								Num:  numl,
+								Line: 243,
+								XY:   line.CopyL(numl),
+							})
+							switch numl {
+							case 3:
+								continue loop3
+							case 4:
+								continue loop4
+							case 5:
+								continue loop5
+							}
+						}
 					}
-					for i := range wx {
-						pool[i+wx*yi].XY.Set(x, y)
-					}
-					yi++
-					wn += wx
-				}
-			}
-			if yi == 0 {
-				break
-			}
-			var pay = g.Bet * LinePay[syml-1][x-1]
-			for i := range wn {
-				var sx = screen.At(x, pool[i].XY.At(x))
-				if sx == syml {
-					pool[i].Sym = syml
-				} else if g.FS > 0 {
-					pool[i].Mult = 5
-				}
-				pool[i].Pay = pay
-				pool[i].Num = x
-			}
-		}
-		if wn > 0 {
-			for i := range wn {
-				if pool[i].Sym == syml {
-					*wins = append(*wins, pool[i])
 				}
 			}
 		}
@@ -112,15 +109,20 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
-	if count := screen.ScatNum(wild) + screen.ScatNum(scat); count >= 3 {
-		var pay, fs = ScatPay[count-1], 12
+	var sn, wn = screen.ScatNum(scat), screen.ScatNum(wild)
+	if count := sn + wn; count >= 3 {
+		var mw float64 = 1 // mult wild
+		if g.FS > 0 && wn > 0 {
+			mw = 5
+		}
+		var pay = ScatPay[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * pay,
-			Mult: 1,
+			Mult: mw,
 			Sym:  scat,
 			Num:  count,
 			XY:   screen.ScatPos(scat),
-			Free: fs,
+			Free: 12,
 		})
 	}
 }

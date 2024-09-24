@@ -42,7 +42,7 @@ local golf = {
   4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20, 25, 40, 50, 100,
 }
 local sum = 0
-for i, v in ipairs(golf) do
+for _, v in ipairs(golf) do
   sum = sum + v
 end
 print("golf bonus: "..#golf.." elements, sum = "..sum..", E = "..sum/#golf)
