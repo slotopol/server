@@ -9,7 +9,7 @@ import (
 	slot "github.com/slotopol/server/game/slot"
 )
 
-func BruteForce5x(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, wc2, wc3, wc4 bool) {
+func BruteForceStars(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, wc2, wc3, wc4 bool) {
 	var screen = g.NewScreen()
 	defer screen.Free()
 	var wins slot.Wins
@@ -61,8 +61,8 @@ func BruteForce5x(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slo
 func CalcStatStars(ctx context.Context, wc2, wc3, wc4 bool) float64 {
 	var reels = &Reels
 	var g = NewGame()
-	var sln float64 = 1
-	g.Sel.SetNum(int(sln), 1)
+	var sln = 1
+	g.Sel.SetNum(sln, 1)
 	var s slot.Stat
 
 	var wcsym = func(wc bool) byte {
@@ -78,13 +78,13 @@ func CalcStatStars(ctx context.Context, wc2, wc3, wc4 bool) float64 {
 		var t0 = time.Now()
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		go s.Progress(ctx2, time.Tick(2*time.Second), sln, total)
-		BruteForce5x(ctx2, &s, g, reels, wc2, wc3, wc4)
+		go s.Progress(ctx2, time.Tick(2*time.Second), g.Sel.Num(), total)
+		BruteForceStars(ctx2, &s, g, reels, wc2, wc3, wc4)
 		return time.Since(t0)
 	}()
 
 	var reshuf = float64(s.Reshuffles)
-	var lrtp = s.LinePay / reshuf / sln * 100
+	var lrtp = s.LinePay / reshuf / float64(sln) * 100
 	_ = jid
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/total*100, g.Sel.Num(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",

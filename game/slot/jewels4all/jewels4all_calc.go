@@ -9,7 +9,7 @@ import (
 	slot "github.com/slotopol/server/game/slot"
 )
 
-func BruteForce5x(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, x, y slot.Pos) {
+func BruteForceEuro(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, x, y slot.Pos) {
 	var screen = g.NewScreen()
 	defer screen.Free()
 	var wins slot.Wins
@@ -67,8 +67,8 @@ func CalcStatEuro(ctx context.Context, x, y slot.Pos) float64 {
 		var t0 = time.Now()
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		go s.Progress(ctx2, time.Tick(2*time.Second), sln, total)
-		BruteForce5x(ctx2, &s, g, reels, x, y)
+		go s.Progress(ctx2, time.Tick(2*time.Second), g.Sel.Num(), total)
+		BruteForceEuro(ctx2, &s, g, reels, x, y)
 		return time.Since(t0)
 	}()
 

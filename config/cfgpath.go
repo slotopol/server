@@ -25,6 +25,10 @@ var (
 	CfgPath string
 	// SQLite-files path.
 	SqlPath string
+	// Monte Carlo method samples number, in millions
+	MCCount uint64
+	// Multithreaded scanning
+	MTScan bool
 )
 
 var (

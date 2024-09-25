@@ -9,7 +9,7 @@ import (
 	slot "github.com/slotopol/server/game/slot"
 )
 
-func BruteForce5x(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, gs slot.Sym) {
+func BruteForceFire(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, gs slot.Sym) {
 	var screen = g.NewScreen()
 	defer screen.Free()
 	var wins slot.Wins
@@ -45,7 +45,7 @@ func CalcStatSym(ctx context.Context, g *Game, reels slot.Reels, gs slot.Sym) fl
 
 	var ctx2, cancel2 = context.WithCancel(ctx)
 	defer cancel2()
-	BruteForce5x(ctx2, &s, g, reels, gs)
+	BruteForceFire(ctx2, &s, g, reels, gs)
 
 	var reshuf = float64(s.Reshuffles)
 	var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
@@ -90,22 +90,15 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 	g.Sel.SetNum(int(sln), 1)
 	var s slot.Stat
 
-	var total = float64(reels.Reshuffles())
-	var dur = func() time.Duration {
-		var t0 = time.Now()
-		var ctx2, cancel2 = context.WithCancel(ctx)
-		defer cancel2()
-		go s.Progress(ctx2, time.Tick(2*time.Second), sln, total)
-		slot.BruteForce5x(ctx2, &s, g, reels)
-		return time.Since(t0)
-	}()
+	var dur = slot.ScanReels(ctx, &s, g, reels,
+		time.Tick(2*time.Second), time.Tick(2*time.Second))
 
 	var reshuf = float64(s.Reshuffles)
 	var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
 	var rtpsym = lrtp + srtp
 	var q = float64(s.FreeCount) / reshuf
 	var rtp = rtpsym + q*rtpfs
-	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/total*100, g.Sel.Num(), dur)
+	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/float64(s.Planned())*100, g.Sel.Num(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
