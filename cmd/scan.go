@@ -43,7 +43,7 @@ func init() {
 
 	for _, gi := range links.GameList {
 		for _, ga := range gi.Aliases {
-			scanflags.Bool(ga.ID, false, fmt.Sprintf("'%s' %s %dx%d videoslot", ga.Name, gi.Provider, gi.ScrnX, gi.ScrnY))
+			scanflags.Bool(ga.ID, false, fmt.Sprintf("'%s' %s %dx%d videoslot", ga.Name, gi.Provider, gi.SX, gi.SY))
 		}
 	}
 	for _, setter := range links.FlagsSetters {

@@ -8,6 +8,8 @@ Slots games server. Provides functionality for Megajack, Novomatic, NetEnt, BetS
 
 # How to build from sources
 
+*Note: you can download the compiled binaries for Windows at [release](https://github.com/slotopol/server/releases/latest) section, or build docker image by [dockerfile](https://github.com/slotopol/server/blob/main/Dockerfile).*
+
 1. Install [Golang](https://go.dev/dl/) of last version.
 2. Clone project and download dependencies.
 3. Build project with script at `task` directory.
@@ -37,7 +39,7 @@ Then web-service can be started:
 slot_win_x64 web
 ```
 
-You can get the list of all provided games by command:
+The list of all provided games can be obtained by command:
 
 ```cmd
 slot_win_x64 list --all
@@ -71,10 +73,10 @@ First of all you can get a list of games supported by server. This call can be w
 curl -X GET localhost:8080/gamelist
 ```
 
-Response has array with available algorithms descriptions. Each structure has a list of games aliases, that shares one algorithm. Field `rtplist` has the list of reels with predefined RTP. There is example of structure with info:
+Response has array with available algorithms descriptions. Each structure has a list of games aliases, that shares one algorithm. Field `rtp` has the list of reels with predefined RTP. There is example of structure with info:
 
 ```json
-{"aliases":[{"id":"trolls","name":"Trolls"},{"id":"excalibur","name":"Excalibur"},{"id":"pandorasbox","name":"Pandora's Box"},{"id":"wildwitches","name":"Wild Witches"}],"provider":"NetEnt","scrnx":5,"scrny":3,"rtplist":[87.788791,89.230191,93.903358,95.183523,96.6485,98.193276,110.298257,91.925079,93.061471,101.929305]}
+{"aliases":[{"id":"trolls","name":"Trolls"},{"id":"excalibur","name":"Excalibur"},{"id":"pandorasbox","name":"Pandora's Box"},{"id":"wildwitches","name":"Wild Witches"}],"provider":"NetEnt","sx":5,"sy":3,"ln":20,"rtp":[87.788791,89.230191,93.903358,95.183523,96.6485,98.193276,110.298257,91.925079,93.061471,101.929305]}
 ```
 
 `/ping`, `/servinfo` and `/memusage`, `/signis`, `/sendcode`, `/activate`, `/signup` and `/signin` endpoints also does not expects authorization.

@@ -16,9 +16,10 @@ func init() {
 			{ID: "kenosports", Name: "Keno Sports"},
 		},
 		Provider: "Slotopol",
-		ScrnX:    80,
-		ScrnY:    0,
-		RtpList:  []float64{92.104554},
+		SX:       80,
+		SY:       0,
+		LN:       0,
+		RTP:      []float64{92.104554},
 	}
 	GameList = append(GameList, gi)
 

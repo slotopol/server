@@ -51,17 +51,19 @@ var listCmd = &cobra.Command{
 				alg++
 				for _, ga := range gi.Aliases {
 					var rtpinfo string
-					if fRTP && len(gi.RtpList) > 0 {
-						var rtpstr = make([]string, len(gi.RtpList))
-						for i, rtp := range gi.RtpList {
+					if fRTP && len(gi.RTP) > 0 {
+						var rtpstr = make([]string, len(gi.RTP))
+						for i, rtp := range gi.RTP {
 							rtpstr[i] = fmt.Sprintf("%.2f", rtp)
 						}
 						rtpinfo = ", RTP: " + strings.Join(rtpstr, ", ")
 					}
-					if gi.ScrnY > 0 {
-						gamelist[i] = fmt.Sprintf("'%s' %s %dx%d videoslot%s", ga.Name, gi.Provider, gi.ScrnX, gi.ScrnY, rtpinfo)
+					if gi.LN > 100 {
+						gamelist[i] = fmt.Sprintf("'%s' %s %dx%d videoslot, %d ways%s", ga.Name, gi.Provider, gi.SX, gi.SY, gi.LN, rtpinfo)
+					} else if gi.SY > 0 {
+						gamelist[i] = fmt.Sprintf("'%s' %s %dx%d videoslot, %d lines%s", ga.Name, gi.Provider, gi.SX, gi.SY, gi.LN, rtpinfo)
 					} else {
-						gamelist[i] = fmt.Sprintf("'%s' %s %d spots lottery%s", ga.Name, gi.Provider, gi.ScrnX, rtpinfo)
+						gamelist[i] = fmt.Sprintf("'%s' %s %d spots lottery%s", ga.Name, gi.Provider, gi.SX, rtpinfo)
 					}
 					i++
 				}

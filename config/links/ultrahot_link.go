@@ -15,9 +15,10 @@ func init() {
 			{ID: "ultrahot", Name: "Ultra Hot"},
 		},
 		Provider: "Novomatic",
-		ScrnX:    3,
-		ScrnY:    3,
-		RtpList:  MakeRtpList(slot.ReelsMap),
+		SX:       3,
+		SY:       3,
+		LN:       5,
+		RTP:      MakeRtpList(slot.ReelsMap),
 	}
 	GameList = append(GameList, gi)
 

@@ -16,9 +16,10 @@ type (
 	GameInfo struct {
 		Aliases  []GameAlias `json:"aliases" yaml:"aliases" xml:"aliases"`
 		Provider string      `json:"provider" yaml:"provider" xml:"provider"`
-		ScrnX    int         `json:"scrnx" yaml:"scrnx" xml:"scrnx"`
-		ScrnY    int         `json:"scrny" yaml:"scrny" xml:"scrny"`
-		RtpList  []float64   `json:"rtplist" yaml:"rtplist" xml:"rtplist"`
+		SX       int         `json:"sx" yaml:"sx" xml:"sx"` // screen width
+		SY       int         `json:"sy" yaml:"sy" xml:"sy"` // screen height
+		LN       int         `json:"ln" yaml:"ln" xml:"ln"` // number of lines
+		RTP      []float64   `json:"rtp" yaml:"rtp" xml:"rtp"`
 	}
 )
 
