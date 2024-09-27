@@ -116,12 +116,14 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 			mw = 5
 		}
 		var pay = ScatPay[count-1]
+		var line = screen.ScatPos(scat)
+		line.Cover(screen.ScatPos(wild))
 		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * pay,
 			Mult: mw,
 			Sym:  scat,
 			Num:  count,
-			XY:   screen.ScatPos(scat),
+			XY:   line,
 			Free: 12,
 		})
 	}

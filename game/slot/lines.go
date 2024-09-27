@@ -14,6 +14,15 @@ func (l *Linex) Set(x Pos, val Pos) {
 	l[x-1] = val
 }
 
+func (l *Linex) Cover(op Linex) *Linex {
+	for i, v := range op {
+		if v > 0 {
+			l[i] = v
+		}
+	}
+	return l
+}
+
 func (l *Linex) Len() int {
 	for i := 7; i >= 0; i-- {
 		if l[i] > 0 {
