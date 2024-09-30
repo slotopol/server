@@ -367,6 +367,7 @@ func SpiSlotSpin(c *gin.Context) {
 	var scrn = game.NewScreen()
 	defer scrn.Free()
 	var n = 0
+	game.Prepare()
 	for {
 		game.Spin(scrn, mrtp)
 		game.Scanner(scrn, &wins)

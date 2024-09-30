@@ -164,6 +164,14 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 
 var MultChoose = []float64{1, 1, 1, 2, 2, 2, 3, 3, 5, 10} // E = 3.0
 
+func (g *Game) Prepare() {
+	if g.FS > 0 {
+		g.M = MultChoose[rand.N(len(MultChoose))]
+	} else {
+		g.M = 0
+	}
+}
+
 func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
 	if g.FS > 0 {
 		g.Gain += wins.Gain()
@@ -178,11 +186,6 @@ func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
 		if wi.Free > 0 {
 			g.FS += wi.Free
 		}
-	}
-	if g.FS > 0 {
-		g.M = MultChoose[rand.N(len(MultChoose))]
-	} else {
-		g.M = 0
 	}
 }
 

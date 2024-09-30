@@ -59,6 +59,7 @@ type SlotGame interface {
 	Scanner(Screen, *Wins) // scan given screen and append result to wins, constat function
 	Spin(Screen, float64)  // fill the screen with random hits on reels closest to given RTP, constat function
 	Spawn(Screen, Wins)    // setup bonus games to wins results, constat function
+	Prepare()              // update game state before new spin
 	Apply(Screen, Wins)    // update game state to spin results
 	FreeSpins() int        // returns number of free spins remained, constat function
 	GetGain() float64      // returns gain for double up games, constat function
@@ -131,6 +132,9 @@ func (g *Slot3x3) NewScreen() Screen {
 func (g *Slot3x3) Spawn(screen Screen, wins Wins) {
 }
 
+func (g *Slot3x3) Prepare() {
+}
+
 func (g *Slot3x3) Apply(screen Screen, wins Wins) {
 	g.Gain = wins.Gain()
 }
@@ -182,6 +186,9 @@ func (g *Slot5x3) NewScreen() Screen {
 func (g *Slot5x3) Spawn(screen Screen, wins Wins) {
 }
 
+func (g *Slot5x3) Prepare() {
+}
+
 func (g *Slot5x3) Apply(screen Screen, wins Wins) {
 	g.Gain = wins.Gain()
 }
@@ -231,6 +238,9 @@ func (g *Slot5x4) NewScreen() Screen {
 }
 
 func (g *Slot5x4) Spawn(screen Screen, wins Wins) {
+}
+
+func (g *Slot5x4) Prepare() {
 }
 
 func (g *Slot5x4) Apply(screen Screen, wins Wins) {

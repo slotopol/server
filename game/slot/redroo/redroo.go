@@ -64,15 +64,6 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
-	if g.FS > 0 {
-		for x := range g.MW {
-			if rand.Float64() < prob2x {
-				g.MW[x] = 2
-			} else {
-				g.MW[x] = 3
-			}
-		}
-	}
 	var line slot.Linex
 loop1:
 	for line[0] = 1; line[0] <= 4; line[0]++ {
@@ -91,7 +82,7 @@ loop1:
 						for x = 1; x <= 5; x++ {
 							var sx = screen.Pos(x, line)
 							if sx == wild {
-								mw *= g.MW[x-1]
+								mw *= g.MW[x-2]
 							} else if syml == 0 && sx != scat {
 								syml = sx
 							} else if sx != syml {
@@ -166,6 +157,18 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 	var _, reels = slot.FindReels(ReelsMap, mrtp)
 	screen.Spin(reels)
+}
+
+func (g *Game) Prepare() {
+	if g.FS > 0 {
+		for x := range g.MW {
+			if rand.Float64() < prob2x {
+				g.MW[x] = 2
+			} else {
+				g.MW[x] = 3
+			}
+		}
+	}
 }
 
 func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
