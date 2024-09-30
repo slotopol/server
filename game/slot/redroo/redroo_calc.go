@@ -1,4 +1,4 @@
-package indiandreaming
+package redroo
 
 import (
 	"context"
@@ -17,8 +17,9 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 		reels = &Reels92
 	}
 	var g = NewGame()
-	var sln float64 = 25
+	var sln float64 = 40
 	g.FS = 12 // set free spins mode
+	g.MW = [3]float64{2.5, 2.5, 2.5}
 	var s slot.Stat
 
 	var dur = slot.ScanReels(ctx, &s, g, reels,
@@ -54,7 +55,8 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 		reels = &Reels92
 	}
 	var g = NewGame()
-	var sln float64 = 25
+	var sln float64 = 40
+	g.MW = [3]float64{1, 1, 1}
 	var s slot.Stat
 
 	var dur = slot.ScanReels(ctx, &s, g, reels,

@@ -31,28 +31,46 @@ function CorrectReel(reel, neighbours)
 		for i = 1, #reel do
 			local symi = reel[i]
 			local b
+			b = neighbours[symi][reel[i - 3]]
+			if b >= 3 then
+				local j = math.random(#reel - b * 2 - 1)
+				if j >= i-3 then j = j+7 end
+				reel[i - 3], reel[j] = reel[j], reel[i - 3]
+				n = n + 1
+			end
 			b = neighbours[symi][reel[i - 2]]
 			if b >= 2 then
 				local j = math.random(#reel - b * 2 - 1)
+				if j >= i-2 then j = j+5 end
 				reel[i - 2], reel[j] = reel[j], reel[i - 2]
 				n = n + 1
 			end
 			b = neighbours[symi][reel[i - 1]]
 			if b >= 1 then
 				local j = math.random(#reel - b * 2 - 1)
+				if j >= i-1 then j = j+3 end
 				reel[i - 1], reel[j] = reel[j], reel[i - 1]
 				n = n + 1
 			end
 			b = neighbours[symi][reel[i + 1]]
 			if b >= 1 then
 				local j = math.random(#reel - b * 2 - 1)
+				if j >= i-1 then j = j+3 end
 				reel[i + 1], reel[j] = reel[j], reel[i + 1]
 				n = n + 1
 			end
 			b = neighbours[symi][reel[i + 2]]
 			if b >= 2 then
 				local j = math.random(#reel - b * 2 - 1)
+				if j >= i-2 then j = j+5 end
 				reel[i + 2], reel[j] = reel[j], reel[i + 2]
+				n = n + 1
+			end
+			b = neighbours[symi][reel[i + 3]]
+			if b >= 3 then
+				local j = math.random(#reel - b * 2 - 1)
+				if j >= i-3 then j = j+7 end
+				reel[i + 3], reel[j] = reel[j], reel[i + 3]
 				n = n + 1
 			end
 		end

@@ -1,72 +1,89 @@
-package indiandreaming
+package redroo
 
-// See: https://freeslotshub.com/aristocrat/indian-dreaming/
+// See: https://freeslotshub.com/aristocrat/big-red/
 
 import (
+	"math/rand/v2"
+
 	slot "github.com/slotopol/server/game/slot"
 )
 
 // Lined payment.
-var LinePay = [12][5]float64{
+var LinePay = [13][5]float64{
 	{},                     //  1 wild
 	{},                     //  2 scatter
-	{0, 0, 100, 200, 5000}, //  3 cash catcher
-	{0, 0, 50, 100, 2500},  //  4 man
-	{0, 0, 50, 100, 1000},  //  5 woman
-	{0, 0, 10, 40, 250},    //  6 guy
-	{0, 0, 6, 25, 150},     //  7 bull
-	{0, 0, 6, 25, 150},     //  8 hatchet
-	{0, 0, 6, 15, 80},      //  9 ace
-	{0, 0, 4, 10, 80},      // 10 king
-	{0, 0, 3, 10, 70},      // 11 queen
-	{0, 0, 3, 10, 60},      // 12 jack
+	{0, 50, 150, 200, 250}, //  3 redroo
+	{0, 20, 80, 150, 200},  //  4 girl
+	{0, 20, 80, 150, 200},  //  5 boy
+	{0, 10, 40, 100, 150},  //  6 dog
+	{0, 10, 40, 100, 150},  //  7 parrot
+	{0, 0, 10, 50, 140},    //  8 ace
+	{0, 0, 10, 50, 140},    //  9 king
+	{0, 0, 5, 40, 120},     // 10 queen
+	{0, 0, 5, 40, 120},     // 11 jack
+	{0, 0, 5, 20, 100},     // 12 ten
+	{0, 2, 5, 20, 100},     // 13 nine
 }
 
 // Scatters payment.
-var ScatPay = [5]float64{0, 0, 2, 15, 100} //  2 scatter
+var ScatPay = [5]float64{0, 0, 80, 400, 800} // scatter
+
+// Scatter freespins table on regular games
+var ScatFreespinReg = [5]int{0, 0, 8, 15, 20} // scatter
+
+// Scatter freespins table on bonus games
+var ScatFreespinBon = [5]int{0, 5, 8, 15, 20} // scatter
 
 type Game struct {
-	slot.Slot5x3 `yaml:",inline"`
+	slot.Slot5x4 `yaml:",inline"`
 	// free spin number
 	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
+	// wild multipliers
+	MW [3]float64 `json:"mw" yaml:"mw" xml:"mw"`
 }
 
 func NewGame() *Game {
 	return &Game{
-		Slot5x3: slot.Slot5x3{
-			Sel: slot.MakeBitNum(25, 1),
+		Slot5x4: slot.Slot5x4{
+			Sel: slot.MakeBitNum(40, 1),
 			Bet: 1,
 		},
 		FS: 0,
+		MW: [3]float64{1, 1, 1},
 	}
 }
 
 const wild, scat = 1, 2
 
+const prob2x = 0.5 // probability of 2x multiplier for wild at free games
+
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
-	if screen.ScatNum(wild) < 5 {
-		g.ScanLined(screen, wins)
-	}
+	g.ScanLined(screen, wins)
 	g.ScanScatters(screen, wins)
 }
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
-	var mwm float64 = 1 // mult wild mode
 	if g.FS > 0 {
-		mwm = 5
+		for x := range g.MW {
+			if rand.Float64() < prob2x {
+				g.MW[x] = 2
+			} else {
+				g.MW[x] = 3
+			}
+		}
 	}
 	var line slot.Linex
 loop1:
-	for line[0] = 1; line[0] <= 3; line[0]++ {
+	for line[0] = 1; line[0] <= 4; line[0]++ {
 	loop2:
-		for line[1] = 1; line[1] <= 3; line[1]++ {
+		for line[1] = 1; line[1] <= 4; line[1]++ {
 		loop3:
-			for line[2] = 1; line[2] <= 3; line[2]++ {
+			for line[2] = 1; line[2] <= 4; line[2]++ {
 			loop4:
-				for line[3] = 1; line[3] <= 3; line[3]++ {
+				for line[3] = 1; line[3] <= 4; line[3]++ {
 				loop5:
-					for line[4] = 1; line[4] <= 3; line[4]++ {
+					for line[4] = 1; line[4] <= 4; line[4]++ {
 						var numl slot.Pos = 5
 						var syml slot.Sym
 						var mw float64 = 1 // mult wild
@@ -74,7 +91,7 @@ loop1:
 						for x = 1; x <= 5; x++ {
 							var sx = screen.Pos(x, line)
 							if sx == wild {
-								mw = mwm
+								mw *= g.MW[x-1]
 							} else if syml == 0 && sx != scat {
 								syml = sx
 							} else if sx != syml {
@@ -83,17 +100,19 @@ loop1:
 							}
 						}
 
-						if numl >= 3 && syml > 0 {
-							// var li = (int(line[0])-1)*81 + (int(line[1])-1)*27 + (int(line[2])-1)*9 + (int(line[line[4]])-1)*3 + int(line[5])
+						if numl >= 2 && syml > 0 {
+							// var li = (int(line[0])-1)*256 + (int(line[1])-1)*64 + (int(line[2])-1)*16 + (int(line[line[4]])-1)*4 + int(line[5])
 							*wins = append(*wins, slot.WinItem{
 								Pay:  g.Bet * LinePay[syml-1][numl-1],
 								Mult: mw,
 								Sym:  syml,
 								Num:  numl,
-								Line: 243,
+								Line: 1024,
 								XY:   line.CopyL(numl),
 							})
 							switch numl {
+							case 2:
+								continue loop2
 							case 3:
 								continue loop3
 							case 4:
@@ -123,23 +142,24 @@ loop1:
 
 // Scatters calculation.
 func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
-	var sn, wn = screen.ScatNum(scat), screen.ScatNum(wild)
-	if count := sn + wn; count >= 3 {
-		var mw float64 = 1 // mult wild
-		if g.FS > 0 && wn > 0 {
-			mw = 5
-		}
+	if count := screen.ScatNum(scat); count >= 2 {
 		var pay = ScatPay[count-1]
-		var line = screen.ScatPos(scat)
-		line.Cover(screen.ScatPos(wild))
-		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * pay,
-			Mult: mw,
-			Sym:  scat,
-			Num:  count,
-			XY:   line,
-			Free: 12,
-		})
+		var fs int
+		if g.FS > 0 {
+			fs = ScatFreespinBon[count-1]
+		} else {
+			fs = ScatFreespinReg[count-1]
+		}
+		if pay >= 0 || fs >= 0 {
+			*wins = append(*wins, slot.WinItem{
+				Pay:  g.Bet * pay,
+				Mult: 1,
+				Sym:  scat,
+				Num:  count,
+				XY:   screen.ScatPos(scat),
+				Free: fs,
+			})
+		}
 	}
 }
 
