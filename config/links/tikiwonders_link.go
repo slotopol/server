@@ -19,6 +19,8 @@ func init() {
 		SX:       5,
 		SY:       3,
 		LN:       30,
+		FG:       FGretrig,
+		BN:       0,
 		RTP:      MakeRtpList(slot.ReelsMap),
 	}
 	GameList = append(GameList, gi)

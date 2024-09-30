@@ -28,6 +28,47 @@ Get the list of available 'NetExt' and 'BetSoft' games only:
 Get the list of available 'Play'n GO' games with RTP list for each:
   %[1]s list --playngo --rtp`
 
+func Include(gi *links.GameInfo) bool {
+	if fAll {
+		return true
+	}
+	var is bool
+	if is, _ = listflags.GetBool(util.ToID(gi.Provider)); is {
+		return true
+	}
+	if is, _ = listflags.GetBool("3reels"); is && gi.SX == 3 {
+		return true
+	}
+	if is, _ = listflags.GetBool("5reels"); is && gi.SX == 5 {
+		return true
+	}
+	if is, _ = listflags.GetBool("3x3"); is && gi.SX == 3 && gi.SY == 3 {
+		return true
+	}
+	if is, _ = listflags.GetBool("5x3"); is && gi.SX == 5 && gi.SY == 3 {
+		return true
+	}
+	if is, _ = listflags.GetBool("5x4"); is && gi.SX == 5 && gi.SY == 4 {
+		return true
+	}
+	if is, _ = listflags.GetBool("fewlines"); is && gi.LN < 20 {
+		return true
+	}
+	if is, _ = listflags.GetBool("multilines"); is && gi.LN >= 20 {
+		return true
+	}
+	if is, _ = listflags.GetBool("megaway"); is && gi.LN > 100 {
+		return true
+	}
+	if is, _ = listflags.GetBool("fg"); is && gi.FG >= links.FGhas {
+		return true
+	}
+	if is, _ = listflags.GetBool("bonus"); is && gi.BN > 0 {
+		return true
+	}
+	return false
+}
+
 // listCmd represents the list command
 var listCmd = &cobra.Command{
 	Use:     "list",
@@ -38,7 +79,7 @@ var listCmd = &cobra.Command{
 		var num, alg int
 		var prov = map[string]int{}
 		for _, gi := range links.GameList {
-			if prv, _ := listflags.GetBool(util.ToID(gi.Provider)); prv || fAll {
+			if Include(&gi) {
 				num += len(gi.Aliases)
 			}
 		}
@@ -46,7 +87,7 @@ var listCmd = &cobra.Command{
 		var gamelist = make([]string, num)
 		var i int
 		for _, gi := range links.GameList {
-			if prv, _ := listflags.GetBool(util.ToID(gi.Provider)); prv || fAll {
+			if Include(&gi) {
 				prov[gi.Provider] += len(gi.Aliases)
 				alg++
 				for _, ga := range gi.Aliases {
@@ -100,8 +141,10 @@ func init() {
 	listflags = listCmd.Flags()
 	listflags.BoolP("name", "n", true, "list of provided games names")
 	listflags.BoolP("stat", "s", true, "summary statistics of provided games")
-	listflags.BoolVar(&fAll, "all", false, "list games of all available providers")
+
+	listflags.BoolVar(&fAll, "all", false, "include all provided games, overrides any other filters")
 	listflags.BoolVar(&fRTP, "rtp", false, "RTP (Return to Player) percents list of available reels for each game")
+
 	listflags.Bool("aristocrat", false, "include games of 'Aristocrat' provider")
 	listflags.Bool("megajack", false, "include games of 'Megajack' provider")
 	listflags.Bool("novomatic", false, "include games of 'Novomatic' provider")
@@ -110,7 +153,19 @@ func init() {
 	listflags.Bool("playtech", false, "include games of 'Playtech' provider")
 	listflags.Bool("playngo", false, "include games of 'Play'n GO' provider")
 	listflags.Bool("slotopol", false, "include games of this 'Slotopol' provider")
+
+	listflags.Bool("3reels", false, "include games with 3 reels")
+	listflags.Bool("5reels", false, "include games with 5 reels")
+	listflags.Bool("3x3", false, "include games with 3x3 screen")
+	listflags.Bool("5x3", false, "include games with 5x3 screen")
+	listflags.Bool("5x4", false, "include games with 5x4 screen")
+	listflags.Bool("fewlines", false, "include games with few lines, i.e. with less than 20")
+	listflags.Bool("multilines", false, "include games with few lines, i.e. with not less than 20")
+	listflags.Bool("megaway", false, "include games with multiways, i.e. with 243, 1024 ways")
+	listflags.Bool("fg", false, "include games with any free games")
+	listflags.Bool("bonus", false, "include games with bonus games")
+
 	listCmd.MarkFlagsOneRequired("all",
-		"aristocrat", "megajack", "novomatic", "netent", "betsoft",
-		"playtech", "playngo", "slotopol")
+		"aristocrat", "megajack", "novomatic", "netent", "betsoft", "playtech", "playngo", "slotopol",
+		"3reels", "5reels", "3x3", "5x3", "5x4", "fewlines", "multilines", "megaway", "fg", "bonus")
 }

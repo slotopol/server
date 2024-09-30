@@ -7,6 +7,12 @@ import (
 	"github.com/spf13/pflag"
 )
 
+const (
+	FGno     = 0 // free games are absent
+	FGhas    = 1 // free games are present
+	FGretrig = 2 // free games are present and can be retriggered
+)
+
 type (
 	GameAlias struct {
 		ID   string `json:"id" yaml:"id" xml:"id"`
@@ -16,9 +22,11 @@ type (
 	GameInfo struct {
 		Aliases  []GameAlias `json:"aliases" yaml:"aliases" xml:"aliases"`
 		Provider string      `json:"provider" yaml:"provider" xml:"provider"`
-		SX       int         `json:"sx" yaml:"sx" xml:"sx"` // screen width
-		SY       int         `json:"sy" yaml:"sy" xml:"sy"` // screen height
-		LN       int         `json:"ln" yaml:"ln" xml:"ln"` // number of lines
+		SX       int         `json:"sx" yaml:"sx" xml:"sx"`                               // screen width
+		SY       int         `json:"sy" yaml:"sy" xml:"sy"`                               // screen height
+		LN       int         `json:"ln,omitempty" yaml:"ln,omitempty" xml:"ln,omitempty"` // number of lines
+		FG       int         `json:"fg,omitempty" yaml:"fg,omitempty" xml:"fg,omitempty"` // free games type
+		BN       int         `json:"bn,omitempty" yaml:"bn,omitempty" xml:"bn,omitempty"` // number of bonuses
 		RTP      []float64   `json:"rtp" yaml:"rtp" xml:"rtp"`
 	}
 )

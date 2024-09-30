@@ -18,6 +18,8 @@ func init() {
 		SX:       80,
 		SY:       0,
 		LN:       0,
+		FG:       FGno,
+		BN:       0,
 		RTP:      []float64{97.980099},
 	}
 	GameList = append(GameList, gi)
