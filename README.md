@@ -76,7 +76,7 @@ curl -X GET localhost:8080/gamelist
 Response has array with available algorithms descriptions. Each structure has a list of games aliases, that shares one algorithm. Field `rtp` has the list of reels with predefined RTP. There is example of structure with info:
 
 ```json
-{"aliases":[{"id":"trolls","name":"Trolls"},{"id":"excalibur","name":"Excalibur"},{"id":"pandorasbox","name":"Pandora's Box"},{"id":"wildwitches","name":"Wild Witches"}],"provider":"NetEnt","sx":5,"sy":3,"ln":20,"rtp":[87.788791,89.230191,93.903358,95.183523,96.6485,98.193276,110.298257,91.925079,93.061471,101.929305]}
+{"aliases":[{"id":"trolls","name":"Trolls"},{"id":"excalibur","name":"Excalibur"},{"id":"pandorasbox","name":"Pandora's Box"},{"id":"wildwitches","name":"Wild Witches"}],"provider":"NetEnt","sx":5,"sy":3,"ln":20,"fg":2,"rtp":[87.788791,89.230191,91.925079,93.061471,93.903358,95.183523,96.6485,98.193276,101.929305,110.298257]}
 ```
 
 `/ping`, `/servinfo` and `/memusage`, `/signis`, `/sendcode`, `/activate`, `/signup` and `/signin` endpoints also does not expects authorization.

@@ -204,7 +204,7 @@ func (g *Game) SetSel(sel slot.Bitset) error {
 		return slot.ErrLinesetOut
 	}
 	if g.FreeSpins() > 0 {
-		return slot.ErrNoFeature
+		return slot.ErrDisabled
 	}
 	g.Sel = sel
 	return nil

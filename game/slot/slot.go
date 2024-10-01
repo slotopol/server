@@ -18,15 +18,15 @@ type Reels interface {
 	Reshuffles() uint64 // returns total number of reshuffles
 }
 
-// WinItem describes win on each line or scatters.
+// WinItem describes win on each line or by scatters.
 type WinItem struct {
 	Pay  float64 `json:"pay,omitempty" yaml:"pay,omitempty" xml:"pay,omitempty,attr"`    // payment with selected bet
-	Mult float64 `json:"mult,omitempty" yaml:"mult,omitempty" xml:"mult,omitempty,attr"` // multiplier for payment for free spins and other special cases
+	Mult float64 `json:"mult,omitempty" yaml:"mult,omitempty" xml:"mult,omitempty,attr"` // multiplier of payment for free spins and other special cases
 	Sym  Sym     `json:"sym,omitempty" yaml:"sym,omitempty" xml:"sym,omitempty,attr"`    // win symbol
-	Num  Pos     `json:"num,omitempty" yaml:"num,omitempty" xml:"num,omitempty,attr"`    // number of win symbol
-	Line int     `json:"line,omitempty" yaml:"line,omitempty" xml:"line,omitempty,attr"` // line mumber (0 for scatters and not lined)
+	Num  Pos     `json:"num,omitempty" yaml:"num,omitempty" xml:"num,omitempty,attr"`    // number of win symbols
+	Line int     `json:"line,omitempty" yaml:"line,omitempty" xml:"line,omitempty,attr"` // line mumber (0 for scatters and not lined combinations)
 	XY   Linex   `json:"xy" yaml:"xy" xml:"xy"`                                          // symbols positions on screen
-	Free int     `json:"free,omitempty" yaml:"free,omitempty" xml:"free,omitempty,attr"` // number of free spins remains
+	Free int     `json:"free,omitempty" yaml:"free,omitempty" xml:"free,omitempty,attr"` // number of free spins
 	BID  int     `json:"bid,omitempty" yaml:"bid,omitempty" xml:"bid,omitempty,attr"`    // bonus identifier
 	Jack int     `json:"jack,omitempty" yaml:"jack,omitempty" xml:"jack,omitempty,attr"` // jackpot identifier
 	Bon  any     `json:"bon,omitempty" yaml:"bon,omitempty" xml:"bon,omitempty"`         // bonus game data
@@ -37,7 +37,7 @@ type Wins []WinItem
 
 // Reset puts lines to pool and set array empty with saved capacity.
 func (wins *Wins) Reset() {
-	*wins = (*wins)[:0] // set it empty
+	*wins = (*wins)[:0] // set it empty without memory reallocation
 }
 
 // Total gain for spin.
@@ -49,7 +49,7 @@ func (wins Wins) Gain() float64 {
 	return sum
 }
 
-type Bitset = util.Bitset64
+type Bitset = util.Bitset64 // 1 bit represents 1 line
 
 var MakeBitNum = util.MakeBitNum64
 
@@ -115,6 +115,7 @@ var (
 	ErrNoLineset  = errors.New("lines set is empty")
 	ErrLinesetOut = errors.New("lines set is out of range bet lines")
 	ErrNoFeature  = errors.New("feature not available")
+	ErrDisabled   = errors.New("feature is disabled")
 )
 
 // Slot5x3 is base struct for all slot games with screen 5x3.
@@ -161,7 +162,7 @@ func (g *Slot3x3) SetBet(bet float64) error {
 		return ErrBetEmpty
 	}
 	if g.FreeSpins() > 0 {
-		return ErrNoFeature
+		return ErrDisabled
 	}
 	g.Bet = bet
 	return nil
@@ -215,7 +216,7 @@ func (g *Slot5x3) SetBet(bet float64) error {
 		return ErrBetEmpty
 	}
 	if g.FreeSpins() > 0 {
-		return ErrNoFeature
+		return ErrDisabled
 	}
 	g.Bet = bet
 	return nil
@@ -269,7 +270,7 @@ func (g *Slot5x4) SetBet(bet float64) error {
 		return ErrBetEmpty
 	}
 	if g.FreeSpins() > 0 {
-		return ErrNoFeature
+		return ErrDisabled
 	}
 	g.Bet = bet
 	return nil
