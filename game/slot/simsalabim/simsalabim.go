@@ -1,29 +1,30 @@
-package diamonddogs
+package simsalabim
 
 import (
 	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot/diamonddogs"
 )
 
 // Lined payment.
 var LinePay = [11][5]float64{
-	{0, 0, 50, 120, 600},     //  1 booth
-	{0, 0, 15, 90, 240},      //  2 vip
-	{0, 0, 15, 90, 240},      //  3 food
-	{0, 0, 10, 60, 120},      //  4 bell
-	{0, 0, 5, 60, 120},       //  5 ace
-	{0, 0, 5, 30, 90},        //  6 king
-	{0, 0, 2, 12, 60},        //  7 queen
-	{0, 0, 2, 12, 60},        //  8 jack
-	{},                       //  9 bonus
-	{0, 5, 200, 2000, 10000}, // 10 wild
-	{},                       // 11 scatter
+	{0, 0, 50, 150, 1000},   //  1 hat
+	{0, 0, 25, 100, 500},    //  2 chest
+	{0, 0, 15, 75, 300},     //  3 cell
+	{0, 0, 10, 50, 200},     //  4 cards
+	{0, 0, 5, 50, 150},      //  5 ace
+	{0, 0, 5, 25, 100},      //  6 king
+	{0, 0, 5, 25, 100},      //  7 queen
+	{0, 0, 5, 25, 100},      //  8 jack
+	{},                      //  9 bonus
+	{0, 5, 200, 2000, 7500}, // 10 wild
+	{},                      // 11 scatter
 }
 
 // Scatters payment.
-var ScatPay = [5]float64{0, 2, 4, 25, 100} // 11 scatter
+var ScatPay = [5]float64{0, 2, 4, 25, 200} // 11 scatter
 
 // Scatter freespins table
-var ScatFreespin = [5]int{0, 0, 10, 10, 10} // 11 scatter
+var ScatFreespin = [5]int{0, 0, 10, 20, 30} // 11 scatter
 
 const (
 	ne12 = 1 // bonus ID
@@ -157,7 +158,7 @@ func (g *Game) Spawn(screen slot.Screen, wins slot.Wins) {
 	for i, wi := range wins {
 		switch wi.BID {
 		case ne12:
-			wins[i].Bon, wins[i].Pay = BonusSpawn(g.Bet)
+			wins[i].Bon, wins[i].Pay = diamonddogs.BonusSpawn(g.Bet)
 		}
 	}
 }
