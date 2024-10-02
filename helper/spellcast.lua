@@ -7,14 +7,14 @@ local symset = {
 	2, --  3 castle
 	2, --  4 brew
 	2, --  5 potion
-	4, --  6 book
-	4, --  7 wand
-	4, --  8 ace
-	4, --  9 king
-	5, -- 10 queen
-	5, -- 11 jack
-	5, -- 12 ten
-	5, -- 13 nine
+	2, --  6 book
+	2, --  7 wand
+	3, --  8 ace
+	3, --  9 king
+	3, -- 10 queen
+	3, -- 11 jack
+	3, -- 12 ten
+	3, -- 13 nine
 }
 
 local neighbours = {
