@@ -17,8 +17,9 @@ func init() {
 		Provider: "Aristocrat",
 		SX:       80,
 		SY:       0,
+		GP:       0,
+		SN:       0,
 		LN:       0,
-		FG:       FGno,
 		BN:       0,
 		RTP:      []float64{89.250235},
 	}

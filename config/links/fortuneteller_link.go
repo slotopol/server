@@ -17,8 +17,9 @@ func init() {
 		Provider: "Play'n GO",
 		SX:       5,
 		SY:       3,
+		GP:       GPsel | GPfghas | GPscat | GPwild,
+		SN:       len(slot.LinePay),
 		LN:       20,
-		FG:       FGhas,
 		BN:       0,
 		RTP:      MakeRtpList(slot.ReelsMap),
 	}

@@ -17,8 +17,9 @@ func init() {
 		Provider: "NetEnt",
 		SX:       5,
 		SY:       3,
+		GP:       GPsel | GPretrig | GPfgmult | GPfgreel | GPscat | GPwild,
+		SN:       len(slot.LinePay),
 		LN:       25,
-		FG:       FGretrig,
 		BN:       1,
 		RTP:      MakeRtpList(slot.ReelsMap),
 	}

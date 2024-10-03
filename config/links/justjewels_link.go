@@ -18,8 +18,9 @@ func init() {
 		Provider: "Novomatic",
 		SX:       5,
 		SY:       3,
+		GP:       GPsel | GPfgno | GPscat,
+		SN:       len(slot.LinePay),
 		LN:       10,
-		FG:       FGno,
 		BN:       0,
 		RTP:      MakeRtpList(slot.ReelsMap),
 	}

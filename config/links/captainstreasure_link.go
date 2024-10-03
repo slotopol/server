@@ -17,8 +17,9 @@ func init() {
 		Provider: "Playtech",
 		SX:       5,
 		SY:       3,
+		GP:       GPsel | GPfgno | GPscat | GPwild,
+		SN:       len(slot.LinePay),
 		LN:       9,
-		FG:       FGno,
 		BN:       0,
 		RTP:      MakeRtpList(slot.ReelsMap),
 	}

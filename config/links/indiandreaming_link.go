@@ -17,8 +17,9 @@ func init() {
 		Provider: "Aristocrat",
 		SX:       5,
 		SY:       3,
+		GP:       GPretrig | GPfgmult | GPscat | GPwild,
+		SN:       len(slot.LinePay),
 		LN:       243,
-		FG:       FGretrig,
 		BN:       0,
 		RTP:      MakeRtpList(slot.ReelsMap),
 	}

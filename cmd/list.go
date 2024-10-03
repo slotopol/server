@@ -16,7 +16,7 @@ import (
 var listflags *pflag.FlagSet
 
 var (
-	fAll, fRTP bool
+	fAll, fProp, fRTP bool
 )
 
 const listShort = "List of available games released on server"
@@ -60,13 +60,72 @@ func Include(gi *links.GameInfo) bool {
 	if is, _ = listflags.GetBool("megaway"); is && gi.LN > 100 {
 		return true
 	}
-	if is, _ = listflags.GetBool("fg"); is && gi.FG >= links.FGhas {
+	if is, _ = listflags.GetBool("fg"); is && gi.GP&(links.GPfghas+links.GPretrig) > 0 {
 		return true
 	}
 	if is, _ = listflags.GetBool("bonus"); is && gi.BN > 0 {
 		return true
 	}
 	return false
+}
+
+func FormatGameInfo(gi links.GameInfo, ai int) string {
+	var buf = make([]string, 0, 10)
+	if gi.SN > 0 {
+		buf = append(buf, fmt.Sprintf("'%s' %s %dx%d videoslot", gi.Aliases[ai].Name, gi.Provider, gi.SX, gi.SY))
+	} else {
+		buf = append(buf, fmt.Sprintf("'%s' %s %d spots lottery", gi.Aliases[ai].Name, gi.Provider, gi.SX))
+	}
+	if fProp {
+		if gi.SN > 0 {
+			buf = append(buf, fmt.Sprintf("%d symbols", gi.SN))
+		}
+		if gi.LN > 100 {
+			buf = append(buf, fmt.Sprintf("%d ways", gi.LN))
+		} else if gi.LN > 0 {
+			var s string
+			if gi.GP&links.GPsel == 0 {
+				s = "constant "
+			}
+			buf = append(buf, fmt.Sprintf("%s%d lines", s, gi.LN))
+		}
+		if gi.GP&links.GPjack > 0 {
+			buf = append(buf, "has jackpot")
+		}
+		if gi.GP&links.GPscat > 0 {
+			buf = append(buf, "has scatters")
+		}
+		if gi.GP&(links.GPfghas+links.GPretrig) > 0 {
+			var s1, s2, s3 string
+			if gi.GP&links.GPretrig > 0 {
+				s1 = "retriggerable "
+			}
+			if gi.GP&links.GPfgmult > 0 {
+				s2 = " with multiplier"
+			}
+			if gi.GP&links.GPfgreel > 0 {
+				s3 = " on bonus reels"
+			}
+			buf = append(buf, s1+"free games"+s2+s3)
+		}
+		if gi.GP&links.GPwild > 0 {
+			buf = append(buf, "has wilds")
+		}
+		if gi.GP&links.GPrwild > 0 {
+			buf = append(buf, "has reel wilds")
+		}
+		if gi.GP&links.GPbwild > 0 {
+			buf = append(buf, "has big wilds")
+		}
+	}
+	if fRTP && len(gi.RTP) > 0 {
+		var rtpbuf = make([]string, len(gi.RTP))
+		for i, rtp := range gi.RTP {
+			rtpbuf[i] = fmt.Sprintf("%.2f", rtp)
+		}
+		buf = append(buf, "RTP: "+strings.Join(rtpbuf, ", "))
+	}
+	return strings.Join(buf, ", ")
 }
 
 // listCmd represents the list command
@@ -90,22 +149,8 @@ var listCmd = &cobra.Command{
 			if Include(&gi) {
 				prov[gi.Provider] += len(gi.Aliases)
 				alg++
-				for _, ga := range gi.Aliases {
-					var rtpinfo string
-					if fRTP && len(gi.RTP) > 0 {
-						var rtpstr = make([]string, len(gi.RTP))
-						for i, rtp := range gi.RTP {
-							rtpstr[i] = fmt.Sprintf("%.2f", rtp)
-						}
-						rtpinfo = ", RTP: " + strings.Join(rtpstr, ", ")
-					}
-					if gi.LN > 100 {
-						gamelist[i] = fmt.Sprintf("'%s' %s %dx%d videoslot, %d ways%s", ga.Name, gi.Provider, gi.SX, gi.SY, gi.LN, rtpinfo)
-					} else if gi.SY > 0 {
-						gamelist[i] = fmt.Sprintf("'%s' %s %dx%d videoslot, %d lines%s", ga.Name, gi.Provider, gi.SX, gi.SY, gi.LN, rtpinfo)
-					} else {
-						gamelist[i] = fmt.Sprintf("'%s' %s %d spots lottery%s", ga.Name, gi.Provider, gi.SX, rtpinfo)
-					}
+				for ai := range gi.Aliases {
+					gamelist[i] = FormatGameInfo(gi, ai)
 					i++
 				}
 			}
@@ -143,6 +188,7 @@ func init() {
 	listflags.BoolP("stat", "s", true, "summary statistics of provided games")
 
 	listflags.BoolVar(&fAll, "all", false, "include all provided games, overrides any other filters")
+	listflags.BoolVar(&fProp, "prop", false, "print properties for each game")
 	listflags.BoolVar(&fRTP, "rtp", false, "RTP (Return to Player) percents list of available reels for each game")
 
 	listflags.Bool("aristocrat", false, "include games of 'Aristocrat' provider")

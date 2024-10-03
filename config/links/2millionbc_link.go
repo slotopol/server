@@ -17,8 +17,9 @@ func init() {
 		Provider: "BetSoft",
 		SX:       5,
 		SY:       3,
+		GP:       GPsel | GPretrig | GPfgreel | GPscat,
+		SN:       len(slot.LinePay),
 		LN:       30,
-		FG:       FGretrig,
 		BN:       2,
 		RTP:      MakeRtpList(slot.ReelsMap),
 	}

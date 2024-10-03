@@ -17,8 +17,9 @@ func init() {
 		Provider: "Megajack",
 		SX:       5,
 		SY:       3,
+		GP:       GPsel | GPfgno | GPscat | GPwild,
+		SN:       len(slot.LinePay),
 		LN:       21,
-		FG:       FGno,
 		BN:       4,
 		RTP:      MakeRtpList(slot.ReelsMap),
 	}
