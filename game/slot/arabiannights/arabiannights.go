@@ -46,6 +46,9 @@ var Jackpot = [12][5]int{
 	{0, 0, 0, 0, 0}, // 12 scatter
 }
 
+// Bet lines
+var bl = slot.BetLinesNetEnt10
+
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
 	// free spin number
@@ -55,7 +58,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{
-			Sel: slot.MakeBitNum(10, 1),
+			Sel: slot.MakeBitNum(len(bl), 1),
 			Bet: 1,
 		},
 		FS: 0,
@@ -63,8 +66,6 @@ func NewGame() *Game {
 }
 
 const wild, scat = 11, 12
-
-var bl = slot.BetLinesNetEnt10
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)
@@ -76,10 +77,10 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
 		var line = bl[li-1]
 
+		var mw float64 = 1 // mult wild
 		var numw, numl slot.Pos = 0, 5
 		var syml slot.Sym
 		var x slot.Pos
-		var mw float64 = 1 // mult wild
 		for x = 1; x <= 5; x++ {
 			var sx = screen.Pos(x, line)
 			if sx == wild {

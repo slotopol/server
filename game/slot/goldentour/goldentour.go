@@ -21,6 +21,9 @@ var LinePay = [11][5]float64{
 	{0, 0, 0, 0, 0},         // 11 luce
 }
 
+// Bet lines
+var bl = slot.BetLinesHot5
+
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
 }
@@ -28,18 +31,10 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{
-			Sel: slot.MakeBitNum(5, 1),
+			Sel: slot.MakeBitNum(len(bl), 1),
 			Bet: 1,
 		},
 	}
-}
-
-var bl = []slot.Linex{
-	{2, 2, 2, 2, 2}, // 1
-	{1, 1, 1, 1, 1}, // 2
-	{3, 3, 3, 3, 3}, // 3
-	{1, 2, 3, 2, 1}, // 4
-	{3, 2, 1, 2, 3}, // 5
 }
 
 const golfbon = 1

@@ -24,24 +24,7 @@ var ScatPay = [5]float64{0, 0, 4, 40, 400} // scatter
 // Scatter freespins table
 var ScatFreespin = [5]int{0, 0, 10, 25, 50} // scatter
 
-type Game struct {
-	slot.Slot5x3 `yaml:",inline"`
-	// free spin number
-	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
-}
-
-func NewGame() *Game {
-	return &Game{
-		Slot5x3: slot.Slot5x3{
-			Sel: slot.MakeBitNum(9, 1),
-			Bet: 1,
-		},
-		FS: 0,
-	}
-}
-
-const wild, scat = 1, 2
-
+// Bet lines
 var bl = []slot.Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
@@ -53,6 +36,24 @@ var bl = []slot.Linex{
 	{2, 1, 2, 3, 2}, // 8
 	{2, 3, 2, 1, 2}, // 9
 }
+
+type Game struct {
+	slot.Slot5x3 `yaml:",inline"`
+	// free spin number
+	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
+}
+
+func NewGame() *Game {
+	return &Game{
+		Slot5x3: slot.Slot5x3{
+			Sel: slot.MakeBitNum(len(bl), 1),
+			Bet: 1,
+		},
+		FS: 0,
+	}
+}
+
+const wild, scat = 1, 2
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)

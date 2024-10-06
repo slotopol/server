@@ -5,24 +5,21 @@ package links
 import (
 	"context"
 
-	slot "github.com/slotopol/server/game/slot/trolls"
+	slot "github.com/slotopol/server/game/slot/reelsteal"
 	"github.com/spf13/pflag"
 )
 
 func init() {
 	var gi = GameInfo{
 		Aliases: []GameAlias{
-			{ID: "trolls", Name: "Trolls"},
-			{ID: "excalibur", Name: "Excalibur"},
-			{ID: "pandorasbox", Name: "Pandora's Box"},
-			{ID: "wildwitches", Name: "Wild Witches"},
+			{ID: "reelsteal", Name: "Reel Steal"},
 		},
 		Provider: "NetEnt",
 		SX:       5,
 		SY:       3,
-		GP:       GPsel | GPretrig | GPfgmult | GPscat | GPwild,
+		GP:       GPsel | GPfghas | GPfgmult | GPscat | GPwild,
 		SN:       len(slot.LinePay),
-		LN:       20,
+		LN:       9,
 		BN:       0,
 		RTP:      MakeRtpList(slot.ReelsMap),
 	}
@@ -32,7 +29,7 @@ func init() {
 		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
 			if is, _ := flags.GetBool(ga.ID); is {
 				var rn, _ = flags.GetString("reels")
-				slot.CalcStat(ctx, rn)
+				slot.CalcStatReg(ctx, rn)
 			}
 		})
 		GameFactory[ga.ID] = func() any {

@@ -16,6 +16,9 @@ var LinePay = [8][3]float64{
 	{0, 0, 5},   // 8 x
 }
 
+// Bet lines
+var bl = slot.BetLinesHot3
+
 type Game struct {
 	slot.Slot3x3 `yaml:",inline"`
 }
@@ -23,14 +26,13 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot3x3: slot.Slot3x3{
-			Sel: slot.MakeBitNum(5, 1),
+			Sel: slot.MakeBitNum(len(bl), 1),
 			Bet: 1,
 		},
 	}
 }
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
-	var bl = slot.BetLinesHot3
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
 		var line = bl[li-1]
 		var fm float64 = 1 // fill mult

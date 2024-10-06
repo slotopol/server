@@ -41,6 +41,9 @@ var Jackpot = [10][5]int{
 	{0, 0, 0, 0, 0}, // 10 star
 }
 
+// Bet lines
+var bl = slot.BetLinesNvm40
+
 type Game struct {
 	slot.Slot5x4 `yaml:",inline"`
 }
@@ -48,15 +51,13 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x4: slot.Slot5x4{
-			Sel: slot.MakeBitNum(40, 1),
+			Sel: slot.MakeBitNum(len(bl), 1),
 			Bet: 1,
 		},
 	}
 }
 
 const wild, scat = 9, 10
-
-var bl = slot.BetLinesNvm40
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)

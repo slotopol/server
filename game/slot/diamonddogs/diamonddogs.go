@@ -25,6 +25,9 @@ var ScatPay = [5]float64{0, 2, 4, 25, 100} // 11 scatter
 // Scatter freespins table
 var ScatFreespin = [5]int{0, 0, 10, 10, 10} // 11 scatter
 
+// Bet lines
+var bl = slot.BetLinesBetSoft25
+
 const (
 	ne12 = 1 // bonus ID
 )
@@ -38,7 +41,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{
-			Sel: slot.MakeBitNum(25, 1),
+			Sel: slot.MakeBitNum(len(bl), 1),
 			Bet: 1,
 		},
 		FS: 0,
@@ -46,8 +49,6 @@ func NewGame() *Game {
 }
 
 const bon, wild, scat = 9, 10, 11
-
-var bl = slot.BetLinesBetSoft25
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)

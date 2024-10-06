@@ -71,6 +71,9 @@ var Jackpot = [13][5]int{
 	{0, 0, 0, 0, 0},   // 13 dice
 }
 
+// Bet lines
+var bl = slot.BetLinesMgj
+
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
 }
@@ -103,8 +106,6 @@ var special = [13]bool{
 
 const wild, scat = 11, 1
 
-var bl = slot.BetLinesMgj
-
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)
 	g.ScanScatters(screen, wins)
@@ -115,10 +116,10 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
 		var line = bl[li-1]
 
+		var mw float64 = 1 // mult wild
 		var numw, numl slot.Pos = 0, 5
 		var syml slot.Sym
 		var x slot.Pos
-		var mw float64 = 1 // mult wild
 		for x = 1; x <= 5; x++ {
 			var sx = screen.Pos(x, line)
 			if sx == wild {

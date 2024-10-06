@@ -9,7 +9,7 @@ import (
 	slot "github.com/slotopol/server/game/slot"
 )
 
-func CalcStatReg(ctx context.Context, rn string) float64 {
+func CalcStat(ctx context.Context, rn string) float64 {
 	var reels *slot.Reels5x
 	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
 		_, reels = slot.FindReels(ReelsMap, mrtp)

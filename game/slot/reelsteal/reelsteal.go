@@ -1,37 +1,35 @@
-package simsalabim
+package reelsteal
+
+// See: https://www.youtube.com/watch?v=5wEFg65Maa0
 
 import (
 	slot "github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/game/slot/diamonddogs"
 )
 
 // Lined payment.
-var LinePay = [11][5]float64{
-	{0, 0, 50, 150, 1000},   //  1 hat
-	{0, 0, 25, 100, 500},    //  2 chest
-	{0, 0, 15, 75, 300},     //  3 cell
-	{0, 0, 10, 50, 200},     //  4 cards
-	{0, 0, 5, 50, 150},      //  5 ace
-	{0, 0, 5, 25, 100},      //  6 king
-	{0, 0, 5, 25, 100},      //  7 queen
-	{0, 0, 5, 25, 100},      //  8 jack
-	{},                      //  9 bonus
-	{0, 5, 200, 2000, 7500}, // 10 wild
-	{},                      // 11 scatter
+var LinePay = [12][5]float64{
+	{},                    //  1 wild
+	{},                    //  2 scatter
+	{0, 0, 25, 150, 1500}, //  3 killer
+	{0, 0, 20, 100, 1000}, //  4 baby
+	{0, 0, 15, 75, 750},   //  5 boss
+	{0, 0, 12, 60, 400},   //  6 driver
+	{0, 0, 10, 50, 200},   //  7 thug
+	{0, 0, 10, 20, 100},   //  8 safe
+	{0, 0, 5, 15, 75},     //  9 case
+	{0, 0, 4, 12, 60},     // 10 bag
+	{0, 0, 2, 10, 50},     // 11 plan
+	{0, 0, 2, 10, 40},     // 12 gun
 }
 
 // Scatters payment.
-var ScatPay = [5]float64{0, 2, 4, 25, 200} // 11 scatter
+var ScatPay = [5]float64{0, 2, 4, 15, 100} // 2 scatter
 
 // Scatter freespins table
-var ScatFreespin = [5]int{0, 0, 10, 20, 30} // 11 scatter
+var ScatFreespin = [5]int{0, 0, 15, 20, 25} // 2 scatter
 
 // Bet lines
-var bl = slot.BetLinesBetSoft25
-
-const (
-	ne12 = 1 // bonus ID
-)
+var bl = slot.BetLinesNvm9
 
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
@@ -49,7 +47,7 @@ func NewGame() *Game {
 	}
 }
 
-const bon, wild, scat = 9, 10, 11
+const wild, scat = 1, 2
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)
@@ -61,18 +59,14 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
 		var line = bl[li-1]
 
-		var numw, numl slot.Pos = 0, 5
+		var mw float64 = 1 // mult wild
+		var numl slot.Pos = 5
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
 			var sx = screen.Pos(x, line)
 			if sx == wild {
-				if syml == 0 {
-					numw = x
-				} else if syml == bon {
-					numl = x - 1
-					break
-				}
+				mw = 5
 			} else if syml == 0 && sx != scat {
 				syml = sx
 			} else if sx != syml {
@@ -81,47 +75,19 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 			}
 		}
 
-		var payw, payl float64
-		if numw > 0 {
-			payw = LinePay[wild-1][numw-1]
-		}
-		if numl > 0 && syml > 0 {
-			payl = LinePay[syml-1][numl-1]
-		}
-		if payl > payw {
+		if numl >= 3 && syml > 0 {
 			var mm float64 = 1 // mult mode
 			if g.FS > 0 {
-				mm = 3
+				mm = 5
 			}
+			var pay = LinePay[syml-1][numl-1]
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * payl,
-				Mult: mm,
+				Pay:  g.Bet * pay,
+				Mult: mw * mm,
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
 				XY:   line.CopyL(numl),
-			})
-		} else if payw > 0 {
-			var mm float64 = 1 // mult mode
-			if g.FS > 0 {
-				mm = 3
-			}
-			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * payw,
-				Mult: mm,
-				Sym:  wild,
-				Num:  numw,
-				Line: li,
-				XY:   line.CopyL(numw),
-			})
-		} else if syml == bon && numl >= 3 { // appear on regular games only
-			*wins = append(*wins, slot.WinItem{
-				Mult: 1,
-				Sym:  syml,
-				Num:  numl,
-				Line: li,
-				XY:   line.CopyL(numl),
-				BID:  ne12,
 			})
 		}
 	}
@@ -129,15 +95,21 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
-	if count := screen.ScatNum(scat); count >= 2 {
-		var mm float64 = 1 // mult mode
-		if g.FS > 0 {
-			mm = 3
-		}
+	var count = screen.ScatNum(scat)
+	if g.FS > 0 {
+		*wins = append(*wins, slot.WinItem{
+			Pay:  0,
+			Mult: 1,
+			Sym:  scat,
+			Num:  count,
+			XY:   screen.ScatPos(scat),
+			Free: int(count),
+		})
+	} else if count >= 2 {
 		var pay, fs = ScatPay[count-1], ScatFreespin[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * float64(g.Sel.Num()) * pay,
-			Mult: mm,
+			Mult: 1,
 			Sym:  scat,
 			Num:  count,
 			XY:   screen.ScatPos(scat),
@@ -147,21 +119,8 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 }
 
 func (g *Game) Spin(screen slot.Screen, mrtp float64) {
-	if g.FS == 0 {
-		var _, reels = slot.FindReels(ReelsMap, mrtp)
-		screen.Spin(reels)
-	} else {
-		screen.Spin(&ReelsBon)
-	}
-}
-
-func (g *Game) Spawn(screen slot.Screen, wins slot.Wins) {
-	for i, wi := range wins {
-		switch wi.BID {
-		case ne12:
-			wins[i].Bon, wins[i].Pay = diamonddogs.BonusSpawn(g.Bet)
-		}
-	}
+	var _, reels = slot.FindReels(ReelsMap, mrtp)
+	screen.Spin(reels)
 }
 
 func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {

@@ -68,6 +68,15 @@ var BetLinesHot3 = []Linex{
 	{3, 2, 1}, // 5
 }
 
+// Sizzling Hot bet lines
+var BetLinesHot5 = []Linex{
+	{2, 2, 2, 2, 2}, // 1
+	{1, 1, 1, 1, 1}, // 2
+	{3, 3, 3, 3, 3}, // 3
+	{1, 2, 3, 2, 1}, // 4
+	{3, 2, 1, 2, 3}, // 5
+}
+
 // Megajack 21 bet lines
 var BetLinesMgj = []Linex{
 	{2, 2, 2, 2, 2}, // 1

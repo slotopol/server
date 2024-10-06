@@ -28,6 +28,19 @@ var ScatPay = [5]float64{0, 2, 3, 25, 250} // 2 scatter
 
 var ScatRand = []int{10, 15, 15, 20, 25}
 
+// Bet lines
+var bl = []slot.Linex{
+	{2, 2, 2, 2, 2}, // 1
+	{1, 1, 1, 1, 1}, // 2
+	{3, 3, 3, 3, 3}, // 3
+	{1, 2, 3, 2, 1}, // 4
+	{3, 2, 1, 2, 3}, // 5
+	{2, 1, 1, 1, 2}, // 6
+	{2, 3, 3, 3, 2}, // 7
+	{1, 1, 2, 3, 3}, // 8
+	{3, 3, 2, 1, 1}, // 9
+}
+
 const (
 	Efs = 17  // average free spins for ScatRand set
 	Pfs = 0.3 // probability of "got away" at free spins
@@ -44,7 +57,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{
-			Sel: slot.MakeBitNum(9, 1),
+			Sel: slot.MakeBitNum(len(bl), 1),
 			Bet: 1,
 		},
 		FS: 0,
@@ -53,18 +66,6 @@ func NewGame() *Game {
 }
 
 const wild, scat = 1, 2
-
-var bl = []slot.Linex{
-	{2, 2, 2, 2, 2}, // 1
-	{1, 1, 1, 1, 1}, // 2
-	{3, 3, 3, 3, 3}, // 3
-	{1, 2, 3, 2, 1}, // 4
-	{3, 2, 1, 2, 3}, // 5
-	{2, 1, 1, 1, 2}, // 6
-	{2, 3, 3, 3, 2}, // 7
-	{1, 1, 2, 3, 3}, // 8
-	{3, 3, 2, 1, 1}, // 9
-}
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)
@@ -78,10 +79,10 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
 		var line = bl[li-1]
 
+		var mw float64 = 1 // mult wild
 		var numw, numl slot.Pos = 0, 5
 		var syml slot.Sym
 		var x slot.Pos
-		var mw float64 = 1 // mult wild
 		for x = 1; x <= 5; x++ {
 			var sx = screen.Pos(x, line)
 			if sx == wild {

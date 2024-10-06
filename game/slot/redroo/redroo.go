@@ -75,9 +75,9 @@ loop1:
 				for line[3] = 1; line[3] <= 4; line[3]++ {
 				loop5:
 					for line[4] = 1; line[4] <= 4; line[4]++ {
+						var mw float64 = 1 // mult wild
 						var numl slot.Pos = 5
 						var syml slot.Sym
-						var mw float64 = 1 // mult wild
 						var x slot.Pos
 						for x = 1; x <= 5; x++ {
 							var sx = screen.Pos(x, line)

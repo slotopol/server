@@ -24,21 +24,7 @@ var LinePay = [11][5]float64{
 // Scatters payment.
 var ScatPay = [5]float64{0, 1, 5, 10, 100} //  2 suitcase
 
-type Game struct {
-	slot.Slot5x3 `yaml:",inline"`
-}
-
-func NewGame() *Game {
-	return &Game{
-		Slot5x3: slot.Slot5x3{
-			Sel: slot.MakeBitNum(9, 1),
-			Bet: 1,
-		},
-	}
-}
-
-const wild, scat = 1, 2
-
+// Bet lines
 var bl = []slot.Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
@@ -51,6 +37,21 @@ var bl = []slot.Linex{
 	{2, 3, 3, 3, 2}, // 9
 }
 
+type Game struct {
+	slot.Slot5x3 `yaml:",inline"`
+}
+
+func NewGame() *Game {
+	return &Game{
+		Slot5x3: slot.Slot5x3{
+			Sel: slot.MakeBitNum(len(bl), 1),
+			Bet: 1,
+		},
+	}
+}
+
+const wild, scat = 1, 2
+
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)
 	g.ScanScatters(screen, wins)
@@ -61,10 +62,10 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
 		var line = bl[li-1]
 
+		var mw float64 = 1 // mult wild
 		var numl slot.Pos = 1
 		var syml = screen.Pos(1, line)
 		var x slot.Pos
-		var mw float64 = 1 // mult wild
 		for x = 2; x <= 5; x++ {
 			var sx = screen.Pos(x, line)
 			if sx == wild {
@@ -87,10 +88,10 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 		}
 
 		if numl < 5 {
+			var mw float64 = 1 // mult wild
 			var numr slot.Pos = 1
 			var symr = screen.Pos(5, line)
 			var x slot.Pos
-			var mw float64 = 1 // mult wild
 			for x = 4; x > numl; x-- {
 				var sx = screen.Pos(x, line)
 				if sx == wild {

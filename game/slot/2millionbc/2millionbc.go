@@ -24,6 +24,9 @@ var LinePay = [13][5]float64{
 // Scatter freespins table
 var ScatFreespin = [5]int{0, 0, 4, 12, 20} // 11 fire
 
+// Bet lines
+var bl = slot.BetLinesBetSoft30
+
 const (
 	acbn = 1 // acorn bonus
 	dlbn = 2 // diamond lion bonus
@@ -42,7 +45,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{
-			Sel: slot.MakeBitNum(30, 1),
+			Sel: slot.MakeBitNum(len(bl), 1),
 			Bet: 1,
 		},
 		FS: 0,
@@ -50,8 +53,6 @@ func NewGame() *Game {
 }
 
 const scat, acorn, diamond = 11, 12, 13
-
-var bl = slot.BetLinesBetSoft30
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)

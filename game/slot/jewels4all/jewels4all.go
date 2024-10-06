@@ -34,6 +34,9 @@ var Jackpot = [8][5]int{
 	{0, 0, 0, 0, 0}, //  8 euro
 }
 
+// Bet lines
+var bl = slot.BetLinesNvm10
+
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
 }
@@ -48,8 +51,6 @@ func NewGame() *Game {
 }
 
 const wild = 8
-
-var bl = slot.BetLinesNvm10
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)

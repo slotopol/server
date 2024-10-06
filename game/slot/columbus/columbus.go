@@ -36,6 +36,9 @@ var Jackpot = [10][5]int{
 	{0, 0, 0, 0, 0}, // 10 ship
 }
 
+// Bet lines
+var bl = slot.BetLinesNvm10
+
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
 	// free spin number
@@ -53,8 +56,6 @@ func NewGame() *Game {
 }
 
 const wild, scat = 1, 10
-
-var bl = slot.BetLinesNvm10
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)
