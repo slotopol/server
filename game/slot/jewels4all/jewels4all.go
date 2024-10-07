@@ -131,15 +131,5 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 }
 
 func (g *Game) SetSel(sel slot.Bitset) error {
-	if sel.IsZero() {
-		return slot.ErrNoLineset
-	}
-	if bs := sel; !bs.AndNot(slot.MakeBitNum(len(bl), 1)).IsZero() {
-		return slot.ErrLinesetOut
-	}
-	if g.FreeSpins() > 0 {
-		return slot.ErrDisabled
-	}
-	g.Sel = sel
-	return nil
+	return g.SetSelNum(sel, len(bl))
 }

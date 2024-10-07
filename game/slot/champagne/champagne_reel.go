@@ -31,5 +31,5 @@ var Reels964 = slot.Reels5x{
 
 // Map with available reels.
 var ReelsMap = map[float64]*slot.Reels5x{
-	96.441093: &Reels964, // original
+	96.441093: &Reels964, // original reels
 }

@@ -32,6 +32,6 @@ func CalcStat(ctx context.Context, rn string) float64 {
 	if s.JackCount[jid] > 0 {
 		fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(reshuf/float64(s.JackCount[jid])))
 	}
-	fmt.Printf("RTP = %g%%\n", lrtp)
+	fmt.Printf("RTP = %.6f%%\n", lrtp)
 	return lrtp
 }

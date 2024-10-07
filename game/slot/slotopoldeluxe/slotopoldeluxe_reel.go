@@ -73,5 +73,5 @@ var ReelsMap = map[float64]*slot.Reels5x{
 	95.677817:  &Reels957,
 	96.994365:  &Reels970,
 	98.643506:  &Reels986,
-	103.561510: &Reels104, // original
+	103.561510: &Reels104, // original reels
 }

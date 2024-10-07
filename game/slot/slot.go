@@ -172,6 +172,20 @@ func (g *Slot3x3) GetSel() Bitset {
 	return g.Sel
 }
 
+func (g *Slot3x3) SetSelNum(sel Bitset, bln int) error {
+	if sel.IsZero() {
+		return ErrNoLineset
+	}
+	if bs := sel; !bs.AndNot(MakeBitNum(bln, 1)).IsZero() {
+		return ErrLinesetOut
+	}
+	if g.FreeSpins() > 0 {
+		return ErrDisabled
+	}
+	g.Sel = sel
+	return nil
+}
+
 // Slot5x3 is base struct for all slot games with screen 5x3.
 type Slot5x3 struct {
 	Sel Bitset  `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
@@ -226,6 +240,20 @@ func (g *Slot5x3) GetSel() Bitset {
 	return g.Sel
 }
 
+func (g *Slot5x3) SetSelNum(sel Bitset, bln int) error {
+	if sel.IsZero() {
+		return ErrNoLineset
+	}
+	if bs := sel; !bs.AndNot(MakeBitNum(bln, 1)).IsZero() {
+		return ErrLinesetOut
+	}
+	if g.FreeSpins() > 0 {
+		return ErrDisabled
+	}
+	g.Sel = sel
+	return nil
+}
+
 // Slot5x4 is base struct for all slot games with screen 5x4.
 type Slot5x4 struct {
 	Sel Bitset  `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
@@ -278,4 +306,18 @@ func (g *Slot5x4) SetBet(bet float64) error {
 
 func (g *Slot5x4) GetSel() Bitset {
 	return g.Sel
+}
+
+func (g *Slot5x4) SetSelNum(sel Bitset, bln int) error {
+	if sel.IsZero() {
+		return ErrNoLineset
+	}
+	if bs := sel; !bs.AndNot(MakeBitNum(bln, 1)).IsZero() {
+		return ErrLinesetOut
+	}
+	if g.FreeSpins() > 0 {
+		return ErrDisabled
+	}
+	g.Sel = sel
+	return nil
 }
