@@ -14,7 +14,7 @@ func CalcStat(ctx context.Context, rn string) float64 {
 	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
 		_, reels = slot.FindReels(ReelsMap, mrtp)
 	} else {
-		reels = &ReelsReg96
+		reels = &Reels926
 	}
 	var g = NewGame()
 	var sln float64 = 1
@@ -29,7 +29,7 @@ func CalcStat(ctx context.Context, rn string) float64 {
 	var rtpsym = lrtp + srtp
 	var q = float64(s.FreeCount) / reshuf
 	var sq = 1 / (1 - q)
-	var rtp = rtpsym + q*rtpsym*sq*3
+	var rtp = rtpsym + q*rtpsym*sq*Emc
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/float64(s.Planned())*100, g.Sel.Num(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
@@ -39,6 +39,6 @@ func CalcStat(ctx context.Context, rn string) float64 {
 	if s.JackCount[jid] > 0 {
 		fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(reshuf/float64(s.JackCount[jid])))
 	}
-	fmt.Printf("RTP = %.5g(sym) + %.5g*%.5g(fg)*3 = %.6f%%\n", rtpsym, q, rtpsym*sq, rtp)
+	fmt.Printf("RTP = %.5g(sym) + %.5g*%.5g(fg)*4.2 = %.6f%%\n", rtpsym, q, rtpsym*sq, rtp)
 	return rtp
 }

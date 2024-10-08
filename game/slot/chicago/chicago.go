@@ -163,7 +163,8 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 	screen.Spin(reels)
 }
 
-var MultChoose = []float64{1, 1, 1, 2, 2, 2, 3, 3, 5, 10} // E = 3.0
+var MultChoose = []float64{1, 2, 3, 5, 10} // E = 4.2
+const Emc = 4.2
 
 func (g *Game) Prepare() {
 	if g.FS > 0 {
