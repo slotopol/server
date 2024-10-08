@@ -146,6 +146,15 @@ const (
 	SEC_slot_selset_noaccess
 	SEC_slot_selset_badlines
 
+	// POST /slot/mode/set
+
+	SEC_slot_modeset_nobind
+	SEC_slot_modeset_nogid
+	SEC_slot_modeset_notopened
+	SEC_slot_modeset_notslot
+	SEC_slot_modeset_noaccess
+	SEC_slot_modeset_badmode
+
 	// POST /slot/sel/getslice
 
 	SEC_slot_selgetslice_nobind

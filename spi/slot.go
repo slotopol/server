@@ -189,6 +189,50 @@ func SpiSlotSelSet(c *gin.Context) {
 	Ret204(c)
 }
 
+// Change game mode depending on the user's choice.
+func SpiSlotModeSet(c *gin.Context) {
+	var err error
+	var ok bool
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
+		N       int      `json:"n" yaml:"n" xml:"n,attr" form:"n"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, SEC_slot_modeset_nobind, err)
+		return
+	}
+	if arg.GID == 0 {
+		Ret400(c, SEC_slot_modeset_nogid, ErrNoGID)
+		return
+	}
+
+	var scene *Scene
+	if scene, ok = Scenes.Get(arg.GID); !ok {
+		Ret404(c, SEC_slot_modeset_notopened, ErrNotOpened)
+		return
+	}
+	var game slot.SlotGame
+	if game, ok = scene.Game.(slot.SlotGame); !ok {
+		Ret403(c, SEC_slot_modeset_notslot, ErrNotSlot)
+		return
+	}
+
+	var admin, al = MustAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&ALgame == 0 {
+		Ret403(c, SEC_slot_modeset_noaccess, ErrNoAccess)
+		return
+	}
+
+	if err = game.SetMode(arg.N); err != nil {
+		Ret403(c, SEC_slot_modeset_badmode, err)
+		return
+	}
+
+	Ret204(c)
+}
+
 // Returns selected bet lines slice.
 func SpiSlotSelGetSlice(c *gin.Context) {
 	var err error

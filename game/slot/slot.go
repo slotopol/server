@@ -68,6 +68,7 @@ type SlotGame interface {
 	SetBet(float64) error  // set bet to given value
 	GetSel() Bitset        // returns selected bet lines indexes, constat function
 	SetSel(Bitset) error   // setup selected bet lines indexes
+	SetMode(int) error     // change game mode depending on the user's choice
 }
 
 // Reels for 3-reels slots.
@@ -186,6 +187,10 @@ func (g *Slot3x3) SetSelNum(sel Bitset, bln int) error {
 	return nil
 }
 
+func (g *Slot3x3) SetMode(int) error {
+	return ErrNoFeature
+}
+
 // Slot5x3 is base struct for all slot games with screen 5x3.
 type Slot5x3 struct {
 	Sel Bitset  `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
@@ -254,6 +259,10 @@ func (g *Slot5x3) SetSelNum(sel Bitset, bln int) error {
 	return nil
 }
 
+func (g *Slot5x3) SetMode(int) error {
+	return ErrNoFeature
+}
+
 // Slot5x4 is base struct for all slot games with screen 5x4.
 type Slot5x4 struct {
 	Sel Bitset  `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
@@ -320,4 +329,8 @@ func (g *Slot5x4) SetSelNum(sel Bitset, bln int) error {
 	}
 	g.Sel = sel
 	return nil
+}
+
+func (g *Slot5x4) SetMode(int) error {
+	return ErrNoFeature
 }

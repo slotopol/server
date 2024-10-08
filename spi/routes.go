@@ -150,6 +150,7 @@ func Router(r *gin.Engine) {
 	rs.POST("/bet/set", SpiSlotBetSet)
 	rs.POST("/sel/get", SpiSlotSelGet)
 	rs.POST("/sel/set", SpiSlotSelSet)
+	rs.POST("/mode/set", SpiSlotModeSet)
 	rs.POST("/sel/getslice", SpiSlotSelGetSlice)
 	rs.POST("/sel/setslice", SpiSlotSelSetSlice)
 	rs.POST("/spin", SpiSlotSpin)

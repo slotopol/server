@@ -1,10 +1,14 @@
 
-# Slot server
+# Slots server
 
 [![GitHub release](https://img.shields.io/github/v/release/slotopol/server.svg)](https://github.com/slotopol/server/releases/latest)
 [![Hits-of-Code](https://hitsofcode.com/github/slotopol/server?branch=main)](https://hitsofcode.com/github/slotopol/server/view?branch=main)
 
+![slotopol-server](docs/logo.webp|alt=slotopol-server)
+
 Slots games server. Releases functionality for Megajack, Novomatic, NetEnt, BetSoft, and some others providers of slot games. Has built-in reels scanner and the sets of reels on different RTP for each game.
+
+Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 # How to build from sources
 
@@ -44,6 +48,10 @@ The list of all provided games can be obtained by command:
 ```cmd
 slot_win_x64 list --all
 ```
+
+# How to test workflow
+
+Build [bot](https://github.com/slotopol/bot) as it described, and run some scripts at `script` folder of project. See [readme](https://github.com/slotopol/bot/blob/main/README.md) for details.
 
 # Architecture and logic
 
