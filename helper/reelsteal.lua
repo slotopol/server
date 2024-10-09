@@ -4,16 +4,16 @@ dofile(path.."reelgen.lua")
 local symset = {
 	1, --  1 wild
 	1, --  2 scatter
-	2, --  3 killer
-	2, --  4 baby
-	3, --  5 boss
-	3, --  6 driver
-	4, --  7 thug
-	4, --  8 safe
-	5, --  9 case
-	6, -- 10 bag
-	6, -- 11 plan
-	6, -- 12 gun
+	1, --  3 money bag
+	2, --  4 banknotes
+	2, --  5 keys
+	3, --  6 wallet
+	3, --  7 piggy bank
+	5, --  8 ace
+	6, --  9 king
+	6, -- 10 queen
+	6, -- 11 jack
+	6, -- 12 ten
 }
 
 local neighbours = {

@@ -4,7 +4,7 @@
 [![GitHub release](https://img.shields.io/github/v/release/slotopol/server.svg)](https://github.com/slotopol/server/releases/latest)
 [![Hits-of-Code](https://hitsofcode.com/github/slotopol/server?branch=main)](https://hitsofcode.com/github/slotopol/server/view?branch=main)
 
-![slotopol-server](docs/logo.webp|alt=slotopol-server)
+![slotopol-server](docs/logo.webp)
 
 Slots games server. Releases functionality for Megajack, Novomatic, NetEnt, BetSoft, and some others providers of slot games. Has built-in reels scanner and the sets of reels on different RTP for each game.
 

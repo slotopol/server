@@ -31,24 +31,32 @@ var ScatPay = [5]float64{0, 2, 5, 20, 500} // 13 scatter
 // Bet lines
 var bl = slot.BetLinesPlt30
 
+const (
+	shell_x5   = 1
+	shell_x8   = 2
+	shell_fs7  = 3
+	shell_fs10 = 4
+	shell_fs15 = 5
+)
+
 type Seashells struct {
-	Sel1 string  `json:"sel1" yaml:"sel1" xml:"sel1"`
-	Sel2 string  `json:"sel2" yaml:"sel2" xml:"sel2"`
+	Sel1 int     `json:"sel1" yaml:"sel1" xml:"sel1"`
+	Sel2 int     `json:"sel2" yaml:"sel2" xml:"sel2"`
 	Mult float64 `json:"mult" yaml:"mult" xml:"mult"`
 	Free int     `json:"free" yaml:"free" xml:"free"`
 }
 
-func (s *Seashells) SetupShell(shell string) {
+func (s *Seashells) SetupShell(shell int) {
 	switch shell {
-	case "x5":
+	case shell_x5:
 		s.Mult += 5
-	case "x8":
+	case shell_x8:
 		s.Mult += 8
-	case "7":
+	case shell_fs7:
 		s.Free += 7
-	case "10":
+	case shell_fs10:
 		s.Free += 10
-	case "15":
+	case shell_fs15:
 		s.Free += 15
 	}
 }
@@ -172,7 +180,7 @@ func (g *Game) Spawn(screen slot.Screen, wins slot.Wins) {
 	}
 	for i := range wins {
 		if wi := &wins[i]; wi.Sym == scat {
-			var idx = []string{"x5", "x8", "7", "10", "15"}
+			var idx = []int{shell_x5, shell_x8, shell_fs7, shell_fs10, shell_fs15}
 			rand.Shuffle(len(idx), func(i, j int) {
 				idx[i], idx[j] = idx[j], idx[i]
 			})
@@ -203,7 +211,7 @@ func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
 	}
 	for _, wi := range wins {
 		if wi.Sym == scat {
-			if g.FS > 0 {
+			if g.M > 0 {
 				g.FS += wi.Free
 			} else {
 				var bon = wi.Bon.(Seashells)

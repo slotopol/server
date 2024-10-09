@@ -1,4 +1,4 @@
-package reelsteal
+package piggyriches
 
 import (
 	"context"
@@ -14,12 +14,13 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
 		_, reels = slot.FindReels(ReelsMap, mrtp)
 	} else {
-		reels = &Reels921
+		reels = &Reels930
 	}
 	var g = NewGame()
 	var sln float64 = 1
 	g.Sel.SetNum(int(sln), 1)
 	g.FS = 15 // set free spins mode
+	g.M = 3
 	var s slot.Stat
 
 	var dur = slot.ScanReels(ctx, &s, g, reels,
@@ -52,7 +53,7 @@ func CalcStatReg(ctx context.Context, rn string) float64 {
 	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
 		_, reels = slot.FindReels(ReelsMap, mrtp)
 	} else {
-		reels = &Reels921
+		reels = &Reels930
 	}
 	var g = NewGame()
 	var sln float64 = 1
