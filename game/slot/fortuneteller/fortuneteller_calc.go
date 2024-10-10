@@ -3,7 +3,6 @@ package fortuneteller
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"time"
 
 	slot "github.com/slotopol/server/game/slot"
@@ -25,13 +24,8 @@ func ExpCards() float64 {
 	return E
 }
 
-func CalcStatBon(ctx context.Context, rn string) float64 {
-	var reels *slot.Reels5x
-	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
-		_, reels = slot.FindReels(ReelsMap, mrtp)
-	} else {
-		reels = &Reels92
-	}
+func CalcStatBon(ctx context.Context, mrtp float64) float64 {
+	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	var g = NewGame()
 	var sln float64 = 1
 	g.Sel.SetNum(int(sln), 1)
@@ -56,21 +50,16 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 	return rtp
 }
 
-func CalcStatReg(ctx context.Context, rn string) float64 {
+func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*bonus games calculations*\n")
 	Ecards = ExpCards()
 	fmt.Printf("*bonus reels calculations*\n")
-	var rtpfs = CalcStatBon(ctx, rn)
+	var rtpfs = CalcStatBon(ctx, mrtp)
 	if ctx.Err() != nil {
 		return 0
 	}
 	fmt.Printf("*regular reels calculations*\n")
-	var reels *slot.Reels5x
-	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
-		_, reels = slot.FindReels(ReelsMap, mrtp)
-	} else {
-		reels = &Reels92
-	}
+	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	var g = NewGame()
 	var sln float64 = 1
 	g.Sel.SetNum(int(sln), 1)

@@ -1,8 +1,6 @@
 package powerstars
 
 import (
-	"math"
-
 	slot "github.com/slotopol/server/game/slot"
 )
 
@@ -58,15 +56,6 @@ var ChanceMap = map[float64]float64{
 	// free spins: q = 0.083289, 1/q = 12.006, rtpfs = 509.549567%
 	// RTP = 69.063(sym) + q*509.55(fg) = 111.502592%
 	111.502592: 1 / 35.,
-}
-
-func FindChance(mrtp float64) (rtp float64, chance float64) {
-	for p, c := range ChanceMap {
-		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
-			rtp, chance = p, c
-		}
-	}
-	return
 }
 
 // Returns the probability of getting at least one star on the 3 reels,

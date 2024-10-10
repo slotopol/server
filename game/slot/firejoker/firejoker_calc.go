@@ -3,7 +3,6 @@ package firejoker
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"time"
 
 	slot "github.com/slotopol/server/game/slot"
@@ -54,13 +53,8 @@ func CalcStatSym(ctx context.Context, g *Game, reels slot.Reels, gs slot.Sym) fl
 	return rtpsym
 }
 
-func CalcStatBon(ctx context.Context, rn string) (rtp float64) {
-	var reels *slot.Reels5x
-	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
-		_, reels = slot.FindReels(ReelsMap, mrtp)
-	} else {
-		reels = &Reels92
-	}
+func CalcStatBon(ctx context.Context, mrtp float64) (rtp float64) {
+	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	var g = NewGame()
 	g.Sel.SetNum(1, 1)
 
@@ -72,19 +66,14 @@ func CalcStatBon(ctx context.Context, rn string) (rtp float64) {
 	return
 }
 
-func CalcStatReg(ctx context.Context, rn string) float64 {
+func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*bonus reels calculations*\n")
-	var rtpfs = CalcStatBon(ctx, rn)
+	var rtpfs = CalcStatBon(ctx, mrtp)
 	if ctx.Err() != nil {
 		return 0
 	}
 	fmt.Printf("*regular reels calculations*\n")
-	var reels *slot.Reels5x
-	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
-		_, reels = slot.FindReels(ReelsMap, mrtp)
-	} else {
-		reels = &Reels92
-	}
+	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	var g = NewGame()
 	var sln float64 = 1
 	g.Sel.SetNum(int(sln), 1)

@@ -3,7 +3,6 @@ package greatblue
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"time"
 
 	slot "github.com/slotopol/server/game/slot"
@@ -35,13 +34,8 @@ func FirstSreespins() (fsavr1 float64, multavr float64) {
 	return
 }
 
-func CalcStat(ctx context.Context, rn string) float64 {
-	var reels *slot.Reels5x
-	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
-		_, reels = slot.FindReels(ReelsMap, mrtp)
-	} else {
-		reels = &Reels92
-	}
+func CalcStat(ctx context.Context, mrtp float64) float64 {
+	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	var g = NewGame()
 	var sln float64 = 5
 	g.Sel.SetNum(int(sln), 1)

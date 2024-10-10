@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"math"
-	"strconv"
 	"time"
 
 	slot "github.com/slotopol/server/game/slot"
@@ -83,17 +82,12 @@ func ExpMonopoly() float64 {
 	return E
 }
 
-func CalcStat(ctx context.Context, rn string) float64 {
+func CalcStat(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*bonus games calculations*\n")
 	Emje = ExpEldorado()
 	Emjm = ExpMonopoly()
 	fmt.Printf("*reels calculations*\n")
-	var reels *slot.Reels5x
-	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
-		_, reels = slot.FindReels(ReelsMap, mrtp)
-	} else {
-		reels = &Reels100
-	}
+	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	var g = NewGame()
 	var sln float64 = 1
 	g.Sel.SetNum(int(sln), 1)

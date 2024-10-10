@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"math"
-	"strconv"
 	"sync/atomic"
 	"time"
 
@@ -27,13 +26,8 @@ func (s *Stat) Update(wins slot.Wins) {
 	}
 }
 
-func CalcStatBon(ctx context.Context, rn string) float64 {
-	var reels *slot.Reels5x
-	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
-		_, reels = slot.FindReels(ReelsMap, mrtp)
-	} else {
-		reels = &ReelsReg92
-	}
+func CalcStatBon(ctx context.Context) float64 {
+	var reels = &ReelsBonu
 	var g = NewGame()
 	var sln float64 = 5
 	g.Sel.SetNum(int(sln), 1)
@@ -59,24 +53,14 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 	return rtpsym
 }
 
-func CalcStatReg(ctx context.Context, rn string) float64 {
+func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*bonus reels calculations*\n")
-	var rtpfs float64
-	if rn != "" && rn[len(rn)-1:] == "u" {
-		rtpfs = CalcStatBon(ctx, "bonu")
-	} else {
-		rtpfs = CalcStatBon(ctx, "bon")
-	}
+	var rtpfs = CalcStatBon(ctx)
 	if ctx.Err() != nil {
 		return 0
 	}
 	fmt.Printf("*regular reels calculations*\n")
-	var reels *slot.Reels5x
-	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
-		_, reels = slot.FindReels(ReelsMap, mrtp)
-	} else {
-		reels = &ReelsReg92
-	}
+	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	var g = NewGame()
 	var sln float64 = 5
 	g.Sel.SetNum(int(sln), 1)

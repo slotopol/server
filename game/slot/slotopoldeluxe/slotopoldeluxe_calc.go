@@ -3,24 +3,18 @@ package slotopoldeluxe
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"time"
 
 	slot "github.com/slotopol/server/game/slot"
 	"github.com/slotopol/server/game/slot/slotopol"
 )
 
-func CalcStat(ctx context.Context, rn string) float64 {
+func CalcStat(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*bonus games calculations*\n")
 	slotopol.Emje = slotopol.ExpEldorado()
 	slotopol.Emjm = slotopol.ExpMonopoly()
 	fmt.Printf("*reels calculations*\n")
-	var reels *slot.Reels5x
-	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
-		_, reels = slot.FindReels(ReelsMap, mrtp)
-	} else {
-		reels = &Reels104
-	}
+	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	var g = NewGame()
 	var sln float64 = 1
 	g.Sel.SetNum(int(sln), 1)

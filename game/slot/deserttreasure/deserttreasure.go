@@ -140,7 +140,7 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 
 func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 	if g.FS == 0 {
-		var _, reels = slot.FindReels(ReelsMap, mrtp)
+		var reels, _ = slot.FindReels(ReelsMap, mrtp)
 		screen.Spin(reels)
 	} else {
 		screen.Spin(&ReelsBon)

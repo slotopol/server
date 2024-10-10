@@ -1,8 +1,6 @@
 package jewels4all
 
 import (
-	"math"
-
 	slot "github.com/slotopol/server/game/slot"
 )
 
@@ -34,13 +32,4 @@ var ChanceMap = map[float64]float64{
 	99.913849: 1 / 165.,
 	// RTP = 67.345(sym) + wc*5373.9(eu) = 110.335951%
 	110.335951: 1 / 125.,
-}
-
-func FindChance(mrtp float64) (rtp float64, chance float64) {
-	for p, c := range ChanceMap {
-		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
-			rtp, chance = p, c
-		}
-	}
-	return
 }

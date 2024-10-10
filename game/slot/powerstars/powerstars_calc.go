@@ -3,7 +3,6 @@ package powerstars
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"time"
 
 	slot "github.com/slotopol/server/game/slot"
@@ -93,13 +92,8 @@ func CalcStatStars(ctx context.Context, wc2, wc3, wc4 bool) float64 {
 	return lrtp
 }
 
-func CalcStat(ctx context.Context, rn string) (rtp float64) {
-	var wc float64
-	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
-		_, wc = FindChance(mrtp) // wild chance
-	} else {
-		_, wc = FindChance(95)
-	}
+func CalcStat(ctx context.Context, mrtp float64) (rtp float64) {
+	var _, wc = slot.FindReels(ChanceMap, mrtp) // wild chance
 
 	var b = 1 / wc
 	fmt.Printf("wild chance %.5g, b = %.5g\n", wc, b)

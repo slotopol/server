@@ -29,8 +29,8 @@ func init() {
 	for _, ga := range gi.Aliases {
 		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
 			if is, _ := flags.GetBool(ga.ID); is {
-				var rn, _ = flags.GetString("reels")
-				slot.CalcStat(ctx, rn)
+				var mrtp, _ = flags.GetFloat64("reels")
+				slot.CalcStat(ctx, mrtp)
 			}
 		})
 		GameFactory[ga.ID] = func() any {

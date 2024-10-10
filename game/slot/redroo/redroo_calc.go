@@ -3,19 +3,13 @@ package redroo
 import (
 	"context"
 	"fmt"
-	"strconv"
 	"time"
 
 	slot "github.com/slotopol/server/game/slot"
 )
 
-func CalcStatBon(ctx context.Context, rn string) float64 {
-	var reels *slot.Reels5x
-	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
-		_, reels = slot.FindReels(ReelsMap, mrtp)
-	} else {
-		reels = &Reels93
-	}
+func CalcStatBon(ctx context.Context, mrtp float64) float64 {
+	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	var g = NewGame()
 	var sln float64 = 40
 	g.FS = 12 // set free spins mode
@@ -41,19 +35,14 @@ func CalcStatBon(ctx context.Context, rn string) float64 {
 	return rtp
 }
 
-func CalcStatReg(ctx context.Context, rn string) float64 {
+func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*bonus reels calculations*\n")
-	var rtpfs = CalcStatBon(ctx, rn)
+	var rtpfs = CalcStatBon(ctx, mrtp)
 	if ctx.Err() != nil {
 		return 0
 	}
 	fmt.Printf("*regular reels calculations*\n")
-	var reels *slot.Reels5x
-	if mrtp, _ := strconv.ParseFloat(rn, 64); mrtp != 0 {
-		_, reels = slot.FindReels(ReelsMap, mrtp)
-	} else {
-		reels = &Reels93
-	}
+	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	var g = NewGame()
 	var sln float64 = 40
 	g.MW = [3]float64{1, 1, 1}

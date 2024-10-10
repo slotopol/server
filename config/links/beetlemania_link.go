@@ -30,12 +30,8 @@ func init() {
 	for _, ga := range gi.Aliases {
 		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
 			if is, _ := flags.GetBool(ga.ID); is {
-				var rn, _ = flags.GetString("reels")
-				if rn == "bon" || rn == "bonu" {
-					slot.CalcStatBon(ctx, rn)
-				} else {
-					slot.CalcStatReg(ctx, rn)
-				}
+				var mrtp, _ = flags.GetFloat64("reels")
+				slot.CalcStatReg(ctx, mrtp)
 			}
 		})
 		GameFactory[ga.ID] = func() any {

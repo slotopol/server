@@ -37,7 +37,7 @@ func init() {
 	rootCmd.AddCommand(scanCmd)
 
 	scanflags = scanCmd.Flags()
-	scanflags.StringP("reels", "r", "", "name of reels set to use")
+	scanflags.Float64P("reels", "r", 92.5, "master RTP to calculate nearest reels")
 	scanflags.Uint64Var(&config.MCCount, "mc", 0, "Monte Carlo method samples number, in millions")
 	scanflags.BoolVar(&config.MTScan, "mt", false, "multithreaded scanning")
 
