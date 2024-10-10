@@ -35,7 +35,7 @@ local reel = MakeReel(symset)
 print("reel length: " .. #reel)
 ShuffleReel(reel)
 local iter = CorrectReel(reel, neighbours)
-RrintReel(reel, iter)
+PrintReel(reel, iter)
 
 local dd = {10,20,20,40,40,80,120,120,450}
 local sum = 0

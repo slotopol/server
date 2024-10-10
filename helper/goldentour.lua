@@ -35,7 +35,7 @@ local reel = MakeReel(symset)
 print("reel length: " .. #reel)
 ShuffleReel(reel)
 local iter = CorrectReel(reel, neighbours)
-RrintReel(reel, iter)
+PrintReel(reel, iter)
 
 -- bonus game calculation
 local golf = {

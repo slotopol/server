@@ -85,7 +85,7 @@ function CorrectReel(reel, neighbours)
 	return iter
 end
 
-function RrintReel(reel, iter)
+function PrintReel(reel, iter)
 	if iter > 1 then
 		if iter >= 1000 then
 			print"too many neighbours shuffle iterations"
