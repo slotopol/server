@@ -47,7 +47,7 @@ func (s *Stat) Count() uint64 {
 func (s *Stat) Update(wins Wins) {
 	for _, wi := range wins {
 		if wi.Pay > 0 {
-			if wi.Line > 0 {
+			if wi.Line != 0 {
 				s.lpm.Lock()
 				s.LinePay += wi.Pay * wi.Mult
 				s.lpm.Unlock()
