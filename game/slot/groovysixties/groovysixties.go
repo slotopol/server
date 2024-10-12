@@ -23,7 +23,7 @@ var LinePay = [12][5]float64{
 }
 
 // Bet lines
-var bl = slot.BetLinesNetEnt40
+var BetLines = slot.BetLinesNetEnt40
 
 type Game struct {
 	slot.Slot5x4 `yaml:",inline"`
@@ -34,7 +34,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x4: slot.Slot5x4{
-			Sel: slot.MakeBitNum(len(bl), 1),
+			Sel: slot.MakeBitNum(len(BetLines), 1),
 			Bet: 1,
 		},
 		FS: 0,
@@ -51,7 +51,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
-		var line = bl[li-1]
+		var line = BetLines[li-1]
 
 		var numw, numl slot.Pos = 0, 5
 		var syml slot.Sym
@@ -153,5 +153,5 @@ func (g *Game) FreeSpins() int {
 }
 
 func (g *Game) SetSel(sel slot.Bitset) error {
-	return g.SetSelNum(sel, len(bl))
+	return g.SetSelNum(sel, len(BetLines))
 }

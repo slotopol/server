@@ -30,7 +30,7 @@ var ScatPay = [5]float64{0, 2, 3, 30, 300} // 2 cat
 var ScatFreespin = [5]int{0, 0, 15, 20, 25} // 2 cat
 
 // Bet lines
-var bl = []slot.Linex{
+var BetLines = []slot.Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3
@@ -66,7 +66,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{
-			Sel: slot.MakeBitNum(len(bl), 1),
+			Sel: slot.MakeBitNum(len(BetLines), 1),
 			Bet: 1,
 		},
 		FS: 0,
@@ -88,7 +88,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 // Lined symbols calculation on regular games.
 func (g *Game) ScanLinedReg(screen slot.Screen, wins *slot.Wins) {
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
-		var line = bl[li-1]
+		var line = BetLines[li-1]
 
 		var numw, numl slot.Pos = 0, 5
 		var syml slot.Sym
@@ -139,7 +139,7 @@ func (g *Game) ScanLinedReg(screen slot.Screen, wins *slot.Wins) {
 // Lined symbols calculation on free spins.
 func (g *Game) ScanLinedBon(screen slot.Screen, wins *slot.Wins) {
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
-		var line = bl[li-1]
+		var line = BetLines[li-1]
 
 		var numw, numl slot.Pos = 0, 5
 		var syml slot.Sym
@@ -254,5 +254,5 @@ func (g *Game) FreeSpins() int {
 }
 
 func (g *Game) SetSel(sel slot.Bitset) error {
-	return g.SetSelNum(sel, len(bl))
+	return g.SetSelNum(sel, len(BetLines))
 }

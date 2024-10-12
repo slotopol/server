@@ -52,7 +52,7 @@ var LineBonus = [13][5]int{
 }
 
 // Bet lines
-var bl = slot.BetLinesMgj
+var BetLines = slot.BetLinesMgj
 
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
@@ -98,7 +98,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
-		var line = bl[li-1]
+		var line = BetLines[li-1]
 
 		var mw float64 = 1 // mult wild
 		var numw, numl slot.Pos = 0, 5
@@ -201,5 +201,5 @@ func (g *Game) Spawn(screen slot.Screen, wins slot.Wins) {
 }
 
 func (g *Game) SetSel(sel slot.Bitset) error {
-	return g.SetSelNum(sel, len(bl))
+	return g.SetSelNum(sel, len(BetLines))
 }

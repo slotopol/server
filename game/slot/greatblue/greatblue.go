@@ -29,7 +29,7 @@ var LinePay = [13][5]float64{
 var ScatPay = [5]float64{0, 2, 5, 20, 500} // 13 scatter
 
 // Bet lines
-var bl = slot.BetLinesPlt30
+var BetLines = slot.BetLinesPlt30
 
 const (
 	shell_x5   = 1
@@ -90,7 +90,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
-		var line = bl[li-1]
+		var line = BetLines[li-1]
 
 		var mw float64 = 1 // mult wild
 		var numw, numl slot.Pos = 0, 5
@@ -230,5 +230,5 @@ func (g *Game) FreeSpins() int {
 }
 
 func (g *Game) SetSel(sel slot.Bitset) error {
-	return g.SetSelNum(sel, len(bl))
+	return g.SetSelNum(sel, len(BetLines))
 }

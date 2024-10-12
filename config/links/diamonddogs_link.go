@@ -20,7 +20,7 @@ func init() {
 		SY:       3,
 		GP:       GPsel | GPretrig | GPfgmult | GPfgreel | GPscat | GPwild,
 		SN:       len(slot.LinePay),
-		LN:       25,
+		LN:       len(slot.BetLines),
 		BN:       1,
 		RTP:      MakeRtpList(slot.ReelsMap),
 	}

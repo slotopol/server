@@ -28,7 +28,7 @@ var ScatPay = [5]float64{0, 0.5, 3} // 8 bonus
 var ScatFreespin = [5]int{0, 0, 10} // 8 bonus
 
 // Bet lines
-var bl = slot.BetLinesHot5
+var BetLines = slot.BetLinesHot5
 
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
@@ -39,7 +39,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{
-			Sel: slot.MakeBitNum(len(bl), 1),
+			Sel: slot.MakeBitNum(len(BetLines), 1),
 			Bet: 1,
 		},
 		FS: 0,
@@ -56,7 +56,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
-		var line = bl[li-1]
+		var line = BetLines[li-1]
 
 		var numl slot.Pos = 1
 		var syml = screen.Pos(1, line)
