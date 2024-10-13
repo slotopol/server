@@ -1,39 +1,41 @@
 //go:build !prod || full || aristocrat
 
-package links
+package redroo
 
 import (
 	"context"
 
-	slot "github.com/slotopol/server/game/slot/redroo"
+	game "github.com/slotopol/server/game"
 	"github.com/spf13/pflag"
 )
 
 func init() {
-	var gi = GameInfo{
-		Aliases: []GameAlias{
+	var gi = game.GameInfo{
+		Aliases: []game.GameAlias{
 			{ID: "redroo", Name: "Redroo"},
 		},
 		Provider: "Aristocrat",
 		SX:       5,
 		SY:       4,
-		GP:       GPretrig | GPscat | GPwild,
-		SN:       len(slot.LinePay),
-		LN:       1024,
-		BN:       0,
-		RTP:      MakeRtpList(slot.ReelsMap),
+		GP: game.GPretrig |
+			game.GPscat |
+			game.GPwild,
+		SN:  len(LinePay),
+		LN:  1024,
+		BN:  0,
+		RTP: game.MakeRtpList(ReelsMap),
 	}
-	GameList = append(GameList, gi)
+	game.GameList = append(game.GameList, gi)
 
 	for _, ga := range gi.Aliases {
-		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
+		game.ScanIters = append(game.ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
 			if is, _ := flags.GetBool(ga.ID); is {
 				var mrtp, _ = flags.GetFloat64("reels")
-				slot.CalcStatReg(ctx, mrtp)
+				CalcStatReg(ctx, mrtp)
 			}
 		})
-		GameFactory[ga.ID] = func() any {
-			return slot.NewGame()
+		game.GameFactory[ga.ID] = func() any {
+			return NewGame()
 		}
 	}
 }

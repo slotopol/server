@@ -1,17 +1,17 @@
 //go:build !prod || full || keno
 
-package links
+package kenocenturion
 
 import (
 	"context"
 
-	keno "github.com/slotopol/server/game/keno/kenocenturion"
+	game "github.com/slotopol/server/game"
 	"github.com/spf13/pflag"
 )
 
 func init() {
-	var gi = GameInfo{
-		Aliases: []GameAlias{
+	var gi = game.GameInfo{
+		Aliases: []game.GameAlias{
 			{ID: "kenocenturion", Name: "Keno Centurion"},
 		},
 		Provider: "Slotopol",
@@ -23,16 +23,16 @@ func init() {
 		BN:       0,
 		RTP:      []float64{97.980099},
 	}
-	GameList = append(GameList, gi)
+	game.GameList = append(game.GameList, gi)
 
 	for _, ga := range gi.Aliases {
-		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
+		game.ScanIters = append(game.ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
 			if is, _ := flags.GetBool(ga.ID); is {
-				keno.CalcStat(ctx)
+				CalcStat(ctx)
 			}
 		})
-		GameFactory[ga.ID] = func() any {
-			return keno.NewGame()
+		game.GameFactory[ga.ID] = func() any {
+			return NewGame()
 		}
 	}
 }

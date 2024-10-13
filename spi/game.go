@@ -5,7 +5,7 @@ import (
 	"sync/atomic"
 
 	cfg "github.com/slotopol/server/config"
-	"github.com/slotopol/server/config/links"
+	game "github.com/slotopol/server/game"
 	keno "github.com/slotopol/server/game/keno"
 	slot "github.com/slotopol/server/game/slot"
 	"github.com/slotopol/server/util"
@@ -70,7 +70,7 @@ func SpiGameJoin(c *gin.Context) {
 	}
 
 	var alias = util.ToID(arg.Alias)
-	var maker, has = links.GameFactory[alias]
+	var maker, has = game.GameFactory[alias]
 	if !has {
 		Ret400(c, SEC_game_join_noalias, ErrNoAliase)
 		return

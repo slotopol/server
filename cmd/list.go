@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	cfg "github.com/slotopol/server/config"
-	"github.com/slotopol/server/config/links"
+	game "github.com/slotopol/server/game"
 	"github.com/slotopol/server/util"
 
 	"github.com/spf13/cobra"
@@ -28,7 +28,7 @@ Get the list of available 'NetExt' and 'BetSoft' games only:
 Get the list of available 'Play'n GO' games with RTP list for each:
   %[1]s list --playngo --rtp`
 
-func Include(gi *links.GameInfo) bool {
+func Include(gi *game.GameInfo) bool {
 	if fAll {
 		return true
 	}
@@ -60,7 +60,7 @@ func Include(gi *links.GameInfo) bool {
 	if is, _ = listflags.GetBool("megaway"); is && gi.LN > 100 {
 		return true
 	}
-	if is, _ = listflags.GetBool("fg"); is && gi.GP&(links.GPfghas+links.GPretrig) > 0 {
+	if is, _ = listflags.GetBool("fg"); is && gi.GP&(game.GPfghas+game.GPretrig) > 0 {
 		return true
 	}
 	if is, _ = listflags.GetBool("bonus"); is && gi.BN > 0 {
@@ -69,7 +69,7 @@ func Include(gi *links.GameInfo) bool {
 	return false
 }
 
-func FormatGameInfo(gi links.GameInfo, ai int) string {
+func FormatGameInfo(gi game.GameInfo, ai int) string {
 	var buf = make([]string, 0, 10)
 	if gi.SN > 0 {
 		buf = append(buf, fmt.Sprintf("'%s' %s %dx%d videoslot", gi.Aliases[ai].Name, gi.Provider, gi.SX, gi.SY))
@@ -84,37 +84,37 @@ func FormatGameInfo(gi links.GameInfo, ai int) string {
 			buf = append(buf, fmt.Sprintf("%d ways", gi.LN))
 		} else if gi.LN > 0 {
 			var s string
-			if gi.GP&links.GPsel == 0 {
+			if gi.GP&game.GPsel == 0 {
 				s = "constant "
 			}
 			buf = append(buf, fmt.Sprintf("%s%d lines", s, gi.LN))
 		}
-		if gi.GP&links.GPjack > 0 {
+		if gi.GP&game.GPjack > 0 {
 			buf = append(buf, "has jackpot")
 		}
-		if gi.GP&links.GPscat > 0 {
+		if gi.GP&game.GPscat > 0 {
 			buf = append(buf, "has scatters")
 		}
-		if gi.GP&(links.GPfghas+links.GPretrig) > 0 {
+		if gi.GP&(game.GPfghas+game.GPretrig) > 0 {
 			var s1, s2, s3 string
-			if gi.GP&links.GPretrig > 0 {
+			if gi.GP&game.GPretrig > 0 {
 				s1 = "retriggerable "
 			}
-			if gi.GP&links.GPfgmult > 0 {
+			if gi.GP&game.GPfgmult > 0 {
 				s2 = " with multiplier"
 			}
-			if gi.GP&links.GPfgreel > 0 {
+			if gi.GP&game.GPfgreel > 0 {
 				s3 = " on bonus reels"
 			}
 			buf = append(buf, s1+"free games"+s2+s3)
 		}
-		if gi.GP&links.GPwild > 0 {
+		if gi.GP&game.GPwild > 0 {
 			buf = append(buf, "has wilds")
 		}
-		if gi.GP&links.GPrwild > 0 {
+		if gi.GP&game.GPrwild > 0 {
 			buf = append(buf, "has reel wilds")
 		}
-		if gi.GP&links.GPbwild > 0 {
+		if gi.GP&game.GPbwild > 0 {
 			buf = append(buf, "has big wilds")
 		}
 	}
@@ -137,7 +137,7 @@ var listCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var num, alg int
 		var prov = map[string]int{}
-		for _, gi := range links.GameList {
+		for _, gi := range game.GameList {
 			if Include(&gi) {
 				num += len(gi.Aliases)
 			}
@@ -145,7 +145,7 @@ var listCmd = &cobra.Command{
 
 		var gamelist = make([]string, num)
 		var i int
-		for _, gi := range links.GameList {
+		for _, gi := range game.GameList {
 			if Include(&gi) {
 				prov[gi.Provider] += len(gi.Aliases)
 				alg++

@@ -1,39 +1,39 @@
 //go:build !prod || full || novomatic
 
-package links
+package alwayshot
 
 import (
 	"context"
 
-	slot "github.com/slotopol/server/game/slot/alwayshot"
+	game "github.com/slotopol/server/game"
 	"github.com/spf13/pflag"
 )
 
 func init() {
-	var gi = GameInfo{
-		Aliases: []GameAlias{
+	var gi = game.GameInfo{
+		Aliases: []game.GameAlias{
 			{ID: "alwayshot", Name: "Always Hot"},
 		},
 		Provider: "Novomatic",
 		SX:       3,
 		SY:       3,
-		GP:       GPfgno,
-		SN:       len(slot.LinePay),
-		LN:       len(slot.BetLines),
+		GP:       game.GPfgno,
+		SN:       len(LinePay),
+		LN:       len(BetLines),
 		BN:       0,
-		RTP:      MakeRtpList(slot.ReelsMap),
+		RTP:      game.MakeRtpList(ReelsMap),
 	}
-	GameList = append(GameList, gi)
+	game.GameList = append(game.GameList, gi)
 
 	for _, ga := range gi.Aliases {
-		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
+		game.ScanIters = append(game.ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
 			if is, _ := flags.GetBool(ga.ID); is {
 				var mrtp, _ = flags.GetFloat64("reels")
-				slot.CalcStat(ctx, mrtp)
+				CalcStat(ctx, mrtp)
 			}
 		})
-		GameFactory[ga.ID] = func() any {
-			return slot.NewGame()
+		game.GameFactory[ga.ID] = func() any {
+			return NewGame()
 		}
 	}
 }

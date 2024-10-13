@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/slotopol/server/config"
-	"github.com/slotopol/server/config/links"
+	game "github.com/slotopol/server/game"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -27,7 +27,7 @@ var scanCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var exitctx = Startup()
 
-		for _, iter := range links.ScanIters {
+		for _, iter := range game.ScanIters {
 			iter(scanflags, exitctx)
 		}
 	},
@@ -41,12 +41,12 @@ func init() {
 	scanflags.Uint64Var(&config.MCCount, "mc", 0, "Monte Carlo method samples number, in millions")
 	scanflags.BoolVar(&config.MTScan, "mt", false, "multithreaded scanning")
 
-	for _, gi := range links.GameList {
+	for _, gi := range game.GameList {
 		for _, ga := range gi.Aliases {
 			scanflags.Bool(ga.ID, false, fmt.Sprintf("'%s' %s %dx%d videoslot", ga.Name, gi.Provider, gi.SX, gi.SY))
 		}
 	}
-	for _, setter := range links.FlagsSetters {
+	for _, setter := range game.FlagsSetters {
 		setter(scanflags)
 	}
 }

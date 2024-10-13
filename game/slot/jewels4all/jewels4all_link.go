@@ -1,39 +1,41 @@
 //go:build !prod || full || novomatic
 
-package links
+package jewels4all
 
 import (
 	"context"
 
-	slot "github.com/slotopol/server/game/slot/jewels4all"
+	game "github.com/slotopol/server/game"
 	"github.com/spf13/pflag"
 )
 
 func init() {
-	var gi = GameInfo{
-		Aliases: []GameAlias{
+	var gi = game.GameInfo{
+		Aliases: []game.GameAlias{
 			{ID: "jewels4all", Name: "Jewels 4 All"},
 		},
 		Provider: "Novomatic",
 		SX:       5,
 		SY:       3,
-		GP:       GPsel | GPfgno | GPbwild,
-		SN:       len(slot.LinePay),
-		LN:       len(slot.BetLines),
-		BN:       0,
-		RTP:      MakeRtpList(slot.ChanceMap),
+		GP: game.GPsel |
+			game.GPfgno |
+			game.GPbwild,
+		SN:  len(LinePay),
+		LN:  len(BetLines),
+		BN:  0,
+		RTP: game.MakeRtpList(ChanceMap),
 	}
-	GameList = append(GameList, gi)
+	game.GameList = append(game.GameList, gi)
 
 	for _, ga := range gi.Aliases {
-		ScanIters = append(ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
+		game.ScanIters = append(game.ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
 			if is, _ := flags.GetBool(ga.ID); is {
 				var mrtp, _ = flags.GetFloat64("reels")
-				slot.CalcStat(ctx, mrtp)
+				CalcStat(ctx, mrtp)
 			}
 		})
-		GameFactory[ga.ID] = func() any {
-			return slot.NewGame()
+		game.GameFactory[ga.ID] = func() any {
+			return NewGame()
 		}
 	}
 }
