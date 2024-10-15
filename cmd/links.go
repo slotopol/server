@@ -61,4 +61,7 @@ import (
 	// Aristocrat
 	_ "github.com/slotopol/server/game/slot/indiandreaming"
 	_ "github.com/slotopol/server/game/slot/redroo"
+
+	// AGT
+	_ "github.com/slotopol/server/game/slot/aislot"
 )
