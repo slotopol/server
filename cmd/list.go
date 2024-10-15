@@ -69,7 +69,7 @@ func Include(gi *game.GameInfo) bool {
 	return false
 }
 
-func FormatGameInfo(gi game.GameInfo, ai int) string {
+func FormatGameInfo(gi *game.GameInfo, ai int) string {
 	var buf = make([]string, 0, 10)
 	if gi.SN > 0 {
 		buf = append(buf, fmt.Sprintf("'%s' %s %dx%d videoslot", gi.Aliases[ai].Name, gi.Provider, gi.SX, gi.SY))
@@ -138,7 +138,7 @@ var listCmd = &cobra.Command{
 		var num, alg int
 		var prov = map[string]int{}
 		for _, gi := range game.GameList {
-			if Include(&gi) {
+			if Include(gi) {
 				num += len(gi.Aliases)
 			}
 		}
@@ -146,7 +146,7 @@ var listCmd = &cobra.Command{
 		var gamelist = make([]string, num)
 		var i int
 		for _, gi := range game.GameList {
-			if Include(&gi) {
+			if Include(gi) {
 				prov[gi.Provider] += len(gi.Aliases)
 				alg++
 				for ai := range gi.Aliases {
