@@ -4,53 +4,37 @@ import (
 	"context"
 	"fmt"
 	"math"
-	"sync/atomic"
 	"time"
 
 	slot "github.com/slotopol/server/game/slot"
 )
 
-type Stat struct {
-	slot.Stat
-	FGNum [5]uint64
-	FGPay uint64
-}
-
-func (s *Stat) Update(wins slot.Wins) {
-	s.Stat.Update(wins)
-	if len(wins) > 0 {
-		if wi := wins[len(wins)-1]; wi.Free > 0 {
-			atomic.AddUint64(&s.FGNum[wi.Num-1], 1)
-			atomic.AddUint64(&s.FGPay, uint64(wins.Gain()))
-		}
-	}
-}
+// Attention! On freespins can be calculated median only, not expectation.
 
 func CalcStatBon(ctx context.Context) float64 {
-	var reels = &ReelsBonu
+	var reels = &ReelsBon
 	var g = NewGame()
-	var sln float64 = 5
+	var sln float64 = 1
 	g.Sel.SetNum(int(sln), 1)
 	g.FS = 10 // set free spins mode
-	var s Stat
+	var s slot.Stat
 
 	var dur = slot.ScanReels(ctx, &s, g, reels,
 		time.Tick(2*time.Second), time.Tick(2*time.Second))
 
 	var reshuf = float64(s.Reshuffles)
-	var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
-	var rtpsym = lrtp + srtp
-	var qjazz = float64(s.BonusCount[jbonus]) / reshuf / sln
+	var lrtp = s.LinePay / reshuf / sln * 100
+	var qjazz = float64(s.BonusCount[jbonus]) / reshuf
+	var jpow = math.Pow(2, 10*qjazz) // jazz power
+	var rtpjazz = lrtp*jpow - lrtp
+	var rtp = lrtp * jpow
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/float64(s.Planned())*100, g.Sel.Num(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
-	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-	fmt.Printf("jazzbee bonuses: count %d, q = 1/%g\n", s.BonusCount[jbonus], 1/qjazz)
-	if s.JackCount[jid] > 0 {
-		fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(reshuf/float64(s.JackCount[jid])))
-	}
-	fmt.Printf("RTP = rtp(sym) = %.6f%%\n", rtpsym)
-	return rtpsym
+	fmt.Printf("symbols: %.5g(lined) + 0(scatter) = %.6f%%\n", lrtp, lrtp)
+	fmt.Printf("jazzbee bonuses: frequency 1/%.5g, pow = %.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount[jbonus]), jpow, rtpjazz)
+	fmt.Printf("RTP = rtp(sym) + rtp(jazz) = %.5g + %.5g = %.6f%%\n", lrtp, rtpjazz, rtp)
+	return rtp
 }
 
 func CalcStatReg(ctx context.Context, mrtp float64) float64 {
@@ -62,9 +46,9 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*regular reels calculations*\n")
 	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	var g = NewGame()
-	var sln float64 = 5
+	var sln float64 = 1
 	g.Sel.SetNum(int(sln), 1)
-	var s Stat
+	var s slot.Stat
 
 	var dur = slot.ScanReels(ctx, &s, g, reels,
 		time.Tick(2*time.Second), time.Tick(2*time.Second))
@@ -72,23 +56,14 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var reshuf = float64(s.Reshuffles)
 	var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
 	var rtpsym = lrtp + srtp
-	var fgsum = float64(s.FGNum[2] + s.FGNum[3] + s.FGNum[4])
-	var fgpay = float64(s.FGPay) / fgsum
-	var rtpbon = (fgpay + rtpfs*10/100) * math.Pow(2, 1.25)
-	var q = fgsum / reshuf
-	var rtp = rtpsym + q*rtpbon
+	var q = float64(s.FreeCount) / reshuf
+	var rtp = rtpsym + q*rtpfs
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/float64(s.Planned())*100, g.Sel.Num(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-	fmt.Printf("free games numbers: [0, 0, %d, %d, %d]\n", s.FGNum[2], s.FGNum[3], s.FGNum[4])
-	fmt.Printf("free games %g, q = %.6f\n", fgsum, q)
+	fmt.Printf("free spins %d, q = %.5g\n", s.FreeCount, q)
 	fmt.Printf("free games frequency: 1/%.5g\n", reshuf/float64(s.FreeHits))
-	fmt.Printf("average pay by freespins start %.6f\n", fgpay)
-	fmt.Printf("rtpbon = (fgpay+rtpfs*10)*2^10/8 = %.6f\n", rtpbon)
-	if s.JackCount[jid] > 0 {
-		fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(reshuf/float64(s.JackCount[jid])))
-	}
-	fmt.Printf("RTP = %.5g(sym) + q*%.5g(bon) = %.6f%%\n", rtpsym, rtpbon, rtp)
+	fmt.Printf("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, q, rtpfs, rtp)
 	return rtp
 }

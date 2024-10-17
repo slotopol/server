@@ -61,7 +61,7 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 	fmt.Printf("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount, q, sq)
 	fmt.Printf("free games frequency: 1/%.5g\n", reshuf/float64(s.FreeHits))
-	fmt.Printf("champagne bonuses: count %d, rtp = %.6f%%\n", s.BonusCount[mjc], rtpmjc)
+	fmt.Printf("champagne bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount[mjc]), rtpmjc)
 	if s.JackCount[jid] > 0 {
 		fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(reshuf/float64(s.JackCount[jid])))
 	}

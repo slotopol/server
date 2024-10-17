@@ -15,8 +15,8 @@ var LinePay = [11][5]float64{
 	{0, 0, 5, 20, 100},      //  7 queen
 	{0, 0, 5, 20, 100},      //  8 jack
 	{0, 0, 5, 20, 100},      //  9 ten
-	{0, 0, 0, 0, 0},         // 10 note
-	{0, 0, 0, 0, 0},         // 11 jazzbee
+	{},                      // 10 note
+	{},                      // 11 jazzbee
 }
 
 // Scatters payment.
@@ -25,25 +25,6 @@ var ScatPay = [5]float64{0, 0, 2, 15, 50} // 10 note
 const (
 	jbonus = 1 // jazzbee freespins bonus
 )
-
-const (
-	jid = 1 // jackpot ID
-)
-
-// Jackpot win combinations.
-var Jackpot = [11][5]int{
-	{0, 0, 0, 0, 0}, //  1 bee
-	{0, 0, 0, 0, 0}, //  2 snail
-	{0, 0, 0, 0, 0}, //  3 fly
-	{0, 0, 0, 0, 0}, //  4 worm
-	{0, 0, 0, 0, 0}, //  5 ace
-	{0, 0, 0, 0, 0}, //  6 king
-	{0, 0, 0, 0, 0}, //  7 queen
-	{0, 0, 0, 0, 0}, //  8 jack
-	{0, 0, 0, 0, 0}, //  9 ten
-	{0, 0, 0, 0, 0}, // 10 note
-	{0, 0, 0, 0, 0}, // 11 jazzbee
-}
 
 // Bet lines
 var BetLines = slot.BetLinesNvm10
@@ -77,29 +58,24 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
 		var line = BetLines[li-1]
 
-		/*var numw, numl int
+		var numw, numl slot.Pos = 0, 5
 		var syml slot.Sym
-		for x := 1; x <= 5; x++ {
-			var symx = screen.Pos(x, line)
-			if symx == wild {
+		var x slot.Pos
+		for x = 1; x <= 5; x++ {
+			var sx = screen.Pos(x, line)
+			if sx == wild {
 				if syml == 0 {
 					numw = x
-				} else {
-					numl = x
 				}
-			} else if symx == scat || symx == jazz {
-				break
-			} else if syml == 0 {
-				syml = symx
-				numl = x
-			} else if symx == syml {
-				numl = x
-			} else {
+			} else if syml == 0 && sx != scat && sx != jazz {
+				syml = sx
+			} else if sx != syml {
+				numl = x - 1
 				break
 			}
-		}*/
+		}
 
-		var numw, numl slot.Pos
+		/*var numw, numl slot.Pos
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
@@ -120,13 +96,13 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 				break
 			}
 			numw++
-		}
+		}*/
 
 		var payw, payl float64
 		if numw > 0 {
 			payw = LinePay[wild-1][numw-1]
 		}
-		if numl > 0 {
+		if numl > 0 && syml > 0 {
 			payl = LinePay[syml-1][numl-1]
 		}
 		if payl > payw {
@@ -146,7 +122,6 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 				Num:  numw,
 				Line: li,
 				XY:   line.CopyL(numw),
-				Jack: Jackpot[wild-1][numw-1],
 			})
 		}
 	}
@@ -158,7 +133,7 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 		var y slot.Pos
 		if screen.At(3, 1) == jazz {
 			y = 1
-		} else if screen.At(3, 1) == jazz {
+		} else if screen.At(3, 2) == jazz {
 			y = 2
 		} else if screen.At(3, 3) == jazz {
 			y = 3
@@ -177,7 +152,7 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 		return
 	}
 
-	if count := screen.ScatNum(scat); count >= 3 {
+	if count := screen.ScatNumCont(scat); count >= 3 {
 		var pay = ScatPay[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * float64(g.Sel.Num()) * pay,
@@ -195,7 +170,7 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 		var reels, _ = slot.FindReels(ReelsMap, mrtp)
 		screen.Spin(reels)
 	} else {
-		screen.Spin(&ReelsBonu)
+		screen.Spin(&ReelsBon)
 	}
 }
 
