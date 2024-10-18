@@ -30,7 +30,7 @@ func init() {
 	for _, ga := range Info.Aliases {
 		game.ScanIters = append(game.ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
 			if is, _ := flags.GetBool(ga.ID); is {
-				CalcStat(ctx)
+				Paytable.CalcStat(ctx)
 			}
 		})
 		game.GameFactory[ga.ID] = func() any {

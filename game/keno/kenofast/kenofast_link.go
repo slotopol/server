@@ -1,6 +1,6 @@
-//go:build !prod || full || keno || aristocrat
+//go:build !prod || full || keno
 
-package americankeno
+package kenofast
 
 import (
 	"context"
@@ -11,16 +11,16 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "americankeno", Name: "American Keno"},
+		{ID: "kenofast", Name: "Keno Fast"},
 	},
-	Provider: "Aristocrat",
+	Provider: "AGT",
 	GP:       0,
 	SX:       80,
 	SY:       0,
 	SN:       0,
 	LN:       0,
 	BN:       0,
-	RTP:      []float64{89.250235},
+	RTP:      []float64{95.616967},
 }
 
 func init() {

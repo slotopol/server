@@ -36,6 +36,9 @@ func Include(gi *game.GameInfo) bool {
 	if is, _ = listflags.GetBool(util.ToID(gi.Provider)); is {
 		return true
 	}
+	if is, _ = listflags.GetBool("keno"); is && gi.SX == 80 {
+		return true
+	}
 	if is, _ = listflags.GetBool("3reels"); is && gi.SX == 3 {
 		return true
 	}
@@ -201,6 +204,7 @@ func init() {
 	listflags.Bool("playtech", false, "include games of 'Playtech' provider")
 	listflags.Bool("slotopol", false, "include games of this 'Slotopol' provider")
 
+	listflags.Bool("keno", false, "include keno games")
 	listflags.Bool("3reels", false, "include games with 3 reels")
 	listflags.Bool("5reels", false, "include games with 5 reels")
 	listflags.Bool("3x3", false, "include games with 3x3 screen")
@@ -214,5 +218,5 @@ func init() {
 
 	listCmd.MarkFlagsOneRequired("all",
 		"agt", "aristocrat", "betsoft", "megajack", "netent", "novomatic", "playngo", "playtech", "slotopol",
-		"3reels", "5reels", "3x3", "5x3", "5x4", "fewlines", "multilines", "megaway", "fg", "bonus")
+		"keno", "3reels", "5reels", "3x3", "5x3", "5x4", "fewlines", "multilines", "megaway", "fg", "bonus")
 }

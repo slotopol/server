@@ -43,10 +43,9 @@ func NewGame() *Game {
 }
 
 func (g *Game) Scanner(scrn *keno.Screen, wins *keno.Wins) {
-	for i := range 80 {
-		if scrn[i] == keno.KSselhit {
-			wins.Num++
-		}
-	}
-	wins.Pay = Paytable[g.Sel.Num()][wins.Num] * g.Bet
+	Paytable.Scanner(scrn, wins, g.Bet)
+}
+
+func (g *Game) SetSel(sel keno.Bitset) error {
+	return g.CheckSel(sel, &Paytable)
 }

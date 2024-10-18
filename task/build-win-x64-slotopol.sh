@@ -1,5 +1,5 @@
 #!/bin/bash -u
-# This script compiles project with Megajsck games only for Windows amd64.
+# This script compiles project with Megajack games only for Windows amd64.
 # It produces static C-libraries linkage.
 
 wd=$(realpath -s "$(dirname "$0")/..")

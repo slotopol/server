@@ -5,6 +5,7 @@ import (
 	_ "github.com/slotopol/server/game/keno/americankeno"
 	_ "github.com/slotopol/server/game/keno/firekeno"
 	_ "github.com/slotopol/server/game/keno/kenocenturion"
+	_ "github.com/slotopol/server/game/keno/kenofast"
 	_ "github.com/slotopol/server/game/keno/kenoluxury"
 
 	// Megajack

@@ -1,7 +1,9 @@
 package game
 
 import (
+	"context"
 	"errors"
+	"fmt"
 	"math/rand/v2"
 
 	"github.com/slotopol/server/util"
@@ -9,8 +11,50 @@ import (
 
 type Paytable [11][11]float64
 
-func (kp *Paytable) Pay(sel, win int) float64 {
-	return kp[sel][win]
+func (kp *Paytable) Pay(sel, hit int) float64 {
+	return kp[sel][hit]
+}
+
+func (kp *Paytable) HasSel(sel int) bool {
+	for _, pay := range kp[sel] {
+		if pay > 0 {
+			return true
+		}
+	}
+	return false
+}
+
+func (kp *Paytable) Scanner(scrn *Screen, wins *Wins, bet float64) {
+	wins.Sel = 0
+	wins.Num = 0
+	for i := range 80 {
+		if scrn[i]&KSsel > 0 {
+			wins.Sel++
+			if scrn[i]&KShit > 0 {
+				wins.Num++
+			}
+		}
+	}
+	wins.Pay = kp[wins.Sel][wins.Num] * bet
+}
+
+func (kp *Paytable) CalcStat(ctx context.Context) float64 {
+	var rtp, lines float64
+	for n := 1; n <= 10; n++ {
+		var nrtp float64
+		for r := 0; r <= n; r++ {
+			var pay = kp[n][r]
+			nrtp += pay * Prob(n, r)
+		}
+		if nrtp > 0 {
+			fmt.Printf("RTP[%2d] = %.6f%%\n", n, nrtp*100)
+			rtp += nrtp
+			lines++
+		}
+	}
+	rtp *= 100 / lines
+	fmt.Printf("RTP[game] = %.6f%%", rtp)
+	return rtp
 }
 
 // Keno spot type
@@ -30,6 +74,7 @@ type Bitset = util.Bitset128
 var MakeBitNum = util.MakeBitNum128
 
 type Wins struct {
+	Sel int     `json:"sel" yaml:"sel" xml:"sel,attr"`
 	Num int     `json:"num" yaml:"num" xml:"num,attr"`
 	Pay float64 `json:"pay" yaml:"pay" xml:"pay,attr"`
 }
@@ -46,7 +91,7 @@ type KenoGame interface {
 
 var (
 	ErrBetEmpty      = errors.New("bet is empty")
-	ErrKenoNotEnough = errors.New("not enough numbers selected, minimum 2 expected")
+	ErrKenoNotEnough = errors.New("no pays with this selected numbers")
 	ErrKenoTooMany   = errors.New("too many numbers selected, not more than 10 expected")
 	ErrKenoOutRange  = errors.New("some of given number is out of range 1..80")
 )
@@ -90,12 +135,12 @@ func (g *Keno80) GetSel() Bitset {
 	return g.Sel
 }
 
-func (g *Keno80) SetSel(sel Bitset) error {
-	if len(sel) < 2 {
-		return ErrKenoNotEnough
-	}
-	if len(sel) > 10 {
+func (g *Keno80) CheckSel(sel Bitset, kp *Paytable) error {
+	if sel.Num() > len(kp)-1 {
 		return ErrKenoTooMany
+	}
+	if !kp.HasSel(sel.Num()) {
+		return ErrKenoNotEnough
 	}
 	for n := range sel.Bits() {
 		if n < 1 || n > 80 {
