@@ -90,13 +90,13 @@ func (s *Stat) Progress(ctx context.Context, steps <-chan time.Time, sln int, to
 	}
 }
 
-func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
-	var screen = g.NewScreen()
-	defer screen.Free()
-	var wins Wins
+func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x) {
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)
 	var r3 = reels.Reel(3)
+	var screen = g.NewScreen()
+	defer screen.Free()
+	var wins Wins
 	for i1 := range r1 {
 		screen.SetCol(1, r1, i1)
 		for i2 := range r2 {
@@ -118,15 +118,51 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	}
 }
 
-func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
-	var screen = g.NewScreen()
-	defer screen.Free()
-	var wins Wins
+func BruteForce3xGo(ctx context.Context, s Stater, g SlotGame, reels *Reels3x) {
+	var r1 = reels.Reel(1)
+	var r2 = reels.Reel(2)
+	var r3 = reels.Reel(3)
+	var wg sync.WaitGroup
+	wg.Add(len(r1))
+	for i1 := range r1 {
+		go func() {
+			defer wg.Done()
+
+			var screen = g.NewScreen()
+			defer screen.Free()
+			var wins Wins
+
+			screen.SetCol(1, r1, i1)
+			for i2 := range r2 {
+				screen.SetCol(2, r2, i2)
+				for i3 := range r3 {
+					screen.SetCol(3, r3, i3)
+					g.Scanner(screen, &wins)
+					s.Update(wins)
+					wins.Reset()
+					if s.Count()&100 == 0 {
+						select {
+						case <-ctx.Done():
+							return
+						default:
+						}
+					}
+				}
+			}
+		}()
+	}
+	wg.Wait()
+}
+
+func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x) {
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)
 	var r3 = reels.Reel(3)
 	var r4 = reels.Reel(4)
 	var r5 = reels.Reel(5)
+	var screen = g.NewScreen()
+	defer screen.Free()
+	var wins Wins
 	for i1 := range r1 {
 		screen.SetCol(1, r1, i1)
 		for i2 := range r2 {
@@ -154,7 +190,7 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	}
 }
 
-func BruteForce5xGo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
+func BruteForce5xGo(ctx context.Context, s Stater, g SlotGame, reels *Reels5x) {
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)
 	var r3 = reels.Reel(3)
@@ -249,7 +285,32 @@ func MonteCarloGo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	wg.Wait()
 }
 
-func ScanReels(ctx context.Context, s Stater, g SlotGame, reels Reels,
+func ScanReels3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x,
+	bftick, mctick <-chan time.Time) time.Duration {
+	var t0 = time.Now()
+	var ctx2, cancel2 = context.WithCancel(ctx)
+	defer cancel2()
+	if config.MCCount > 0 {
+		s.SetPlan(config.MCCount * 1e6)
+		go s.Progress(ctx2, mctick, g.GetSel().Num(), float64(s.Planned()))
+		if config.MTScan && !config.DevMode {
+			MonteCarloGo(ctx2, s, g, reels)
+		} else {
+			MonteCarlo(ctx2, s, g, reels)
+		}
+	} else {
+		s.SetPlan(reels.Reshuffles())
+		go s.Progress(ctx2, bftick, g.GetSel().Num(), float64(s.Planned()))
+		if config.MTScan && !config.DevMode {
+			BruteForce3xGo(ctx2, s, g, reels)
+		} else {
+			BruteForce3x(ctx2, s, g, reels)
+		}
+	}
+	return time.Since(t0)
+}
+
+func ScanReels5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x,
 	bftick, mctick <-chan time.Time) time.Duration {
 	var t0 = time.Now()
 	var ctx2, cancel2 = context.WithCancel(ctx)

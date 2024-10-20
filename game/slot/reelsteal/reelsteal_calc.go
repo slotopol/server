@@ -16,7 +16,7 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 	g.FS = 15 // set free spins mode
 	var s slot.Stat
 
-	var dur = slot.ScanReels(ctx, &s, g, reels,
+	var dur = slot.ScanReels5x(ctx, &s, g, reels,
 		time.Tick(2*time.Second), time.Tick(2*time.Second))
 
 	var reshuf = float64(s.Reshuffles)
@@ -48,7 +48,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	g.Sel.SetNum(int(sln), 1)
 	var s slot.Stat
 
-	var dur = slot.ScanReels(ctx, &s, g, reels,
+	var dur = slot.ScanReels5x(ctx, &s, g, reels,
 		time.Tick(2*time.Second), time.Tick(2*time.Second))
 
 	var reshuf = float64(s.Reshuffles)

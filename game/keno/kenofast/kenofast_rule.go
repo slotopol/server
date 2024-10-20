@@ -1,5 +1,7 @@
 package kenofast
 
+// See: https://demo.agtsoftware.com/games/agt/keno
+
 import (
 	keno "github.com/slotopol/server/game/keno"
 )
