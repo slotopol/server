@@ -66,4 +66,5 @@ import (
 	// AGT
 	_ "github.com/slotopol/server/game/slot/5hothothot"
 	_ "github.com/slotopol/server/game/slot/aislot"
+	_ "github.com/slotopol/server/game/slot/cherryhot"
 )

@@ -1,6 +1,6 @@
-//go:build !prod || full || novomatic
+//go:build !prod || full || agt
 
-package sizzlinghot
+package cherryhot
 
 import (
 	"context"
@@ -11,11 +11,11 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "sizzlinghot", Name: "Sizzling Hot"},
-		{ID: "sizzlinghotdeluxe", Name: "Sizzling Hot Deluxe"},
+		{ID: "cherryhot", Name: "Cherry Hot"},
 	},
-	Provider: "Novomatic",
-	GP: game.GPfgno |
+	Provider: "AGT",
+	GP: game.GPsel |
+		game.GPfgno |
 		game.GPscat,
 	SX:  5,
 	SY:  3,
