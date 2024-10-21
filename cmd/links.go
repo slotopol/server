@@ -67,4 +67,5 @@ import (
 	_ "github.com/slotopol/server/game/slot/5hothothot"
 	_ "github.com/slotopol/server/game/slot/aislot"
 	_ "github.com/slotopol/server/game/slot/cherryhot"
+	_ "github.com/slotopol/server/game/slot/sevenhot"
 )

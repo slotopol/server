@@ -7,7 +7,7 @@ import (
 )
 
 // Lined payment.
-var LinePay = [9][3]float64{
+var LinePay = [7][3]float64{
 	{0, 0, 100}, // 1 seven
 	{0, 0, 50},  // 2 strawberry
 	{0, 0, 20},  // 3 grapes

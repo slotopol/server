@@ -414,8 +414,8 @@ var BetLinesPlt30 = []Linex{
 	{3, 2, 1, 1, 2}, // 30
 }
 
-// AGT software 15 bet lines
-var BetLinesAgt15 = []Linex{
+// AGT software 20 bet lines
+var BetLinesAgt5x3 = [20]Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3
@@ -431,4 +431,9 @@ var BetLinesAgt15 = []Linex{
 	{2, 1, 2, 3, 2}, // 13
 	{1, 2, 1, 2, 1}, // 14
 	{3, 2, 3, 2, 3}, // 15
+	{2, 2, 3, 2, 2}, // 16
+	{2, 2, 1, 2, 2}, // 17
+	{1, 3, 1, 3, 1}, // 18
+	{3, 1, 3, 1, 3}, // 19
+	{2, 1, 3, 1, 2}, // 20
 }

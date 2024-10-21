@@ -1,6 +1,6 @@
-package cherryhot
+package sevenhot
 
-// See: https://demo.agtsoftware.com/games/agt/cherryhot
+// See: https://demo.agtsoftware.com/games/agt/sevenhot20
 
 import (
 	slot "github.com/slotopol/server/game/slot"
@@ -8,21 +8,21 @@ import (
 
 // Lined payment.
 var LinePay = [8][5]float64{
-	{0, 0, 20, 200, 1000}, // 1 strawberry
-	{0, 0, 8, 80, 200},    // 2 blueberry
-	{0, 0, 4.8, 12, 40},   // 3 plum
-	{0, 0, 4, 10, 40},     // 4 pear
-	{0, 0, 4, 10, 40},     // 5 peach
-	{0, 1, 3.2, 8, 32},    // 6 cherry
-	{0, 0, 1, 4, 20},      // 7 apple
-	{},                    // 8 scatter
+	{0, 0, 10, 100, 500}, // 1 seven
+	{0, 0, 5, 20, 50},    // 2 blueberry
+	{0, 0, 5, 20, 40},    // 3 strawberry
+	{0, 0, 2.5, 6, 22},   // 4 plum
+	{0, 0, 2, 5, 20},     // 5 pear
+	{0, 0, 2, 4, 18},     // 6 peach
+	{0, 0.5, 1.5, 4, 18}, // 7 cherry
+	{},                   // 8 bell
 }
 
 // Scatters payment.
-var ScatPay = [5]float64{0, 0, 2, 12, 60} // 8 scatter
+var ScatPay = [5]float64{0, 0, 2, 10, 60} // 8 bell
 
 // Bet lines
-var BetLines = slot.BetLinesAgt5x3[:5]
+var BetLines = slot.BetLinesAgt5x3[:20]
 
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
@@ -39,17 +39,6 @@ func NewGame() *Game {
 
 const scat = 8
 
-var Special = map[slot.Sym]bool{
-	1: false, // 1 strawberry
-	2: false, // 2 blueberry
-	3: true,  // 3 plum
-	4: true,  // 4 pear
-	5: true,  // 5 peach
-	6: true,  // 6 cherry
-	7: false, // 7 apple
-	8: false, // 8 scatter
-}
-
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)
 	g.ScanScatters(screen, wins)
@@ -57,18 +46,6 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
-	var ms float64 = 1 // mult screen
-	if symm := screen.At(1, 1); Special[symm] {
-		var x slot.Pos
-		for x = 1; x <= 5; x++ {
-			if screen.At(x, 1) != symm || screen.At(x, 2) != symm || screen.At(x, 3) != symm {
-				break
-			}
-		}
-		if x > 3 {
-			ms = float64(x - 1)
-		}
-	}
 	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
 		var line = BetLines[li-1]
 
@@ -86,7 +63,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 		if pay := LinePay[syml-1][numl-1]; pay > 0 {
 			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * pay,
-				Mult: ms,
+				Mult: 1,
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
