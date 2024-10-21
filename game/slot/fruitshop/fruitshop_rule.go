@@ -52,7 +52,7 @@ var LineFreespinBon = [11][5]int{
 }
 
 // Bet lines
-var BetLines = slot.BetLinesNetEnt15
+var BetLines = slot.BetLinesNetEnt5x3[:15]
 
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`

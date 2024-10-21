@@ -29,7 +29,7 @@ var LinePay = [13][5]float64{
 var ScatPay = [5]float64{0, 2, 5, 20, 500} // 13 scatter
 
 // Bet lines
-var BetLines = slot.BetLinesPlt30
+var BetLines = slot.BetLinesPlt5x3[:30]
 
 const (
 	shell_x5   = 1

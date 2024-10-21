@@ -28,7 +28,7 @@ var ScatPay = [5]float64{0, 2, 4, 50, 400} // 2 scatter
 var ScatFreespin = [5]int{0, 0, 10, 20, 30} // 2 scatter
 
 // Bet lines
-var BetLines = slot.BetLinesBetSoft30
+var BetLines = slot.BetLinesNetEnt5x3[:30]
 
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`

@@ -25,7 +25,7 @@ var LinePay = [13][5]float64{
 var ScatFreespin = [5]int{0, 0, 4, 12, 20} // 11 fire
 
 // Bet lines
-var BetLines = slot.BetLinesBetSoft30
+var BetLines = slot.BetLinesNetEnt5x3[:30]
 
 const (
 	acbn = 1 // acorn bonus

@@ -27,7 +27,7 @@ var ScatPay = [5]float64{0, 2, 4, 25, 200} // 11 scatter
 var ScatFreespin = [5]int{0, 0, 10, 20, 30} // 11 scatter
 
 // Bet lines
-var BetLines = slot.BetLinesBetSoft25
+var BetLines = slot.BetLinesNetEnt5x3[:25]
 
 const (
 	ne12 = 1 // bonus ID

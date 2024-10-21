@@ -51,7 +51,7 @@ var Jackpot = [14][5]int{
 }
 
 // Bet lines
-var BetLines = slot.BetLinesNetEnt20
+var BetLines = slot.BetLinesNetEnt5x3[:20]
 
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
