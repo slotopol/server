@@ -82,7 +82,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 		var line = BetLines[li-1]
 
 		var mw float64 = 1 // mult wild
-		var numl slot.Pos = 1
+		var numl slot.Pos = 5
 		var syml = screen.Pos(1, line)
 		var x slot.Pos
 		for x = 2; x <= 5; x++ {
@@ -90,9 +90,9 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 			if sx == wild {
 				mw = 2
 			} else if sx != syml {
+				numl = x - 1
 				break
 			}
-			numl++
 		}
 
 		if pay := LinePay[syml-1][numl-1]; pay > 0 {

@@ -1,6 +1,6 @@
-//go:build !prod || full || novomatic
+//go:build !prod || full || agt
 
-package katana
+package shiningstars
 
 import (
 	"context"
@@ -11,14 +11,12 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "katana", Name: "Katana"},
+		{ID: "shiningstars", Name: "Shining Stars"},
 	},
-	Provider: "Novomatic",
+	Provider: "AGT",
 	GP: game.GPsel |
-		game.GPretrig |
-		game.GPfgreel |
+		game.GPfgno |
 		game.GPscat |
-		game.GPwild |
 		game.GPrwild,
 	SX:  5,
 	SY:  3,
@@ -35,7 +33,7 @@ func init() {
 		game.ScanIters = append(game.ScanIters, func(flags *pflag.FlagSet, ctx context.Context) {
 			if is, _ := flags.GetBool(ga.ID); is {
 				var mrtp, _ = flags.GetFloat64("reels")
-				CalcStatReg(ctx, mrtp)
+				CalcStat(ctx, mrtp)
 			}
 		})
 		game.GameFactory[ga.ID] = func() any {
