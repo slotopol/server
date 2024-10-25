@@ -45,7 +45,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x4: slot.Slot5x4{
-			Sel: slot.MakeBitNum(40, 1),
+			Sel: 40,
 			Bet: 1,
 		},
 		FS: 0,
@@ -192,6 +192,6 @@ func (g *Game) FreeSpins() int {
 	return g.FS
 }
 
-func (g *Game) SetSel(sel slot.Bitset) error {
+func (g *Game) SetSel(sel int) error {
 	return slot.ErrNoFeature
 }

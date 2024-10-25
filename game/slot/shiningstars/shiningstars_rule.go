@@ -1,5 +1,7 @@
 package shiningstars
 
+// See: https://demo.agtsoftware.com/games/agt/shiningstars
+
 import (
 	slot "github.com/slotopol/server/game/slot"
 )
@@ -33,7 +35,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{
-			Sel: slot.MakeBitNum(len(BetLines), 1),
+			Sel: len(BetLines),
 			Bet: 1,
 		},
 	}
@@ -59,7 +61,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 		}
 	}
 
-	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
+	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
 		var numl slot.Pos = 5
@@ -93,7 +95,7 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 	if count := screen.ScatNum(scat1); count >= 3 {
 		var pay = ScatPay1[count-1]
 		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * float64(g.Sel.Num()) * pay,
+			Pay:  g.Bet * float64(g.Sel) * pay,
 			Mult: 1,
 			Sym:  scat1,
 			Num:  count,
@@ -102,7 +104,7 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 	} else if count := screen.ScatNumOdd(scat2); count >= 3 {
 		var pay = ScatPay2[count-1]
 		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * float64(g.Sel.Num()) * pay,
+			Pay:  g.Bet * float64(g.Sel) * pay,
 			Mult: 1,
 			Sym:  scat2,
 			Num:  count,
@@ -116,6 +118,6 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 	screen.Spin(reels)
 }
 
-func (g *Game) SetSel(sel slot.Bitset) error {
+func (g *Game) SetSel(sel int) error {
 	return g.SetSelNum(sel, len(BetLines))
 }

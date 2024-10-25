@@ -17,7 +17,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	var g = NewGame()
 	var sln float64 = 1
-	g.Sel.SetNum(int(sln), 1)
+	g.Sel = int(sln)
 	var s slot.Stat
 
 	var dur = slot.ScanReels5x(ctx, &s, g, reels,
@@ -35,7 +35,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	var qmjm = float64(s.BonusCount[mjm]) / reshuf / sln
 	var rtpmjm = slotopol.Emjm * qmjm * 100
 	var rtp = rtpsym + rtpmje1 + rtpmje3 + rtpmje6 + rtpmjm
-	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/float64(s.Planned())*100, g.Sel.Num(), dur)
+	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/float64(s.Planned())*100, g.Sel, dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)

@@ -151,8 +151,6 @@ func Router(r *gin.Engine) {
 	rs.POST("/sel/get", SpiSlotSelGet)
 	rs.POST("/sel/set", SpiSlotSelSet)
 	rs.POST("/mode/set", SpiSlotModeSet)
-	rs.POST("/sel/getslice", SpiSlotSelGetSlice)
-	rs.POST("/sel/setslice", SpiSlotSelSetSlice)
 	rs.POST("/spin", SpiSlotSpin)
 	rs.POST("/doubleup", SpiSlotDoubleup)
 	rs.POST("/collect", SpiSlotCollect)

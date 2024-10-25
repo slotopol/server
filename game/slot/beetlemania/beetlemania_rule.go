@@ -38,7 +38,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{
-			Sel: slot.MakeBitNum(5, 1),
+			Sel: 5,
 			Bet: 1,
 		},
 		FS: 0,
@@ -55,7 +55,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
-	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
+	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
 		var numw, numl slot.Pos = 0, 5
@@ -155,7 +155,7 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 	if count := screen.ScatNumCont(scat); count >= 3 {
 		var pay = ScatPay[count-1]
 		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * float64(g.Sel.Num()) * pay,
+			Pay:  g.Bet * float64(g.Sel) * pay,
 			Mult: 1,
 			Sym:  scat,
 			Num:  count,
@@ -204,6 +204,6 @@ func (g *Game) FreeSpins() int {
 	return g.FS
 }
 
-func (g *Game) SetSel(sel slot.Bitset) error {
+func (g *Game) SetSel(sel int) error {
 	return g.SetSelNum(sel, len(BetLines))
 }

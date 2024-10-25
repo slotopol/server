@@ -110,8 +110,8 @@ func SpiSlotSelGet(c *gin.Context) {
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
 	}
 	var ret struct {
-		XMLName xml.Name    `json:"-" yaml:"-" xml:"ret"`
-		Sel     slot.Bitset `json:"sel" yaml:"sel" xml:"sel"`
+		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		Sel     int      `json:"sel" yaml:"sel" xml:"sel"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -150,9 +150,9 @@ func SpiSlotSelSet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
-		XMLName xml.Name    `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64      `json:"gid" yaml:"gid" xml:"gid,attr"`
-		Sel     slot.Bitset `json:"sel" yaml:"sel" xml:"sel" binding:"required"`
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
+		Sel     int      `json:"sel" yaml:"sel" xml:"sel" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -233,97 +233,6 @@ func SpiSlotModeSet(c *gin.Context) {
 	Ret204(c)
 }
 
-// Returns selected bet lines slice.
-func SpiSlotSelGetSlice(c *gin.Context) {
-	var err error
-	var ok bool
-	var arg struct {
-		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
-	}
-	var ret struct {
-		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
-		Sel     []int    `json:"sel" yaml:"sel" xml:"sel"`
-	}
-
-	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_slot_selgetslice_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_slot_selgetslice_nogid, ErrNoGID)
-		return
-	}
-
-	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_slot_selgetslice_notopened, ErrNotOpened)
-		return
-	}
-	var game slot.SlotGame
-	if game, ok = scene.Game.(slot.SlotGame); !ok {
-		Ret403(c, SEC_slot_selgetslice_notslot, ErrNotSlot)
-		return
-	}
-
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_slot_selgetslice_noaccess, ErrNoAccess)
-		return
-	}
-
-	var bs = game.GetSel()
-	ret.Sel = bs.Expand()
-
-	RetOk(c, ret)
-}
-
-// Set selected bet lines slice.
-func SpiSlotSelSetSlice(c *gin.Context) {
-	var err error
-	var ok bool
-	var arg struct {
-		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
-		Sel     []int    `json:"sel" yaml:"sel" xml:"sel" binding:"required"`
-	}
-
-	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_slot_selsetslice_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_slot_selsetslice_nogid, ErrNoGID)
-		return
-	}
-
-	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_slot_selsetslice_notopened, ErrNotOpened)
-		return
-	}
-	var game slot.SlotGame
-	if game, ok = scene.Game.(slot.SlotGame); !ok {
-		Ret403(c, SEC_slot_selsetslice_notslot, ErrNotSlot)
-		return
-	}
-
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_slot_selsetslice_noaccess, ErrNoAccess)
-		return
-	}
-
-	var bs slot.Bitset
-	bs.Pack(arg.Sel)
-	if err = game.SetSel(bs); err != nil {
-		Ret403(c, SEC_slot_selsetslice_badlines, err)
-		return
-	}
-
-	Ret204(c)
-}
-
 // Make a spin.
 func SpiSlotSpin(c *gin.Context) {
 	var err error
@@ -387,7 +296,7 @@ func SpiSlotSpin(c *gin.Context) {
 		banksum  float64
 	)
 	if fs == 0 {
-		totalbet = bet * float64(sel.Num())
+		totalbet = bet * float64(sel)
 	}
 
 	var props *Props

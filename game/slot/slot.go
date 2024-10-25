@@ -3,8 +3,6 @@ package game
 import (
 	"errors"
 	"math"
-
-	"github.com/slotopol/server/util"
 )
 
 type (
@@ -49,10 +47,6 @@ func (wins Wins) Gain() float64 {
 	return sum
 }
 
-type Bitset = util.Bitset64 // 1 bit represents 1 line
-
-var MakeBitNum = util.MakeBitNum64
-
 // SlotGame is common slots interface. Any slot game should implement this interface.
 type SlotGame interface {
 	NewScreen() Screen     // returns new empty screen object for this game, constat function
@@ -66,8 +60,8 @@ type SlotGame interface {
 	SetGain(float64) error // set gain to given value on double up games
 	GetBet() float64       // returns current bet, constat function
 	SetBet(float64) error  // set bet to given value
-	GetSel() Bitset        // returns selected bet lines indexes, constat function
-	SetSel(Bitset) error   // setup selected bet lines indexes
+	GetSel() int           // returns number of selected bet lines, constat function
+	SetSel(int) error      // setup number of selected bet lines
 	SetMode(int) error     // change game mode depending on the user's choice
 }
 
@@ -121,7 +115,7 @@ var (
 
 // Slot5x3 is base struct for all slot games with screen 5x3.
 type Slot3x3 struct {
-	Sel Bitset  `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
+	Sel int     `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
 	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
 	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"` // gain for double up games
@@ -169,15 +163,15 @@ func (g *Slot3x3) SetBet(bet float64) error {
 	return nil
 }
 
-func (g *Slot3x3) GetSel() Bitset {
+func (g *Slot3x3) GetSel() int {
 	return g.Sel
 }
 
-func (g *Slot3x3) SetSelNum(sel Bitset, bln int) error {
-	if sel.IsZero() {
+func (g *Slot3x3) SetSelNum(sel int, bln int) error {
+	if sel < 1 {
 		return ErrNoLineset
 	}
-	if bs := sel; !bs.AndNot(MakeBitNum(bln, 1)).IsZero() {
+	if sel > bln {
 		return ErrLinesetOut
 	}
 	if g.FreeSpins() > 0 {
@@ -193,7 +187,7 @@ func (g *Slot3x3) SetMode(int) error {
 
 // Slot5x3 is base struct for all slot games with screen 5x3.
 type Slot5x3 struct {
-	Sel Bitset  `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
+	Sel int     `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
 	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
 	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"` // gain for double up games
@@ -241,15 +235,15 @@ func (g *Slot5x3) SetBet(bet float64) error {
 	return nil
 }
 
-func (g *Slot5x3) GetSel() Bitset {
+func (g *Slot5x3) GetSel() int {
 	return g.Sel
 }
 
-func (g *Slot5x3) SetSelNum(sel Bitset, bln int) error {
-	if sel.IsZero() {
+func (g *Slot5x3) SetSelNum(sel int, bln int) error {
+	if sel < 1 {
 		return ErrNoLineset
 	}
-	if bs := sel; !bs.AndNot(MakeBitNum(bln, 1)).IsZero() {
+	if sel > bln {
 		return ErrLinesetOut
 	}
 	if g.FreeSpins() > 0 {
@@ -265,7 +259,7 @@ func (g *Slot5x3) SetMode(int) error {
 
 // Slot5x4 is base struct for all slot games with screen 5x4.
 type Slot5x4 struct {
-	Sel Bitset  `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
+	Sel int     `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
 	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
 	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"` // gain for double up games
@@ -313,15 +307,15 @@ func (g *Slot5x4) SetBet(bet float64) error {
 	return nil
 }
 
-func (g *Slot5x4) GetSel() Bitset {
+func (g *Slot5x4) GetSel() int {
 	return g.Sel
 }
 
-func (g *Slot5x4) SetSelNum(sel Bitset, bln int) error {
-	if sel.IsZero() {
+func (g *Slot5x4) SetSelNum(sel int, bln int) error {
+	if sel < 1 {
 		return ErrNoLineset
 	}
-	if bs := sel; !bs.AndNot(MakeBitNum(bln, 1)).IsZero() {
+	if sel > bln {
 		return ErrLinesetOut
 	}
 	if g.FreeSpins() > 0 {

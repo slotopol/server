@@ -29,7 +29,7 @@ var LinePay = [13][5]float64{
 var ScatPay = [5]float64{0, 2, 5, 20, 500} // 13 scatter
 
 // Bet lines
-var BetLines = slot.BetLinesPlt5x3[:30]
+var BetLines = slot.BetLinesPlt5x3[:25]
 
 const (
 	shell_x5   = 1
@@ -72,7 +72,7 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{
-			Sel: slot.MakeBitNum(25, 1),
+			Sel: len(BetLines),
 			Bet: 1,
 		},
 		FS: 0,
@@ -89,7 +89,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
-	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
+	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
 		var mw float64 = 1 // mult wild
@@ -159,7 +159,7 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 			fs = 8
 		}
 		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * float64(g.Sel.Num()) * pay,
+			Pay:  g.Bet * float64(g.Sel) * pay,
 			Mult: mm,
 			Sym:  scat,
 			Num:  count,
@@ -229,6 +229,6 @@ func (g *Game) FreeSpins() int {
 	return g.FS
 }
 
-func (g *Game) SetSel(sel slot.Bitset) error {
+func (g *Game) SetSel(sel int) error {
 	return g.SetSelNum(sel, len(BetLines))
 }

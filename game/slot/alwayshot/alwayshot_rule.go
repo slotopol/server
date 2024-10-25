@@ -29,14 +29,14 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot3x3: slot.Slot3x3{
-			Sel: slot.MakeBitNum(len(BetLines), 1),
+			Sel: len(BetLines),
 			Bet: 1,
 		},
 	}
 }
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
-	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
+	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 		var sym1, sym2, sym3 = screen.Pos(1, line), screen.Pos(2, line), screen.Pos(3, line)
 		if sym1 == sym2 && sym1 == sym3 {
@@ -57,6 +57,6 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 	screen.Spin(reels)
 }
 
-func (g *Game) SetSel(sel slot.Bitset) error {
+func (g *Game) SetSel(sel int) error {
 	return slot.ErrNoFeature
 }

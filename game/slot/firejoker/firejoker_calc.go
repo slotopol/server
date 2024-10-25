@@ -39,7 +39,7 @@ func BruteForceFire(ctx context.Context, s slot.Stater, g slot.SlotGame, reels s
 }
 
 func CalcStatSym(ctx context.Context, g *Game, reels slot.Reels, gs slot.Sym) float64 {
-	var sln = float64(g.Sel.Num())
+	var sln = float64(g.Sel)
 	var s slot.Stat
 
 	var ctx2, cancel2 = context.WithCancel(ctx)
@@ -56,7 +56,7 @@ func CalcStatSym(ctx context.Context, g *Game, reels slot.Reels, gs slot.Sym) fl
 func CalcStatBon(ctx context.Context, mrtp float64) (rtp float64) {
 	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	var g = NewGame()
-	g.Sel.SetNum(1, 1)
+	g.Sel = 1
 
 	for gs := slot.Sym(1); gs <= 7; gs++ {
 		rtp += CalcStatSym(ctx, g, reels, gs)
@@ -76,7 +76,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	var g = NewGame()
 	var sln float64 = 1
-	g.Sel.SetNum(int(sln), 1)
+	g.Sel = int(sln)
 	var s slot.Stat
 
 	var dur = slot.ScanReels5x(ctx, &s, g, reels,
@@ -87,7 +87,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var rtpsym = lrtp + srtp
 	var q = float64(s.FreeCount) / reshuf
 	var rtp = rtpsym + q*rtpfs
-	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/float64(s.Planned())*100, g.Sel.Num(), dur)
+	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/float64(s.Planned())*100, g.Sel, dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)

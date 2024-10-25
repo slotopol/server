@@ -26,14 +26,14 @@ type Game struct {
 func NewGame() *Game {
 	return &Game{
 		Slot3x3: slot.Slot3x3{
-			Sel: slot.MakeBitNum(len(BetLines), 1),
+			Sel: len(BetLines),
 			Bet: 1,
 		},
 	}
 }
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
-	for li := g.Sel.Next(0); li != -1; li = g.Sel.Next(li) {
+	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 		var fm float64 = 1 // fill mult
 		if sym := screen.FillSym(); sym >= 4 && sym <= 7 {
@@ -58,6 +58,6 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 	screen.Spin(reels)
 }
 
-func (g *Game) SetSel(sel slot.Bitset) error {
+func (g *Game) SetSel(sel int) error {
 	return slot.ErrNoFeature
 }
