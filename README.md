@@ -11,8 +11,8 @@ Slots games server. Releases functionality for Megajack, Novomatic, NetEnt, BetS
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 87 games, 50 algorithms, 9 providers
-AGT: 5 games
+total: 88 games, 51 algorithms, 9 providers
+AGT: 6 games
 Aristocrat: 3 games
 BetSoft: 3 games
 Megajack: 3 games
@@ -139,10 +139,10 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -X
 curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"cid":1,"uid":3,"alias":"jokerdolphin"}' -X POST localhost:8080/game/join
 ```
 
-* Change selected bet lines. Argument `sel` is a bitset with selected lines, 1st bit in bitset means 1st line. So, value `62` sets lines 1, 2, 3, 4, 5.
+* Change number of selected bet lines.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1,"sel":62}' -X POST localhost:8080/slot/sel/set
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1,"sel":5}' -X POST localhost:8080/slot/sel/set
 ```
 
 * Make a spin. Spin returns `sid` - spin ID, by this ID it can be found at the log; `screen` with new symbols after spin; `wins` with list of win on each line if it was; `fs` - free spins remained; `gain` - total gain after spin, that can be gambled on double up; `wallet` - user balance after spin with won coins.
