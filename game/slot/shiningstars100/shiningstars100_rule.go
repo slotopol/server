@@ -1,40 +1,29 @@
-package shiningstars
+package shiningstars100
 
-// See: https://demo.agtsoftware.com/games/agt/shiningstars
+// See: https://demo.agtsoftware.com/games/agt/shiningstars100
 
 import (
 	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot/shiningstars"
 )
 
 // Lined payment.
-var LinePay = [11][5]float64{
-	{},                 //  1 wild (on 2, 3, 4 reels)
-	{},                 //  2 scatter1 (on all reels)
-	{},                 //  3 scatter2 (on 1, 3, 5 reels)
-	{0, 1, 5, 25, 500}, //  4 seven
-	{0, 0, 4, 12, 70},  //  5 grape
-	{0, 0, 4, 12, 70},  //  6 watermelon
-	{0, 0, 2, 4, 20},   //  7 avocado
-	{0, 0, 1, 3, 15},   //  8 pomegranate
-	{0, 0, 1, 3, 15},   //  9 carambola
-	{0, 0, 1, 3, 15},   // 10 maracuya
-	{0, 0, 1, 3, 15},   // 11 orange
-}
+var LinePay = shiningstars.LinePay
 
 // Scatters payment.
-var ScatPay1 = [5]float64{0, 0, 5, 20, 100} // 2 scatter1
-var ScatPay2 = [5]float64{0, 0, 20}         // 3 scatter2
+var ScatPay1 = shiningstars.ScatPay1
+var ScatPay2 = shiningstars.ScatPay2
 
 // Bet lines
-var BetLines = slot.BetLinesAgt5x3[:10]
+var BetLines = slot.BetLinesAgt5x4[:100]
 
 type Game struct {
-	slot.Slot5x3 `yaml:",inline"`
+	slot.Slot5x4 `yaml:",inline"`
 }
 
 func NewGame() *Game {
 	return &Game{
-		Slot5x3: slot.Slot5x3{
+		Slot5x4: slot.Slot5x4{
 			Sel: len(BetLines),
 			Bet: 1,
 		},
@@ -119,5 +108,5 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 }
 
 func (g *Game) SetSel(sel int) error {
-	return slot.ErrNoFeature
+	return g.SetSelNum(sel, len(BetLines))
 }

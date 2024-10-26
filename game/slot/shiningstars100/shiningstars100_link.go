@@ -1,6 +1,6 @@
 //go:build !prod || full || agt
 
-package shiningstars
+package shiningstars100
 
 import (
 	"context"
@@ -11,14 +11,15 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "shiningstars", Name: "Shining Stars"},
+		{ID: "100shiningstars", Name: "100 Shining Stars"},
 	},
 	Provider: "AGT",
-	GP: game.GPfgno |
+	GP: game.GPsel |
+		game.GPfgno |
 		game.GPscat |
 		game.GPrwild,
 	SX:  5,
-	SY:  3,
+	SY:  4,
 	SN:  len(LinePay),
 	LN:  len(BetLines),
 	BN:  0,
