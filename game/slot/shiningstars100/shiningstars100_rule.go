@@ -42,7 +42,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	var reelwild [5]bool
 	var x, y slot.Pos
 	for x = 2; x <= 4; x++ {
-		for y = 1; y <= 3; y++ {
+		for y = 1; y <= 4; y++ {
 			if screen.At(x, y) == wild {
 				reelwild[x-1] = true
 				break

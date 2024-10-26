@@ -8,17 +8,17 @@ import (
 
 // Lined payment.
 var LinePay = [11][5]float64{
-	{},                 //  1 wild (on 2, 3, 4 reels)
-	{},                 //  2 scatter1 (on all reels)
-	{},                 //  3 scatter2 (on 1, 3, 5 reels)
-	{0, 1, 5, 25, 500}, //  4 seven
-	{0, 0, 4, 12, 70},  //  5 grape
-	{0, 0, 4, 12, 70},  //  6 watermelon
-	{0, 0, 2, 4, 20},   //  7 avocado
-	{0, 0, 1, 3, 15},   //  8 pomegranate
-	{0, 0, 1, 3, 15},   //  9 carambola
-	{0, 0, 1, 3, 15},   // 10 maracuya
-	{0, 0, 1, 3, 15},   // 11 orange
+	{},                     //  1 wild (on 2, 3, 4 reels)
+	{},                     //  2 scatter1 (on all reels)
+	{},                     //  3 scatter2 (on 1, 3, 5 reels)
+	{0, 10, 50, 250, 5000}, //  4 seven
+	{0, 0, 40, 120, 700},   //  5 grape
+	{0, 0, 40, 120, 700},   //  6 watermelon
+	{0, 0, 20, 40, 200},    //  7 avocado
+	{0, 0, 10, 30, 150},    //  8 pomegranate
+	{0, 0, 10, 30, 150},    //  9 carambola
+	{0, 0, 10, 30, 150},    // 10 maracuya
+	{0, 0, 10, 30, 150},    // 11 orange
 }
 
 // Scatters payment.
