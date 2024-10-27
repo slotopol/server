@@ -16,7 +16,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	var s slot.Stat
 
 	var dur = slot.ScanReels5x(ctx, &s, g, reels,
-		time.Tick(2*time.Second), time.Tick(2*time.Second))
+		time.Tick(6*time.Second), time.Tick(2*time.Second))
 
 	var reshuf = float64(s.Reshuffles)
 	var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
