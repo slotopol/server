@@ -1,5 +1,5 @@
 local path = arg[0]:match("(.*[/\\])")
-dofile(path.."reelgen.lua")
+dofile(path.."lib/reelgen.lua")
 
 local symset = {
 	0, --  1 wild -- insert directly
@@ -33,11 +33,8 @@ local neighbours = {
 }
 
 math.randomseed(os.time())
-local reel = MakeReel(symset)
-print("reel length: " .. #reel)
-ShuffleReel(reel)
-local iter = CorrectReel(reel, neighbours)
+local reel, iter = makereel(symset, neighbours)
 for i = 1, 4 do
 	table.insert(reel, i, 1)
 end
-PrintReel(reel, iter)
+printreel(reel, iter)

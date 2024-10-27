@@ -6,7 +6,8 @@ reelmt.__newindex = function(t, i, v)
 	rawset(t, (i - 1) % rawlen(t) + 1, v)
 end
 
-function MakeReel(symset)
+function makereel(symset, neighbours)
+	-- make not-shuffled reel
 	local reel = {}
 	for sym, n in ipairs(symset) do
 		for _ = 1, n do
@@ -14,17 +15,72 @@ function MakeReel(symset)
 		end
 	end
 	setmetatable(reel, reelmt)
-	return reel
+
+	-- shuffle it
+	shuffle(reel)
+
+	-- correct it
+	local iter = correctreel(reel, neighbours)
+	return reel, iter
 end
 
-function ShuffleReel(reel)
-	for i = #reel, 1, -1 do
+function makereelhot(symset, sy, scat)
+	-- make set of chunks
+	local chunks = {}
+	for sym, n in pairs(symset) do
+		while n > 0 do
+			local m
+			if scat[sym] then
+				m = 1
+			elseif n < sy then
+				m = n
+			else
+				m = sy
+			end
+			n = n - m
+			local c = {sym=sym, n=m}
+			chunks[#chunks+1] = c
+		end
+	end
+
+	-- shuffle until reel become correct
+	local iter = 0
+	repeat
+		shuffle(chunks)
+		local ok, n = true, 0
+		for _, c in pairs(chunks) do
+			if scat[c.sym] then
+				if n < sy then
+					ok = false
+					break
+				else
+					n = 0
+				end
+			else
+				n = n + c.n
+			end
+		end
+		iter = iter + 1
+	until ok or iter >= 1000
+
+	-- glue chunks to single reel
+	local reel = {}
+	for _, c in pairs(chunks) do
+		for _ = 1, c.n do
+			reel[#reel+1] = c.sym
+		end
+	end
+	return reel, iter
+end
+
+function shuffle(t)
+	for i = #t, 1, -1 do
 		local j = math.random(i)
-		reel[i], reel[j] = reel[j], reel[i]
+		t[i], t[j] = t[j], t[i]
 	end
 end
 
-function CorrectReel(reel, neighbours)
+function correctreel(reel, neighbours)
 	local iter = 0
 	while true do
 		local n = 0
@@ -85,7 +141,8 @@ function CorrectReel(reel, neighbours)
 	return iter
 end
 
-function PrintReel(reel, iter)
+function printreel(reel, iter)
+	print("reel length: " .. #reel)
 	if iter > 1 then
 		if iter >= 1000 then
 			print"too many neighbours shuffle iterations"
@@ -94,9 +151,5 @@ function PrintReel(reel, iter)
 			print(iter.." iterations")
 		end
 	end
-	io.write("{")
-	for i = 1, #reel do
-		io.write(reel[i] .. ", ")
-	end
-	io.write("}\n")
+	print("{" .. table.concat(reel, ", ") .. "}")
 end

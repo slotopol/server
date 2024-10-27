@@ -1,5 +1,5 @@
 local path = arg[0]:match("(.*[/\\])")
-dofile(path.."keno.lua")
+dofile(path.."lib/keno.lua")
 
 -- Fire Keno
 local paytable = {
@@ -16,5 +16,5 @@ local paytable = {
     {    15,     0,     0,     0,     0,     1,     3,    25,   666,  1000,100000,}, -- 10 sel
 }
 
-KenoProbTable(10, 6)
-KenoRTP(paytable, 6)
+kenoprobtable(10, 6)
+kenortp(paytable, 6)

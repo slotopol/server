@@ -1,9 +1,9 @@
 
-local function fmt(...)
+local function printf(...)
 	print(string.format(...))
 end
 
-function Combin(n, r)
+function combin(n, r)
 	local mi, mj = 1, 1
 	local i, j = n, 1
 	for _ = 1, r do
@@ -14,16 +14,16 @@ function Combin(n, r)
 	end
 	return mi / mj
 end
-local c = Combin
+local c = combin
 
-local C_80_20 = c(80, 20)
+local c_80_20 = c(80, 20)
 
-function KenoProb(n, r)
-	return c(n, r) * c(80-n, 20-r) / C_80_20
+function kenoprob(n, r)
+	return c(n, r) * c(80-n, 20-r) / c_80_20
 end
-local p = KenoProb
+local p = kenoprob
 
-function KenoProbTable(selmax, prec)
+function kenoprobtable(selmax, prec)
 	print "Probability calculation"
 	local hf = "%-"..(prec+2).."d"
 	do
@@ -31,7 +31,7 @@ function KenoProbTable(selmax, prec)
 		for r = 0, selmax do
 			t[#t+1] = string.format(hf, r)
 		end
-		fmt("     %s", table.concat(t, " | "))
+		printf("     %s", table.concat(t, " | "))
 	end
 	local pf = "%."..prec.."f"
 	for n = 1, selmax do
@@ -39,11 +39,11 @@ function KenoProbTable(selmax, prec)
 		for r = 0, n do
 			t[#t+1] = string.format(pf, p(n, r))
 		end
-		fmt("[%02d] %s", n, table.concat(t, " | "))
+		printf("[%02d] %s", n, table.concat(t, " | "))
 	end
 end
 
-function KenoRTP(paytable, prec)
+function kenortp(paytable, prec)
 	print "RTP calculation"
 	local grtp = 0
 	local pf = "RTP[%2d] = %."..prec.."f%%"
@@ -53,9 +53,9 @@ function KenoRTP(paytable, prec)
 			local pay = paytable[n][r+1]
 			rtp = rtp + pay * p(n, r)
 		end
-		fmt(pf, n, rtp*100)
+		printf(pf, n, rtp*100)
 		grtp = grtp + rtp
 	end
 	grtp = grtp / 9
-	fmt("RTP[game] = %."..prec.."f%%", grtp*100)
+	printf("RTP[game] = %."..prec.."f%%", grtp*100)
 end

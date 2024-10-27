@@ -1,5 +1,5 @@
 local path = arg[0]:match("(.*[/\\])")
-dofile(path.."reelgen.lua")
+dofile(path.."lib/reelgen.lua")
 
 local symset = {
 	1, --  1 wild
@@ -31,11 +31,8 @@ local neighbours = {
 }
 
 math.randomseed(os.time())
-local reel = MakeReel(symset)
-print("reel length: " .. #reel)
-ShuffleReel(reel)
-local iter = CorrectReel(reel, neighbours)
-PrintReel(reel, iter)
+local reel, iter = makereel(symset, neighbours)
+printreel(reel, iter)
 
 local fsn = {10, 15, 15, 20, 25}
 local sum = 0

@@ -4,8 +4,8 @@
 -- see: https://github.com/lunarmodules/luacheck
 
 globals = {
-	"MakeReel", "ShuffleReel", "CorrectReel", "PrintReel",
-	"Combin", "KenoProb", "KenoProbTable", "KenoRTP",
+	"makereel", "makereelhot", "shuffle", "correctreel", "printreel",
+	"combin", "kenoprob", "kenoprobtable", "kenortp",
 }
 
 read_globals = {
