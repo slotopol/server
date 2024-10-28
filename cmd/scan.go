@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/slotopol/server/config"
+	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/game"
 
 	"github.com/spf13/cobra"
@@ -23,12 +23,15 @@ var scanCmd = &cobra.Command{
 	Aliases: []string{"calc"},
 	Short:   scanShort,
 	Long:    scanLong,
-	Example: fmt.Sprintf(scanExmp, config.AppName),
+	Example: fmt.Sprintf(scanExmp, cfg.AppName),
 	Run: func(cmd *cobra.Command, args []string) {
 		var exitctx = Startup()
 
-		for _, iter := range game.ScanIters {
-			iter(scanflags, exitctx)
+		var mrtp, _ = scanflags.GetFloat64("reels")
+		for alias, scan := range game.ScanFactory {
+			if is, _ := scanflags.GetBool(alias); is {
+				scan(exitctx, mrtp)
+			}
 		}
 	},
 }
@@ -38,15 +41,12 @@ func init() {
 
 	scanflags = scanCmd.Flags()
 	scanflags.Float64P("reels", "r", 92.5, "master RTP to calculate nearest reels")
-	scanflags.Uint64Var(&config.MCCount, "mc", 0, "Monte Carlo method samples number, in millions")
-	scanflags.BoolVar(&config.MTScan, "mt", false, "multithreaded scanning")
+	scanflags.Uint64Var(&cfg.MCCount, "mc", 0, "Monte Carlo method samples number, in millions")
+	scanflags.BoolVar(&cfg.MTScan, "mt", false, "multithreaded scanning")
 
 	for _, gi := range game.GameList {
 		for _, ga := range gi.Aliases {
 			scanflags.Bool(ga.ID, false, fmt.Sprintf("'%s' %s %dx%d videoslot", ga.Name, gi.Provider, gi.SX, gi.SY))
 		}
-	}
-	for _, setter := range game.FlagsSetters {
-		setter(scanflags)
 	}
 }

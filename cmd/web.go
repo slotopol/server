@@ -6,7 +6,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/slotopol/server/config"
+	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/spi"
 	"golang.org/x/sync/errgroup"
 
@@ -24,11 +24,11 @@ var webCmd = &cobra.Command{
 	Use:     "web",
 	Short:   webShort,
 	Long:    webLong,
-	Example: fmt.Sprintf(webExmp, config.AppName),
+	Example: fmt.Sprintf(webExmp, cfg.AppName),
 	Run: func(cmd *cobra.Command, args []string) {
 		var err error
 
-		if config.DevMode {
+		if cfg.DevMode {
 			gin.SetMode(gin.DebugMode)
 		} else {
 			gin.SetMode(gin.ReleaseMode)

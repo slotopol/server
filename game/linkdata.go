@@ -3,8 +3,6 @@ package game
 import (
 	"context"
 	"sort"
-
-	"github.com/spf13/pflag"
 )
 
 const ( // Game properties
@@ -41,12 +39,8 @@ type (
 )
 
 var GameList = []*GameInfo{}
-
-var FlagsSetters = []func(*pflag.FlagSet){}
-
-var ScanIters = []func(*pflag.FlagSet, context.Context){}
-
 var GameFactory = map[string]func() any{}
+var ScanFactory = map[string]func(context.Context, float64) float64{}
 
 func MakeRtpList[T any](reelsmap map[float64]T) []float64 {
 	var list = make([]float64, 0, len(reelsmap))

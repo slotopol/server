@@ -8,7 +8,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	"github.com/slotopol/server/config"
+	cfg "github.com/slotopol/server/config"
 )
 
 type Stater interface {
@@ -290,10 +290,10 @@ func ScanReels3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x,
 	var t0 = time.Now()
 	var ctx2, cancel2 = context.WithCancel(ctx)
 	defer cancel2()
-	if config.MCCount > 0 {
-		s.SetPlan(config.MCCount * 1e6)
+	if cfg.MCCount > 0 {
+		s.SetPlan(cfg.MCCount * 1e6)
 		go s.Progress(ctx2, mctick, g.GetSel(), float64(s.Planned()))
-		if config.MTScan && !config.DevMode {
+		if cfg.MTScan && !cfg.DevMode {
 			MonteCarloGo(ctx2, s, g, reels)
 		} else {
 			MonteCarlo(ctx2, s, g, reels)
@@ -301,7 +301,7 @@ func ScanReels3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x,
 	} else {
 		s.SetPlan(reels.Reshuffles())
 		go s.Progress(ctx2, bftick, g.GetSel(), float64(s.Planned()))
-		if config.MTScan && !config.DevMode {
+		if cfg.MTScan && !cfg.DevMode {
 			BruteForce3xGo(ctx2, s, g, reels)
 		} else {
 			BruteForce3x(ctx2, s, g, reels)
@@ -315,10 +315,10 @@ func ScanReels5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x,
 	var t0 = time.Now()
 	var ctx2, cancel2 = context.WithCancel(ctx)
 	defer cancel2()
-	if config.MCCount > 0 {
-		s.SetPlan(config.MCCount * 1e6)
+	if cfg.MCCount > 0 {
+		s.SetPlan(cfg.MCCount * 1e6)
 		go s.Progress(ctx2, mctick, g.GetSel(), float64(s.Planned()))
-		if config.MTScan && !config.DevMode {
+		if cfg.MTScan && !cfg.DevMode {
 			MonteCarloGo(ctx2, s, g, reels)
 		} else {
 			MonteCarlo(ctx2, s, g, reels)
@@ -326,7 +326,7 @@ func ScanReels5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x,
 	} else {
 		s.SetPlan(reels.Reshuffles())
 		go s.Progress(ctx2, bftick, g.GetSel(), float64(s.Planned()))
-		if config.MTScan && !config.DevMode {
+		if cfg.MTScan && !cfg.DevMode {
 			BruteForce5xGo(ctx2, s, g, reels)
 		} else {
 			BruteForce5x(ctx2, s, g, reels)

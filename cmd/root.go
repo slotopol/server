@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/slotopol/server/config"
+	cfg "github.com/slotopol/server/config"
 	"github.com/spf13/cobra"
 )
 
@@ -12,21 +12,21 @@ const rootLong = `This application implements web server and reels scanner for s
 
 var (
 	rootCmd = &cobra.Command{
-		Use:     config.AppName,
-		Version: config.BuildVers,
+		Use:     cfg.AppName,
+		Version: cfg.BuildVers,
 		Short:   rootShort,
 		Long:    rootLong,
 	}
 )
 
 func init() {
-	cobra.OnInitialize(config.InitConfig)
+	cobra.OnInitialize(cfg.InitConfig)
 
 	var flags = rootCmd.PersistentFlags()
-	flags.StringVarP(&config.CfgFile, "config", "c", "", "config file (default is config/slot.yaml at executable location)")
-	flags.StringVarP(&config.SqlPath, "sqlite", "q", "", "sqlite databases path (default same as config file path)")
-	flags.BoolVarP(&config.DevMode, "devmode", "d", false, "start application in developer mode")
-	rootCmd.SetVersionTemplate(fmt.Sprintf("version: %s, builton: %s", config.BuildVers, config.BuildTime))
+	flags.StringVarP(&cfg.CfgFile, "config", "c", "", "config file (default is config/slot.yaml at executable location)")
+	flags.StringVarP(&cfg.SqlPath, "sqlite", "q", "", "sqlite databases path (default same as config file path)")
+	flags.BoolVarP(&cfg.DevMode, "devmode", "d", false, "start application in developer mode")
+	rootCmd.SetVersionTemplate(fmt.Sprintf("version: %s, builton: %s", cfg.BuildVers, cfg.BuildTime))
 }
 
 // Execute executes the root command.
