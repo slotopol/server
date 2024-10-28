@@ -1,7 +1,7 @@
 package jewels4all
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // RTP(no eu) = 67.344781%

@@ -3,7 +3,7 @@ package hothothot
 // See: https://demo.agtsoftware.com/games/agt/hothothot5
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // Lined payment.

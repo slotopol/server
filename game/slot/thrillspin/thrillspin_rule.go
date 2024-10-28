@@ -3,7 +3,7 @@ package thrillspin
 // See: https://www.youtube.com/watch?v=bAQaKujiLAU
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // Lined payment.

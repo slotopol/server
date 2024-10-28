@@ -1,7 +1,7 @@
 package trolls
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [39, 39, 40, 39, 39], total reshuffles 92537640

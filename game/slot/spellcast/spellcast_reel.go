@@ -1,7 +1,7 @@
 package spellcast
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [35, 35, 35, 35, 35], total reshuffles 52521875

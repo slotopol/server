@@ -1,7 +1,7 @@
 package tikiwonders
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [31, 31, 31, 31, 31], total reshuffles 28629151

@@ -3,7 +3,7 @@ package shiningstars100
 // See: https://demo.agtsoftware.com/games/agt/shiningstars100
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 	"github.com/slotopol/server/game/slot/shiningstars"
 )
 

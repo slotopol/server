@@ -3,7 +3,7 @@ package captainstreasure
 // See: https://freeslotshub.com/playtech/captains-treasure/
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // Lined payment.

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 var Egolfbn float64

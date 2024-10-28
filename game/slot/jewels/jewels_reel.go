@@ -1,7 +1,7 @@
 package jewels
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [27, 27, 27, 27, 27], total reshuffles 14348907

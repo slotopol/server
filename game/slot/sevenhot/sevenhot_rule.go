@@ -3,7 +3,7 @@ package sevenhot
 // See: https://demo.agtsoftware.com/games/agt/sevenhot20
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // Lined payment.

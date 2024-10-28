@@ -1,7 +1,7 @@
 package alwayshot
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [36, 36, 36], total reshuffles 46656

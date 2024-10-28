@@ -1,7 +1,7 @@
 package captainstreasure
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [32, 42, 42, 42, 32], total reshuffles 75866112

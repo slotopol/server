@@ -1,7 +1,7 @@
 package greatblue
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [44, 44, 44, 44, 44], total reshuffles 164916224

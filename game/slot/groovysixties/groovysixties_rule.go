@@ -3,7 +3,7 @@ package groovysixties
 // See: https://www.youtube.com/watch?v=qINQD6wRhpY
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // Lined payment.

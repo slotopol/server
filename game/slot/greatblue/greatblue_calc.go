@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 func FirstSreespins() (fsavr1 float64, multavr float64) {

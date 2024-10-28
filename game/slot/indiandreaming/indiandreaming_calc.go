@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 func CalcStatBon(ctx context.Context, mrtp float64) float64 {

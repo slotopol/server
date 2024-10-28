@@ -5,7 +5,7 @@ package shiningstars100
 import (
 	"context"
 
-	game "github.com/slotopol/server/game"
+	"github.com/slotopol/server/game"
 	"github.com/spf13/pflag"
 )
 

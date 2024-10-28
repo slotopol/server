@@ -1,7 +1,7 @@
 package simsalabim
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 	"github.com/slotopol/server/game/slot/diamonddogs"
 )
 

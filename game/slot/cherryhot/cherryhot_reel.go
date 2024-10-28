@@ -1,7 +1,7 @@
 package cherryhot
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [31, 30, 31, 30, 31], total reshuffles 26811900

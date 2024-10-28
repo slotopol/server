@@ -1,7 +1,7 @@
 package columbus
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [32, 28, 32, 28, 32], total reshuffles 25690112

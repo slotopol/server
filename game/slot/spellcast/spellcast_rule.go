@@ -3,7 +3,7 @@ package spellcast
 // See: https://www.youtube.com/watch?v=a_2rXSNin7A
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // Lined payment.

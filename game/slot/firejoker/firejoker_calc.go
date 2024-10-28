@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"time"
 
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 func BruteForceFire(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, gs slot.Sym) {

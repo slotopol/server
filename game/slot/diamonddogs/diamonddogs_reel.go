@@ -1,7 +1,7 @@
 package diamonddogs
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [35, 35, 35, 36, 36], total reshuffles 55566000

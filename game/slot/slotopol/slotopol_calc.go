@@ -6,7 +6,7 @@ import (
 	"math"
 	"time"
 
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 var Emje float64 // Eldorado game 1 spin calculated expectation

@@ -4,7 +4,7 @@ package fortuneteller
 // See: https://www.youtube.com/watch?v=bFQq3cCz9XY
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // Lined payment.

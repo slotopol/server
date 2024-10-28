@@ -1,7 +1,7 @@
 package roaringforties
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [58, 66, 66, 66, 58], total reshuffles 967136544

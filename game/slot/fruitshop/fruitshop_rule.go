@@ -3,7 +3,7 @@ package fruitshop
 // See: https://slotsspot.com/online-free-slots/fruit-shop-slot/
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // Lined payment.

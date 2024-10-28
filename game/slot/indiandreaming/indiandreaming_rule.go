@@ -3,7 +3,7 @@ package indiandreaming
 // See: https://freeslotshub.com/aristocrat/indian-dreaming/
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // Lined payment.

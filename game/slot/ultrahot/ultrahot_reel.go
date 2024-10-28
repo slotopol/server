@@ -1,7 +1,7 @@
 package ultrahot
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [37, 37, 37], total reshuffles 50653

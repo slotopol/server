@@ -1,7 +1,7 @@
 package powerstars
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [33, 33, 33, 33, 33], total reshuffles 39135393

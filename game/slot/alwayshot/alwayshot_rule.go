@@ -3,7 +3,7 @@ package alwayshot
 // See: https://freeslotshub.com/novomatic/always-hot/
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // Lined payment.

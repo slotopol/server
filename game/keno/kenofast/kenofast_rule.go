@@ -3,7 +3,7 @@ package kenofast
 // See: https://demo.agtsoftware.com/games/agt/keno
 
 import (
-	keno "github.com/slotopol/server/game/keno"
+	"github.com/slotopol/server/game/keno"
 )
 
 // RTP[ 1] = 95.000000%

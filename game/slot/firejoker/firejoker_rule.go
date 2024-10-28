@@ -5,7 +5,7 @@ package firejoker
 import (
 	"math/rand/v2"
 
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // Lined payment.

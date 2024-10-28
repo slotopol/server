@@ -3,7 +3,7 @@ package reelsteal
 // See: https://www.youtube.com/watch?v=5wEFg65Maa0
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // Lined payment.

@@ -1,7 +1,7 @@
 package sizzlinghot
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [25, 25, 25, 25, 25], total reshuffles 9765625

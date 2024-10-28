@@ -1,4 +1,4 @@
-package game
+package slot
 
 import (
 	"encoding/json"

@@ -3,7 +3,7 @@ package shiningstars
 // See: https://demo.agtsoftware.com/games/agt/shiningstars
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // Lined payment.

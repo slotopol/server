@@ -3,7 +3,7 @@ package americankeno
 // See: https://freeslotshub.com/aristocrat/keno/
 
 import (
-	keno "github.com/slotopol/server/game/keno"
+	"github.com/slotopol/server/game/keno"
 )
 
 // RTP[ 2] = 86.075949%

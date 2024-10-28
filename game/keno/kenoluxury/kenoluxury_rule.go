@@ -1,7 +1,7 @@
 package kenoluxury
 
 import (
-	keno "github.com/slotopol/server/game/keno"
+	"github.com/slotopol/server/game/keno"
 )
 
 // RTP[ 2] = 92.088608%

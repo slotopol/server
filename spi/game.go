@@ -5,9 +5,9 @@ import (
 	"sync/atomic"
 
 	cfg "github.com/slotopol/server/config"
-	game "github.com/slotopol/server/game"
-	keno "github.com/slotopol/server/game/keno"
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/game/keno"
+	"github.com/slotopol/server/game/slot"
 	"github.com/slotopol/server/util"
 
 	"github.com/gin-gonic/gin"

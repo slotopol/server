@@ -1,7 +1,7 @@
 package plentyontwenty
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [35, 29, 35, 29, 35], total reshuffles 36057875

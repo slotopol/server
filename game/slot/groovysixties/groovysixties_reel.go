@@ -1,7 +1,7 @@
 package groovysixties
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [52, 55, 56, 55, 52], total reshuffles 458057600

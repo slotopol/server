@@ -1,7 +1,7 @@
 package atthemovies
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [36, 37, 36, 37, 36], total reshuffles 63872064

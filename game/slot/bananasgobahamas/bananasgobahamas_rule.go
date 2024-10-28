@@ -1,7 +1,7 @@
 package bananasgobahamas
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // Lined payment.

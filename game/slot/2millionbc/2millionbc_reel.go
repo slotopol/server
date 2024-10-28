@@ -1,7 +1,7 @@
 package twomillionbc
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [32, 32, 32, 32, 110], total reshuffles 115343360

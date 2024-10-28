@@ -3,7 +3,7 @@ package goldentour
 // See: https://freeslotshub.com/playtech/golden-tour/
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // Lined payment.

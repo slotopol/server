@@ -1,7 +1,7 @@
 package slotopoldeluxe
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [32, 32, 32, 32, 32], total reshuffles 33554432

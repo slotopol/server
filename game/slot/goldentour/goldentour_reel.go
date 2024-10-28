@@ -1,7 +1,7 @@
 package goldentour
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [32, 46, 54, 46, 32], total reshuffles 117006336

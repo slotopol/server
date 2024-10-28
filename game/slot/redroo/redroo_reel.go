@@ -1,7 +1,7 @@
 package redroo
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // *bonus reels calculations*

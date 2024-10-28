@@ -1,7 +1,7 @@
 package sevenhot
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [34, 34, 35, 34, 34], total reshuffles 46771760

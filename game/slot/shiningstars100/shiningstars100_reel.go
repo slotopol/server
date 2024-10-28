@@ -1,7 +1,7 @@
 package shiningstars100
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [74, 73, 76, 73, 74], total reshuffles 2217801904

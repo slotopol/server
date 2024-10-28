@@ -6,7 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	cfg "github.com/slotopol/server/config"
-	game "github.com/slotopol/server/game"
+	"github.com/slotopol/server/game"
 )
 
 // save server start time

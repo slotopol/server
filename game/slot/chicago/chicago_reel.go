@@ -1,7 +1,7 @@
 package chicago
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [34, 34, 34, 34, 34], total reshuffles 45435424

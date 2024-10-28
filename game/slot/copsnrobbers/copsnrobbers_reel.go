@@ -1,7 +1,7 @@
 package copsnrobbers
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [39, 39, 39, 39, 39], total reshuffles 90224199

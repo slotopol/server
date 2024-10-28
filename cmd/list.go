@@ -6,7 +6,7 @@ import (
 	"strings"
 
 	cfg "github.com/slotopol/server/config"
-	game "github.com/slotopol/server/game"
+	"github.com/slotopol/server/game"
 	"github.com/slotopol/server/util"
 
 	"github.com/spf13/cobra"

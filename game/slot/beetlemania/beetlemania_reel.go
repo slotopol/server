@@ -1,7 +1,7 @@
 package beetlemania
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [29, 29, 31, 29, 29], total reshuffles 21925711

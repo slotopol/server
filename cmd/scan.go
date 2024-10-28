@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/slotopol/server/config"
-	game "github.com/slotopol/server/game"
+	"github.com/slotopol/server/game"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"

@@ -6,7 +6,7 @@ import (
 	"math"
 	"time"
 
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // Attention! On freespins can be calculated median only, not expectation.

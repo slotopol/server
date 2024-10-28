@@ -3,7 +3,7 @@ package cherryhot
 // See: https://demo.agtsoftware.com/games/agt/cherryhot
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // Lined payment.

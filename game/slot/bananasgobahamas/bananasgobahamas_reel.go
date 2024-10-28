@@ -1,7 +1,7 @@
 package bananasgobahamas
 
 import (
-	slot "github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot"
 )
 
 // reels lengths [30, 43, 43, 43, 43], total reshuffles 102564030
