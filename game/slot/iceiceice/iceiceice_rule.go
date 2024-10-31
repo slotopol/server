@@ -1,6 +1,6 @@
-package hothothot
+package iceiceice
 
-// See: https://demo.agtsoftware.com/games/agt/hothothot5
+// See: https://demo.agtsoftware.com/games/agt/iceiceice
 
 import (
 	"github.com/slotopol/server/game/slot"
@@ -8,17 +8,28 @@ import (
 
 // Lined payment.
 var LinePay = [7][3]float64{
-	{0, 0, 100}, // 1 seven
-	{0, 0, 50},  // 2 strawberry
-	{0, 0, 20},  // 3 grapes
-	{0, 0, 4},   // 4 plum
-	{0, 0, 2},   // 5 pear
-	{0, 0, 1},   // 6 cherry
+	{0, 0, 500}, // 1 seven
+	{0, 0, 250}, // 2 strawberry
+	{0, 0, 100}, // 3 grapes
+	{0, 0, 20},  // 4 plum
+	{0, 0, 10},  // 5 pear
+	{0, 0, 5},   // 6 cherry
 	{},          // 7 star
 }
 
 // Bet lines
-var BetLines = slot.BetLinesHot3
+var BetLines = []slot.Linex{
+	{2, 2, 2}, // 1
+	{1, 1, 1}, // 2
+	{3, 3, 3}, // 3
+	{1, 2, 3}, // 4
+	{3, 2, 1}, // 5
+	{2, 3, 2}, // 6
+	{2, 1, 2}, // 7
+	{1, 2, 1}, // 8
+	{3, 2, 3}, // 9
+	{1, 3, 1}, // 10
+}
 
 type Game struct {
 	slot.Slot3x3 `yaml:",inline"`

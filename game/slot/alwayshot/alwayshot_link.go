@@ -9,6 +9,7 @@ import (
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{ID: "alwayshot", Name: "Always Hot"},
+		{ID: "tropichot", Name: "Tropic Hot"}, // see: https://demo.agtsoftware.com/games/agt/tropichot
 	},
 	Provider: "Novomatic",
 	GP:       game.GPfgno,

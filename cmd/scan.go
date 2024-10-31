@@ -2,9 +2,11 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -14,8 +16,10 @@ var scanflags *pflag.FlagSet
 
 const scanShort = "Slots games reels scanning"
 const scanLong = `Calculate RTP (Return to Player) percentage for specified slot game reels.`
-const scanExmp = `Scan reels for 'Slotopol' game for reels set nearest to 100%%:
-  %[1]s scan --slotopol --reels=100`
+const scanExmp = `Scan reels for "Slotopol" game for reels set nearest to 100%%:
+  %[1]s scan --game=slotopol --mrtp=100
+Scan reels for "Dolphins Pearl" and "Katana" games for reels set nearest to 94.5%%:
+  %[1]s scan -g="Dolphins Pearl" -g=katana -r=94.5`
 
 // scanCmd represents the scan command
 var scanCmd = &cobra.Command{
@@ -25,13 +29,31 @@ var scanCmd = &cobra.Command{
 	Long:    scanLong,
 	Example: fmt.Sprintf(scanExmp, cfg.AppName),
 	Run: func(cmd *cobra.Command, args []string) {
+		var err error
 		var exitctx = Startup()
 
-		var mrtp, _ = scanflags.GetFloat64("reels")
-		for alias, scan := range game.ScanFactory {
-			if is, _ := scanflags.GetBool(alias); is {
-				scan(exitctx, mrtp)
+		var mrtp float64
+		if mrtp, err = scanflags.GetFloat64("mrtp"); err != nil {
+			log.Fatalln(err.Error())
+			return
+		}
+		var list []string
+		if list, err = scanflags.GetStringArray("game"); err != nil {
+			log.Fatalln(err.Error())
+			return
+		}
+		var scan game.Scanner
+		var ok bool
+		for _, alias := range list {
+			if scan, ok = game.ScanFactory[util.ToID(alias)]; !ok {
+				log.Fatalf("game name \"%s\" does not recognized", alias)
+				return
 			}
+			if len(list) > 1 {
+				fmt.Println()
+				fmt.Printf("***Scan '%s' game with master RTP %g***\n", alias, mrtp)
+			}
+			scan(exitctx, mrtp)
 		}
 	},
 }
@@ -40,13 +62,10 @@ func init() {
 	rootCmd.AddCommand(scanCmd)
 
 	scanflags = scanCmd.Flags()
-	scanflags.Float64P("reels", "r", 92.5, "master RTP to calculate nearest reels")
+	scanflags.StringArrayP("game", "g", nil, "identifier of game to scan")
+	scanflags.Float64P("mrtp", "r", 92.5, "master RTP to calculate nearest reels")
 	scanflags.Uint64Var(&cfg.MCCount, "mc", 0, "Monte Carlo method samples number, in millions")
 	scanflags.BoolVar(&cfg.MTScan, "mt", false, "multithreaded scanning")
 
-	for _, gi := range game.GameList {
-		for _, ga := range gi.Aliases {
-			scanflags.Bool(ga.ID, false, fmt.Sprintf("'%s' %s %dx%d videoslot", ga.Name, gi.Provider, gi.SX, gi.SY))
-		}
-	}
+	scanCmd.MarkFlagRequired("game")
 }

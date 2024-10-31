@@ -29,18 +29,20 @@ type (
 		Aliases  []GameAlias `json:"aliases" yaml:"aliases" xml:"aliases"`
 		Provider string      `json:"provider" yaml:"provider" xml:"provider"`
 		GP       uint        `json:"gp,omitempty" yaml:"gp,omitempty" xml:"gp,omitempty"` // game properties
-		SX       int         `json:"sx" yaml:"sx" xml:"sx"`                               // screen width
-		SY       int         `json:"sy" yaml:"sy" xml:"sy"`                               // screen height
+		SX       int         `json:"sx,omitempty" yaml:"sx,omitempty" xml:"sx,omitempty"` // screen width
+		SY       int         `json:"sy,omitempty" yaml:"sy,omitempty" xml:"sy,omitempty"` // screen height
 		SN       int         `json:"sn,omitempty" yaml:"sn,omitempty" xml:"sn,omitempty"` // number of symbols
 		LN       int         `json:"ln,omitempty" yaml:"ln,omitempty" xml:"ln,omitempty"` // number of lines
 		BN       int         `json:"bn,omitempty" yaml:"bn,omitempty" xml:"bn,omitempty"` // number of bonuses
-		RTP      []float64   `json:"rtp" yaml:"rtp" xml:"rtp"`
+		RTP      []float64   `json:"rtp" yaml:"rtp" xml:"rtp"`                            // 'Return to Player' percents list
 	}
+
+	Scanner func(context.Context, float64) float64
 )
 
 var GameList = []*GameInfo{}
 var GameFactory = map[string]func() any{}
-var ScanFactory = map[string]func(context.Context, float64) float64{}
+var ScanFactory = map[string]Scanner{}
 
 func MakeRtpList[T any](reelsmap map[float64]T) []float64 {
 	var list = make([]float64, 0, len(reelsmap))
