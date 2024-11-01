@@ -24,7 +24,7 @@ function makereel(symset, neighbours)
 	return reel, iter
 end
 
-function makereelhot(symset, sy, scat)
+function makereelhot(symset, sy, scat, strict)
 	-- make set of chunks
 	local chunks = {}
 	for sym, n in pairs(symset) do
@@ -48,7 +48,12 @@ function makereelhot(symset, sy, scat)
 	repeat
 		shuffle(chunks)
 		local ok, n = true, 0
+		local last = 0
 		for _, c in pairs(chunks) do
+			if strict and c.sym == last then
+				ok = false
+				break
+			end
 			if scat[c.sym] then
 				if n < sy then
 					ok = false
@@ -59,6 +64,7 @@ function makereelhot(symset, sy, scat)
 			else
 				n = n + c.n
 			end
+			last = c.sym
 		end
 		iter = iter + 1
 	until ok or iter >= 1000

@@ -8,15 +8,15 @@ import (
 
 // Lined payment.
 var LinePay = [9][3]float64{
-	{0, 0, 60}, // 1 seven
-	{0, 0, 40}, // 2 star
-	{0, 0, 20}, // 3 melon
-	{0, 0, 16}, // 4 grapes
-	{0, 0, 16}, // 5 bell
-	{0, 0, 8},  // 6 orange
-	{0, 0, 8},  // 7 plum
-	{0, 0, 8},  // 8 lemon
-	{0, 0, 8},  // 9 cherry
+	{0, 0, 300}, // 1 seven
+	{0, 0, 200}, // 2 star
+	{0, 0, 100}, // 3 melon
+	{0, 0, 80},  // 4 grapes
+	{0, 0, 80},  // 5 bell
+	{0, 0, 40},  // 6 orange
+	{0, 0, 40},  // 7 plum
+	{0, 0, 40},  // 8 lemon
+	{0, 0, 40},  // 9 cherry
 }
 
 // Bet lines
@@ -46,7 +46,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 				Sym:  sym1,
 				Num:  3,
 				Line: li,
-				XY:   line.CopyL(3),
+				XY:   line, // whole line is used
 			})
 		}
 	}

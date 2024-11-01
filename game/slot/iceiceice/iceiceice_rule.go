@@ -78,7 +78,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 					Sym:  syml,
 					Num:  3,
 					Line: li,
-					XY:   line.CopyL(3),
+					XY:   line, // whole line is used
 				})
 			}
 		} else { // g.FS == 0
@@ -99,7 +99,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 					Sym:  syml,
 					Num:  3,
 					Line: li,
-					XY:   line.CopyL(3),
+					XY:   line, // whole line is used
 				})
 			}
 		}

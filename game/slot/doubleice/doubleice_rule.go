@@ -1,23 +1,26 @@
-package ultrahot
+package doubleice
+
+// See: https://demo.agtsoftware.com/games/agt/doubleice
 
 import (
 	"github.com/slotopol/server/game/slot"
 )
 
 // Lined payment.
-var LinePay = [8][3]float64{
-	{0, 0, 750}, // 1 seven
-	{0, 0, 200}, // 2 star
-	{0, 0, 60},  // 3 bar
-	{0, 0, 40},  // 4 plum
-	{0, 0, 40},  // 5 orange
-	{0, 0, 40},  // 6 lemon
-	{0, 0, 40},  // 7 cherry
-	{0, 0, 5},   // 8 x
+var LinePay = [9][3]float64{
+	{0, 0, 600}, // 1 seven
+	{0, 0, 400}, // 2 strawberry
+	{0, 0, 200}, // 3 bell
+	{0, 0, 160}, // 4 star
+	{0, 0, 160}, // 5 lemon
+	{0, 0, 20},  // 6 blueberry
+	{0, 0, 20},  // 7 plum
+	{0, 0, 20},  // 8 orange
+	{0, 0, 20},  // 9 cherry
 }
 
 // Bet lines
-var BetLines = slot.BetLinesHot3
+var BetLines = slot.BetLinesAgt3x3[:]
 
 type Game struct {
 	slot.Slot3x3 `yaml:",inline"`
@@ -34,7 +37,7 @@ func NewGame() *Game {
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	var fm float64 = 1 // fill mult
-	if sym := screen.FillSym(); sym >= 4 && sym <= 7 {
+	if sym := screen.FillSym(); sym >= 6 {
 		fm = 2
 	}
 	for li := 1; li <= g.Sel; li++ {
