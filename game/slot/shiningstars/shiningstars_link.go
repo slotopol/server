@@ -9,7 +9,8 @@ import (
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{ID: "shiningstars", Name: "Shining Stars"},
-		{ID: "greenhot", Name: "Green Hot"}, // see: https://demo.agtsoftware.com/games/agt/greenhot
+		{ID: "greenhot", Name: "Green Hot"},        // see: https://demo.agtsoftware.com/games/agt/greenhot
+		{ID: "applesshine", Name: "Apples' Shine"}, // see: https://demo.agtsoftware.com/games/agt/applesshine
 	},
 	Provider: "AGT",
 	GP: game.GPfgno |

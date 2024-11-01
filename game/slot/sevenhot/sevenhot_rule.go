@@ -8,14 +8,14 @@ import (
 
 // Lined payment.
 var LinePay = [8][5]float64{
-	{0, 0, 10, 100, 500}, // 1 seven
-	{0, 0, 5, 20, 50},    // 2 blueberry
-	{0, 0, 5, 20, 40},    // 3 strawberry
-	{0, 0, 2.5, 6, 22},   // 4 plum
-	{0, 0, 2, 5, 20},     // 5 pear
-	{0, 0, 2, 4, 18},     // 6 peach
-	{0, 0.5, 1.5, 4, 18}, // 7 cherry
-	{},                   // 8 bell
+	{0, 0, 100, 1000, 5000}, // 1 seven
+	{0, 0, 50, 200, 500},    // 2 blueberry
+	{0, 0, 50, 200, 400},    // 3 strawberry
+	{0, 0, 25, 60, 220},     // 4 plum
+	{0, 0, 20, 50, 200},     // 5 pear
+	{0, 0, 20, 40, 180},     // 6 peach
+	{0, 5, 15, 40, 180},     // 7 cherry
+	{},                      // 8 bell
 }
 
 // Scatters payment.

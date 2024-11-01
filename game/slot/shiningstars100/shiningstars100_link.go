@@ -9,6 +9,7 @@ import (
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{ID: "100shiningstars", Name: "100 Shining Stars"},
+		{ID: "50applesshine", Name: "50 Apples' Shine"}, // see: https://demo.agtsoftware.com/games/agt/applesshine50
 	},
 	Provider: "AGT",
 	GP: game.GPsel |
