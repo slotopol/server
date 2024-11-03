@@ -67,6 +67,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/aislot"
 	_ "github.com/slotopol/server/game/slot/cherryhot"
 	_ "github.com/slotopol/server/game/slot/doubleice"
+	_ "github.com/slotopol/server/game/slot/happysanta"
 	_ "github.com/slotopol/server/game/slot/iceiceice"
 	_ "github.com/slotopol/server/game/slot/sevenhot"
 	_ "github.com/slotopol/server/game/slot/shiningstars"
