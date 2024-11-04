@@ -43,7 +43,6 @@ var (
 	ErrBadJwtID = errors.New("jwt-token id does not refer to registered user")
 	ErrNoAuth   = errors.New("authorization is required")
 	ErrNoScheme = errors.New("authorization does not have expected scheme")
-	ErrNoEmail  = errors.New("email or user ID should be provided")
 	ErrNoSecret = errors.New("expected password or SHA25 hash on it and current time as a nonce")
 	ErrSmallKey = errors.New("password too small")
 	ErrNoCred   = errors.New("user with given credentials does not registered")
@@ -341,8 +340,8 @@ func SpiSignis(c *gin.Context) {
 	var err error
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		UID     uint64   `json:"uid" yaml:"uid" xml:"uid" form:"uid"`
-		Email   string   `json:"email" yaml:"email" xml:"email" form:"email"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid" form:"uid" binding:"required_without=Email"`
+		Email   string   `json:"email" yaml:"email" xml:"email" form:"email" binding:"omitempty,email"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -352,10 +351,6 @@ func SpiSignis(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_signis_nobind, err)
-		return
-	}
-	if arg.UID == 0 && arg.Email == "" {
-		Ret400(c, SEC_signis_noemail, ErrNoEmail)
 		return
 	}
 
@@ -383,16 +378,12 @@ func SpiSendCode(c *gin.Context) {
 	var err error
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		UID     uint64   `json:"uid" yaml:"uid" xml:"uid" form:"uid"`
-		Email   string   `json:"email" yaml:"email" xml:"email" form:"email"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid" form:"uid" binding:"required_without=Email"`
+		Email   string   `json:"email" yaml:"email" xml:"email" form:"email" binding:"omitempty,email"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_sendcode_nobind, err)
-		return
-	}
-	if arg.UID == 0 && arg.Email == "" {
-		Ret400(c, SEC_sendcode_noemail, ErrNoEmail)
 		return
 	}
 
@@ -435,17 +426,13 @@ func SpiActivate(c *gin.Context) {
 	var err error
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		UID     uint64   `json:"uid" yaml:"uid" xml:"uid" form:"uid"`
-		Email   string   `json:"email" yaml:"email" xml:"email" form:"email"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid" form:"uid" binding:"required_without=Email"`
+		Email   string   `json:"email" yaml:"email" xml:"email" form:"email" binding:"omitempty,email"`
 		Code    uint32   `json:"code,omitempty" yaml:"code,omitempty" xml:"code,omitempty" form:"code"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_activate_nobind, err)
-		return
-	}
-	if arg.UID == 0 && arg.Email == "" {
-		Ret400(c, SEC_activate_noemail, ErrNoEmail)
 		return
 	}
 
@@ -492,7 +479,7 @@ func SpiSignup(c *gin.Context) {
 	var err error
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		Email   string   `json:"email" yaml:"email" xml:"email" form:"email" binding:"required"`
+		Email   string   `json:"email" yaml:"email" xml:"email" form:"email" binding:"required,email"`
 		Secret  string   `json:"secret" yaml:"secret" xml:"secret" form:"secret" binding:"required"`
 		Name    string   `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
 	}
@@ -515,7 +502,7 @@ func SpiSignup(c *gin.Context) {
 
 	var code uint32
 	var status UF
-	if _, al := GetAdmin(c, 0); al&ALadmin != 0 {
+	if _, al := GetAdmin(c, 0); al&ALadmin != 0 || !Cfg.UseActivation {
 		status = UFactivated
 	} else {
 		code = rand.N[uint32](1000000) // 6 digits
@@ -576,8 +563,8 @@ func SpiSignin(c *gin.Context) {
 	var err error
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		UID     uint64   `json:"uid" yaml:"uid" xml:"uid" form:"uid"`
-		Email   string   `json:"email" yaml:"email" xml:"email" form:"email"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid" form:"uid" binding:"required_without=Email"`
+		Email   string   `json:"email" yaml:"email" xml:"email" form:"email" binding:"omitempty,email"`
 		Secret  string   `json:"secret" yaml:"secret,omitempty" xml:"secret,omitempty" form:"secret"`
 		HS256   string   `json:"hs256,omitempty" yaml:"hs256,omitempty" xml:"hs256,omitempty" form:"hs256"`
 		SigTime string   `json:"sigtime,omitempty" yaml:"sigtime,omitempty" xml:"sigtime,omitempty" form:"sigtime"`
@@ -587,10 +574,6 @@ func SpiSignin(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_signin_nobind, err)
-		return
-	}
-	if arg.UID == 0 && arg.Email == "" {
-		Ret400(c, SEC_signin_noemail, ErrNoEmail)
 		return
 	}
 	if len(arg.SigTime) == 0 && len(arg.Secret) == 0 {

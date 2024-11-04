@@ -17,16 +17,12 @@ func SpiUserRename(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
-		Name    string   `json:"name" yaml:"name" xml:"name" form:"name"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid" binding:"required"`
+		Name    string   `json:"name" yaml:"name" xml:"name" form:"name" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_user_rename_nobind, err)
-		return
-	}
-	if arg.UID == 0 {
-		Ret400(c, SEC_user_rename_nouid, ErrNoUID)
 		return
 	}
 
@@ -56,17 +52,13 @@ func SpiUserSecret(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName   xml.Name `json:"-" yaml:"-" xml:"arg"`
-		UID       uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
-		OldSecret string   `json:"oldsecret" yaml:"oldsecret" xml:"oldsecret" form:"oldsecret"`
-		NewSecret string   `json:"newsecret" yaml:"newsecret" xml:"newsecret" form:"newsecret"`
+		UID       uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid" binding:"required"`
+		OldSecret string   `json:"oldsecret" yaml:"oldsecret" xml:"oldsecret" form:"oldsecret" binding:"required"`
+		NewSecret string   `json:"newsecret" yaml:"newsecret" xml:"newsecret" form:"newsecret" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_user_secret_nobind, err)
-		return
-	}
-	if arg.UID == 0 {
-		Ret400(c, SEC_user_secret_nouid, ErrNoUID)
 		return
 	}
 	if len(arg.NewSecret) < 6 {
@@ -107,7 +99,7 @@ func SpiUserDelete(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid" binding:"required"`
 		Secret  string   `json:"secret" yaml:"secret" xml:"secret" form:"secret"`
 	}
 	var ret struct {
@@ -118,10 +110,6 @@ func SpiUserDelete(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_user_delete_nobind, err)
-		return
-	}
-	if arg.UID == 0 {
-		Ret400(c, SEC_user_delete_nouid, ErrNoUID)
 		return
 	}
 

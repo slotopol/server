@@ -15,6 +15,9 @@ authentication:
   # Validity timeout of the nonce with which the login hash is signed.
   nonce-timeout: 2m30s
 activation: # User account activation and verification
+  # Expects accounts activation by code after accounts registration.
+  # Or registers accounts as is already activated if value is false.
+  use-activation: false
   # Brevo API-key, see https://app.brevo.com/settings/keys/api.
   brevo-api-key: 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
   # Brevo API endpoint to post request to send email,

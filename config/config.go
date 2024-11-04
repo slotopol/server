@@ -23,6 +23,7 @@ type CfgJwtAuth struct {
 }
 
 type CfgSendCode struct {
+	UseActivation      bool          `json:"use-activation" yaml:"use-activation" mapstructure:"use-activation"`
 	BrevoApiKey        string        `json:"brevo-api-key" yaml:"brevo-api-key" mapstructure:"brevo-api-key"`
 	BrevoEmailEndpoint string        `json:"brevo-email-endpoint" yaml:"brevo-email-endpoint" mapstructure:"brevo-email-endpoint"`
 	SenderName         string        `json:"sender-name" yaml:"sender-name" mapstructure:"sender-name"`
@@ -105,6 +106,7 @@ var Cfg = &Config{
 		NonceTimeout: 150 * time.Second,
 	},
 	CfgSendCode: CfgSendCode{
+		UseActivation:      false,
 		BrevoApiKey:        "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",
 		BrevoEmailEndpoint: "https://api.brevo.com/v3/smtp/email",
 		SenderName:         "Slotopol server",

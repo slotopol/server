@@ -19,7 +19,7 @@ func SpiSlotBetGet(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid" binding:"required"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -28,10 +28,6 @@ func SpiSlotBetGet(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_slot_betget_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_slot_betget_nogid, ErrNoGID)
 		return
 	}
 
@@ -63,16 +59,12 @@ func SpiSlotBetSet(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" binding:"required"`
 		Bet     float64  `json:"bet" yaml:"bet" xml:"bet" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_slot_betset_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_slot_betset_nogid, ErrNoGID)
 		return
 	}
 
@@ -107,7 +99,7 @@ func SpiSlotSelGet(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid" binding:"required"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -116,10 +108,6 @@ func SpiSlotSelGet(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_slot_selget_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_slot_selget_nogid, ErrNoGID)
 		return
 	}
 
@@ -151,16 +139,12 @@ func SpiSlotSelSet(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" binding:"required"`
 		Sel     int      `json:"sel" yaml:"sel" xml:"sel" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_slot_selset_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_slot_selset_nogid, ErrNoGID)
 		return
 	}
 
@@ -195,16 +179,12 @@ func SpiSlotModeSet(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid" binding:"required"`
 		N       int      `json:"n" yaml:"n" xml:"n,attr" form:"n"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_slot_modeset_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_slot_modeset_nogid, ErrNoGID)
 		return
 	}
 
@@ -239,7 +219,7 @@ func SpiSlotSpin(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid" binding:"required"`
 	}
 	var ret struct {
 		XMLName xml.Name      `json:"-" yaml:"-" xml:"ret"`
@@ -252,10 +232,6 @@ func SpiSlotSpin(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_slot_spin_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_slot_spin_nogid, ErrNoGID)
 		return
 	}
 
@@ -403,8 +379,8 @@ func SpiSlotDoubleup(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
-		Mult    int      `json:"mult" yaml:"mult" xml:"mult" form:"mult"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid" binding:"required"`
+		Mult    int      `json:"mult" yaml:"mult" xml:"mult" form:"mult" binding:"gte=2,lte=10"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -415,18 +391,6 @@ func SpiSlotDoubleup(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_slot_doubleup_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_slot_doubleup_nogid, ErrNoGID)
-		return
-	}
-	if arg.Mult < 2 {
-		Ret400(c, SEC_slot_doubleup_nomult, ErrNoMult)
-		return
-	}
-	if arg.Mult > 10 {
-		Ret400(c, SEC_slot_doubleup_bigmult, ErrBigMult)
 		return
 	}
 
@@ -533,15 +497,11 @@ func SpiSlotCollect(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_slot_collect_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_slot_collect_nogid, ErrNoGID)
 		return
 	}
 

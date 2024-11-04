@@ -18,7 +18,7 @@ func SpiKenoBetGet(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid" binding:"required"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -27,10 +27,6 @@ func SpiKenoBetGet(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_keno_betget_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_keno_betget_nogid, ErrNoGID)
 		return
 	}
 
@@ -62,16 +58,12 @@ func SpiKenoBetSet(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" binding:"required"`
 		Bet     float64  `json:"bet" yaml:"bet" xml:"bet" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_keno_betset_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_keno_betset_nogid, ErrNoGID)
 		return
 	}
 
@@ -106,7 +98,7 @@ func SpiKenoSelGet(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid" binding:"required"`
 	}
 	var ret struct {
 		XMLName xml.Name    `json:"-" yaml:"-" xml:"ret"`
@@ -115,10 +107,6 @@ func SpiKenoSelGet(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_keno_selget_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_keno_selget_nogid, ErrNoGID)
 		return
 	}
 
@@ -150,16 +138,12 @@ func SpiKenoSelSet(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name    `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64      `json:"gid" yaml:"gid" xml:"gid,attr"`
+		GID     uint64      `json:"gid" yaml:"gid" xml:"gid,attr" binding:"required"`
 		Sel     keno.Bitset `json:"sel" yaml:"sel" xml:"sel" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_keno_selset_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_keno_selset_nogid, ErrNoGID)
 		return
 	}
 
@@ -194,7 +178,7 @@ func SpiKenoSelGetSlice(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid" binding:"required"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -203,10 +187,6 @@ func SpiKenoSelGetSlice(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_keno_selgetslice_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_keno_selgetslice_nogid, ErrNoGID)
 		return
 	}
 
@@ -239,16 +219,12 @@ func SpiKenoSelSetSlice(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" binding:"required"`
 		Sel     []int    `json:"sel" yaml:"sel" xml:"sel" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_keno_selsetslice_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_keno_selsetslice_nogid, ErrNoGID)
 		return
 	}
 
@@ -284,7 +260,7 @@ func SpiKenoSpin(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid" binding:"required"`
 	}
 	var ret struct {
 		XMLName xml.Name      `json:"-" yaml:"-" xml:"ret"`
@@ -297,10 +273,6 @@ func SpiKenoSpin(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_keno_spin_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_keno_spin_nogid, ErrNoGID)
 		return
 	}
 

@@ -17,7 +17,7 @@ func SpiClubIs(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid"`
+		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required_without=Name"`
 		Name    string   `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty" form:"name"`
 	}
 	var ret struct {
@@ -28,10 +28,6 @@ func SpiClubIs(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_club_is_nobind, err)
-		return
-	}
-	if arg.CID == 0 {
-		Ret400(c, SEC_club_is_nouid, ErrNoCID)
 		return
 	}
 
@@ -60,7 +56,7 @@ func SpiClubInfo(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid"`
+		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -75,10 +71,6 @@ func SpiClubInfo(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_club_info_nobind, err)
-		return
-	}
-	if arg.CID == 0 {
-		Ret400(c, SEC_club_info_nouid, ErrNoCID)
 		return
 	}
 
@@ -112,16 +104,12 @@ func SpiClubRename(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid"`
+		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required"`
 		Name    string   `json:"name" yaml:"name" xml:"name" form:"name" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_club_rename_nobind, err)
-		return
-	}
-	if arg.CID == 0 {
-		Ret400(c, SEC_club_rename_nouid, ErrNoCID)
 		return
 	}
 
@@ -155,7 +143,7 @@ func SpiClubCashin(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid"`
+		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required"`
 		BankSum float64  `json:"banksum" yaml:"banksum" xml:"banksum" form:"banksum"`
 		FundSum float64  `json:"fundsum" yaml:"fundsum" xml:"fundsum" form:"fundsum"`
 		LockSum float64  `json:"locksum" yaml:"locksum" xml:"locksum" form:"locksum"`
@@ -170,10 +158,6 @@ func SpiClubCashin(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_club_cashin_nobind, err)
-		return
-	}
-	if arg.CID == 0 {
-		Ret400(c, SEC_club_cashin_nouid, ErrNoCID)
 		return
 	}
 	if arg.BankSum == 0 && arg.FundSum == 0 && arg.LockSum == 0 {

@@ -13,8 +13,8 @@ func SpiPropsWalletGet(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid"`
-		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
+		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid" binding:"required"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -23,14 +23,6 @@ func SpiPropsWalletGet(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_prop_walletget_nobind, err)
-		return
-	}
-	if arg.CID == 0 {
-		Ret400(c, SEC_prop_walletget_norid, ErrNoCID)
-		return
-	}
-	if arg.UID == 0 {
-		Ret400(c, SEC_prop_walletget_nouid, ErrNoUID)
 		return
 	}
 
@@ -64,9 +56,9 @@ func SpiPropsWalletAdd(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid"`
-		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
-		Sum     float64  `json:"sum" yaml:"sum" xml:"sum"`
+		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid" binding:"required"`
+		Sum     float64  `json:"sum" yaml:"sum" xml:"sum" binding:"required"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -75,18 +67,6 @@ func SpiPropsWalletAdd(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_prop_walletadd_nobind, err)
-		return
-	}
-	if arg.CID == 0 {
-		Ret400(c, SEC_prop_walletadd_norid, ErrNoCID)
-		return
-	}
-	if arg.UID == 0 {
-		Ret400(c, SEC_prop_walletadd_nouid, ErrNoUID)
-		return
-	}
-	if arg.Sum == 0 {
-		Ret400(c, SEC_prop_walletadd_noadd, ErrZero)
 		return
 	}
 	if arg.Sum > cfg.Cfg.AdjunctLimit || arg.Sum < -cfg.Cfg.AdjunctLimit {
@@ -145,8 +125,8 @@ func SpiPropsAlGet(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid"`
-		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
+		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid" binding:"required"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -155,14 +135,6 @@ func SpiPropsAlGet(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_prop_alget_nobind, err)
-		return
-	}
-	if arg.CID == 0 {
-		Ret400(c, SEC_prop_alget_norid, ErrNoCID)
-		return
-	}
-	if arg.UID == 0 {
-		Ret400(c, SEC_prop_alget_nouid, ErrNoUID)
 		return
 	}
 
@@ -196,21 +168,13 @@ func SpiPropsAlSet(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid"`
-		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
+		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid" binding:"required"`
 		Access  AL       `json:"access" yaml:"access" xml:"access"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_prop_alset_nobind, err)
-		return
-	}
-	if arg.CID == 0 {
-		Ret400(c, SEC_prop_alset_norid, ErrNoCID)
-		return
-	}
-	if arg.UID == 0 {
-		Ret400(c, SEC_prop_alset_nouid, ErrNoUID)
 		return
 	}
 
@@ -265,8 +229,8 @@ func SpiPropsRtpGet(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid"`
-		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
+		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid" binding:"required"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -275,14 +239,6 @@ func SpiPropsRtpGet(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_prop_rtpget_nobind, err)
-		return
-	}
-	if arg.CID == 0 {
-		Ret400(c, SEC_prop_rtpget_norid, ErrNoCID)
-		return
-	}
-	if arg.UID == 0 {
-		Ret400(c, SEC_prop_rtpget_nouid, ErrNoUID)
 		return
 	}
 
@@ -323,14 +279,6 @@ func SpiPropsRtpSet(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_prop_rtpset_nobind, err)
-		return
-	}
-	if arg.CID == 0 {
-		Ret400(c, SEC_prop_rtpset_norid, ErrNoCID)
-		return
-	}
-	if arg.UID == 0 {
-		Ret400(c, SEC_prop_rtpset_nouid, ErrNoUID)
 		return
 	}
 

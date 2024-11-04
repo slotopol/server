@@ -26,8 +26,8 @@ func SpiGameJoin(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid"`
-		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
+		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid" binding:"required"`
 		Alias   string   `json:"alias" yaml:"alias" xml:"alias" form:"alias" binding:"required"`
 	}
 	var ret struct {
@@ -40,14 +40,6 @@ func SpiGameJoin(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_game_join_nobind, err)
-		return
-	}
-	if arg.CID == 0 {
-		Ret400(c, SEC_game_join_norid, ErrNoCID)
-		return
-	}
-	if arg.UID == 0 {
-		Ret400(c, SEC_game_join_nouid, ErrNoUID)
 		return
 	}
 
@@ -127,15 +119,11 @@ func SpiGamePart(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_game_part_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_game_part_nogid, ErrNoGID)
 		return
 	}
 
@@ -178,7 +166,7 @@ func SpiGameInfo(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid" binding:"required"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -193,10 +181,6 @@ func SpiGameInfo(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_game_info_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_game_info_nogid, ErrNoGID)
 		return
 	}
 
@@ -241,7 +225,7 @@ func SpiGameRtpGet(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid"`
+		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid" binding:"required"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -250,10 +234,6 @@ func SpiGameRtpGet(c *gin.Context) {
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, SEC_game_rdget_nobind, err)
-		return
-	}
-	if arg.GID == 0 {
-		Ret400(c, SEC_game_rdget_nogid, ErrNoGID)
 		return
 	}
 
