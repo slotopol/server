@@ -10,17 +10,16 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "kenoluxury", Name: "Keno Luxury"},
-		{ID: "kenosports", Name: "Keno Sports"},
+		{ID: "kenoluxury", Prov: "Slotopol", Name: "Keno Luxury"},
+		{ID: "kenosports", Prov: "Slotopol", Name: "Keno Sports"},
 	},
-	Provider: "Slotopol",
-	GP:       0,
-	SX:       80,
-	SY:       0,
-	SN:       0,
-	LN:       0,
-	BN:       0,
-	RTP:      []float64{92.104554},
+	GP:  0,
+	SX:  80,
+	SY:  0,
+	SN:  0,
+	LN:  0,
+	BN:  0,
+	RTP: []float64{92.104554},
 }
 
 func init() {

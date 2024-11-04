@@ -8,11 +8,10 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "groovysixties", Name: "Groovy Sixties"},
-		{ID: "funkyseventies", Name: "Funky Seventies"}, // See: https://www.youtube.com/watch?v=a-qF9ZOpRP0
-		{ID: "supereighties", Name: "Super Eighties"},   // See: https://www.youtube.com/watch?v=Wj49gwfRtz8
+		{ID: "groovysixties", Prov: "NetEnt", Name: "Groovy Sixties"},
+		{ID: "funkyseventies", Prov: "NetEnt", Name: "Funky Seventies"}, // See: https://www.youtube.com/watch?v=a-qF9ZOpRP0
+		{ID: "supereighties", Prov: "NetEnt", Name: "Super Eighties"},   // See: https://www.youtube.com/watch?v=Wj49gwfRtz8
 	},
-	Provider: "NetEnt",
 	GP: game.GPsel |
 		game.GPretrig |
 		game.GPfgmult |

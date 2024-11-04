@@ -12,12 +12,12 @@ Server provides HTTP-based API for popular slots and have well-optimized perform
 
 ```text
 total: 97 games, 54 algorithms, 9 providers
-AGT: 14 games
-Aristocrat: 3 games
+AGT: 15 games
+Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games
 NetEnt: 20 games
-Novomatic: 40 games
+Novomatic: 38 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games
@@ -97,7 +97,7 @@ curl -X GET localhost:8080/gamelist
 Response has array with available algorithms descriptions. Each structure has a list of games aliases, that shares one algorithm. Field `rtp` has the list of reels with predefined RTP. There is example of structure with info:
 
 ```json
-{"aliases":[{"id":"trolls","name":"Trolls"},{"id":"excalibur","name":"Excalibur"},{"id":"pandorasbox","name":"Pandora's Box"},{"id":"wildwitches","name":"Wild Witches"}],"provider":"NetEnt","gp":865,"sx":5,"sy":3,"sn":14,"ln":20,"rtp":[87.788791,89.230191,91.925079,93.061471,93.903358,95.183523,96.6485,98.193276,101.929305,110.298257]}
+{"aliases":[{"id":"trolls","prov":"NetEnt","name":"Trolls"},{"id":"excalibur","prov":"NetEnt","name":"Excalibur"},{"id":"pandorasbox","prov":"NetEnt","name":"Pandora's Box"},{"id":"wildwitches","prov":"NetEnt","name":"Wild Witches"}],"gp":865,"sx":5,"sy":3,"sn":14,"ln":20,"rtp":[87.788791,89.230191,91.925079,93.061471,93.903358,95.183523,96.6485,98.193276,101.929305,110.298257]}
 ```
 
 `/ping`, `/servinfo` and `/memusage`, `/signis`, `/sendcode`, `/activate`, `/signup` and `/signin` endpoints also does not expects authorization.

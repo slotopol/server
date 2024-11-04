@@ -8,10 +8,9 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "iceiceice", Name: "Ice Ice Ice"},
-		{ID: "5hothothot", Name: "5 Hot Hot Hot"}, // see: https://demo.agtsoftware.com/games/agt/hothothot5
+		{ID: "iceiceice", Prov: "AGT", Name: "Ice Ice Ice"},
+		{ID: "5hothothot", Prov: "AGT", Name: "5 Hot Hot Hot"}, // see: https://demo.agtsoftware.com/games/agt/hothothot5
 	},
-	Provider: "AGT",
 	GP: game.GPretrig |
 		game.GPscat |
 		game.GPwild,

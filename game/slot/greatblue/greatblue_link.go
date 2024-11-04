@@ -8,10 +8,9 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "greatblue", Name: "Great Blue"}, // see: https://freeslotshub.com/playtech/great-blue/
-		{ID: "irishluck", Name: "Irish Luck"}, // see: https://freeslotshub.com/playtech/irish-luck/
+		{ID: "greatblue", Prov: "Playtech", Name: "Great Blue"}, // see: https://freeslotshub.com/playtech/great-blue/
+		{ID: "irishluck", Prov: "Playtech", Name: "Irish Luck"}, // see: https://freeslotshub.com/playtech/irish-luck/
 	},
-	Provider: "Playtech",
 	GP: game.GPsel |
 		game.GPretrig |
 		game.GPfgmult |

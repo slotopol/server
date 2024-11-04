@@ -8,17 +8,16 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "alwayshot", Name: "Always Hot"},
-		{ID: "tropichot", Name: "Tropic Hot"}, // see: https://demo.agtsoftware.com/games/agt/tropichot
+		{ID: "alwayshot", Prov: "Novomatic", Name: "Always Hot"},
+		{ID: "tropichot", Prov: "AGT", Name: "Tropic Hot"}, // see: https://demo.agtsoftware.com/games/agt/tropichot
 	},
-	Provider: "Novomatic",
-	GP:       game.GPfgno,
-	SX:       3,
-	SY:       3,
-	SN:       len(LinePay),
-	LN:       len(BetLines),
-	BN:       0,
-	RTP:      game.MakeRtpList(ReelsMap),
+	GP:  game.GPfgno,
+	SX:  3,
+	SY:  3,
+	SN:  len(LinePay),
+	LN:  len(BetLines),
+	BN:  0,
+	RTP: game.MakeRtpList(ReelsMap),
 }
 
 func init() {

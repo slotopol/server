@@ -8,9 +8,8 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "captainstreasure", Name: "Captain's Treasure"},
+		{ID: "captainstreasure", Prov: "Playtech", Name: "Captain's Treasure"},
 	},
-	Provider: "Playtech",
 	GP: game.GPsel |
 		game.GPfgno |
 		game.GPscat |

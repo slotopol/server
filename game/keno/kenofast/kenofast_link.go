@@ -10,16 +10,15 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "kenofast", Name: "Keno Fast"},
+		{ID: "kenofast", Prov: "AGT", Name: "Keno Fast"},
 	},
-	Provider: "AGT",
-	GP:       0,
-	SX:       80,
-	SY:       0,
-	SN:       0,
-	LN:       0,
-	BN:       0,
-	RTP:      []float64{95.616967},
+	GP:  0,
+	SX:  80,
+	SY:  0,
+	SN:  0,
+	LN:  0,
+	BN:  0,
+	RTP: []float64{95.616967},
 }
 
 func init() {

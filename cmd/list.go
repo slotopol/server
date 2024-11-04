@@ -28,14 +28,11 @@ Get the list of available 'NetExt' and 'BetSoft' games only:
 Get the list of available 'Play'n GO' games with RTP list for each:
   %[1]s list --playngo --rtp`
 
-func Include(gi *game.GameInfo) bool {
+func incinfo(gi *game.GameInfo) bool {
 	if fAll {
 		return true
 	}
 	var is bool
-	if is, _ = listflags.GetBool(util.ToID(gi.Provider)); is {
-		return true
-	}
 	if is, _ = listflags.GetBool("keno"); is && gi.SX == 80 {
 		return true
 	}
@@ -72,12 +69,17 @@ func Include(gi *game.GameInfo) bool {
 	return false
 }
 
+func isProv(prov string) bool {
+	var is, _ = listflags.GetBool(util.ToID(prov))
+	return is
+}
+
 func FormatGameInfo(gi *game.GameInfo, ai int) string {
 	var buf = make([]string, 0, 10)
 	if gi.SN > 0 {
-		buf = append(buf, fmt.Sprintf("'%s' %s %dx%d videoslot", gi.Aliases[ai].Name, gi.Provider, gi.SX, gi.SY))
+		buf = append(buf, fmt.Sprintf("'%s' %s %dx%d videoslot", gi.Aliases[ai].Name, gi.Aliases[ai].Prov, gi.SX, gi.SY))
 	} else {
-		buf = append(buf, fmt.Sprintf("'%s' %s %d spots lottery", gi.Aliases[ai].Name, gi.Provider, gi.SX))
+		buf = append(buf, fmt.Sprintf("'%s' %s %d spots lottery", gi.Aliases[ai].Name, gi.Aliases[ai].Prov, gi.SX))
 	}
 	if fProp {
 		if gi.SN > 0 {
@@ -141,21 +143,29 @@ var listCmd = &cobra.Command{
 		var num, alg int
 		var prov = map[string]int{}
 		for _, gi := range game.GameList {
-			if Include(gi) {
-				num += len(gi.Aliases)
+			var inc = incinfo(gi)
+			for _, ga := range gi.Aliases {
+				if inc || isProv(ga.Prov) {
+					num++
+				}
 			}
 		}
 
 		var gamelist = make([]string, num)
 		var i int
 		for _, gi := range game.GameList {
-			if Include(gi) {
-				prov[gi.Provider] += len(gi.Aliases)
-				alg++
-				for ai := range gi.Aliases {
+			var inc = incinfo(gi)
+			var has bool
+			for ai, ga := range gi.Aliases {
+				if inc || isProv(ga.Prov) {
+					has = true
+					prov[ga.Prov]++
 					gamelist[i] = FormatGameInfo(gi, ai)
 					i++
 				}
+			}
+			if has {
+				alg++
 			}
 		}
 		var provlist = make([]string, len(prov))
