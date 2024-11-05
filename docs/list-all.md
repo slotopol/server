@@ -6,6 +6,7 @@
 '2 Million B.C.' BetSoft 5x3 videoslot
 '5 Hot Hot Hot' AGT 3x3 videoslot
 '50 Apples' Shine' AGT 5x4 videoslot
+'50 Happy Santa' AGT 5x4 videoslot
 'AI' AGT 5x3 videoslot
 'Always Hot' Novomatic 3x3 videoslot
 'American Keno' Aristocrat 80 spots lottery
@@ -100,8 +101,8 @@
 'Voodoo Vibes' NetEnt 5x3 videoslot
 'Wild Witches' NetEnt 5x3 videoslot
 
-total: 97 games, 54 algorithms, 9 providers
-AGT: 15 games
+total: 98 games, 55 algorithms, 9 providers
+AGT: 16 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games

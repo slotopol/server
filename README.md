@@ -11,8 +11,8 @@ Slots games server. Releases functionality for Megajack, Novomatic, NetEnt, BetS
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 97 games, 54 algorithms, 9 providers
-AGT: 15 games
+total: 98 games, 55 algorithms, 9 providers
+AGT: 16 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games
