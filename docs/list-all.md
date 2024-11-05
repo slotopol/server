@@ -46,6 +46,7 @@
 'Groovy Sixties' NetEnt 5x4 videoslot
 'Gryphons Gold' Novomatic 5x3 videoslot
 'Happy Santa' AGT 5x3 videoslot
+'Hot Clover' AGT 5x4 videoslot
 'Hot Target' Novomatic 5x3 videoslot
 'Ice Ice Ice' AGT 3x3 videoslot
 'Indian Dreaming' Aristocrat 5x3 videoslot
@@ -101,8 +102,8 @@
 'Voodoo Vibes' NetEnt 5x3 videoslot
 'Wild Witches' NetEnt 5x3 videoslot
 
-total: 98 games, 55 algorithms, 9 providers
-AGT: 16 games
+total: 99 games, 56 algorithms, 9 providers
+AGT: 17 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games

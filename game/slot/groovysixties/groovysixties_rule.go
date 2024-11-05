@@ -44,12 +44,13 @@ func NewGame() *Game {
 const wild, scat = 1, 2
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
-	g.ScanLined(screen, wins)
-	g.ScanScatters(screen, wins)
+	var scrn5x4 = screen.(*slot.Screen5x4)
+	g.ScanLined(scrn5x4, wins)
+	g.ScanScatters(scrn5x4, wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
+func (g *Game) ScanLined(screen *slot.Screen5x4, wins *slot.Wins) {
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
@@ -108,7 +109,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
+func (g *Game) ScanScatters(screen *slot.Screen5x4, wins *slot.Wins) {
 	if count := screen.ScatNum(scat); count >= 3 {
 		var mm float64 = 1 // mult mode
 		if g.FS > 0 {

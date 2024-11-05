@@ -58,12 +58,13 @@ const wild, scat = 1, 2
 const prob2x = 0.5 // probability of 2x multiplier for wild at free games
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
-	g.ScanLined(screen, wins)
-	g.ScanScatters(screen, wins)
+	var scrn5x4 = screen.(*slot.Screen5x4)
+	g.ScanLined(scrn5x4, wins)
+	g.ScanScatters(scrn5x4, wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
+func (g *Game) ScanLined(screen *slot.Screen5x4, wins *slot.Wins) {
 	var line slot.Linex
 loop1:
 	for line[0] = 1; line[0] <= 4; line[0]++ {
@@ -132,7 +133,7 @@ loop1:
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
+func (g *Game) ScanScatters(screen *slot.Screen5x4, wins *slot.Wins) {
 	if count := screen.ScatNum(scat); count >= 2 {
 		var pay = ScatPay[count-1]
 		var fs int

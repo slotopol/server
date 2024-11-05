@@ -21,7 +21,7 @@ var LinePay = [10][5]float64{
 }
 
 // Scatters payment.
-var ScatPay = [5]float64{0, 0, 3, 20, 500} // 8 bell
+var ScatPay = [5]float64{0, 0, 3, 20, 500} // 2 scatter
 
 // Bet lines
 var BetLines = slot.BetLinesAgt5x3[:20]

@@ -1,18 +1,27 @@
-package shiningstars100
+package hotclover
 
-// See: https://demo.agtsoftware.com/games/agt/shiningstars100
+// See: https://demo.agtsoftware.com/games/agt/hotclover100
 
 import (
 	"github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/game/slot/shiningstars"
 )
 
 // Lined payment.
-var LinePay = shiningstars.LinePay
+var LinePay = [10][5]float64{
+	{},                     //  1 wild
+	{},                     //  2 scatter
+	{0, 10, 50, 200, 3000}, //  3 seven
+	{0, 0, 40, 100, 600},   //  4 strawberry
+	{0, 0, 40, 100, 400},   //  5 grapes
+	{0, 0, 20, 50, 200},    //  6 bar
+	{0, 0, 12, 30, 100},    //  7 plum
+	{0, 0, 12, 30, 100},    //  8 orange
+	{0, 0, 8, 28, 80},      //  9 lemon
+	{0, 0, 8, 28, 80},      // 10 cherry
+}
 
 // Scatters payment.
-var ScatPay1 = shiningstars.ScatPay1
-var ScatPay2 = shiningstars.ScatPay2
+var ScatPay = [5]float64{0, 0, 3, 20, 100} // 2 scatter
 
 // Bet lines
 var BetLines = slot.BetLinesAgt5x4[:100]
@@ -30,7 +39,7 @@ func NewGame() *Game {
 	}
 }
 
-const wild, scat1, scat2 = 1, 2, 3
+const wild, scat = 1, 2
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	var scrn5x4 = screen.(*slot.Screen5x4)
@@ -82,23 +91,14 @@ func (g *Game) ScanLined(screen *slot.Screen5x4, wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(screen *slot.Screen5x4, wins *slot.Wins) {
-	if count := screen.ScatNum(scat1); count >= 3 {
-		var pay = ScatPay1[count-1]
+	if count := screen.ScatNum(scat); count >= 3 {
+		var pay = ScatPay[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * float64(g.Sel) * pay,
 			Mult: 1,
-			Sym:  scat1,
+			Sym:  scat,
 			Num:  count,
-			XY:   screen.ScatPos(scat1),
-		})
-	} else if count := screen.ScatNumOdd(scat2); count >= 3 {
-		var pay = ScatPay2[count-1]
-		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * float64(g.Sel) * pay,
-			Mult: 1,
-			Sym:  scat2,
-			Num:  count,
-			XY:   screen.ScatPosOdd(scat2),
+			XY:   screen.ScatPos(scat),
 		})
 	}
 }
@@ -109,5 +109,5 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 }
 
 func (g *Game) SetSel(sel int) error {
-	return g.SetSelNum(sel, len(BetLines))
+	return slot.ErrNoFeature
 }
