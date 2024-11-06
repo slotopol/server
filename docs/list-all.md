@@ -4,6 +4,7 @@
 ```text
 '100 Shining Stars' AGT 5x4 videoslot
 '2 Million B.C.' BetSoft 5x3 videoslot
+'40 Bigfoot' AGT 5x4 videoslot
 '5 Hot Hot Hot' AGT 3x3 videoslot
 '50 Apples' Shine' AGT 5x4 videoslot
 '50 Happy Santa' AGT 5x4 videoslot
@@ -18,6 +19,8 @@
 'Bananas Go Bahamas' Novomatic 5x3 videoslot
 'Beetle Mania Deluxe' Novomatic 5x3 videoslot
 'Beetle Mania' Novomatic 5x3 videoslot
+'Big Five' AGT 5x3 videoslot
+'Bigfoot' AGT 5x3 videoslot
 'Captain's Treasure' Playtech 5x3 videoslot
 'Champagne' Megajack 5x3 videoslot
 'Cherry Hot' AGT 5x3 videoslot
@@ -49,6 +52,7 @@
 'Hot Clover' AGT 5x4 videoslot
 'Hot Target' Novomatic 5x3 videoslot
 'Ice Ice Ice' AGT 3x3 videoslot
+'Ice Queen' AGT 5x3 videoslot
 'Indian Dreaming' Aristocrat 5x3 videoslot
 'Irish Luck' Playtech 5x3 videoslot
 'Jewels 4 All' Novomatic 5x3 videoslot
@@ -78,6 +82,7 @@
 'Reel Steal' NetEnt 5x3 videoslot
 'Roaring Forties' Novomatic 5x4 videoslot
 'Royal Treasures' Novomatic 5x3 videoslot
+'STALKER' AGT 5x3 videoslot
 'Safari Heat' Playtech 5x3 videoslot
 'Secret Forest' Novomatic 5x3 videoslot
 'Secret Of Horus' NetEnt 5x3 videoslot
@@ -102,8 +107,8 @@
 'Voodoo Vibes' NetEnt 5x3 videoslot
 'Wild Witches' NetEnt 5x3 videoslot
 
-total: 99 games, 56 algorithms, 9 providers
-AGT: 17 games
+total: 104 games, 57 algorithms, 9 providers
+AGT: 22 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games

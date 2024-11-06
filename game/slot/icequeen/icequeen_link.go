@@ -1,6 +1,6 @@
 //go:build !prod || full || agt
 
-package happysanta50
+package iceqween
 
 import (
 	"github.com/slotopol/server/game"
@@ -8,15 +8,18 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "50happysanta", Prov: "AGT", Name: "50 Happy Santa"},
-		{ID: "40bigfoot", Prov: "AGT", Name: "40 Bigfoot"}, // see: https://demo.agtsoftware.com/games/agt/bigfoot40
+		{ID: "icequeen", Prov: "AGT", Name: "Ice Queen"}, // see: https://demo.agtsoftware.com/games/agt/iceqween
+		{ID: "stalker", Prov: "AGT", Name: "STALKER"},    // see: https://demo.agtsoftware.com/games/agt/stalker
+		{ID: "bigfive", Prov: "AGT", Name: "Big Five"},   // see: https://demo.agtsoftware.com/games/agt/bigfive
 	},
 	GP: game.GPsel |
-		game.GPfgno |
+		game.GPretrig |
+		game.GPfgmult |
+		game.GPfgreel |
 		game.GPscat |
 		game.GPwild,
 	SX:  5,
-	SY:  4,
+	SY:  3,
 	SN:  len(LinePay),
 	LN:  len(BetLines),
 	BN:  0,
@@ -26,7 +29,7 @@ var Info = game.GameInfo{
 func init() {
 	game.GameList = append(game.GameList, &Info)
 	for _, ga := range Info.Aliases {
-		game.ScanFactory[ga.ID] = CalcStat
+		game.ScanFactory[ga.ID] = CalcStatReg
 		game.GameFactory[ga.ID] = func() any {
 			return NewGame()
 		}
