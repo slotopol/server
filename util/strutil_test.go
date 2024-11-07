@@ -62,9 +62,11 @@ func ExampleToKey() {
 func ExampleToID() {
 	fmt.Println(util.ToID("Joker Dolphin"))
 	fmt.Println(util.ToID("Lucky Lady's Charm"))
+	fmt.Println(util.ToID("BetSoft/2 Million B.C."))
 	// Output:
 	// jokerdolphin
 	// luckyladyscharm
+	// betsoft/2millionbc
 }
 
 func ExampleJoinPath() {

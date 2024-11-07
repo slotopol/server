@@ -8,8 +8,8 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "tikiwonders", Prov: "NetEnt", Name: "Tiki Wonders"},
-		{ID: "geishawonders", Prov: "NetEnt", Name: "Geisha Wonders"},
+		{ID: "netent/tikiwonders", Prov: "NetEnt", Name: "Tiki Wonders"},
+		{ID: "netent/geishawonders", Prov: "NetEnt", Name: "Geisha Wonders"},
 	},
 	GP: game.GPsel |
 		game.GPretrig |

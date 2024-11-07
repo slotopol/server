@@ -95,7 +95,7 @@ func ToID(s string) string {
 	var bc = b
 	var n int
 	for _, v := range b {
-		if VarChar[v] {
+		if VarChar[v] || v == '/' {
 			n++
 		}
 	}
@@ -106,7 +106,7 @@ func ToID(s string) string {
 	}
 	var i int
 	for _, v := range b {
-		if VarChar[v] {
+		if VarChar[v] || v == '/' {
 			if v >= 'A' && v <= 'Z' {
 				if !c {
 					bc, c = []byte(s), true

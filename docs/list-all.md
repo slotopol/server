@@ -11,7 +11,9 @@
 'AI' AGT 5x3 videoslot
 'Always Hot' Novomatic 3x3 videoslot
 'American Keno' Aristocrat 80 spots lottery
+'Anonymous' AGT 5x3 videoslot
 'Apples' Shine' AGT 5x3 videoslot
+'Arabian Nights' AGT 5x3 videoslot
 'Arabian Nights' NetEnt 5x3 videoslot
 'At the Movies' BetSoft 5x3 videoslot
 'Attila' Novomatic 5x3 videoslot
@@ -39,11 +41,13 @@
 'Excalibur' NetEnt 5x3 videoslot
 'Fire Joker' Play'n GO 5x3 videoslot
 'Fire Keno' Slotopol 80 spots lottery
+'Firefighters' AGT 5x3 videoslot
 'Fortune Teller' Play'n GO 5x3 videoslot
 'Fruit Shop' NetEnt 5x3 videoslot
 'Funky Seventies' NetEnt 5x4 videoslot
 'Geisha Wonders' NetEnt 5x3 videoslot
 'Golden Tour' Playtech 5x3 videoslot
+'Grand Theft' AGT 5x3 videoslot
 'Great Blue' Playtech 5x3 videoslot
 'Green Hot' AGT 5x3 videoslot
 'Groovy Sixties' NetEnt 5x4 videoslot
@@ -96,6 +100,7 @@
 'Spellcast' NetEnt 5x3 videoslot
 'Super Eighties' NetEnt 5x4 videoslot
 'Sushi Bar' BetSoft 5x3 videoslot
+'Tesla' AGT 5x3 videoslot
 'The Money Game' Novomatic 5x3 videoslot
 'Thrill Spin' NetEnt 5x3 videoslot
 'Tiki Wonders' NetEnt 5x3 videoslot
@@ -107,8 +112,8 @@
 'Voodoo Vibes' NetEnt 5x3 videoslot
 'Wild Witches' NetEnt 5x3 videoslot
 
-total: 104 games, 57 algorithms, 9 providers
-AGT: 22 games
+total: 109 games, 57 algorithms, 9 providers
+AGT: 27 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games

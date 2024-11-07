@@ -8,8 +8,8 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "50happysanta", Prov: "AGT", Name: "50 Happy Santa"},
-		{ID: "40bigfoot", Prov: "AGT", Name: "40 Bigfoot"}, // see: https://demo.agtsoftware.com/games/agt/bigfoot40
+		{ID: "agt/50happysanta", Prov: "AGT", Name: "50 Happy Santa"},
+		{ID: "agt/40bigfoot", Prov: "AGT", Name: "40 Bigfoot"}, // see: https://demo.agtsoftware.com/games/agt/bigfoot40
 	},
 	GP: game.GPsel |
 		game.GPfgno |

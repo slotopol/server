@@ -8,8 +8,8 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "iceiceice", Prov: "AGT", Name: "Ice Ice Ice"},
-		{ID: "5hothothot", Prov: "AGT", Name: "5 Hot Hot Hot"}, // see: https://demo.agtsoftware.com/games/agt/hothothot5
+		{ID: "agt/iceiceice", Prov: "AGT", Name: "Ice Ice Ice"},
+		{ID: "agt/5hothothot", Prov: "AGT", Name: "5 Hot Hot Hot"}, // see: https://demo.agtsoftware.com/games/agt/hothothot5
 	},
 	GP: game.GPretrig |
 		game.GPscat |

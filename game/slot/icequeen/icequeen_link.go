@@ -8,9 +8,13 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "icequeen", Prov: "AGT", Name: "Ice Queen"}, // see: https://demo.agtsoftware.com/games/agt/iceqween
-		{ID: "stalker", Prov: "AGT", Name: "STALKER"},    // see: https://demo.agtsoftware.com/games/agt/stalker
-		{ID: "bigfive", Prov: "AGT", Name: "Big Five"},   // see: https://demo.agtsoftware.com/games/agt/bigfive
+		{ID: "agt/icequeen", Prov: "AGT", Name: "Ice Queen"},           // see: https://demo.agtsoftware.com/games/agt/iceqween
+		{ID: "agt/stalker", Prov: "AGT", Name: "STALKER"},              // see: https://demo.agtsoftware.com/games/agt/stalker
+		{ID: "agt/bigfive", Prov: "AGT", Name: "Big Five"},             // see: https://demo.agtsoftware.com/games/agt/bigfive
+		{ID: "agt/arabiannights", Prov: "AGT", Name: "Arabian Nights"}, // see: https://demo.agtsoftware.com/games/agt/arabiannights
+		{ID: "agt/anonymous", Prov: "AGT", Name: "Anonymous"},          // see: https://demo.agtsoftware.com/games/agt/anonymous
+		{ID: "agt/grandtheft", Prov: "AGT", Name: "Grand Theft"},       // see: https://demo.agtsoftware.com/games/agt/bankofny
+		{ID: "agt/firefighters", Prov: "AGT", Name: "Firefighters"},    // see: https://demo.agtsoftware.com/games/agt/firefighters
 	},
 	GP: game.GPsel |
 		game.GPretrig |

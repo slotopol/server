@@ -8,8 +8,8 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "sizzlinghot", Prov: "Novomatic", Name: "Sizzling Hot"},
-		{ID: "sizzlinghotdeluxe", Prov: "Novomatic", Name: "Sizzling Hot Deluxe"},
+		{ID: "novomatic/sizzlinghot", Prov: "Novomatic", Name: "Sizzling Hot"},
+		{ID: "novomatic/sizzlinghotdeluxe", Prov: "Novomatic", Name: "Sizzling Hot Deluxe"},
 	},
 	GP: game.GPfgno |
 		game.GPscat,

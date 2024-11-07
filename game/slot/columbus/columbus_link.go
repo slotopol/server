@@ -8,9 +8,9 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "columbus", Prov: "Novomatic", Name: "Columbus"},
-		{ID: "columbusdeluxe", Prov: "Novomatic", Name: "Columbus Deluxe"},
-		{ID: "marcopolo", Prov: "Novomatic", Name: "Marco Polo"},
+		{ID: "novomatic/columbus", Prov: "Novomatic", Name: "Columbus"},
+		{ID: "novomatic/columbusdeluxe", Prov: "Novomatic", Name: "Columbus Deluxe"},
+		{ID: "novomatic/marcopolo", Prov: "Novomatic", Name: "Marco Polo"},
 	},
 	GP: game.GPsel |
 		game.GPretrig |

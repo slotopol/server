@@ -10,7 +10,7 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "americankeno", Prov: "Aristocrat", Name: "American Keno"},
+		{ID: "aristocrat/americankeno", Prov: "Aristocrat", Name: "American Keno"},
 	},
 	GP:  0,
 	SX:  80,

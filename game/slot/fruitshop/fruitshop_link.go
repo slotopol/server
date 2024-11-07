@@ -8,7 +8,7 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "fruitshop", Prov: "NetEnt", Name: "Fruit Shop"},
+		{ID: "netent/fruitshop", Prov: "NetEnt", Name: "Fruit Shop"},
 	},
 	GP: game.GPretrig |
 		game.GPfgmult |
