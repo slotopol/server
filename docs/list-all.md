@@ -15,6 +15,7 @@
 'Apples' Shine' AGT 5x3 videoslot
 'Arabian Nights' AGT 5x3 videoslot
 'Arabian Nights' NetEnt 5x3 videoslot
+'Around The World' AGT 5x4 videoslot
 'At the Movies' BetSoft 5x3 videoslot
 'Attila' Novomatic 5x3 videoslot
 'Banana Splash' Novomatic 5x3 videoslot
@@ -23,6 +24,7 @@
 'Beetle Mania' Novomatic 5x3 videoslot
 'Big Five' AGT 5x3 videoslot
 'Bigfoot' AGT 5x3 videoslot
+'Bitcoin' AGT 5x3 videoslot
 'Captain's Treasure' Playtech 5x3 videoslot
 'Champagne' Megajack 5x3 videoslot
 'Cherry Hot' AGT 5x3 videoslot
@@ -78,6 +80,7 @@
 'Pharaon's Gold II' Novomatic 5x3 videoslot
 'Pharaon's Gold III' Novomatic 5x3 videoslot
 'Piggy Riches' NetEnt 5x3 videoslot
+'Pirates Gold' AGT 5x3 videoslot
 'Plenty on Twenty' Novomatic 5x3 videoslot
 'Polar Fox' Novomatic 5x3 videoslot
 'Power Stars' Novomatic 5x3 videoslot
@@ -101,9 +104,11 @@
 'Super Eighties' NetEnt 5x4 videoslot
 'Sushi Bar' BetSoft 5x3 videoslot
 'Tesla' AGT 5x3 videoslot
+'The Leprechaun' AGT 5x3 videoslot
 'The Money Game' Novomatic 5x3 videoslot
 'Thrill Spin' NetEnt 5x3 videoslot
 'Tiki Wonders' NetEnt 5x3 videoslot
+'Time Machine II' AGT 5x3 videoslot
 'Trolls' NetEnt 5x3 videoslot
 'Tropic Hot' AGT 3x3 videoslot
 'Ultra Hot' Novomatic 3x3 videoslot
@@ -111,9 +116,10 @@
 'Viking's Treasure' NetEnt 5x3 videoslot
 'Voodoo Vibes' NetEnt 5x3 videoslot
 'Wild Witches' NetEnt 5x3 videoslot
+'Wizard' AGT 5x4 videoslot
 
-total: 109 games, 57 algorithms, 9 providers
-AGT: 27 games
+total: 115 games, 58 algorithms, 9 providers
+AGT: 33 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games

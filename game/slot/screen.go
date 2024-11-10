@@ -16,6 +16,7 @@ type Screen interface {
 	Set(x, y Pos, sym Sym)             // setup symbol at given position
 	SetCol(x Pos, reel []Sym, pos int) // setup column on screen with given reel at given position
 	Spin(reels Reels)                  // fill the screen with random hits on those reels
+	SymNum(sym Sym) (n Pos)            // returns number of symbols on the screen that can repeats on reel
 	ScatNum(scat Sym) (n Pos)          // returns number of scatters on the screen
 	ScatNumOdd(scat Sym) (n Pos)       // returns number of scatters on the screen on odd reels
 	ScatNumCont(scat Sym) (n Pos)      // returns number of continuous scatters on the screen
@@ -103,6 +104,15 @@ func (s *Screenx) Spin(reels Reels) {
 		var hit = rand.N(len(reel))
 		s.SetCol(x, reel, hit)
 	}
+}
+
+func (s *Screenx) SymNum(sym Sym) (n Pos) {
+	for i := range s.sx * s.sy {
+		if s.data[i] == sym {
+			n++
+		}
+	}
+	return
 }
 
 func (s *Screenx) ScatNum(scat Sym) (n Pos) {
@@ -255,6 +265,17 @@ func (s *Screen3x3) Spin(reels Reels) {
 	}
 }
 
+func (s *Screen3x3) SymNum(sym Sym) (n Pos) {
+	for x := range 3 {
+		for y := range 3 {
+			if s[x][y] == sym {
+				n++
+			}
+		}
+	}
+	return
+}
+
 func (s *Screen3x3) ScatNum(scat Sym) (n Pos) {
 	var x Pos
 	for x = range 3 {
@@ -393,6 +414,17 @@ func (s *Screen5x3) Spin(reels Reels) {
 	}
 }
 
+func (s *Screen5x3) SymNum(sym Sym) (n Pos) {
+	for x := range 5 {
+		for y := range 3 {
+			if s[x][y] == sym {
+				n++
+			}
+		}
+	}
+	return
+}
+
 func (s *Screen5x3) ScatNum(scat Sym) (n Pos) {
 	for x := range 5 {
 		var r = s[x]
@@ -526,6 +558,17 @@ func (s *Screen5x4) Spin(reels Reels) {
 		var hit = rand.N(len(reel))
 		s.SetCol(x, reel, hit)
 	}
+}
+
+func (s *Screen5x4) SymNum(sym Sym) (n Pos) {
+	for x := range 5 {
+		for y := range 4 {
+			if s[x][y] == sym {
+				n++
+			}
+		}
+	}
+	return
 }
 
 func (s *Screen5x4) ScatNum(scat Sym) (n Pos) {
