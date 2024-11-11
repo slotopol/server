@@ -4,11 +4,12 @@ package twomillionbc
 
 import (
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 )
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "betsoft/2millionbc", Prov: "BetSoft", Name: "2 Million B.C."},
+		{Prov: "BetSoft", Name: "2 Million B.C."},
 	},
 	GP: game.GPsel |
 		game.GPretrig |
@@ -25,9 +26,8 @@ var Info = game.GameInfo{
 func init() {
 	game.GameList = append(game.GameList, &Info)
 	for _, ga := range Info.Aliases {
-		game.ScanFactory[ga.ID] = CalcStatReg
-		game.GameFactory[ga.ID] = func() any {
-			return NewGame()
-		}
+		var aid = util.ToID(ga.Prov + "/" + ga.Name)
+		game.ScanFactory[aid] = CalcStatReg
+		game.GameFactory[aid] = func() any { return NewGame() }
 	}
 }

@@ -4,12 +4,13 @@ package iceiceice
 
 import (
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 )
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "agt/iceiceice", Prov: "AGT", Name: "Ice Ice Ice"},
-		{ID: "agt/5hothothot", Prov: "AGT", Name: "5 Hot Hot Hot"}, // see: https://demo.agtsoftware.com/games/agt/hothothot5
+		{Prov: "AGT", Name: "Ice Ice Ice"},
+		{Prov: "AGT", Name: "5 Hot Hot Hot"}, // see: https://demo.agtsoftware.com/games/agt/hothothot5
 	},
 	GP: game.GPretrig |
 		game.GPscat |
@@ -25,9 +26,8 @@ var Info = game.GameInfo{
 func init() {
 	game.GameList = append(game.GameList, &Info)
 	for _, ga := range Info.Aliases {
-		game.ScanFactory[ga.ID] = CalcStatReg
-		game.GameFactory[ga.ID] = func() any {
-			return NewGame()
-		}
+		var aid = util.ToID(ga.Prov + "/" + ga.Name)
+		game.ScanFactory[aid] = CalcStatReg
+		game.GameFactory[aid] = func() any { return NewGame() }
 	}
 }

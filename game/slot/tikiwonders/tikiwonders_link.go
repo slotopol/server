@@ -4,12 +4,13 @@ package tikiwonders
 
 import (
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 )
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "netent/tikiwonders", Prov: "NetEnt", Name: "Tiki Wonders"},
-		{ID: "netent/geishawonders", Prov: "NetEnt", Name: "Geisha Wonders"},
+		{Prov: "NetEnt", Name: "Tiki Wonders"},
+		{Prov: "NetEnt", Name: "Geisha Wonders"},
 	},
 	GP: game.GPsel |
 		game.GPretrig |
@@ -27,9 +28,8 @@ var Info = game.GameInfo{
 func init() {
 	game.GameList = append(game.GameList, &Info)
 	for _, ga := range Info.Aliases {
-		game.ScanFactory[ga.ID] = CalcStat
-		game.GameFactory[ga.ID] = func() any {
-			return NewGame()
-		}
+		var aid = util.ToID(ga.Prov + "/" + ga.Name)
+		game.ScanFactory[aid] = CalcStat
+		game.GameFactory[aid] = func() any { return NewGame() }
 	}
 }

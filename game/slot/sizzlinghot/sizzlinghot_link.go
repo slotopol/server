@@ -4,12 +4,13 @@ package sizzlinghot
 
 import (
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 )
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "novomatic/sizzlinghot", Prov: "Novomatic", Name: "Sizzling Hot"},
-		{ID: "novomatic/sizzlinghotdeluxe", Prov: "Novomatic", Name: "Sizzling Hot Deluxe"},
+		{Prov: "Novomatic", Name: "Sizzling Hot"},
+		{Prov: "Novomatic", Name: "Sizzling Hot Deluxe"},
 	},
 	GP: game.GPfgno |
 		game.GPscat,
@@ -24,9 +25,8 @@ var Info = game.GameInfo{
 func init() {
 	game.GameList = append(game.GameList, &Info)
 	for _, ga := range Info.Aliases {
-		game.ScanFactory[ga.ID] = CalcStat
-		game.GameFactory[ga.ID] = func() any {
-			return NewGame()
-		}
+		var aid = util.ToID(ga.Prov + "/" + ga.Name)
+		game.ScanFactory[aid] = CalcStat
+		game.GameFactory[aid] = func() any { return NewGame() }
 	}
 }

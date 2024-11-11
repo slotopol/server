@@ -4,12 +4,13 @@ package thrillspin
 
 import (
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 )
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "netent/thrillspin", Prov: "NetEnt", Name: "Thrill Spin"},
-		{ID: "netent/vikingstreasure", Prov: "NetEnt", Name: "Viking's Treasure"},
+		{Prov: "NetEnt", Name: "Thrill Spin"},
+		{Prov: "NetEnt", Name: "Viking's Treasure"},
 	},
 	GP: game.GPsel |
 		game.GPretrig |
@@ -27,9 +28,8 @@ var Info = game.GameInfo{
 func init() {
 	game.GameList = append(game.GameList, &Info)
 	for _, ga := range Info.Aliases {
-		game.ScanFactory[ga.ID] = CalcStat
-		game.GameFactory[ga.ID] = func() any {
-			return NewGame()
-		}
+		var aid = util.ToID(ga.Prov + "/" + ga.Name)
+		game.ScanFactory[aid] = CalcStat
+		game.GameFactory[aid] = func() any { return NewGame() }
 	}
 }

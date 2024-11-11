@@ -21,7 +21,6 @@ const ( // Game properties
 
 type (
 	GameAlias struct {
-		ID   string `json:"id" yaml:"id" xml:"id"`
 		Prov string `json:"prov" yaml:"prov" xml:"prov"`
 		Name string `json:"name" yaml:"name" xml:"name"`
 	}

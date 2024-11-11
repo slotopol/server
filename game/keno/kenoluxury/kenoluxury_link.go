@@ -6,12 +6,13 @@ import (
 	"context"
 
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 )
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "slotopol/kenoluxury", Prov: "Slotopol", Name: "Keno Luxury"},
-		{ID: "slotopol/kenosports", Prov: "Slotopol", Name: "Keno Sports"},
+		{Prov: "Slotopol", Name: "Keno Luxury"},
+		{Prov: "Slotopol", Name: "Keno Sports"},
 	},
 	GP:  0,
 	SX:  80,
@@ -25,11 +26,10 @@ var Info = game.GameInfo{
 func init() {
 	game.GameList = append(game.GameList, &Info)
 	for _, ga := range Info.Aliases {
-		game.ScanFactory[ga.ID] = func(ctx context.Context, mrtp float64) float64 {
+		var aid = util.ToID(ga.Prov + "/" + ga.Name)
+		game.ScanFactory[aid] = func(ctx context.Context, mrtp float64) float64 {
 			return Paytable.CalcStat(ctx)
 		}
-		game.GameFactory[ga.ID] = func() any {
-			return NewGame()
-		}
+		game.GameFactory[aid] = func() any { return NewGame() }
 	}
 }

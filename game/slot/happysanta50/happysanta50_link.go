@@ -4,12 +4,13 @@ package happysanta50
 
 import (
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 )
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "agt/50happysanta", Prov: "AGT", Name: "50 Happy Santa"},
-		{ID: "agt/40bigfoot", Prov: "AGT", Name: "40 Bigfoot"}, // see: https://demo.agtsoftware.com/games/agt/bigfoot40
+		{Prov: "AGT", Name: "50 Happy Santa"},
+		{Prov: "AGT", Name: "40 Bigfoot"}, // see: https://demo.agtsoftware.com/games/agt/bigfoot40
 	},
 	GP: game.GPsel |
 		game.GPfgno |
@@ -26,9 +27,8 @@ var Info = game.GameInfo{
 func init() {
 	game.GameList = append(game.GameList, &Info)
 	for _, ga := range Info.Aliases {
-		game.ScanFactory[ga.ID] = CalcStat
-		game.GameFactory[ga.ID] = func() any {
-			return NewGame()
-		}
+		var aid = util.ToID(ga.Prov + "/" + ga.Name)
+		game.ScanFactory[aid] = CalcStat
+		game.GameFactory[aid] = func() any { return NewGame() }
 	}
 }

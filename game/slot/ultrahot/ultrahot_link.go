@@ -4,11 +4,12 @@ package ultrahot
 
 import (
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 )
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "novomatic/ultrahot", Prov: "Novomatic", Name: "Ultra Hot"},
+		{Prov: "Novomatic", Name: "Ultra Hot"},
 	},
 	GP:  game.GPfgno,
 	SX:  3,
@@ -22,9 +23,8 @@ var Info = game.GameInfo{
 func init() {
 	game.GameList = append(game.GameList, &Info)
 	for _, ga := range Info.Aliases {
-		game.ScanFactory[ga.ID] = CalcStat
-		game.GameFactory[ga.ID] = func() any {
-			return NewGame()
-		}
+		var aid = util.ToID(ga.Prov + "/" + ga.Name)
+		game.ScanFactory[aid] = CalcStat
+		game.GameFactory[aid] = func() any { return NewGame() }
 	}
 }

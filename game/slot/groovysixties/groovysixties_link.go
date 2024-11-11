@@ -4,13 +4,14 @@ package groovysixties
 
 import (
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 )
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "netent/groovysixties", Prov: "NetEnt", Name: "Groovy Sixties"},
-		{ID: "netent/funkyseventies", Prov: "NetEnt", Name: "Funky Seventies"}, // See: https://www.youtube.com/watch?v=a-qF9ZOpRP0
-		{ID: "netent/supereighties", Prov: "NetEnt", Name: "Super Eighties"},   // See: https://www.youtube.com/watch?v=Wj49gwfRtz8
+		{Prov: "NetEnt", Name: "Groovy Sixties"},
+		{Prov: "NetEnt", Name: "Funky Seventies"}, // See: https://www.youtube.com/watch?v=a-qF9ZOpRP0
+		{Prov: "NetEnt", Name: "Super Eighties"},  // See: https://www.youtube.com/watch?v=Wj49gwfRtz8
 	},
 	GP: game.GPsel |
 		game.GPretrig |
@@ -28,9 +29,8 @@ var Info = game.GameInfo{
 func init() {
 	game.GameList = append(game.GameList, &Info)
 	for _, ga := range Info.Aliases {
-		game.ScanFactory[ga.ID] = CalcStat
-		game.GameFactory[ga.ID] = func() any {
-			return NewGame()
-		}
+		var aid = util.ToID(ga.Prov + "/" + ga.Name)
+		game.ScanFactory[aid] = CalcStat
+		game.GameFactory[aid] = func() any { return NewGame() }
 	}
 }

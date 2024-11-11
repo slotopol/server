@@ -4,14 +4,15 @@ package trolls
 
 import (
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 )
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "netent/trolls", Prov: "NetEnt", Name: "Trolls"},
-		{ID: "netent/excalibur", Prov: "NetEnt", Name: "Excalibur"},
-		{ID: "netent/pandorasbox", Prov: "NetEnt", Name: "Pandora's Box"},
-		{ID: "netent/wildwitches", Prov: "NetEnt", Name: "Wild Witches"},
+		{Prov: "NetEnt", Name: "Trolls"},
+		{Prov: "NetEnt", Name: "Excalibur"},
+		{Prov: "NetEnt", Name: "Pandora's Box"},
+		{Prov: "NetEnt", Name: "Wild Witches"},
 	},
 	GP: game.GPsel |
 		game.GPretrig |
@@ -29,9 +30,8 @@ var Info = game.GameInfo{
 func init() {
 	game.GameList = append(game.GameList, &Info)
 	for _, ga := range Info.Aliases {
-		game.ScanFactory[ga.ID] = CalcStat
-		game.GameFactory[ga.ID] = func() any {
-			return NewGame()
-		}
+		var aid = util.ToID(ga.Prov + "/" + ga.Name)
+		game.ScanFactory[aid] = CalcStat
+		game.GameFactory[aid] = func() any { return NewGame() }
 	}
 }

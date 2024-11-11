@@ -97,7 +97,7 @@ curl -X GET localhost:8080/gamelist
 Response has array with available algorithms descriptions. Each structure has a list of games aliases, that shares one algorithm. Field `rtp` has the list of reels with predefined RTP. There is example of structure with info:
 
 ```json
-{"aliases":[{"id":"netent/trolls","prov":"NetEnt","name":"Trolls"},{"id":"netent/excalibur","prov":"NetEnt","name":"Excalibur"},{"id":"netent/pandorasbox","prov":"NetEnt","name":"Pandora's Box"},{"id":"netent/wildwitches","prov":"NetEnt","name":"Wild Witches"}],"gp":865,"sx":5,"sy":3,"sn":14,"ln":20,"rtp":[87.788791,89.230191,91.925079,93.061471,93.903358,95.183523,96.6485,98.193276,101.929305,110.298257]}
+{"aliases":[{"prov":"NetEnt","name":"Trolls"},{"prov":"NetEnt","name":"Excalibur"},{"prov":"NetEnt","name":"Pandora's Box"},{"prov":"NetEnt","name":"Wild Witches"}],"gp":865,"sx":5,"sy":3,"sn":14,"ln":20,"rtp":[87.788791,89.230191,91.925079,93.061471,93.903358,95.183523,96.6485,98.193276,101.929305,110.298257]}
 ```
 
 `/ping`, `/servinfo` and `/memusage`, `/signis`, `/sendcode`, `/activate`, `/signup` and `/signin` endpoints also does not expects authorization.
@@ -136,8 +136,10 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -X
 * Join to game. GID received at response will be used at all calls for access to this game instance. Also you will get initial game state, and user balance at this club.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"cid":1,"uid":3,"alias":"jokerdolphin"}' -X POST localhost:8080/game/join
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"cid":1,"uid":3,"alias":"Novomatic/Joker Dolphin"}' -X POST localhost:8080/game/join
 ```
+
+Endpoint receives `alias` identifier to game that represents as concatenation of provider name and game name with slash. For example, `NetEnt/Tiki Wonders`. Whole list of all supported games can be obtained by [list](docs/list-all.md) command. Identifier turns to lowercase without spaces.
 
 * Change number of selected bet lines.
 

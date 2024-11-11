@@ -4,12 +4,13 @@ package shiningstars100
 
 import (
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 )
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "agt/100shiningstars", Prov: "AGT", Name: "100 Shining Stars"},
-		{ID: "agt/50applesshine", Prov: "AGT", Name: "50 Apples' Shine"}, // see: https://demo.agtsoftware.com/games/agt/applesshine50
+		{Prov: "AGT", Name: "100 Shining Stars"},
+		{Prov: "AGT", Name: "50 Apples' Shine"}, // see: https://demo.agtsoftware.com/games/agt/applesshine50
 	},
 	GP: game.GPsel |
 		game.GPfgno |
@@ -26,9 +27,8 @@ var Info = game.GameInfo{
 func init() {
 	game.GameList = append(game.GameList, &Info)
 	for _, ga := range Info.Aliases {
-		game.ScanFactory[ga.ID] = CalcStat
-		game.GameFactory[ga.ID] = func() any {
-			return NewGame()
-		}
+		var aid = util.ToID(ga.Prov + "/" + ga.Name)
+		game.ScanFactory[aid] = CalcStat
+		game.GameFactory[aid] = func() any { return NewGame() }
 	}
 }

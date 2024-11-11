@@ -4,12 +4,13 @@ package spellcast
 
 import (
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 )
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "netent/spellcast", Prov: "NetEnt", Name: "Spellcast"},
-		{ID: "netent/secretofhorus", Prov: "NetEnt", Name: "Secret Of Horus"},
+		{Prov: "NetEnt", Name: "Spellcast"},
+		{Prov: "NetEnt", Name: "Secret Of Horus"},
 	},
 	GP: game.GPsel |
 		game.GPretrig |
@@ -27,9 +28,8 @@ var Info = game.GameInfo{
 func init() {
 	game.GameList = append(game.GameList, &Info)
 	for _, ga := range Info.Aliases {
-		game.ScanFactory[ga.ID] = CalcStat
-		game.GameFactory[ga.ID] = func() any {
-			return NewGame()
-		}
+		var aid = util.ToID(ga.Prov + "/" + ga.Name)
+		game.ScanFactory[aid] = CalcStat
+		game.GameFactory[aid] = func() any { return NewGame() }
 	}
 }

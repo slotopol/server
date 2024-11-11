@@ -4,29 +4,30 @@ package dolphinspearl
 
 import (
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 )
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "novomatic/dolphinspearl", Prov: "Novomatic", Name: "Dolphins Pearl"},
-		{ID: "novomatic/dolphinspearldeluxe", Prov: "Novomatic", Name: "Dolphins Pearl Deluxe"},
-		{ID: "aristocrat/dolphintreasure", Prov: "Aristocrat", Name: "Dolphin Treasure"}, // See: https://freeslotshub.com/aristocrat/dolphin-treasure/
-		{ID: "novomatic/attila", Prov: "Novomatic", Name: "Attila"},
-		{ID: "novomatic/bananasplash", Prov: "Novomatic", Name: "Banana Splash"},
-		{ID: "novomatic/dynastyofming", Prov: "Novomatic", Name: "Dynasty Of Ming"},
-		{ID: "novomatic/gryphonsgold", Prov: "Novomatic", Name: "Gryphons Gold"},
-		{ID: "novomatic/jokerdolphin", Prov: "Novomatic", Name: "Joker Dolphin"},
-		{ID: "novomatic/kingofcards", Prov: "Novomatic", Name: "King Of Cards"},
-		{ID: "novomatic/luckyladyscharm", Prov: "Novomatic", Name: "Lucky Lady's Charm"},
-		{ID: "novomatic/luckyladyscharmdeluxe", Prov: "Novomatic", Name: "Lucky Lady's Charm Deluxe"},
-		{ID: "novomatic/pharaonsgold2", Prov: "Novomatic", Name: "Pharaon's Gold II"},
-		{ID: "novomatic/pharaonsgold3", Prov: "Novomatic", Name: "Pharaon's Gold III"},
-		{ID: "novomatic/polarfox", Prov: "Novomatic", Name: "Polar Fox"},
-		{ID: "novomatic/ramses2", Prov: "Novomatic", Name: "Ramses II"},
-		{ID: "novomatic/royaltreasures", Prov: "Novomatic", Name: "Royal Treasures"},
-		{ID: "novomatic/secretforest", Prov: "Novomatic", Name: "Secret Forest"},
-		{ID: "novomatic/themoneygame", Prov: "Novomatic", Name: "The Money Game"},
-		{ID: "novomatic/unicornmagic", Prov: "Novomatic", Name: "Unicorn Magic"},
+		{Prov: "Novomatic", Name: "Dolphins Pearl"},
+		{Prov: "Novomatic", Name: "Dolphins Pearl Deluxe"},
+		{Prov: "Aristocrat", Name: "Dolphin Treasure"}, // See: https://freeslotshub.com/aristocrat/dolphin-treasure/
+		{Prov: "Novomatic", Name: "Attila"},
+		{Prov: "Novomatic", Name: "Banana Splash"},
+		{Prov: "Novomatic", Name: "Dynasty Of Ming"},
+		{Prov: "Novomatic", Name: "Gryphons Gold"},
+		{Prov: "Novomatic", Name: "Joker Dolphin"},
+		{Prov: "Novomatic", Name: "King Of Cards"},
+		{Prov: "Novomatic", Name: "Lucky Lady's Charm"},
+		{Prov: "Novomatic", Name: "Lucky Lady's Charm Deluxe"},
+		{Prov: "Novomatic", Name: "Pharaon's Gold II"},
+		{Prov: "Novomatic", Name: "Pharaon's Gold III"},
+		{Prov: "Novomatic", Name: "Polar Fox"},
+		{Prov: "Novomatic", Name: "Ramses II"},
+		{Prov: "Novomatic", Name: "Royal Treasures"},
+		{Prov: "Novomatic", Name: "Secret Forest"},
+		{Prov: "Novomatic", Name: "The Money Game"},
+		{Prov: "Novomatic", Name: "Unicorn Magic"},
 	},
 	GP: game.GPsel |
 		game.GPretrig |
@@ -45,9 +46,8 @@ var Info = game.GameInfo{
 func init() {
 	game.GameList = append(game.GameList, &Info)
 	for _, ga := range Info.Aliases {
-		game.ScanFactory[ga.ID] = CalcStatReg
-		game.GameFactory[ga.ID] = func() any {
-			return NewGame()
-		}
+		var aid = util.ToID(ga.Prov + "/" + ga.Name)
+		game.ScanFactory[aid] = CalcStatReg
+		game.GameFactory[aid] = func() any { return NewGame() }
 	}
 }

@@ -4,11 +4,12 @@ package indiandreaming
 
 import (
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 )
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "aristocrat/indiandreaming", Prov: "Aristocrat", Name: "Indian Dreaming"},
+		{Prov: "Aristocrat", Name: "Indian Dreaming"},
 	},
 	GP: game.GPretrig |
 		game.GPfgmult |
@@ -25,9 +26,8 @@ var Info = game.GameInfo{
 func init() {
 	game.GameList = append(game.GameList, &Info)
 	for _, ga := range Info.Aliases {
-		game.ScanFactory[ga.ID] = CalcStatReg
-		game.GameFactory[ga.ID] = func() any {
-			return NewGame()
-		}
+		var aid = util.ToID(ga.Prov + "/" + ga.Name)
+		game.ScanFactory[aid] = CalcStatReg
+		game.GameFactory[aid] = func() any { return NewGame() }
 	}
 }

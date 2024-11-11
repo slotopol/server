@@ -4,12 +4,13 @@ package atthemovies
 
 import (
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 )
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{ID: "betsoft/atthemovies", Prov: "BetSoft", Name: "At the Movies"},
-		{ID: "betsoft/sushibar", Prov: "BetSoft", Name: "Sushi Bar"},
+		{Prov: "BetSoft", Name: "At the Movies"},
+		{Prov: "BetSoft", Name: "Sushi Bar"},
 	},
 	GP: game.GPsel |
 		game.GPretrig |
@@ -27,9 +28,8 @@ var Info = game.GameInfo{
 func init() {
 	game.GameList = append(game.GameList, &Info)
 	for _, ga := range Info.Aliases {
-		game.ScanFactory[ga.ID] = CalcStat
-		game.GameFactory[ga.ID] = func() any {
-			return NewGame()
-		}
+		var aid = util.ToID(ga.Prov + "/" + ga.Name)
+		game.ScanFactory[aid] = CalcStat
+		game.GameFactory[aid] = func() any { return NewGame() }
 	}
 }
