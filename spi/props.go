@@ -7,6 +7,53 @@ import (
 	cfg "github.com/slotopol/server/config"
 )
 
+// Returns all properties for pointed user at pointed club.
+func SpiPropsGet(c *gin.Context) {
+	var err error
+	var ok bool
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid" binding:"required"`
+	}
+	var ret struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		Wallet  float64  `json:"wallet" yaml:"wallet" xml:"wallet"`
+		Access  AL       `json:"access" yaml:"access" xml:"access"`
+		MRTP    float64  `json:"mrtp" yaml:"mrtp" xml:"mrtp"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, SEC_prop_get_nobind, err)
+		return
+	}
+
+	var club *Club
+	if club, ok = Clubs.Get(arg.CID); !ok {
+		Ret404(c, SEC_prop_get_noclub, ErrNoClub)
+		return
+	}
+	_ = club
+
+	var user *User
+	if user, ok = Users.Get(arg.UID); !ok {
+		Ret404(c, SEC_prop_get_nouser, ErrNoUser)
+		return
+	}
+
+	var admin, al = MustAdmin(c, arg.CID)
+	if admin != user && al&ALall == 0 {
+		Ret403(c, SEC_prop_get_noaccess, ErrNoAccess)
+		return
+	}
+
+	ret.Wallet = user.GetWallet(arg.CID)
+	ret.Access = user.GetAL(arg.CID)
+	ret.MRTP = user.GetRTP(arg.CID)
+
+	RetOk(c, ret)
+}
+
 // Returns balance at wallet for pointed user at pointed club.
 func SpiPropsWalletGet(c *gin.Context) {
 	var err error
@@ -40,7 +87,7 @@ func SpiPropsWalletGet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if admin != user && al&ALuser == 0 {
+	if admin != user && al&ALall == 0 {
 		Ret403(c, SEC_prop_walletget_noaccess, ErrNoAccess)
 		return
 	}
@@ -88,7 +135,7 @@ func SpiPropsWalletAdd(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if al&ALuser == 0 {
+	if al&(ALuser+ALadmin) == 0 {
 		Ret403(c, SEC_prop_walletadd_noaccess, ErrNoAccess)
 		return
 	}
@@ -152,7 +199,7 @@ func SpiPropsAlGet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if admin != user && al&ALadmin == 0 {
+	if admin != user && al&ALall == 0 {
 		Ret403(c, SEC_prop_alget_noaccess, ErrNoAccess)
 		return
 	}
@@ -192,7 +239,7 @@ func SpiPropsAlSet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if al&ALadmin == 0 {
+	if al&(ALclub+ALadmin) == 0 {
 		Ret403(c, SEC_prop_alset_noaccess, ErrNoAccess)
 		return
 	}
@@ -256,7 +303,7 @@ func SpiPropsRtpGet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if admin != user && al&ALgame == 0 {
+	if admin != user && al&ALall == 0 {
 		Ret403(c, SEC_prop_rtpget_noaccess, ErrNoAccess)
 		return
 	}
@@ -296,7 +343,7 @@ func SpiPropsRtpSet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if al&ALgame == 0 {
+	if al&(ALgame+ALadmin) == 0 {
 		Ret403(c, SEC_prop_rtpset_noaccess, ErrNoAccess)
 		return
 	}

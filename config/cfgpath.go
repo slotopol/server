@@ -66,7 +66,7 @@ func InitConfig() {
 	} else {
 		const sub = "config"
 		// Search config in home directory with name "slot" (without extension).
-		viper.SetConfigName("slot")
+		viper.SetConfigName("slot-app")
 		viper.SetConfigType("yaml")
 		if env, ok := os.LookupEnv("CFGFILE"); ok {
 			viper.AddConfigPath(env)

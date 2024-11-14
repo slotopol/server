@@ -347,6 +347,7 @@ func SpiSignis(c *gin.Context) {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
 		UID     uint64   `json:"uid" yaml:"uid" xml:"uid"`
 		Email   string   `json:"email" yaml:"email" xml:"email"`
+		Name    string   `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -360,12 +361,14 @@ func SpiSignis(c *gin.Context) {
 		if user, ok := Users.Get(arg.UID); ok {
 			ret.UID = user.UID
 			ret.Email = user.Email
+			ret.Name = user.Name
 		}
 	} else {
-		for _, u := range Users.Items() {
-			if u.Email == email {
-				ret.UID = u.UID
-				ret.Email = u.Email
+		for _, user := range Users.Items() {
+			if user.Email == email {
+				ret.UID = user.UID
+				ret.Email = user.Email
+				ret.Name = user.Name
 				break
 			}
 		}

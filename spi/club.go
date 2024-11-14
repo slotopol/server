@@ -11,6 +11,25 @@ const (
 	sqlclub = `UPDATE club SET bank=bank+?, fund=fund+?, lock=lock+?, utime=CURRENT_TIMESTAMP WHERE cid=?`
 )
 
+func SpiClubList(c *gin.Context) {
+	type item struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"club"`
+		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr"`
+		Name    string   `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
+	}
+	var ret struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		List    []item   `json:"list" yaml:"list" xml:"list>club" form:"list"`
+	}
+
+	ret.List = make([]item, 0, Clubs.Len())
+	for cid, club := range Clubs.Items() {
+		ret.List = append(ret.List, item{CID: cid, Name: club.Name})
+	}
+
+	RetOk(c, ret)
+}
+
 // Returns current club state.
 func SpiClubIs(c *gin.Context) {
 	var err error

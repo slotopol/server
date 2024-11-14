@@ -24,7 +24,7 @@ import (
 )
 
 var (
-	Cfg = cfg.Cfg
+	Cfg = cfg.Cfg // shortcut
 )
 
 var (
@@ -111,7 +111,7 @@ func InitStorage() (err error) {
 	}
 	if ok {
 		var body []byte
-		if body, err = os.ReadFile(util.JoinFilePath(cfg.CfgPath, "slot-club-init.sql")); err != nil {
+		if body, err = os.ReadFile(util.JoinFilePath(cfg.CfgPath, "slot-clubinit.sql")); err != nil {
 			log.Printf("can not open SQL-file with initial settings: %s", err.Error())
 			err = nil // remove error
 		}
@@ -127,11 +127,11 @@ func InitStorage() (err error) {
 
 	// Read properies master for new registered user
 	var body []byte
-	if body, err = os.ReadFile(util.JoinFilePath(cfg.CfgPath, "slot-new-user.yaml")); err != nil {
+	if body, err = os.ReadFile(util.JoinFilePath(cfg.CfgPath, "slot-newuser.yaml")); err != nil {
 		log.Printf("can not open YAML-file with properties initialization for new user: %s", err.Error())
 		err = nil // remove error
 	} else if err = yaml.Unmarshal(body, &spi.PropMaster); err != nil {
-		log.Printf("can not unmarshal 'slot-new-user.yaml': %s", err.Error())
+		log.Printf("can not unmarshal 'slot-newuser.yaml': %s", err.Error())
 		err = nil // remove error
 	}
 

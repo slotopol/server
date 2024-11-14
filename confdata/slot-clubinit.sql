@@ -12,8 +12,8 @@ Users access levels (`gal` or `access` fields) are sum of followed ints:
 */
 
 INSERT INTO `club` (`cid`,`name`,`bank`,`fund`,`lock`,`jptrate`,`mrtp`) VALUES
-(1,'virtual',10000,1000000,0,2.0,95),
-(2,'global',0,0,0,2.0,0);
+(1,'virtual',10000,1000000,0,2.5,95),
+(2,'global',0,0,0,2.5,0);
 
 INSERT INTO `user` (`uid`,`email`,`secret`,`name`,`status`,`gal`) VALUES
 (1,'admin@example.org','0YBoaT','admin',1,31),

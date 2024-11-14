@@ -18,7 +18,7 @@ type Club struct {
 	Fund  float64   `xorm:"notnull default 0" json:"fund" yaml:"fund" xml:"fund"` // jackpot fund, in coins
 	Lock  float64   `xorm:"notnull default 0" json:"lock" yaml:"lock" xml:"lock"` // not changed deposit within games
 
-	JptRate float64 `xorm:"'jptrate' notnull default 2.0" json:"jptrate" yaml:"jptrate" xml:"jptrate"` // percent to pay to jackpot fund for games with jackpot
+	JptRate float64 `xorm:"'jptrate' notnull default 2.5" json:"jptrate" yaml:"jptrate" xml:"jptrate"` // percent to pay to jackpot fund for games with jackpot
 	MRTP    float64 `xorm:"'mrtp' notnull default 0" json:"mrtp" yaml:"mrtp" xml:"mrtp"`               // master RTP
 
 	mux sync.RWMutex

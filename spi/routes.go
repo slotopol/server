@@ -167,6 +167,7 @@ func Router(r *gin.Engine) {
 
 	// properties group
 	var rp = ra.Group("/prop")
+	rp.POST("/get", SpiPropsGet)
 	rp.POST("/wallet/get", SpiPropsWalletGet)
 	rp.POST("/wallet/add", SpiPropsWalletAdd)
 	rp.POST("/al/get", SpiPropsAlGet)
@@ -183,6 +184,7 @@ func Router(r *gin.Engine) {
 
 	// club group
 	var rc = ra.Group("/club")
+	rc.POST("/list", SpiClubList)
 	rc.POST("/is", SpiClubIs)
 	rc.POST("/info", SpiClubInfo)
 	rc.POST("/rename", SpiClubRename)

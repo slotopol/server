@@ -232,6 +232,13 @@ const (
 	SEC_keno_spin_badbank
 	SEC_keno_spin_sqlbank
 
+	// POST /prop/get
+
+	SEC_prop_get_nobind
+	SEC_prop_get_noclub
+	SEC_prop_get_nouser
+	SEC_prop_get_noaccess
+
 	// POST /prop/wallet/get
 
 	SEC_prop_walletget_nobind

@@ -23,7 +23,7 @@ func init() {
 	cobra.OnInitialize(cfg.InitConfig)
 
 	var flags = rootCmd.PersistentFlags()
-	flags.StringVarP(&cfg.CfgFile, "config", "c", "", "config file (default is config/slot.yaml at executable location)")
+	flags.StringVarP(&cfg.CfgFile, "config", "c", "", "config file (default is config/slot-app.yaml at executable location)")
 	flags.StringVarP(&cfg.SqlPath, "sqlite", "q", "", "sqlite databases path (default same as config file path)")
 	flags.BoolVarP(&cfg.DevMode, "devmode", "d", false, "start application in developer mode")
 	rootCmd.SetVersionTemplate(fmt.Sprintf("version: %s, builton: %s", cfg.BuildVers, cfg.BuildTime))
