@@ -1,4 +1,4 @@
-package spi
+package api
 
 import (
 	"encoding/json"
@@ -14,7 +14,7 @@ import (
 )
 
 // Returns bet value.
-func SpiSlotBetGet(c *gin.Context) {
+func ApiSlotBetGet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -27,24 +27,24 @@ func SpiSlotBetGet(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_slot_betget_nobind, err)
+		Ret400(c, AEC_slot_betget_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_slot_betget_notopened, ErrNotOpened)
+		Ret404(c, AEC_slot_betget_notopened, ErrNotOpened)
 		return
 	}
 	var game slot.SlotGame
 	if game, ok = scene.Game.(slot.SlotGame); !ok {
-		Ret403(c, SEC_slot_betget_notslot, ErrNotSlot)
+		Ret403(c, AEC_slot_betget_notslot, ErrNotSlot)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_slot_betget_noaccess, ErrNoAccess)
+		Ret403(c, AEC_slot_betget_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -54,7 +54,7 @@ func SpiSlotBetGet(c *gin.Context) {
 }
 
 // Set bet value.
-func SpiSlotBetSet(c *gin.Context) {
+func ApiSlotBetSet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -64,29 +64,29 @@ func SpiSlotBetSet(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_slot_betset_nobind, err)
+		Ret400(c, AEC_slot_betset_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_slot_betset_notopened, ErrNotOpened)
+		Ret404(c, AEC_slot_betset_notopened, ErrNotOpened)
 		return
 	}
 	var game slot.SlotGame
 	if game, ok = scene.Game.(slot.SlotGame); !ok {
-		Ret403(c, SEC_slot_betset_notslot, ErrNotSlot)
+		Ret403(c, AEC_slot_betset_notslot, ErrNotSlot)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_slot_betset_noaccess, ErrNoAccess)
+		Ret403(c, AEC_slot_betset_noaccess, ErrNoAccess)
 		return
 	}
 
 	if err = game.SetBet(arg.Bet); err != nil {
-		Ret403(c, SEC_slot_betset_badbet, err)
+		Ret403(c, AEC_slot_betset_badbet, err)
 		return
 	}
 
@@ -94,7 +94,7 @@ func SpiSlotBetSet(c *gin.Context) {
 }
 
 // Returns selected bet lines bitset.
-func SpiSlotSelGet(c *gin.Context) {
+func ApiSlotSelGet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -107,24 +107,24 @@ func SpiSlotSelGet(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_slot_selget_nobind, err)
+		Ret400(c, AEC_slot_selget_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_slot_selget_notopened, ErrNotOpened)
+		Ret404(c, AEC_slot_selget_notopened, ErrNotOpened)
 		return
 	}
 	var game slot.SlotGame
 	if game, ok = scene.Game.(slot.SlotGame); !ok {
-		Ret403(c, SEC_slot_selget_notslot, ErrNotSlot)
+		Ret403(c, AEC_slot_selget_notslot, ErrNotSlot)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_slot_selget_noaccess, ErrNoAccess)
+		Ret403(c, AEC_slot_selget_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -134,7 +134,7 @@ func SpiSlotSelGet(c *gin.Context) {
 }
 
 // Set selected bet lines bitset.
-func SpiSlotSelSet(c *gin.Context) {
+func ApiSlotSelSet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -144,29 +144,29 @@ func SpiSlotSelSet(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_slot_selset_nobind, err)
+		Ret400(c, AEC_slot_selset_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_slot_selset_notopened, ErrNotOpened)
+		Ret404(c, AEC_slot_selset_notopened, ErrNotOpened)
 		return
 	}
 	var game slot.SlotGame
 	if game, ok = scene.Game.(slot.SlotGame); !ok {
-		Ret403(c, SEC_slot_selset_notslot, ErrNotSlot)
+		Ret403(c, AEC_slot_selset_notslot, ErrNotSlot)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_slot_selset_noaccess, ErrNoAccess)
+		Ret403(c, AEC_slot_selset_noaccess, ErrNoAccess)
 		return
 	}
 
 	if err = game.SetSel(arg.Sel); err != nil {
-		Ret403(c, SEC_slot_selset_badlines, err)
+		Ret403(c, AEC_slot_selset_badlines, err)
 		return
 	}
 
@@ -174,7 +174,7 @@ func SpiSlotSelSet(c *gin.Context) {
 }
 
 // Change game mode depending on the user's choice.
-func SpiSlotModeSet(c *gin.Context) {
+func ApiSlotModeSet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -184,29 +184,29 @@ func SpiSlotModeSet(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_slot_modeset_nobind, err)
+		Ret400(c, AEC_slot_modeset_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_slot_modeset_notopened, ErrNotOpened)
+		Ret404(c, AEC_slot_modeset_notopened, ErrNotOpened)
 		return
 	}
 	var game slot.SlotGame
 	if game, ok = scene.Game.(slot.SlotGame); !ok {
-		Ret403(c, SEC_slot_modeset_notslot, ErrNotSlot)
+		Ret403(c, AEC_slot_modeset_notslot, ErrNotSlot)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_slot_modeset_noaccess, ErrNoAccess)
+		Ret403(c, AEC_slot_modeset_noaccess, ErrNoAccess)
 		return
 	}
 
 	if err = game.SetMode(arg.N); err != nil {
-		Ret403(c, SEC_slot_modeset_badmode, err)
+		Ret403(c, AEC_slot_modeset_badmode, err)
 		return
 	}
 
@@ -214,7 +214,7 @@ func SpiSlotModeSet(c *gin.Context) {
 }
 
 // Make a spin.
-func SpiSlotSpin(c *gin.Context) {
+func ApiSlotSpin(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -231,36 +231,36 @@ func SpiSlotSpin(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_slot_spin_nobind, err)
+		Ret400(c, AEC_slot_spin_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_slot_spin_notopened, ErrNotOpened)
+		Ret404(c, AEC_slot_spin_notopened, ErrNotOpened)
 		return
 	}
 	var game slot.SlotGame
 	if game, ok = scene.Game.(slot.SlotGame); !ok {
-		Ret403(c, SEC_slot_spin_notslot, ErrNotSlot)
+		Ret403(c, AEC_slot_spin_notslot, ErrNotSlot)
 		return
 	}
 
 	var club *Club
 	if club, ok = Clubs.Get(scene.CID); !ok {
-		Ret500(c, SEC_slot_spin_noclub, ErrNoClub)
+		Ret500(c, AEC_slot_spin_noclub, ErrNoClub)
 		return
 	}
 
 	var user *User
 	if user, ok = Users.Get(scene.UID); !ok {
-		Ret500(c, SEC_slot_spin_nouser, ErrNoUser)
+		Ret500(c, AEC_slot_spin_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_slot_spin_noaccess, ErrNoAccess)
+		Ret403(c, AEC_slot_spin_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -277,11 +277,11 @@ func SpiSlotSpin(c *gin.Context) {
 
 	var props *Props
 	if props, ok = user.props.Get(scene.CID); !ok {
-		Ret500(c, SEC_slot_spin_noprops, ErrNoProps)
+		Ret500(c, AEC_slot_spin_noprops, ErrNoProps)
 		return
 	}
 	if props.Wallet < totalbet {
-		Ret403(c, SEC_slot_spin_nomoney, ErrNoMoney)
+		Ret403(c, AEC_slot_spin_nomoney, ErrNoMoney)
 		return
 	}
 
@@ -307,7 +307,7 @@ func SpiSlotSpin(c *gin.Context) {
 		}
 		wins.Reset()
 		if n >= cfg.Cfg.MaxSpinAttempts {
-			Ret500(c, SEC_slot_spin_badbank, ErrBadBank)
+			Ret500(c, AEC_slot_spin_badbank, ErrBadBank)
 			return
 		}
 		n++
@@ -317,7 +317,7 @@ func SpiSlotSpin(c *gin.Context) {
 	if Cfg.ClubUpdateBuffer > 1 {
 		go BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum)
 	} else if err = BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum); err != nil {
-		Ret500(c, SEC_slot_spin_sqlbank, err)
+		Ret500(c, AEC_slot_spin_sqlbank, err)
 		return
 	}
 
@@ -374,7 +374,7 @@ func SpiSlotSpin(c *gin.Context) {
 }
 
 // Double up gamble on last gain.
-func SpiSlotDoubleup(c *gin.Context) {
+func ApiSlotDoubleup(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -390,48 +390,48 @@ func SpiSlotDoubleup(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_slot_doubleup_nobind, err)
+		Ret400(c, AEC_slot_doubleup_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_slot_doubleup_notopened, ErrNotOpened)
+		Ret404(c, AEC_slot_doubleup_notopened, ErrNotOpened)
 		return
 	}
 	var game slot.SlotGame
 	if game, ok = scene.Game.(slot.SlotGame); !ok {
-		Ret403(c, SEC_slot_doubleup_notslot, ErrNotSlot)
+		Ret403(c, AEC_slot_doubleup_notslot, ErrNotSlot)
 		return
 	}
 
 	var club *Club
 	if club, ok = Clubs.Get(scene.CID); !ok {
-		Ret500(c, SEC_slot_doubleup_noclub, ErrNoClub)
+		Ret500(c, AEC_slot_doubleup_noclub, ErrNoClub)
 		return
 	}
 
 	var user *User
 	if user, ok = Users.Get(scene.UID); !ok {
-		Ret500(c, SEC_slot_doubleup_nouser, ErrNoUser)
+		Ret500(c, AEC_slot_doubleup_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_slot_doubleup_noaccess, ErrNoAccess)
+		Ret403(c, AEC_slot_doubleup_noaccess, ErrNoAccess)
 		return
 	}
 
 	var props *Props
 	if props, ok = user.props.Get(scene.CID); !ok {
-		Ret500(c, SEC_slot_doubleup_noprops, ErrNoProps)
+		Ret500(c, AEC_slot_doubleup_noprops, ErrNoProps)
 		return
 	}
 
 	var risk = game.GetGain()
 	if risk == 0 {
-		Ret403(c, SEC_slot_doubleup_nomoney, ErrNoMoney)
+		Ret403(c, AEC_slot_doubleup_nomoney, ErrNoMoney)
 		return
 	}
 
@@ -454,7 +454,7 @@ func SpiSlotDoubleup(c *gin.Context) {
 	if Cfg.ClubUpdateBuffer > 1 {
 		go BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum)
 	} else if err = BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum); err != nil {
-		Ret500(c, SEC_slot_doubleup_sqlbank, err)
+		Ret500(c, AEC_slot_doubleup_sqlbank, err)
 		return
 	}
 
@@ -492,7 +492,7 @@ func SpiSlotDoubleup(c *gin.Context) {
 	RetOk(c, ret)
 }
 
-func SpiSlotCollect(c *gin.Context) {
+func ApiSlotCollect(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -501,29 +501,29 @@ func SpiSlotCollect(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_slot_collect_nobind, err)
+		Ret400(c, AEC_slot_collect_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_slot_collect_notopened, ErrNotOpened)
+		Ret404(c, AEC_slot_collect_notopened, ErrNotOpened)
 		return
 	}
 	var game slot.SlotGame
 	if game, ok = scene.Game.(slot.SlotGame); !ok {
-		Ret403(c, SEC_slot_collect_notslot, ErrNotSlot)
+		Ret403(c, AEC_slot_collect_notslot, ErrNotSlot)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_slot_collect_noaccess, ErrNoAccess)
+		Ret403(c, AEC_slot_collect_noaccess, ErrNoAccess)
 		return
 	}
 
 	if err = game.SetGain(0); err != nil {
-		Ret403(c, SEC_slot_collect_denied, err)
+		Ret403(c, AEC_slot_collect_denied, err)
 		return
 	}
 

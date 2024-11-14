@@ -1,4 +1,4 @@
-package spi
+package api
 
 import (
 	"encoding/xml"
@@ -12,7 +12,7 @@ const (
 )
 
 // Changes 'Name' of given user.
-func SpiUserRename(c *gin.Context) {
+func ApiUserRename(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -22,24 +22,24 @@ func SpiUserRename(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_user_rename_nobind, err)
+		Ret400(c, AEC_user_rename_nobind, err)
 		return
 	}
 
 	var user *User
 	if user, ok = Users.Get(arg.UID); !ok {
-		Ret404(c, SEC_user_rename_nouser, ErrNoUser)
+		Ret404(c, AEC_user_rename_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, 0)
 	if admin != user && al&ALadmin == 0 {
-		Ret403(c, SEC_user_rename_noaccess, ErrNoAccess)
+		Ret403(c, AEC_user_rename_noaccess, ErrNoAccess)
 		return
 	}
 
 	if _, err = cfg.XormStorage.ID(user.UID).Cols("name").Update(&User{Name: arg.Name}); err != nil {
-		Ret500(c, SEC_user_rename_update, err)
+		Ret500(c, AEC_user_rename_update, err)
 		return
 	}
 	user.Name = arg.Name
@@ -47,7 +47,7 @@ func SpiUserRename(c *gin.Context) {
 	Ret204(c)
 }
 
-func SpiUserSecret(c *gin.Context) {
+func ApiUserSecret(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -58,33 +58,33 @@ func SpiUserSecret(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_user_secret_nobind, err)
+		Ret400(c, AEC_user_secret_nobind, err)
 		return
 	}
 	if len(arg.NewSecret) < 6 {
-		Ret400(c, SEC_user_secret_smallsec, ErrSmallKey)
+		Ret400(c, AEC_user_secret_smallsec, ErrSmallKey)
 		return
 	}
 
 	var user *User
 	if user, ok = Users.Get(arg.UID); !ok {
-		Ret404(c, SEC_user_secret_nouser, ErrNoUser)
+		Ret404(c, AEC_user_secret_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, 0)
 	if admin != user && al&ALadmin == 0 {
-		Ret403(c, SEC_user_secret_noaccess, ErrNoAccess)
+		Ret403(c, AEC_user_secret_noaccess, ErrNoAccess)
 		return
 	}
 
 	if arg.OldSecret != user.Secret && al&ALadmin == 0 {
-		Ret403(c, SEC_user_secret_nosecret, ErrNotConf)
+		Ret403(c, AEC_user_secret_nosecret, ErrNotConf)
 		return
 	}
 
 	if _, err = cfg.XormStorage.ID(user.UID).Cols("secret").Update(&User{Secret: arg.NewSecret}); err != nil {
-		Ret500(c, SEC_user_secret_update, err)
+		Ret500(c, AEC_user_secret_update, err)
 		return
 	}
 	user.Secret = arg.NewSecret
@@ -94,7 +94,7 @@ func SpiUserSecret(c *gin.Context) {
 
 // Deletes registration, drops user and all linked records from database,
 // and moves all remained coins at wallets to clubs deposits.
-func SpiUserDelete(c *gin.Context) {
+func ApiUserDelete(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -109,50 +109,50 @@ func SpiUserDelete(c *gin.Context) {
 	ret.Wallets = map[uint64]float64{}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_user_delete_nobind, err)
+		Ret400(c, AEC_user_delete_nobind, err)
 		return
 	}
 
 	var user *User
 	if user, ok = Users.Get(arg.UID); !ok {
-		Ret404(c, SEC_user_delete_nouser, ErrNoUser)
+		Ret404(c, AEC_user_delete_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, 0)
 	if admin != user && al&ALadmin == 0 {
-		Ret403(c, SEC_user_delete_noaccess, ErrNoAccess)
+		Ret403(c, AEC_user_delete_noaccess, ErrNoAccess)
 		return
 	}
 
 	if arg.Secret != user.Secret && al&ALadmin == 0 {
-		Ret403(c, SEC_user_delete_nosecret, ErrNotConf)
+		Ret403(c, AEC_user_delete_nosecret, ErrNotConf)
 		return
 	}
 
 	// write gain and total bet as transaction
 	if err = SafeTransaction(cfg.XormStorage, func(session *Session) (err error) {
 		if _, err = session.ID(arg.UID).Delete(user); err != nil {
-			Ret500(c, SEC_user_delete_sqluser, err)
+			Ret500(c, AEC_user_delete_sqluser, err)
 			return
 		}
 
 		for cid, props := range user.props.Items() {
 			if props.Wallet != 0 {
 				if _, err = session.Exec(sqllock, props.Wallet, cid); err != nil {
-					Ret500(c, SEC_user_delete_sqllock, err)
+					Ret500(c, AEC_user_delete_sqllock, err)
 					return
 				}
 			}
 		}
 
 		if _, err = session.Where("uid=?", arg.UID).Delete(&Props{}); err != nil {
-			Ret500(c, SEC_user_delete_sqlprops, err)
+			Ret500(c, AEC_user_delete_sqlprops, err)
 			return
 		}
 
 		if _, err = session.Where("uid=?", arg.UID).Delete(&Scene{}); err != nil {
-			Ret500(c, SEC_user_delete_sqlgames, err)
+			Ret500(c, AEC_user_delete_sqlgames, err)
 			return
 		}
 

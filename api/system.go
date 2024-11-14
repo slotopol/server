@@ -1,4 +1,4 @@
-package spi
+package api
 
 import (
 	"runtime"
@@ -13,7 +13,7 @@ import (
 var starttime = time.Now()
 
 // Check service response.
-func SpiPing(c *gin.Context) {
+func ApiPing(c *gin.Context) {
 	var ret = gin.H{
 		"message": "pong",
 	}
@@ -21,7 +21,7 @@ func SpiPing(c *gin.Context) {
 }
 
 // Static service system information.
-func SpiServInfo(c *gin.Context) {
+func ApiServInfo(c *gin.Context) {
 	var ret = gin.H{
 		"buildvers": cfg.BuildVers,
 		"buildtime": cfg.BuildTime,
@@ -38,7 +38,7 @@ func SpiServInfo(c *gin.Context) {
 }
 
 // Memory usage footprint.
-func SpiMemUsage(c *gin.Context) {
+func ApiMemUsage(c *gin.Context) {
 	var mem runtime.MemStats
 	runtime.ReadMemStats(&mem)
 
@@ -58,6 +58,6 @@ func SpiMemUsage(c *gin.Context) {
 }
 
 // Returns full list of all available games by game type IDs.
-func SpiGameList(c *gin.Context) {
+func ApiGameList(c *gin.Context) {
 	RetOk(c, game.GameList)
 }

@@ -1,4 +1,4 @@
-package spi
+package api
 
 import (
 	"encoding/json"
@@ -122,71 +122,71 @@ func Router(r *gin.Engine) {
 	r.NoMethod(Handle405)
 	//r.Use(gzip.Gzip(gzip.DefaultCompression))
 
-	r.GET("/ping", SpiPing)
-	r.GET("/servinfo", SpiServInfo)
-	r.GET("/memusage", SpiMemUsage)
-	r.GET("/gamelist", SpiGameList)
+	r.GET("/ping", ApiPing)
+	r.GET("/servinfo", ApiServInfo)
+	r.GET("/memusage", ApiMemUsage)
+	r.GET("/gamelist", ApiGameList)
 
 	// authorization
-	r.GET("/signis", SpiSignis)
-	r.GET("/sendcode", SpiSendCode)
-	r.GET("/activate", Auth(false), SpiActivate)
-	r.POST("/signup", Auth(false), SpiSignup)
-	r.POST("/signin", SpiSignin)
-	r.Any("/refresh", Auth(true), SpiRefresh)
+	r.GET("/signis", ApiSignis)
+	r.GET("/sendcode", ApiSendCode)
+	r.GET("/activate", Auth(false), ApiActivate)
+	r.POST("/signup", Auth(false), ApiSignup)
+	r.POST("/signin", ApiSignin)
+	r.Any("/refresh", Auth(true), ApiRefresh)
 
 	var ra = r.Group("/", Auth(true))
 
 	// common game group
 	var rg = ra.Group("/game")
-	rg.POST("/join", SpiGameJoin)
-	rg.POST("/part", SpiGamePart)
-	rg.POST("/info", SpiGameInfo)
-	rg.POST("/rtp/get", SpiGameRtpGet)
+	rg.POST("/join", ApiGameJoin)
+	rg.POST("/part", ApiGamePart)
+	rg.POST("/info", ApiGameInfo)
+	rg.POST("/rtp/get", ApiGameRtpGet)
 
 	// slot group
 	var rs = ra.Group("/slot")
-	rs.POST("/bet/get", SpiSlotBetGet)
-	rs.POST("/bet/set", SpiSlotBetSet)
-	rs.POST("/sel/get", SpiSlotSelGet)
-	rs.POST("/sel/set", SpiSlotSelSet)
-	rs.POST("/mode/set", SpiSlotModeSet)
-	rs.POST("/spin", SpiSlotSpin)
-	rs.POST("/doubleup", SpiSlotDoubleup)
-	rs.POST("/collect", SpiSlotCollect)
+	rs.POST("/bet/get", ApiSlotBetGet)
+	rs.POST("/bet/set", ApiSlotBetSet)
+	rs.POST("/sel/get", ApiSlotSelGet)
+	rs.POST("/sel/set", ApiSlotSelSet)
+	rs.POST("/mode/set", ApiSlotModeSet)
+	rs.POST("/spin", ApiSlotSpin)
+	rs.POST("/doubleup", ApiSlotDoubleup)
+	rs.POST("/collect", ApiSlotCollect)
 
 	// keno group
 	var rk = ra.Group("/keno")
-	rk.POST("/bet/get", SpiKenoBetGet)
-	rk.POST("/bet/set", SpiKenoBetSet)
-	rk.POST("/sel/get", SpiKenoSelGet)
-	rk.POST("/sel/set", SpiKenoSelSet)
-	rk.POST("/sel/getslice", SpiKenoSelGetSlice)
-	rk.POST("/sel/setslice", SpiKenoSelSetSlice)
-	rk.POST("/spin", SpiKenoSpin)
+	rk.POST("/bet/get", ApiKenoBetGet)
+	rk.POST("/bet/set", ApiKenoBetSet)
+	rk.POST("/sel/get", ApiKenoSelGet)
+	rk.POST("/sel/set", ApiKenoSelSet)
+	rk.POST("/sel/getslice", ApiKenoSelGetSlice)
+	rk.POST("/sel/setslice", ApiKenoSelSetSlice)
+	rk.POST("/spin", ApiKenoSpin)
 
 	// properties group
 	var rp = ra.Group("/prop")
-	rp.POST("/get", SpiPropsGet)
-	rp.POST("/wallet/get", SpiPropsWalletGet)
-	rp.POST("/wallet/add", SpiPropsWalletAdd)
-	rp.POST("/al/get", SpiPropsAlGet)
-	rp.POST("/al/set", SpiPropsAlSet)
-	rp.POST("/rtp/get", SpiPropsRtpGet)
-	rp.POST("/rtp/set", SpiPropsRtpSet)
+	rp.POST("/get", ApiPropsGet)
+	rp.POST("/wallet/get", ApiPropsWalletGet)
+	rp.POST("/wallet/add", ApiPropsWalletAdd)
+	rp.POST("/al/get", ApiPropsAlGet)
+	rp.POST("/al/set", ApiPropsAlSet)
+	rp.POST("/rtp/get", ApiPropsRtpGet)
+	rp.POST("/rtp/set", ApiPropsRtpSet)
 
 	// user group
 	var ru = ra.Group("/user")
-	ru.POST("/is", SpiSignis)
-	ru.POST("/rename", SpiUserRename)
-	ru.POST("/secret", SpiUserSecret)
-	ru.POST("/delete", SpiUserDelete)
+	ru.POST("/is", ApiSignis)
+	ru.POST("/rename", ApiUserRename)
+	ru.POST("/secret", ApiUserSecret)
+	ru.POST("/delete", ApiUserDelete)
 
 	// club group
 	var rc = ra.Group("/club")
-	rc.POST("/list", SpiClubList)
-	rc.POST("/is", SpiClubIs)
-	rc.POST("/info", SpiClubInfo)
-	rc.POST("/rename", SpiClubRename)
-	rc.POST("/cashin", SpiClubCashin)
+	rc.POST("/list", ApiClubList)
+	rc.POST("/is", ApiClubIs)
+	rc.POST("/info", ApiClubInfo)
+	rc.POST("/rename", ApiClubRename)
+	rc.POST("/cashin", ApiClubCashin)
 }

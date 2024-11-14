@@ -1,4 +1,4 @@
-package spi
+package api
 
 import (
 	"encoding/xml"
@@ -21,7 +21,7 @@ var (
 )
 
 // Joins to game and creates new instance of game.
-func SpiGameJoin(c *gin.Context) {
+func ApiGameJoin(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -39,32 +39,32 @@ func SpiGameJoin(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_game_join_nobind, err)
+		Ret400(c, AEC_game_join_nobind, err)
 		return
 	}
 
 	var club *Club
 	if club, ok = Clubs.Get(arg.CID); !ok {
-		Ret404(c, SEC_game_join_noclub, ErrNoClub)
+		Ret404(c, AEC_game_join_noclub, ErrNoClub)
 		return
 	}
 
 	var user *User
 	if user, ok = Users.Get(arg.UID); !ok {
-		Ret404(c, SEC_game_join_nouser, ErrNoUser)
+		Ret404(c, AEC_game_join_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
 	if (al&ALmem == 0) || (admin != user && al&ALgame == 0) {
-		Ret403(c, SEC_game_join_noaccess, ErrNoAccess)
+		Ret403(c, AEC_game_join_noaccess, ErrNoAccess)
 		return
 	}
 
 	var alias = util.ToID(arg.Alias)
 	var maker, has = game.GameFactory[alias]
 	if !has {
-		Ret400(c, SEC_game_join_noalias, ErrNoAliase)
+		Ret400(c, AEC_game_join_noalias, ErrNoAliase)
 		return
 	}
 
@@ -85,7 +85,7 @@ func SpiGameJoin(c *gin.Context) {
 	if Cfg.ClubInsertBuffer > 1 {
 		go JoinBuf.Join(cfg.XormStorage, &scene.Story)
 	} else if err = JoinBuf.Join(cfg.XormStorage, &scene.Story); err != nil {
-		Ret500(c, SEC_game_join_sql, err)
+		Ret500(c, AEC_game_join_sql, err)
 		return
 	}
 
@@ -114,7 +114,7 @@ func SpiGameJoin(c *gin.Context) {
 }
 
 // Removes instance of opened game.
-func SpiGamePart(c *gin.Context) {
+func ApiGamePart(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -123,25 +123,25 @@ func SpiGamePart(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_game_part_nobind, err)
+		Ret400(c, AEC_game_part_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_game_part_notopened, ErrNotOpened)
+		Ret404(c, AEC_game_part_notopened, ErrNotOpened)
 		return
 	}
 
 	var user *User
 	if user, ok = Users.Get(scene.UID); !ok {
-		Ret500(c, SEC_game_part_nouser, ErrNoUser)
+		Ret500(c, AEC_game_part_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin != user && al&ALgame == 0 {
-		Ret403(c, SEC_game_part_noaccess, ErrNoAccess)
+		Ret403(c, AEC_game_part_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -149,7 +149,7 @@ func SpiGamePart(c *gin.Context) {
 	if Cfg.ClubUpdateBuffer > 1 {
 		go JoinBuf.Flow(cfg.XormStorage, arg.GID, false)
 	} else if err = JoinBuf.Flow(cfg.XormStorage, arg.GID, false); err != nil {
-		Ret500(c, SEC_game_part_sql, err)
+		Ret500(c, AEC_game_part_sql, err)
 		return
 	}
 
@@ -161,7 +161,7 @@ func SpiGamePart(c *gin.Context) {
 }
 
 // Returns full info of game scene with given GID, and balance on wallet.
-func SpiGameInfo(c *gin.Context) {
+func ApiGameInfo(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -180,31 +180,31 @@ func SpiGameInfo(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_game_info_nobind, err)
+		Ret400(c, AEC_game_info_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_game_info_notopened, ErrNotOpened)
+		Ret404(c, AEC_game_info_notopened, ErrNotOpened)
 		return
 	}
 
 	var user *User
 	if user, ok = Users.Get(scene.UID); !ok {
-		Ret500(c, SEC_game_info_nouser, ErrNoUser)
+		Ret500(c, AEC_game_info_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin != user && al&ALgame == 0 {
-		Ret403(c, SEC_game_info_noaccess, ErrNoAccess)
+		Ret403(c, AEC_game_info_noaccess, ErrNoAccess)
 		return
 	}
 
 	var props *Props
 	if props, ok = user.props.Get(scene.CID); !ok {
-		Ret500(c, SEC_game_info_noprops, ErrNoProps)
+		Ret500(c, AEC_game_info_noprops, ErrNoProps)
 		return
 	}
 
@@ -220,7 +220,7 @@ func SpiGameInfo(c *gin.Context) {
 }
 
 // Returns master RTP for given GID.
-func SpiGameRtpGet(c *gin.Context) {
+func ApiGameRtpGet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -233,31 +233,31 @@ func SpiGameRtpGet(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_game_rdget_nobind, err)
+		Ret400(c, AEC_game_rdget_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_game_rdget_notopened, ErrNotOpened)
+		Ret404(c, AEC_game_rdget_notopened, ErrNotOpened)
 		return
 	}
 
 	var club *Club
 	if club, ok = Clubs.Get(scene.CID); !ok {
-		Ret500(c, SEC_game_rdget_noclub, ErrNoClub)
+		Ret500(c, AEC_game_rdget_noclub, ErrNoClub)
 		return
 	}
 
 	var user *User
 	if user, ok = Users.Get(scene.UID); !ok {
-		Ret500(c, SEC_game_rdget_nouser, ErrNoUser)
+		Ret500(c, AEC_game_rdget_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_game_rdget_noaccess, ErrNoAccess)
+		Ret403(c, AEC_game_rdget_noaccess, ErrNoAccess)
 		return
 	}
 

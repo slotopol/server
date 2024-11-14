@@ -6,8 +6,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/slotopol/server/api"
 	cfg "github.com/slotopol/server/config"
-	"github.com/slotopol/server/spi"
 	"golang.org/x/sync/errgroup"
 
 	"github.com/gin-gonic/gin"
@@ -44,7 +44,7 @@ var webCmd = &cobra.Command{
 		var r = gin.New()
 		r.SetTrustedProxies(Cfg.TrustedProxies)
 		r.HandleMethodNotAllowed = true
-		spi.Router(r)
+		api.Router(r)
 
 		// starts HTTP listeners
 		var wg errgroup.Group

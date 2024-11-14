@@ -12,8 +12,8 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/slotopol/server/api"
 	cfg "github.com/slotopol/server/config"
-	"github.com/slotopol/server/spi"
 	"github.com/slotopol/server/util"
 	"gopkg.in/yaml.v3"
 
@@ -99,14 +99,14 @@ func InitStorage() (err error) {
 	defer session.Close()
 
 	if err = session.Sync(
-		&spi.Club{}, &spi.User{}, &spi.Props{},
-		&spi.Story{}, spi.Walletlog{}, spi.Banklog{},
+		&api.Club{}, &api.User{}, &api.Props{},
+		&api.Story{}, api.Walletlog{}, api.Banklog{},
 	); err != nil {
 		return
 	}
 
 	var ok bool
-	if ok, err = session.IsTableEmpty(&spi.Club{}); err != nil {
+	if ok, err = session.IsTableEmpty(&api.Club{}); err != nil {
 		return
 	}
 	if ok {
@@ -130,7 +130,7 @@ func InitStorage() (err error) {
 	if body, err = os.ReadFile(util.JoinFilePath(cfg.CfgPath, "slot-newuser.yaml")); err != nil {
 		log.Printf("can not open YAML-file with properties initialization for new user: %s", err.Error())
 		err = nil // remove error
-	} else if err = yaml.Unmarshal(body, &spi.PropMaster); err != nil {
+	} else if err = yaml.Unmarshal(body, &api.PropMaster); err != nil {
 		log.Printf("can not unmarshal 'slot-newuser.yaml': %s", err.Error())
 		err = nil // remove error
 	}
@@ -139,16 +139,16 @@ func InitStorage() (err error) {
 
 	var offset = 0
 	for {
-		var chunk []*spi.Club
+		var chunk []*api.Club
 		if err = session.Limit(limit, offset).Find(&chunk); err != nil {
 			return
 		}
 		offset += limit
 		for _, club := range chunk {
-			spi.Clubs.Set(club.CID, club)
-			var bat = &spi.SqlBank{}
+			api.Clubs.Set(club.CID, club)
+			var bat = &api.SqlBank{}
 			bat.Init(club.CID, Cfg.ClubUpdateBuffer, Cfg.ClubInsertBuffer)
-			spi.BankBat[club.CID] = bat
+			api.BankBat[club.CID] = bat
 		}
 		if limit > len(chunk) {
 			break
@@ -157,14 +157,14 @@ func InitStorage() (err error) {
 
 	offset = 0
 	for {
-		var chunk []*spi.User
+		var chunk []*api.User
 		if err = session.Limit(limit, offset).Find(&chunk); err != nil {
 			return
 		}
 		offset += limit
 		for _, user := range chunk {
 			user.Init()
-			spi.Users.Set(user.UID, user)
+			api.Users.Set(user.UID, user)
 		}
 		if limit > len(chunk) {
 			break
@@ -173,16 +173,16 @@ func InitStorage() (err error) {
 
 	offset = 0
 	for {
-		var chunk []*spi.Props
+		var chunk []*api.Props
 		if err = session.Limit(limit, offset).Find(&chunk); err != nil {
 			return
 		}
 		offset += limit
 		for _, props := range chunk {
-			if !spi.Clubs.Has(props.CID) {
+			if !api.Clubs.Has(props.CID) {
 				return fmt.Errorf("found props without club linkage, UID=%d, CID=%d, value=%g", props.UID, props.CID, props.Wallet)
 			}
-			var user, ok = spi.Users.Get(props.UID)
+			var user, ok = api.Users.Get(props.UID)
 			if !ok {
 				return fmt.Errorf("found props without user linkage, UID=%d, CID=%d, value=%g", props.UID, props.CID, props.Wallet)
 			}
@@ -194,17 +194,17 @@ func InitStorage() (err error) {
 	}
 
 	var i64 int64
-	if i64, err = session.Count(&spi.Story{}); err != nil {
+	if i64, err = session.Count(&api.Story{}); err != nil {
 		return
 	}
-	spi.StoryCounter = uint64(i64)
+	api.StoryCounter = uint64(i64)
 
 	// Close all games of previous server session
-	if _, err = session.Cols("flow").Update(&spi.Story{Flow: false}); err != nil {
+	if _, err = session.Cols("flow").Update(&api.Story{Flow: false}); err != nil {
 		return
 	}
 
-	spi.JoinBuf.Init(Cfg.ClubUpdateBuffer, Cfg.ClubInsertBuffer)
+	api.JoinBuf.Init(Cfg.ClubUpdateBuffer, Cfg.ClubInsertBuffer)
 	return
 }
 
@@ -238,21 +238,21 @@ func InitSpinlog() (err error) {
 	var session = cfg.XormSpinlog.NewSession()
 	defer session.Close()
 
-	if err = session.Sync(&spi.Spinlog{}, &spi.Multlog{}); err != nil {
+	if err = session.Sync(&api.Spinlog{}, &api.Multlog{}); err != nil {
 		return
 	}
 	var i64 int64
-	if i64, err = session.Count(&spi.Spinlog{}); err != nil {
+	if i64, err = session.Count(&api.Spinlog{}); err != nil {
 		return
 	}
-	spi.SpinCounter = uint64(i64)
-	if i64, err = session.Count(&spi.Multlog{}); err != nil {
+	api.SpinCounter = uint64(i64)
+	if i64, err = session.Count(&api.Multlog{}); err != nil {
 		return
 	}
-	spi.MultCounter = uint64(i64)
+	api.MultCounter = uint64(i64)
 
-	spi.SpinBuf.Init(Cfg.SpinInsertBuffer)
-	spi.MultBuf.Init(Cfg.SpinInsertBuffer)
+	api.SpinBuf.Init(Cfg.SpinInsertBuffer)
+	api.MultBuf.Init(Cfg.SpinInsertBuffer)
 	return
 }
 
@@ -263,22 +263,22 @@ func SqlLoop(exitctx context.Context) {
 	for {
 		select {
 		case <-flush:
-			for cid, bat := range spi.BankBat {
+			for cid, bat := range api.BankBat {
 				if err := bat.Flush(cfg.XormStorage, fd); err != nil {
 					log.Printf("can not update bank for cid=%d: %s", cid, err.Error())
 				}
 			}
-			if err := spi.JoinBuf.Flush(cfg.XormStorage, fd); err != nil {
+			if err := api.JoinBuf.Flush(cfg.XormStorage, fd); err != nil {
 				log.Printf("can not write to story log: %s", err.Error())
 			}
-			if err := spi.SpinBuf.Flush(cfg.XormSpinlog, fd); err != nil {
+			if err := api.SpinBuf.Flush(cfg.XormSpinlog, fd); err != nil {
 				log.Printf("can not write to spin log: %s", err.Error())
 			}
-			if err := spi.MultBuf.Flush(cfg.XormSpinlog, fd); err != nil {
+			if err := api.MultBuf.Flush(cfg.XormSpinlog, fd); err != nil {
 				log.Printf("can not write to mult log: %s", err.Error())
 			}
 		case <-passers:
-			cfg.XormStorage.Where("ctime<? AND status=0", time.Now().Add(-time.Hour*3*24).Format(time.DateTime)).Delete(&spi.User{})
+			cfg.XormStorage.Where("ctime<? AND status=0", time.Now().Add(-time.Hour*3*24).Format(time.DateTime)).Delete(&api.User{})
 		case <-exitctx.Done():
 			return
 		}
@@ -299,13 +299,13 @@ func Init() (err error) {
 
 func Done() (err error) {
 	var errs []error
-	for _, bat := range spi.BankBat {
+	for _, bat := range api.BankBat {
 		errs = append(errs, bat.Flush(cfg.XormStorage, 0))
 	}
-	errs = append(errs, spi.JoinBuf.Flush(cfg.XormStorage, 0))
+	errs = append(errs, api.JoinBuf.Flush(cfg.XormStorage, 0))
 
-	errs = append(errs, spi.SpinBuf.Flush(cfg.XormSpinlog, 0))
-	errs = append(errs, spi.MultBuf.Flush(cfg.XormSpinlog, 0))
+	errs = append(errs, api.SpinBuf.Flush(cfg.XormSpinlog, 0))
+	errs = append(errs, api.MultBuf.Flush(cfg.XormSpinlog, 0))
 
 	errs = append(errs, cfg.XormStorage.Close())
 	errs = append(errs, cfg.XormSpinlog.Close())

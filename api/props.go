@@ -1,4 +1,4 @@
-package spi
+package api
 
 import (
 	"encoding/xml"
@@ -8,7 +8,7 @@ import (
 )
 
 // Returns all properties for pointed user at pointed club.
-func SpiPropsGet(c *gin.Context) {
+func ApiPropsGet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -24,26 +24,26 @@ func SpiPropsGet(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_prop_get_nobind, err)
+		Ret400(c, AEC_prop_get_nobind, err)
 		return
 	}
 
 	var club *Club
 	if club, ok = Clubs.Get(arg.CID); !ok {
-		Ret404(c, SEC_prop_get_noclub, ErrNoClub)
+		Ret404(c, AEC_prop_get_noclub, ErrNoClub)
 		return
 	}
 	_ = club
 
 	var user *User
 	if user, ok = Users.Get(arg.UID); !ok {
-		Ret404(c, SEC_prop_get_nouser, ErrNoUser)
+		Ret404(c, AEC_prop_get_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
 	if admin != user && al&ALall == 0 {
-		Ret403(c, SEC_prop_get_noaccess, ErrNoAccess)
+		Ret403(c, AEC_prop_get_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -55,7 +55,7 @@ func SpiPropsGet(c *gin.Context) {
 }
 
 // Returns balance at wallet for pointed user at pointed club.
-func SpiPropsWalletGet(c *gin.Context) {
+func ApiPropsWalletGet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -69,26 +69,26 @@ func SpiPropsWalletGet(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_prop_walletget_nobind, err)
+		Ret400(c, AEC_prop_walletget_nobind, err)
 		return
 	}
 
 	var club *Club
 	if club, ok = Clubs.Get(arg.CID); !ok {
-		Ret404(c, SEC_prop_walletget_noclub, ErrNoClub)
+		Ret404(c, AEC_prop_walletget_noclub, ErrNoClub)
 		return
 	}
 	_ = club
 
 	var user *User
 	if user, ok = Users.Get(arg.UID); !ok {
-		Ret404(c, SEC_prop_walletget_nouser, ErrNoUser)
+		Ret404(c, AEC_prop_walletget_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
 	if admin != user && al&ALall == 0 {
-		Ret403(c, SEC_prop_walletget_noaccess, ErrNoAccess)
+		Ret403(c, AEC_prop_walletget_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -98,7 +98,7 @@ func SpiPropsWalletGet(c *gin.Context) {
 }
 
 // Adds some coins to user wallet. Sum can be < 0 to remove some coins.
-func SpiPropsWalletAdd(c *gin.Context) {
+func ApiPropsWalletAdd(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -113,40 +113,40 @@ func SpiPropsWalletAdd(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_prop_walletadd_nobind, err)
+		Ret400(c, AEC_prop_walletadd_nobind, err)
 		return
 	}
 	if arg.Sum > cfg.Cfg.AdjunctLimit || arg.Sum < -cfg.Cfg.AdjunctLimit {
-		Ret400(c, SEC_prop_walletadd_limit, ErrTooBig)
+		Ret400(c, AEC_prop_walletadd_limit, ErrTooBig)
 		return
 	}
 
 	var club *Club
 	if club, ok = Clubs.Get(arg.CID); !ok {
-		Ret404(c, SEC_prop_walletadd_noclub, ErrNoClub)
+		Ret404(c, AEC_prop_walletadd_noclub, ErrNoClub)
 		return
 	}
 	_ = club
 
 	var user *User
 	if user, ok = Users.Get(arg.UID); !ok {
-		Ret404(c, SEC_prop_walletadd_nouser, ErrNoUser)
+		Ret404(c, AEC_prop_walletadd_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
 	if al&(ALuser+ALadmin) == 0 {
-		Ret403(c, SEC_prop_walletadd_noaccess, ErrNoAccess)
+		Ret403(c, AEC_prop_walletadd_noaccess, ErrNoAccess)
 		return
 	}
 
 	var props *Props
 	if props, ok = user.props.Get(arg.CID); !ok {
-		Ret500(c, SEC_prop_walletadd_noprops, ErrNoProps)
+		Ret500(c, AEC_prop_walletadd_noprops, ErrNoProps)
 		return
 	}
 	if props.Wallet+arg.Sum < 0 {
-		Ret403(c, SEC_prop_walletadd_nomoney, ErrNoMoney)
+		Ret403(c, AEC_prop_walletadd_nomoney, ErrNoMoney)
 		return
 	}
 
@@ -154,7 +154,7 @@ func SpiPropsWalletAdd(c *gin.Context) {
 	if Cfg.ClubInsertBuffer > 1 {
 		go BankBat[arg.CID].Add(cfg.XormStorage, arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum)
 	} else if err = BankBat[arg.CID].Add(cfg.XormStorage, arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum); err != nil {
-		Ret500(c, SEC_prop_walletadd_sql, err)
+		Ret500(c, AEC_prop_walletadd_sql, err)
 		return
 	}
 
@@ -167,7 +167,7 @@ func SpiPropsWalletAdd(c *gin.Context) {
 }
 
 // Returns personal access level for pointed user at pointed club.
-func SpiPropsAlGet(c *gin.Context) {
+func ApiPropsAlGet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -181,26 +181,26 @@ func SpiPropsAlGet(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_prop_alget_nobind, err)
+		Ret400(c, AEC_prop_alget_nobind, err)
 		return
 	}
 
 	var club *Club
 	if club, ok = Clubs.Get(arg.CID); !ok {
-		Ret404(c, SEC_prop_alget_noclub, ErrNoClub)
+		Ret404(c, AEC_prop_alget_noclub, ErrNoClub)
 		return
 	}
 	_ = club
 
 	var user *User
 	if user, ok = Users.Get(arg.UID); !ok {
-		Ret404(c, SEC_prop_alget_nouser, ErrNoUser)
+		Ret404(c, AEC_prop_alget_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
 	if admin != user && al&ALall == 0 {
-		Ret403(c, SEC_prop_alget_noaccess, ErrNoAccess)
+		Ret403(c, AEC_prop_alget_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -210,7 +210,7 @@ func SpiPropsAlGet(c *gin.Context) {
 }
 
 // Set personal access level for given user at given club.
-func SpiPropsAlSet(c *gin.Context) {
+func ApiPropsAlSet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -221,37 +221,37 @@ func SpiPropsAlSet(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_prop_alset_nobind, err)
+		Ret400(c, AEC_prop_alset_nobind, err)
 		return
 	}
 
 	var club *Club
 	if club, ok = Clubs.Get(arg.CID); !ok {
-		Ret404(c, SEC_prop_alset_noclub, ErrNoClub)
+		Ret404(c, AEC_prop_alset_noclub, ErrNoClub)
 		return
 	}
 	_ = club
 
 	var user *User
 	if user, ok = Users.Get(arg.UID); !ok {
-		Ret404(c, SEC_prop_alset_nouser, ErrNoUser)
+		Ret404(c, AEC_prop_alset_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
 	if al&(ALclub+ALadmin) == 0 {
-		Ret403(c, SEC_prop_alset_noaccess, ErrNoAccess)
+		Ret403(c, AEC_prop_alset_noaccess, ErrNoAccess)
 		return
 	}
 	_ = admin
 
 	var props *Props
 	if props, ok = user.props.Get(arg.CID); !ok {
-		Ret500(c, SEC_prop_alset_noprops, ErrNoProps)
+		Ret500(c, AEC_prop_alset_noprops, ErrNoProps)
 		return
 	}
 	if al&arg.Access != arg.Access {
-		Ret403(c, SEC_prop_alset_nolevel, ErrNoLevel)
+		Ret403(c, AEC_prop_alset_nolevel, ErrNoLevel)
 		return
 	}
 
@@ -259,7 +259,7 @@ func SpiPropsAlSet(c *gin.Context) {
 	if Cfg.ClubInsertBuffer > 1 {
 		go BankBat[arg.CID].Access(cfg.XormStorage, arg.UID, arg.Access)
 	} else if err = BankBat[arg.CID].Access(cfg.XormStorage, arg.UID, arg.Access); err != nil {
-		Ret500(c, SEC_prop_rtpset_sql, err)
+		Ret500(c, AEC_prop_rtpset_sql, err)
 		return
 	}
 
@@ -271,7 +271,7 @@ func SpiPropsAlSet(c *gin.Context) {
 
 // Returns master RTP for pointed user at pointed club.
 // This RTP if it set have more priority then club RTP.
-func SpiPropsRtpGet(c *gin.Context) {
+func ApiPropsRtpGet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -285,26 +285,26 @@ func SpiPropsRtpGet(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_prop_rtpget_nobind, err)
+		Ret400(c, AEC_prop_rtpget_nobind, err)
 		return
 	}
 
 	var club *Club
 	if club, ok = Clubs.Get(arg.CID); !ok {
-		Ret404(c, SEC_prop_rtpget_noclub, ErrNoClub)
+		Ret404(c, AEC_prop_rtpget_noclub, ErrNoClub)
 		return
 	}
 	_ = club
 
 	var user *User
 	if user, ok = Users.Get(arg.UID); !ok {
-		Ret404(c, SEC_prop_rtpget_nouser, ErrNoUser)
+		Ret404(c, AEC_prop_rtpget_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
 	if admin != user && al&ALall == 0 {
-		Ret403(c, SEC_prop_rtpget_noaccess, ErrNoAccess)
+		Ret403(c, AEC_prop_rtpget_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -314,7 +314,7 @@ func SpiPropsRtpGet(c *gin.Context) {
 }
 
 // Set personal master RTP for given user at given club.
-func SpiPropsRtpSet(c *gin.Context) {
+func ApiPropsRtpSet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -325,33 +325,33 @@ func SpiPropsRtpSet(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_prop_rtpset_nobind, err)
+		Ret400(c, AEC_prop_rtpset_nobind, err)
 		return
 	}
 
 	var club *Club
 	if club, ok = Clubs.Get(arg.CID); !ok {
-		Ret404(c, SEC_prop_rtpset_noclub, ErrNoClub)
+		Ret404(c, AEC_prop_rtpset_noclub, ErrNoClub)
 		return
 	}
 	_ = club
 
 	var user *User
 	if user, ok = Users.Get(arg.UID); !ok {
-		Ret404(c, SEC_prop_rtpset_nouser, ErrNoUser)
+		Ret404(c, AEC_prop_rtpset_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
 	if al&(ALgame+ALadmin) == 0 {
-		Ret403(c, SEC_prop_rtpset_noaccess, ErrNoAccess)
+		Ret403(c, AEC_prop_rtpset_noaccess, ErrNoAccess)
 		return
 	}
 	_ = admin
 
 	var props *Props
 	if props, ok = user.props.Get(arg.CID); !ok {
-		Ret500(c, SEC_prop_rtpset_noprops, ErrNoProps)
+		Ret500(c, AEC_prop_rtpset_noprops, ErrNoProps)
 		return
 	}
 
@@ -359,7 +359,7 @@ func SpiPropsRtpSet(c *gin.Context) {
 	if Cfg.ClubInsertBuffer > 1 {
 		go BankBat[arg.CID].MRTP(cfg.XormStorage, arg.UID, arg.MRTP)
 	} else if err = BankBat[arg.CID].MRTP(cfg.XormStorage, arg.UID, arg.MRTP); err != nil {
-		Ret500(c, SEC_prop_rtpset_sql, err)
+		Ret500(c, AEC_prop_rtpset_sql, err)
 		return
 	}
 

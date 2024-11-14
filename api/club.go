@@ -1,4 +1,4 @@
-package spi
+package api
 
 import (
 	"encoding/xml"
@@ -11,7 +11,7 @@ const (
 	sqlclub = `UPDATE club SET bank=bank+?, fund=fund+?, lock=lock+?, utime=CURRENT_TIMESTAMP WHERE cid=?`
 )
 
-func SpiClubList(c *gin.Context) {
+func ApiClubList(c *gin.Context) {
 	type item struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"club"`
 		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr"`
@@ -31,7 +31,7 @@ func SpiClubList(c *gin.Context) {
 }
 
 // Returns current club state.
-func SpiClubIs(c *gin.Context) {
+func ApiClubIs(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -46,7 +46,7 @@ func SpiClubIs(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_club_is_nobind, err)
+		Ret400(c, AEC_club_is_nobind, err)
 		return
 	}
 
@@ -70,7 +70,7 @@ func SpiClubIs(c *gin.Context) {
 }
 
 // Returns current club state.
-func SpiClubInfo(c *gin.Context) {
+func ApiClubInfo(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -89,19 +89,19 @@ func SpiClubInfo(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_club_info_nobind, err)
+		Ret400(c, AEC_club_info_nobind, err)
 		return
 	}
 
 	var club *Club
 	if club, ok = Clubs.Get(arg.CID); !ok {
-		Ret500(c, SEC_club_info_noclub, ErrNoClub)
+		Ret500(c, AEC_club_info_noclub, ErrNoClub)
 		return
 	}
 
 	var _, al = MustAdmin(c, arg.CID)
 	if al&ALclub == 0 {
-		Ret403(c, SEC_club_info_noaccess, ErrNoAccess)
+		Ret403(c, AEC_club_info_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -118,7 +118,7 @@ func SpiClubInfo(c *gin.Context) {
 }
 
 // Rename the club.
-func SpiClubRename(c *gin.Context) {
+func ApiClubRename(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -128,24 +128,24 @@ func SpiClubRename(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_club_rename_nobind, err)
+		Ret400(c, AEC_club_rename_nobind, err)
 		return
 	}
 
 	var club *Club
 	if club, ok = Clubs.Get(arg.CID); !ok {
-		Ret500(c, SEC_club_rename_noclub, ErrNoClub)
+		Ret500(c, AEC_club_rename_noclub, ErrNoClub)
 		return
 	}
 
 	var _, al = MustAdmin(c, arg.CID)
 	if al&ALclub == 0 {
-		Ret403(c, SEC_club_rename_noaccess, ErrNoAccess)
+		Ret403(c, AEC_club_rename_noaccess, ErrNoAccess)
 		return
 	}
 
 	if _, err = cfg.XormStorage.ID(club.CID).Cols("name").Update(&Club{Name: arg.Name}); err != nil {
-		Ret500(c, SEC_club_rename_update, err)
+		Ret500(c, AEC_club_rename_update, err)
 		return
 	}
 
@@ -157,7 +157,7 @@ func SpiClubRename(c *gin.Context) {
 }
 
 // Adding or withdrawing coins from club bank, fund and lock balances.
-func SpiClubCashin(c *gin.Context) {
+func ApiClubCashin(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -176,23 +176,23 @@ func SpiClubCashin(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_club_cashin_nobind, err)
+		Ret400(c, AEC_club_cashin_nobind, err)
 		return
 	}
 	if arg.BankSum == 0 && arg.FundSum == 0 && arg.LockSum == 0 {
-		Ret400(c, SEC_club_cashin_nosum, ErrNoAddSum)
+		Ret400(c, AEC_club_cashin_nosum, ErrNoAddSum)
 		return
 	}
 
 	var club *Club
 	if club, ok = Clubs.Get(arg.CID); !ok {
-		Ret500(c, SEC_club_cashin_noclub, ErrNoClub)
+		Ret500(c, AEC_club_cashin_noclub, ErrNoClub)
 		return
 	}
 
 	var _, al = MustAdmin(c, arg.CID)
 	if al&ALclub == 0 {
-		Ret403(c, SEC_club_cashin_noaccess, ErrNoAccess)
+		Ret403(c, AEC_club_cashin_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -203,15 +203,15 @@ func SpiClubCashin(c *gin.Context) {
 	club.mux.Unlock()
 
 	if bank < 0 {
-		Ret403(c, SEC_club_cashin_bankout, ErrBankOut)
+		Ret403(c, AEC_club_cashin_bankout, ErrBankOut)
 		return
 	}
 	if fund < 0 {
-		Ret403(c, SEC_club_cashin_fundout, ErrFundOut)
+		Ret403(c, AEC_club_cashin_fundout, ErrFundOut)
 		return
 	}
 	if lock < 0 {
-		Ret403(c, SEC_club_cashin_lockout, ErrLockOut)
+		Ret403(c, AEC_club_cashin_lockout, ErrLockOut)
 		return
 	}
 
@@ -225,11 +225,11 @@ func SpiClubCashin(c *gin.Context) {
 	}
 	if err = SafeTransaction(cfg.XormStorage, func(session *Session) (err error) {
 		if _, err = session.Exec(sqlclub, arg.BankSum, arg.FundSum, arg.LockSum, club.CID); err != nil {
-			Ret500(c, SEC_club_cashin_sqlbank, err)
+			Ret500(c, AEC_club_cashin_sqlbank, err)
 			return
 		}
 		if _, err = session.Insert(&rec); err != nil {
-			Ret500(c, SEC_club_cashin_sqllog, err)
+			Ret500(c, AEC_club_cashin_sqllog, err)
 			return
 		}
 		return

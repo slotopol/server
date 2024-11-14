@@ -1,4 +1,4 @@
-package spi
+package api
 
 import (
 	"bytes"
@@ -101,7 +101,7 @@ func Auth(required bool) gin.HandlerFunc {
 		if user != nil {
 			c.Set(userKey, user)
 		} else if required {
-			Ret401(c, SEC_auth_absent, ErrNoAuth)
+			Ret401(c, AEC_auth_absent, ErrNoAuth)
 			return
 		}
 
@@ -116,7 +116,7 @@ func UserFromHeader(c *gin.Context) (*User, int, error) {
 		} else if strings.HasPrefix(hdr, "Bearer ") {
 			return GetBearerAuth(hdr[7:])
 		} else {
-			return nil, SEC_auth_scheme, ErrNoScheme
+			return nil, AEC_auth_scheme, ErrNoScheme
 		}
 	}
 	return nil, 0, nil
@@ -158,7 +158,7 @@ func UserFromForm(c *gin.Context) (*User, int, error) {
 func GetBasicAuth(credentials string) (user *User, code int, err error) {
 	var decoded []byte
 	if decoded, err = base64.RawURLEncoding.DecodeString(credentials); err != nil {
-		return nil, SEC_basic_decode, err
+		return nil, AEC_basic_decode, err
 	}
 	var parts = strings.Split(util.B2S(decoded), ":")
 
@@ -170,11 +170,11 @@ func GetBasicAuth(credentials string) (user *User, code int, err error) {
 		}
 	}
 	if user == nil {
-		err, code = ErrNoCred, SEC_basic_nouser
+		err, code = ErrNoCred, AEC_basic_nouser
 		return
 	}
 	if user.Secret != parts[1] {
-		err, code = ErrNotPass, SEC_basic_deny
+		err, code = ErrNotPass, AEC_basic_deny
 		return
 	}
 	return
@@ -195,35 +195,35 @@ func GetBearerAuth(tokenstr string) (user *User, code int, err error) {
 	if err == nil {
 		var ok bool
 		if user, ok = Users.Get(claims.UID); !ok {
-			err, code = ErrBadJwtID, SEC_token_nouser
+			err, code = ErrBadJwtID, AEC_token_nouser
 		}
 		return
 	}
 	switch {
 	case errors.Is(err, jwt.ErrTokenMalformed):
-		code = SEC_token_malform
+		code = AEC_token_malform
 	case errors.Is(err, jwt.ErrTokenSignatureInvalid):
-		code = SEC_token_notsign
+		code = AEC_token_notsign
 	case errors.Is(err, jwt.ErrTokenInvalidClaims):
-		code = SEC_token_badclaims
+		code = AEC_token_badclaims
 	case errors.Is(err, jwt.ErrTokenExpired):
-		code = SEC_token_expired
+		code = AEC_token_expired
 	case errors.Is(err, jwt.ErrTokenNotValidYet):
-		code = SEC_token_notyet
+		code = AEC_token_notyet
 	case errors.Is(err, jwt.ErrTokenInvalidIssuer):
-		code = SEC_token_issuer
+		code = AEC_token_issuer
 	default:
-		code = SEC_token_error
+		code = AEC_token_error
 	}
 	return
 }
 
 func Handle404(c *gin.Context) {
-	Ret404(c, SEC_nourl, Err404)
+	Ret404(c, AEC_nourl, Err404)
 }
 
 func Handle405(c *gin.Context) {
-	RetErr(c, http.StatusMethodNotAllowed, SEC_nomethod, Err405)
+	RetErr(c, http.StatusMethodNotAllowed, AEC_nomethod, Err405)
 }
 
 type AuthResp struct {
@@ -336,7 +336,7 @@ func sendcode(name, email string, code uint32) (err error) {
 	return
 }
 
-func SpiSignis(c *gin.Context) {
+func ApiSignis(c *gin.Context) {
 	var err error
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
@@ -351,7 +351,7 @@ func SpiSignis(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_signis_nobind, err)
+		Ret400(c, AEC_signis_nobind, err)
 		return
 	}
 
@@ -377,7 +377,7 @@ func SpiSignis(c *gin.Context) {
 	RetOk(c, ret)
 }
 
-func SpiSendCode(c *gin.Context) {
+func ApiSendCode(c *gin.Context) {
 	var err error
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
@@ -386,7 +386,7 @@ func SpiSendCode(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_sendcode_nobind, err)
+		Ret400(c, AEC_sendcode_nobind, err)
 		return
 	}
 
@@ -404,19 +404,19 @@ func SpiSendCode(c *gin.Context) {
 		}
 	}
 	if user == nil {
-		Ret403(c, SEC_sendcode_nouser, ErrNoCred)
+		Ret403(c, AEC_sendcode_nouser, ErrNoCred)
 		return
 	}
 
 	var code = rand.N[uint32](1000000) // 6 digits
 
 	if _, err = cfg.XormStorage.ID(user.UID).Cols("code").Update(&User{Code: code}); err != nil {
-		Ret500(c, SEC_sendcode_update, err)
+		Ret500(c, AEC_sendcode_update, err)
 		return
 	}
 
 	if err = sendcode(user.Name, user.Email, code); err != nil {
-		Ret500(c, SEC_sendcode_code, err)
+		Ret500(c, AEC_sendcode_code, err)
 		return
 	}
 
@@ -425,7 +425,7 @@ func SpiSendCode(c *gin.Context) {
 	Ret204(c)
 }
 
-func SpiActivate(c *gin.Context) {
+func ApiActivate(c *gin.Context) {
 	var err error
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
@@ -435,7 +435,7 @@ func SpiActivate(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_activate_nobind, err)
+		Ret400(c, AEC_activate_nobind, err)
 		return
 	}
 
@@ -453,23 +453,23 @@ func SpiActivate(c *gin.Context) {
 		}
 	}
 	if user == nil {
-		Ret403(c, SEC_activate_nouser, ErrNoCred)
+		Ret403(c, AEC_activate_nouser, ErrNoCred)
 		return
 	}
 
 	if _, al := GetAdmin(c, 0); al&ALadmin == 0 {
 		if time.Since(user.UTime) > Cfg.CodeTimeout {
-			Ret403(c, SEC_activate_oldcode, ErrOldCode)
+			Ret403(c, AEC_activate_oldcode, ErrOldCode)
 			return
 		}
 		if arg.Code != user.Code {
-			Ret403(c, SEC_activate_badcode, ErrBadCode)
+			Ret403(c, AEC_activate_badcode, ErrBadCode)
 			return
 		}
 	}
 
 	if _, err = cfg.XormStorage.ID(user.UID).Cols("status").Update(&User{Status: user.Status | UFactivated}); err != nil {
-		Ret500(c, SEC_activate_update, err)
+		Ret500(c, AEC_activate_update, err)
 		return
 	}
 
@@ -478,7 +478,7 @@ func SpiActivate(c *gin.Context) {
 	Ret204(c)
 }
 
-func SpiSignup(c *gin.Context) {
+func ApiSignup(c *gin.Context) {
 	var err error
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
@@ -493,11 +493,11 @@ func SpiSignup(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_signup_nobind, err)
+		Ret400(c, AEC_signup_nobind, err)
 		return
 	}
 	if len(arg.Secret) < 6 {
-		Ret400(c, SEC_signup_smallsec, ErrSmallKey)
+		Ret400(c, AEC_signup_smallsec, ErrSmallKey)
 		return
 	}
 
@@ -510,7 +510,7 @@ func SpiSignup(c *gin.Context) {
 	} else {
 		code = rand.N[uint32](1000000) // 6 digits
 		if err = sendcode(arg.Name, email, code); err != nil {
-			Ret500(c, SEC_signup_code, err)
+			Ret500(c, AEC_signup_code, err)
 			return
 		}
 	}
@@ -553,7 +553,7 @@ func SpiSignup(c *gin.Context) {
 		Users.Set(user.UID, user)
 		return
 	}); err != nil {
-		Ret500(c, SEC_signup_sql, err)
+		Ret500(c, AEC_signup_sql, err)
 		return
 	}
 
@@ -562,7 +562,7 @@ func SpiSignup(c *gin.Context) {
 	RetOk(c, ret)
 }
 
-func SpiSignin(c *gin.Context) {
+func ApiSignin(c *gin.Context) {
 	var err error
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
@@ -576,15 +576,15 @@ func SpiSignin(c *gin.Context) {
 	var ret AuthResp
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_signin_nobind, err)
+		Ret400(c, AEC_signin_nobind, err)
 		return
 	}
 	if len(arg.SigTime) == 0 && len(arg.Secret) == 0 {
-		Ret400(c, SEC_signin_nosecret, ErrNoSecret)
+		Ret400(c, AEC_signin_nosecret, ErrNoSecret)
 		return
 	}
 	if len(arg.Secret) > 0 && len(arg.Secret) < 6 {
-		Ret400(c, SEC_signin_smallsec, ErrSmallKey)
+		Ret400(c, AEC_signin_smallsec, ErrSmallKey)
 		return
 	}
 
@@ -602,45 +602,45 @@ func SpiSignin(c *gin.Context) {
 		}
 	}
 	if user == nil {
-		Ret403(c, SEC_signin_nouser, ErrNoCred)
+		Ret403(c, AEC_signin_nouser, ErrNoCred)
 		return
 	}
 
 	if user.Status&UFactivated == 0 {
-		Ret403(c, SEC_signin_activate, ErrActivate)
+		Ret403(c, AEC_signin_activate, ErrActivate)
 		return
 	}
 
 	if user.Status&UFsigncode != 0 {
 		if time.Since(user.UTime) > Cfg.CodeTimeout {
-			Ret403(c, SEC_signin_oldcode, ErrOldCode)
+			Ret403(c, AEC_signin_oldcode, ErrOldCode)
 			return
 		}
 		if arg.Code != user.Code {
-			Ret403(c, SEC_signin_badcode, ErrBadCode)
+			Ret403(c, AEC_signin_badcode, ErrBadCode)
 			return
 		}
 	}
 
 	if len(arg.Secret) > 0 {
 		if arg.Secret != user.Secret {
-			Ret403(c, SEC_signin_denypass, ErrNotPass)
+			Ret403(c, AEC_signin_denypass, ErrNotPass)
 			return
 		}
 	} else {
 		var sigtime time.Time
 		if sigtime, err = time.Parse(time.RFC3339, arg.SigTime); err != nil {
-			Ret400(c, SEC_signin_sigtime, ErrSigTime)
+			Ret400(c, AEC_signin_sigtime, ErrSigTime)
 			return
 		}
 		if time.Since(sigtime) > Cfg.NonceTimeout {
-			Ret403(c, SEC_signin_timeout, ErrSigOut)
+			Ret403(c, AEC_signin_timeout, ErrSigOut)
 			return
 		}
 
 		var hs256 []byte
 		if hs256, err = hex.DecodeString(arg.HS256); err != nil {
-			Ret400(c, SEC_signin_hs256, ErrBadHash)
+			Ret400(c, AEC_signin_hs256, ErrBadHash)
 			return
 		}
 
@@ -648,7 +648,7 @@ func SpiSignin(c *gin.Context) {
 		h.Write(util.S2B(user.Secret))
 		var master = h.Sum(nil)
 		if !hmac.Equal(master, hs256) {
-			Ret403(c, SEC_signin_denyhash, ErrNotPass)
+			Ret403(c, AEC_signin_denyhash, ErrNotPass)
 			return
 		}
 	}
@@ -657,7 +657,7 @@ func SpiSignin(c *gin.Context) {
 	RetOk(c, ret)
 }
 
-func SpiRefresh(c *gin.Context) {
+func ApiRefresh(c *gin.Context) {
 	var ret AuthResp
 
 	var user = c.MustGet(userKey).(*User)

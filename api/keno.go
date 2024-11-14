@@ -1,4 +1,4 @@
-package spi
+package api
 
 import (
 	"encoding/json"
@@ -13,7 +13,7 @@ import (
 )
 
 // Returns bet value.
-func SpiKenoBetGet(c *gin.Context) {
+func ApiKenoBetGet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -26,24 +26,24 @@ func SpiKenoBetGet(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_keno_betget_nobind, err)
+		Ret400(c, AEC_keno_betget_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_keno_betget_notopened, ErrNotOpened)
+		Ret404(c, AEC_keno_betget_notopened, ErrNotOpened)
 		return
 	}
 	var game keno.KenoGame
 	if game, ok = scene.Game.(keno.KenoGame); !ok {
-		Ret403(c, SEC_keno_betget_notslot, ErrNotKeno)
+		Ret403(c, AEC_keno_betget_notslot, ErrNotKeno)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_keno_betget_noaccess, ErrNoAccess)
+		Ret403(c, AEC_keno_betget_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -53,7 +53,7 @@ func SpiKenoBetGet(c *gin.Context) {
 }
 
 // Set bet value.
-func SpiKenoBetSet(c *gin.Context) {
+func ApiKenoBetSet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -63,29 +63,29 @@ func SpiKenoBetSet(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_keno_betset_nobind, err)
+		Ret400(c, AEC_keno_betset_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_keno_betset_notopened, ErrNotOpened)
+		Ret404(c, AEC_keno_betset_notopened, ErrNotOpened)
 		return
 	}
 	var game keno.KenoGame
 	if game, ok = scene.Game.(keno.KenoGame); !ok {
-		Ret403(c, SEC_keno_betset_notslot, ErrNotKeno)
+		Ret403(c, AEC_keno_betset_notslot, ErrNotKeno)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_keno_betset_noaccess, ErrNoAccess)
+		Ret403(c, AEC_keno_betset_noaccess, ErrNoAccess)
 		return
 	}
 
 	if err = game.SetBet(arg.Bet); err != nil {
-		Ret403(c, SEC_keno_betset_badbet, err)
+		Ret403(c, AEC_keno_betset_badbet, err)
 		return
 	}
 
@@ -93,7 +93,7 @@ func SpiKenoBetSet(c *gin.Context) {
 }
 
 // Returns selected numbers bitset.
-func SpiKenoSelGet(c *gin.Context) {
+func ApiKenoSelGet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -106,24 +106,24 @@ func SpiKenoSelGet(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_keno_selget_nobind, err)
+		Ret400(c, AEC_keno_selget_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_keno_selget_notopened, ErrNotOpened)
+		Ret404(c, AEC_keno_selget_notopened, ErrNotOpened)
 		return
 	}
 	var game keno.KenoGame
 	if game, ok = scene.Game.(keno.KenoGame); !ok {
-		Ret403(c, SEC_keno_selget_notslot, ErrNotSlot)
+		Ret403(c, AEC_keno_selget_notslot, ErrNotSlot)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_keno_selget_noaccess, ErrNoAccess)
+		Ret403(c, AEC_keno_selget_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -133,7 +133,7 @@ func SpiKenoSelGet(c *gin.Context) {
 }
 
 // Set selected numbers bitset.
-func SpiKenoSelSet(c *gin.Context) {
+func ApiKenoSelSet(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -143,29 +143,29 @@ func SpiKenoSelSet(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_keno_selset_nobind, err)
+		Ret400(c, AEC_keno_selset_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_keno_selset_notopened, ErrNotOpened)
+		Ret404(c, AEC_keno_selset_notopened, ErrNotOpened)
 		return
 	}
 	var game keno.KenoGame
 	if game, ok = scene.Game.(keno.KenoGame); !ok {
-		Ret403(c, SEC_keno_selset_notslot, ErrNotSlot)
+		Ret403(c, AEC_keno_selset_notslot, ErrNotSlot)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_keno_selset_noaccess, ErrNoAccess)
+		Ret403(c, AEC_keno_selset_noaccess, ErrNoAccess)
 		return
 	}
 
 	if err = game.SetSel(arg.Sel); err != nil {
-		Ret403(c, SEC_keno_selset_badlines, err)
+		Ret403(c, AEC_keno_selset_badlines, err)
 		return
 	}
 
@@ -173,7 +173,7 @@ func SpiKenoSelSet(c *gin.Context) {
 }
 
 // Returns selected numbers slice.
-func SpiKenoSelGetSlice(c *gin.Context) {
+func ApiKenoSelGetSlice(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -186,24 +186,24 @@ func SpiKenoSelGetSlice(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_keno_selgetslice_nobind, err)
+		Ret400(c, AEC_keno_selgetslice_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_keno_selgetslice_notopened, ErrNotOpened)
+		Ret404(c, AEC_keno_selgetslice_notopened, ErrNotOpened)
 		return
 	}
 	var game keno.KenoGame
 	if game, ok = scene.Game.(keno.KenoGame); !ok {
-		Ret403(c, SEC_keno_selgetslice_notslot, ErrNotSlot)
+		Ret403(c, AEC_keno_selgetslice_notslot, ErrNotSlot)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_keno_selgetslice_noaccess, ErrNoAccess)
+		Ret403(c, AEC_keno_selgetslice_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -214,7 +214,7 @@ func SpiKenoSelGetSlice(c *gin.Context) {
 }
 
 // Set selected numbers slice.
-func SpiKenoSelSetSlice(c *gin.Context) {
+func ApiKenoSelSetSlice(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -224,38 +224,38 @@ func SpiKenoSelSetSlice(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_keno_selsetslice_nobind, err)
+		Ret400(c, AEC_keno_selsetslice_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_keno_selsetslice_notopened, ErrNotOpened)
+		Ret404(c, AEC_keno_selsetslice_notopened, ErrNotOpened)
 		return
 	}
 	var game keno.KenoGame
 	if game, ok = scene.Game.(keno.KenoGame); !ok {
-		Ret403(c, SEC_keno_selsetslice_notslot, ErrNotSlot)
+		Ret403(c, AEC_keno_selsetslice_notslot, ErrNotSlot)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_keno_selsetslice_noaccess, ErrNoAccess)
+		Ret403(c, AEC_keno_selsetslice_noaccess, ErrNoAccess)
 		return
 	}
 
 	var bs keno.Bitset
 	bs.Pack(arg.Sel)
 	if err = game.SetSel(bs); err != nil {
-		Ret403(c, SEC_keno_selsetslice_badlines, err)
+		Ret403(c, AEC_keno_selsetslice_badlines, err)
 		return
 	}
 
 	Ret204(c)
 }
 
-func SpiKenoSpin(c *gin.Context) {
+func ApiKenoSpin(c *gin.Context) {
 	var err error
 	var ok bool
 	var arg struct {
@@ -272,36 +272,36 @@ func SpiKenoSpin(c *gin.Context) {
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, SEC_keno_spin_nobind, err)
+		Ret400(c, AEC_keno_spin_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, SEC_keno_spin_notopened, ErrNotOpened)
+		Ret404(c, AEC_keno_spin_notopened, ErrNotOpened)
 		return
 	}
 	var game keno.KenoGame
 	if game, ok = scene.Game.(keno.KenoGame); !ok {
-		Ret403(c, SEC_keno_spin_notslot, ErrNotKeno)
+		Ret403(c, AEC_keno_spin_notslot, ErrNotKeno)
 		return
 	}
 
 	var club *Club
 	if club, ok = Clubs.Get(scene.CID); !ok {
-		Ret500(c, SEC_keno_spin_noclub, ErrNoClub)
+		Ret500(c, AEC_keno_spin_noclub, ErrNoClub)
 		return
 	}
 
 	var user *User
 	if user, ok = Users.Get(scene.UID); !ok {
-		Ret500(c, SEC_keno_spin_nouser, ErrNoUser)
+		Ret500(c, AEC_keno_spin_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin.UID != scene.UID && al&ALgame == 0 {
-		Ret403(c, SEC_keno_spin_noaccess, ErrNoAccess)
+		Ret403(c, AEC_keno_spin_noaccess, ErrNoAccess)
 		return
 	}
 
@@ -312,11 +312,11 @@ func SpiKenoSpin(c *gin.Context) {
 
 	var props *Props
 	if props, ok = user.props.Get(scene.CID); !ok {
-		Ret500(c, SEC_keno_spin_noprops, ErrNoProps)
+		Ret500(c, AEC_keno_spin_noprops, ErrNoProps)
 		return
 	}
 	if props.Wallet < bet {
-		Ret403(c, SEC_keno_spin_nomoney, ErrNoMoney)
+		Ret403(c, AEC_keno_spin_nomoney, ErrNoMoney)
 		return
 	}
 
@@ -337,7 +337,7 @@ func SpiKenoSpin(c *gin.Context) {
 			break
 		}
 		if n >= cfg.Cfg.MaxSpinAttempts {
-			Ret500(c, SEC_keno_spin_badbank, ErrBadBank)
+			Ret500(c, AEC_keno_spin_badbank, ErrBadBank)
 			return
 		}
 		n++
@@ -347,7 +347,7 @@ func SpiKenoSpin(c *gin.Context) {
 	if Cfg.ClubUpdateBuffer > 1 {
 		go BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum)
 	} else if err = BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum); err != nil {
-		Ret500(c, SEC_keno_spin_sqlbank, err)
+		Ret500(c, AEC_keno_spin_sqlbank, err)
 		return
 	}
 
