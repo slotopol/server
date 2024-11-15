@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/util"
 )
 
@@ -14,12 +15,11 @@ type Club struct {
 	CTime time.Time `xorm:"created 'ctime' notnull default CURRENT_TIMESTAMP" json:"ctime" yaml:"ctime" xml:"ctime"` // creation time
 	UTime time.Time `xorm:"updated 'utime' notnull default CURRENT_TIMESTAMP" json:"utime" yaml:"utime" xml:"utime"` // update time
 	Name  string    `xorm:"notnull" json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
-	Bank  float64   `xorm:"notnull default 0" json:"bank" yaml:"bank" xml:"bank"` // users win/lost balance, in coins
-	Fund  float64   `xorm:"notnull default 0" json:"fund" yaml:"fund" xml:"fund"` // jackpot fund, in coins
-	Lock  float64   `xorm:"notnull default 0" json:"lock" yaml:"lock" xml:"lock"` // not changed deposit within games
-
-	JptRate float64 `xorm:"'jptrate' notnull default 2.5" json:"jptrate" yaml:"jptrate" xml:"jptrate"` // percent to pay to jackpot fund for games with jackpot
-	MRTP    float64 `xorm:"'mrtp' notnull default 0" json:"mrtp" yaml:"mrtp" xml:"mrtp"`               // master RTP
+	Bank  float64   `xorm:"notnull default 0" json:"bank" yaml:"bank" xml:"bank"`          // users win/lost balance, in coins
+	Fund  float64   `xorm:"notnull default 0" json:"fund" yaml:"fund" xml:"fund"`          // jackpot fund, in coins
+	Lock  float64   `xorm:"notnull default 0" json:"lock" yaml:"lock" xml:"lock"`          // not changed deposit within games
+	Rate  float64   `xorm:"'rate' notnull default 2.5" json:"rate" yaml:"rate" xml:"rate"` // jackpot rate for games with progressive jackpot
+	MRTP  float64   `xorm:"'mrtp' notnull default 0" json:"mrtp" yaml:"mrtp" xml:"mrtp"`   // master RTP
 
 	mux sync.RWMutex
 }
@@ -75,8 +75,8 @@ type AL uint
 
 const (
 	ALmem   AL = 1 << iota // user have access to club
-	ALgame                 // can change club game settings
-	ALuser                 // can change user balance and move user money to/from club deposit
+	ALgame                 // can change club game settings and users gameplay
+	ALuser                 // can change user properties and move user money to/from club deposit
 	ALclub                 // can change club bank, fund, deposit
 	ALadmin                // can change same access levels to other users
 	ALall   = ALgame | ALuser | ALclub | ALadmin
@@ -204,13 +204,15 @@ func MustAdmin(c *gin.Context, cid uint64) (*User, AL) {
 }
 
 func GetRTP(user *User, club *Club) float64 {
-	if props, ok := user.props.Get(club.CID); ok && props.MRTP != 0 {
-		return props.MRTP
+	if user != nil {
+		if props, ok := user.props.Get(club.CID); ok && props.MRTP != 0 {
+			return props.MRTP
+		}
 	}
 	if club.MRTP != 0 {
 		return club.MRTP
 	}
-	return 92 // default RTP if no others found
+	return cfg.DefMRTP // default master RTP if no others found
 }
 
 func init() {

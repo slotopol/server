@@ -83,9 +83,8 @@ func ApiClubInfo(c *gin.Context) {
 		Bank    float64  `json:"bank" yaml:"bank" xml:"bank"` // users win/lost balance, in coins
 		Fund    float64  `json:"fund" yaml:"fund" xml:"fund"` // jackpot fund, in coins
 		Lock    float64  `json:"lock" yaml:"lock" xml:"lock"` // not changed deposit within games
-
-		JptRate float64 `json:"jptrate" yaml:"jptrate" xml:"jptrate"`
-		MRTP    float64 `json:"mrtp" yaml:"mrtp" xml:"mrtp"` // master RTP
+		Rate    float64  `json:"rate" yaml:"rate" xml:"rate"` // jackpot rate for games with progressive jackpot
+		MRTP    float64  `json:"mrtp" yaml:"mrtp" xml:"mrtp"` // master RTP
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -110,7 +109,7 @@ func ApiClubInfo(c *gin.Context) {
 	ret.Bank = club.Bank
 	ret.Fund = club.Fund
 	ret.Lock = club.Lock
-	ret.JptRate = club.JptRate
+	ret.Rate = club.Rate
 	ret.MRTP = club.MRTP
 	club.mux.Unlock()
 

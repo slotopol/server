@@ -229,7 +229,7 @@ func ApiGameRtpGet(c *gin.Context) {
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
-		RTP     float64  `json:"rtp" yaml:"rtp" xml:"rtp"`
+		MRTP    float64  `json:"mrtp" yaml:"mrtp" xml:"mrtp"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -256,13 +256,13 @@ func ApiGameRtpGet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALgame == 0 {
+	if admin != user && al&ALgame == 0 {
 		Ret403(c, AEC_game_rdget_noaccess, ErrNoAccess)
 		return
 	}
 
 	club.mux.RLock()
-	ret.RTP = GetRTP(user, club)
+	ret.MRTP = GetRTP(user, club)
 	club.mux.RUnlock()
 
 	RetOk(c, ret)

@@ -303,7 +303,7 @@ const ( // API error codes
 	AEC_user_secret_smallsec
 	AEC_user_secret_nouser
 	AEC_user_secret_noaccess
-	AEC_user_secret_nosecret
+	AEC_user_secret_notequ
 	AEC_user_secret_update
 
 	// POST /user/delete

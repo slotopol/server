@@ -33,7 +33,7 @@ func ApiUserRename(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, 0)
-	if admin != user && al&ALadmin == 0 {
+	if admin != user && al&ALuser == 0 {
 		Ret403(c, AEC_user_rename_noaccess, ErrNoAccess)
 		return
 	}
@@ -73,13 +73,13 @@ func ApiUserSecret(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, 0)
-	if admin != user && al&ALadmin == 0 {
+	if admin != user && al&(ALuser+ALadmin) == 0 {
 		Ret403(c, AEC_user_secret_noaccess, ErrNoAccess)
 		return
 	}
 
 	if arg.OldSecret != user.Secret && al&ALadmin == 0 {
-		Ret403(c, AEC_user_secret_nosecret, ErrNotConf)
+		Ret403(c, AEC_user_secret_notequ, ErrNotConf)
 		return
 	}
 
@@ -120,7 +120,7 @@ func ApiUserDelete(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, 0)
-	if admin != user && al&ALadmin == 0 {
+	if admin != user && al&ALuser == 0 {
 		Ret403(c, AEC_user_delete_noaccess, ErrNoAccess)
 		return
 	}

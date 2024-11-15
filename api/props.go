@@ -42,14 +42,16 @@ func ApiPropsGet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if admin != user && al&ALall == 0 {
+	if admin != user && al&ALuser == 0 {
 		Ret403(c, AEC_prop_get_noaccess, ErrNoAccess)
 		return
 	}
 
-	ret.Wallet = user.GetWallet(arg.CID)
-	ret.Access = user.GetAL(arg.CID)
-	ret.MRTP = user.GetRTP(arg.CID)
+	if props, ok := user.props.Get(arg.CID); ok {
+		ret.Wallet = props.Wallet
+		ret.Access = props.Access
+		ret.MRTP = props.MRTP
+	}
 
 	RetOk(c, ret)
 }
@@ -87,7 +89,7 @@ func ApiPropsWalletGet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if admin != user && al&ALall == 0 {
+	if admin != user && al&ALuser == 0 {
 		Ret403(c, AEC_prop_walletget_noaccess, ErrNoAccess)
 		return
 	}
@@ -135,7 +137,7 @@ func ApiPropsWalletAdd(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if al&(ALuser+ALadmin) == 0 {
+	if al&ALuser == 0 {
 		Ret403(c, AEC_prop_walletadd_noaccess, ErrNoAccess)
 		return
 	}
@@ -172,8 +174,9 @@ func ApiPropsAlGet(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required"`
+		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid"`
 		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid" binding:"required"`
+		All     bool     `json:"all" yaml:"all" xml:"all,attr" form:"all"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -186,7 +189,7 @@ func ApiPropsAlGet(c *gin.Context) {
 	}
 
 	var club *Club
-	if club, ok = Clubs.Get(arg.CID); !ok {
+	if club, ok = Clubs.Get(arg.CID); !ok && !arg.All {
 		Ret404(c, AEC_prop_alget_noclub, ErrNoClub)
 		return
 	}
@@ -199,12 +202,15 @@ func ApiPropsAlGet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if admin != user && al&ALall == 0 {
+	if admin != user && al&(ALuser+ALadmin) == 0 {
 		Ret403(c, AEC_prop_alget_noaccess, ErrNoAccess)
 		return
 	}
 
 	ret.Access = user.GetAL(arg.CID)
+	if arg.All {
+		ret.Access |= user.GAL
+	}
 
 	RetOk(c, ret)
 }
@@ -239,7 +245,7 @@ func ApiPropsAlSet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if al&(ALclub+ALadmin) == 0 {
+	if al&ALadmin == 0 {
 		Ret403(c, AEC_prop_alset_noaccess, ErrNoAccess)
 		return
 	}
@@ -277,7 +283,8 @@ func ApiPropsRtpGet(c *gin.Context) {
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required"`
-		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid" binding:"required"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid"`
+		All     bool     `json:"all" yaml:"all" xml:"all,attr" form:"all"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
@@ -297,18 +304,24 @@ func ApiPropsRtpGet(c *gin.Context) {
 	_ = club
 
 	var user *User
-	if user, ok = Users.Get(arg.UID); !ok {
+	if user, ok = Users.Get(arg.UID); !ok && !arg.All {
 		Ret404(c, AEC_prop_rtpget_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if admin != user && al&ALall == 0 {
+	if admin != user && al&ALuser == 0 {
 		Ret403(c, AEC_prop_rtpget_noaccess, ErrNoAccess)
 		return
 	}
 
-	ret.MRTP = user.GetRTP(arg.CID)
+	if arg.All {
+		club.mux.RLock()
+		ret.MRTP = GetRTP(user, club)
+		club.mux.RUnlock()
+	} else {
+		ret.MRTP = user.GetRTP(arg.CID)
+	}
 
 	RetOk(c, ret)
 }
@@ -343,7 +356,7 @@ func ApiPropsRtpSet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if al&(ALgame+ALadmin) == 0 {
+	if al&ALuser == 0 {
 		Ret403(c, AEC_prop_rtpset_noaccess, ErrNoAccess)
 		return
 	}
