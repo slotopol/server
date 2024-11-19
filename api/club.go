@@ -34,15 +34,18 @@ func ApiClubList(c *gin.Context) {
 func ApiClubIs(c *gin.Context) {
 	var err error
 	var ok bool
+	type item struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"user"`
+		CID     uint64   `json:"cid,omitempty" yaml:"cid,omitempty" xml:"cid,attr,omitempty"`
+		Name    string   `json:"name,omitempty" yaml:"name,omitempty" xml:"name,attr,omitempty"`
+	}
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required_without=Name"`
-		Name    string   `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty" form:"name"`
+		List    []item   `json:"list" yaml:"list" xml:"list>user" form:"list" binding:"required"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
-		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr"`
-		Name    string   `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
+		List    []item   `json:"list" yaml:"list" xml:"list>user"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -50,20 +53,25 @@ func ApiClubIs(c *gin.Context) {
 		return
 	}
 
-	if arg.CID != 0 {
-		var club *Club
-		if club, ok = Clubs.Get(arg.CID); ok {
-			ret.CID = club.CID
-			ret.Name = club.Name
-		}
-	} else {
-		for _, club := range Clubs.Items() {
-			if club.Name == arg.Name {
-				ret.CID = club.CID
-				ret.Name = club.Name
-				break
+	ret.List = make([]item, len(arg.List))
+	for i, ai := range arg.List {
+		var ri item
+		if ai.CID != 0 {
+			var club *Club
+			if club, ok = Clubs.Get(ai.CID); ok {
+				ri.CID = club.CID
+				ri.Name = club.Name
+			}
+		} else {
+			for _, club := range Clubs.Items() {
+				if club.Name == ai.Name {
+					ri.CID = club.CID
+					ri.Name = club.Name
+					break
+				}
 			}
 		}
+		ret.List[i] = ri
 	}
 
 	RetOk(c, ret)

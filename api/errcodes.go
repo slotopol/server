@@ -290,6 +290,10 @@ const ( // API error codes
 	AEC_prop_rtpset_noprops
 	AEC_prop_rtpset_sql
 
+	// POST /user/is
+
+	AEC_user_is_nobind
+
 	// POST /user/rename
 
 	AEC_user_rename_nobind

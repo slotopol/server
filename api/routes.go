@@ -177,7 +177,7 @@ func Router(r *gin.Engine) {
 
 	// user group
 	var ru = ra.Group("/user")
-	ru.POST("/is", ApiSignis)
+	ru.POST("/is", ApiUserIs)
 	ru.POST("/rename", ApiUserRename)
 	ru.POST("/secret", ApiUserSecret)
 	ru.POST("/delete", ApiUserDelete)

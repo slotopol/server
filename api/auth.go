@@ -355,8 +355,6 @@ func ApiSignis(c *gin.Context) {
 		return
 	}
 
-	var email = util.ToLower(arg.Email)
-
 	if arg.UID != 0 {
 		if user, ok := Users.Get(arg.UID); ok {
 			ret.UID = user.UID
@@ -364,6 +362,7 @@ func ApiSignis(c *gin.Context) {
 			ret.Name = user.Name
 		}
 	} else {
+		var email = util.ToLower(arg.Email)
 		for _, user := range Users.Items() {
 			if user.Email == email {
 				ret.UID = user.UID

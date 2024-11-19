@@ -5,11 +5,60 @@ import (
 
 	"github.com/gin-gonic/gin"
 	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/util"
 )
 
 const (
 	sqllock = `UPDATE club SET lock=lock+?, utime=CURRENT_TIMESTAMP WHERE cid=?`
 )
+
+func ApiUserIs(c *gin.Context) {
+	var err error
+	type item struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"user"`
+		UID     uint64   `json:"uid,omitempty" yaml:"uid,omitempty" xml:"uid,attr,omitempty"`
+		Email   string   `json:"email,omitempty" yaml:"email,omitempty" xml:"email,attr,omitempty"`
+		Name    string   `json:"name,omitempty" yaml:"name,omitempty" xml:"name,attr,omitempty"`
+	}
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		List    []item   `json:"list" yaml:"list" xml:"list>user" form:"list" binding:"required"`
+	}
+	var ret struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		List    []item   `json:"list" yaml:"list" xml:"list>user"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, AEC_user_is_nobind, err)
+		return
+	}
+
+	ret.List = make([]item, len(arg.List))
+	for i, ai := range arg.List {
+		var ri item
+		if ai.UID != 0 {
+			if user, ok := Users.Get(ai.UID); ok {
+				ri.UID = user.UID
+				ri.Email = user.Email
+				ri.Name = user.Name
+			}
+		} else {
+			var email = util.ToLower(ai.Email)
+			for _, user := range Users.Items() {
+				if user.Email == email {
+					ri.UID = user.UID
+					ri.Email = user.Email
+					ri.Name = user.Name
+					break
+				}
+			}
+		}
+		ret.List[i] = ri
+	}
+
+	RetOk(c, ret)
+}
 
 // Changes 'Name' of given user.
 func ApiUserRename(c *gin.Context) {
