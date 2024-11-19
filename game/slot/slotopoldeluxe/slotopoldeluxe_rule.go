@@ -7,7 +7,7 @@ import (
 
 // Lined payment.
 var LinePay = [13][5]float64{
-	{0, 0, 0, 0, 0},           //  1 dollar
+	{},                        //  1 dollar
 	{0, 2, 5, 25, 100},        //  2 cherry
 	{0, 2, 5, 25, 100},        //  3 plum
 	{0, 0, 5, 25, 100},        //  4 wmelon
@@ -18,8 +18,8 @@ var LinePay = [13][5]float64{
 	{0, 2, 10, 100, 500},      //  9 palm
 	{0, 2, 10, 100, 500},      // 10 yacht
 	{0, 10, 200, 2000, 10000}, // 11 eldorado
-	{0, 0, 0, 0, 0},           // 12 spin
-	{0, 0, 0, 0, 0},           // 13 dice
+	{},                        // 12 spin
+	{},                        // 13 dice
 }
 
 // Scatters payment.
@@ -57,6 +57,9 @@ var BetLines = slot.BetLinesMgj
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
 }
+
+// Declare conformity with SlotGame interface.
+var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{

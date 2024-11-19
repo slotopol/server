@@ -32,6 +32,9 @@ type Game struct {
 	keno.Keno80 `yaml:",inline"`
 }
 
+// Declare conformity with KenoGame interface.
+var _ keno.KenoGame = (*Game)(nil)
+
 func NewGame() *Game {
 	return &Game{
 		Keno80: keno.Keno80{

@@ -7,7 +7,7 @@ import (
 // Lined payment.
 var LinePay = [10][5]float64{
 	{0, 8, 80, 800, 8000}, //  1 wild
-	{0, 0, 0, 0, 0},       //  2 scatter
+	{},                    //  2 scatter
 	{0, 5, 40, 250, 1000}, //  3 shield
 	{0, 0, 20, 75, 500},   //  4 swords
 	{0, 0, 0, 50, 250},    //  5 lamp
@@ -42,6 +42,9 @@ type Game struct {
 	// free spin number
 	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
 }
+
+// Declare conformity with SlotGame interface.
+var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{

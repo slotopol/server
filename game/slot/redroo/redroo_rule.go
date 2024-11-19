@@ -42,6 +42,9 @@ type Game struct {
 	MW [3]float64 `json:"mw" yaml:"mw" xml:"mw"`
 }
 
+// Declare conformity with SlotGame interface.
+var _ slot.SlotGame = (*Game)(nil)
+
 func NewGame() *Game {
 	return &Game{
 		Slot5x4: slot.Slot5x4{

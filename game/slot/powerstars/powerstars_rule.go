@@ -18,7 +18,7 @@ var LinePay = [9][5]float64{
 	{0, 0, 10, 30, 150},    // 6 orange
 	{0, 0, 10, 20, 100},    // 7 lemon
 	{0, 0, 10, 20, 100},    // 8 cherry
-	{0, 0, 0, 0, 0},        // 9 star
+	{},                     // 9 star
 }
 
 const (
@@ -45,6 +45,9 @@ type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
 	PRW          [5]int `json:"prw" yaml:"prw" xml:"prw"` // pinned reel wild
 }
+
+// Declare conformity with SlotGame interface.
+var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{

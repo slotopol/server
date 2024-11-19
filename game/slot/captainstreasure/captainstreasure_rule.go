@@ -8,8 +8,8 @@ import (
 
 // Lined payment.
 var LinePay = [11][5]float64{
-	{0, 0, 0, 0, 0},         //  1 wild
-	{0, 0, 0, 0, 0},         //  2 scatter
+	{},                      //  1 wild
+	{},                      //  2 scatter
 	{2, 10, 100, 500, 5000}, //  3 sabers
 	{0, 5, 50, 250, 2500},   //  4 map
 	{0, 3, 20, 100, 1000},   //  5 anchor
@@ -40,6 +40,9 @@ var BetLines = []slot.Linex{
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
 }
+
+// Declare conformity with SlotGame interface.
+var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{

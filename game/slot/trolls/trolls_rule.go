@@ -18,8 +18,8 @@ var LinePay = [14][5]float64{
 	{0, 0, 5, 25, 125},        // 10 jack
 	{0, 2, 5, 25, 100},        // 11 ten
 	{0, 10, 250, 2500, 10000}, // 12 wild
-	{0, 0, 0, 0, 0},           // 13 golden
-	{0, 0, 0, 0, 0},           // 14 scatter
+	{},                        // 13 golden
+	{},                        // 14 scatter
 }
 
 // Scatters payment.

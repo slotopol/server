@@ -17,7 +17,7 @@ var LinePay = [12][5]float64{
 	{0, 0, 3, 15, 75},         //  9 ten
 	{0, 0, 3, 15, 75},         // 10 nine
 	{0, 10, 200, 2500, 10000}, // 11 wild
-	{0, 0, 0, 0, 0},           // 12 scatter
+	{},                        // 12 scatter
 }
 
 // Scatters payment.
@@ -54,6 +54,9 @@ type Game struct {
 	// free spin number
 	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
 }
+
+// Declare conformity with SlotGame interface.
+var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{

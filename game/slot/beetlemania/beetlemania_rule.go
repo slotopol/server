@@ -35,6 +35,9 @@ type Game struct {
 	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
 }
 
+// Declare conformity with SlotGame interface.
+var _ slot.SlotGame = (*Game)(nil)
+
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{

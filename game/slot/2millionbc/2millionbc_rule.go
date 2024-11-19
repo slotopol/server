@@ -16,8 +16,8 @@ var LinePay = [13][5]float64{
 	{0, 0, 20, 60, 100},    //  8 gold
 	{0, 0, 15, 50, 75},     //  9 vase
 	{0, 0, 10, 25, 50},     // 10 ruby
-	{0, 0, 0, 0, 0},        // 11 fire
-	{0, 0, 0, 0, 0},        // 12 acorn
+	{},                     // 11 fire
+	{},                     // 12 acorn
 	{0, 0, 40, 100, 200},   // 13 diamond
 }
 
@@ -41,6 +41,9 @@ type Game struct {
 	// acorns bet
 	AB float64 `json:"ab" yaml:"ab" xml:"ab"`
 }
+
+// Declare conformity with SlotGame interface.
+var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{

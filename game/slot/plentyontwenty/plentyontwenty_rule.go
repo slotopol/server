@@ -13,7 +13,7 @@ var LinePay = [8][5]float64{
 	{0, 0, 10, 20, 100},   // orange
 	{0, 0, 10, 20, 100},   // lemon
 	{0, 0, 10, 20, 100},   // cherry
-	{0, 0, 0, 0, 0},       // star
+	{},                    // star
 }
 
 // Scatters payment.
@@ -41,6 +41,9 @@ var BetLines = slot.BetLinesNvm20
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
 }
+
+// Declare conformity with SlotGame interface.
+var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{

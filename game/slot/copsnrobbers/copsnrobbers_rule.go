@@ -11,7 +11,7 @@ import (
 // Lined payment.
 var LinePay = [11][5]float64{
 	{0, 3, 30, 300, 3000}, //  1 wild
-	{0, 0, 0, 0, 0},       //  2 scatter
+	{},                    //  2 scatter
 	{0, 2, 25, 150, 750},  //  3 money bag
 	{0, 2, 20, 100, 500},  //  4 diamonds
 	{0, 2, 15, 75, 500},   //  5 robbery
@@ -53,6 +53,9 @@ type Game struct {
 	// multiplier for free spins, if them ended by "got away"
 	M float64 `json:"m,omitempty" yaml:"m,omitempty" xml:"m,omitempty"`
 }
+
+// Declare conformity with SlotGame interface.
+var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{

@@ -20,6 +20,9 @@ type Game struct {
 	slot.Slot5x4 `yaml:",inline"`
 }
 
+// Declare conformity with SlotGame interface.
+var _ slot.SlotGame = (*Game)(nil)
+
 func NewGame() *Game {
 	return &Game{
 		Slot5x4: slot.Slot5x4{
