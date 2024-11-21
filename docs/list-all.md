@@ -64,6 +64,7 @@
 'Ice Ice Ice' AGT 3x3 videoslot
 'Ice Queen' AGT 5x3 videoslot
 'Indian Dreaming' Aristocrat 5x3 videoslot
+'Infinity Gems' AGT 5x3 videoslot
 'Irish Luck' Playtech 5x3 videoslot
 'Jewels 4 All' Novomatic 5x3 videoslot
 'Jewels' Novomatic 5x3 videoslot
@@ -123,8 +124,8 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 120 games, 59 algorithms, 9 providers
-AGT: 38 games
+total: 121 games, 60 algorithms, 9 providers
+AGT: 39 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games

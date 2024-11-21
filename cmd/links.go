@@ -73,6 +73,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/hotclover"
 	_ "github.com/slotopol/server/game/slot/iceiceice"
 	_ "github.com/slotopol/server/game/slot/icequeen"
+	_ "github.com/slotopol/server/game/slot/infinitygems"
 	_ "github.com/slotopol/server/game/slot/sevenhot"
 	_ "github.com/slotopol/server/game/slot/shiningstars"
 	_ "github.com/slotopol/server/game/slot/shiningstars100"
