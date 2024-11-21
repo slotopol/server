@@ -9,10 +9,12 @@
 '50 Apples' Shine' AGT 5x4 videoslot
 '50 Happy Santa' AGT 5x4 videoslot
 'AI' AGT 5x3 videoslot
+'Aladdin' AGT 5x4 videoslot
 'Always Hot' Novomatic 3x3 videoslot
 'American Keno' Aristocrat 80 spots lottery
 'Anonymous' AGT 5x3 videoslot
 'Apples' Shine' AGT 5x3 videoslot
+'Arabian Nights 2' AGT 5x4 videoslot
 'Arabian Nights' AGT 5x3 videoslot
 'Arabian Nights' NetEnt 5x3 videoslot
 'Around The World' AGT 5x4 videoslot
@@ -26,12 +28,14 @@
 'Bigfoot' AGT 5x3 videoslot
 'Bitcoin' AGT 5x3 videoslot
 'Captain's Treasure' Playtech 5x3 videoslot
+'Casino' AGT 5x4 videoslot
 'Champagne' Megajack 5x3 videoslot
 'Cherry Hot' AGT 5x3 videoslot
 'Chicago' Novomatic 5x3 videoslot
 'Columbus Deluxe' Novomatic 5x3 videoslot
 'Columbus' Novomatic 5x3 videoslot
 'Cops'n'Robbers' Play'n GO 5x3 videoslot
+'Crown' AGT 5x4 videoslot
 'Desert Treasure' Playtech 5x3 videoslot
 'Diamond Dogs' NetEnt 5x3 videoslot
 'Dolphin Treasure' Aristocrat 5x3 videoslot
@@ -115,11 +119,12 @@
 'Unicorn Magic' Novomatic 5x3 videoslot
 'Viking's Treasure' NetEnt 5x3 videoslot
 'Voodoo Vibes' NetEnt 5x3 videoslot
+'Wild West' AGT 5x4 videoslot
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 115 games, 58 algorithms, 9 providers
-AGT: 33 games
+total: 120 games, 59 algorithms, 9 providers
+AGT: 38 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games

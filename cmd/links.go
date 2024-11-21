@@ -65,6 +65,7 @@ import (
 
 	// AGT
 	_ "github.com/slotopol/server/game/slot/aislot"
+	_ "github.com/slotopol/server/game/slot/aladdin"
 	_ "github.com/slotopol/server/game/slot/cherryhot"
 	_ "github.com/slotopol/server/game/slot/doubleice"
 	_ "github.com/slotopol/server/game/slot/happysanta"

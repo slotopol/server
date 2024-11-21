@@ -17,9 +17,9 @@ var scanflags *pflag.FlagSet
 const scanShort = "Slots games reels scanning"
 const scanLong = `Calculate RTP (Return to Player) percentage for specified slot game reels.`
 const scanExmp = `Scan reels for "Slotopol" game for reels set nearest to 100%%:
-  %[1]s scan --game=slotopol --mrtp=100
+  %[1]s scan --game=megajack/slotopol --mrtp=100
 Scan reels for "Dolphins Pearl" and "Katana" games for reels set nearest to 94.5%%:
-  %[1]s scan -g="Dolphins Pearl" -g=katana -r=94.5`
+  %[1]s scan -g="Novomatic / Dolphins Pearl" -g=novomatic/katana -r=94.5`
 
 // scanCmd represents the scan command
 var scanCmd = &cobra.Command{
