@@ -360,6 +360,9 @@ func ApiSignis(c *gin.Context) {
 			ret.UID = user.UID
 			ret.Email = user.Email
 			ret.Name = user.Name
+		} else {
+			Ret404(c, AEC_signis_nouid, ErrNoCred)
+			return
 		}
 	} else {
 		var email = util.ToLower(arg.Email)
@@ -370,6 +373,10 @@ func ApiSignis(c *gin.Context) {
 				ret.Name = user.Name
 				break
 			}
+		}
+		if ret.UID == 0 {
+			Ret404(c, AEC_signis_noemail, ErrNoCred)
+			return
 		}
 	}
 

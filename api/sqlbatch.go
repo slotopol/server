@@ -70,6 +70,12 @@ func (sb *SqlBank) clear() {
 	sb.lft = time.Now()
 }
 
+func (sb *SqlBank) IsEmpty() bool {
+	return sb.banksum == 0 &&
+		len(sb.usersum) == 0 && len(sb.useral) == 0 && len(sb.userrtp) == 0 &&
+		len(sb.log) == 0
+}
+
 func (sb *SqlBank) transaction(session *Session) (err error) {
 	if sb.banksum != 0 {
 		if _, err = session.Exec(sqlbank1, sb.banksum, sb.cid); err != nil {
@@ -162,7 +168,7 @@ func (sb *SqlBank) MRTP(engine *xorm.Engine, uid uint64, mrtp float64) (err erro
 func (sb *SqlBank) Flush(engine *xorm.Engine, d time.Duration) (err error) {
 	sb.mux.Lock()
 	defer sb.mux.Unlock()
-	if len(sb.usersum) == 0 {
+	if sb.IsEmpty() {
 		return
 	}
 	if d == 0 || time.Since(sb.lft) >= d {
@@ -196,6 +202,10 @@ func (ss *SqlStory) clear() {
 	clear(ss.flow)
 	ss.log = ss.log[:0]
 	ss.lft = time.Now()
+}
+
+func (ss *SqlStory) IsEmpty() bool {
+	return len(ss.flow) == 0 && len(ss.log) == 0
 }
 
 func (ss *SqlStory) transaction(session *Session) (err error) {
@@ -247,7 +257,7 @@ func (ss *SqlStory) Flow(engine *xorm.Engine, gid uint64, flow bool) (err error)
 func (ss *SqlStory) Flush(engine *xorm.Engine, d time.Duration) (err error) {
 	ss.mux.Lock()
 	defer ss.mux.Unlock()
-	if len(ss.flow) == 0 && len(ss.log) == 0 {
+	if ss.IsEmpty() {
 		return
 	}
 	if d == 0 || time.Since(ss.lft) >= d {

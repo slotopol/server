@@ -122,13 +122,13 @@ func Router(r *gin.Engine) {
 	r.NoMethod(Handle405)
 	//r.Use(gzip.Gzip(gzip.DefaultCompression))
 
-	r.GET("/ping", ApiPing)
+	r.Any("/ping", ApiPing)
 	r.GET("/servinfo", ApiServInfo)
 	r.GET("/memusage", ApiMemUsage)
 	r.GET("/gamelist", ApiGameList)
 
 	// authorization
-	r.GET("/signis", ApiSignis)
+	r.Any("/signis", ApiSignis)
 	r.GET("/sendcode", ApiSendCode)
 	r.GET("/activate", Auth(false), ApiActivate)
 	r.POST("/signup", Auth(false), ApiSignup)
