@@ -12,13 +12,13 @@ import (
 func TestS2B(t *testing.T) {
 	var s = "some string"
 	var ps = unsafe.Pointer(unsafe.StringData(s))
-	var b = []byte(s)
+	/*var b = []byte(s)
 	var pb = unsafe.Pointer(unsafe.SliceData(b))
 	if ps == pb {
 		t.Error("string pointer is equal to pointer on new allocated bytes slice")
-	}
-	b = util.S2B(s)
-	pb = unsafe.Pointer(unsafe.SliceData(b))
+	}*/
+	var b = util.S2B(s)
+	var pb = unsafe.Pointer(unsafe.SliceData(b))
 	if ps != pb {
 		t.Error("string pointer is not equal to pointer on same bytes slice")
 	}

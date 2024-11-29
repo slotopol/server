@@ -31,8 +31,8 @@ COPY ./confdata /go/bin/config
 
 # Set executable rights to all shell-scripts.
 RUN chmod +x ./task/*.sh
-# Compile project for Linux amd64 and copy config files.
-RUN ./task/build-linux-x64.sh
+# Compile project for Linux amd64.
+RUN ./task/build-docker.sh
 
 ##
 ## Deploy stage

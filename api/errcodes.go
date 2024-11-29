@@ -2,7 +2,10 @@ package api
 
 import "errors"
 
-const ( // API error codes
+// API error codes.
+// Each error code have unique source code point,
+// so this error code at service reply exactly points to error place.
+const (
 	AECnull = iota
 
 	// authorization

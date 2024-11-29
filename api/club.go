@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	sqlclub = `UPDATE club SET bank=bank+?, fund=fund+?, lock=lock+?, utime=CURRENT_TIMESTAMP WHERE cid=?`
+	sqlclub = "UPDATE club SET `bank`=`bank`+?, `fund`=`fund`+?, `lock`=`lock`+?, `utime`=CURRENT_TIMESTAMP WHERE `cid`=?"
 )
 
 func ApiClubList(c *gin.Context) {

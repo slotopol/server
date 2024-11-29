@@ -14,10 +14,7 @@ var starttime = time.Now()
 
 // Check service response.
 func ApiPing(c *gin.Context) {
-	var ret = gin.H{
-		"message": "pong",
-	}
-	RetOk(c, ret)
+	RetOk(c, nil)
 }
 
 // Static service system information.
@@ -28,6 +25,7 @@ func ApiServInfo(c *gin.Context) {
 		"started":   starttime.Format(time.RFC3339),
 		"govers":    runtime.Version(),
 		"os":        runtime.GOOS,
+		"arch":      runtime.GOARCH,
 		"numcpu":    runtime.NumCPU(),
 		"maxprocs":  runtime.GOMAXPROCS(0),
 		"exepath":   cfg.ExePath,

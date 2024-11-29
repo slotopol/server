@@ -5,13 +5,19 @@ import (
 	"encoding/xml"
 	"fmt"
 	"net/http"
+	"runtime"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
 	"xorm.io/xorm"
+
+	cfg "github.com/slotopol/server/config"
 )
 
 type Session = xorm.Session
+
+// "Server" field for HTTP headers.
+var serverhdr = fmt.Sprintf("slotopol/%s (%s; %s)", cfg.BuildVers, runtime.GOOS, runtime.GOARCH)
 
 var Offered = []string{
 	binding.MIMEJSON,
@@ -21,6 +27,7 @@ var Offered = []string{
 }
 
 func Negotiate(c *gin.Context, code int, data any) {
+	c.Writer.Header().Add("Server", serverhdr)
 	switch c.NegotiateFormat(Offered...) {
 	case binding.MIMEJSON:
 		c.JSON(code, data)
@@ -41,6 +48,7 @@ func RetOk(c *gin.Context, data any) {
 }
 
 func Ret204(c *gin.Context) {
+	c.Writer.Header().Add("Server", serverhdr)
 	c.Status(http.StatusNoContent)
 }
 

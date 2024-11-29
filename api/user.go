@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	sqllock = `UPDATE club SET lock=lock+?, utime=CURRENT_TIMESTAMP WHERE cid=?`
+	sqllock = "UPDATE club SET `lock`=`lock`+?, `utime`=CURRENT_TIMESTAMP WHERE `cid`=?"
 )
 
 func ApiUserIs(c *gin.Context) {
