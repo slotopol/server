@@ -122,6 +122,9 @@ func FormatGameInfo(gi *game.GameInfo, ai int) string {
 		if gi.GP&game.GPbwild > 0 {
 			buf = append(buf, "has big wilds")
 		}
+		if gi.GP&game.GPbsym > 0 {
+			buf = append(buf, "has big symbols")
+		}
 	}
 	if fRTP && len(gi.RTP) > 0 {
 		var rtpbuf = make([]string, len(gi.RTP))

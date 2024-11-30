@@ -1,6 +1,6 @@
-//go:build !prod || full || playngo
+//go:build !prod || full || agt
 
-package firejoker
+package valkyrie
 
 import (
 	"github.com/slotopol/server/game"
@@ -9,11 +9,12 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Play'n GO", Name: "Fire Joker"},
+		{Prov: "AGT", Name: "Valkyrie"},
 	},
-	GP: game.GPfghas |
+	GP: game.GPsel |
+		game.GPfghas |
 		game.GPscat |
-		game.GPbsym,
+		game.GPwild,
 	SX:  5,
 	SY:  3,
 	SN:  len(LinePay),

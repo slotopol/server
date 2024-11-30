@@ -1,4 +1,4 @@
-package firejoker
+package valkyrie
 
 import (
 	"context"
@@ -8,62 +8,62 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-func BruteForceFire(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, big slot.Sym) {
+func BruteForceBon(ctx context.Context, s slot.Stater, g slot.SlotGame, reels *slot.Reels5x) {
+	var r1 = reels.Reel(1)
+	var r5 = reels.Reel(3)
 	var screen = g.NewScreen()
 	defer screen.Free()
 	var wins slot.Wins
-	var x slot.Pos
-	for x = 2; x <= 4; x++ {
-		screen.Set(x, 1, big)
-		screen.Set(x, 2, big)
-		screen.Set(x, 3, big)
-	}
-	var r1 = reels.Reel(1)
-	var r5 = reels.Reel(5)
 	for i1 := range r1 {
 		screen.SetCol(1, r1, i1)
-		for i5 := range r5 {
-			screen.SetCol(5, r5, i5)
-			g.Scanner(screen, &wins)
-			s.Update(wins)
-			wins.Reset()
-			if s.Count()&100 == 0 {
-				select {
-				case <-ctx.Done():
-					return
-				default:
+		for _, big := range BonusReel {
+			var x slot.Pos
+			for x = 2; x <= 4; x++ {
+				screen.Set(x, 1, big)
+				screen.Set(x, 2, big)
+				screen.Set(x, 3, big)
+			}
+			for i5 := range r5 {
+				screen.SetCol(3, r5, i5)
+				g.Scanner(screen, &wins)
+				s.Update(wins)
+				wins.Reset()
+				if s.Count()&100 == 0 {
+					select {
+					case <-ctx.Done():
+						return
+					default:
+					}
 				}
 			}
 		}
 	}
 }
 
-func CalcStatSym(ctx context.Context, g *Game, reels slot.Reels, big slot.Sym) float64 {
-	var sln = float64(g.Sel)
+func CalcStatBon(ctx context.Context, mrtp float64) float64 {
+	var reels, _ = slot.FindReels(ReelsMap, mrtp)
+	var g = NewGame()
+	var sln float64 = 1
+	g.Sel = int(sln)
+	g.FS = 15 // set free spins mode
 	var s slot.Stat
 
 	var ctx2, cancel2 = context.WithCancel(ctx)
 	defer cancel2()
-	BruteForceFire(ctx2, &s, g, reels, big)
+	s.SetPlan(uint64(len(reels.Reel(1))) * uint64(len(BonusReel)) * uint64(len(reels.Reel(5))))
+	BruteForceBon(ctx2, &s, g, reels)
 
 	var reshuf = float64(s.Reshuffles)
 	var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
-	var rtpsym = lrtp + srtp
-	fmt.Printf("RTP[%d] = %.5g(lined) + %.5g(scatter) = %.6f%%\n", big, lrtp, srtp, rtpsym)
-	return rtpsym
-}
-
-func CalcStatBon(ctx context.Context, mrtp float64) (rtp float64) {
-	var reels, _ = slot.FindReels(ReelsMap, mrtp)
-	var g = NewGame()
-	g.Sel = 1
-
-	for big := slot.Sym(1); big <= 7; big++ {
-		rtp += CalcStatSym(ctx, g, reels, big)
+	if srtp > 0 {
+		panic("scatters are presents on bonus games")
 	}
-	rtp /= 7
-	fmt.Printf("average freespins RTP = %.6f%%\n", rtp)
-	return
+	var rtp = lrtp + srtp
+	fmt.Printf("completed %.5g%%, selected %d lines\n", reshuf/float64(s.Planned())*100, g.Sel)
+	fmt.Printf("reels lengths [%d, [%d], %d], total reshuffles %d\n",
+		len(reels.Reel(1)), len(BonusReel), len(reels.Reel(5)), reels.Reshuffles())
+	fmt.Printf("RTP = %.6f%%\n", rtp)
+	return rtp
 }
 
 func CalcStatReg(ctx context.Context, mrtp float64) float64 {

@@ -1,6 +1,6 @@
-package firejoker
+package valkyrie
 
-// See: https://freeslotshub.com/playngo/fire-joker/
+// See: https://demo.agtsoftware.com/games/agt/valkyrie
 
 import (
 	"math/rand/v2"
@@ -10,25 +10,23 @@ import (
 
 // Lined payment.
 var LinePay = [13][5]float64{
-	{0, 0, 20, 50, 100}, // 1 seven
-	{0, 0, 10, 25, 50},  // 2 bell
-	{0, 0, 10, 25, 50},  // 3 melon
-	{0, 0, 4, 10, 20},   // 4 plum
-	{0, 0, 4, 10, 20},   // 5 orange
-	{0, 0, 4, 10, 20},   // 6 lemon
-	{0, 0, 4, 10, 20},   // 7 cherry
-	{},                  // 8 bonus
-	{},                  // 9 joker
+	{0, 2, 50, 500, 1000}, //  1 wild
+	{},                    //  2 scatter
+	{0, 2, 25, 250, 500},  //  3 warrior
+	{0, 2, 25, 100, 200},  //  4 helmet
+	{0, 0, 20, 100, 200},  //  5 shield
+	{0, 0, 15, 50, 100},   //  6 axe
+	{0, 0, 15, 50, 100},   //  7 mug
+	{0, 0, 10, 25, 50},    //  8 ace
+	{0, 0, 10, 25, 50},    //  9 king
+	{0, 0, 5, 10, 25},     // 10 queen
+	{0, 0, 5, 10, 25},     // 11 jack
+	{0, 0, 5, 10, 25},     // 12 ten
+	{0, 2, 5, 10, 25},     // 13 nine
 }
 
-// Scatters payment.
-var ScatPay = [5]float64{0, 0.5, 3} // 8 bonus
-
-// Scatter freespins table
-var ScatFreespin = [5]int{0, 0, 10} // 8 bonus
-
 // Bet lines
-var BetLines = slot.BetLinesHot5
+var BetLines = slot.BetLinesAgt5x3[:30]
 
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
@@ -49,7 +47,7 @@ func NewGame() *Game {
 	}
 }
 
-const scat, jack = 8, 9
+const wild, scat = 1, 2
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)
@@ -61,25 +59,47 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
-		var numl slot.Pos = 5
-		var syml = screen.Pos(1, line)
+		var numw, numl slot.Pos = 0, 5
+		var syml slot.Sym
 		var x slot.Pos
-		for x = 2; x <= 5; x++ {
+		for x = 1; x <= 5; x++ {
 			var sx = screen.Pos(x, line)
-			if sx != syml {
+			if sx == wild {
+				if syml == 0 {
+					numw = x
+				}
+			} else if syml == 0 && sx != scat {
+				syml = sx
+			} else if sx != syml {
 				numl = x - 1
 				break
 			}
 		}
 
-		if pay := LinePay[syml-1][numl-1]; pay > 0 {
+		var payw, payl float64
+		if numw > 0 {
+			payw = LinePay[wild-1][numw-1]
+		}
+		if numl > 0 && syml > 0 {
+			payl = LinePay[syml-1][numl-1]
+		}
+		if payl > payw {
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * pay,
+				Pay:  g.Bet * payl,
 				Mult: 1,
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
 				XY:   line.CopyL(numl),
+			})
+		} else if payw > 0 {
+			*wins = append(*wins, slot.WinItem{
+				Pay:  g.Bet * payw,
+				Mult: 1,
+				Sym:  wild,
+				Num:  numw,
+				Line: li,
+				XY:   line.CopyL(numw),
 			})
 		}
 	}
@@ -87,24 +107,12 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
-	if count := screen.ScatNum(scat); count >= 2 {
-		var pay, fs = ScatPay[count-1], ScatFreespin[count-1]
+	if count := screen.ScatNum(scat); count >= 3 {
 		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * float64(g.Sel) * pay,
-			Mult: 1,
 			Sym:  scat,
 			Num:  count,
 			XY:   screen.ScatPos(scat),
-			Free: fs,
-		})
-	}
-	if count := screen.ScatNum(jack); count == 5 {
-		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * float64(g.Sel) * 100000,
-			Mult: 1,
-			Sym:  jack,
-			Num:  5,
-			XY:   screen.ScatPos(scat),
+			Free: 15,
 		})
 	}
 }
@@ -121,7 +129,7 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 		hit = rand.N(len(reel))
 		screen.SetCol(1, reel, hit)
 		// set center
-		var big = rand.N[slot.Sym](7) + 1
+		var big = BonusReel[rand.N(len(BonusReel))]
 		var x slot.Pos
 		for x = 2; x <= 4; x++ {
 			screen.Set(x, 1, big)
@@ -157,5 +165,5 @@ func (g *Game) FreeSpins() int {
 }
 
 func (g *Game) SetSel(sel int) error {
-	return slot.ErrNoFeature
+	return g.SetSelNum(sel, len(BetLines))
 }

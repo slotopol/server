@@ -77,5 +77,6 @@ import (
 	_ "github.com/slotopol/server/game/slot/sevenhot"
 	_ "github.com/slotopol/server/game/slot/shiningstars"
 	_ "github.com/slotopol/server/game/slot/shiningstars100"
+	_ "github.com/slotopol/server/game/slot/valkyrie"
 	_ "github.com/slotopol/server/game/slot/wizard"
 )
