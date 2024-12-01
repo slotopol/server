@@ -1,20 +1,21 @@
-package happysanta50
+package shiningstars100
 
-// See: https://demo.agtsoftware.com/games/agt/happysanta50
+// See: https://demo.agtsoftware.com/games/agt/shiningstars100
 
 import (
 	"github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/game/slot/happysanta"
+	"github.com/slotopol/server/game/slot/agt/shiningstars"
 )
 
 // Lined payment.
-var LinePay = happysanta.LinePay
+var LinePay = shiningstars.LinePay
 
 // Scatters payment.
-var ScatPay = happysanta.ScatPay
+var ScatPay1 = shiningstars.ScatPay1
+var ScatPay2 = shiningstars.ScatPay2
 
 // Bet lines
-var BetLines = slot.BetLinesAgt5x4[:50]
+var BetLines = slot.BetLinesAgt5x4[:100]
 
 type Game struct {
 	slot.Slot5x4 `yaml:",inline"`
@@ -32,7 +33,7 @@ func NewGame() *Game {
 	}
 }
 
-const wild, scat = 1, 2
+const wild, scat1, scat2 = 1, 2, 3
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	var scrn5x4 = screen.(*slot.Screen5x4)
@@ -42,6 +43,17 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen *slot.Screen5x4, wins *slot.Wins) {
+	var reelwild [5]bool
+	var x, y slot.Pos
+	for x = 2; x <= 4; x++ {
+		for y = 1; y <= 4; y++ {
+			if screen.At(x, y) == wild {
+				reelwild[x-1] = true
+				break
+			}
+		}
+	}
+
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
@@ -50,7 +62,7 @@ func (g *Game) ScanLined(screen *slot.Screen5x4, wins *slot.Wins) {
 		var x slot.Pos
 		for x = 2; x <= 5; x++ {
 			var sx = screen.Pos(x, line)
-			if sx == wild {
+			if reelwild[x-1] {
 				continue
 			} else if sx != syml {
 				numl = x - 1
@@ -73,14 +85,23 @@ func (g *Game) ScanLined(screen *slot.Screen5x4, wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(screen *slot.Screen5x4, wins *slot.Wins) {
-	if count := screen.ScatNum(scat); count >= 3 {
-		var pay = ScatPay[count-1]
+	if count := screen.ScatNum(scat1); count >= 3 {
+		var pay = ScatPay1[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * float64(g.Sel) * pay,
 			Mult: 1,
-			Sym:  scat,
+			Sym:  scat1,
 			Num:  count,
-			XY:   screen.ScatPos(scat),
+			XY:   screen.ScatPos(scat1),
+		})
+	} else if count := screen.ScatNumOdd(scat2); count >= 3 {
+		var pay = ScatPay2[count-1]
+		*wins = append(*wins, slot.WinItem{
+			Pay:  g.Bet * float64(g.Sel) * pay,
+			Mult: 1,
+			Sym:  scat2,
+			Num:  count,
+			XY:   screen.ScatPosOdd(scat2),
 		})
 	}
 }

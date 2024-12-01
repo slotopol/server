@@ -2,7 +2,7 @@ package slotopoldeluxe
 
 import (
 	"github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/game/slot/slotopol"
+	"github.com/slotopol/server/game/slot/megajack/slotopol"
 )
 
 // Lined payment.

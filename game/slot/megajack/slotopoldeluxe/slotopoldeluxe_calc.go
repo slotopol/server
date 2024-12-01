@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/game/slot/slotopol"
+	"github.com/slotopol/server/game/slot/megajack/slotopol"
 )
 
 func CalcStat(ctx context.Context, mrtp float64) float64 {
