@@ -19,6 +19,7 @@ const ( // Game properties
 	GPwild   GP = 0b_0000_1000_0000 // has wild symbols
 	GPrwild  GP = 0b_0001_0000_0000 // has reel wild symbols
 	GPbwild  GP = 0b_0010_0000_0000 // has big wild (3x3)
+	GPwmult  GP = 0b_0100_0000_0000 // has multiplier on wilds
 	GPbsym   GP = 0b_1000_0000_0000 // has big symbol (usually 3x3 in the center on free games)
 )
 

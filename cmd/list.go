@@ -75,65 +75,75 @@ func isProv(prov string) bool {
 }
 
 func FormatGameInfo(gi *game.GameInfo, ai int) string {
-	var buf = make([]string, 0, 10)
+	var b strings.Builder
 	if gi.SN > 0 {
-		buf = append(buf, fmt.Sprintf("'%s' %s %dx%d videoslot", gi.Aliases[ai].Name, gi.Aliases[ai].Prov, gi.SX, gi.SY))
+		fmt.Fprintf(&b, "'%s' %s %dx%d videoslot", gi.Aliases[ai].Name, gi.Aliases[ai].Prov, gi.SX, gi.SY)
 	} else {
-		buf = append(buf, fmt.Sprintf("'%s' %s %d spots lottery", gi.Aliases[ai].Name, gi.Aliases[ai].Prov, gi.SX))
+		fmt.Fprintf(&b, "'%s' %s %d spots lottery", gi.Aliases[ai].Name, gi.Aliases[ai].Prov, gi.SX)
 	}
 	if fProp {
 		if gi.SN > 0 {
-			buf = append(buf, fmt.Sprintf("%d symbols", gi.SN))
+			fmt.Fprintf(&b, ", %d symbols", gi.SN)
 		}
 		if gi.LN > 100 {
-			buf = append(buf, fmt.Sprintf("%d ways", gi.LN))
+			fmt.Fprintf(&b, ", %d ways", gi.LN)
 		} else if gi.LN > 0 {
-			var s string
 			if gi.GP&game.GPsel == 0 {
-				s = "constant "
+				fmt.Fprintf(&b, ", constant %d lines", gi.LN)
+			} else {
+				fmt.Fprintf(&b, ", %d lines", gi.LN)
 			}
-			buf = append(buf, fmt.Sprintf("%s%d lines", s, gi.LN))
 		}
 		if gi.GP&game.GPjack > 0 {
-			buf = append(buf, "has jackpot")
-		}
-		if gi.GP&game.GPscat > 0 {
-			buf = append(buf, "has scatters")
+			b.WriteString(", has jackpot")
 		}
 		if gi.GP&(game.GPfghas+game.GPretrig) > 0 {
-			var s1, s2, s3 string
+			b.WriteString(", ")
 			if gi.GP&game.GPretrig > 0 {
-				s1 = "retriggerable "
+				b.WriteString("retriggerable ")
 			}
+			b.WriteString("free games")
 			if gi.GP&game.GPfgmult > 0 {
-				s2 = " with multiplier"
+				b.WriteString(" with multiplier")
 			}
 			if gi.GP&game.GPfgreel > 0 {
-				s3 = " on bonus reels"
+				b.WriteString(" on bonus reels")
 			}
-			buf = append(buf, s1+"free games"+s2+s3)
+		}
+		if gi.GP&game.GPscat > 0 {
+			b.WriteString(", has scatters")
 		}
 		if gi.GP&game.GPwild > 0 {
-			buf = append(buf, "has wilds")
+			if gi.GP&game.GPwmult > 0 {
+				b.WriteString(", has wilds with multiplier")
+			} else {
+				b.WriteString(", has wilds")
+			}
 		}
 		if gi.GP&game.GPrwild > 0 {
-			buf = append(buf, "has reel wilds")
+			if gi.GP&game.GPwmult > 0 {
+				b.WriteString(", has reel wilds with multiplier")
+			} else {
+				b.WriteString(", has reel wilds")
+			}
 		}
 		if gi.GP&game.GPbwild > 0 {
-			buf = append(buf, "has big wilds")
+			b.WriteString(", has big wilds")
 		}
 		if gi.GP&game.GPbsym > 0 {
-			buf = append(buf, "has big symbols")
+			b.WriteString(", has big symbols")
 		}
 	}
 	if fRTP && len(gi.RTP) > 0 {
-		var rtpbuf = make([]string, len(gi.RTP))
+		b.WriteString(", RTP: ")
 		for i, rtp := range gi.RTP {
-			rtpbuf[i] = fmt.Sprintf("%.2f", rtp)
+			if i > 0 {
+				b.WriteString(", ")
+			}
+			fmt.Fprintf(&b, "%.2f", rtp)
 		}
-		buf = append(buf, "RTP: "+strings.Join(rtpbuf, ", "))
 	}
-	return strings.Join(buf, ", ")
+	return b.String()
 }
 
 // listCmd represents the list command
