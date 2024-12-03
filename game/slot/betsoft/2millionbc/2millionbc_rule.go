@@ -156,7 +156,7 @@ func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
 		}
 	}
 
-	if g.FS > 0 {
+	if g.FS != 0 {
 		g.Gain += wins.Gain()
 	} else {
 		g.Gain = wins.Gain()

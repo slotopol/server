@@ -46,7 +46,7 @@ func (s *Stat) Count() uint64 {
 
 func (s *Stat) Update(wins Wins) {
 	for _, wi := range wins {
-		if wi.Pay > 0 {
+		if wi.Pay != 0 {
 			if wi.Line != 0 {
 				s.lpm.Lock()
 				s.LinePay += wi.Pay * wi.Mult
@@ -57,14 +57,14 @@ func (s *Stat) Update(wins Wins) {
 				s.spm.Unlock()
 			}
 		}
-		if wi.Free > 0 {
+		if wi.Free != 0 {
 			atomic.AddUint64(&s.FreeCount, uint64(wi.Free))
 			atomic.AddUint64(&s.FreeHits, 1)
 		}
-		if wi.BID > 0 {
+		if wi.BID != 0 {
 			atomic.AddUint64(&s.BonusCount[wi.BID], 1)
 		}
-		if wi.Jack > 0 {
+		if wi.Jack != 0 {
 			atomic.AddUint64(&s.JackCount[wi.Jack], 1)
 		}
 	}

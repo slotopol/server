@@ -154,7 +154,7 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 }
 
 func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
-	if g.FreeSpins() > 0 {
+	if g.FreeSpins() != 0 {
 		g.Gain += wins.Gain()
 	} else {
 		g.Gain = wins.Gain()

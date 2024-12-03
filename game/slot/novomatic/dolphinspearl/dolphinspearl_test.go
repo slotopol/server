@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/game/slot/dolphinspearl"
+	"github.com/slotopol/server/game/slot/novomatic/dolphinspearl"
 )
 
 // go test -v -bench ^BenchmarkSpin$ -benchmem -count=5 -cover ./game/slot/dolphinspearl

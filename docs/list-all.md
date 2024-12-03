@@ -106,6 +106,7 @@
 'Slotopol Deluxe' Megajack 5x3 videoslot
 'Slotopol' Megajack 5x3 videoslot
 'Spellcast' NetEnt 5x3 videoslot
+'Sun City' AGT 5x3 videoslot
 'Super Eighties' NetEnt 5x4 videoslot
 'Sushi Bar' BetSoft 5x3 videoslot
 'Tesla' AGT 5x3 videoslot
@@ -125,8 +126,8 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 122 games, 61 algorithms, 9 providers
-AGT: 40 games
+total: 123 games, 62 algorithms, 9 providers
+AGT: 41 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games

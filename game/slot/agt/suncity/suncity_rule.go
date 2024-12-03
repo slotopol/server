@@ -1,6 +1,4 @@
-package thrillspin
-
-// See: https://www.youtube.com/watch?v=bAQaKujiLAU
+package suncity
 
 import (
 	"github.com/slotopol/server/game/slot"
@@ -8,29 +6,23 @@ import (
 
 // Lined payment.
 var LinePay = [13][5]float64{
-	{0, 10, 250, 2500, 10000}, //  1 wild
-	{},                        //  2 scatter
-	{0, 3, 25, 100, 1000},     //  3 house
-	{0, 2, 25, 100, 750},      //  4 bigwheel
-	{0, 0, 15, 100, 500},      //  5 carousel
-	{0, 0, 10, 75, 250},       //  6 pepsi
-	{0, 0, 10, 50, 250},       //  7 icecream
-	{0, 0, 10, 50, 150},       //  8 ace
-	{0, 0, 5, 50, 150},        //  9 king
-	{0, 0, 5, 25, 100},        // 10 queen
-	{0, 0, 5, 25, 100},        // 11 jack
-	{0, 0, 5, 25, 100},        // 12 ten
-	{0, 2, 5, 25, 100},        // 13 nine
+	{0, 10, 250, 2500, 9000}, //  1 wild
+	{},                       //  2 scatter
+	{0, 2, 25, 125, 750},     //  3 yacht
+	{0, 2, 25, 125, 750},     //  4 bike
+	{0, 0, 20, 100, 400},     //  5 lady
+	{0, 0, 15, 75, 250},      //  6 salesgirl
+	{0, 0, 15, 75, 250},      //  7 courier
+	{0, 0, 10, 50, 125},      //  8 ace
+	{0, 0, 10, 50, 125},      //  9 king
+	{0, 0, 5, 25, 100},       // 10 queen
+	{0, 0, 5, 25, 100},       // 11 jack
+	{0, 0, 5, 25, 100},       // 12 ten
+	{0, 2, 5, 25, 100},       // 13 nine
 }
 
-// Scatters payment.
-var ScatPay = [5]float64{0, 2, 5, 25, 500} // 2 scatter
-
-// Scatter freespins table
-var ScatFreespin = [5]int{0, 0, 15, 15, 15} // 2 scatter
-
 // Bet lines
-var BetLines = slot.BetLinesNetEnt5x3[:15]
+var BetLines = slot.BetLinesAgt5x3[:20]
 
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
@@ -63,7 +55,6 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
-		var mw float64 = 1 // mult wild
 		var numw, numl slot.Pos = 0, 5
 		var syml slot.Sym
 		var x slot.Pos
@@ -73,7 +64,6 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 				if syml == 0 {
 					numw = x
 				}
-				mw = 2
 			} else if syml == 0 && sx != scat {
 				syml = sx
 			} else if sx != syml {
@@ -89,27 +79,19 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 		if numl > 0 && syml > 0 {
 			payl = LinePay[syml-1][numl-1]
 		}
-		if payl*mw > payw {
-			var mm float64 = 1 // mult mode
-			if g.FS > 0 {
-				mm = 3
-			}
+		if payl > payw {
 			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * payl,
-				Mult: mw * mm,
+				Mult: 1,
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
 				XY:   line.CopyL(numl),
 			})
 		} else if payw > 0 {
-			var mm float64 = 1 // mult mode
-			if g.FS > 0 {
-				mm = 3
-			}
 			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * payw,
-				Mult: mm,
+				Mult: 1,
 				Sym:  wild,
 				Num:  numw,
 				Line: li,
@@ -121,26 +103,23 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
-	if count := screen.ScatNum(scat); count >= 2 {
-		var mm float64 = 1 // mult mode
-		if g.FS > 0 {
-			mm = 3
-		}
-		var pay, fs = ScatPay[count-1], ScatFreespin[count-1]
+	if count := screen.ScatNum(scat); count == 2 {
 		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * float64(g.Sel) * pay,
-			Mult: mm,
 			Sym:  scat,
 			Num:  count,
 			XY:   screen.ScatPos(scat),
-			Free: fs,
+			Free: -1,
 		})
 	}
 }
 
 func (g *Game) Spin(screen slot.Screen, mrtp float64) {
-	var reels, _ = slot.FindReels(ReelsMap, mrtp)
-	screen.Spin(reels)
+	if g.FS == 0 {
+		var reels, _ = slot.FindReels(ReelsMap, mrtp)
+		screen.Spin(reels)
+	} else {
+		screen.Spin(&ReelsBon)
+	}
 }
 
 func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
@@ -150,12 +129,13 @@ func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
 		g.Gain = wins.Gain()
 	}
 
-	if g.FS > 0 {
-		g.FS--
-	}
 	for _, wi := range wins {
-		if wi.Free > 0 {
-			g.FS += wi.Free
+		if wi.Free != 0 {
+			if g.FS != 0 {
+				g.FS = 0 // stop free games
+			} else {
+				g.FS = -1 // start free games
+			}
 		}
 	}
 }
