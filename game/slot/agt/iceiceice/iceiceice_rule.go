@@ -33,8 +33,6 @@ var BetLines = []slot.Linex{
 
 type Game struct {
 	slot.Slot3x3 `yaml:",inline"`
-	// free spin number
-	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
 }
 
 // Declare conformity with SlotGame interface.
@@ -46,7 +44,6 @@ func NewGame() *Game {
 			Sel: len(BetLines),
 			Bet: 1,
 		},
-		FS: 0,
 	}
 }
 
@@ -56,7 +53,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
-		if g.FS > 0 {
+		if g.FSR > 0 {
 			var numl slot.Pos = 3
 			var syml slot.Sym
 			var x slot.Pos
@@ -84,7 +81,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 					XY:   line, // whole line is used
 				})
 			}
-		} else { // g.FS == 0
+		} else { // g.FSR == 0
 			var numl slot.Pos = 3
 			var syml = screen.Pos(1, line)
 			var x slot.Pos

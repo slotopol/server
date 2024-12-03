@@ -48,8 +48,6 @@ const (
 
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
-	// free spin number
-	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
 	// multiplier for free spins, if them ended by "got away"
 	M float64 `json:"m,omitempty" yaml:"m,omitempty" xml:"m,omitempty"`
 }
@@ -63,8 +61,7 @@ func NewGame() *Game {
 			Sel: len(BetLines),
 			Bet: 1,
 		},
-		FS: 0,
-		M:  0,
+		M: 0,
 	}
 }
 
@@ -72,7 +69,7 @@ const wild, scat = 1, 2
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)
-	if g.FS == 0 {
+	if g.FSR == 0 {
 		g.ScanScatters(screen, wins)
 	}
 }
@@ -110,7 +107,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 		}
 		if payl*mw > payw {
 			var mm float64 = 1 // mult mode
-			if g.FS > 0 {
+			if g.FSR > 0 {
 				mm = g.M
 			}
 			*wins = append(*wins, slot.WinItem{
@@ -123,7 +120,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 			})
 		} else if payw > 0 {
 			var mm float64 = 1 // mult mode
-			if g.FS > 0 {
+			if g.FSR > 0 {
 				mm = g.M
 			}
 			*wins = append(*wins, slot.WinItem{
@@ -157,7 +154,7 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 }
 
 func (g *Game) Spin(screen slot.Screen, mrtp float64) {
-	if g.FS == 0 {
+	if g.FSR == 0 {
 		var reels, _ = slot.FindReels(ReelsMap, mrtp)
 		screen.Spin(reels)
 	} else {
@@ -166,21 +163,23 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 }
 
 func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
-	if g.FS != 0 {
+	if g.FSR != 0 {
 		g.Gain += wins.Gain()
+		g.FSN++
 	} else {
 		g.Gain = wins.Gain()
+		g.FSN = 0
 	}
 
-	if g.FS > 0 {
-		g.FS--
-		if g.FS == 0 {
+	if g.FSR > 0 {
+		g.FSR--
+		if g.FSR == 0 {
 			g.M = 0 // no multiplier on regular games
 		}
 	} else { // free spins can not be nested
 		for _, wi := range wins {
 			if wi.Free > 0 {
-				g.FS = wi.Free
+				g.FSR = wi.Free
 				if rand.Float64() <= Pfs {
 					g.M = 2
 				} else {
@@ -189,10 +188,6 @@ func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
 			}
 		}
 	}
-}
-
-func (g *Game) FreeSpins() int {
-	return g.FS
 }
 
 func (g *Game) SetSel(sel int) error {

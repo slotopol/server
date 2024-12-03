@@ -36,8 +36,6 @@ var ScatFreespinBon = [5]int{0, 5, 8, 15, 20} // scatter
 
 type Game struct {
 	slot.Slot5x4 `yaml:",inline"`
-	// free spin number
-	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
 	// wild multipliers
 	MW [3]float64 `json:"mw" yaml:"mw" xml:"mw"`
 }
@@ -51,7 +49,6 @@ func NewGame() *Game {
 			Sel: 40,
 			Bet: 1,
 		},
-		FS: 0,
 		MW: [3]float64{1, 1, 1},
 	}
 }
@@ -140,7 +137,7 @@ func (g *Game) ScanScatters(screen *slot.Screen5x4, wins *slot.Wins) {
 	if count := screen.ScatNum(scat); count >= 2 {
 		var pay = ScatPay[count-1]
 		var fs int
-		if g.FS > 0 {
+		if g.FSR > 0 {
 			fs = ScatFreespinBon[count-1]
 		} else {
 			fs = ScatFreespinReg[count-1]
@@ -164,7 +161,7 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 }
 
 func (g *Game) Prepare() {
-	if g.FS > 0 {
+	if g.FSR > 0 {
 		for x := range g.MW {
 			if rand.Float64() < prob2x {
 				g.MW[x] = 2
@@ -173,27 +170,6 @@ func (g *Game) Prepare() {
 			}
 		}
 	}
-}
-
-func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
-	if g.FS != 0 {
-		g.Gain += wins.Gain()
-	} else {
-		g.Gain = wins.Gain()
-	}
-
-	if g.FS > 0 {
-		g.FS--
-	}
-	for _, wi := range wins {
-		if wi.Free > 0 {
-			g.FS += wi.Free
-		}
-	}
-}
-
-func (g *Game) FreeSpins() int {
-	return g.FS
 }
 
 func (g *Game) SetSel(sel int) error {

@@ -34,8 +34,6 @@ const (
 
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
-	// free spin number
-	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
 	// acorns number
 	AN int `json:"an" yaml:"an" xml:"an"`
 	// acorns bet
@@ -51,7 +49,6 @@ func NewGame() *Game {
 			Sel: len(BetLines),
 			Bet: 1,
 		},
-		FS: 0,
 	}
 }
 
@@ -126,7 +123,7 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 }
 
 func (g *Game) Spin(screen slot.Screen, mrtp float64) {
-	if g.FS == 0 {
+	if g.FSR == 0 {
 		var reels, _ = slot.FindReels(ReelsMap, mrtp)
 		screen.Spin(reels)
 	} else {
@@ -156,24 +153,22 @@ func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
 		}
 	}
 
-	if g.FS != 0 {
+	if g.FSR != 0 {
 		g.Gain += wins.Gain()
+		g.FSN++
 	} else {
 		g.Gain = wins.Gain()
+		g.FSN = 0
 	}
 
-	if g.FS > 0 {
-		g.FS--
+	if g.FSR > 0 {
+		g.FSR--
 	}
 	for _, wi := range wins {
 		if wi.Free > 0 {
-			g.FS += wi.Free
+			g.FSR += wi.Free
 		}
 	}
-}
-
-func (g *Game) FreeSpins() int {
-	return g.FS
 }
 
 func (g *Game) SetSel(sel int) error {

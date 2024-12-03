@@ -118,7 +118,12 @@ type Slot3x3 struct {
 	Sel int     `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
 	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
-	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"` // gain for double up games
+	// gain for double up games
+	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"`
+	// free spin number
+	FSN int `json:"fsn,omitempty" yaml:"fsn,omitempty" xml:"fsn,omitempty"`
+	// free spin remains
+	FSR int `json:"fsr,omitempty" yaml:"fsr,omitempty" xml:"fsr,omitempty"`
 }
 
 func (g *Slot3x3) NewScreen() Screen {
@@ -132,11 +137,26 @@ func (g *Slot3x3) Prepare() {
 }
 
 func (g *Slot3x3) Apply(screen Screen, wins Wins) {
-	g.Gain = wins.Gain()
+	if g.FSR != 0 {
+		g.Gain += wins.Gain()
+		g.FSN++
+	} else {
+		g.Gain = wins.Gain()
+		g.FSN = 0
+	}
+
+	if g.FSR > 0 {
+		g.FSR--
+	}
+	for _, wi := range wins {
+		if wi.Free > 0 {
+			g.FSR += wi.Free
+		}
+	}
 }
 
 func (g *Slot3x3) FreeSpins() int {
-	return 0
+	return g.FSR
 }
 
 func (g *Slot3x3) GetGain() float64 {
@@ -190,7 +210,12 @@ type Slot5x3 struct {
 	Sel int     `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
 	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
-	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"` // gain for double up games
+	// gain for double up games
+	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"`
+	// free spin number
+	FSN int `json:"fsn,omitempty" yaml:"fsn,omitempty" xml:"fsn,omitempty"`
+	// free spin remains
+	FSR int `json:"fsr,omitempty" yaml:"fsr,omitempty" xml:"fsr,omitempty"`
 }
 
 func (g *Slot5x3) NewScreen() Screen {
@@ -204,11 +229,26 @@ func (g *Slot5x3) Prepare() {
 }
 
 func (g *Slot5x3) Apply(screen Screen, wins Wins) {
-	g.Gain = wins.Gain()
+	if g.FSR != 0 {
+		g.Gain += wins.Gain()
+		g.FSN++
+	} else {
+		g.Gain = wins.Gain()
+		g.FSN = 0
+	}
+
+	if g.FSR > 0 {
+		g.FSR--
+	}
+	for _, wi := range wins {
+		if wi.Free > 0 {
+			g.FSR += wi.Free
+		}
+	}
 }
 
 func (g *Slot5x3) FreeSpins() int {
-	return 0
+	return g.FSR
 }
 
 func (g *Slot5x3) GetGain() float64 {
@@ -262,7 +302,12 @@ type Slot5x4 struct {
 	Sel int     `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
 	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
-	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"` // gain for double up games
+	// gain for double up games
+	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"`
+	// free spin number
+	FSN int `json:"fsn,omitempty" yaml:"fsn,omitempty" xml:"fsn,omitempty"`
+	// free spin remains
+	FSR int `json:"fsr,omitempty" yaml:"fsr,omitempty" xml:"fsr,omitempty"`
 }
 
 func (g *Slot5x4) NewScreen() Screen {
@@ -276,11 +321,26 @@ func (g *Slot5x4) Prepare() {
 }
 
 func (g *Slot5x4) Apply(screen Screen, wins Wins) {
-	g.Gain = wins.Gain()
+	if g.FSR != 0 {
+		g.Gain += wins.Gain()
+		g.FSN++
+	} else {
+		g.Gain = wins.Gain()
+		g.FSN = 0
+	}
+
+	if g.FSR > 0 {
+		g.FSR--
+	}
+	for _, wi := range wins {
+		if wi.Free > 0 {
+			g.FSR += wi.Free
+		}
+	}
 }
 
 func (g *Slot5x4) FreeSpins() int {
-	return 0
+	return g.FSR
 }
 
 func (g *Slot5x4) GetGain() float64 {

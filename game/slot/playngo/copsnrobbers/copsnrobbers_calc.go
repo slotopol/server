@@ -13,7 +13,7 @@ func CalcStatBon(ctx context.Context) float64 {
 	var g = NewGame()
 	var sln float64 = 1
 	g.Sel = int(sln)
-	g.FS = Efs // set free spins mode
+	g.FSR = Efs // set free spins mode
 	g.M = 1
 	var s slot.Stat
 

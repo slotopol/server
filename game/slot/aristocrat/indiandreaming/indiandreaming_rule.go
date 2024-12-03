@@ -27,8 +27,6 @@ var ScatPay = [5]float64{0, 0, 2, 15, 100} //  2 scatter
 
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
-	// free spin number
-	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
 }
 
 // Declare conformity with SlotGame interface.
@@ -40,7 +38,6 @@ func NewGame() *Game {
 			Sel: 25,
 			Bet: 1,
 		},
-		FS: 0,
 	}
 }
 
@@ -56,7 +53,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	var mwm float64 = 1 // mult wild mode
-	if g.FS > 0 {
+	if g.FSR > 0 {
 		mwm = 5
 	}
 	var line slot.Linex
@@ -129,7 +126,7 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 	var sn, wn = screen.ScatNum(scat), screen.ScatNum(wild)
 	if count := sn + wn; count >= 3 {
 		var mw float64 = 1 // mult wild
-		if g.FS > 0 && wn > 0 {
+		if g.FSR > 0 && wn > 0 {
 			mw = 5
 		}
 		var pay = ScatPay[count-1]
@@ -149,27 +146,6 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	screen.Spin(reels)
-}
-
-func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
-	if g.FS != 0 {
-		g.Gain += wins.Gain()
-	} else {
-		g.Gain = wins.Gain()
-	}
-
-	if g.FS > 0 {
-		g.FS--
-	}
-	for _, wi := range wins {
-		if wi.Free > 0 {
-			g.FS += wi.Free
-		}
-	}
-}
-
-func (g *Game) FreeSpins() int {
-	return g.FS
 }
 
 func (g *Game) SetSel(sel int) error {

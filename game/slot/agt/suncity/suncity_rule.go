@@ -1,5 +1,7 @@
 package suncity
 
+// See: https://demo.agtsoftware.com/games/agt/suncity
+
 import (
 	"github.com/slotopol/server/game/slot"
 )
@@ -22,12 +24,10 @@ var LinePay = [13][5]float64{
 }
 
 // Bet lines
-var BetLines = slot.BetLinesAgt5x3[:20]
+var BetLines = slot.BetLinesAgt5x3[:30]
 
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
-	// free spin number
-	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
 }
 
 // Declare conformity with SlotGame interface.
@@ -39,7 +39,6 @@ func NewGame() *Game {
 			Sel: len(BetLines),
 			Bet: 1,
 		},
-		FS: 0,
 	}
 }
 
@@ -114,7 +113,7 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 }
 
 func (g *Game) Spin(screen slot.Screen, mrtp float64) {
-	if g.FS == 0 {
+	if g.FSR == 0 {
 		var reels, _ = slot.FindReels(ReelsMap, mrtp)
 		screen.Spin(reels)
 	} else {
@@ -123,25 +122,23 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 }
 
 func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
-	if g.FS != 0 {
+	if g.FSR != 0 {
 		g.Gain += wins.Gain()
+		g.FSN++
 	} else {
 		g.Gain = wins.Gain()
+		g.FSN = 0
 	}
 
 	for _, wi := range wins {
 		if wi.Free != 0 {
-			if g.FS != 0 {
-				g.FS = 0 // stop free games
+			if g.FSR != 0 {
+				g.FSR = 0 // stop free games
 			} else {
-				g.FS = -1 // start free games
+				g.FSR = -1 // start free games
 			}
 		}
 	}
-}
-
-func (g *Game) FreeSpins() int {
-	return g.FS
 }
 
 func (g *Game) SetSel(sel int) error {

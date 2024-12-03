@@ -16,7 +16,7 @@ func CalcStatBon(ctx context.Context) float64 {
 	var g = NewGame()
 	var sln float64 = 1
 	g.Sel = int(sln)
-	g.FS = 10 // set free spins mode
+	g.FSR = 10 // set free spins mode
 	var s slot.Stat
 
 	var dur = slot.ScanReels5x(ctx, &s, g, reels,

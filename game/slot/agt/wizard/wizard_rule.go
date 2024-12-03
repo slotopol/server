@@ -29,8 +29,6 @@ var BetLines = slot.BetLinesAgt5x4[:50]
 
 type Game struct {
 	slot.Slot5x4 `yaml:",inline"`
-	// free spin number
-	FS int `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty"`
 }
 
 // Declare conformity with SlotGame interface.
@@ -42,7 +40,6 @@ func NewGame() *Game {
 			Sel: len(BetLines),
 			Bet: 1,
 		},
-		FS: 0,
 	}
 }
 
@@ -122,27 +119,6 @@ func (g *Game) ScanScatters(screen *slot.Screen5x4, wins *slot.Wins) {
 func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	screen.Spin(reels)
-}
-
-func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
-	if g.FS != 0 {
-		g.Gain += wins.Gain()
-	} else {
-		g.Gain = wins.Gain()
-	}
-
-	if g.FS > 0 {
-		g.FS--
-	}
-	for _, wi := range wins {
-		if wi.Free > 0 {
-			g.FS += wi.Free
-		}
-	}
-}
-
-func (g *Game) FreeSpins() int {
-	return g.FS
 }
 
 func (g *Game) SetSel(sel int) error {

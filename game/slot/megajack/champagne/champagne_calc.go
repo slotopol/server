@@ -41,7 +41,7 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 	var g = NewGame()
 	var sln float64 = 1
 	g.Sel = int(sln)
-	g.FS = 15 // set free spins mode
+	g.FSR = 15 // set free spins mode
 	var s slot.Stat
 
 	var dur = slot.ScanReels5x(ctx, &s, g, reels,
@@ -82,7 +82,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var g = NewGame()
 	var sln float64 = 1
 	g.Sel = int(sln)
-	g.FS = 0 // no free spins
+	g.FSR = 0 // no free spins
 	var s slot.Stat
 
 	var dur = slot.ScanReels5x(ctx, &s, g, reels,
