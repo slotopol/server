@@ -265,13 +265,12 @@ func ApiSlotSpin(c *gin.Context) {
 	}
 
 	var (
-		fs       = game.FreeSpins()
 		bet      = game.GetBet()
 		sel      = game.GetSel()
 		totalbet float64
 		banksum  float64
 	)
-	if fs == 0 {
+	if !game.FreeSpins() {
 		totalbet = bet * float64(sel)
 	}
 

@@ -44,6 +44,7 @@
 'Double Hot' AGT 3x3 videoslot
 'Double Ice' AGT 3x3 videoslot
 'Dynasty Of Ming' Novomatic 5x3 videoslot
+'Egypt' AGT 5x3 videoslot
 'Excalibur' NetEnt 5x3 videoslot
 'Fire Joker' Play'n GO 5x3 videoslot
 'Fire Keno' Slotopol 80 spots lottery
@@ -126,8 +127,8 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 123 games, 62 algorithms, 9 providers
-AGT: 41 games
+total: 124 games, 63 algorithms, 9 providers
+AGT: 42 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games

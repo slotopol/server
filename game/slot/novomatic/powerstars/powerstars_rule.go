@@ -141,7 +141,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 
 func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 	screen.Spin(&Reels)
-	if g.FreeSpins() == 0 {
+	if !g.FreeSpins() {
 		var _, wc = slot.FindReels(ChanceMap, mrtp) // wild chance
 		var x, y slot.Pos
 		for x = 2; x <= 4; x++ {
@@ -154,7 +154,7 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 }
 
 func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
-	if g.FreeSpins() != 0 {
+	if g.FSR != 0 {
 		g.Gain += wins.Gain()
 		g.FSN++
 	} else {
@@ -177,8 +177,8 @@ func (g *Game) Apply(screen slot.Screen, wins slot.Wins) {
 	}
 }
 
-func (g *Game) FreeSpins() int {
-	return max(g.PRW[1], g.PRW[2], g.PRW[3])
+func (g *Game) FreeSpins() bool {
+	return max(g.PRW[1], g.PRW[2], g.PRW[3]) > 0
 }
 
 func (g *Game) SetSel(sel int) error {

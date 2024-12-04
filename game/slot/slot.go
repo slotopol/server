@@ -55,7 +55,7 @@ type SlotGame interface {
 	Spawn(Screen, Wins)    // setup bonus games to wins results, constat function
 	Prepare()              // update game state before new spin
 	Apply(Screen, Wins)    // update game state to spin results
-	FreeSpins() int        // returns number of free spins remained, constat function
+	FreeSpins() bool       // returns if it free spins mode, constat function
 	GetGain() float64      // returns gain for double up games, constat function
 	SetGain(float64) error // set gain to given value on double up games
 	GetBet() float64       // returns current bet, constat function
@@ -155,8 +155,8 @@ func (g *Slot3x3) Apply(screen Screen, wins Wins) {
 	}
 }
 
-func (g *Slot3x3) FreeSpins() int {
-	return g.FSR
+func (g *Slot3x3) FreeSpins() bool {
+	return g.FSR != 0
 }
 
 func (g *Slot3x3) GetGain() float64 {
@@ -176,7 +176,7 @@ func (g *Slot3x3) SetBet(bet float64) error {
 	if bet <= 0 {
 		return ErrBetEmpty
 	}
-	if g.FreeSpins() > 0 {
+	if g.FreeSpins() {
 		return ErrDisabled
 	}
 	g.Bet = bet
@@ -194,7 +194,7 @@ func (g *Slot3x3) SetSelNum(sel int, bln int) error {
 	if sel > bln {
 		return ErrLinesetOut
 	}
-	if g.FreeSpins() > 0 {
+	if g.FreeSpins() {
 		return ErrDisabled
 	}
 	g.Sel = sel
@@ -247,8 +247,8 @@ func (g *Slot5x3) Apply(screen Screen, wins Wins) {
 	}
 }
 
-func (g *Slot5x3) FreeSpins() int {
-	return g.FSR
+func (g *Slot5x3) FreeSpins() bool {
+	return g.FSR != 0
 }
 
 func (g *Slot5x3) GetGain() float64 {
@@ -268,7 +268,7 @@ func (g *Slot5x3) SetBet(bet float64) error {
 	if bet <= 0 {
 		return ErrBetEmpty
 	}
-	if g.FreeSpins() > 0 {
+	if g.FreeSpins() {
 		return ErrDisabled
 	}
 	g.Bet = bet
@@ -286,7 +286,7 @@ func (g *Slot5x3) SetSelNum(sel int, bln int) error {
 	if sel > bln {
 		return ErrLinesetOut
 	}
-	if g.FreeSpins() > 0 {
+	if g.FreeSpins() {
 		return ErrDisabled
 	}
 	g.Sel = sel
@@ -339,8 +339,8 @@ func (g *Slot5x4) Apply(screen Screen, wins Wins) {
 	}
 }
 
-func (g *Slot5x4) FreeSpins() int {
-	return g.FSR
+func (g *Slot5x4) FreeSpins() bool {
+	return g.FSR != 0
 }
 
 func (g *Slot5x4) GetGain() float64 {
@@ -360,7 +360,7 @@ func (g *Slot5x4) SetBet(bet float64) error {
 	if bet <= 0 {
 		return ErrBetEmpty
 	}
-	if g.FreeSpins() > 0 {
+	if g.FreeSpins() {
 		return ErrDisabled
 	}
 	g.Bet = bet
@@ -378,7 +378,7 @@ func (g *Slot5x4) SetSelNum(sel int, bln int) error {
 	if sel > bln {
 		return ErrLinesetOut
 	}
-	if g.FreeSpins() > 0 {
+	if g.FreeSpins() {
 		return ErrDisabled
 	}
 	g.Sel = sel
