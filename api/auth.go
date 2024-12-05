@@ -43,7 +43,7 @@ var (
 	ErrBadJwtID = errors.New("jwt-token id does not refer to registered user")
 	ErrNoAuth   = errors.New("authorization is required")
 	ErrNoScheme = errors.New("authorization does not have expected scheme")
-	ErrNoSecret = errors.New("expected password or SHA25 hash on it and current time as a nonce")
+	ErrNoSecret = errors.New("expected password or SHA256 hash on it and current time as a nonce")
 	ErrSmallKey = errors.New("password too small")
 	ErrNoCred   = errors.New("user with given credentials does not registered")
 	ErrActivate = errors.New("activation required for this account")

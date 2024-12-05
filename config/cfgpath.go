@@ -74,6 +74,7 @@ func InitConfig() {
 		viper.AddConfigPath(filepath.Join(ExePath, sub))
 		viper.AddConfigPath(ExePath)
 		viper.AddConfigPath(sub)
+		viper.AddConfigPath("appdata")
 		viper.AddConfigPath(".")
 		if home, err := os.UserHomeDir(); err == nil {
 			viper.AddConfigPath(filepath.Join(home, sub))

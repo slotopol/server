@@ -86,7 +86,13 @@ func InitStorage() (err error) {
 	}
 
 	if Cfg.DriverName == "sqlite3" {
-		cfg.XormStorage, err = xorm.NewEngine(Cfg.DriverName, util.JoinPath(cfg.SqlPath, Cfg.ClubSourceName))
+		var fpath string
+		if Cfg.ClubSourceName != ":memory:" {
+			fpath = util.JoinPath(cfg.SqlPath, Cfg.ClubSourceName)
+		} else {
+			fpath = Cfg.ClubSourceName
+		}
+		cfg.XormStorage, err = xorm.NewEngine(Cfg.DriverName, fpath)
 	} else {
 		cfg.XormStorage, err = xorm.NewEngine(Cfg.DriverName, Cfg.ClubSourceName)
 	}
@@ -226,7 +232,13 @@ func InitSpinlog() (err error) {
 	}
 
 	if Cfg.DriverName == "sqlite3" {
-		cfg.XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, util.JoinPath(cfg.SqlPath, Cfg.SpinSourceName))
+		var fpath string
+		if Cfg.SpinSourceName != ":memory:" {
+			fpath = util.JoinPath(cfg.SqlPath, Cfg.SpinSourceName)
+		} else {
+			fpath = Cfg.SpinSourceName
+		}
+		cfg.XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, fpath)
 	} else {
 		cfg.XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, Cfg.SpinSourceName)
 	}

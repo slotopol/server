@@ -3,7 +3,7 @@
 # It produces static C-libraries linkage.
 
 wd=$(realpath -s "$(dirname "$0")/..")
-cp -ruv "$wd/confdata/"* "$GOPATH/bin/config"
+cp -ruv "$wd/appdata/"* "$GOPATH/bin/config"
 
 buildvers=$(git describe --tags)
 # See https://tc39.es/ecma262/#sec-date-time-string-format

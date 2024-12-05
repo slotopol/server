@@ -27,7 +27,7 @@ COPY go.mod go.sum ./
 RUN go mod download
 # Copy all files and subfolders in current state as is.
 COPY . .
-COPY ./confdata /go/bin/config
+COPY ./appdata /go/bin/config
 
 # Set executable rights to all shell-scripts.
 RUN chmod +x ./task/*.sh

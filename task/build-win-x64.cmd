@@ -3,7 +3,7 @@ rem This script compiles project for Windows amd64.
 rem It produces static C-libraries linkage.
 
 set wd=%~dp0..
-xcopy %wd%\confdata %GOPATH%\bin\config /f /d /i /e /k /y
+xcopy %wd%\appdata %GOPATH%\bin\config /f /d /i /e /k /y
 
 for /F "tokens=*" %%g in ('git describe --tags') do (set buildvers=%%g)
 for /f "tokens=2 delims==" %%g in ('wmic os get localdatetime /value') do set dt=%%g

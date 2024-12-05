@@ -131,12 +131,12 @@ var Cfg = &Config{
 	},
 	CfgXormDrv: CfgXormDrv{
 		DriverName:       "sqlite3",
-		ClubSourceName:   "slot-club.sqlite",
-		SpinSourceName:   "slot-spin.sqlite",
+		ClubSourceName:   ":memory:",
+		SpinSourceName:   ":memory:",
 		SqlFlushTick:     2500 * time.Millisecond,
-		ClubUpdateBuffer: 200,
-		ClubInsertBuffer: 150,
-		SpinInsertBuffer: 250,
+		ClubUpdateBuffer: 1,
+		ClubInsertBuffer: 1,
+		SpinInsertBuffer: 1,
 	},
 	CfgGameplay: CfgGameplay{
 		AdjunctLimit:    100000,
