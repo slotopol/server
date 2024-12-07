@@ -12,5 +12,5 @@ local symset = {
 }
 
 math.randomseed(os.time())
-local reel, iter = makereelhot(symset, 3, {})
+local reel, iter = makereelhot(symset, 3, {}, {})
 printreel(reel, iter)

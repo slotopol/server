@@ -4,23 +4,23 @@ dofile(path.."lib/reelgen.lua")
 local symset = {
 	4, --  1 wild (only on reel 2, 3, 4)
 	2, --  2 scatter
-	5, --  3 strawberry
-	5, --  4 bell
-	5, --  5 greenstar
-	5, --  6 redstar
-	6, --  7 plum
-	6, --  8 peach
-	6, --  9 quince
-	6, -- 10 cherry
+	2, --  3 seven
+	5, --  4 strawberry
+	5, --  5 blueberry
+	7, --  6 pear
+	9, --  7 plum
+	9, --  8 peach
+	9, --  9 quince
+	9, -- 10 cherry
 }
 
 local chunklen = {
 	3, --  1 wild
 	1, --  2 scatter
-	3, --  3 strawberry
-	3, --  4 bell
-	3, --  5 greenstar
-	3, --  6 redstar
+	1, --  3 seven
+	1, --  4 strawberry
+	1, --  5 blueberry
+	3, --  6 pear
 	3, --  7 plum
 	3, --  8 peach
 	3, --  9 quince

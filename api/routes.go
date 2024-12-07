@@ -125,7 +125,7 @@ func Ret500(c *gin.Context, code int, err error) {
 	RetErr(c, http.StatusInternalServerError, code, err)
 }
 
-func Router(r *gin.Engine) {
+func SetupRouter(r *gin.Engine) {
 	r.NoRoute(Handle404)
 	r.NoMethod(Handle405)
 	//r.Use(gzip.Gzip(gzip.DefaultCompression))

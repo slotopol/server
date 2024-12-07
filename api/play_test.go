@@ -78,10 +78,10 @@ func TestPlay(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	gin.SetMode(gin.DebugMode)
+	gin.SetMode(gin.TestMode)
 	var r = gin.New()
 	r.HandleMethodNotAllowed = true
-	api.Router(r)
+	api.SetupRouter(r)
 
 	// Send "ping" and check that server is our
 	ping(t, r)

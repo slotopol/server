@@ -24,18 +24,16 @@ function makereel(symset, neighbours)
 	return reel, iter
 end
 
-function makereelhot(symset, sy, scat, strict)
+function makereelhot(symset, sy, scat, chunklen, strict)
 	-- make set of chunks
 	local chunks = {}
 	for sym, n in pairs(symset) do
 		while n > 0 do
 			local m
 			if scat[sym] then
-				m = 1
-			elseif n < sy then
-				m = n
+				m = chunklen[sym] or 1
 			else
-				m = sy
+				m = math.min(n, chunklen[sym] or sy)
 			end
 			n = n - m
 			local c = {sym=sym, n=m}

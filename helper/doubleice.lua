@@ -13,6 +13,18 @@ local symset = {
 	8, -- 9 cherry
 }
 
+local chunklen = {
+	3, -- 1 seven
+	4, -- 2 strawberry
+	4, -- 3 bell
+	5, -- 4 star
+	5, -- 5 lemon
+	5, -- 6 blueberry
+	5, -- 7 plum
+	5, -- 8 orange
+	5, -- 9 cherry
+}
+
 math.randomseed(os.time())
-local reel, iter = makereelhot(symset, 5, {}, true)
+local reel, iter = makereelhot(symset, 3, {}, chunklen, true)
 printreel(reel, iter)
