@@ -13,7 +13,7 @@ var Info = game.GameInfo{
 	GP: game.GPsel |
 		game.GPfgno |
 		game.GPscat |
-		game.GPwild,
+		game.GPrwild,
 	SX:  5,
 	SY:  3,
 	SN:  len(LinePay),

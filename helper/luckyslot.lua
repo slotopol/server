@@ -2,20 +2,20 @@ local path = arg[0]:match("(.*[/\\])")
 dofile(path.."lib/reelgen.lua")
 
 local symset = {
-	4, --  1 wild (only on reel 2, 3, 4)
-	2, --  2 scatter
+	1, --  1 wild (only on reel 2, 3, 4)
+	1, --  2 scatter
 	2, --  3 seven
-	5, --  4 strawberry
-	5, --  5 blueberry
-	7, --  6 pear
-	9, --  7 plum
-	9, --  8 peach
-	9, --  9 quince
-	9, -- 10 cherry
+	3, --  4 strawberry
+	4, --  5 blueberry
+	6, --  6 pear
+	7, --  7 plum
+	7, --  8 peach
+	7, --  9 quince
+	7, -- 10 cherry
 }
 
 local chunklen = {
-	3, --  1 wild
+	1, --  1 wild
 	1, --  2 scatter
 	1, --  3 seven
 	1, --  4 strawberry
@@ -28,5 +28,5 @@ local chunklen = {
 }
 
 math.randomseed(os.time())
-local reel, iter = makereelhot(symset, 3, {[2]=true}, chunklen, true)
+local reel, iter = makereelhot(symset, 3, {[1]=true, [2]=true}, chunklen, true)
 printreel(reel, iter)

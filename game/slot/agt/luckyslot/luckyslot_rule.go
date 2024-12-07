@@ -51,6 +51,17 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
+	var reelwild [5]bool
+	var x, y slot.Pos
+	for x = 2; x <= 4; x++ {
+		for y = 1; y <= 3; y++ {
+			if screen.At(x, y) == wild {
+				reelwild[x-1] = true
+				break
+			}
+		}
+	}
+
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
@@ -59,7 +70,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 		var x slot.Pos
 		for x = 2; x <= 5; x++ {
 			var sx = screen.Pos(x, line)
-			if sx == wild {
+			if reelwild[x-1] {
 				continue
 			} else if sx != syml {
 				numl = x - 1
