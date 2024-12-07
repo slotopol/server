@@ -3,6 +3,8 @@ package game
 import (
 	"context"
 	"sort"
+
+	"github.com/slotopol/server/util"
 )
 
 type GP uint
@@ -54,4 +56,13 @@ func MakeRtpList[T any](reelsmap map[float64]T) []float64 {
 	}
 	sort.Float64s(list)
 	return list
+}
+
+func (gi *GameInfo) SetupFactory(game func() any, scan Scanner) {
+	GameList = append(GameList, gi)
+	for _, ga := range gi.Aliases {
+		var aid = util.ToID(ga.Prov + "/" + ga.Name)
+		GameFactory[aid] = game
+		ScanFactory[aid] = scan
+	}
 }
