@@ -102,11 +102,12 @@ const (
 
 	// POST /game/rtp/get
 
-	AEC_game_rdget_nobind
-	AEC_game_rdget_notopened
-	AEC_game_rdget_noclub
-	AEC_game_rdget_nouser
-	AEC_game_rdget_noaccess
+	AEC_game_rtpget_nobind
+	AEC_game_rtpget_notopened
+	AEC_game_rtpget_noinfo
+	AEC_game_rtpget_noclub
+	AEC_game_rtpget_nouser
+	AEC_game_rtpget_noaccess
 
 	// POST /slot/bet/get
 

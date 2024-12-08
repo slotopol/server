@@ -286,8 +286,8 @@ func ApiSlotSpin(c *gin.Context) {
 
 	club.mux.RLock()
 	var bank = club.Bank
-	var mrtp = GetRTP(user, club)
 	club.mux.RUnlock()
+	var mrtp = GetRTP(user, club)
 
 	// spin until gain less than bank value
 	var wins slot.Wins
@@ -436,8 +436,8 @@ func ApiSlotDoubleup(c *gin.Context) {
 
 	club.mux.RLock()
 	var bank = club.Bank
-	var mrtp = GetRTP(user, club)
 	club.mux.RUnlock()
+	var mrtp = GetRTP(user, club)
 
 	var multgain float64 // new multiplied gain
 	if bank >= risk*float64(arg.Mult) {

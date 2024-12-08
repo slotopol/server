@@ -209,6 +209,8 @@ func GetRTP(user *User, club *Club) float64 {
 			return props.MRTP
 		}
 	}
+	club.mux.RLock()
+	defer club.mux.RUnlock()
 	if club.MRTP != 0 {
 		return club.MRTP
 	}

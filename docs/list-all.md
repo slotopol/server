@@ -27,6 +27,7 @@
 'Big Five' AGT 5x3 videoslot
 'Bigfoot' AGT 5x3 videoslot
 'Bitcoin' AGT 5x3 videoslot
+'Book of Set' AGT 5x3 videoslot
 'Captain's Treasure' Playtech 5x3 videoslot
 'Casino' AGT 5x4 videoslot
 'Champagne' Megajack 5x3 videoslot
@@ -84,8 +85,9 @@
 'Marco Polo' Novomatic 5x3 videoslot
 'Pandora's Box' NetEnt 5x3 videoslot
 'Panther Moon' Playtech 5x3 videoslot
-'Pharaon's Gold II' Novomatic 5x3 videoslot
-'Pharaon's Gold III' Novomatic 5x3 videoslot
+'Pharaoh II' AGT 5x3 videoslot
+'Pharaoh's Gold II' Novomatic 5x3 videoslot
+'Pharaoh's Gold III' Novomatic 5x3 videoslot
 'Piggy Riches' NetEnt 5x3 videoslot
 'Pirates Gold' AGT 5x3 videoslot
 'Plenty on Twenty' Novomatic 5x3 videoslot
@@ -128,8 +130,8 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 125 games, 64 algorithms, 9 providers
-AGT: 43 games
+total: 127 games, 64 algorithms, 9 providers
+AGT: 45 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games

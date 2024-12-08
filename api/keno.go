@@ -322,8 +322,8 @@ func ApiKenoSpin(c *gin.Context) {
 
 	club.mux.RLock()
 	var bank = club.Bank
-	var mrtp = GetRTP(user, club)
 	club.mux.RUnlock()
+	var mrtp = GetRTP(user, club)
 
 	// spin until gain less than bank value
 	var wins keno.Wins

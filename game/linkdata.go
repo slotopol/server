@@ -2,6 +2,7 @@ package game
 
 import (
 	"context"
+	"math"
 	"sort"
 
 	"github.com/slotopol/server/util"
@@ -58,6 +59,17 @@ func MakeRtpList[T any](reelsmap map[float64]T) []float64 {
 	return list
 }
 
+func GetInfo(alias string) *GameInfo {
+	for _, gi := range GameList {
+		for _, ga := range gi.Aliases {
+			if aid := util.ToID(ga.Prov + "/" + ga.Name); alias == aid {
+				return gi
+			}
+		}
+	}
+	return nil
+}
+
 func (gi *GameInfo) SetupFactory(game func() any, scan Scanner) {
 	GameList = append(GameList, gi)
 	for _, ga := range gi.Aliases {
@@ -65,4 +77,13 @@ func (gi *GameInfo) SetupFactory(game func() any, scan Scanner) {
 		GameFactory[aid] = game
 		ScanFactory[aid] = scan
 	}
+}
+
+func (gi *GameInfo) FindRTP(mrtp float64) (rtp float64) {
+	for _, p := range gi.RTP {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			rtp = p
+		}
+	}
+	return
 }

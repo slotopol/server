@@ -95,9 +95,7 @@ func ApiGameJoin(c *gin.Context) {
 	ret.GID = gid
 	ret.Game = anygame
 	// make game screen object
-	club.mux.RLock()
 	var rtp = GetRTP(user, club)
-	club.mux.RUnlock()
 	switch game := anygame.(type) {
 	case slot.SlotGame:
 		var scrn = game.NewScreen()
@@ -230,40 +228,46 @@ func ApiGameRtpGet(c *gin.Context) {
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
 		MRTP    float64  `json:"mrtp" yaml:"mrtp" xml:"mrtp"`
+		RTP     float64  `json:"rtp" yaml:"rtp" xml:"rtp"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
-		Ret400(c, AEC_game_rdget_nobind, err)
+		Ret400(c, AEC_game_rtpget_nobind, err)
 		return
 	}
 
 	var scene *Scene
 	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_game_rdget_notopened, ErrNotOpened)
+		Ret404(c, AEC_game_rtpget_notopened, ErrNotOpened)
+		return
+	}
+
+	var gi *game.GameInfo
+	if gi = game.GetInfo(scene.Alias); gi == nil {
+		Ret500(c, AEC_game_rtpget_noinfo, ErrNoAliase)
 		return
 	}
 
 	var club *Club
 	if club, ok = Clubs.Get(scene.CID); !ok {
-		Ret500(c, AEC_game_rdget_noclub, ErrNoClub)
+		Ret500(c, AEC_game_rtpget_noclub, ErrNoClub)
 		return
 	}
 
 	var user *User
 	if user, ok = Users.Get(scene.UID); !ok {
-		Ret500(c, AEC_game_rdget_nouser, ErrNoUser)
+		Ret500(c, AEC_game_rtpget_nouser, ErrNoUser)
 		return
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
 	if admin != user && al&ALgame == 0 {
-		Ret403(c, AEC_game_rdget_noaccess, ErrNoAccess)
+		Ret403(c, AEC_game_rtpget_noaccess, ErrNoAccess)
 		return
 	}
 
-	club.mux.RLock()
 	ret.MRTP = GetRTP(user, club)
-	club.mux.RUnlock()
+	ret.RTP = gi.FindRTP(ret.MRTP)
 
 	RetOk(c, ret)
 }

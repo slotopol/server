@@ -316,9 +316,7 @@ func ApiPropsRtpGet(c *gin.Context) {
 	}
 
 	if arg.All {
-		club.mux.RLock()
 		ret.MRTP = GetRTP(user, club)
-		club.mux.RUnlock()
 	} else {
 		ret.MRTP = user.GetRTP(arg.CID)
 	}

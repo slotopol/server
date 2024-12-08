@@ -32,6 +32,9 @@ type Screenx struct {
 	data   [40]Sym
 }
 
+// Declare conformity with Screen interface.
+var _ Screen = (*Screenx)(nil)
+
 var poolsx = sync.Pool{
 	New: func() any {
 		return &Screen3x3{}
@@ -220,6 +223,9 @@ func (s *Screenx) UnmarshalJSON(b []byte) (err error) {
 // Screen for 3x3 slots.
 type Screen3x3 [3][3]Sym
 
+// Declare conformity with Screen interface.
+var _ Screen = (*Screen3x3)(nil)
+
 var pools3x3 = sync.Pool{
 	New: func() any {
 		return &Screen3x3{}
@@ -369,6 +375,9 @@ func (s *Screen3x3) FillSym() Sym {
 // Screen for 5x3 slots.
 type Screen5x3 [5][3]Sym
 
+// Declare conformity with Screen interface.
+var _ Screen = (*Screen5x3)(nil)
+
 var pools5x3 = sync.Pool{
 	New: func() any {
 		return &Screen5x3{}
@@ -514,6 +523,9 @@ func (s *Screen5x3) FillSym() Sym {
 
 // Screen for 5x4 slots.
 type Screen5x4 [5][4]Sym
+
+// Declare conformity with Screen interface.
+var _ Screen = (*Screen5x4)(nil)
 
 var pools5x4 = sync.Pool{
 	New: func() any {
