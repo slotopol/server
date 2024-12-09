@@ -10,7 +10,7 @@ local symset = {
 	6, --  6 pear
 	7, --  7 plum
 	7, --  8 peach
-	7, --  9 quince
+	7, --  9 papaya
 	7, -- 10 cherry
 }
 
@@ -23,7 +23,7 @@ local chunklen = {
 	3, --  6 pear
 	3, --  7 plum
 	3, --  8 peach
-	3, --  9 quince
+	3, --  9 papaya
 	3, -- 10 cherry
 }
 

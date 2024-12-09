@@ -47,22 +47,33 @@ function makereelhot(symset, sy, scat, chunklen, strict)
 		shuffle(chunks)
 		local ok, n = true, 0
 		local last = 0
-		for _, c in pairs(chunks) do
-			if strict and c.sym == last then
-				ok = false
-				break
-			end
-			if scat[c.sym] then
-				if n < sy then
+		for i = 1, #chunks do
+			local c1, c2 = chunks[i], chunks[i+1]
+			if strict and c1.sym == last then
+				if not c2 or c2.sym == last then
 					ok = false
 					break
+				else
+					c1, c2 = c2, c1
+					chunks[i], chunks[i+1] = c1, c2
+				end
+			end
+			if scat[c1.sym] then
+				if n < sy then
+					if not c2 or scat[c2.sym] or (strict and c2.sym == last) then
+						ok = false
+						break
+					else
+						c1, c2 = c2, c1
+						chunks[i], chunks[i+1] = c1, c2
+					end
 				else
 					n = 0
 				end
 			else
-				n = n + c.n
+				n = n + c1.n
 			end
-			last = c.sym
+			last = c1.sym
 		end
 		iter = iter + 1
 	until ok or iter >= 1000

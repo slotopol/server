@@ -69,6 +69,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/agt/cherryhot"
 	_ "github.com/slotopol/server/game/slot/agt/doubleice"
 	_ "github.com/slotopol/server/game/slot/agt/egypt"
+	_ "github.com/slotopol/server/game/slot/agt/extraspin"
 	_ "github.com/slotopol/server/game/slot/agt/happysanta"
 	_ "github.com/slotopol/server/game/slot/agt/happysanta50"
 	_ "github.com/slotopol/server/game/slot/agt/hotclover"
