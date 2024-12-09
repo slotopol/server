@@ -8,7 +8,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"strings"
+	"regexp"
 	"syscall"
 	"time"
 
@@ -18,6 +18,7 @@ import (
 	"gopkg.in/yaml.v3"
 
 	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
 	"xorm.io/xorm"
 	"xorm.io/xorm/names"
@@ -32,7 +33,9 @@ var (
 	ErrNoSpinName = errors.New("name of 'spin' database does not provided at data source name")
 )
 
-const sqlnewdb = "CREATE DATABASE IF NOT EXISTS `%s`"
+const mysqlnewdb = "CREATE DATABASE IF NOT EXISTS `%s`"
+
+var snre = regexp.MustCompile(`^(\w+:.+@/)(\w+)`)
 
 func Startup() (exitctx context.Context) {
 	//var cancel context.CancelFunc
@@ -69,35 +72,39 @@ func Startup() (exitctx context.Context) {
 }
 
 func InitStorage() (err error) {
-	if Cfg.DriverName != "sqlite3" {
-		var c1 = strings.Split(Cfg.ClubSourceName, "@/")
-		if len(c1) < 2 {
-			return ErrNoClubName
-		}
-		var c2 = strings.Split(c1[1], "?")
-		var engine *xorm.Engine
-		if engine, err = xorm.NewEngine(Cfg.DriverName, c1[0]+"@/"); err != nil {
-			return
-		}
-		defer engine.Close()
-		if _, err = engine.Exec(fmt.Sprintf(sqlnewdb, c2[0])); err != nil {
-			return
-		}
-	}
-
-	if Cfg.DriverName == "sqlite3" {
+	switch Cfg.DriverName {
+	case "sqlite3":
 		var fpath string
 		if Cfg.ClubSourceName != ":memory:" {
 			fpath = util.JoinPath(cfg.SqlPath, Cfg.ClubSourceName)
 		} else {
 			fpath = Cfg.ClubSourceName
 		}
-		cfg.XormStorage, err = xorm.NewEngine(Cfg.DriverName, fpath)
-	} else {
-		cfg.XormStorage, err = xorm.NewEngine(Cfg.DriverName, Cfg.ClubSourceName)
-	}
-	if err != nil {
-		return
+		if cfg.XormStorage, err = xorm.NewEngine(Cfg.DriverName, fpath); err != nil {
+			return
+		}
+
+	case "mysql":
+		if c := snre.FindStringSubmatch(Cfg.ClubSourceName); len(c) == 3 {
+			var dbname, rsn = c[2], c[1]
+			var engine *xorm.Engine
+			if engine, err = xorm.NewEngine(Cfg.DriverName, rsn); err != nil {
+				return
+			}
+			defer engine.Close()
+			if _, err = engine.Exec(fmt.Sprintf(mysqlnewdb, dbname)); err != nil {
+				return
+			}
+		}
+		if cfg.XormStorage, err = xorm.NewEngine(Cfg.DriverName, Cfg.ClubSourceName); err != nil {
+			return
+		}
+
+	case "postgres":
+		if cfg.XormStorage, err = xorm.NewEngine(Cfg.DriverName, Cfg.ClubSourceName); err != nil {
+			log.Println(Cfg.ClubSourceName)
+			return
+		}
 	}
 	cfg.XormStorage.SetMapper(names.GonicMapper{})
 
@@ -215,35 +222,38 @@ func InitStorage() (err error) {
 }
 
 func InitSpinlog() (err error) {
-	if Cfg.DriverName != "sqlite3" {
-		var c1 = strings.Split(Cfg.SpinSourceName, "@/")
-		if len(c1) < 2 {
-			return ErrNoSpinName
-		}
-		var c2 = strings.Split(c1[1], "?")
-		var engine *xorm.Engine
-		if engine, err = xorm.NewEngine(Cfg.DriverName, c1[0]+"@/"); err != nil {
-			return
-		}
-		defer engine.Close()
-		if _, err = engine.Exec(fmt.Sprintf(sqlnewdb, c2[0])); err != nil {
-			return
-		}
-	}
-
-	if Cfg.DriverName == "sqlite3" {
+	switch Cfg.DriverName {
+	case "sqlite3":
 		var fpath string
 		if Cfg.SpinSourceName != ":memory:" {
 			fpath = util.JoinPath(cfg.SqlPath, Cfg.SpinSourceName)
 		} else {
 			fpath = Cfg.SpinSourceName
 		}
-		cfg.XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, fpath)
-	} else {
-		cfg.XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, Cfg.SpinSourceName)
-	}
-	if err != nil {
-		return
+		if cfg.XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, fpath); err != nil {
+			return
+		}
+
+	case "mysql":
+		if c := snre.FindStringSubmatch(Cfg.ClubSourceName); len(c) == 3 {
+			var dbname, rsn = c[2], c[1]
+			var engine *xorm.Engine
+			if engine, err = xorm.NewEngine(Cfg.DriverName, rsn); err != nil {
+				return
+			}
+			defer engine.Close()
+			if _, err = engine.Exec(fmt.Sprintf(mysqlnewdb, dbname)); err != nil {
+				return
+			}
+		}
+		if cfg.XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, Cfg.SpinSourceName); err != nil {
+			return
+		}
+
+	case "postgres":
+		if cfg.XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, Cfg.SpinSourceName); err != nil {
+			return
+		}
 	}
 	cfg.XormSpinlog.SetMapper(names.GonicMapper{})
 

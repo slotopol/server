@@ -66,15 +66,18 @@ web-server: # See https://golang.org/pkg/net/http/#Server for details.
   shutdown-timeout: 15s
 database:
   # Provides driver name to create XORM engine.
-  # It can be "sqlite3" or "mysql".
+  # It can be "sqlite3", "mysql", "postgres".
+  # To place database in memory only, point driver name "sqlite3" and source names ":memory:".
   driver-name: sqlite3
   # Data source name for 'club' database to create XORM engine.
-  # For sqlite3 it should be database file name (slot-club.sqlite),
-  # for mysql it should match to pattern user:password@/slot_club.
+  # For sqlite3 it should be db file name:   slot-club.sqlite
+  # For mysql it should match to pattern:    user:password@/slot_club.
+  # For postgres it should match to pattern: user=postgres password=password dbname=slot_club sslmode=disable
   club-source-name: slot-club.sqlite
   # Data source name for 'spin' database to create XORM engine.
-  # For sqlite3 it should be database file name (slot-spin.sqlite),
-  # for mysql it should match to pattern user:password@/slot_spin.
+  # For sqlite3 it should be db file name:   slot-spin.sqlite
+  # For mysql it should match to pattern:    user:password@/slot_spin.
+  # For postgres it should match to pattern: user=postgres password=password dbname=slot_spin sslmode=disable
   spin-source-name: slot-spin.sqlite
   # Duration between flushes of SQL batching buffers.
   sql-flush-tick: 2500ms
