@@ -112,14 +112,14 @@ func InitStorage() (err error) {
 	defer session.Close()
 
 	if err = session.Sync(
-		&api.Club{}, &api.User{}, &api.Props{},
+		&api.ClubData{}, &api.User{}, &api.Props{},
 		&api.Story{}, api.Walletlog{}, api.Banklog{},
 	); err != nil {
 		return
 	}
 
 	var ok bool
-	if ok, err = session.IsTableEmpty(&api.Club{}); err != nil {
+	if ok, err = session.IsTableEmpty(&api.ClubData{}); err != nil {
 		return
 	}
 	if ok {

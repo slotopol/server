@@ -426,7 +426,7 @@ func ApiSlotDoubleup(c *gin.Context) {
 
 	var risk = game.GetGain()
 	if risk == 0 {
-		Ret403(c, AEC_slot_doubleup_nomoney, ErrNoMoney)
+		Ret403(c, AEC_slot_doubleup_nogain, ErrNoGain)
 		return
 	}
 

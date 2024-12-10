@@ -169,7 +169,7 @@ const (
 	AEC_slot_doubleup_nouser
 	AEC_slot_doubleup_noaccess
 	AEC_slot_doubleup_noprops
-	AEC_slot_doubleup_nomoney
+	AEC_slot_doubleup_nogain
 	AEC_slot_doubleup_sqlbank
 
 	// POST /slot/collect
@@ -365,6 +365,7 @@ var (
 	ErrNoProps   = errors.New("properties for given user and club does not found")
 	ErrNoAddSum  = errors.New("no sum to change balance of bank or fund or deposit")
 	ErrNoMoney   = errors.New("not enough money on balance")
+	ErrNoGain    = errors.New("no money won")
 	ErrBankOut   = errors.New("not enough money at bank")
 	ErrFundOut   = errors.New("not enough money at jackpot fund")
 	ErrLockOut   = errors.New("not enough money at deposit")
