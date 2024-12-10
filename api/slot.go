@@ -284,9 +284,7 @@ func ApiSlotSpin(c *gin.Context) {
 		return
 	}
 
-	club.mux.RLock()
-	var bank = club.Bank
-	club.mux.RUnlock()
+	var bank = club.Bank()
 	var mrtp = GetRTP(user, club)
 
 	// spin until gain less than bank value
@@ -321,9 +319,7 @@ func ApiSlotSpin(c *gin.Context) {
 	}
 
 	// make changes to memory data
-	club.mux.Lock()
-	club.Bank += banksum
-	club.mux.Unlock()
+	club.AddBank(banksum)
 	props.Wallet -= banksum
 	game.Apply(scrn, wins)
 
@@ -434,9 +430,7 @@ func ApiSlotDoubleup(c *gin.Context) {
 		return
 	}
 
-	club.mux.RLock()
-	var bank = club.Bank
-	club.mux.RUnlock()
+	var bank = club.Bank()
 	var mrtp = GetRTP(user, club)
 
 	var multgain float64 // new multiplied gain
@@ -458,10 +452,7 @@ func ApiSlotDoubleup(c *gin.Context) {
 	}
 
 	// make changes to memory data
-	club.mux.Lock()
-	club.Bank += banksum
-	club.mux.Unlock()
-
+	club.AddBank(banksum)
 	props.Wallet -= banksum
 
 	game.SetGain(multgain)

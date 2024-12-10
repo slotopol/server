@@ -214,7 +214,7 @@ func ApiUserDelete(c *gin.Context) {
 	for cid, props := range user.props.Items() {
 		ret.Wallets[cid] = props.Wallet
 		if club, ok := Clubs.Get(cid); ok && props.Wallet != 0 {
-			club.Lock += float64(props.Wallet)
+			club.AddDeposit(props.Wallet)
 			ret.Wallets[cid] = props.Wallet
 		}
 	}

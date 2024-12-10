@@ -24,7 +24,7 @@ func ApiClubList(c *gin.Context) {
 
 	ret.List = make([]item, 0, Clubs.Len())
 	for cid, club := range Clubs.Items() {
-		ret.List = append(ret.List, item{CID: cid, Name: club.Name})
+		ret.List = append(ret.List, item{CID: cid, Name: club.Name()})
 	}
 
 	RetOk(c, ret)
@@ -59,14 +59,14 @@ func ApiClubIs(c *gin.Context) {
 		if ai.CID != 0 {
 			var club *Club
 			if club, ok = Clubs.Get(ai.CID); ok {
-				ri.CID = club.CID
-				ri.Name = club.Name
+				ri.CID = club.CID()
+				ri.Name = club.Name()
 			}
 		} else {
 			for _, club := range Clubs.Items() {
-				if club.Name == ai.Name {
-					ri.CID = club.CID
-					ri.Name = club.Name
+				if name := club.Name(); name == ai.Name {
+					ri.CID = club.CID()
+					ri.Name = name
 					break
 				}
 			}
@@ -86,13 +86,8 @@ func ApiClubInfo(c *gin.Context) {
 		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required"`
 	}
 	var ret struct {
-		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
-		Name    string   `json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
-		Bank    float64  `json:"bank" yaml:"bank" xml:"bank"` // users win/lost balance, in coins
-		Fund    float64  `json:"fund" yaml:"fund" xml:"fund"` // jackpot fund, in coins
-		Lock    float64  `json:"lock" yaml:"lock" xml:"lock"` // not changed deposit within games
-		Rate    float64  `json:"rate" yaml:"rate" xml:"rate"` // jackpot rate for games with progressive jackpot
-		MRTP    float64  `json:"mrtp" yaml:"mrtp" xml:"mrtp"` // master RTP
+		XMLName  xml.Name `json:"-" yaml:"-" xml:"ret"`
+		ClubData `yaml:",inline"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -112,14 +107,7 @@ func ApiClubInfo(c *gin.Context) {
 		return
 	}
 
-	club.mux.Lock()
-	ret.Name = club.Name
-	ret.Bank = club.Bank
-	ret.Fund = club.Fund
-	ret.Lock = club.Lock
-	ret.Rate = club.Rate
-	ret.MRTP = club.MRTP
-	club.mux.Unlock()
+	ret.ClubData = club.Get()
 
 	RetOk(c, ret)
 }
@@ -151,14 +139,12 @@ func ApiClubRename(c *gin.Context) {
 		return
 	}
 
-	if _, err = cfg.XormStorage.ID(club.CID).Cols("name").Update(&Club{Name: arg.Name}); err != nil {
+	if _, err = cfg.XormStorage.ID(club.CID()).Cols("name").Update(&ClubData{Name: arg.Name}); err != nil {
 		Ret500(c, AEC_club_rename_update, err)
 		return
 	}
 
-	club.mux.Lock()
-	club.Name = arg.Name
-	club.mux.Unlock()
+	club.SetName(arg.Name)
 
 	Ret204(c)
 }
@@ -203,11 +189,10 @@ func ApiClubCashin(c *gin.Context) {
 		return
 	}
 
-	club.mux.Lock()
-	var bank = club.Bank + arg.BankSum
-	var fund = club.Fund + arg.FundSum
-	var lock = club.Lock + arg.LockSum
-	club.mux.Unlock()
+	var bank, fund, lock = club.GetCash()
+	bank += arg.BankSum
+	fund += arg.FundSum
+	lock += arg.LockSum
 
 	if bank < 0 {
 		Ret403(c, AEC_club_cashin_bankout, ErrBankOut)
@@ -231,7 +216,7 @@ func ApiClubCashin(c *gin.Context) {
 		LockSum: arg.LockSum,
 	}
 	if err = SafeTransaction(cfg.XormStorage, func(session *Session) (err error) {
-		if _, err = session.Exec(sqlclub, arg.BankSum, arg.FundSum, arg.LockSum, club.CID); err != nil {
+		if _, err = session.Exec(sqlclub, arg.BankSum, arg.FundSum, arg.LockSum, club.CID()); err != nil {
 			Ret500(c, AEC_club_cashin_sqlbank, err)
 			return
 		}
@@ -245,11 +230,7 @@ func ApiClubCashin(c *gin.Context) {
 	}
 
 	// make changes to memory data
-	club.mux.Lock()
-	club.Bank += arg.BankSum
-	club.Fund += arg.FundSum
-	club.Lock += arg.LockSum
-	club.mux.Unlock()
+	club.AddCash(arg.BankSum, arg.FundSum, arg.LockSum)
 
 	ret.BID = rec.ID
 	ret.Bank = bank

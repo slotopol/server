@@ -152,16 +152,16 @@ func InitStorage() (err error) {
 
 	var offset = 0
 	for {
-		var chunk []*api.Club
+		var chunk []api.ClubData
 		if err = session.Limit(limit, offset).Find(&chunk); err != nil {
 			return
 		}
 		offset += limit
-		for _, club := range chunk {
-			api.Clubs.Set(club.CID, club)
+		for _, cd := range chunk {
+			api.Clubs.Set(cd.CID, api.MakeClub(cd))
 			var bat = &api.SqlBank{}
-			bat.Init(club.CID, Cfg.ClubUpdateBuffer, Cfg.ClubInsertBuffer)
-			api.BankBat[club.CID] = bat
+			bat.Init(cd.CID, Cfg.ClubUpdateBuffer, Cfg.ClubInsertBuffer)
+			api.BankBat[cd.CID] = bat
 		}
 		if limit > len(chunk) {
 			break

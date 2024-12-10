@@ -320,9 +320,7 @@ func ApiKenoSpin(c *gin.Context) {
 		return
 	}
 
-	club.mux.RLock()
-	var bank = club.Bank
-	club.mux.RUnlock()
+	var bank = club.Bank()
 	var mrtp = GetRTP(user, club)
 
 	// spin until gain less than bank value
@@ -352,9 +350,7 @@ func ApiKenoSpin(c *gin.Context) {
 	}
 
 	// make changes to memory data
-	club.mux.Lock()
-	club.Bank += banksum
-	club.mux.Unlock()
+	club.AddBank(banksum)
 	props.Wallet -= banksum
 
 	// write spin result to log and get spin ID

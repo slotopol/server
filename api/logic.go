@@ -9,8 +9,7 @@ import (
 	"github.com/slotopol/server/util"
 )
 
-// Club means independent bank into which gambles some users.
-type Club struct {
+type ClubData struct {
 	CID   uint64    `xorm:"pk autoincr" json:"cid" yaml:"cid" xml:"cid,attr"`                                        // club ID
 	CTime time.Time `xorm:"created 'ctime' notnull default CURRENT_TIMESTAMP" json:"ctime" yaml:"ctime" xml:"ctime"` // creation time
 	UTime time.Time `xorm:"updated 'utime' notnull default CURRENT_TIMESTAMP" json:"utime" yaml:"utime" xml:"utime"` // update time
@@ -20,8 +19,16 @@ type Club struct {
 	Lock  float64   `xorm:"notnull default 0" json:"lock" yaml:"lock" xml:"lock"`          // not changed deposit within games
 	Rate  float64   `xorm:"'rate' notnull default 2.5" json:"rate" yaml:"rate" xml:"rate"` // jackpot rate for games with progressive jackpot
 	MRTP  float64   `xorm:"'mrtp' notnull default 0" json:"mrtp" yaml:"mrtp" xml:"mrtp"`   // master RTP
+}
 
-	mux sync.RWMutex
+func (ClubData) TableName() string {
+	return "club"
+}
+
+// Club means independent bank into which gambles some users.
+type Club struct {
+	data ClubData
+	mux  sync.RWMutex
 }
 
 // User flag.
@@ -154,6 +161,94 @@ var Users util.RWMap[uint64, *User]
 // All scenes, by GID.
 var Scenes util.RWMap[uint64, *Scene]
 
+func MakeClub(cd ClubData) *Club {
+	return &Club{data: cd}
+}
+
+func (club *Club) Get() ClubData {
+	club.mux.RLock()
+	defer club.mux.RUnlock()
+	return club.data
+}
+
+func (club *Club) CID() uint64 { // read only
+	return club.data.CID
+}
+
+func (club *Club) Name() string {
+	club.mux.RLock()
+	defer club.mux.RUnlock()
+	return club.data.Name
+}
+
+func (club *Club) SetName(name string) {
+	club.mux.Lock()
+	defer club.mux.Unlock()
+	club.data.Name = name
+}
+
+func (club *Club) Bank() float64 {
+	club.mux.RLock()
+	defer club.mux.RUnlock()
+	return club.data.Bank
+}
+
+func (club *Club) Fund() float64 {
+	club.mux.RLock()
+	defer club.mux.RUnlock()
+	return club.data.Fund
+}
+
+func (club *Club) Deposit() float64 {
+	club.mux.RLock()
+	defer club.mux.RUnlock()
+	return club.data.Lock
+}
+
+func (club *Club) GetCash() (bank, fund, deposit float64) {
+	club.mux.RLock()
+	defer club.mux.RUnlock()
+	return club.data.Bank, club.data.Fund, club.data.Lock
+}
+
+func (club *Club) AddCash(bank, fund, deposit float64) {
+	club.mux.Lock()
+	defer club.mux.Unlock()
+	club.data.Bank += bank
+	club.data.Fund += fund
+	club.data.Lock += deposit
+}
+
+func (club *Club) AddBank(bank float64) {
+	club.mux.Lock()
+	defer club.mux.Unlock()
+	club.data.Bank += bank
+}
+
+func (club *Club) AddFund(fund float64) {
+	club.mux.Lock()
+	defer club.mux.Unlock()
+	club.data.Fund += fund
+}
+
+func (club *Club) AddDeposit(deposit float64) {
+	club.mux.Lock()
+	defer club.mux.Unlock()
+	club.data.Lock += deposit
+}
+
+func (club *Club) Rate() float64 {
+	club.mux.RLock()
+	defer club.mux.RUnlock()
+	return club.data.Rate
+}
+
+func (club *Club) MRTP() float64 {
+	club.mux.RLock()
+	defer club.mux.RUnlock()
+	return club.data.MRTP
+}
+
 func (user *User) Init() {
 	user.games.Init(0)
 	user.props.Init(0)
@@ -205,14 +300,12 @@ func MustAdmin(c *gin.Context, cid uint64) (*User, AL) {
 
 func GetRTP(user *User, club *Club) float64 {
 	if user != nil {
-		if props, ok := user.props.Get(club.CID); ok && props.MRTP != 0 {
+		if props, ok := user.props.Get(club.CID()); ok && props.MRTP != 0 {
 			return props.MRTP
 		}
 	}
-	club.mux.RLock()
-	defer club.mux.RUnlock()
-	if club.MRTP != 0 {
-		return club.MRTP
+	if mrtp := club.MRTP(); mrtp != 0 {
+		return mrtp
 	}
 	return cfg.DefMRTP // default master RTP if no others found
 }
