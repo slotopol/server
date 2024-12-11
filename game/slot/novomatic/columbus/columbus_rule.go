@@ -121,12 +121,12 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
-	if count := screen.ScatNumOdd(scat); count >= 3 {
+	if count := screen.ScatNum(scat); count >= 3 {
 		*wins = append(*wins, slot.WinItem{
 			Mult: 1,
 			Sym:  scat,
 			Num:  count,
-			XY:   screen.ScatPosOdd(scat),
+			XY:   screen.ScatPos(scat),
 			Free: 10,
 		})
 	}

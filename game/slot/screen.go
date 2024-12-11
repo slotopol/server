@@ -18,10 +18,8 @@ type Screen interface {
 	Spin(reels Reels)                  // fill the screen with random hits on those reels
 	SymNum(sym Sym) (n Pos)            // returns number of symbols on the screen that can repeats on reel
 	ScatNum(scat Sym) (n Pos)          // returns number of scatters on the screen
-	ScatNumOdd(scat Sym) (n Pos)       // returns number of scatters on the screen on odd reels
 	ScatNumCont(scat Sym) (n Pos)      // returns number of continuous scatters on the screen
 	ScatPos(scat Sym) Linex            // returns line with scatters positions on the screen
-	ScatPosOdd(scat Sym) Linex         // returns line with scatters positions on the screen on odd reels
 	ScatPosCont(scat Sym) Linex        // returns line with continuous scatters positions on the screen
 	FillSym() Sym                      // returns symbol that filled whole screen, or 0
 	Free()                             // put object to pool
@@ -122,21 +120,6 @@ func (s *Screenx) ScatNum(scat Sym) (n Pos) {
 	for i := range s.sx * s.sy {
 		if s.data[i] == scat {
 			n++
-		}
-	}
-	return
-}
-
-func (s *Screenx) ScatNumOdd(scat Sym) (n Pos) {
-	var x, y, i Pos
-loopx:
-	for x = 0; x < s.sx; x += 2 {
-		i = x * s.sy
-		for y = range s.sy {
-			if s.data[i+y] == scat {
-				n++
-				continue loopx
-			}
 		}
 	}
 	return
@@ -293,17 +276,6 @@ func (s *Screen3x3) ScatNum(scat Sym) (n Pos) {
 	return
 }
 
-func (s *Screen3x3) ScatNumOdd(scat Sym) (n Pos) {
-	var x Pos
-	for x = 0; x < 3; x += 2 {
-		var r = s[x]
-		if r[0] == scat || r[1] == scat || r[2] == scat {
-			n++
-		}
-	}
-	return
-}
-
 func (s *Screen3x3) ScatNumCont(scat Sym) (n Pos) {
 	var x Pos
 	for x = 0; x < 3; x++ {
@@ -444,16 +416,6 @@ func (s *Screen5x3) ScatNum(scat Sym) (n Pos) {
 	return
 }
 
-func (s *Screen5x3) ScatNumOdd(scat Sym) (n Pos) {
-	for x := 0; x < 5; x += 2 {
-		var r = s[x]
-		if r[0] == scat || r[1] == scat || r[2] == scat {
-			n++
-		}
-	}
-	return
-}
-
 func (s *Screen5x3) ScatNumCont(scat Sym) (n Pos) {
 	for x := 0; x < 5; x++ {
 		var r = s[x]
@@ -585,16 +547,6 @@ func (s *Screen5x4) SymNum(sym Sym) (n Pos) {
 
 func (s *Screen5x4) ScatNum(scat Sym) (n Pos) {
 	for x := range 5 {
-		var r = s[x]
-		if r[0] == scat || r[1] == scat || r[2] == scat || r[3] == scat {
-			n++
-		}
-	}
-	return
-}
-
-func (s *Screen5x4) ScatNumOdd(scat Sym) (n Pos) {
-	for x := 0; x < 5; x += 2 {
 		var r = s[x]
 		if r[0] == scat || r[1] == scat || r[2] == scat || r[3] == scat {
 			n++

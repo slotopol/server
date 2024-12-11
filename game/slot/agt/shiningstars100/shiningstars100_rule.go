@@ -94,14 +94,14 @@ func (g *Game) ScanScatters(screen *slot.Screen5x4, wins *slot.Wins) {
 			Num:  count,
 			XY:   screen.ScatPos(scat1),
 		})
-	} else if count := screen.ScatNumOdd(scat2); count >= 3 {
+	} else if count := screen.ScatNum(scat2); count >= 3 {
 		var pay = ScatPay2[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * float64(g.Sel) * pay,
 			Mult: 1,
 			Sym:  scat2,
 			Num:  count,
-			XY:   screen.ScatPosOdd(scat2),
+			XY:   screen.ScatPos(scat2),
 		})
 	}
 }
