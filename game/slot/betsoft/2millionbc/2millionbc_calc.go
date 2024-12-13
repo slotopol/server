@@ -33,7 +33,7 @@ func ExpDiamondLion() float64 {
 }
 
 func CalcStatBon(ctx context.Context) float64 {
-	var reels = &ReelsBon
+	var reels = ReelsBon
 	var g = NewGame()
 	var sln float64 = 1
 	g.Sel = int(sln)
