@@ -4,8 +4,15 @@ package fortuneteller
 // See: https://www.youtube.com/watch?v=bFQq3cCz9XY
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game/slot"
 )
+
+//go:embed fortuneteller_reel.yaml
+var reels []byte
+
+var ReelsMap = slot.ReadReelsMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [12][5]float64{

@@ -3,10 +3,21 @@ package copsnrobbers
 // See: https://freeslotshub.com/playngo/cop-the-lot/
 
 import (
+	_ "embed"
 	"math/rand/v2"
 
 	"github.com/slotopol/server/game/slot"
 )
+
+//go:embed copsnrobbers_bon.yaml
+var bon []byte
+
+var ReelsBon = slot.ReadBon[*slot.Reels5x](bon)
+
+//go:embed copsnrobbers_reel.yaml
+var reels []byte
+
+var ReelsMap = slot.ReadReelsMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [11][5]float64{
@@ -158,7 +169,7 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 		var reels, _ = slot.FindReels(ReelsMap, mrtp)
 		screen.Spin(reels)
 	} else {
-		screen.Spin(&ReelsBon)
+		screen.Spin(ReelsBon)
 	}
 }
 
