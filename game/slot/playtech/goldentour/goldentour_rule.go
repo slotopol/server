@@ -3,8 +3,15 @@ package goldentour
 // See: https://freeslotshub.com/playtech/golden-tour/
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game/slot"
 )
+
+//go:embed goldentour_reel.yaml
+var reels []byte
+
+var ReelsMap = slot.ReadReelsMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [11][5]float64{

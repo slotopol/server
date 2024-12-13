@@ -3,8 +3,15 @@ package captainstreasure
 // See: https://freeslotshub.com/playtech/captains-treasure/
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game/slot"
 )
+
+//go:embed captainstreasure_reel.yaml
+var reels []byte
+
+var ReelsMap = slot.ReadReelsMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [11][5]float64{
