@@ -3,8 +3,15 @@ package shiningstars
 // See: https://demo.agtsoftware.com/games/agt/shiningstars
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game/slot"
 )
+
+//go:embed shiningstars_reel.yaml
+var reels []byte
+
+var ReelsMap = slot.ReadReelsMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [11][5]float64{

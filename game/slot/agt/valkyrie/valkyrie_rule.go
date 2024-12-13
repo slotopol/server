@@ -3,10 +3,21 @@ package valkyrie
 // See: https://demo.agtsoftware.com/games/agt/valkyrie
 
 import (
+	_ "embed"
 	"math/rand/v2"
 
 	"github.com/slotopol/server/game/slot"
 )
+
+//go:embed valkyrie_bon.yaml
+var bon []byte
+
+var BonusReel = slot.ReadBon[[]slot.Sym](bon)
+
+//go:embed valkyrie_reel.yaml
+var reels []byte
+
+var ReelsMap = slot.ReadReelsMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [13][5]float64{

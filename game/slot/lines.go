@@ -2,6 +2,9 @@ package slot
 
 import (
 	"encoding/json"
+	"os"
+
+	"gopkg.in/yaml.v3"
 )
 
 type Linex [8]Pos
@@ -55,6 +58,38 @@ func (l *Linex) CopyR5(num Pos) (dst Linex) {
 
 func (l Linex) MarshalJSON() ([]byte, error) {
 	return json.Marshal(l[:l.Len()])
+}
+
+func ReadBon[T any](b []byte) (bon T) {
+	var err error
+	if err = yaml.Unmarshal(b, &bon); err != nil {
+		panic(err)
+	}
+	return
+}
+
+func LoadBon[T any](fpath string) (bon T) {
+	var b, err = os.ReadFile(fpath)
+	if err != nil {
+		panic(err)
+	}
+	return ReadBon[T](b)
+}
+
+func ReadReelsMap[T any](b []byte) (rm map[float64]T) {
+	var err error
+	if err = yaml.Unmarshal(b, &rm); err != nil {
+		panic(err)
+	}
+	return
+}
+
+func LoadReelsMap[T any](fpath string) (rm map[float64]T) {
+	var b, err = os.ReadFile(fpath)
+	if err != nil {
+		panic(err)
+	}
+	return ReadReelsMap[T](b)
 }
 
 // (1 ,1) symbol is on left top corner
