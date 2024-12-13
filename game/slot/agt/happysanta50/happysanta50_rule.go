@@ -3,9 +3,16 @@ package happysanta50
 // See: https://demo.agtsoftware.com/games/agt/happysanta50
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game/slot"
 	"github.com/slotopol/server/game/slot/agt/happysanta"
 )
+
+//go:embed happysanta50_reel.yaml
+var reels []byte
+
+var ReelsMap = slot.ReadReelsMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = happysanta.LinePay

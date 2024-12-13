@@ -3,10 +3,16 @@ package egypt
 // See: https://demo.agtsoftware.com/games/agt/egypt
 
 import (
+	_ "embed"
 	"math/rand/v2"
 
 	"github.com/slotopol/server/game/slot"
 )
+
+//go:embed egypt_reel.yaml
+var reels []byte
+
+var ReelsMap = slot.ReadReelsMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [12][5]float64{

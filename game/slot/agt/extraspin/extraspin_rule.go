@@ -3,8 +3,15 @@ package extraspin
 // See: https://demo.agtsoftware.com/games/agt/extraspin
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game/slot"
 )
+
+//go:embed extraspin_reel.yaml
+var reels []byte
+
+var ReelsMap = slot.ReadReelsMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [9][5]float64{
