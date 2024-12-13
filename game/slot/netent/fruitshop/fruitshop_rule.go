@@ -3,8 +3,15 @@ package fruitshop
 // See: https://slotsspot.com/online-free-slots/fruit-shop-slot/
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game/slot"
 )
+
+//go:embed fruitshop_reel.yaml
+var reels []byte
+
+var ReelsMap = slot.ReadReelsMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [11][5]float64{

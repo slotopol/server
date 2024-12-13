@@ -7,9 +7,9 @@ import (
 )
 
 //go:embed 2millionbc_bon.yaml
-var bon []byte
+var rbon []byte
 
-var ReelsBon = slot.ReadBon[*slot.Reels5x](bon)
+var ReelsBon = slot.ReadBon[*slot.Reels5x](rbon)
 
 //go:embed 2millionbc_reel.yaml
 var reels []byte

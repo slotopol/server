@@ -3,10 +3,16 @@ package greatblue
 // See: https://freeslotshub.com/playtech/great-blue/
 
 import (
+	_ "embed"
 	"math/rand/v2"
 
 	"github.com/slotopol/server/game/slot"
 )
+
+//go:embed greatblue_reel.yaml
+var reels []byte
+
+var ReelsMap = slot.ReadReelsMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [13][5]float64{

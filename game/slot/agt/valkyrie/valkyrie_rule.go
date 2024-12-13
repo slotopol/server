@@ -10,9 +10,9 @@ import (
 )
 
 //go:embed valkyrie_bon.yaml
-var bon []byte
+var rbon []byte
 
-var BonusReel = slot.ReadBon[[]slot.Sym](bon)
+var BonusReel = slot.ReadBon[[]slot.Sym](rbon)
 
 //go:embed valkyrie_reel.yaml
 var reels []byte

@@ -9,9 +9,9 @@ import (
 )
 
 //go:embed suncity_bon.yaml
-var bon []byte
+var rbon []byte
 
-var ReelsBon = slot.ReadBon[*slot.Reels5x](bon)
+var ReelsBon = slot.ReadBon[*slot.Reels5x](rbon)
 
 //go:embed suncity_reel.yaml
 var reels []byte

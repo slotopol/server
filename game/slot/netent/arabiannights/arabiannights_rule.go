@@ -1,8 +1,20 @@
 package arabiannights
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game/slot"
 )
+
+//go:embed arabiannights_bon.yaml
+var rbon []byte
+
+var ReelsBon = slot.ReadBon[*slot.Reels5x](rbon)
+
+//go:embed arabiannights_reel.yaml
+var reels []byte
+
+var ReelsMap = slot.ReadReelsMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [12][5]float64{
@@ -158,7 +170,7 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 		var reels, _ = slot.FindReels(ReelsMap, mrtp)
 		screen.Spin(reels)
 	} else {
-		screen.Spin(&ReelsBon)
+		screen.Spin(ReelsBon)
 	}
 }
 

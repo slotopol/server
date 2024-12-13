@@ -7,9 +7,9 @@ import (
 )
 
 //go:embed deserttreasure_bon.yaml
-var bon []byte
+var rbon []byte
 
-var ReelsBon = slot.ReadBon[*slot.Reels5x](bon)
+var ReelsBon = slot.ReadBon[*slot.Reels5x](rbon)
 
 //go:embed deserttreasure_reel.yaml
 var reels []byte
