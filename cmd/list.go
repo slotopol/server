@@ -39,10 +39,16 @@ func incinfo(gi *game.GameInfo) bool {
 	if is, _ = listflags.GetBool("3reels"); is && gi.SX == 3 {
 		return true
 	}
+	if is, _ = listflags.GetBool("4reels"); is && gi.SX == 4 {
+		return true
+	}
 	if is, _ = listflags.GetBool("5reels"); is && gi.SX == 5 {
 		return true
 	}
 	if is, _ = listflags.GetBool("3x3"); is && gi.SX == 3 && gi.SY == 3 {
+		return true
+	}
+	if is, _ = listflags.GetBool("4x4"); is && gi.SX == 4 && gi.SY == 4 {
 		return true
 	}
 	if is, _ = listflags.GetBool("5x3"); is && gi.SX == 5 && gi.SY == 3 {
@@ -229,8 +235,10 @@ func init() {
 
 	listflags.Bool("keno", false, "include keno games")
 	listflags.Bool("3reels", false, "include games with 3 reels")
+	listflags.Bool("4reels", false, "include games with 4 reels")
 	listflags.Bool("5reels", false, "include games with 5 reels")
 	listflags.Bool("3x3", false, "include games with 3x3 screen")
+	listflags.Bool("4x4", false, "include games with 4x4 screen")
 	listflags.Bool("5x3", false, "include games with 5x3 screen")
 	listflags.Bool("5x4", false, "include games with 5x4 screen")
 	listflags.Bool("fewlines", false, "include games with few lines, i.e. with less than 20")
@@ -241,5 +249,5 @@ func init() {
 
 	listCmd.MarkFlagsOneRequired("all",
 		"agt", "aristocrat", "betsoft", "megajack", "netent", "novomatic", "playngo", "playtech", "slotopol",
-		"keno", "3reels", "5reels", "3x3", "5x3", "5x4", "fewlines", "multilines", "megaway", "fg", "bonus")
+		"keno", "3reels", "4reels", "5reels", "3x3", "4x4", "5x3", "5x4", "fewlines", "multilines", "megaway", "fg", "bonus")
 }

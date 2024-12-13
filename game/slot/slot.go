@@ -80,6 +80,21 @@ func (r *Reels3x) Reshuffles() uint64 {
 	return uint64(len(r[0])) * uint64(len(r[1])) * uint64(len(r[2]))
 }
 
+// Reels for 4-reels slots.
+type Reels4x [4][]Sym
+
+func (r *Reels4x) Cols() int {
+	return 4
+}
+
+func (r *Reels4x) Reel(col Pos) []Sym {
+	return r[col-1]
+}
+
+func (r *Reels4x) Reshuffles() uint64 {
+	return uint64(len(r[0])) * uint64(len(r[1])) * uint64(len(r[2])) * uint64(len(r[3]))
+}
+
 // Reels for 5-reels slots.
 type Reels5x [5][]Sym
 
@@ -202,6 +217,98 @@ func (g *Slot3x3) SetSelNum(sel int, bln int) error {
 }
 
 func (g *Slot3x3) SetMode(int) error {
+	return ErrNoFeature
+}
+
+// Slot4x4 is base struct for all slot games with screen 4x4.
+type Slot4x4 struct {
+	Sel int     `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
+	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
+
+	// gain for double up games
+	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"`
+	// free spin number
+	FSN int `json:"fsn,omitempty" yaml:"fsn,omitempty" xml:"fsn,omitempty"`
+	// free spin remains
+	FSR int `json:"fsr,omitempty" yaml:"fsr,omitempty" xml:"fsr,omitempty"`
+}
+
+func (g *Slot4x4) NewScreen() Screen {
+	return NewScreen4x4()
+}
+
+func (g *Slot4x4) Spawn(screen Screen, wins Wins) {
+}
+
+func (g *Slot4x4) Prepare() {
+}
+
+func (g *Slot4x4) Apply(screen Screen, wins Wins) {
+	if g.FSR != 0 {
+		g.Gain += wins.Gain()
+		g.FSN++
+	} else {
+		g.Gain = wins.Gain()
+		g.FSN = 0
+	}
+
+	if g.FSR > 0 {
+		g.FSR--
+	}
+	for _, wi := range wins {
+		if wi.Free > 0 {
+			g.FSR += wi.Free
+		}
+	}
+}
+
+func (g *Slot4x4) FreeSpins() bool {
+	return g.FSR != 0
+}
+
+func (g *Slot4x4) GetGain() float64 {
+	return g.Gain
+}
+
+func (g *Slot4x4) SetGain(gain float64) error {
+	g.Gain = gain
+	return nil
+}
+
+func (g *Slot4x4) GetBet() float64 {
+	return g.Bet
+}
+
+func (g *Slot4x4) SetBet(bet float64) error {
+	if bet <= 0 {
+		return ErrBetEmpty
+	}
+	if g.FreeSpins() {
+		return ErrDisabled
+	}
+	g.Bet = bet
+	return nil
+}
+
+func (g *Slot4x4) GetSel() int {
+	return g.Sel
+}
+
+func (g *Slot4x4) SetSelNum(sel int, bln int) error {
+	if sel < 1 {
+		return ErrNoLineset
+	}
+	if sel > bln {
+		return ErrLinesetOut
+	}
+	if g.FreeSpins() {
+		return ErrDisabled
+	}
+	g.Sel = sel
+	return nil
+}
+
+func (g *Slot4x4) SetMode(int) error {
 	return ErrNoFeature
 }
 

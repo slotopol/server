@@ -150,21 +150,6 @@ func (s *Screenx) ScatPos(scat Sym) (l Linex) {
 	return
 }
 
-func (s *Screenx) ScatPosOdd(scat Sym) (l Linex) {
-	var x, y, i Pos
-loopx:
-	for x = 0; x < s.sx; x += 2 {
-		i = x * s.sy
-		for y = range s.sy {
-			if s.data[i+y] == scat {
-				l[x] = y + 1
-				continue loopx
-			}
-		}
-	}
-	return
-}
-
 func (s *Screenx) ScatPosCont(scat Sym) (l Linex) {
 	var x, y, i Pos
 loopx:
@@ -303,20 +288,6 @@ func (s *Screen3x3) ScatPos(scat Sym) (l Linex) {
 	return
 }
 
-func (s *Screen3x3) ScatPosOdd(scat Sym) (l Linex) {
-	for x := 0; x < 3; x += 2 {
-		var r = s[x]
-		if r[0] == scat {
-			l[x] = 1
-		} else if r[1] == scat {
-			l[x] = 2
-		} else if r[2] == scat {
-			l[x] = 3
-		}
-	}
-	return
-}
-
 func (s *Screen3x3) ScatPosCont(scat Sym) (l Linex) {
 	var x int
 	for x = 0; x < 3; x++ {
@@ -339,6 +310,136 @@ func (s *Screen3x3) FillSym() Sym {
 	if s[1][0] == sym && s[2][0] == sym &&
 		s[0][1] == sym && s[1][1] == sym && s[2][1] == sym &&
 		s[0][2] == sym && s[1][2] == sym && s[2][2] == sym {
+		return sym
+	}
+	return 0
+}
+
+// Screen for 4x4 slots.
+type Screen4x4 [4][4]Sym
+
+// Declare conformity with Screen interface.
+var _ Screen = (*Screen4x4)(nil)
+
+var pools4x4 = sync.Pool{
+	New: func() any {
+		return &Screen4x4{}
+	},
+}
+
+func NewScreen4x4() *Screen4x4 {
+	return pools4x4.Get().(*Screen4x4)
+}
+
+func (s *Screen4x4) Free() {
+	pools4x4.Put(s)
+}
+
+func (s *Screen4x4) Dim() (Pos, Pos) {
+	return 4, 4
+}
+
+func (s *Screen4x4) At(x, y Pos) Sym {
+	return s[x-1][y-1]
+}
+
+func (s *Screen4x4) Pos(x Pos, line Linex) Sym {
+	return s[x-1][line[x-1]-1]
+}
+
+func (s *Screen4x4) Set(x, y Pos, sym Sym) {
+	s[x-1][y-1] = sym
+}
+
+func (s *Screen4x4) SetCol(x Pos, reel []Sym, pos int) {
+	for y := range 4 {
+		s[x-1][y] = reel[(pos+y)%len(reel)]
+	}
+}
+
+func (s *Screen4x4) Spin(reels Reels) {
+	var x Pos
+	for x = 1; x <= 4; x++ {
+		var reel = reels.Reel(x)
+		var hit = rand.N(len(reel))
+		s.SetCol(x, reel, hit)
+	}
+}
+
+func (s *Screen4x4) SymNum(sym Sym) (n Pos) {
+	for x := range 4 {
+		for y := range 4 {
+			if s[x][y] == sym {
+				n++
+			}
+		}
+	}
+	return
+}
+
+func (s *Screen4x4) ScatNum(scat Sym) (n Pos) {
+	for x := range 4 {
+		var r = s[x]
+		if r[0] == scat || r[1] == scat || r[2] == scat || r[3] == scat {
+			n++
+		}
+	}
+	return
+}
+
+func (s *Screen4x4) ScatNumCont(scat Sym) (n Pos) {
+	for x := 0; x < 4; x++ {
+		var r = s[x]
+		if r[0] == scat || r[1] == scat || r[2] == scat || r[3] == scat {
+			n++
+		} else {
+			break // scatters should be continuous
+		}
+	}
+	return
+}
+
+func (s *Screen4x4) ScatPos(scat Sym) (l Linex) {
+	for x := range 4 {
+		var r = s[x]
+		if r[0] == scat {
+			l[x] = 1
+		} else if r[1] == scat {
+			l[x] = 2
+		} else if r[2] == scat {
+			l[x] = 3
+		} else if r[3] == scat {
+			l[x] = 4
+		}
+	}
+	return
+}
+
+func (s *Screen4x4) ScatPosCont(scat Sym) (l Linex) {
+	var x int
+	for x = 0; x < 4; x++ {
+		var r = s[x]
+		if r[0] == scat {
+			l[x] = 1
+		} else if r[1] == scat {
+			l[x] = 2
+		} else if r[2] == scat {
+			l[x] = 3
+		} else if r[3] == scat {
+			l[x] = 4
+		} else {
+			break // scatters should be continuous
+		}
+	}
+	return
+}
+
+func (s *Screen4x4) FillSym() Sym {
+	var sym = s[0][0]
+	if s[1][0] == sym && s[2][0] == sym && s[3][0] == sym &&
+		s[0][1] == sym && s[1][1] == sym && s[2][1] == sym && s[3][1] == sym &&
+		s[0][2] == sym && s[1][2] == sym && s[2][2] == sym && s[3][2] == sym &&
+		s[0][3] == sym && s[1][3] == sym && s[2][3] == sym && s[3][3] == sym {
 		return sym
 	}
 	return 0
@@ -430,20 +531,6 @@ func (s *Screen5x3) ScatNumCont(scat Sym) (n Pos) {
 
 func (s *Screen5x3) ScatPos(scat Sym) (l Linex) {
 	for x := range 5 {
-		var r = s[x]
-		if r[0] == scat {
-			l[x] = 1
-		} else if r[1] == scat {
-			l[x] = 2
-		} else if r[2] == scat {
-			l[x] = 3
-		}
-	}
-	return
-}
-
-func (s *Screen5x3) ScatPosOdd(scat Sym) (l Linex) {
-	for x := 0; x < 5; x += 2 {
 		var r = s[x]
 		if r[0] == scat {
 			l[x] = 1
@@ -569,22 +656,6 @@ func (s *Screen5x4) ScatNumCont(scat Sym) (n Pos) {
 
 func (s *Screen5x4) ScatPos(scat Sym) (l Linex) {
 	for x := range 5 {
-		var r = s[x]
-		if r[0] == scat {
-			l[x] = 1
-		} else if r[1] == scat {
-			l[x] = 2
-		} else if r[2] == scat {
-			l[x] = 3
-		} else if r[3] == scat {
-			l[x] = 4
-		}
-	}
-	return
-}
-
-func (s *Screen5x4) ScatPosOdd(scat Sym) (l Linex) {
-	for x := 0; x < 5; x += 2 {
 		var r = s[x]
 		if r[0] == scat {
 			l[x] = 1

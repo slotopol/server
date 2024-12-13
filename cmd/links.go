@@ -78,6 +78,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/agt/infinitygems"
 	_ "github.com/slotopol/server/game/slot/agt/luckyslot"
 	_ "github.com/slotopol/server/game/slot/agt/panda"
+	_ "github.com/slotopol/server/game/slot/agt/santa"
 	_ "github.com/slotopol/server/game/slot/agt/sevenhot"
 	_ "github.com/slotopol/server/game/slot/agt/shiningstars"
 	_ "github.com/slotopol/server/game/slot/agt/shiningstars100"

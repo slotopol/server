@@ -102,6 +102,7 @@
 'Royal Treasures' Novomatic 5x3 videoslot
 'STALKER' AGT 5x3 videoslot
 'Safari Heat' Playtech 5x3 videoslot
+'Santa' AGT 4x4 videoslot
 'Secret Forest' Novomatic 5x3 videoslot
 'Secret Of Horus' NetEnt 5x3 videoslot
 'Seven Hot' AGT 5x3 videoslot
@@ -132,8 +133,8 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 129 games, 66 algorithms, 9 providers
-AGT: 47 games
+total: 130 games, 67 algorithms, 9 providers
+AGT: 48 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games

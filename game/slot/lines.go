@@ -59,7 +59,7 @@ func (l Linex) MarshalJSON() ([]byte, error) {
 
 // (1 ,1) symbol is on left top corner
 
-// Ultra Hot 3x3 bet lines
+// Ultra Hot 3x3 slot bet lines
 var BetLinesHot3 = []Linex{
 	{2, 2, 2}, // 1
 	{1, 1, 1}, // 2
@@ -77,7 +77,7 @@ var BetLinesHot5 = []Linex{
 	{3, 2, 1, 2, 3}, // 5
 }
 
-// Megajack 21 bet lines
+// Megajack 5x3 slots bet lines
 var BetLinesMgj = []Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
@@ -102,7 +102,7 @@ var BetLinesMgj = []Linex{
 	{1, 1, 2, 1, 1}, // 21
 }
 
-// Novomatic 9 bet lines (old versions of games)
+// Novomatic 5x3 slots bet lines (old versions of games)
 var BetLinesNvm9 = []Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
@@ -115,7 +115,7 @@ var BetLinesNvm9 = []Linex{
 	{1, 1, 2, 3, 3}, // 9
 }
 
-// Novomatic 10 bet lines (deluxe versions of games)
+// Novomatic 5x3 slots bet lines (deluxe versions of games)
 var BetLinesNvm10 = []Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
@@ -129,7 +129,7 @@ var BetLinesNvm10 = []Linex{
 	{3, 2, 2, 2, 1}, // 10
 }
 
-// Novomatic 20 bet lines (new games)
+// Novomatic 5x3 slots bet lines (new games)
 var BetLinesNvm20 = []Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
@@ -153,7 +153,7 @@ var BetLinesNvm20 = []Linex{
 	{2, 2, 1, 2, 2}, // 20
 }
 
-// Novomatic 40 bet lines (screen 5x4)
+// Novomatic 5x4 slots bet lines
 var BetLinesNvm5x4 = [...]Linex{
 	{1, 1, 1, 1, 1}, // 1
 	{2, 2, 2, 2, 2}, // 2
@@ -197,7 +197,7 @@ var BetLinesNvm5x4 = [...]Linex{
 	{3, 4, 4, 4, 3}, // 40
 }
 
-// NetEnt/BetSoft 30 bet lines
+// NetEnt/BetSoft 5x3 slots bet lines
 var BetLinesNetEnt5x3 = [...]Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
@@ -231,7 +231,7 @@ var BetLinesNetEnt5x3 = [...]Linex{
 	{3, 2, 1, 1, 2}, // 30
 }
 
-// NetEnt 40 bet lines (screen 5x4)
+// NetEnt 5x4 slots bet lines
 var BetLinesNetEnt5x4 = [...]Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{3, 3, 3, 3, 3}, // 2
@@ -275,7 +275,7 @@ var BetLinesNetEnt5x4 = [...]Linex{
 	{4, 3, 2, 1, 2}, // 40
 }
 
-// Playtech 30 bet lines
+// Playtech 5x3 slots bet lines
 var BetLinesPlt5x3 = [...]Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
@@ -309,7 +309,7 @@ var BetLinesPlt5x3 = [...]Linex{
 	{3, 2, 1, 1, 2}, // 30
 }
 
-// AGT software 27 bet lines
+// AGT software 3x3 slots bet lines
 var BetLinesAgt3x3 = [...]Linex{
 	{2, 2, 2}, // 1
 	{1, 1, 1}, // 2
@@ -340,7 +340,21 @@ var BetLinesAgt3x3 = [...]Linex{
 	{2, 2, 3}, // 27
 }
 
-// AGT software 20 bet lines
+// AGT software 4x4 slots bet lines
+var BetLinesAgt4x4 = [...]Linex{
+	{2, 2, 2, 2}, // 1
+	{1, 1, 1, 1}, // 2
+	{3, 3, 3, 3}, // 3
+	{4, 4, 4, 4}, // 4
+	{1, 2, 3, 4}, // 5
+	{4, 3, 2, 1}, // 6
+	{1, 2, 2, 1}, // 7
+	{4, 3, 3, 4}, // 8
+	{2, 1, 1, 2}, // 9
+	{3, 4, 4, 3}, // 10
+}
+
+// AGT software 5x3 slots bet lines
 var BetLinesAgt5x3 = [...]Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
@@ -374,7 +388,7 @@ var BetLinesAgt5x3 = [...]Linex{
 	{2, 3, 2, 3, 2}, // 30
 }
 
-// AGT software 100 bet lines
+// AGT software 5x4 slots bet lines
 var BetLinesAgt5x4 = [...]Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
