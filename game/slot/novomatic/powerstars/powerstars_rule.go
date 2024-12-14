@@ -3,10 +3,21 @@ package powerstars
 // See: https://freeslotshub.com/novomatic/power-stars/
 
 import (
+	_ "embed"
 	"math/rand/v2"
 
 	"github.com/slotopol/server/game/slot"
 )
+
+//go:embed powerstars_reel.yaml
+var reels []byte
+
+var Reels = slot.ReadObj[*slot.Reels5x](reels)
+
+//go:embed powerstars_chance.yaml
+var chance []byte
+
+var ChanceMap = slot.ReadMap[float64](chance)
 
 // Lined payment.
 var LinePay = [9][5]float64{
@@ -140,7 +151,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 }
 
 func (g *Game) Spin(screen slot.Screen, mrtp float64) {
-	screen.Spin(&Reels)
+	screen.Spin(Reels)
 	if !g.FreeSpins() {
 		var _, wc = slot.FindReels(ChanceMap, mrtp) // wild chance
 		var x, y slot.Pos

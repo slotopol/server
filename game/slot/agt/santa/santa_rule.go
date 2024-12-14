@@ -11,7 +11,7 @@ import (
 //go:embed santa_reel.yaml
 var reels []byte
 
-var ReelsMap = slot.ReadReelsMap[*slot.Reels4x](reels)
+var ReelsMap = slot.ReadMap[*slot.Reels4x](reels)
 
 // Lined payment.
 var LinePay = [10][5]float64{

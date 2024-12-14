@@ -11,7 +11,7 @@ import (
 //go:embed reelsteal_reel.yaml
 var reels []byte
 
-var ReelsMap = slot.ReadReelsMap[*slot.Reels5x](reels)
+var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [12][5]float64{

@@ -1,8 +1,15 @@
 package sizzlinghot
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game/slot"
 )
+
+//go:embed sizzlinghot_reel.yaml
+var reels []byte
+
+var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [8][5]float64{

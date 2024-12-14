@@ -68,6 +68,9 @@ type SlotGame interface {
 // Reels for 3-reels slots.
 type Reels3x [3][]Sym
 
+// Declare conformity with Reels interface.
+var _ Reels = (*Reels3x)(nil)
+
 func (r *Reels3x) Cols() int {
 	return 3
 }
@@ -83,6 +86,9 @@ func (r *Reels3x) Reshuffles() uint64 {
 // Reels for 4-reels slots.
 type Reels4x [4][]Sym
 
+// Declare conformity with Reels interface.
+var _ Reels = (*Reels4x)(nil)
+
 func (r *Reels4x) Cols() int {
 	return 4
 }
@@ -97,6 +103,9 @@ func (r *Reels4x) Reshuffles() uint64 {
 
 // Reels for 5-reels slots.
 type Reels5x [5][]Sym
+
+// Declare conformity with Reels interface.
+var _ Reels = (*Reels5x)(nil)
 
 func (r *Reels5x) Cols() int {
 	return 5

@@ -1,8 +1,15 @@
 package ultrahot
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game/slot"
 )
+
+//go:embed ultrahot_reel.yaml
+var reels []byte
+
+var ReelsMap = slot.ReadMap[*slot.Reels3x](reels)
 
 // Lined payment.
 var LinePay = [8][3]float64{

@@ -60,23 +60,23 @@ func (l Linex) MarshalJSON() ([]byte, error) {
 	return json.Marshal(l[:l.Len()])
 }
 
-func ReadBon[T any](b []byte) (bon T) {
+func ReadObj[T any](b []byte) (obj T) {
 	var err error
-	if err = yaml.Unmarshal(b, &bon); err != nil {
+	if err = yaml.Unmarshal(b, &obj); err != nil {
 		panic(err)
 	}
 	return
 }
 
-func LoadBon[T any](fpath string) (bon T) {
+func LoadObj[T any](fpath string) (obj T) {
 	var b, err = os.ReadFile(fpath)
 	if err != nil {
 		panic(err)
 	}
-	return ReadBon[T](b)
+	return ReadObj[T](b)
 }
 
-func ReadReelsMap[T any](b []byte) (rm map[float64]T) {
+func ReadMap[T any](b []byte) (rm map[float64]T) {
 	var err error
 	if err = yaml.Unmarshal(b, &rm); err != nil {
 		panic(err)
@@ -84,12 +84,12 @@ func ReadReelsMap[T any](b []byte) (rm map[float64]T) {
 	return
 }
 
-func LoadReelsMap[T any](fpath string) (rm map[float64]T) {
+func LoadMap[T any](fpath string) (rm map[float64]T) {
 	var b, err = os.ReadFile(fpath)
 	if err != nil {
 		panic(err)
 	}
-	return ReadReelsMap[T](b)
+	return ReadMap[T](b)
 }
 
 // (1 ,1) symbol is on left top corner

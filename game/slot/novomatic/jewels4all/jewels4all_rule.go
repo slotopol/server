@@ -1,10 +1,21 @@
 package jewels4all
 
 import (
+	_ "embed"
 	"math/rand/v2"
 
 	"github.com/slotopol/server/game/slot"
 )
+
+//go:embed jewels4all_reel.yaml
+var reels []byte
+
+var Reels = slot.ReadObj[*slot.Reels5x](reels)
+
+//go:embed jewels4all_chance.yaml
+var chance []byte
+
+var ChanceMap = slot.ReadMap[float64](chance)
 
 // Lined payment.
 var LinePay = [8][5]float64{
@@ -125,7 +136,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 }
 
 func (g *Game) Spin(screen slot.Screen, mrtp float64) {
-	screen.Spin(&Reels)
+	screen.Spin(Reels)
 	var _, wc = slot.FindReels(ChanceMap, mrtp) // wild chance
 	if rand.Float64() < wc {
 		var x, y = rand.N[slot.Pos](5) + 1, rand.N[slot.Pos](3) + 1

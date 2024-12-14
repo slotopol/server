@@ -8,6 +8,12 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
+// Returns the probability of getting at least one star on the 3 reels,
+// including several stars at once.
+func AnyStarProb(b float64) float64 {
+	return (b*b + (b-1)*b + (b-1)*(b-1)) / b / b / b
+}
+
 func BruteForceStars(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, wc2, wc3, wc4 bool) {
 	var screen = g.NewScreen()
 	defer screen.Free()
@@ -58,7 +64,7 @@ func BruteForceStars(ctx context.Context, s slot.Stater, g slot.SlotGame, reels 
 }
 
 func CalcStatStars(ctx context.Context, wc2, wc3, wc4 bool) float64 {
-	var reels = &Reels
+	var reels = Reels
 	var g = NewGame()
 	g.Sel = 1
 	var s slot.Stat

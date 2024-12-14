@@ -12,12 +12,12 @@ import (
 //go:embed valkyrie_bon.yaml
 var rbon []byte
 
-var BonusReel = slot.ReadBon[[]slot.Sym](rbon)
+var BonusReel = slot.ReadObj[[]slot.Sym](rbon)
 
 //go:embed valkyrie_reel.yaml
 var reels []byte
 
-var ReelsMap = slot.ReadReelsMap[*slot.Reels5x](reels)
+var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [13][5]float64{

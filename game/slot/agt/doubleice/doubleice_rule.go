@@ -11,7 +11,7 @@ import (
 //go:embed doubleice_reel.yaml
 var reels []byte
 
-var ReelsMap = slot.ReadReelsMap[*slot.Reels3x](reels)
+var ReelsMap = slot.ReadMap[*slot.Reels3x](reels)
 
 // Lined payment.
 var LinePay = [9][3]float64{

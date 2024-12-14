@@ -53,7 +53,7 @@ func BruteForceEuro(ctx context.Context, s slot.Stater, g slot.SlotGame, reels s
 }
 
 func CalcStatEuro(ctx context.Context, x, y slot.Pos) float64 {
-	var reels = &Reels
+	var reels = Reels
 	var g = NewGame()
 	var sln float64 = 1
 	g.Sel = int(sln)
