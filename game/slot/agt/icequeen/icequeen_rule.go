@@ -134,7 +134,7 @@ func (g *Game) Spin(screen slot.Screen, mrtp float64) {
 		var reels, _ = slot.FindReels(ReelsMap, mrtp)
 		screen.Spin(reels)
 	} else {
-		screen.Spin(&ReelsBon)
+		screen.Spin(ReelsBon)
 	}
 }
 
