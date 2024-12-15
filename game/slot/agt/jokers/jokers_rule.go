@@ -1,6 +1,6 @@
-package happysanta
+package jokers
 
-// See: https://demo.agtsoftware.com/games/agt/happysanta
+// See: https://demo.agtsoftware.com/games/agt/jokers20
 
 import (
 	_ "embed"
@@ -8,7 +8,7 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed happysanta_reel.yaml
+//go:embed jokers_reel.yaml
 var reels []byte
 
 var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
@@ -18,7 +18,7 @@ var LinePay = [10][5]float64{
 	{},                    //  1 wild
 	{},                    //  2 scatter
 	{0, 4, 40, 100, 1000}, //  3 strawberry
-	{0, 0, 30, 100, 300},  //  4 bell
+	{0, 0, 30, 100, 300},  //  4 pear
 	{0, 0, 12, 60, 200},   //  5 greenstar
 	{0, 0, 12, 60, 160},   //  6 redstar
 	{0, 0, 10, 40, 120},   //  7 plum

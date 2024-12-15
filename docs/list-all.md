@@ -2,6 +2,7 @@
 # slot_win_x64 list --all
 
 ```text
+'100 Jokers' AGT 5x4 videoslot
 '100 Shining Stars' AGT 5x4 videoslot
 '2 Million B.C.' BetSoft 5x3 videoslot
 '40 Bigfoot' AGT 5x4 videoslot
@@ -73,6 +74,7 @@
 'Jewels 4 All' Novomatic 5x3 videoslot
 'Jewels' Novomatic 5x3 videoslot
 'Joker Dolphin' Novomatic 5x3 videoslot
+'Jokers' AGT 5x3 videoslot
 'Just Jewels Deluxe' Novomatic 5x3 videoslot
 'Just Jewels' Novomatic 5x3 videoslot
 'Katana' Novomatic 5x3 videoslot
@@ -134,8 +136,8 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 131 games, 68 algorithms, 9 providers
-AGT: 49 games
+total: 133 games, 68 algorithms, 9 providers
+AGT: 51 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games

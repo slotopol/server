@@ -1,6 +1,6 @@
 //go:build !prod || full || agt
 
-package happysanta
+package jokers
 
 import (
 	"github.com/slotopol/server/game"
@@ -8,8 +8,9 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "AGT", Name: "Happy Santa"},
-		{Prov: "AGT", Name: "Bigfoot"}, // see: https://demo.agtsoftware.com/games/agt/bigfoot
+		{Prov: "AGT", Name: "Jokers"},
+		{Prov: "AGT", Name: "Happy Santa"}, // see: https://demo.agtsoftware.com/games/agt/happysanta
+		{Prov: "AGT", Name: "Bigfoot"},     // see: https://demo.agtsoftware.com/games/agt/bigfoot
 	},
 	GP: game.GPsel |
 		game.GPfgno |

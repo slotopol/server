@@ -5,7 +5,7 @@ local symset = {
 	4, --  1 wild (only on reel 2, 3, 4)
 	2, --  2 scatter
 	5, --  3 strawberry
-	5, --  4 bell
+	5, --  4 pear
 	5, --  5 greenstar
 	5, --  6 redstar
 	6, --  7 plum
@@ -18,7 +18,7 @@ local chunklen = {
 	3, --  1 wild
 	1, --  2 scatter
 	3, --  3 strawberry
-	3, --  4 bell
+	3, --  4 pear
 	3, --  5 greenstar
 	3, --  6 redstar
 	3, --  7 plum

@@ -1,27 +1,27 @@
-package happysanta50
+package jokers100
 
-// See: https://demo.agtsoftware.com/games/agt/happysanta50
+// See: https://demo.agtsoftware.com/games/agt/jokers100
 
 import (
 	_ "embed"
 
 	"github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/game/slot/agt/happysanta"
+	"github.com/slotopol/server/game/slot/agt/jokers"
 )
 
-//go:embed happysanta50_reel.yaml
+//go:embed jokers100_reel.yaml
 var reels []byte
 
 var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
 
 // Lined payment.
-var LinePay = happysanta.LinePay
+var LinePay = jokers.LinePay
 
 // Scatters payment.
-var ScatPay = happysanta.ScatPay
+var ScatPay = jokers.ScatPay
 
 // Bet lines
-var BetLines = slot.BetLinesAgt5x4[:50]
+var BetLines = slot.BetLinesAgt5x4[:]
 
 type Game struct {
 	slot.Slot5x4 `yaml:",inline"`
