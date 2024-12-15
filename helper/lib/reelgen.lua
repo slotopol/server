@@ -166,5 +166,5 @@ function printreel(reel, iter)
 			print(iter.." iterations")
 		end
 	end
-	print("[" .. table.concat(reel, ", ") .. "]") -- for yaml-file
+	print("- [" .. table.concat(reel, ", ") .. "]") -- for yaml-file
 end

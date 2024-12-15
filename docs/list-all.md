@@ -66,6 +66,7 @@
 'Happy Santa' AGT 5x3 videoslot
 'Hot Clover' AGT 5x4 videoslot
 'Hot Target' Novomatic 5x3 videoslot
+'Ice Fruits' AGT 5x3 videoslot
 'Ice Ice Ice' AGT 3x3 videoslot
 'Ice Queen' AGT 5x3 videoslot
 'Indian Dreaming' Aristocrat 5x3 videoslot
@@ -136,8 +137,8 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 133 games, 68 algorithms, 9 providers
-AGT: 51 games
+total: 134 games, 69 algorithms, 9 providers
+AGT: 52 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games
