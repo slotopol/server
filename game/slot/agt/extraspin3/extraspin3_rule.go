@@ -1,25 +1,23 @@
-package iceqween
+package extraspin3
+
+// See: https://demo.agtsoftware.com/games/agt/extraspin3
 
 import (
 	"github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/game/slot/novomatic/dolphinspearl"
+	"github.com/slotopol/server/game/slot/agt/extraspin"
 )
 
-// Copy data from dolphinspearl.
+// Copy data from extraspin.
 var (
-	LinePay      = dolphinspearl.LinePay
-	ScatPay      = dolphinspearl.ScatPay
-	ScatFreespin = dolphinspearl.ScatFreespin
+	LinePay = extraspin.LinePay
 
-	ReelsBon = dolphinspearl.ReelsBon
-	ReelsMap = dolphinspearl.ReelsMap
+	ReelsMap = extraspin.ReelsMap
 
-	CalcStatReg = dolphinspearl.CalcStatReg
-	CalcStatBon = dolphinspearl.CalcStatBon
+	CalcStat = extraspin.CalcStat
 )
 
 // Bet lines
-var BetLines = slot.BetLinesAgt5x3[:]
+var BetLines = slot.BetLinesAgt5x3[:10]
 
 type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
@@ -31,13 +29,13 @@ var _ slot.SlotGame = (*Game)(nil)
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{
-			Sel: 10,
+			Sel: len(BetLines),
 			Bet: 1,
 		},
 	}
 }
 
-const wild, scat = 1, 13
+const wild, scat = 1, 2
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	g.ScanLined(screen, wins)
@@ -49,7 +47,6 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
-		var mw float64 = 1 // mult wild
 		var numw, numl slot.Pos = 0, 5
 		var syml slot.Sym
 		var x slot.Pos
@@ -59,7 +56,6 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 				if syml == 0 {
 					numw = x
 				}
-				mw = 2
 			} else if syml == 0 && sx != scat {
 				syml = sx
 			} else if sx != syml {
@@ -75,27 +71,19 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 		if numl > 0 && syml > 0 {
 			payl = LinePay[syml-1][numl-1]
 		}
-		if payl*mw > payw {
-			var mm float64 = 1 // mult mode
-			if g.FSR > 0 {
-				mm = 3
-			}
+		if payl > payw {
 			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * payl,
-				Mult: mw * mm,
+				Mult: 1,
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
 				XY:   line.CopyL(numl),
 			})
 		} else if payw > 0 {
-			var mm float64 = 1 // mult mode
-			if g.FSR > 0 {
-				mm = 3
-			}
 			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * payw,
-				Mult: mm,
+				Mult: 1,
 				Sym:  wild,
 				Num:  numw,
 				Line: li,
@@ -107,30 +95,19 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
-	if count := screen.ScatNum(scat); count >= 2 {
-		var mm float64 = 1 // mult mode
-		if g.FSR > 0 {
-			mm = 3
-		}
-		var pay, fs = ScatPay[count-1], ScatFreespin[count-1]
+	if count := screen.ScatNum(scat); count >= 1 {
 		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * float64(g.Sel) * pay,
-			Mult: mm,
 			Sym:  scat,
 			Num:  count,
 			XY:   screen.ScatPos(scat),
-			Free: fs,
+			Free: int(count) * 3,
 		})
 	}
 }
 
 func (g *Game) Spin(screen slot.Screen, mrtp float64) {
-	if g.FSR == 0 {
-		var reels, _ = slot.FindReels(ReelsMap, mrtp)
-		screen.Spin(reels)
-	} else {
-		screen.Spin(ReelsBon)
-	}
+	var reels, _ = slot.FindReels(ReelsMap, mrtp)
+	screen.Spin(reels)
 }
 
 func (g *Game) SetSel(sel int) error {
