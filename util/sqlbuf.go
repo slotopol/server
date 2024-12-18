@@ -15,15 +15,19 @@ type SqlBuf[T any] struct {
 
 func (sb *SqlBuf[T]) Init(capacity int) {
 	sb.mux.Lock()
+	defer sb.mux.Unlock()
 	sb.buf = make([]T, 0, capacity)
-	sb.mux.Unlock()
 }
 
 func (sb *SqlBuf[T]) Len() int {
+	sb.mux.Lock()
+	defer sb.mux.Unlock()
 	return len(sb.buf)
 }
 
 func (sb *SqlBuf[T]) Last() time.Time {
+	sb.mux.Lock()
+	defer sb.mux.Unlock()
 	return sb.lft
 }
 

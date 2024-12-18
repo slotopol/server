@@ -380,11 +380,13 @@ func ApiKenoSpin(c *gin.Context) {
 	}
 	rec.Wins = util.B2S(b)
 
-	go func() {
-		if err = SpinBuf.Put(cfg.XormSpinlog, rec); err != nil {
-			log.Printf("can not write to spin log: %s", err.Error())
-		}
-	}()
+	if Cfg.UseSpinLog {
+		go func() {
+			if err = SpinBuf.Put(cfg.XormSpinlog, rec); err != nil {
+				log.Printf("can not write to spin log: %s", err.Error())
+			}
+		}()
+	}
 
 	// prepare result
 	ret.SID = sid

@@ -69,6 +69,8 @@ database:
   # It can be "sqlite3", "mysql", "postgres".
   # To place database in memory only, point driver name "sqlite3" and source names ":memory:".
   driver-name: sqlite3
+  # Determines whether to write information about users spins to the log.
+  use-spin-log: true
   # Data source name for 'club' database to create XORM engine.
   # For sqlite3 it should be db file name:   slot-club.sqlite
   # For mysql it should match to pattern:    user:password@/slot_club.

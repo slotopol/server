@@ -49,6 +49,10 @@ var scanCmd = &cobra.Command{
 				log.Fatalf("game name \"%s\" does not recognized", alias)
 				return
 			}
+			if scan == nil {
+				fmt.Println()
+				fmt.Printf("***Scanner for '%s' game is absent***\n", alias)
+			}
 			if len(list) > 1 {
 				fmt.Println()
 				fmt.Printf("***Scan '%s' game with master RTP %g***\n", alias, mrtp)

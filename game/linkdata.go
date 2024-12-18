@@ -75,7 +75,7 @@ func (gi *GameInfo) SetupFactory(game func() any, scan Scanner) {
 	for _, ga := range gi.Aliases {
 		var aid = util.ToID(ga.Prov + "/" + ga.Name)
 		GameFactory[aid] = game
-		ScanFactory[aid] = scan
+		ScanFactory[aid] = scan // can be nil
 	}
 }
 

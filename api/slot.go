@@ -352,11 +352,13 @@ func ApiSlotSpin(c *gin.Context) {
 		rec.Wins = util.B2S(b)
 	}
 
-	go func() {
-		if err = SpinBuf.Put(cfg.XormSpinlog, rec); err != nil {
-			log.Printf("can not write to spin log: %s", err.Error())
-		}
-	}()
+	if Cfg.UseSpinLog {
+		go func() {
+			if err = SpinBuf.Put(cfg.XormSpinlog, rec); err != nil {
+				log.Printf("can not write to spin log: %s", err.Error())
+			}
+		}()
+	}
 
 	// prepare result
 	ret.SID = sid
@@ -459,20 +461,22 @@ func ApiSlotDoubleup(c *gin.Context) {
 
 	// write doubleup result to log and get spin ID
 	var id = atomic.AddUint64(&MultCounter, 1)
-	go func() {
-		var rec = Multlog{
-			ID:     id,
-			GID:    arg.GID,
-			MRTP:   mrtp,
-			Mult:   arg.Mult,
-			Risk:   risk,
-			Gain:   multgain,
-			Wallet: props.Wallet,
-		}
-		if err = MultBuf.Put(cfg.XormSpinlog, rec); err != nil {
-			log.Printf("can not write to mult log: %s", err.Error())
-		}
-	}()
+	if Cfg.UseSpinLog {
+		go func() {
+			var rec = Multlog{
+				ID:     id,
+				GID:    arg.GID,
+				MRTP:   mrtp,
+				Mult:   arg.Mult,
+				Risk:   risk,
+				Gain:   multgain,
+				Wallet: props.Wallet,
+			}
+			if err = MultBuf.Put(cfg.XormSpinlog, rec); err != nil {
+				log.Printf("can not write to mult log: %s", err.Error())
+			}
+		}()
+	}
 
 	// prepare result
 	ret.ID = id

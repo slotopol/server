@@ -89,6 +89,9 @@ func InitConfig() {
 		}
 	}
 
+	viper.BindEnv("database.driver-name", "DBDRIVER")
+	viper.BindEnv("database.club-source-name", "CLUBDSN")
+	viper.BindEnv("database.slot-spin.sqlite", "SPINDSN")
 	viper.AutomaticEnv()
 
 	if err = viper.ReadInConfig(); err != nil {

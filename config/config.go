@@ -61,6 +61,8 @@ type CfgXormDrv struct {
 	// Provides driver name to create XORM engine.
 	// It can be "sqlite3" or "mysql".
 	DriverName string `json:"driver-name" yaml:"driver-name" mapstructure:"driver-name"`
+	// Determines whether to write information about users spins to the log.
+	UseSpinLog bool `json:"use-spin-log" yaml:"use-spin-log" mapstructure:"use-spin-log"`
 	// Data source name for 'club' database to create XORM engine.
 	// For sqlite3 it should be database file name (slot-club.sqlite),
 	// for mysql it should match to pattern user:password@/slot_club.
@@ -131,6 +133,7 @@ var Cfg = &Config{
 	},
 	CfgXormDrv: CfgXormDrv{
 		DriverName:       "sqlite3",
+		UseSpinLog:       true,
 		ClubSourceName:   ":memory:",
 		SpinSourceName:   ":memory:",
 		SqlFlushTick:     2500 * time.Millisecond,

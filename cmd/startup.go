@@ -293,11 +293,13 @@ func SqlLoop(exitctx context.Context) {
 			if err := api.JoinBuf.Flush(cfg.XormStorage, fd); err != nil {
 				log.Printf("can not write to story log: %s", err.Error())
 			}
-			if err := api.SpinBuf.Flush(cfg.XormSpinlog, fd); err != nil {
-				log.Printf("can not write to spin log: %s", err.Error())
-			}
-			if err := api.MultBuf.Flush(cfg.XormSpinlog, fd); err != nil {
-				log.Printf("can not write to mult log: %s", err.Error())
+			if Cfg.UseSpinLog {
+				if err := api.SpinBuf.Flush(cfg.XormSpinlog, fd); err != nil {
+					log.Printf("can not write to spin log: %s", err.Error())
+				}
+				if err := api.MultBuf.Flush(cfg.XormSpinlog, fd); err != nil {
+					log.Printf("can not write to mult log: %s", err.Error())
+				}
 			}
 		case <-passers:
 			cfg.XormStorage.Where("ctime<? AND status=0", time.Now().Add(-time.Hour*3*24).Format(time.DateTime)).Delete(&api.User{})
@@ -312,9 +314,11 @@ func Init() (err error) {
 		err = fmt.Errorf("can not init XORM records storage: %w", err)
 		return
 	}
-	if err = InitSpinlog(); err != nil {
-		err = fmt.Errorf("can not init XORM spins log storage: %w", err)
-		return
+	if Cfg.UseSpinLog {
+		if err = InitSpinlog(); err != nil {
+			err = fmt.Errorf("can not init XORM spins log storage: %w", err)
+			return
+		}
 	}
 	return
 }
@@ -325,11 +329,12 @@ func Done() (err error) {
 		errs = append(errs, bat.Flush(cfg.XormStorage, 0))
 	}
 	errs = append(errs, api.JoinBuf.Flush(cfg.XormStorage, 0))
-
-	errs = append(errs, api.SpinBuf.Flush(cfg.XormSpinlog, 0))
-	errs = append(errs, api.MultBuf.Flush(cfg.XormSpinlog, 0))
-
 	errs = append(errs, cfg.XormStorage.Close())
-	errs = append(errs, cfg.XormSpinlog.Close())
+
+	if Cfg.UseSpinLog {
+		errs = append(errs, api.SpinBuf.Flush(cfg.XormSpinlog, 0))
+		errs = append(errs, api.MultBuf.Flush(cfg.XormSpinlog, 0))
+		errs = append(errs, cfg.XormSpinlog.Close())
+	}
 	return errors.Join(errs...)
 }
