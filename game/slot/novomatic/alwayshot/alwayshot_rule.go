@@ -14,16 +14,16 @@ var reels []byte
 var ReelsMap = slot.ReadMap[*slot.Reels3x](reels)
 
 // Lined payment.
-var LinePay = [9][3]float64{
-	{0, 0, 300}, // 1 seven
-	{0, 0, 200}, // 2 star
-	{0, 0, 100}, // 3 melon
-	{0, 0, 80},  // 4 grapes
-	{0, 0, 80},  // 5 bell
-	{0, 0, 40},  // 6 orange
-	{0, 0, 40},  // 7 plum
-	{0, 0, 40},  // 8 lemon
-	{0, 0, 40},  // 9 cherry
+var LinePay = [9]float64{
+	300, // 1 seven
+	200, // 2 star
+	100, // 3 melon
+	80,  // 4 grapes
+	80,  // 5 bell
+	40,  // 6 orange
+	40,  // 7 plum
+	40,  // 8 lemon
+	40,  // 9 cherry
 }
 
 // Bet lines
@@ -51,7 +51,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 		var sym1, sym2, sym3 = screen.Pos(1, line), screen.Pos(2, line), screen.Pos(3, line)
 		if sym1 == sym2 && sym1 == sym3 {
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * LinePay[sym1-1][2],
+				Pay:  g.Bet * LinePay[sym1-1],
 				Mult: 1,
 				Sym:  sym1,
 				Num:  3,

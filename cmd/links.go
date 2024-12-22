@@ -79,6 +79,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/agt/jokers"
 	_ "github.com/slotopol/server/game/slot/agt/jokers100"
 	_ "github.com/slotopol/server/game/slot/agt/luckyslot"
+	_ "github.com/slotopol/server/game/slot/agt/merrychristmas"
 	_ "github.com/slotopol/server/game/slot/agt/panda"
 	_ "github.com/slotopol/server/game/slot/agt/santa"
 	_ "github.com/slotopol/server/game/slot/agt/sevenhot"

@@ -88,6 +88,7 @@
 'Lucky Lady's Charm' Novomatic 5x3 videoslot
 'Lucky Slot' AGT 5x3 videoslot
 'Marco Polo' Novomatic 5x3 videoslot
+'Merry Christmas' AGT 3x3 videoslot
 'Panda' AGT 3x3 videoslot
 'Pandora's Box' NetEnt 5x3 videoslot
 'Panther Moon' Playtech 5x3 videoslot
@@ -137,8 +138,8 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 134 games, 69 algorithms, 9 providers
-AGT: 52 games
+total: 135 games, 70 algorithms, 9 providers
+AGT: 53 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games
