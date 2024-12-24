@@ -2,25 +2,23 @@ local path = arg[0]:match("(.*[/\\])")
 dofile(path.."lib/reelgen.lua")
 
 local symset = {
-	1, -- 1 wild
-	3, -- 2 scatter
-	1, -- 3 snowman
-	3, -- 4 ice
-	6, -- 5 sled
-	10, -- 6 house
-	14, -- 7 bell
-	16, -- 8 deer
+	3, -- 1 snowman 500
+	2, -- 2 scatter
+	4, -- 3 ice     250
+	6, -- 4 sled    100
+	10, -- 5 house  20
+	10, -- 6 bell   10
+	12, -- 7 deer   5
 }
 
 local chunklen = {
-	6, -- 1 wild
+	6, -- 1 snowman
 	1, -- 2 scatter
-	6, -- 3 snowman
-	6, -- 4 ice
-	6, -- 5 sled
-	6, -- 6 house
-	6, -- 7 bell
-	6, -- 8 deer
+	6, -- 3 ice
+	6, -- 4 sled
+	7, -- 5 house
+	7, -- 6 bell
+	7, -- 7 deer
 }
 
 math.randomseed(os.time())

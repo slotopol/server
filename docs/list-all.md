@@ -63,6 +63,7 @@
 'Green Hot' AGT 5x3 videoslot
 'Groovy Sixties' NetEnt 5x4 videoslot
 'Gryphons Gold' Novomatic 5x3 videoslot
+'Halloween' AGT 3x3 videoslot
 'Happy Santa' AGT 5x3 videoslot
 'Hot Clover' AGT 5x4 videoslot
 'Hot Target' Novomatic 5x3 videoslot
@@ -88,6 +89,7 @@
 'Lucky Lady's Charm' Novomatic 5x3 videoslot
 'Lucky Slot' AGT 5x3 videoslot
 'Marco Polo' Novomatic 5x3 videoslot
+'Mega Shine' AGT 5x3 videoslot
 'Merry Christmas' AGT 3x3 videoslot
 'Panda' AGT 3x3 videoslot
 'Pandora's Box' NetEnt 5x3 videoslot
@@ -138,8 +140,8 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 135 games, 70 algorithms, 9 providers
-AGT: 53 games
+total: 137 games, 71 algorithms, 9 providers
+AGT: 55 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games

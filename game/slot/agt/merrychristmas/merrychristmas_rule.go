@@ -15,14 +15,13 @@ var ReelsMap = slot.ReadMap[*slot.Reels3x](reels)
 
 // Lined payment.
 var LinePay = [8][3]float64{
-	{0, 0, 500}, // 1 wild
+	{0, 0, 500}, // 1 snowman
 	{},          // 2 scatter
-	{0, 0, 500}, // 3 snowman
-	{0, 0, 250}, // 4 ice
-	{0, 0, 100}, // 5 sled
-	{0, 0, 20},  // 6 house
-	{0, 0, 10},  // 7 bell
-	{0, 0, 5},   // 8 deer
+	{0, 0, 250}, // 3 ice
+	{0, 0, 100}, // 4 sled
+	{0, 0, 20},  // 5 house
+	{0, 0, 10},  // 6 bell
+	{0, 0, 5},   // 7 deer
 }
 
 // Bet lines
@@ -44,7 +43,7 @@ func NewGame() *Game {
 	}
 }
 
-const wild, scat, wbon = 1, 2, 3
+const wild, scat = 1, 2
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	for li := 1; li <= g.Sel; li++ {
@@ -55,7 +54,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 		var x slot.Pos
 		for x = 1; x <= 3; x++ {
 			var sx = screen.Pos(x, line)
-			if sx == wild || (g.FSR > 0 && sx == wbon) {
+			if g.FSR > 0 && sx == wild {
 				if syml == 0 {
 					numw = x
 				}
