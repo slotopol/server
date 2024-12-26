@@ -1,6 +1,6 @@
 //go:build !prod || full || agt
 
-package doubleice
+package valentinesday
 
 import (
 	"github.com/slotopol/server/game"
@@ -8,12 +8,12 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "AGT", Name: "Double Ice"},
-		{Prov: "AGT", Name: "Double Hot"}, // see: https://demo.agtsoftware.com/games/agt/double
+		{Prov: "AGT", Name: "Valentine's Day"},
 	},
 	GP: game.GPfgno |
+		game.GPscat |
 		game.GPfill,
-	SX:  3,
+	SX:  5,
 	SY:  3,
 	SN:  len(LinePay),
 	LN:  len(BetLines),

@@ -87,6 +87,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/agt/shiningstars"
 	_ "github.com/slotopol/server/game/slot/agt/shiningstars100"
 	_ "github.com/slotopol/server/game/slot/agt/suncity"
+	_ "github.com/slotopol/server/game/slot/agt/valentinesday"
 	_ "github.com/slotopol/server/game/slot/agt/valkyrie"
 	_ "github.com/slotopol/server/game/slot/agt/wizard"
 )

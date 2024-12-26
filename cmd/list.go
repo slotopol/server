@@ -139,6 +139,9 @@ func FormatGameInfo(gi *game.GameInfo, ai int) string {
 		if gi.GP&game.GPbsym > 0 {
 			b.WriteString(", has big symbols")
 		}
+		if gi.GP&game.GPfill > 0 {
+			b.WriteString(", has multiplier on filled screen")
+		}
 	}
 	if fRTP && len(gi.RTP) > 0 {
 		b.WriteString(", RTP: ")

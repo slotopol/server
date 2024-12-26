@@ -133,6 +133,7 @@
 'Tropic Hot' AGT 3x3 videoslot
 'Ultra Hot' Novomatic 3x3 videoslot
 'Unicorn Magic' Novomatic 5x3 videoslot
+'Valentine's Day' AGT 5x3 videoslot
 'Valkyrie' AGT 5x3 videoslot
 'Viking's Treasure' NetEnt 5x3 videoslot
 'Voodoo Vibes' NetEnt 5x3 videoslot
@@ -140,8 +141,8 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 137 games, 71 algorithms, 9 providers
-AGT: 55 games
+total: 138 games, 72 algorithms, 9 providers
+AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games
