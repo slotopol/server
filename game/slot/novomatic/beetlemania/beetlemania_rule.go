@@ -61,12 +61,42 @@ const wild, scat = 1, 10
 const jazz = 11
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
-	g.ScanLined(screen, wins)
-	g.ScanScatters(screen, wins)
+	var scrn5x3 = screen.(*slot.Screen5x3)
+	g.ScanLined(scrn5x3, wins)
+	g.ScanScatters(scrn5x3, wins)
+}
+
+func ScatNumCont(scrn *slot.Screen5x3) (n slot.Pos) {
+	for x := 0; x < 5; x++ {
+		var r = scrn[x]
+		if r[0] == scat || r[1] == scat || r[2] == scat {
+			n++
+		} else {
+			break // scatters should be continuous
+		}
+	}
+	return
+}
+
+func ScatPosCont(scrn *slot.Screen5x3) (l slot.Linex) {
+	var x int
+	for x = 0; x < 5; x++ {
+		var r = scrn[x]
+		if r[0] == scat {
+			l[x] = 1
+		} else if r[1] == scat {
+			l[x] = 2
+		} else if r[2] == scat {
+			l[x] = 3
+		} else {
+			break // scatters should be continuous
+		}
+	}
+	return
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
+func (g *Game) ScanLined(screen *slot.Screen5x3, wins *slot.Wins) {
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
@@ -140,7 +170,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
+func (g *Game) ScanScatters(screen *slot.Screen5x3, wins *slot.Wins) {
 	if g.FSR > 0 {
 		var y slot.Pos
 		if screen.At(3, 1) == jazz {
@@ -164,14 +194,14 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 		return
 	}
 
-	if count := screen.ScatNumCont(scat); count >= 3 {
+	if count := ScatNumCont(screen); count >= 3 {
 		var pay = ScatPay[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * float64(g.Sel) * pay,
 			Mult: 1,
 			Sym:  scat,
 			Num:  count,
-			XY:   screen.ScatPosCont(scat),
+			XY:   ScatPosCont(screen),
 			Free: 10,
 		})
 	}

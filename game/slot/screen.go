@@ -18,9 +18,7 @@ type Screen interface {
 	Spin(reels Reels)                  // fill the screen with random hits on those reels
 	SymNum(sym Sym) (n Pos)            // returns number of symbols on the screen that can repeats on reel
 	ScatNum(scat Sym) (n Pos)          // returns number of scatters on the screen
-	ScatNumCont(scat Sym) (n Pos)      // returns number of continuous scatters on the screen
 	ScatPos(scat Sym) Linex            // returns line with scatters positions on the screen
-	ScatPosCont(scat Sym) Linex        // returns line with continuous scatters positions on the screen
 	FillSym() Sym                      // returns symbol that filled whole screen, or 0
 	Free()                             // put object to pool
 }
@@ -125,43 +123,11 @@ func (s *Screenx) ScatNum(scat Sym) (n Pos) {
 	return
 }
 
-func (s *Screenx) ScatNumCont(scat Sym) (n Pos) {
-	var x, y, i Pos
-loopx:
-	for x = range s.sx {
-		i = x * s.sy
-		for y = range s.sy {
-			if s.data[i+y] == scat {
-				n++
-				continue loopx
-			}
-		}
-		break // scatters should be continuous
-	}
-	return
-}
-
 func (s *Screenx) ScatPos(scat Sym) (l Linex) {
 	for i := range s.sx * s.sy {
 		if s.data[i] == scat {
 			l[i/s.sy+1] = i%s.sy + 1
 		}
-	}
-	return
-}
-
-func (s *Screenx) ScatPosCont(scat Sym) (l Linex) {
-	var x, y, i Pos
-loopx:
-	for x = range s.sx {
-		i = x * s.sy
-		for y = range s.sy {
-			if s.data[i+y] == scat {
-				l[x] = y + 1
-				continue loopx
-			}
-		}
-		break // scatters should be continuous
 	}
 	return
 }
@@ -261,19 +227,6 @@ func (s *Screen3x3) ScatNum(scat Sym) (n Pos) {
 	return
 }
 
-func (s *Screen3x3) ScatNumCont(scat Sym) (n Pos) {
-	var x Pos
-	for x = 0; x < 3; x++ {
-		var r = s[x]
-		if r[0] == scat || r[1] == scat || r[2] == scat {
-			n++
-		} else {
-			break // scatters should be continuous
-		}
-	}
-	return
-}
-
 func (s *Screen3x3) ScatPos(scat Sym) (l Linex) {
 	for x := range 3 {
 		var r = s[x]
@@ -283,23 +236,6 @@ func (s *Screen3x3) ScatPos(scat Sym) (l Linex) {
 			l[x] = 2
 		} else if r[2] == scat {
 			l[x] = 3
-		}
-	}
-	return
-}
-
-func (s *Screen3x3) ScatPosCont(scat Sym) (l Linex) {
-	var x int
-	for x = 0; x < 3; x++ {
-		var r = s[x]
-		if r[0] == scat {
-			l[x] = 1
-		} else if r[1] == scat {
-			l[x] = 2
-		} else if r[2] == scat {
-			l[x] = 3
-		} else {
-			break // scatters should be continuous
 		}
 	}
 	return
@@ -387,18 +323,6 @@ func (s *Screen4x4) ScatNum(scat Sym) (n Pos) {
 	return
 }
 
-func (s *Screen4x4) ScatNumCont(scat Sym) (n Pos) {
-	for x := 0; x < 4; x++ {
-		var r = s[x]
-		if r[0] == scat || r[1] == scat || r[2] == scat || r[3] == scat {
-			n++
-		} else {
-			break // scatters should be continuous
-		}
-	}
-	return
-}
-
 func (s *Screen4x4) ScatPos(scat Sym) (l Linex) {
 	for x := range 4 {
 		var r = s[x]
@@ -410,25 +334,6 @@ func (s *Screen4x4) ScatPos(scat Sym) (l Linex) {
 			l[x] = 3
 		} else if r[3] == scat {
 			l[x] = 4
-		}
-	}
-	return
-}
-
-func (s *Screen4x4) ScatPosCont(scat Sym) (l Linex) {
-	var x int
-	for x = 0; x < 4; x++ {
-		var r = s[x]
-		if r[0] == scat {
-			l[x] = 1
-		} else if r[1] == scat {
-			l[x] = 2
-		} else if r[2] == scat {
-			l[x] = 3
-		} else if r[3] == scat {
-			l[x] = 4
-		} else {
-			break // scatters should be continuous
 		}
 	}
 	return
@@ -517,18 +422,6 @@ func (s *Screen5x3) ScatNum(scat Sym) (n Pos) {
 	return
 }
 
-func (s *Screen5x3) ScatNumCont(scat Sym) (n Pos) {
-	for x := 0; x < 5; x++ {
-		var r = s[x]
-		if r[0] == scat || r[1] == scat || r[2] == scat {
-			n++
-		} else {
-			break // scatters should be continuous
-		}
-	}
-	return
-}
-
 func (s *Screen5x3) ScatPos(scat Sym) (l Linex) {
 	for x := range 5 {
 		var r = s[x]
@@ -538,23 +431,6 @@ func (s *Screen5x3) ScatPos(scat Sym) (l Linex) {
 			l[x] = 2
 		} else if r[2] == scat {
 			l[x] = 3
-		}
-	}
-	return
-}
-
-func (s *Screen5x3) ScatPosCont(scat Sym) (l Linex) {
-	var x int
-	for x = 0; x < 5; x++ {
-		var r = s[x]
-		if r[0] == scat {
-			l[x] = 1
-		} else if r[1] == scat {
-			l[x] = 2
-		} else if r[2] == scat {
-			l[x] = 3
-		} else {
-			break // scatters should be continuous
 		}
 	}
 	return
@@ -642,18 +518,6 @@ func (s *Screen5x4) ScatNum(scat Sym) (n Pos) {
 	return
 }
 
-func (s *Screen5x4) ScatNumCont(scat Sym) (n Pos) {
-	for x := 0; x < 5; x++ {
-		var r = s[x]
-		if r[0] == scat || r[1] == scat || r[2] == scat || r[3] == scat {
-			n++
-		} else {
-			break // scatters should be continuous
-		}
-	}
-	return
-}
-
 func (s *Screen5x4) ScatPos(scat Sym) (l Linex) {
 	for x := range 5 {
 		var r = s[x]
@@ -665,25 +529,6 @@ func (s *Screen5x4) ScatPos(scat Sym) (l Linex) {
 			l[x] = 3
 		} else if r[3] == scat {
 			l[x] = 4
-		}
-	}
-	return
-}
-
-func (s *Screen5x4) ScatPosCont(scat Sym) (l Linex) {
-	var x int
-	for x = 0; x < 5; x++ {
-		var r = s[x]
-		if r[0] == scat {
-			l[x] = 1
-		} else if r[1] == scat {
-			l[x] = 2
-		} else if r[2] == scat {
-			l[x] = 3
-		} else if r[3] == scat {
-			l[x] = 4
-		} else {
-			break // scatters should be continuous
 		}
 	}
 	return

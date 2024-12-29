@@ -57,11 +57,14 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 
 func FillMult(screen *slot.Screen5x3) float64 {
 	var sym = screen[2][1] // center symbol
+	if sym < 4 || sym > 7 {
+		return 1
+	}
 	var r *[3]slot.Sym
 	if r = &screen[2]; r[0] != sym || r[2] != sym {
 		return 1
 	}
-	var n float64 = 1
+	var n = 1
 	if r = &screen[1]; r[0] == sym && r[1] == sym && r[2] == sym {
 		n++
 		if r = &screen[0]; r[0] == sym && r[1] == sym && r[2] == sym {
@@ -77,7 +80,7 @@ func FillMult(screen *slot.Screen5x3) float64 {
 	if n < 3 {
 		return 1
 	}
-	return n - 1
+	return float64(n - 1)
 }
 
 // Lined symbols calculation.

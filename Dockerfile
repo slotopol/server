@@ -51,4 +51,4 @@ EXPOSE 8080
 
 # Run application with full path representation.
 # Without shell to get signal for graceful shutdown.
-ENTRYPOINT ["/go/bin/slot_linux_x64", "web"]
+ENTRYPOINT ["/go/bin/app", "web"]

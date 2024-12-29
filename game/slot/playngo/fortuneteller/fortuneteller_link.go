@@ -18,7 +18,7 @@ var Info = game.GameInfo{
 	SY:  3,
 	SN:  len(LinePay),
 	LN:  len(BetLines),
-	BN:  0,
+	BN:  1,
 	RTP: game.MakeRtpList(ReelsMap),
 }
 

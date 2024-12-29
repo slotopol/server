@@ -15,14 +15,14 @@ var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [8][5]float64{
-	{0, 0, 20, 200, 1000}, // 1 strawberry
-	{0, 0, 8, 80, 200},    // 2 blueberry
-	{0, 0, 4.8, 12, 40},   // 3 plum
-	{0, 0, 4, 10, 40},     // 4 pear
-	{0, 0, 4, 10, 40},     // 5 peach
-	{0, 1, 3.2, 8, 32},    // 6 cherry
-	{0, 0, 1, 4, 20},      // 7 apple
-	{},                    // 8 scatter
+	{0, 0, 100, 1000, 5000}, // 1 strawberry
+	{0, 0, 40, 400, 1000},   // 2 blueberry
+	{0, 0, 24, 60, 200},     // 3 plum
+	{0, 0, 20, 50, 200},     // 4 pear
+	{0, 0, 20, 50, 200},     // 5 peach
+	{0, 5, 16, 40, 160},     // 6 cherry
+	{0, 0, 5, 20, 100},      // 7 apple
+	{},                      // 8 scatter
 }
 
 // Scatters payment.
@@ -49,36 +49,33 @@ func NewGame() *Game {
 
 const scat = 8
 
-var Special = map[slot.Sym]bool{
-	1: false, // 1 strawberry
-	2: false, // 2 blueberry
-	3: true,  // 3 plum
-	4: true,  // 4 pear
-	5: true,  // 5 peach
-	6: true,  // 6 cherry
-	7: false, // 7 apple
-	8: false, // 8 scatter
+func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
+	var scrn5x3 = screen.(*slot.Screen5x3)
+	g.ScanLined(scrn5x3, wins)
+	g.ScanScatters(scrn5x3, wins)
 }
 
-func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
-	g.ScanLined(screen, wins)
-	g.ScanScatters(screen, wins)
+func FillMult(screen *slot.Screen5x3) float64 {
+	var sym = screen[0][0]
+	if sym < 3 || sym > 6 {
+		return 1
+	}
+	var r *[3]slot.Sym
+	var i int
+	for i = 0; i < 5; i++ {
+		if r = &screen[i]; r[0] != sym || r[1] != sym || r[2] != sym {
+			break
+		}
+	}
+	if i < 3 {
+		return 1
+	}
+	return float64(i)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
-	var ms float64 = 1 // mult screen
-	if symm := screen.At(1, 1); Special[symm] {
-		var x slot.Pos
-		for x = 1; x <= 5; x++ {
-			if screen.At(x, 1) != symm || screen.At(x, 2) != symm || screen.At(x, 3) != symm {
-				break
-			}
-		}
-		if x > 3 {
-			ms = float64(x - 1)
-		}
-	}
+func (g *Game) ScanLined(screen *slot.Screen5x3, wins *slot.Wins) {
+	var fm float64 // fill mult
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
@@ -94,9 +91,12 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 		}
 
 		if pay := LinePay[syml-1][numl-1]; pay > 0 {
+			if fm == 0 { // lazy calculation
+				fm = FillMult(screen)
+			}
 			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * pay,
-				Mult: ms,
+				Mult: fm,
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
@@ -107,7 +107,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
+func (g *Game) ScanScatters(screen *slot.Screen5x3, wins *slot.Wins) {
 	if count := screen.ScatNum(scat); count >= 3 {
 		var pay = ScatPay[count-1]
 		*wins = append(*wins, slot.WinItem{
