@@ -69,12 +69,12 @@ const wild, scat = 1, 2
 const prob2x = 0.5 // probability of 2x multiplier for wild at free games
 
 func (g *Game) Scanner(wins *slot.Wins) {
-	g.ScanLined(&g.Scrn, wins)
-	g.ScanScatters(&g.Scrn, wins)
+	g.ScanLined(wins)
+	g.ScanScatters(wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen *slot.Screen5x4, wins *slot.Wins) {
+func (g *Game) ScanLined(wins *slot.Wins) {
 	var line slot.Linex
 loop1:
 	for line[0] = 1; line[0] <= 4; line[0]++ {
@@ -91,7 +91,7 @@ loop1:
 						var syml slot.Sym
 						var x slot.Pos
 						for x = 1; x <= 5; x++ {
-							var sx = screen.Pos(x, line)
+							var sx = g.Scrn.Pos(x, line)
 							if sx == wild {
 								mw *= g.MW[x-2]
 							} else if syml == 0 && sx != scat {
@@ -143,8 +143,8 @@ loop1:
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen *slot.Screen5x4, wins *slot.Wins) {
-	if count := screen.ScatNum(scat); count >= 2 {
+func (g *Game) ScanScatters(wins *slot.Wins) {
+	if count := g.Scrn.ScatNum(scat); count >= 2 {
 		var pay = ScatPay[count-1]
 		var fs int
 		if g.FSR > 0 {
@@ -158,7 +158,7 @@ func (g *Game) ScanScatters(screen *slot.Screen5x4, wins *slot.Wins) {
 				Mult: 1,
 				Sym:  scat,
 				Num:  count,
-				XY:   screen.ScatPos(scat),
+				XY:   g.Scrn.ScatPos(scat),
 				Free: fs,
 			})
 		}

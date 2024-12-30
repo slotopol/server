@@ -69,31 +69,31 @@ func (g *Game) Clone() slot.SlotGame {
 const scat = 8
 
 func (g *Game) Scanner(wins *slot.Wins) {
-	g.ScanLined(&g.Scrn, wins)
-	g.ScanScatters(&g.Scrn, wins)
+	g.ScanLined(wins)
+	g.ScanScatters(wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
+func (g *Game) ScanLined(wins *slot.Wins) {
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
 		var numl slot.Pos = 1
-		var syml = screen.Pos(3, line)
+		var syml = g.Scrn.Pos(3, line)
 		var xy slot.Linex
 		xy.Set(3, line.At(3))
-		if screen.Pos(2, line) == syml {
+		if g.Scrn.Pos(2, line) == syml {
 			xy.Set(2, line.At(2))
 			numl++
-			if screen.Pos(1, line) == syml {
+			if g.Scrn.Pos(1, line) == syml {
 				xy.Set(1, line.At(1))
 				numl++
 			}
 		}
-		if screen.Pos(4, line) == syml {
+		if g.Scrn.Pos(4, line) == syml {
 			xy.Set(4, line.At(4))
 			numl++
-			if screen.Pos(5, line) == syml {
+			if g.Scrn.Pos(5, line) == syml {
 				xy.Set(5, line.At(5))
 				numl++
 			}
@@ -113,15 +113,15 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
-	if count := screen.ScatNum(scat); count >= 3 {
+func (g *Game) ScanScatters(wins *slot.Wins) {
+	if count := g.Scrn.ScatNum(scat); count >= 3 {
 		var pay = ScatPay[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * float64(g.Sel) * pay,
 			Mult: 1,
 			Sym:  scat,
 			Num:  count,
-			XY:   screen.ScatPos(scat),
+			XY:   g.Scrn.ScatPos(scat),
 		})
 	}
 }

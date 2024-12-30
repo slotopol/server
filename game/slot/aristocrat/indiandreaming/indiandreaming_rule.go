@@ -57,13 +57,13 @@ const wild, scat = 1, 2
 
 func (g *Game) Scanner(wins *slot.Wins) {
 	if g.Scrn.ScatNum(wild) < 5 {
-		g.ScanLined(&g.Scrn, wins)
+		g.ScanLined(wins)
 	}
-	g.ScanScatters(&g.Scrn, wins)
+	g.ScanScatters(wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
+func (g *Game) ScanLined(wins *slot.Wins) {
 	var mwm float64 = 1 // mult wild mode
 	if g.FSR > 0 {
 		mwm = 5
@@ -84,7 +84,7 @@ loop1:
 						var syml slot.Sym
 						var x slot.Pos
 						for x = 1; x <= 5; x++ {
-							var sx = screen.Pos(x, line)
+							var sx = g.Scrn.Pos(x, line)
 							if sx == wild {
 								mw = mwm
 							} else if syml == 0 && sx != scat {
@@ -134,16 +134,16 @@ loop1:
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
-	var sn, wn = screen.ScatNum(scat), screen.ScatNum(wild)
+func (g *Game) ScanScatters(wins *slot.Wins) {
+	var sn, wn = g.Scrn.ScatNum(scat), g.Scrn.ScatNum(wild)
 	if count := sn + wn; count >= 3 {
 		var mw float64 = 1 // mult wild
 		if g.FSR > 0 && wn > 0 {
 			mw = 5
 		}
 		var pay = ScatPay[count-1]
-		var line = screen.ScatPos(scat)
-		line.Cover(screen.ScatPos(wild))
+		var line = g.Scrn.ScatPos(scat)
+		line.Cover(g.Scrn.ScatPos(wild))
 		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * pay,
 			Mult: mw,

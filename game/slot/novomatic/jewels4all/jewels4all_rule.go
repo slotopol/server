@@ -72,16 +72,16 @@ func (g *Game) Clone() slot.SlotGame {
 const wild = 8
 
 func (g *Game) Scanner(wins *slot.Wins) {
-	g.ScanLined(&g.Scrn, wins)
+	g.ScanLined(wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
-	var scrnwild slot.Screen5x3 = *screen.(*slot.Screen5x3)
+func (g *Game) ScanLined(wins *slot.Wins) {
+	var scrnwild slot.Screen5x3 = g.Scrn
 	var x, y slot.Pos
 	for x = 1; x <= 5; x++ {
 		for y = 1; y <= 3; y++ {
-			if screen.At(x, y) == wild {
+			if g.Scrn.At(x, y) == wild {
 				for i := max(0, x-2); i <= min(4, x); i++ {
 					for j := max(0, y-2); j <= min(2, y); j++ {
 						scrnwild[i][j] = wild

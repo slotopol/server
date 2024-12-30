@@ -72,20 +72,20 @@ func (g *Game) Clone() slot.SlotGame {
 const scat, acorn, diamond = 11, 12, 13
 
 func (g *Game) Scanner(wins *slot.Wins) {
-	g.ScanLined(&g.Scrn, wins)
-	g.ScanScatters(&g.Scrn, wins)
+	g.ScanLined(wins)
+	g.ScanScatters(wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
+func (g *Game) ScanLined(wins *slot.Wins) {
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
 		var numl slot.Pos = 5
-		var syml = screen.Pos(1, line)
+		var syml = g.Scrn.Pos(1, line)
 		var x slot.Pos
 		for x = 2; x <= 5; x++ {
-			var sx = screen.Pos(x, line)
+			var sx = g.Scrn.Pos(x, line)
 			if sx != syml {
 				numl = x - 1
 				break
@@ -116,18 +116,18 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
-	if count := screen.ScatNum(scat); count >= 3 {
+func (g *Game) ScanScatters(wins *slot.Wins) {
+	if count := g.Scrn.ScatNum(scat); count >= 3 {
 		var fs = ScatFreespin[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Sym:  scat,
 			Num:  count,
-			XY:   screen.ScatPos(scat),
+			XY:   g.Scrn.ScatPos(scat),
 			Free: fs,
 		})
 	}
 
-	if screen.At(5, 1) == acorn || screen.At(5, 2) == acorn || screen.At(5, 3) == acorn {
+	if g.Scrn.At(5, 1) == acorn || g.Scrn.At(5, 2) == acorn || g.Scrn.At(5, 3) == acorn {
 		if (g.AN+1)%3 == 0 {
 			*wins = append(*wins, slot.WinItem{
 				Mult: 1,

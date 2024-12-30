@@ -56,12 +56,12 @@ const golfbon = 1
 const wild, scat1, scat2, scat3 = 1, 9, 10, 11
 
 func (g *Game) Scanner(wins *slot.Wins) {
-	g.ScanLined(&g.Scrn, wins)
-	g.ScanScatters(&g.Scrn, wins)
+	g.ScanLined(wins)
+	g.ScanScatters(wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
+func (g *Game) ScanLined(wins *slot.Wins) {
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
@@ -69,7 +69,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
-			var sx = screen.Pos(x, line)
+			var sx = g.Scrn.Pos(x, line)
 			if sx == wild {
 				if syml == 0 {
 					numw = x
@@ -117,7 +117,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 			var symr slot.Sym
 			var x slot.Pos
 			for x = 5; x > numl; x-- {
-				var sx = screen.Pos(x, line)
+				var sx = g.Scrn.Pos(x, line)
 				if sx == wild {
 					if symr == 0 {
 						numw = 6 - x
@@ -164,29 +164,29 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
-	if count := screen.ScatNum(scat1); count >= 3 {
+func (g *Game) ScanScatters(wins *slot.Wins) {
+	if count := g.Scrn.ScatNum(scat1); count >= 3 {
 		*wins = append(*wins, slot.WinItem{
 			Mult: 1,
 			Sym:  scat1,
 			Num:  count,
-			XY:   screen.ScatPos(scat1),
+			XY:   g.Scrn.ScatPos(scat1),
 			BID:  golfbon,
 		})
-	} else if count := screen.ScatNum(scat2); count >= 3 {
+	} else if count := g.Scrn.ScatNum(scat2); count >= 3 {
 		*wins = append(*wins, slot.WinItem{
 			Mult: 1,
 			Sym:  scat2,
 			Num:  count,
-			XY:   screen.ScatPos(scat2),
+			XY:   g.Scrn.ScatPos(scat2),
 			BID:  golfbon,
 		})
-	} else if count := screen.ScatNum(scat3); count >= 3 {
+	} else if count := g.Scrn.ScatNum(scat3); count >= 3 {
 		*wins = append(*wins, slot.WinItem{
 			Mult: 1,
 			Sym:  scat3,
 			Num:  count,
-			XY:   screen.ScatPos(scat3),
+			XY:   g.Scrn.ScatPos(scat3),
 			BID:  golfbon,
 		})
 	}

@@ -41,10 +41,8 @@ RUN ./task/build-docker.sh
 # Thin deploy image.
 FROM scratch
 
-# Copy compiled executable and packages to new image destination.
-COPY --from=build /go/bin/slot* /go/bin/
-# Copy configuration files.
-COPY --from=build /go/bin/config /go/bin/config
+# Copy compiled executable and configuration files to new image destination.
+COPY --from=build /go/bin /go/bin
 
 # Open REST listen port.
 EXPOSE 8080

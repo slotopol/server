@@ -66,8 +66,8 @@ const wild, scat = 1, 10
 const jazz = 11
 
 func (g *Game) Scanner(wins *slot.Wins) {
-	g.ScanLined(&g.Scrn, wins)
-	g.ScanScatters(&g.Scrn, wins)
+	g.ScanLined(wins)
+	g.ScanScatters(wins)
 }
 
 func ScatNumCont(scrn *slot.Screen5x3) (n slot.Pos) {
@@ -100,7 +100,7 @@ func ScatPosCont(scrn *slot.Screen5x3) (l slot.Linex) {
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen *slot.Screen5x3, wins *slot.Wins) {
+func (g *Game) ScanLined(wins *slot.Wins) {
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
@@ -108,7 +108,7 @@ func (g *Game) ScanLined(screen *slot.Screen5x3, wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
-			var sx = screen.Pos(x, line)
+			var sx = g.Scrn.Pos(x, line)
 			if sx == wild {
 				if syml == 0 {
 					numw = x
@@ -125,13 +125,13 @@ func (g *Game) ScanLined(screen *slot.Screen5x3, wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
-			var sx = screen.Pos(x, line)
+			var sx = g.Scrn.Pos(x, line)
 			if sx != wild {
 				if sx != scat && sx != jazz {
 					syml = sx
 					numl = numw + 1
 					for x := numl + 1; x <= 5; x++ {
-						var sx = screen.Pos(x, line)
+						var sx = g.Scrn.Pos(x, line)
 						if sx == syml || sx == wild {
 							numl++
 						} else {
@@ -174,14 +174,14 @@ func (g *Game) ScanLined(screen *slot.Screen5x3, wins *slot.Wins) {
 }
 
 // Scatters calculation.
-func (g *Game) ScanScatters(screen *slot.Screen5x3, wins *slot.Wins) {
+func (g *Game) ScanScatters(wins *slot.Wins) {
 	if g.FSR > 0 {
 		var y slot.Pos
-		if screen.At(3, 1) == jazz {
+		if g.Scrn.At(3, 1) == jazz {
 			y = 1
-		} else if screen.At(3, 2) == jazz {
+		} else if g.Scrn.At(3, 2) == jazz {
 			y = 2
-		} else if screen.At(3, 3) == jazz {
+		} else if g.Scrn.At(3, 3) == jazz {
 			y = 3
 		} else {
 			return // ignore scatters on freespins
@@ -198,14 +198,14 @@ func (g *Game) ScanScatters(screen *slot.Screen5x3, wins *slot.Wins) {
 		return
 	}
 
-	if count := ScatNumCont(screen); count >= 3 {
+	if count := ScatNumCont(&g.Scrn); count >= 3 {
 		var pay = ScatPay[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * float64(g.Sel) * pay,
 			Mult: 1,
 			Sym:  scat,
 			Num:  count,
-			XY:   ScatPosCont(screen),
+			XY:   ScatPosCont(&g.Scrn),
 			Free: 10,
 		})
 	}

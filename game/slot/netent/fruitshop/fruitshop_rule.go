@@ -85,20 +85,20 @@ func (g *Game) Clone() slot.SlotGame {
 const wild = 1
 
 func (g *Game) Scanner(wins *slot.Wins) {
-	g.ScanLined(&g.Scrn, wins)
+	g.ScanLined(wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
+func (g *Game) ScanLined(wins *slot.Wins) {
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
 		var mw float64 = 1 // mult wild
 		var numl slot.Pos = 5
-		var syml = screen.Pos(1, line)
+		var syml = g.Scrn.Pos(1, line)
 		var x slot.Pos
 		for x = 2; x <= 5; x++ {
-			var sx = screen.Pos(x, line)
+			var sx = g.Scrn.Pos(x, line)
 			if sx == wild {
 				mw = 2
 			} else if sx != syml {

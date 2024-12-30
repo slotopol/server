@@ -77,11 +77,11 @@ func (g *Game) Clone() slot.SlotGame {
 const wild = 9
 
 func (g *Game) Scanner(wins *slot.Wins) {
-	g.ScanLined(&g.Scrn, wins)
+	g.ScanLined(wins)
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
+func (g *Game) ScanLined(wins *slot.Wins) {
 	var reelwild [5]bool
 	var fs int
 	var x, y slot.Pos
@@ -90,7 +90,7 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 			reelwild[x-1] = true
 		} else {
 			for y = 1; y <= 3; y++ {
-				if screen.At(x, y) == wild {
+				if g.Scrn.At(x, y) == wild {
 					reelwild[x-1] = true
 					fs = 1
 					break
@@ -105,9 +105,9 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 		var numl, numr slot.Pos
 		var payl, payr float64
 
-		syml, numl = screen.Pos(1, line), 1
+		syml, numl = g.Scrn.Pos(1, line), 1
 		for x = 2; x <= 5; x++ {
-			var sx = screen.Pos(x, line)
+			var sx = g.Scrn.Pos(x, line)
 			if sx != syml && !reelwild[x-1] {
 				break
 			}
@@ -116,9 +116,9 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 		payl = LinePay[syml-1][numl-1]
 
 		if numl < 4 {
-			symr, numr = screen.Pos(5, line), 1
+			symr, numr = g.Scrn.Pos(5, line), 1
 			for x = 4; x >= 2; x-- {
-				var sx = screen.Pos(x, line)
+				var sx = g.Scrn.Pos(x, line)
 				if sx != symr && !reelwild[x-1] {
 					break
 				}
