@@ -3,11 +3,10 @@ package slot
 import (
 	"encoding/json"
 	"math/rand/v2"
-	"sync"
 )
 
 // Screen contains symbols rectangle of the slot game.
-// It can be with dimensions 3x1, 3x3, 5x3, 5x4 or others.
+// It can be with dimensions 3x1, 3x3, 4x4, 5x3, 5x4 or others.
 // (1 ,1) symbol is on left top corner.
 type Screen interface {
 	Dim() (Pos, Pos)                   // returns screen dimensions
@@ -19,8 +18,6 @@ type Screen interface {
 	SymNum(sym Sym) (n Pos)            // returns number of symbols on the screen that can repeats on reel
 	ScatNum(scat Sym) (n Pos)          // returns number of scatters on the screen
 	ScatPos(scat Sym) Linex            // returns line with scatters positions on the screen
-	FillSym() Sym                      // returns symbol that filled whole screen, or 0
-	Free()                             // put object to pool
 }
 
 type Screenx struct {
@@ -31,29 +28,17 @@ type Screenx struct {
 // Declare conformity with Screen interface.
 var _ Screen = (*Screenx)(nil)
 
-var poolsx = sync.Pool{
-	New: func() any {
-		return &Screen3x3{}
-	},
-}
-
-func NewScreenx(sx, sy Pos) *Screenx {
-	var s = poolsx.Get().(*Screenx)
+func (s *Screenx) Init(sx, sy Pos) {
 	s.sx, s.sy = sx, sy
-	return s
-}
-
-func (s *Screenx) Free() {
-	poolsx.Put(s)
 }
 
 func (s *Screenx) Len() int {
-	for i := 39; i >= 0; i-- {
-		if s.data[i] > 0 {
-			return i + 1
+	for i, sym := range s.data {
+		if sym == 0 {
+			return i
 		}
 	}
-	return 0
+	return len(s.data)
 }
 
 func (s *Screenx) UpdateDim() (sx, sy Pos) {
@@ -64,10 +49,16 @@ func (s *Screenx) UpdateDim() (sx, sy Pos) {
 		sx, sy = 3, 3
 	case 5 * 3:
 		sx, sy = 5, 3
+	case 4 * 4:
+		sx, sy = 4, 4
+	case 6 * 3:
+		sx, sy = 6, 3
 	case 5 * 4:
 		sx, sy = 5, 4
 	case 6 * 4:
 		sx, sy = 6, 4
+	case 5 * 5:
+		sx, sy = 5, 5
 	}
 	s.sx, s.sy = sx, sy
 	return
@@ -132,16 +123,6 @@ func (s *Screenx) ScatPos(scat Sym) (l Linex) {
 	return
 }
 
-func (s *Screenx) FillSym() (sym Sym) {
-	sym = s.data[0]
-	for i := range s.sx * s.sy {
-		if s.data[i] != sym {
-			return 0
-		}
-	}
-	return
-}
-
 func (s *Screenx) MarshalJSON() ([]byte, error) {
 	return json.Marshal(s.data[:s.Len()])
 }
@@ -159,20 +140,6 @@ type Screen3x3 [3][3]Sym
 
 // Declare conformity with Screen interface.
 var _ Screen = (*Screen3x3)(nil)
-
-var pools3x3 = sync.Pool{
-	New: func() any {
-		return &Screen3x3{}
-	},
-}
-
-func NewScreen3x3() *Screen3x3 {
-	return pools3x3.Get().(*Screen3x3)
-}
-
-func (s *Screen3x3) Free() {
-	pools3x3.Put(s)
-}
 
 func (s *Screen3x3) Dim() (Pos, Pos) {
 	return 3, 3
@@ -241,35 +208,11 @@ func (s *Screen3x3) ScatPos(scat Sym) (l Linex) {
 	return
 }
 
-func (s *Screen3x3) FillSym() Sym {
-	var sym = s[0][0]
-	if s[1][0] == sym && s[2][0] == sym &&
-		s[0][1] == sym && s[1][1] == sym && s[2][1] == sym &&
-		s[0][2] == sym && s[1][2] == sym && s[2][2] == sym {
-		return sym
-	}
-	return 0
-}
-
 // Screen for 4x4 slots.
 type Screen4x4 [4][4]Sym
 
 // Declare conformity with Screen interface.
 var _ Screen = (*Screen4x4)(nil)
-
-var pools4x4 = sync.Pool{
-	New: func() any {
-		return &Screen4x4{}
-	},
-}
-
-func NewScreen4x4() *Screen4x4 {
-	return pools4x4.Get().(*Screen4x4)
-}
-
-func (s *Screen4x4) Free() {
-	pools4x4.Put(s)
-}
 
 func (s *Screen4x4) Dim() (Pos, Pos) {
 	return 4, 4
@@ -339,36 +282,11 @@ func (s *Screen4x4) ScatPos(scat Sym) (l Linex) {
 	return
 }
 
-func (s *Screen4x4) FillSym() Sym {
-	var sym = s[0][0]
-	if s[1][0] == sym && s[2][0] == sym && s[3][0] == sym &&
-		s[0][1] == sym && s[1][1] == sym && s[2][1] == sym && s[3][1] == sym &&
-		s[0][2] == sym && s[1][2] == sym && s[2][2] == sym && s[3][2] == sym &&
-		s[0][3] == sym && s[1][3] == sym && s[2][3] == sym && s[3][3] == sym {
-		return sym
-	}
-	return 0
-}
-
 // Screen for 5x3 slots.
 type Screen5x3 [5][3]Sym
 
 // Declare conformity with Screen interface.
 var _ Screen = (*Screen5x3)(nil)
-
-var pools5x3 = sync.Pool{
-	New: func() any {
-		return &Screen5x3{}
-	},
-}
-
-func NewScreen5x3() *Screen5x3 {
-	return pools5x3.Get().(*Screen5x3)
-}
-
-func (s *Screen5x3) Free() {
-	pools5x3.Put(s)
-}
 
 func (s *Screen5x3) Dim() (Pos, Pos) {
 	return 5, 3
@@ -436,35 +354,11 @@ func (s *Screen5x3) ScatPos(scat Sym) (l Linex) {
 	return
 }
 
-func (s *Screen5x3) FillSym() Sym {
-	var sym = s[0][0]
-	if s[1][0] == sym && s[2][0] == sym && s[3][0] == sym && s[4][0] == sym &&
-		s[0][1] == sym && s[1][1] == sym && s[2][1] == sym && s[3][1] == sym && s[4][1] == sym &&
-		s[0][2] == sym && s[1][2] == sym && s[2][2] == sym && s[3][2] == sym && s[4][2] == sym {
-		return sym
-	}
-	return 0
-}
-
 // Screen for 5x4 slots.
 type Screen5x4 [5][4]Sym
 
 // Declare conformity with Screen interface.
 var _ Screen = (*Screen5x4)(nil)
-
-var pools5x4 = sync.Pool{
-	New: func() any {
-		return &Screen5x4{}
-	},
-}
-
-func NewScreen5x4() *Screen5x4 {
-	return pools5x4.Get().(*Screen5x4)
-}
-
-func (s *Screen5x4) Free() {
-	pools5x4.Put(s)
-}
 
 func (s *Screen5x4) Dim() (Pos, Pos) {
 	return 5, 4
@@ -532,15 +426,4 @@ func (s *Screen5x4) ScatPos(scat Sym) (l Linex) {
 		}
 	}
 	return
-}
-
-func (s *Screen5x4) FillSym() Sym {
-	var sym = s[0][0]
-	if s[1][0] == sym && s[2][0] == sym && s[3][0] == sym && s[4][0] == sym &&
-		s[0][1] == sym && s[1][1] == sym && s[2][1] == sym && s[3][1] == sym && s[4][1] == sym &&
-		s[0][2] == sym && s[1][2] == sym && s[2][2] == sym && s[3][2] == sym && s[4][2] == sym &&
-		s[0][3] == sym && s[1][3] == sym && s[2][3] == sym && s[3][3] == sym && s[4][3] == sym {
-		return sym
-	}
-	return 0
 }

@@ -138,11 +138,11 @@ var (
 	ErrDisabled   = errors.New("feature is disabled")
 )
 
-// Slot5x3 is base struct for all slot games with screen 5x3.
-type Slot3x3 struct {
-	Scrn Screen3x3 `json:"scrn" yaml:"scrn" xml:"scrn"`
-	Sel  int       `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
-	Bet  float64   `json:"bet" yaml:"bet" xml:"bet"` // bet value
+// Slotx is base struct for all slot games with subsequent screen.
+type Slotx[T any] struct {
+	Scrn T       `json:"scrn" yaml:"scrn" xml:"scrn"`
+	Sel  int     `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
+	Bet  float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
 	// gain for double up games
 	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"`
@@ -152,17 +152,17 @@ type Slot3x3 struct {
 	FSR int `json:"fsr,omitempty" yaml:"fsr,omitempty" xml:"fsr,omitempty"`
 }
 
-func (g *Slot3x3) Screen() Screen {
-	return &g.Scrn
+func (g *Slotx[T]) Screen() Screen {
+	return any(&g.Scrn).(Screen)
 }
 
-func (g *Slot3x3) Spawn(wins Wins) {
+func (g *Slotx[T]) Spawn(wins Wins) {
 }
 
-func (g *Slot3x3) Prepare() {
+func (g *Slotx[T]) Prepare() {
 }
 
-func (g *Slot3x3) Apply(wins Wins) {
+func (g *Slotx[T]) Apply(wins Wins) {
 	if g.FSR != 0 {
 		g.Gain += wins.Gain()
 		g.FSN++
@@ -181,24 +181,24 @@ func (g *Slot3x3) Apply(wins Wins) {
 	}
 }
 
-func (g *Slot3x3) FreeSpins() bool {
+func (g *Slotx[T]) FreeSpins() bool {
 	return g.FSR != 0
 }
 
-func (g *Slot3x3) GetGain() float64 {
+func (g *Slotx[T]) GetGain() float64 {
 	return g.Gain
 }
 
-func (g *Slot3x3) SetGain(gain float64) error {
+func (g *Slotx[T]) SetGain(gain float64) error {
 	g.Gain = gain
 	return nil
 }
 
-func (g *Slot3x3) GetBet() float64 {
+func (g *Slotx[T]) GetBet() float64 {
 	return g.Bet
 }
 
-func (g *Slot3x3) SetBet(bet float64) error {
+func (g *Slotx[T]) SetBet(bet float64) error {
 	if bet <= 0 {
 		return ErrBetEmpty
 	}
@@ -209,11 +209,11 @@ func (g *Slot3x3) SetBet(bet float64) error {
 	return nil
 }
 
-func (g *Slot3x3) GetSel() int {
+func (g *Slotx[T]) GetSel() int {
 	return g.Sel
 }
 
-func (g *Slot3x3) SetSelNum(sel int, bln int) error {
+func (g *Slotx[T]) SetSelNum(sel int, bln int) error {
 	if sel < 1 {
 		return ErrNoLineset
 	}
@@ -227,285 +227,6 @@ func (g *Slot3x3) SetSelNum(sel int, bln int) error {
 	return nil
 }
 
-func (g *Slot3x3) SetMode(int) error {
-	return ErrNoFeature
-}
-
-// Slot4x4 is base struct for all slot games with screen 4x4.
-type Slot4x4 struct {
-	Scrn Screen4x4 `json:"scrn" yaml:"scrn" xml:"scrn"`
-	Sel  int       `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
-	Bet  float64   `json:"bet" yaml:"bet" xml:"bet"` // bet value
-
-	// gain for double up games
-	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"`
-	// free spin number
-	FSN int `json:"fsn,omitempty" yaml:"fsn,omitempty" xml:"fsn,omitempty"`
-	// free spin remains
-	FSR int `json:"fsr,omitempty" yaml:"fsr,omitempty" xml:"fsr,omitempty"`
-}
-
-func (g *Slot4x4) Screen() Screen {
-	return &g.Scrn
-}
-
-func (g *Slot4x4) Spawn(wins Wins) {
-}
-
-func (g *Slot4x4) Prepare() {
-}
-
-func (g *Slot4x4) Apply(wins Wins) {
-	if g.FSR != 0 {
-		g.Gain += wins.Gain()
-		g.FSN++
-	} else {
-		g.Gain = wins.Gain()
-		g.FSN = 0
-	}
-
-	if g.FSR > 0 {
-		g.FSR--
-	}
-	for _, wi := range wins {
-		if wi.Free > 0 {
-			g.FSR += wi.Free
-		}
-	}
-}
-
-func (g *Slot4x4) FreeSpins() bool {
-	return g.FSR != 0
-}
-
-func (g *Slot4x4) GetGain() float64 {
-	return g.Gain
-}
-
-func (g *Slot4x4) SetGain(gain float64) error {
-	g.Gain = gain
-	return nil
-}
-
-func (g *Slot4x4) GetBet() float64 {
-	return g.Bet
-}
-
-func (g *Slot4x4) SetBet(bet float64) error {
-	if bet <= 0 {
-		return ErrBetEmpty
-	}
-	if g.FreeSpins() {
-		return ErrDisabled
-	}
-	g.Bet = bet
-	return nil
-}
-
-func (g *Slot4x4) GetSel() int {
-	return g.Sel
-}
-
-func (g *Slot4x4) SetSelNum(sel int, bln int) error {
-	if sel < 1 {
-		return ErrNoLineset
-	}
-	if sel > bln {
-		return ErrLinesetOut
-	}
-	if g.FreeSpins() {
-		return ErrDisabled
-	}
-	g.Sel = sel
-	return nil
-}
-
-func (g *Slot4x4) SetMode(int) error {
-	return ErrNoFeature
-}
-
-// Slot5x3 is base struct for all slot games with screen 5x3.
-type Slot5x3 struct {
-	Scrn Screen5x3 `json:"scrn" yaml:"scrn" xml:"scrn"`
-	Sel  int       `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
-	Bet  float64   `json:"bet" yaml:"bet" xml:"bet"` // bet value
-
-	// gain for double up games
-	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"`
-	// free spin number
-	FSN int `json:"fsn,omitempty" yaml:"fsn,omitempty" xml:"fsn,omitempty"`
-	// free spin remains
-	FSR int `json:"fsr,omitempty" yaml:"fsr,omitempty" xml:"fsr,omitempty"`
-}
-
-func (g *Slot5x3) Screen() Screen {
-	return &g.Scrn
-}
-
-func (g *Slot5x3) Spawn(wins Wins) {
-}
-
-func (g *Slot5x3) Prepare() {
-}
-
-func (g *Slot5x3) Apply(wins Wins) {
-	if g.FSR != 0 {
-		g.Gain += wins.Gain()
-		g.FSN++
-	} else {
-		g.Gain = wins.Gain()
-		g.FSN = 0
-	}
-
-	if g.FSR > 0 {
-		g.FSR--
-	}
-	for _, wi := range wins {
-		if wi.Free > 0 {
-			g.FSR += wi.Free
-		}
-	}
-}
-
-func (g *Slot5x3) FreeSpins() bool {
-	return g.FSR != 0
-}
-
-func (g *Slot5x3) GetGain() float64 {
-	return g.Gain
-}
-
-func (g *Slot5x3) SetGain(gain float64) error {
-	g.Gain = gain
-	return nil
-}
-
-func (g *Slot5x3) GetBet() float64 {
-	return g.Bet
-}
-
-func (g *Slot5x3) SetBet(bet float64) error {
-	if bet <= 0 {
-		return ErrBetEmpty
-	}
-	if g.FreeSpins() {
-		return ErrDisabled
-	}
-	g.Bet = bet
-	return nil
-}
-
-func (g *Slot5x3) GetSel() int {
-	return g.Sel
-}
-
-func (g *Slot5x3) SetSelNum(sel int, bln int) error {
-	if sel < 1 {
-		return ErrNoLineset
-	}
-	if sel > bln {
-		return ErrLinesetOut
-	}
-	if g.FreeSpins() {
-		return ErrDisabled
-	}
-	g.Sel = sel
-	return nil
-}
-
-func (g *Slot5x3) SetMode(int) error {
-	return ErrNoFeature
-}
-
-// Slot5x4 is base struct for all slot games with screen 5x4.
-type Slot5x4 struct {
-	Scrn Screen5x4 `json:"scrn" yaml:"scrn" xml:"scrn"`
-	Sel  int       `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
-	Bet  float64   `json:"bet" yaml:"bet" xml:"bet"` // bet value
-
-	// gain for double up games
-	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"`
-	// free spin number
-	FSN int `json:"fsn,omitempty" yaml:"fsn,omitempty" xml:"fsn,omitempty"`
-	// free spin remains
-	FSR int `json:"fsr,omitempty" yaml:"fsr,omitempty" xml:"fsr,omitempty"`
-}
-
-func (g *Slot5x4) Screen() Screen {
-	return &g.Scrn
-}
-
-func (g *Slot5x4) Spawn(wins Wins) {
-}
-
-func (g *Slot5x4) Prepare() {
-}
-
-func (g *Slot5x4) Apply(wins Wins) {
-	if g.FSR != 0 {
-		g.Gain += wins.Gain()
-		g.FSN++
-	} else {
-		g.Gain = wins.Gain()
-		g.FSN = 0
-	}
-
-	if g.FSR > 0 {
-		g.FSR--
-	}
-	for _, wi := range wins {
-		if wi.Free > 0 {
-			g.FSR += wi.Free
-		}
-	}
-}
-
-func (g *Slot5x4) FreeSpins() bool {
-	return g.FSR != 0
-}
-
-func (g *Slot5x4) GetGain() float64 {
-	return g.Gain
-}
-
-func (g *Slot5x4) SetGain(gain float64) error {
-	g.Gain = gain
-	return nil
-}
-
-func (g *Slot5x4) GetBet() float64 {
-	return g.Bet
-}
-
-func (g *Slot5x4) SetBet(bet float64) error {
-	if bet <= 0 {
-		return ErrBetEmpty
-	}
-	if g.FreeSpins() {
-		return ErrDisabled
-	}
-	g.Bet = bet
-	return nil
-}
-
-func (g *Slot5x4) GetSel() int {
-	return g.Sel
-}
-
-func (g *Slot5x4) SetSelNum(sel int, bln int) error {
-	if sel < 1 {
-		return ErrNoLineset
-	}
-	if sel > bln {
-		return ErrLinesetOut
-	}
-	if g.FreeSpins() {
-		return ErrDisabled
-	}
-	g.Sel = sel
-	return nil
-}
-
-func (g *Slot5x4) SetMode(int) error {
+func (g *Slotx[T]) SetMode(int) error {
 	return ErrNoFeature
 }

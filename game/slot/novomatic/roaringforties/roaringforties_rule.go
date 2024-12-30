@@ -52,7 +52,7 @@ var Jackpot = [10][5]int{
 var BetLines = slot.BetLinesNvm5x4[:40]
 
 type Game struct {
-	slot.Slot5x4 `yaml:",inline"`
+	slot.Slotx[slot.Screen5x4] `yaml:",inline"`
 }
 
 // Declare conformity with SlotGame interface.
@@ -60,7 +60,7 @@ var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{
-		Slot5x4: slot.Slot5x4{
+		Slotx: slot.Slotx[slot.Screen5x4]{
 			Sel: len(BetLines),
 			Bet: 1,
 		},

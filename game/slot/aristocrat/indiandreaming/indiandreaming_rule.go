@@ -33,7 +33,7 @@ var LinePay = [12][5]float64{
 var ScatPay = [5]float64{0, 0, 2, 15, 100} //  2 scatter
 
 type Game struct {
-	slot.Slot5x3 `yaml:",inline"`
+	slot.Slotx[slot.Screen5x3] `yaml:",inline"`
 }
 
 // Declare conformity with SlotGame interface.
@@ -41,7 +41,7 @@ var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{
-		Slot5x3: slot.Slot5x3{
+		Slotx: slot.Slotx[slot.Screen5x3]{
 			Sel: 25,
 			Bet: 1,
 		},

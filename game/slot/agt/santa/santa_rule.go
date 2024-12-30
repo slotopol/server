@@ -31,7 +31,7 @@ var LinePay = [10][5]float64{
 var BetLines = slot.BetLinesAgt4x4[:10]
 
 type Game struct {
-	slot.Slot4x4 `yaml:",inline"`
+	slot.Slotx[slot.Screen4x4] `yaml:",inline"`
 }
 
 // Declare conformity with SlotGame interface.
@@ -39,7 +39,7 @@ var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{
-		Slot4x4: slot.Slot4x4{
+		Slotx: slot.Slotx[slot.Screen4x4]{
 			Sel: len(BetLines),
 			Bet: 1,
 		},

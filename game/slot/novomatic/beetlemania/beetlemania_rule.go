@@ -42,7 +42,7 @@ const (
 var BetLines = slot.BetLinesNvm10
 
 type Game struct {
-	slot.Slot5x3 `yaml:",inline"`
+	slot.Slotx[slot.Screen5x3] `yaml:",inline"`
 }
 
 // Declare conformity with SlotGame interface.
@@ -50,7 +50,7 @@ var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{
-		Slot5x3: slot.Slot5x3{
+		Slotx: slot.Slotx[slot.Screen5x3]{
 			Sel: 5,
 			Bet: 1,
 		},

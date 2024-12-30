@@ -41,7 +41,7 @@ var ScatFreespinReg = [5]int{0, 0, 8, 15, 20} // scatter
 var ScatFreespinBon = [5]int{0, 5, 8, 15, 20} // scatter
 
 type Game struct {
-	slot.Slot5x4 `yaml:",inline"`
+	slot.Slotx[slot.Screen5x4] `yaml:",inline"`
 	// wild multipliers
 	MW [3]float64 `json:"mw" yaml:"mw" xml:"mw"`
 }
@@ -51,7 +51,7 @@ var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{
-		Slot5x4: slot.Slot5x4{
+		Slotx: slot.Slotx[slot.Screen5x4]{
 			Sel: 40,
 			Bet: 1,
 		},

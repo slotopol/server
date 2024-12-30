@@ -8,8 +8,8 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-func BruteForceEuro(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, x, y slot.Pos) {
-	var screen = g.Screen()
+func BruteForceEuro(ctx context.Context, s slot.Stater, g *Game, reels slot.Reels, x, y slot.Pos) {
+	var screen = &g.Scrn
 	var wins slot.Wins
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)
