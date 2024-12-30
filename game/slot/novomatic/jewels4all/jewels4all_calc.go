@@ -9,7 +9,7 @@ import (
 )
 
 func BruteForceEuro(ctx context.Context, s slot.Stater, g *Game, reels slot.Reels, x, y slot.Pos) {
-	var screen = &g.Scrn
+	var screen = &g.Scr
 	var wins slot.Wins
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)

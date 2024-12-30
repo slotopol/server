@@ -107,7 +107,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
-			var sx = g.Scrn.Pos(x, line)
+			var sx = g.Scr.Pos(x, line)
 			if sx == wild {
 				if syml == 0 {
 					numw = x
@@ -152,7 +152,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	if count := g.Scrn.ScatNum(scat); count >= 2 {
+	if count := g.Scr.ScatNum(scat); count >= 2 {
 		var mm float64 = 1 // mult mode
 		if g.FSR > 0 {
 			mm = g.M
@@ -163,7 +163,7 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 			Mult: mm,
 			Sym:  scat,
 			Num:  count,
-			XY:   g.Scrn.ScatPos(scat),
+			XY:   g.Scr.ScatPos(scat),
 			Free: fs,
 		})
 	}
@@ -171,7 +171,7 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 
 func (g *Game) Spin(mrtp float64) {
 	var reels, _ = slot.FindReels(ReelsMap, mrtp)
-	g.Scrn.Spin(reels)
+	g.Scr.Spin(reels)
 }
 
 var MultChoose = []float64{1, 2, 3, 5, 10} // E = 4.2

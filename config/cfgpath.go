@@ -65,10 +65,10 @@ func InitConfig() {
 		viper.SetConfigFile(CfgFile)
 	} else {
 		const sub = "config"
-		// Search config in home directory with name "slot" (without extension).
+		// Search config in home directory with name "slot-app" (without extension).
 		viper.SetConfigName("slot-app")
 		viper.SetConfigType("yaml")
-		if env, ok := os.LookupEnv("CFGFILE"); ok {
+		if env := os.Getenv("CFGFILE"); env != "" {
 			viper.AddConfigPath(env)
 		}
 		viper.AddConfigPath(filepath.Join(ExePath, sub))
@@ -77,8 +77,8 @@ func InitConfig() {
 		viper.AddConfigPath("appdata")
 		viper.AddConfigPath(".")
 		if home, err := os.UserHomeDir(); err == nil {
+			viper.AddConfigPath(filepath.Join(home, "slotopol", sub))
 			viper.AddConfigPath(filepath.Join(home, sub))
-			viper.AddConfigPath(home)
 		}
 		if env, ok := os.LookupEnv("GOBIN"); ok {
 			viper.AddConfigPath(filepath.Join(env, sub))
@@ -150,8 +150,8 @@ func LookupInLocations(env, sub, fname string) (fpath string) {
 		".",
 	)
 	if home, err := os.UserHomeDir(); err == nil {
+		list, _ = AddDir(list, filepath.Join(home, "slotopol", sub))
 		list, _ = AddDir(list, filepath.Join(home, sub))
-		list, _ = AddDir(list, home)
 	}
 	if env, ok := os.LookupEnv("GOBIN"); ok {
 		list, _ = AddDir(list, filepath.Join(env, sub))

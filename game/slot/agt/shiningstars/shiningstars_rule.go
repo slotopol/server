@@ -69,7 +69,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 	var x, y slot.Pos
 	for x = 2; x <= 4; x++ {
 		for y = 1; y <= 3; y++ {
-			if g.Scrn.At(x, y) == wild {
+			if g.Scr.At(x, y) == wild {
 				reelwild[x-1] = true
 				break
 			}
@@ -80,10 +80,10 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var line = BetLines[li-1]
 
 		var numl slot.Pos = 5
-		var syml = g.Scrn.Pos(1, line)
+		var syml = g.Scr.Pos(1, line)
 		var x slot.Pos
 		for x = 2; x <= 5; x++ {
-			var sx = g.Scrn.Pos(x, line)
+			var sx = g.Scr.Pos(x, line)
 			if reelwild[x-1] {
 				continue
 			} else if sx != syml {
@@ -107,30 +107,30 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	if count := g.Scrn.ScatNum(scat1); count >= 3 {
+	if count := g.Scr.ScatNum(scat1); count >= 3 {
 		var pay = ScatPay1[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * float64(g.Sel) * pay,
 			Mult: 1,
 			Sym:  scat1,
 			Num:  count,
-			XY:   g.Scrn.ScatPos(scat1),
+			XY:   g.Scr.ScatPos(scat1),
 		})
-	} else if count := g.Scrn.ScatNum(scat2); count >= 3 {
+	} else if count := g.Scr.ScatNum(scat2); count >= 3 {
 		var pay = ScatPay2[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * float64(g.Sel) * pay,
 			Mult: 1,
 			Sym:  scat2,
 			Num:  count,
-			XY:   g.Scrn.ScatPos(scat2),
+			XY:   g.Scr.ScatPos(scat2),
 		})
 	}
 }
 
 func (g *Game) Spin(mrtp float64) {
 	var reels, _ = slot.FindReels(ReelsMap, mrtp)
-	g.Scrn.Spin(reels)
+	g.Scr.Spin(reels)
 }
 
 func (g *Game) SetSel(sel int) error {

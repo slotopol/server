@@ -108,7 +108,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
-			var sx = g.Scrn.Pos(x, line)
+			var sx = g.Scr.Pos(x, line)
 			if sx == wild {
 				if syml == 0 {
 					numw = x
@@ -125,13 +125,13 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
-			var sx = g.Scrn.Pos(x, line)
+			var sx = g.Scr.Pos(x, line)
 			if sx != wild {
 				if sx != scat && sx != jazz {
 					syml = sx
 					numl = numw + 1
 					for x := numl + 1; x <= 5; x++ {
-						var sx = g.Scrn.Pos(x, line)
+						var sx = g.Scr.Pos(x, line)
 						if sx == syml || sx == wild {
 							numl++
 						} else {
@@ -177,11 +177,11 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 func (g *Game) ScanScatters(wins *slot.Wins) {
 	if g.FSR > 0 {
 		var y slot.Pos
-		if g.Scrn.At(3, 1) == jazz {
+		if g.Scr.At(3, 1) == jazz {
 			y = 1
-		} else if g.Scrn.At(3, 2) == jazz {
+		} else if g.Scr.At(3, 2) == jazz {
 			y = 2
-		} else if g.Scrn.At(3, 3) == jazz {
+		} else if g.Scr.At(3, 3) == jazz {
 			y = 3
 		} else {
 			return // ignore scatters on freespins
@@ -198,14 +198,14 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 		return
 	}
 
-	if count := ScatNumCont(&g.Scrn); count >= 3 {
+	if count := ScatNumCont(&g.Scr); count >= 3 {
 		var pay = ScatPay[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * float64(g.Sel) * pay,
 			Mult: 1,
 			Sym:  scat,
 			Num:  count,
-			XY:   ScatPosCont(&g.Scrn),
+			XY:   ScatPosCont(&g.Scr),
 			Free: 10,
 		})
 	}
@@ -214,9 +214,9 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 func (g *Game) Spin(mrtp float64) {
 	if g.FSR == 0 {
 		var reels, _ = slot.FindReels(ReelsMap, mrtp)
-		g.Scrn.Spin(reels)
+		g.Scr.Spin(reels)
 	} else {
-		g.Scrn.Spin(ReelsBon)
+		g.Scr.Spin(ReelsBon)
 	}
 }
 

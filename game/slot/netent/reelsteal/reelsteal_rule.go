@@ -76,7 +76,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
-			var sx = g.Scrn.Pos(x, line)
+			var sx = g.Scr.Pos(x, line)
 			if sx == wild {
 				mw = 5
 			} else if syml == 0 && sx != scat {
@@ -107,14 +107,14 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	var count = g.Scrn.ScatNum(scat)
+	var count = g.Scr.ScatNum(scat)
 	if g.FSR > 0 {
 		*wins = append(*wins, slot.WinItem{
 			Pay:  0,
 			Mult: 1,
 			Sym:  scat,
 			Num:  count,
-			XY:   g.Scrn.ScatPos(scat),
+			XY:   g.Scr.ScatPos(scat),
 			Free: int(count),
 		})
 	} else if count >= 2 {
@@ -124,7 +124,7 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 			Mult: 1,
 			Sym:  scat,
 			Num:  count,
-			XY:   g.Scrn.ScatPos(scat),
+			XY:   g.Scr.ScatPos(scat),
 			Free: fs,
 		})
 	}
@@ -132,7 +132,7 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 
 func (g *Game) Spin(mrtp float64) {
 	var reels, _ = slot.FindReels(ReelsMap, mrtp)
-	g.Scrn.Spin(reels)
+	g.Scr.Spin(reels)
 }
 
 func (g *Game) SetSel(sel int) error {

@@ -140,9 +140,9 @@ var (
 
 // Slotx is base struct for all slot games with subsequent screen.
 type Slotx[T any] struct {
-	Scrn T       `json:"scrn" yaml:"scrn" xml:"scrn"`
-	Sel  int     `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
-	Bet  float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
+	Scr T       `json:"scr" yaml:"scr" xml:"scr"` // game screen
+	Sel int     `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
+	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
 	// gain for double up games
 	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"`
@@ -153,7 +153,7 @@ type Slotx[T any] struct {
 }
 
 func (g *Slotx[T]) Screen() Screen {
-	return any(&g.Scrn).(Screen)
+	return any(&g.Scr).(Screen)
 }
 
 func (g *Slotx[T]) Spawn(wins Wins) {

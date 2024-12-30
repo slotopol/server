@@ -15,7 +15,7 @@ func AnyStarProb(b float64) float64 {
 }
 
 func BruteForceStars(ctx context.Context, s slot.Stater, g *Game, reels slot.Reels, wc2, wc3, wc4 bool) {
-	var screen = &g.Scrn
+	var screen = &g.Scr
 	var wins slot.Wins
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)

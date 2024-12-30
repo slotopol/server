@@ -90,7 +90,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 			reelwild[x-1] = true
 		} else {
 			for y = 1; y <= 3; y++ {
-				if g.Scrn.At(x, y) == wild {
+				if g.Scr.At(x, y) == wild {
 					reelwild[x-1] = true
 					fs = 1
 					break
@@ -105,9 +105,9 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var numl, numr slot.Pos
 		var payl, payr float64
 
-		syml, numl = g.Scrn.Pos(1, line), 1
+		syml, numl = g.Scr.Pos(1, line), 1
 		for x = 2; x <= 5; x++ {
-			var sx = g.Scrn.Pos(x, line)
+			var sx = g.Scr.Pos(x, line)
 			if sx != syml && !reelwild[x-1] {
 				break
 			}
@@ -116,9 +116,9 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		payl = LinePay[syml-1][numl-1]
 
 		if numl < 4 {
-			symr, numr = g.Scrn.Pos(5, line), 1
+			symr, numr = g.Scr.Pos(5, line), 1
 			for x = 4; x >= 2; x-- {
-				var sx = g.Scrn.Pos(x, line)
+				var sx = g.Scr.Pos(x, line)
 				if sx != symr && !reelwild[x-1] {
 					break
 				}
@@ -156,14 +156,14 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 }
 
 func (g *Game) Spin(mrtp float64) {
-	g.Scrn.Spin(Reels)
+	g.Scr.Spin(Reels)
 	if !g.FreeSpins() {
 		var _, wc = slot.FindReels(ChanceMap, mrtp) // wild chance
 		var x, y slot.Pos
 		for x = 2; x <= 4; x++ {
 			if rand.Float64() < wc {
 				y = rand.N[slot.Pos](3) + 1
-				g.Scrn.Set(x, y, wild)
+				g.Scr.Set(x, y, wild)
 			}
 		}
 	}
@@ -184,7 +184,7 @@ func (g *Game) Apply(wins slot.Wins) {
 			g.PRW[x-1]--
 		} else {
 			for y = 1; y <= 3; y++ {
-				if g.Scrn.At(x, y) == wild {
+				if g.Scr.At(x, y) == wild {
 					g.PRW[x-1] = 1
 					break
 				}

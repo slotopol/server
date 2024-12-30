@@ -97,9 +97,9 @@ var (
 )
 
 type Keno80 struct {
-	Scrn Screen  `json:"scrn" yaml:"scrn" xml:"scrn"`
-	Bet  float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
-	Sel  Bitset  `json:"sel" yaml:"sel" xml:"sel"` // selected numbers
+	Scr Screen  `json:"scr" yaml:"scr" xml:"scr"` // game screen
+	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
+	Sel Bitset  `json:"sel" yaml:"sel" xml:"sel"` // selected numbers
 }
 
 func (g *Keno80) Spin(_ float64) {
@@ -111,12 +111,12 @@ func (g *Keno80) Spin(_ float64) {
 		hits[i], hits[j] = hits[j], hits[i]
 	})
 
-	clear(g.Scrn[:])
+	clear(g.Scr[:])
 	for n := range g.Sel.Bits() {
-		g.Scrn[n-1] = KSsel
+		g.Scr[n-1] = KSsel
 	}
 	for i := range 20 {
-		g.Scrn[hits[i]-1] |= KShit
+		g.Scr[hits[i]-1] |= KShit
 	}
 }
 
