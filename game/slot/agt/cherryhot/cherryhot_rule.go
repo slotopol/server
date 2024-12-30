@@ -54,10 +54,9 @@ func (g *Game) Clone() slot.SlotGame {
 
 const scat = 8
 
-func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
-	var scrn5x3 = screen.(*slot.Screen5x3)
-	g.ScanLined(scrn5x3, wins)
-	g.ScanScatters(scrn5x3, wins)
+func (g *Game) Scanner(wins *slot.Wins) {
+	g.ScanLined(&g.Scrn, wins)
+	g.ScanScatters(&g.Scrn, wins)
 }
 
 func FillMult(screen *slot.Screen5x3) float64 {

@@ -65,10 +65,9 @@ func (g *Game) Clone() slot.SlotGame {
 const wild, scat = 1, 10
 const jazz = 11
 
-func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
-	var scrn5x3 = screen.(*slot.Screen5x3)
-	g.ScanLined(scrn5x3, wins)
-	g.ScanScatters(scrn5x3, wins)
+func (g *Game) Scanner(wins *slot.Wins) {
+	g.ScanLined(&g.Scrn, wins)
+	g.ScanScatters(&g.Scrn, wins)
 }
 
 func ScatNumCont(scrn *slot.Screen5x3) (n slot.Pos) {

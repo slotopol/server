@@ -23,7 +23,7 @@ func BruteForceFire(ctx context.Context, s slot.Stater, g slot.SlotGame, reels s
 		screen.SetCol(1, r1, i1)
 		for i5 := range r5 {
 			screen.SetCol(5, r5, i5)
-			g.Scanner(screen, &wins)
+			g.Scanner(&wins)
 			s.Update(wins)
 			wins.Reset()
 			if s.Count()&100 == 0 {

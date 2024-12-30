@@ -293,7 +293,7 @@ func ApiSlotSpin(c *gin.Context) {
 	game.Prepare()
 	for {
 		game.Spin(mrtp)
-		game.Scanner(game.Screen(), &wins)
+		game.Scanner(&wins)
 		game.Spawn(wins)
 		banksum = totalbet - wins.Gain()
 		if bank+banksum >= 0 || (bank < 0 && banksum > 0) {

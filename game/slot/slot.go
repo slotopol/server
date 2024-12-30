@@ -51,7 +51,7 @@ func (wins Wins) Gain() float64 {
 type SlotGame interface {
 	Clone() SlotGame       // returns full cloned copy of itself
 	Screen() Screen        // returns screen object for this game, constat function
-	Scanner(Screen, *Wins) // scan given screen and append result to wins, constat function
+	Scanner(*Wins)         // scan given screen and append result to wins, constat function
 	Spin(float64)          // fill the screen with random hits on reels closest to given RTP, constat function
 	Spawn(Wins)            // setup bonus games to wins results, constat function
 	Prepare()              // update game state before new spin

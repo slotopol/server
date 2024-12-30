@@ -24,7 +24,7 @@ func BruteForceBon(ctx context.Context, s slot.Stater, g slot.SlotGame, reels *s
 			}
 			for i5 := range r5 {
 				screen.SetCol(3, r5, i5)
-				g.Scanner(screen, &wins)
+				g.Scanner(&wins)
 				s.Update(wins)
 				wins.Reset()
 				if s.Count()&100 == 0 {

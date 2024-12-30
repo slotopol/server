@@ -42,7 +42,7 @@ func BruteForceStars(ctx context.Context, s slot.Stater, g slot.SlotGame, reels 
 						if wc4 {
 							screen.Set(4, 1, wild)
 						}
-						g.Scanner(screen, &wins)
+						g.Scanner(&wins)
 						screen.Set(2, 1, sym2)
 						screen.Set(3, 1, sym3)
 						screen.Set(4, 1, sym4)

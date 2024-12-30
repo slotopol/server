@@ -52,7 +52,7 @@ func (g *Game) Clone() slot.SlotGame {
 
 const wild, scat = 1, 9
 
-func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
+func (g *Game) Scanner(wins *slot.Wins) {
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
@@ -60,7 +60,7 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 3; x++ {
-			var sx = screen.Pos(x, line)
+			var sx = g.Scrn.Pos(x, line)
 			if sx == wild {
 				if syml == 0 {
 					numw = x
@@ -96,11 +96,11 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 		}
 	}
 
-	if count := screen.ScatNum(scat); count > 0 {
+	if count := g.Scrn.ScatNum(scat); count > 0 {
 		*wins = append(*wins, slot.WinItem{
 			Sym:  scat,
 			Num:  count,
-			XY:   screen.ScatPos(scat),
+			XY:   g.Scrn.ScatPos(scat),
 			Free: int(count),
 		})
 	}

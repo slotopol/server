@@ -31,7 +31,7 @@ func BruteForceEuro(ctx context.Context, s slot.Stater, g slot.SlotGame, reels s
 							sym = screen.At(x, y)
 							screen.Set(x, y, wild)
 						}
-						g.Scanner(screen, &wins)
+						g.Scanner(&wins)
 						if x > 0 {
 							screen.Set(x, y, sym)
 						}

@@ -47,15 +47,19 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
-	var fm float64 = 1 // fill mult
-	if sym := screen.FillSym(); sym >= 4 && sym <= 7 {
-		fm = 2
-	}
+func (g *Game) Scanner(wins *slot.Wins) {
+	var fm float64 // fill mult
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
-		var sym1, sym2, sym3 = screen.Pos(1, line), screen.Pos(2, line), screen.Pos(3, line)
+		var sym1, sym2, sym3 = g.Scrn.Pos(1, line), g.Scrn.Pos(2, line), g.Scrn.Pos(3, line)
 		if sym1 == sym2 && sym1 == sym3 {
+			if fm == 0 { // lazy calculation
+				if sym := g.Scrn.FillSym(); sym >= 4 && sym <= 7 {
+					fm = 2
+				} else {
+					fm = 1
+				}
+			}
 			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * LinePay[sym1-1],
 				Mult: fm,

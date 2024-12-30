@@ -83,10 +83,10 @@ func (g *Game) Clone() slot.SlotGame {
 
 const wild, scat = 1, 2
 
-func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
-	g.ScanLined(screen, wins)
+func (g *Game) Scanner(wins *slot.Wins) {
+	g.ScanLined(&g.Scrn, wins)
 	if g.FSR == 0 {
-		g.ScanScatters(screen, wins)
+		g.ScanScatters(&g.Scrn, wins)
 	}
 }
 
