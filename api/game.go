@@ -34,7 +34,6 @@ func ApiGameJoin(c *gin.Context) {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr"`
 		Game    any      `json:"game" yaml:"game" xml:"game"`
-		Scrn    any      `json:"scrn" yaml:"scrn" xml:"scrn"`
 		Wallet  float64  `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
 
@@ -98,13 +97,9 @@ func ApiGameJoin(c *gin.Context) {
 	var rtp = GetRTP(user, club)
 	switch game := anygame.(type) {
 	case slot.SlotGame:
-		var scrn = game.NewScreen()
-		game.Spin(scrn, rtp)
-		ret.Scrn = scrn
+		game.Spin(rtp)
 	case keno.KenoGame:
-		var scrn keno.Screen
-		game.Spin(&scrn, rtp)
-		ret.Scrn = &scrn
+		game.Spin(rtp)
 	}
 	ret.Wallet = user.GetWallet(arg.CID)
 

@@ -110,7 +110,6 @@ type Spinlog struct {
 	GID    uint64    `xorm:"notnull" json:"gid" yaml:"gid" xml:"gid,attr"`                                            // game ID
 	MRTP   float64   `xorm:"notnull" json:"mrtp" yaml:"mrtp" xml:"mrtp,attr"`                                         // master RTP
 	Game   string    `xorm:"notnull" json:"game" yaml:"game" xml:"game"`                                              // game data
-	Screen string    `xorm:"notnull" json:"screen,omitempty" yaml:"screen,omitempty" xml:"screen,omitempty"`          // game screen marshaled to JSON
 	Wins   string    `xorm:"text" json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`                   // list of wins marshaled to JSON
 	Gain   float64   `xorm:"notnull" json:"gain" yaml:"gain" xml:"gain"`                                              // total gain at last spin
 	Wallet float64   `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"`

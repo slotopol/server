@@ -49,12 +49,13 @@ func (wins Wins) Gain() float64 {
 
 // SlotGame is common slots interface. Any slot game should implement this interface.
 type SlotGame interface {
-	NewScreen() Screen     // returns new empty screen object for this game, constat function
+	Clone() SlotGame       // returns full cloned copy of itself
+	Screen() Screen        // returns screen object for this game, constat function
 	Scanner(Screen, *Wins) // scan given screen and append result to wins, constat function
-	Spin(Screen, float64)  // fill the screen with random hits on reels closest to given RTP, constat function
-	Spawn(Screen, Wins)    // setup bonus games to wins results, constat function
+	Spin(float64)          // fill the screen with random hits on reels closest to given RTP, constat function
+	Spawn(Wins)            // setup bonus games to wins results, constat function
 	Prepare()              // update game state before new spin
-	Apply(Screen, Wins)    // update game state to spin results
+	Apply(Wins)            // update game state to spin results
 	FreeSpins() bool       // returns if it free spins mode, constat function
 	GetGain() float64      // returns gain for double up games, constat function
 	SetGain(float64) error // set gain to given value on double up games
@@ -139,8 +140,9 @@ var (
 
 // Slot5x3 is base struct for all slot games with screen 5x3.
 type Slot3x3 struct {
-	Sel int     `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
-	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
+	Scrn Screen3x3 `json:"scrn" yaml:"scrn" xml:"scrn"`
+	Sel  int       `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
+	Bet  float64   `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
 	// gain for double up games
 	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"`
@@ -150,17 +152,17 @@ type Slot3x3 struct {
 	FSR int `json:"fsr,omitempty" yaml:"fsr,omitempty" xml:"fsr,omitempty"`
 }
 
-func (g *Slot3x3) NewScreen() Screen {
-	return NewScreen3x3()
+func (g *Slot3x3) Screen() Screen {
+	return &g.Scrn
 }
 
-func (g *Slot3x3) Spawn(screen Screen, wins Wins) {
+func (g *Slot3x3) Spawn(wins Wins) {
 }
 
 func (g *Slot3x3) Prepare() {
 }
 
-func (g *Slot3x3) Apply(screen Screen, wins Wins) {
+func (g *Slot3x3) Apply(wins Wins) {
 	if g.FSR != 0 {
 		g.Gain += wins.Gain()
 		g.FSN++
@@ -231,8 +233,9 @@ func (g *Slot3x3) SetMode(int) error {
 
 // Slot4x4 is base struct for all slot games with screen 4x4.
 type Slot4x4 struct {
-	Sel int     `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
-	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
+	Scrn Screen4x4 `json:"scrn" yaml:"scrn" xml:"scrn"`
+	Sel  int       `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
+	Bet  float64   `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
 	// gain for double up games
 	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"`
@@ -242,17 +245,17 @@ type Slot4x4 struct {
 	FSR int `json:"fsr,omitempty" yaml:"fsr,omitempty" xml:"fsr,omitempty"`
 }
 
-func (g *Slot4x4) NewScreen() Screen {
-	return NewScreen4x4()
+func (g *Slot4x4) Screen() Screen {
+	return &g.Scrn
 }
 
-func (g *Slot4x4) Spawn(screen Screen, wins Wins) {
+func (g *Slot4x4) Spawn(wins Wins) {
 }
 
 func (g *Slot4x4) Prepare() {
 }
 
-func (g *Slot4x4) Apply(screen Screen, wins Wins) {
+func (g *Slot4x4) Apply(wins Wins) {
 	if g.FSR != 0 {
 		g.Gain += wins.Gain()
 		g.FSN++
@@ -323,8 +326,9 @@ func (g *Slot4x4) SetMode(int) error {
 
 // Slot5x3 is base struct for all slot games with screen 5x3.
 type Slot5x3 struct {
-	Sel int     `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
-	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
+	Scrn Screen5x3 `json:"scrn" yaml:"scrn" xml:"scrn"`
+	Sel  int       `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
+	Bet  float64   `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
 	// gain for double up games
 	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"`
@@ -334,17 +338,17 @@ type Slot5x3 struct {
 	FSR int `json:"fsr,omitempty" yaml:"fsr,omitempty" xml:"fsr,omitempty"`
 }
 
-func (g *Slot5x3) NewScreen() Screen {
-	return NewScreen5x3()
+func (g *Slot5x3) Screen() Screen {
+	return &g.Scrn
 }
 
-func (g *Slot5x3) Spawn(screen Screen, wins Wins) {
+func (g *Slot5x3) Spawn(wins Wins) {
 }
 
 func (g *Slot5x3) Prepare() {
 }
 
-func (g *Slot5x3) Apply(screen Screen, wins Wins) {
+func (g *Slot5x3) Apply(wins Wins) {
 	if g.FSR != 0 {
 		g.Gain += wins.Gain()
 		g.FSN++
@@ -415,8 +419,9 @@ func (g *Slot5x3) SetMode(int) error {
 
 // Slot5x4 is base struct for all slot games with screen 5x4.
 type Slot5x4 struct {
-	Sel int     `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
-	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
+	Scrn Screen5x4 `json:"scrn" yaml:"scrn" xml:"scrn"`
+	Sel  int       `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
+	Bet  float64   `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
 	// gain for double up games
 	Gain float64 `json:"gain,omitempty" yaml:"gain,omitempty" xml:"gain,omitempty"`
@@ -426,17 +431,17 @@ type Slot5x4 struct {
 	FSR int `json:"fsr,omitempty" yaml:"fsr,omitempty" xml:"fsr,omitempty"`
 }
 
-func (g *Slot5x4) NewScreen() Screen {
-	return NewScreen5x4()
+func (g *Slot5x4) Screen() Screen {
+	return &g.Scrn
 }
 
-func (g *Slot5x4) Spawn(screen Screen, wins Wins) {
+func (g *Slot5x4) Spawn(wins Wins) {
 }
 
 func (g *Slot5x4) Prepare() {
 }
 
-func (g *Slot5x4) Apply(screen Screen, wins Wins) {
+func (g *Slot5x4) Apply(wins Wins) {
 	if g.FSR != 0 {
 		g.Gain += wins.Gain()
 		g.FSN++

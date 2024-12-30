@@ -100,6 +100,11 @@ func NewGame() *Game {
 	}
 }
 
+func (g *Game) Clone() slot.SlotGame {
+	var clone = *g
+	return &clone
+}
+
 // Not from lined paytable.
 var Special = [12]bool{
 	true,  //  1
@@ -226,12 +231,12 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 	}
 }
 
-func (g *Game) Spin(screen slot.Screen, mrtp float64) {
+func (g *Game) Spin(mrtp float64) {
 	var reels, _ = slot.FindReels(ReelsMap, mrtp)
-	screen.Spin(reels)
+	g.Scrn.Spin(reels)
 }
 
-func (g *Game) Spawn(screen slot.Screen, wins slot.Wins) {
+func (g *Game) Spawn(wins slot.Wins) {
 	for i, wi := range wins {
 		switch wi.BID {
 		case mjc:

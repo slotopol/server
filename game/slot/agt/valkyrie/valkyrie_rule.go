@@ -55,6 +55,11 @@ func NewGame() *Game {
 	}
 }
 
+func (g *Game) Clone() slot.SlotGame {
+	var clone = *g
+	return &clone
+}
+
 const wild, scat = 1, 2
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
@@ -125,29 +130,29 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 	}
 }
 
-func (g *Game) Spin(screen slot.Screen, mrtp float64) {
+func (g *Game) Spin(mrtp float64) {
 	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	if g.FSR == 0 {
-		screen.Spin(reels)
+		g.Scrn.Spin(reels)
 	} else {
 		var reel []slot.Sym
 		var hit int
 		// set 1 reel
 		reel = reels.Reel(1)
 		hit = rand.N(len(reel))
-		screen.SetCol(1, reel, hit)
+		g.Scrn.SetCol(1, reel, hit)
 		// set center
 		var big = BonusReel[rand.N(len(BonusReel))]
 		var x slot.Pos
 		for x = 2; x <= 4; x++ {
-			screen.Set(x, 1, big)
-			screen.Set(x, 2, big)
-			screen.Set(x, 3, big)
+			g.Scrn.Set(x, 1, big)
+			g.Scrn.Set(x, 2, big)
+			g.Scrn.Set(x, 3, big)
 		}
 		// set 5 reel
 		reel = reels.Reel(5)
 		hit = rand.N(len(reel))
-		screen.SetCol(5, reel, hit)
+		g.Scrn.SetCol(5, reel, hit)
 	}
 }
 

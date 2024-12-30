@@ -266,7 +266,6 @@ func ApiKenoSpin(c *gin.Context) {
 		XMLName xml.Name      `json:"-" yaml:"-" xml:"ret"`
 		SID     uint64        `json:"sid" yaml:"sid" xml:"sid,attr"`
 		Game    keno.KenoGame `json:"game" yaml:"game" xml:"game"`
-		Scrn    keno.Screen   `json:"scrn" yaml:"scrn" xml:"scrn"`
 		Wins    keno.Wins     `json:"wins" yaml:"wins" xml:"wins"`
 		Wallet  float64       `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
@@ -325,11 +324,10 @@ func ApiKenoSpin(c *gin.Context) {
 
 	// spin until gain less than bank value
 	var wins keno.Wins
-	var scrn keno.Screen
 	var n = 0
 	for {
-		game.Spin(&scrn, mrtp)
-		game.Scanner(&scrn, &wins)
+		game.Spin(mrtp)
+		game.Scanner(&wins)
 		banksum = bet - wins.Pay
 		if bank+banksum >= 0 || (bank < 0 && banksum > 0) {
 			break
@@ -370,11 +368,6 @@ func ApiKenoSpin(c *gin.Context) {
 	}
 	rec.Game = util.B2S(b)
 
-	if b, err = json.Marshal(scrn); err != nil {
-		return
-	}
-	rec.Screen = util.B2S(b)
-
 	if b, err = json.Marshal(wins); err != nil {
 		return
 	}
@@ -391,7 +384,6 @@ func ApiKenoSpin(c *gin.Context) {
 	// prepare result
 	ret.SID = sid
 	ret.Game = game
-	ret.Scrn = scrn
 	ret.Wins = wins
 	ret.Wallet = props.Wallet
 

@@ -64,6 +64,11 @@ func NewGame() *Game {
 	}
 }
 
+func (g *Game) Clone() slot.SlotGame {
+	var clone = *g
+	return &clone
+}
+
 const wild = 8
 
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
@@ -135,12 +140,12 @@ func (g *Game) ScanLined(screen slot.Screen, wins *slot.Wins) {
 	}
 }
 
-func (g *Game) Spin(screen slot.Screen, mrtp float64) {
-	screen.Spin(Reels)
+func (g *Game) Spin(mrtp float64) {
+	g.Scrn.Spin(Reels)
 	var _, wc = slot.FindReels(ChanceMap, mrtp) // wild chance
 	if rand.Float64() < wc {
 		var x, y = rand.N[slot.Pos](5) + 1, rand.N[slot.Pos](3) + 1
-		screen.Set(x, y, wild)
+		g.Scrn.Set(x, y, wild)
 	}
 }
 

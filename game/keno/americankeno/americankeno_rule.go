@@ -45,8 +45,8 @@ func NewGame() *Game {
 	}
 }
 
-func (g *Game) Scanner(scrn *keno.Screen, wins *keno.Wins) {
-	Paytable.Scanner(scrn, wins, g.Bet)
+func (g *Game) Scanner(wins *keno.Wins) {
+	Paytable.Scanner(&g.Scrn, wins, g.Bet)
 }
 
 func (g *Game) SetSel(sel keno.Bitset) error {

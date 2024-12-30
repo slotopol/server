@@ -11,14 +11,12 @@ import (
 
 func BenchmarkSpin(b *testing.B) {
 	var g = dolphinspearl.NewGame()
-	var screen = g.NewScreen()
-	defer screen.Free()
 	var wins = make(slot.Wins, 0, 10)
 
 	b.ResetTimer()
 	for range b.N {
-		g.Spin(screen, 92)
-		g.Scanner(screen, &wins)
+		g.Spin(92)
+		g.Scanner(&g.Scrn, &wins)
 		wins.Reset()
 	}
 }

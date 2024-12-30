@@ -225,7 +225,6 @@ func ApiSlotSpin(c *gin.Context) {
 		XMLName xml.Name      `json:"-" yaml:"-" xml:"ret"`
 		SID     uint64        `json:"sid" yaml:"sid" xml:"sid,attr"`
 		Game    slot.SlotGame `json:"game" yaml:"game" xml:"game"`
-		Scrn    slot.Screen   `json:"scrn" yaml:"scrn" xml:"scrn"`
 		Wins    slot.Wins     `json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
 		Wallet  float64       `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
@@ -290,14 +289,12 @@ func ApiSlotSpin(c *gin.Context) {
 	// spin until gain less than bank value
 	var wins slot.Wins
 	defer wins.Reset()
-	var scrn = game.NewScreen()
-	defer scrn.Free()
 	var n = 0
 	game.Prepare()
 	for {
-		game.Spin(scrn, mrtp)
-		game.Scanner(scrn, &wins)
-		game.Spawn(scrn, wins)
+		game.Spin(mrtp)
+		game.Scanner(game.Screen(), &wins)
+		game.Spawn(wins)
 		banksum = totalbet - wins.Gain()
 		if bank+banksum >= 0 || (bank < 0 && banksum > 0) {
 			break
@@ -321,7 +318,7 @@ func ApiSlotSpin(c *gin.Context) {
 	// make changes to memory data
 	club.AddBank(banksum)
 	props.Wallet -= banksum
-	game.Apply(scrn, wins)
+	game.Apply(wins)
 
 	// write spin result to log and get spin ID
 	var sid = atomic.AddUint64(&SpinCounter, 1)
@@ -339,11 +336,6 @@ func ApiSlotSpin(c *gin.Context) {
 		return
 	}
 	rec.Game = util.B2S(b)
-
-	if b, err = json.Marshal(scrn); err != nil {
-		return
-	}
-	rec.Screen = util.B2S(b)
 
 	if len(wins) > 0 {
 		if b, err = json.Marshal(wins); err != nil {
@@ -363,7 +355,6 @@ func ApiSlotSpin(c *gin.Context) {
 	// prepare result
 	ret.SID = sid
 	ret.Game = game
-	ret.Scrn = scrn
 	ret.Wins = wins
 	ret.Wallet = props.Wallet
 

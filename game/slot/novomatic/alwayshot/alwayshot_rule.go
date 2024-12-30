@@ -45,6 +45,11 @@ func NewGame() *Game {
 	}
 }
 
+func (g *Game) Clone() slot.SlotGame {
+	var clone = *g
+	return &clone
+}
+
 func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
@@ -62,9 +67,9 @@ func (g *Game) Scanner(screen slot.Screen, wins *slot.Wins) {
 	}
 }
 
-func (g *Game) Spin(screen slot.Screen, mrtp float64) {
+func (g *Game) Spin(mrtp float64) {
 	var reels, _ = slot.FindReels(ReelsMap, mrtp)
-	screen.Spin(reels)
+	g.Scrn.Spin(reels)
 }
 
 func (g *Game) SetSel(sel int) error {

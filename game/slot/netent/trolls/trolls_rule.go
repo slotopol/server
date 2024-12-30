@@ -64,6 +64,9 @@ type Game struct {
 	slot.Slot5x3 `yaml:",inline"`
 }
 
+// Declare conformity with SlotGame interface.
+var _ slot.SlotGame = (*Game)(nil)
+
 func NewGame() *Game {
 	return &Game{
 		Slot5x3: slot.Slot5x3{
@@ -71,6 +74,11 @@ func NewGame() *Game {
 			Bet: 1,
 		},
 	}
+}
+
+func (g *Game) Clone() slot.SlotGame {
+	var clone = *g
+	return &clone
 }
 
 const wild1, wild2, scat = 12, 13, 14
@@ -168,9 +176,9 @@ func (g *Game) ScanScatters(screen slot.Screen, wins *slot.Wins) {
 	}
 }
 
-func (g *Game) Spin(screen slot.Screen, mrtp float64) {
+func (g *Game) Spin(mrtp float64) {
 	var reels, _ = slot.FindReels(ReelsMap, mrtp)
-	screen.Spin(reels)
+	g.Scrn.Spin(reels)
 }
 
 func (g *Game) SetSel(sel int) error {

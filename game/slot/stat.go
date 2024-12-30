@@ -96,8 +96,7 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x) {
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)
 	var r3 = reels.Reel(3)
-	var screen = g.NewScreen()
-	defer screen.Free()
+	var screen = g.Screen()
 	var wins Wins
 	for i1 := range r1 {
 		screen.SetCol(1, r1, i1)
@@ -127,11 +126,11 @@ func BruteForce3xGo(ctx context.Context, s Stater, g SlotGame, reels *Reels3x) {
 	var wg sync.WaitGroup
 	wg.Add(len(r1))
 	for i1 := range r1 {
+		var c = g.Clone()
 		go func() {
 			defer wg.Done()
 
-			var screen = g.NewScreen()
-			defer screen.Free()
+			var screen = c.Screen()
 			var wins Wins
 
 			screen.SetCol(1, r1, i1)
@@ -139,7 +138,7 @@ func BruteForce3xGo(ctx context.Context, s Stater, g SlotGame, reels *Reels3x) {
 				screen.SetCol(2, r2, i2)
 				for i3 := range r3 {
 					screen.SetCol(3, r3, i3)
-					g.Scanner(screen, &wins)
+					c.Scanner(screen, &wins)
 					s.Update(wins)
 					wins.Reset()
 					if s.Count()%ctxgranulation == 0 {
@@ -161,8 +160,7 @@ func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x) {
 	var r2 = reels.Reel(2)
 	var r3 = reels.Reel(3)
 	var r4 = reels.Reel(4)
-	var screen = g.NewScreen()
-	defer screen.Free()
+	var screen = g.Screen()
 	var wins Wins
 	for i1 := range r1 {
 		screen.SetCol(1, r1, i1)
@@ -196,11 +194,11 @@ func BruteForce4xGo(ctx context.Context, s Stater, g SlotGame, reels *Reels4x) {
 	var wg sync.WaitGroup
 	wg.Add(len(r1))
 	for i1 := range r1 {
+		var c = g.Clone()
 		go func() {
 			defer wg.Done()
 
-			var screen = g.NewScreen()
-			defer screen.Free()
+			var screen = c.Screen()
 			var wins Wins
 
 			screen.SetCol(1, r1, i1)
@@ -210,7 +208,7 @@ func BruteForce4xGo(ctx context.Context, s Stater, g SlotGame, reels *Reels4x) {
 					screen.SetCol(3, r3, i3)
 					for i4 := range r4 {
 						screen.SetCol(4, r4, i4)
-						g.Scanner(screen, &wins)
+						c.Scanner(screen, &wins)
 						s.Update(wins)
 						wins.Reset()
 						if s.Count()%ctxgranulation == 0 {
@@ -234,8 +232,7 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x) {
 	var r3 = reels.Reel(3)
 	var r4 = reels.Reel(4)
 	var r5 = reels.Reel(5)
-	var screen = g.NewScreen()
-	defer screen.Free()
+	var screen = g.Screen()
 	var wins Wins
 	for i1 := range r1 {
 		screen.SetCol(1, r1, i1)
@@ -273,11 +270,11 @@ func BruteForce5xGo(ctx context.Context, s Stater, g SlotGame, reels *Reels5x) {
 	var wg sync.WaitGroup
 	wg.Add(len(r1))
 	for i1 := range r1 {
+		var c = g.Clone()
 		go func() {
 			defer wg.Done()
 
-			var screen = g.NewScreen()
-			defer screen.Free()
+			var screen = c.Screen()
 			var wins Wins
 
 			screen.SetCol(1, r1, i1)
@@ -289,7 +286,7 @@ func BruteForce5xGo(ctx context.Context, s Stater, g SlotGame, reels *Reels5x) {
 						screen.SetCol(4, r4, i4)
 						for i5 := range r5 {
 							screen.SetCol(5, r5, i5)
-							g.Scanner(screen, &wins)
+							c.Scanner(screen, &wins)
 							s.Update(wins)
 							wins.Reset()
 							if s.Count()%ctxgranulation == 0 {
@@ -310,8 +307,7 @@ func BruteForce5xGo(ctx context.Context, s Stater, g SlotGame, reels *Reels5x) {
 
 func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	var n = s.Planned()
-	var screen = g.NewScreen()
-	defer screen.Free()
+	var screen = g.Screen()
 	var wins Wins
 	for range n {
 		screen.Spin(reels)
@@ -334,16 +330,16 @@ func MonteCarloGo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	var wg sync.WaitGroup
 	wg.Add(ncpu)
 	for range ncpu {
+		var c = g.Clone()
 		go func() {
 			defer wg.Done()
 
-			var screen = g.NewScreen()
-			defer screen.Free()
+			var screen = c.Screen()
 			var wins Wins
 
 			for range n / uint64(ncpu) {
 				screen.Spin(reels)
-				g.Scanner(screen, &wins)
+				c.Scanner(screen, &wins)
 				s.Update(wins)
 				wins.Reset()
 				if s.Count()%ctxgranulation == 0 {

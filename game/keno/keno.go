@@ -81,12 +81,12 @@ type Wins struct {
 
 // KenoGame is common keno interface. Any keno game should implement this interface.
 type KenoGame interface {
-	Scanner(*Screen, *Wins) // scan given screen and append result to wins, constat function
-	Spin(*Screen, float64)  // fill the screen with random hits on reels closest to given RTP, constat function
-	GetBet() float64        // returns current bet, constat function
-	SetBet(float64) error   // set bet to given value
-	GetSel() Bitset         // returns current selected numbers, constat function
-	SetSel(Bitset) error    // set current selected numbers
+	Scanner(*Wins)        // scan given screen and append result to wins, constat function
+	Spin(float64)         // fill the screen with random hits on reels closest to given RTP, constat function
+	GetBet() float64      // returns current bet, constat function
+	SetBet(float64) error // set bet to given value
+	GetSel() Bitset       // returns current selected numbers, constat function
+	SetSel(Bitset) error  // set current selected numbers
 }
 
 var (
@@ -97,11 +97,12 @@ var (
 )
 
 type Keno80 struct {
-	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
-	Sel Bitset  `json:"sel" yaml:"sel" xml:"sel"` // selected numbers
+	Scrn Screen  `json:"scrn" yaml:"scrn" xml:"scrn"`
+	Bet  float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
+	Sel  Bitset  `json:"sel" yaml:"sel" xml:"sel"` // selected numbers
 }
 
-func (g *Keno80) Spin(scrn *Screen, _ float64) {
+func (g *Keno80) Spin(_ float64) {
 	var hits [80]int
 	for i := range 80 {
 		hits[i] = i + 1
@@ -110,12 +111,12 @@ func (g *Keno80) Spin(scrn *Screen, _ float64) {
 		hits[i], hits[j] = hits[j], hits[i]
 	})
 
-	clear(scrn[:])
+	clear(g.Scrn[:])
 	for n := range g.Sel.Bits() {
-		scrn[n-1] = KSsel
+		g.Scrn[n-1] = KSsel
 	}
 	for i := range 20 {
-		scrn[hits[i]-1] |= KShit
+		g.Scrn[hits[i]-1] |= KShit
 	}
 }
 

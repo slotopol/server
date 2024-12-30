@@ -9,8 +9,7 @@ import (
 )
 
 func BruteForceFire(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, big slot.Sym) {
-	var screen = g.NewScreen()
-	defer screen.Free()
+	var screen = g.Screen()
 	var wins slot.Wins
 	var x slot.Pos
 	for x = 2; x <= 4; x++ {

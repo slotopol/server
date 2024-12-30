@@ -11,8 +11,7 @@ import (
 func BruteForceBon(ctx context.Context, s slot.Stater, g slot.SlotGame, reels *slot.Reels5x) {
 	var r1 = reels.Reel(1)
 	var r5 = reels.Reel(3)
-	var screen = g.NewScreen()
-	defer screen.Free()
+	var screen = g.Screen()
 	var wins slot.Wins
 	for i1 := range r1 {
 		screen.SetCol(1, r1, i1)
