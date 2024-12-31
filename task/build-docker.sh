@@ -5,7 +5,7 @@
 # dockerfile has no access to git repository,
 # so update content of this variable by
 #   echo $(git describe --tags)
-buildvers="v0.7.0-5-gc55db28"
+buildvers="v0.7.0-6-gb2085ae"
 # See https://tc39.es/ecma262/#sec-date-time-string-format
 # time format acceptable for Date constructors.
 buildtime=$(date +'%FT%T.%3NZ')

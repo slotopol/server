@@ -80,6 +80,7 @@ database:
   # For sqlite3 it should be db file name:   slot-spin.sqlite
   # For mysql it should match to pattern:    user:password@/slot_spin.
   # For postgres it should match to pattern: user=postgres password=password dbname=slot_spin sslmode=disable
+  # Can be empty to switch off logs, same as "use-spin-log: false"
   spin-source-name: slot-spin.sqlite
   # Duration between flushes of SQL batching buffers.
   sql-flush-tick: 2500ms

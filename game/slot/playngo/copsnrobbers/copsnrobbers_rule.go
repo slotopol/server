@@ -178,6 +178,12 @@ func (g *Game) Spin(mrtp float64) {
 	}
 }
 
+func (g *Game) Prepare() {
+	if g.FSR == 0 {
+		g.M = 0 // no multiplier on regular games
+	}
+}
+
 func (g *Game) Apply(wins slot.Wins) {
 	if g.FSR != 0 {
 		g.Gain += wins.Gain()
@@ -189,9 +195,6 @@ func (g *Game) Apply(wins slot.Wins) {
 
 	if g.FSR > 0 {
 		g.FSR--
-		if g.FSR == 0 {
-			g.M = 0 // no multiplier on regular games
-		}
 	} else { // free spins can not be nested
 		for _, wi := range wins {
 			if wi.Free > 0 {

@@ -137,28 +137,17 @@ func (g *Game) Spin(mrtp float64) {
 	g.Scr.Spin(reels)
 }
 
-func (g *Game) Apply(wins slot.Wins) {
-	if g.FSR != 0 {
-		g.Gain += wins.Gain()
-		g.FSN++
-	} else {
-		g.Gain = wins.Gain()
-		g.FSN = 0
-	}
-
-	if g.FSR > 0 {
-		g.FSR--
-	}
-	for _, wi := range wins {
-		if wi.Free > 0 {
-			g.FSR += wi.Free
-			if g.M == 0 {
-				g.M = 3
-			}
-		}
-	}
+func (g *Game) Prepare() {
 	if g.FSR == 0 {
 		g.M = 0
+	}
+}
+
+func (g *Game) Apply(wins slot.Wins) {
+	g.Slotx.Apply(wins)
+
+	if g.FSR > 0 && g.M == 0 {
+		g.M = 3
 	}
 }
 

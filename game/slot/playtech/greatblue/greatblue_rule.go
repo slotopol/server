@@ -210,6 +210,12 @@ func (g *Game) Spawn(wins slot.Wins) {
 	}
 }
 
+func (g *Game) Prepare() {
+	if g.FSR == 0 {
+		g.M = 0
+	}
+}
+
 func (g *Game) Apply(wins slot.Wins) {
 	if g.FSR != 0 {
 		g.Gain += wins.Gain()
@@ -232,9 +238,6 @@ func (g *Game) Apply(wins slot.Wins) {
 				g.M = bon.Mult
 			}
 		}
-	}
-	if g.FSR == 0 {
-		g.M = 0
 	}
 }
 

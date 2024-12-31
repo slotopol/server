@@ -314,6 +314,9 @@ func Init() (err error) {
 		err = fmt.Errorf("can not init XORM records storage: %w", err)
 		return
 	}
+	if Cfg.SpinSourceName == "" {
+		Cfg.UseSpinLog = false
+	}
 	if Cfg.UseSpinLog {
 		if err = InitSpinlog(); err != nil {
 			err = fmt.Errorf("can not init XORM spins log storage: %w", err)

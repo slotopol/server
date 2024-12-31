@@ -160,6 +160,8 @@ func (g *Game) Spawn(wins slot.Wins) {
 }
 
 func (g *Game) Apply(wins slot.Wins) {
+	g.Slotx.Apply(wins)
+
 	if g.Scr.At(5, 1) == acorn || g.Scr.At(5, 2) == acorn || g.Scr.At(5, 3) == acorn {
 		g.AN++
 		g.AN %= 3
@@ -167,23 +169,6 @@ func (g *Game) Apply(wins slot.Wins) {
 			g.AB += g.Bet * float64(g.Sel)
 		} else {
 			g.AB = 0
-		}
-	}
-
-	if g.FSR != 0 {
-		g.Gain += wins.Gain()
-		g.FSN++
-	} else {
-		g.Gain = wins.Gain()
-		g.FSN = 0
-	}
-
-	if g.FSR > 0 {
-		g.FSR--
-	}
-	for _, wi := range wins {
-		if wi.Free > 0 {
-			g.FSR += wi.Free
 		}
 	}
 }
