@@ -11,18 +11,18 @@
 
 ![slotopol-server](docs/logo.webp)
 
-Slots games server. Releases functionality for Megajack, Novomatic, NetEnt, BetSoft, and some others providers of slot games. Has built-in reels scanner and the sets of reels on different RTP for each game.
+Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, and some others providers of slot games. Has built-in reels scanner and the sets of reels on different RTP for each game.
 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 138 games, 72 algorithms, 9 providers
+total: 144 games, 73 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games
 NetEnt: 20 games
-Novomatic: 38 games
+Novomatic: 44 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games
@@ -30,22 +30,15 @@ Slotopol: 4 games
 
 *Last added games*:
 
+* '[Book Of Ra Deluxe](https://freeslotshub.com/novomatic/book-of-ra-deluxe/)' Novomatic 5x3 videoslot
+* '[Book Of Ra](https://freeslotshub.com/novomatic/book-of-ra/)' Novomatic 5x3 videoslot
+* '[Faust](https://freeslotshub.com/novomatic/faust/)' Novomatic 5x3 videoslot
+* 'God Of Sun' Novomatic 5x3 videoslot
+* 'Down Under' Novomatic 5x3 videoslot
+* 'Lord of the Ocean' Novomatic 5x3 videoslot
 * '[Valentine's Day](https://demo.agtsoftware.com/games/agt/valentine)' AGT 5x3 videoslot
 * '[Halloween](https://demo.agtsoftware.com/games/agt/halloween)' AGT 3x3 videoslot
 * '[Merry Christmas](https://demo.agtsoftware.com/games/agt/christmas)' AGT 3x3 videoslot
-* '[Ice Fruits](https://demo.agtsoftware.com/games/agt/megaice)' AGT 5x3 videoslot
-* '[100 Jokers](https://demo.agtsoftware.com/games/agt/jokers100)' AGT 5x4 videoslot
-* '[Jokers](https://demo.agtsoftware.com/games/agt/jokers20)' AGT 5x3 videoslot
-* '[Extra Spin III](https://demo.agtsoftware.com/games/agt/extraspin3)' AGT 5x3 videoslot
-* '[Santa](https://demo.agtsoftware.com/games/agt/santa)' AGT 4x4 videoslot
-* '[Panda](https://demo.agtsoftware.com/games/agt/panda)' AGT 3x3 videoslot
-* '[Extra Spin](https://demo.agtsoftware.com/games/agt/extraspin)' AGT 5x3 videoslot
-* '[Book of Set](https://demo.agtsoftware.com/games/agt/bookofset)' AGT 5x3 videoslot
-* '[Pharaoh II](https://demo.agtsoftware.com/games/agt/pharaoh2)' AGT 5x3 videoslot
-* '[Lucky Slot](https://demo.agtsoftware.com/games/agt/luckyslot)' AGT 5x3 videoslot
-* '[Egypt](https://demo.agtsoftware.com/games/agt/egypt)' AGT 5x3 videoslot
-* '[Sun City](https://demo.agtsoftware.com/games/agt/suncity)' AGT 5x3 videoslot
-* '[Valkyrie](https://demo.agtsoftware.com/games/agt/valkyrie)' AGT 5x3 videoslot
 
 # How to build from sources
 

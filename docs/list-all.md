@@ -28,6 +28,8 @@
 'Big Five' AGT 5x3 videoslot
 'Bigfoot' AGT 5x3 videoslot
 'Bitcoin' AGT 5x3 videoslot
+'Book Of Ra Deluxe' Novomatic 5x3 videoslot
+'Book Of Ra' Novomatic 5x3 videoslot
 'Book of Set' AGT 5x3 videoslot
 'Captain's Treasure' Playtech 5x3 videoslot
 'Casino' AGT 5x4 videoslot
@@ -45,11 +47,13 @@
 'Dolphins Pearl' Novomatic 5x3 videoslot
 'Double Hot' AGT 3x3 videoslot
 'Double Ice' AGT 3x3 videoslot
+'Down Under' Novomatic 5x3 videoslot
 'Dynasty Of Ming' Novomatic 5x3 videoslot
 'Egypt' AGT 5x3 videoslot
 'Excalibur' NetEnt 5x3 videoslot
 'Extra Spin III' AGT 5x3 videoslot
 'Extra Spin' AGT 5x3 videoslot
+'Faust' Novomatic 5x3 videoslot
 'Fire Joker' Play'n GO 5x3 videoslot
 'Fire Keno' Slotopol 80 spots lottery
 'Firefighters' AGT 5x3 videoslot
@@ -57,6 +61,7 @@
 'Fruit Shop' NetEnt 5x3 videoslot
 'Funky Seventies' NetEnt 5x4 videoslot
 'Geisha Wonders' NetEnt 5x3 videoslot
+'God Of Sun' Novomatic 5x3 videoslot
 'Golden Tour' Playtech 5x3 videoslot
 'Grand Theft' AGT 5x3 videoslot
 'Great Blue' Playtech 5x3 videoslot
@@ -85,6 +90,7 @@
 'Keno Luxury' Slotopol 80 spots lottery
 'Keno Sports' Slotopol 80 spots lottery
 'King Of Cards' Novomatic 5x3 videoslot
+'Lord of the Ocean' Novomatic 5x3 videoslot
 'Lucky Lady's Charm Deluxe' Novomatic 5x3 videoslot
 'Lucky Lady's Charm' Novomatic 5x3 videoslot
 'Lucky Slot' AGT 5x3 videoslot
@@ -141,13 +147,13 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 138 games, 72 algorithms, 9 providers
+total: 144 games, 73 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 3 games
 NetEnt: 20 games
-Novomatic: 38 games
+Novomatic: 44 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games

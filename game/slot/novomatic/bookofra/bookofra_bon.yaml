@@ -1,0 +1,61 @@
+
+# *calculations for expanding symbol [1]*
+# reels lengths [37, 37, 36, 37, 37], total reshuffles 67469796
+# symbols: 774.39(lined) + 9.2681(scatter) = 783.656364%
+# free spins 16336080, q = 0.24212, sq = 1/(1-q) = 1.319478
+# free games frequency: 1/41.301
+# RTP[1] = sq*rtp(sym) = 1.3195*783.66 = 1034.017066%
+# *calculations for expanding symbol [2]*
+# reels lengths [37, 37, 36, 37, 37], total reshuffles 67469796
+# symbols: 525.21(lined) + 9.2681(scatter) = 534.482156%
+# free spins 16336080, q = 0.24212, sq = 1/(1-q) = 1.319478
+# free games frequency: 1/41.301
+# RTP[2] = sq*rtp(sym) = 1.3195*534.48 = 705.237265%
+# *calculations for expanding symbol [3]*
+# reels lengths [37, 37, 36, 37, 37], total reshuffles 67469796
+# symbols: 470.29(lined) + 9.2681(scatter) = 479.557579%
+# free spins 16336080, q = 0.24212, sq = 1/(1-q) = 1.319478
+# free games frequency: 1/41.301
+# RTP[3] = sq*rtp(sym) = 1.3195*479.56 = 632.765512%
+# *calculations for expanding symbol [4]*
+# reels lengths [37, 37, 36, 37, 37], total reshuffles 67469796
+# symbols: 452.2(lined) + 9.2681(scatter) = 461.466454%
+# free spins 16336080, q = 0.24212, sq = 1/(1-q) = 1.319478
+# free games frequency: 1/41.301
+# RTP[4] = sq*rtp(sym) = 1.3195*461.47 = 608.894677%
+# *calculations for expanding symbol [5]*
+# reels lengths [37, 37, 36, 37, 37], total reshuffles 67469796
+# symbols: 589.91(lined) + 9.2681(scatter) = 599.180039%
+# free spins 16336080, q = 0.24212, sq = 1/(1-q) = 1.319478
+# free games frequency: 1/41.301
+# RTP[5] = sq*rtp(sym) = 1.3195*599.18 = 790.604677%
+# *calculations for expanding symbol [6]*
+# reels lengths [37, 37, 36, 37, 37], total reshuffles 67469796
+# symbols: 765.85(lined) + 9.2681(scatter) = 775.121167%
+# free spins 16336080, q = 0.24212, sq = 1/(1-q) = 1.319478
+# free games frequency: 1/41.301
+# RTP[6] = sq*rtp(sym) = 1.3195*775.12 = 1022.755064%
+# *calculations for expanding symbol [7]*
+# reels lengths [37, 37, 36, 37, 37], total reshuffles 67469796
+# symbols: 577.15(lined) + 9.2681(scatter) = 586.417261%
+# free spins 16336080, q = 0.24212, sq = 1/(1-q) = 1.319478
+# free games frequency: 1/41.301
+# RTP[7] = sq*rtp(sym) = 1.3195*586.42 = 773.764477%
+# *calculations for expanding symbol [8]*
+# reels lengths [37, 37, 36, 37, 37], total reshuffles 67469796
+# symbols: 569.17(lined) + 9.2681(scatter) = 578.437335%
+# free spins 16336080, q = 0.24212, sq = 1/(1-q) = 1.319478
+# free games frequency: 1/41.301
+# RTP[8] = sq*rtp(sym) = 1.3195*578.44 = 763.235142%
+# *calculations for expanding symbol [9]*
+# reels lengths [37, 37, 36, 37, 37], total reshuffles 67469796
+# symbols: 507.83(lined) + 9.2681(scatter) = 517.094308%
+# free spins 16336080, q = 0.24212, sq = 1/(1-q) = 1.319478
+# free games frequency: 1/41.301
+# RTP[9] = sq*rtp(sym) = 1.3195*517.09 = 682.294389%
+# RTPfs = 779.285363%
+- [ 8, 2, 6, 8, 1, 6, 5, 3, 9, 6, 8, 5, 2, 7, 9,10, 5, 8, 2, 7, 9,10, 6, 8, 2, 7, 6, 5, 4, 7, 8, 3, 6, 5, 4, 7, 5]
+- [ 7, 3, 6, 9, 4, 8,10, 6, 7, 5, 9, 7, 1, 8, 5, 4, 8, 7,10, 5, 9, 6, 3, 5, 8, 7, 9, 2, 8, 5, 7, 8, 4, 9, 5, 6, 9]
+- [ 5, 1, 7, 9, 1, 6, 8, 7, 3, 8, 6, 4, 7, 5, 1, 9, 5, 6, 2, 7, 5, 8, 6, 9, 8, 5,10, 9, 6, 8, 2, 9, 7, 3, 6, 8]
+- [10, 9, 6, 7, 4, 6, 2, 7, 8, 1, 5, 7, 3, 6, 7, 4, 9, 6, 3, 7, 9, 4, 5, 8, 9, 1, 8, 5,10, 6, 9, 3, 6, 9, 4, 7, 8]
+- [ 7, 4, 9,10, 6, 2, 7, 5, 3, 9, 8,10, 6, 8, 2, 5, 3, 8, 5, 1, 8, 9, 3, 5, 1, 6, 4, 9, 2, 7, 3, 6, 4, 7, 2, 9, 1]
