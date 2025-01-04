@@ -21,6 +21,7 @@
 'Around The World' AGT 5x4 videoslot
 'At the Movies' BetSoft 5x3 videoslot
 'Attila' Novomatic 5x3 videoslot
+'Aztec Gold' Megajack 5x3 videoslot
 'Banana Splash' Novomatic 5x3 videoslot
 'Bananas Go Bahamas' Novomatic 5x3 videoslot
 'Beetle Mania Deluxe' Novomatic 5x3 videoslot
@@ -147,11 +148,11 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 144 games, 73 algorithms, 9 providers
+total: 145 games, 74 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
-Megajack: 3 games
+Megajack: 4 games
 NetEnt: 20 games
 Novomatic: 44 games
 Play'n GO: 3 games

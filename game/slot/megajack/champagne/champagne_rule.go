@@ -43,6 +43,7 @@ const (
 	mje9 = 4 // Eldorado9
 	mjm  = 5 // Monopoly
 	mjc  = 6 // Champagne
+	mjap = 7 // AztecPyramid
 )
 
 // Lined bonus games

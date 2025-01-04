@@ -16,11 +16,11 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 144 games, 73 algorithms, 9 providers
+total: 145 games, 74 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
-Megajack: 3 games
+Megajack: 4 games
 NetEnt: 20 games
 Novomatic: 44 games
 Play'n GO: 3 games
@@ -30,6 +30,7 @@ Slotopol: 4 games
 
 *Last added games*:
 
+* 'Aztec Gold' Megajack 5x3 videoslot with 'Aztec Pyramid' bonus game
 * '[Book Of Ra Deluxe](https://freeslotshub.com/novomatic/book-of-ra-deluxe/)' Novomatic 5x3 videoslot
 * '[Book Of Ra](https://freeslotshub.com/novomatic/book-of-ra/)' Novomatic 5x3 videoslot
 * '[Faust](https://freeslotshub.com/novomatic/faust/)' Novomatic 5x3 videoslot

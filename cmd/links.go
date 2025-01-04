@@ -9,6 +9,7 @@ import (
 	_ "github.com/slotopol/server/game/keno/kenoluxury"
 
 	// Megajack
+	_ "github.com/slotopol/server/game/slot/megajack/aztecgold"
 	_ "github.com/slotopol/server/game/slot/megajack/champagne"
 	_ "github.com/slotopol/server/game/slot/megajack/slotopol"
 	_ "github.com/slotopol/server/game/slot/megajack/slotopoldeluxe"
