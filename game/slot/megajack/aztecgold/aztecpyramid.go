@@ -93,8 +93,8 @@ type Pyramid struct {
 }
 
 type Bonus struct {
-	Strike [4]Pyramid `json:"strike" yaml:"strike" xml:"strike"`
-	Room   [5]Row     `json:"room" yaml:"room" xml:"room>row"`
+	Strike [att]Pyramid `json:"strike" yaml:"strike" xml:"strike"`
+	Room   [5]Row       `json:"room" yaml:"room" xml:"room>row"`
 }
 
 var Room = [5][]Cell{
@@ -215,7 +215,7 @@ func AztecPyramidSpawn(bet float64) (any, float64) {
 	var res Bonus
 	var cash float64
 	var enter bool
-	for i := range 4 {
+	for i := range att {
 		var pyr = getpyramid(rand.Float64())
 		cash = apm[pyr-1]
 		res.Strike[i].Type = pyr

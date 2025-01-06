@@ -1,6 +1,6 @@
 # Typical usage:
-#   docker build --progress=plain --pull --rm -f "Dockerfile" -t slot:latest "."
-#   docker run -d -p 8080:8080 slot
+#   docker build --progress=plain --pull --rm -f "Dockerfile" -t schwarzlichtbezirk/slotopol:latest "."
+#   docker run -d -p 8080:8080 schwarzlichtbezirk/slotopol
 
 ##
 ## Build stage

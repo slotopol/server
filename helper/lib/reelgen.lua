@@ -157,7 +157,6 @@ function correctreel(reel, neighbours)
 end
 
 function printreel(reel, iter)
-	print("reel length: " .. #reel)
 	if iter > 1 then
 		if iter >= 1000 then
 			print"too many neighbours shuffle iterations"
@@ -166,5 +165,5 @@ function printreel(reel, iter)
 			print(iter.." iterations")
 		end
 	end
-	print("- [" .. table.concat(reel, ", ") .. "]") -- for yaml-file
+	print("- [" .. table.concat(reel, ", ") .. "] # "..#reel) -- for yaml-file
 end
