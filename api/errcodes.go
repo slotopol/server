@@ -137,7 +137,7 @@ const (
 	AEC_slot_selset_notopened
 	AEC_slot_selset_notslot
 	AEC_slot_selset_noaccess
-	AEC_slot_selset_badlines
+	AEC_slot_selset_badsel
 
 	// POST /slot/mode/set
 
@@ -155,6 +155,8 @@ const (
 	AEC_slot_spin_noclub
 	AEC_slot_spin_nouser
 	AEC_slot_spin_noaccess
+	AEC_slot_spin_badbet
+	AEC_slot_spin_badsel
 	AEC_slot_spin_noprops
 	AEC_slot_spin_nomoney
 	AEC_slot_spin_badbank
@@ -208,7 +210,7 @@ const (
 	AEC_keno_selset_notopened
 	AEC_keno_selset_notslot
 	AEC_keno_selset_noaccess
-	AEC_keno_selset_badlines
+	AEC_keno_selset_badsel
 
 	// POST /keno/sel/getslice
 
@@ -223,7 +225,7 @@ const (
 	AEC_keno_selsetslice_notopened
 	AEC_keno_selsetslice_notslot
 	AEC_keno_selsetslice_noaccess
-	AEC_keno_selsetslice_badlines
+	AEC_keno_selsetslice_badsel
 
 	// POST /keno/spin
 

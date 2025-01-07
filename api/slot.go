@@ -166,7 +166,7 @@ func ApiSlotSelSet(c *gin.Context) {
 	}
 
 	if err = game.SetSel(arg.Sel); err != nil {
-		Ret403(c, AEC_slot_selset_badlines, err)
+		Ret403(c, AEC_slot_selset_badsel, err)
 		return
 	}
 
@@ -220,6 +220,8 @@ func ApiSlotSpin(c *gin.Context) {
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid" binding:"required"`
+		Bet     float64  `json:"bet,omitempty" yaml:"bet,omitempty" xml:"bet,omitempty"`
+		Sel     int      `json:"sel,omitempty" yaml:"sel,omitempty" xml:"sel,omitempty"`
 	}
 	var ret struct {
 		XMLName xml.Name      `json:"-" yaml:"-" xml:"ret"`
@@ -261,6 +263,19 @@ func ApiSlotSpin(c *gin.Context) {
 	if admin.UID != scene.UID && al&ALgame == 0 {
 		Ret403(c, AEC_slot_spin_noaccess, ErrNoAccess)
 		return
+	}
+
+	if arg.Bet != 0 {
+		if err = game.SetBet(arg.Bet); err != nil {
+			Ret403(c, AEC_slot_spin_badbet, err)
+			return
+		}
+	}
+	if arg.Sel != 0 {
+		if err = game.SetSel(arg.Sel); err != nil {
+			Ret403(c, AEC_slot_spin_badsel, err)
+			return
+		}
 	}
 
 	var (

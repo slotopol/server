@@ -120,6 +120,24 @@ func (r *Reels5x) Reshuffles() uint64 {
 	return uint64(len(r[0])) * uint64(len(r[1])) * uint64(len(r[2])) * uint64(len(r[3])) * uint64(len(r[4]))
 }
 
+// Reels for 6-reels slots.
+type Reels6x [6][]Sym
+
+// Declare conformity with Reels interface.
+var _ Reels = (*Reels6x)(nil)
+
+func (r *Reels6x) Cols() int {
+	return 6
+}
+
+func (r *Reels6x) Reel(col Pos) []Sym {
+	return r[col-1]
+}
+
+func (r *Reels6x) Reshuffles() uint64 {
+	return uint64(len(r[0])) * uint64(len(r[1])) * uint64(len(r[2])) * uint64(len(r[3])) * uint64(len(r[4])) * uint64(len(r[5]))
+}
+
 func FindReels[T any](reelsmap map[float64]T, mrtp float64) (reels T, rtp float64) {
 	for p, r := range reelsmap {
 		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
@@ -202,6 +220,9 @@ func (g *Slotx[T]) SetBet(bet float64) error {
 	if bet <= 0 {
 		return ErrBetEmpty
 	}
+	if bet == g.Bet {
+		return nil
+	}
 	if g.FreeSpins() {
 		return ErrDisabled
 	}
@@ -219,6 +240,9 @@ func (g *Slotx[T]) SetSelNum(sel int, bln int) error {
 	}
 	if sel > bln {
 		return ErrLinesetOut
+	}
+	if sel == g.Sel {
+		return nil
 	}
 	if g.FreeSpins() {
 		return ErrDisabled

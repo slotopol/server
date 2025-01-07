@@ -41,13 +41,28 @@ Slotopol: 4 games
 * '[Halloween](https://demo.agtsoftware.com/games/agt/halloween)' AGT 3x3 videoslot
 * '[Merry Christmas](https://demo.agtsoftware.com/games/agt/christmas)' AGT 3x3 videoslot
 
+*Top-10 of most liked games released on server*:
+
+* 'Slotopol' Megajack 5x3 videoslot - it's the classic
+* '[Book Of Ra Deluxe](https://freeslotshub.com/novomatic/book-of-ra-deluxe/)' Novomatic 5x3 videoslot with special expanding symbol on free games
+* 'Aztec Gold' Megajack 5x3 videoslot with 'Aztec Pyramid' bonus game
+* 'Fruit Shop' NetEnt 5x3 videoslot with free spins on every win
+* '[Sun City](https://demo.agtsoftware.com/games/agt/suncity)' AGT 5x3 videoslot with free games continous by the luck
+* '[Egypt](https://demo.agtsoftware.com/games/agt/egypt)' AGT 5x3 videoslot with minislot for wilds multiplier
+* 'Fire Joker' Play'n GO 5x3 videoslot with jackpot on lined pays and big symbols on free games
+* 'Lucky Lady's Charm Deluxe' Novomatic 5x3 videoslot
+* 'Sizzling Hot Deluxe' Novomatic 5x3 videoslot
+* 'Plenty on Twenty' Novomatic 5x3 videoslot
+
 # How to build from sources
 
-*Note: you can download the compiled binaries for Windows at [release](https://github.com/slotopol/server/releases/latest) section, or build docker image by [dockerfile](https://github.com/slotopol/server/blob/main/Dockerfile), or use compiled image from [docker hub](https://hub.docker.com/r/schwarzlichtbezirk/slotopol).*
+*Note: you can download the compiled binaries for Windows at [release](https://github.com/slotopol/server/releases/latest) section, or build docker image by [dockerfile](https://github.com/slotopol/server/blob/main/Dockerfile), or use compiled image from [docker hub](https://hub.docker.com/r/schwarzlichtbezirk/slotopol): `docker pull schwarzlichtbezirk/slotopol`.*
 
 1. Install [Golang](https://go.dev/dl/) of last version.
 2. Clone project and download dependencies.
 3. Build project with script at `task` directory.
+
+Project can be [built](.github/workflows/go.yml) for Windows/Linux/MacOS.
 
 For Windows command prompt:
 
@@ -78,6 +93,12 @@ The [list of all](docs/list-all.md) provided games can be obtained by command:
 
 ```cmd
 slot_win_x64 list --all
+```
+
+To find out the list of available RTPs can be with command like this
+
+```cmd
+slot_win_x64 list --megajack --rtp
 ```
 
 # How to test workflow

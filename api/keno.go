@@ -165,7 +165,7 @@ func ApiKenoSelSet(c *gin.Context) {
 	}
 
 	if err = game.SetSel(arg.Sel); err != nil {
-		Ret403(c, AEC_keno_selset_badlines, err)
+		Ret403(c, AEC_keno_selset_badsel, err)
 		return
 	}
 
@@ -248,7 +248,7 @@ func ApiKenoSelSetSlice(c *gin.Context) {
 	var bs keno.Bitset
 	bs.Pack(arg.Sel)
 	if err = game.SetSel(bs); err != nil {
-		Ret403(c, AEC_keno_selsetslice_badlines, err)
+		Ret403(c, AEC_keno_selsetslice_badsel, err)
 		return
 	}
 

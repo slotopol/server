@@ -36,13 +36,16 @@ func incinfo(gi *game.GameInfo) bool {
 	if is, _ = listflags.GetBool("keno"); is && gi.SX == 80 {
 		return true
 	}
-	if is, _ = listflags.GetBool("3reels"); is && gi.SX == 3 {
+	if is, _ = listflags.GetBool("3x"); is && gi.SX == 3 {
 		return true
 	}
-	if is, _ = listflags.GetBool("4reels"); is && gi.SX == 4 {
+	if is, _ = listflags.GetBool("4x"); is && gi.SX == 4 {
 		return true
 	}
-	if is, _ = listflags.GetBool("5reels"); is && gi.SX == 5 {
+	if is, _ = listflags.GetBool("5x"); is && gi.SX == 5 {
+		return true
+	}
+	if is, _ = listflags.GetBool("6x"); is && gi.SX == 6 {
 		return true
 	}
 	if is, _ = listflags.GetBool("3x3"); is && gi.SX == 3 && gi.SY == 3 {
@@ -55,6 +58,12 @@ func incinfo(gi *game.GameInfo) bool {
 		return true
 	}
 	if is, _ = listflags.GetBool("5x4"); is && gi.SX == 5 && gi.SY == 4 {
+		return true
+	}
+	if is, _ = listflags.GetBool("6x3"); is && gi.SX == 6 && gi.SY == 3 {
+		return true
+	}
+	if is, _ = listflags.GetBool("6x4"); is && gi.SX == 6 && gi.SY == 4 {
 		return true
 	}
 	if is, _ = listflags.GetBool("fewlines"); is && gi.LN < 20 {
@@ -237,13 +246,16 @@ func init() {
 	listflags.Bool("slotopol", false, "include games of this 'Slotopol' provider")
 
 	listflags.Bool("keno", false, "include keno games")
-	listflags.Bool("3reels", false, "include games with 3 reels")
-	listflags.Bool("4reels", false, "include games with 4 reels")
-	listflags.Bool("5reels", false, "include games with 5 reels")
+	listflags.Bool("3x", false, "include games with 3 reels")
+	listflags.Bool("4x", false, "include games with 4 reels")
+	listflags.Bool("5x", false, "include games with 5 reels")
+	listflags.Bool("6x", false, "include games with 5 reels")
 	listflags.Bool("3x3", false, "include games with 3x3 screen")
 	listflags.Bool("4x4", false, "include games with 4x4 screen")
 	listflags.Bool("5x3", false, "include games with 5x3 screen")
 	listflags.Bool("5x4", false, "include games with 5x4 screen")
+	listflags.Bool("6x3", false, "include games with 6x3 screen")
+	listflags.Bool("6x4", false, "include games with 6x4 screen")
 	listflags.Bool("fewlines", false, "include games with few lines, i.e. with less than 20")
 	listflags.Bool("multilines", false, "include games with few lines, i.e. with not less than 20")
 	listflags.Bool("megaway", false, "include games with multiways, i.e. with 243, 1024 ways")
@@ -251,6 +263,7 @@ func init() {
 	listflags.Bool("bonus", false, "include games with bonus games")
 
 	listCmd.MarkFlagsOneRequired("all",
-		"agt", "aristocrat", "betsoft", "megajack", "netent", "novomatic", "playngo", "playtech", "slotopol",
-		"keno", "3reels", "4reels", "5reels", "3x3", "4x4", "5x3", "5x4", "fewlines", "multilines", "megaway", "fg", "bonus")
+		"agt", "aristocrat", "betsoft", "megajack", "netent", "novomatic", "playngo", "playtech", "slotopol", "keno",
+		"3x", "4x", "5x", "6x", "3x3", "4x4", "5x3", "5x4", "6x3", "6x4",
+		"fewlines", "multilines", "megaway", "fg", "bonus")
 }

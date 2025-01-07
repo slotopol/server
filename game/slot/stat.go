@@ -305,6 +305,93 @@ func BruteForce5xGo(ctx context.Context, s Stater, g SlotGame, reels *Reels5x) {
 	wg.Wait()
 }
 
+func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels *Reels6x) {
+	var r1 = reels.Reel(1)
+	var r2 = reels.Reel(2)
+	var r3 = reels.Reel(3)
+	var r4 = reels.Reel(4)
+	var r5 = reels.Reel(5)
+	var r6 = reels.Reel(6)
+	var screen = g.Screen()
+	var wins Wins
+	for i1 := range r1 {
+		screen.SetCol(1, r1, i1)
+		for i2 := range r2 {
+			screen.SetCol(2, r2, i2)
+			for i3 := range r3 {
+				screen.SetCol(3, r3, i3)
+				for i4 := range r4 {
+					screen.SetCol(4, r4, i4)
+					for i5 := range r5 {
+						screen.SetCol(5, r5, i5)
+						for i6 := range r6 {
+							screen.SetCol(6, r6, i6)
+							g.Scanner(&wins)
+							s.Update(wins)
+							wins.Reset()
+							if s.Count()%ctxgranulation == 0 {
+								select {
+								case <-ctx.Done():
+									return
+								default:
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+func BruteForce6xGo(ctx context.Context, s Stater, g SlotGame, reels *Reels6x) {
+	var r1 = reels.Reel(1)
+	var r2 = reels.Reel(2)
+	var r3 = reels.Reel(3)
+	var r4 = reels.Reel(4)
+	var r5 = reels.Reel(5)
+	var r6 = reels.Reel(6)
+	var wg sync.WaitGroup
+	wg.Add(len(r1))
+	for i1 := range r1 {
+		var c = g.Clone()
+		go func() {
+			defer wg.Done()
+
+			var screen = c.Screen()
+			var wins Wins
+
+			screen.SetCol(1, r1, i1)
+			for i2 := range r2 {
+				screen.SetCol(2, r2, i2)
+				for i3 := range r3 {
+					screen.SetCol(3, r3, i3)
+					for i4 := range r4 {
+						screen.SetCol(4, r4, i4)
+						for i5 := range r5 {
+							screen.SetCol(5, r5, i5)
+							for i6 := range r6 {
+								screen.SetCol(6, r6, i6)
+								c.Scanner(&wins)
+								s.Update(wins)
+								wins.Reset()
+								if s.Count()%ctxgranulation == 0 {
+									select {
+									case <-ctx.Done():
+										return
+									default:
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}()
+	}
+	wg.Wait()
+}
+
 func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	var n = s.Planned()
 	var screen = g.Screen()

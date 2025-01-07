@@ -43,21 +43,21 @@ func (s *Screenx) Len() int {
 
 func (s *Screenx) UpdateDim() (sx, sy Pos) {
 	switch s.Len() {
-	case 3 * 1:
+	case 3 * 1: // 3
 		sx, sy = 3, 1
-	case 3 * 3:
+	case 3 * 3: // 9
 		sx, sy = 3, 3
-	case 5 * 3:
+	case 5 * 3: // 15
 		sx, sy = 5, 3
-	case 4 * 4:
+	case 4 * 4: // 16
 		sx, sy = 4, 4
-	case 6 * 3:
+	case 6 * 3: // 18
 		sx, sy = 6, 3
-	case 5 * 4:
+	case 5 * 4: // 20
 		sx, sy = 5, 4
-	case 6 * 4:
+	case 6 * 4: // 24
 		sx, sy = 6, 4
-	case 5 * 5:
+	case 5 * 5: // 25
 		sx, sy = 5, 5
 	}
 	s.sx, s.sy = sx, sy
@@ -414,6 +414,152 @@ func (s *Screen5x4) ScatNum(scat Sym) (n Pos) {
 
 func (s *Screen5x4) ScatPos(scat Sym) (l Linex) {
 	for x := range 5 {
+		var r = s[x]
+		if r[0] == scat {
+			l[x] = 1
+		} else if r[1] == scat {
+			l[x] = 2
+		} else if r[2] == scat {
+			l[x] = 3
+		} else if r[3] == scat {
+			l[x] = 4
+		}
+	}
+	return
+}
+
+// Screen for 6x3 slots.
+type Screen6x3 [6][3]Sym
+
+// Declare conformity with Screen interface.
+var _ Screen = (*Screen6x3)(nil)
+
+func (s *Screen6x3) Dim() (Pos, Pos) {
+	return 6, 3
+}
+
+func (s *Screen6x3) At(x, y Pos) Sym {
+	return s[x-1][y-1]
+}
+
+func (s *Screen6x3) Pos(x Pos, line Linex) Sym {
+	return s[x-1][line[x-1]-1]
+}
+
+func (s *Screen6x3) Set(x, y Pos, sym Sym) {
+	s[x-1][y-1] = sym
+}
+
+func (s *Screen6x3) SetCol(x Pos, reel []Sym, pos int) {
+	for y := range 3 {
+		s[x-1][y] = reel[(pos+y)%len(reel)]
+	}
+}
+
+func (s *Screen6x3) Spin(reels Reels) {
+	var x Pos
+	for x = 1; x <= 6; x++ {
+		var reel = reels.Reel(x)
+		var hit = rand.N(len(reel))
+		s.SetCol(x, reel, hit)
+	}
+}
+
+func (s *Screen6x3) SymNum(sym Sym) (n Pos) {
+	for x := range 6 {
+		for y := range 3 {
+			if s[x][y] == sym {
+				n++
+			}
+		}
+	}
+	return
+}
+
+func (s *Screen6x3) ScatNum(scat Sym) (n Pos) {
+	for x := range 6 {
+		var r = s[x]
+		if r[0] == scat || r[1] == scat || r[2] == scat {
+			n++
+		}
+	}
+	return
+}
+
+func (s *Screen6x3) ScatPos(scat Sym) (l Linex) {
+	for x := range 6 {
+		var r = s[x]
+		if r[0] == scat {
+			l[x] = 1
+		} else if r[1] == scat {
+			l[x] = 2
+		} else if r[2] == scat {
+			l[x] = 3
+		}
+	}
+	return
+}
+
+// Screen for 6x4 slots.
+type Screen6x4 [6][4]Sym
+
+// Declare conformity with Screen interface.
+var _ Screen = (*Screen6x4)(nil)
+
+func (s *Screen6x4) Dim() (Pos, Pos) {
+	return 6, 4
+}
+
+func (s *Screen6x4) At(x, y Pos) Sym {
+	return s[x-1][y-1]
+}
+
+func (s *Screen6x4) Pos(x Pos, line Linex) Sym {
+	return s[x-1][line[x-1]-1]
+}
+
+func (s *Screen6x4) Set(x, y Pos, sym Sym) {
+	s[x-1][y-1] = sym
+}
+
+func (s *Screen6x4) SetCol(x Pos, reel []Sym, pos int) {
+	for y := range 4 {
+		s[x-1][y] = reel[(pos+y)%len(reel)]
+	}
+}
+
+func (s *Screen6x4) Spin(reels Reels) {
+	var x Pos
+	for x = 1; x <= 6; x++ {
+		var reel = reels.Reel(x)
+		var hit = rand.N(len(reel))
+		s.SetCol(x, reel, hit)
+	}
+}
+
+func (s *Screen6x4) SymNum(sym Sym) (n Pos) {
+	for x := range 6 {
+		for y := range 4 {
+			if s[x][y] == sym {
+				n++
+			}
+		}
+	}
+	return
+}
+
+func (s *Screen6x4) ScatNum(scat Sym) (n Pos) {
+	for x := range 6 {
+		var r = s[x]
+		if r[0] == scat || r[1] == scat || r[2] == scat || r[3] == scat {
+			n++
+		}
+	}
+	return
+}
+
+func (s *Screen6x4) ScatPos(scat Sym) (l Linex) {
+	for x := range 6 {
 		var r = s[x]
 		if r[0] == scat {
 			l[x] = 1
