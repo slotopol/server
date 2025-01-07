@@ -10,26 +10,22 @@ import (
 
 var Eacbn float64
 
-func ExpAcorn() float64 {
+func ExpAcorn() {
 	var sum float64
 	for _, v := range Acorn {
 		sum += float64(v)
 	}
-	var E = sum / float64(len(Acorn))
-	fmt.Printf("len = %d, E = %g\n", len(Acorn), E)
-	return E
+	Eacbn = sum / float64(len(Acorn))
 }
 
 var Edlbn float64
 
-func ExpDiamondLion() float64 {
+func ExpDiamondLion() {
 	var sum float64
 	for _, v := range DiamondLion {
 		sum += float64(v)
 	}
-	var E = sum / float64(len(DiamondLion))
-	fmt.Printf("len = %d, E = %g\n", len(DiamondLion), E)
-	return E
+	Edlbn = sum / float64(len(DiamondLion))
 }
 
 func CalcStatBon(ctx context.Context) float64 {
@@ -61,8 +57,10 @@ func CalcStatBon(ctx context.Context) float64 {
 
 func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*bonus games calculations*\n")
-	Eacbn = ExpAcorn()
-	Edlbn = ExpDiamondLion()
+	ExpAcorn()
+	fmt.Printf("len = %d, E = %g\n", len(Acorn), Eacbn)
+	ExpDiamondLion()
+	fmt.Printf("len = %d, E = %g\n", len(DiamondLion), Edlbn)
 	fmt.Printf("*bonus reels calculations*\n")
 	var rtpfs = CalcStatBon(ctx)
 	if ctx.Err() != nil {

@@ -10,7 +10,7 @@ import (
 
 var Ecards float64
 
-func ExpCards() float64 {
+func ExpCards() {
 	var sum float64
 	for c1 := 1; c1 <= 4; c1++ {
 		for c2 := 1; c2 <= 4; c2++ {
@@ -19,9 +19,7 @@ func ExpCards() float64 {
 			}
 		}
 	}
-	var E = sum / 4 / 4 / 4
-	fmt.Printf("total = %d, E = %g\n", 4*4*4, E)
-	return E
+	Ecards = sum / 4 / 4 / 4
 }
 
 func CalcStatBon(ctx context.Context, mrtp float64) float64 {
@@ -52,7 +50,8 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 
 func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*bonus games calculations*\n")
-	Ecards = ExpCards()
+	ExpCards()
+	fmt.Printf("total = %d, E = %g\n", 4*4*4, Ecards)
 	fmt.Printf("*bonus reels calculations*\n")
 	var rtpfs = CalcStatBon(ctx, mrtp)
 	if ctx.Err() != nil {

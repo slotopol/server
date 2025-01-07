@@ -51,7 +51,5 @@ local neighbours = {
 }
 
 math.randomseed(os.time())
-local reel, iter = makereel(symset, neighbours)
-printreel(reel, iter)
-local reel5, iter5 = makereel(symset5, neighbours)
-printreel(reel5, iter5)
+printreel(makereel(symset, neighbours))
+printreel(makereel(symset5, neighbours))

@@ -31,8 +31,7 @@ local neighbours = {
 }
 
 math.randomseed(os.time())
-local reel, iter = makereel(symset, neighbours)
-printreel(reel, iter)
+printreel(makereel(symset, neighbours))
 
 -- bonus game calculation
 local golf = {

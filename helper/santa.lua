@@ -41,8 +41,5 @@ local chunklen = {
 }
 
 math.randomseed(os.time())
-local reel, iter
-reel, iter = makereelhot(symset134, 4, {}, chunklen, true)
-printreel(reel, iter)
-reel, iter = makereelhot(symset2, 4, {}, chunklen, true)
-printreel(reel, iter)
+printreel(makereelhot(symset134, 4, {}, chunklen, true))
+printreel(makereelhot(symset2, 4, {}, chunklen, true))

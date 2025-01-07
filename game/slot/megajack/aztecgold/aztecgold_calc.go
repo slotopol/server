@@ -15,6 +15,7 @@ var (
 )
 
 func ExpBonus() {
+	Epyr = 0
 	for i, p := range app {
 		Epyr += p * apm[i]
 	}

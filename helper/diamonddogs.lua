@@ -31,8 +31,7 @@ local neighbours = {
 }
 
 math.randomseed(os.time())
-local reel, iter = makereel(symset, neighbours)
-printreel(reel, iter)
+printreel(makereel(symset, neighbours))
 
 local dd = {10,20,20,40,40,80,120,120,450}
 local sum = 0

@@ -10,19 +10,18 @@ import (
 
 var Egolfbn float64
 
-func ExpGolf() float64 {
+func ExpGolf() {
 	var sum float64
 	for _, v := range Golf {
 		sum += float64(v)
 	}
-	var E = sum / float64(len(Golf))
-	fmt.Printf("len = %d, E = %g\n", len(Golf), E)
-	return E
+	Egolfbn = sum / float64(len(Golf))
 }
 
 func CalcStat(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*bonus games calculations*\n")
-	Egolfbn = ExpGolf()
+	ExpGolf()
+	fmt.Printf("len = %d, E = %g\n", len(Golf), Egolfbn)
 	fmt.Printf("*reels calculations*\n")
 	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	var g = NewGame()

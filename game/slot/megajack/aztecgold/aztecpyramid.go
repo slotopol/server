@@ -18,7 +18,7 @@ var apm = [6]float64{
 // aztec pyramids frequency
 var apf [6]float64
 
-// aztec pyramid probability on max 4 attempts
+// aztec pyramid probability on max 3 attempts
 var app [6]float64
 
 const att = 3 // number of attempts

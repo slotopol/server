@@ -12,19 +12,18 @@ import (
 var Emje float64 // Eldorado game 1 spin calculated expectation
 
 // Eldorado expectation.
-func ExpEldorado() float64 {
+func ExpEldorado() {
 	var sum float64
 	for _, v := range Eldorado {
 		sum += v
 	}
-	var E = sum / float64(len(Eldorado))
-	fmt.Printf("eldorado 1 spin: count = %d, E = %g\n", len(Eldorado), E)
-	return E
+	Emje = sum / float64(len(Eldorado))
+	fmt.Printf("eldorado 1 spin: count = %d, E = %g\n", len(Eldorado), Emje)
 }
 
 var Emjm float64 // Monopoly game calculated expectation
 
-func ExpMonopoly() float64 {
+func ExpMonopoly() {
 	var dices = [7]int{1, 1, 1, 1, 1, 1, 1}
 	var sumi, sumii, sumj float64
 	var count, zcount int = 6 * 6 * 6 * 6 * 6 * 6 * 6, 0
@@ -74,18 +73,17 @@ func ExpMonopoly() float64 {
 		}
 		dices[0] = dices[0]%6 + 1
 	}
-	var E = sumi / float64(count)
-	var v = sumii/float64(count) - E*E
+	Emjm = sumi / float64(count)
+	var v = sumii/float64(count) - Emjm*Emjm
 	var sigma = math.Sqrt(v)
-	fmt.Printf("monopoly: count = %d, sum = %g, zerocount = %d, p(zero) = 1/%d, E = %g\n", count, sumi, zcount, int(float64(count)/float64(zcount)), E)
-	fmt.Printf("monopoly: variance = %.6g, sigma = %.6g, limits = %.6g ... %.6g\n", v, sigma, E-sigma, E+sigma)
-	return E
+	fmt.Printf("monopoly: count = %d, sum = %g, zerocount = %d, p(zero) = 1/%d, E = %g\n", count, sumi, zcount, int(float64(count)/float64(zcount)), Emjm)
+	fmt.Printf("monopoly: variance = %.6g, sigma = %.6g, limits = %.6g ... %.6g\n", v, sigma, Emjm-sigma, Emjm+sigma)
 }
 
 func CalcStat(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*bonus games calculations*\n")
-	Emje = ExpEldorado()
-	Emjm = ExpMonopoly()
+	ExpEldorado()
+	ExpMonopoly()
 	fmt.Printf("*reels calculations*\n")
 	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	var g = NewGame()

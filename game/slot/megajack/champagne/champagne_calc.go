@@ -8,15 +8,18 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-var Emjc float64 // Bottle game calculated expectation
+var (
+	Ebot float64 // expectation of 1 bottle
+	Emjc float64 // Bottle game calculated expectation
+)
 
-func ExpBottle() float64 {
+func ExpBottle() {
 	// avr 1 bottle gain
-	var m float64
+	Ebot = 0
 	for _, v := range Bottles {
-		m += float64(v)
+		Ebot += float64(v)
 	}
-	m /= float64(len(Bottles))
+	Ebot /= float64(len(Bottles))
 
 	// expectation
 	var E float64
@@ -32,8 +35,7 @@ func ExpBottle() float64 {
 		}
 	}
 	E /= float64(n)
-	fmt.Printf("len = %d, avr bottle gain = %.5g, E = %g\n", len(Bottles), m, E)
-	return E
+	Emjc = E
 }
 
 func CalcStatBon(ctx context.Context, mrtp float64) float64 {
@@ -71,7 +73,8 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 
 func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*bonus games calculations*\n")
-	Emjc = ExpBottle()
+	ExpBottle()
+	fmt.Printf("len = %d, avr bottle gain = %.5g, E = %g\n", len(Bottles), Ebot, Emjc)
 	fmt.Printf("*bonus reels calculations*\n")
 	var rtpfs = CalcStatBon(ctx, mrtp)
 	if ctx.Err() != nil {

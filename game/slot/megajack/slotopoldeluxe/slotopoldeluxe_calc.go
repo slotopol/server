@@ -11,8 +11,8 @@ import (
 
 func CalcStat(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*bonus games calculations*\n")
-	slotopol.Emje = slotopol.ExpEldorado()
-	slotopol.Emjm = slotopol.ExpMonopoly()
+	slotopol.ExpEldorado()
+	slotopol.ExpMonopoly()
 	fmt.Printf("*reels calculations*\n")
 	var reels, _ = slot.FindReels(ReelsMap, mrtp)
 	var g = NewGame()

@@ -2,8 +2,8 @@ local path = arg[0]:match("(.*[/\\])")
 dofile(path.."lib/reelgen.lua")
 
 local symset1 = {
-	5, --  1 tomat   100
-	5, --  2 corn    100
+	4, --  1 tomat   100
+	4, --  2 corn    100
 	4, --  3 lama    100
 	4, --  4 frog    100
 	4, --  5 jaguar  100
@@ -17,8 +17,8 @@ local symset1 = {
 }
 
 local symset2 = {
-	5, --  1 tomat   100
-	5, --  2 corn    100
+	4, --  1 tomat   100
+	4, --  2 corn    100
 	4, --  3 lama    100
 	4, --  4 frog    100
 	4, --  5 jaguar  100
@@ -93,14 +93,8 @@ local neighbours = {
 }
 
 math.randomseed(os.time())
-local reel, iter
-reel, iter = makereel(symset1, neighbours)
-printreel(reel, iter)
-reel, iter = makereel(symset2, neighbours)
-printreel(reel, iter)
-reel, iter = makereel(symset3, neighbours)
-printreel(reel, iter)
-reel, iter = makereel(symset4, neighbours)
-printreel(reel, iter)
-reel, iter = makereel(symset5, neighbours)
-printreel(reel, iter)
+printreel(makereel(symset1, neighbours))
+printreel(makereel(symset2, neighbours))
+printreel(makereel(symset3, neighbours))
+printreel(makereel(symset4, neighbours))
+printreel(makereel(symset5, neighbours))

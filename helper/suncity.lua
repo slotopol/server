@@ -83,8 +83,5 @@ local neighbours = {
 }
 
 math.randomseed(os.time())
-local reel, iter
-reel, iter = makereel(symset15reg, neighbours)
-printreel(reel, iter)
-reel, iter = makereel(symset234reg, neighbours)
-printreel(reel, iter)
+printreel(makereel(symset15reg, neighbours))
+printreel(makereel(symset234reg, neighbours))

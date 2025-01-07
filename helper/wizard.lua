@@ -16,5 +16,4 @@ local symset = {
 }
 
 math.randomseed(os.time())
-local reel, iter = makereelhot(symset, 4, {}, {}, true)
-printreel(reel, iter)
+printreel(makereelhot(symset, 4, {}, {}, true))
