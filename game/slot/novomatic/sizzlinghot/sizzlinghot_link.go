@@ -8,8 +8,10 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Sizzling Hot"},
-		{Prov: "Novomatic", Name: "Sizzling Hot Deluxe"},
+		{Prov: "Novomatic", Name: "Sizzling Hot"},        // see: https://www.slotsmate.com/software/novomatic/novomatic-sizzling-hot
+		{Prov: "Novomatic", Name: "Sizzling Hot Deluxe"}, // see: https://www.slotsmate.com/software/novomatic/sizzling-hot-deluxe
+		{Prov: "Novomatic", Name: "Age of Heroes"},       // see: https://www.slotsmate.com/software/novomatic/age-of-heroes
+		{Prov: "Novomatic", Name: "Hot Cubes"},           // see: https://www.slotsmate.com/software/novomatic/hot-cubes
 	},
 	GP: game.GPfgno |
 		game.GPscat,

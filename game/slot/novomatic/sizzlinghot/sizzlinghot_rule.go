@@ -1,5 +1,7 @@
 package sizzlinghot
 
+// See: https://www.slotsmate.com/software/novomatic/sizzling-hot-deluxe
+
 import (
 	_ "embed"
 

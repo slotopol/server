@@ -1,5 +1,7 @@
 package bananasgobahamas
 
+// See: https://www.slotsmate.com/software/novomatic/bananas-go-bahamas
+
 import (
 	_ "embed"
 

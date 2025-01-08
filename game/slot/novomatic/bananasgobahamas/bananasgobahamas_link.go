@@ -8,7 +8,7 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Bananas Go Bahamas"},
+		{Prov: "Novomatic", Name: "Bananas Go Bahamas"}, // see: https://www.slotsmate.com/software/novomatic/bananas-go-bahamas
 	},
 	GP: game.GPsel |
 		game.GPretrig |

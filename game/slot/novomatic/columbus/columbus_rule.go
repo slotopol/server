@@ -1,5 +1,7 @@
 package columbus
 
+// See: https://www.slotsmate.com/software/novomatic/columbus-deluxe
+
 import (
 	_ "embed"
 

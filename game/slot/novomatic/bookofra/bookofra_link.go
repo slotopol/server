@@ -8,10 +8,11 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Book Of Ra"},
-		{Prov: "Novomatic", Name: "Book Of Ra Deluxe"}, // see: https://freeslotshub.com/novomatic/book-of-ra-deluxe/
+		{Prov: "Novomatic", Name: "Book of Ra"},        // see: https://www.slotsmate.com/software/novomatic/book-of-ra-classic
+		{Prov: "Novomatic", Name: "Book of Ra Deluxe"}, // see: https://www.slotsmate.com/software/novomatic/book-of-ra-deluxe
+		{Prov: "Novomatic", Name: "Gate of Ra Deluxe"}, // see: https://www.slotsmate.com/software/novomatic/gate-of-ra-deluxe
 		{Prov: "Novomatic", Name: "Down Under"},
-		{Prov: "Novomatic", Name: "God Of Sun"},
+		{Prov: "Novomatic", Name: "God of Sun"},
 		{Prov: "Novomatic", Name: "Lord of the Ocean"},
 		{Prov: "Novomatic", Name: "Faust"}, // see: https://freeslotshub.com/novomatic/faust/
 	},

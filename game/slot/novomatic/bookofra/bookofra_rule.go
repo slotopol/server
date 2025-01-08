@@ -1,5 +1,7 @@
 package bookofra
 
+// See: https://www.slotsmate.com/software/novomatic/book-of-ra-deluxe
+
 import (
 	_ "embed"
 	"math/rand/v2"

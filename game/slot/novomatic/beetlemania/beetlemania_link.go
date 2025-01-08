@@ -10,7 +10,7 @@ var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "Novomatic", Name: "Beetle Mania"},
 		{Prov: "Novomatic", Name: "Beetle Mania Deluxe"},
-		{Prov: "Novomatic", Name: "Hot Target"},
+		{Prov: "Novomatic", Name: "Hot Target"}, // see: https://www.slotsmate.com/software/novomatic/hot-target
 	},
 	GP: game.GPsel |
 		game.GPfghas |

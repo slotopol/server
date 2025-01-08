@@ -8,8 +8,8 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Just Jewels"},
-		{Prov: "Novomatic", Name: "Just Jewels Deluxe"},
+		{Prov: "Novomatic", Name: "Just Jewels"},        // see: https://www.slotsmate.com/software/novomatic/just-jewels
+		{Prov: "Novomatic", Name: "Just Jewels Deluxe"}, // see: https://www.slotsmate.com/software/novomatic/just-jewels-deluxe
 	},
 	GP: game.GPsel |
 		game.GPfgno |

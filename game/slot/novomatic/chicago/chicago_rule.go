@@ -1,5 +1,7 @@
 package chicago
 
+// See: https://www.slotsmate.com/software/novomatic/novomatic-chicago
+
 import (
 	_ "embed"
 	"math/rand/v2"

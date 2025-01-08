@@ -1,5 +1,7 @@
 package dolphinspearl
 
+// See: https://www.slotsmate.com/software/novomatic/dolphins-pearl-deluxe
+
 import (
 	_ "embed"
 
