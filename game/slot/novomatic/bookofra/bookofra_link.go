@@ -14,7 +14,8 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Down Under"},
 		{Prov: "Novomatic", Name: "God of Sun"},
 		{Prov: "Novomatic", Name: "Lord of the Ocean"},
-		{Prov: "Novomatic", Name: "Faust"}, // see: https://freeslotshub.com/novomatic/faust/
+		{Prov: "Novomatic", Name: "Faust"},                      // see: https://freeslotshub.com/novomatic/faust/
+		{Prov: "Novomatic", Name: "The Real King Gold Records"}, // https://www.slotsmate.com/software/novomatic/the-real-king-gold-records
 	},
 	GP: game.GPsel |
 		game.GPretrig |

@@ -89,6 +89,7 @@
 'Jewels' Novomatic 5x3 videoslot
 'Joker Dolphin' Novomatic 5x3 videoslot
 'Jokers' AGT 5x3 videoslot
+'Just Fruits' Novomatic 5x3 videoslot
 'Just Jewels Deluxe' Novomatic 5x3 videoslot
 'Just Jewels' Novomatic 5x3 videoslot
 'Katana' Novomatic 5x3 videoslot
@@ -141,6 +142,7 @@
 'The Leprechaun' AGT 5x3 videoslot
 'The Money Game Deluxe' Novomatic 5x3 videoslot
 'The Money Game' Novomatic 5x3 videoslot
+'The Real King Gold Records' Novomatic 5x3 videoslot
 'Thrill Spin' NetEnt 5x3 videoslot
 'Tiki Wonders' NetEnt 5x3 videoslot
 'Time Machine II' AGT 5x3 videoslot
@@ -156,13 +158,13 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 153 games, 74 algorithms, 9 providers
+total: 155 games, 74 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 52 games
+Novomatic: 54 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games

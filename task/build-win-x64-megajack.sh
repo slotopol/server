@@ -3,6 +3,7 @@
 # It produces static C-libraries linkage.
 
 wd=$(realpath -s "$(dirname "$0")/..")
+mkdir -p "$GOPATH/bin/config"
 cp -ruv "$wd/appdata/"* "$GOPATH/bin/config"
 
 buildvers=$(git describe --tags)

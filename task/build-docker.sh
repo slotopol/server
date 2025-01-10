@@ -2,10 +2,14 @@
 # This script compiles project for Linux amd64 inside of docker.
 # It produces static C-libraries linkage.
 
+wd=$(realpath -s "$(dirname "$0")/..")
+mkdir -p "$GOPATH/bin/config"
+cp -ruv "$wd/appdata/"* "$GOPATH/bin/config"
+
 # dockerfile has no access to git repository,
 # so update content of this variable by
 #   echo $(git describe --tags)
-buildvers="v0.7.0-13-g3bc7898"
+buildvers="v0.7.0-14-g79f2a17"
 # See https://tc39.es/ecma262/#sec-date-time-string-format
 # time format acceptable for Date constructors.
 buildtime=$(date +'%FT%T.%3NZ')

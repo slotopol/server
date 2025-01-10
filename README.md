@@ -16,13 +16,13 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 153 games, 74 algorithms, 9 providers
+total: 155 games, 74 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 52 games
+Novomatic: 54 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games
@@ -59,7 +59,7 @@ Slotopol: 4 games
 
 *Note: you can download the compiled binaries for Windows at [release](https://github.com/slotopol/server/releases/latest) section, or build docker image by [dockerfile](https://github.com/slotopol/server/blob/main/Dockerfile), or use compiled image from [docker hub](https://hub.docker.com/r/schwarzlichtbezirk/slotopol): `docker pull schwarzlichtbezirk/slotopol`.*
 
-1. Install [Golang](https://go.dev/dl/) of last version.
+1. Install [Golang](https://go.dev/dl/) of last version and GCC toolset.
 2. Clone project and download dependencies.
 3. Build project with script at `task` directory.
 
