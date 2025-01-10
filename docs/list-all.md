@@ -103,6 +103,7 @@
 'Lucky Lady's Charm' Novomatic 5x3 videoslot
 'Lucky Slot' AGT 5x3 videoslot
 'Marco Polo' Novomatic 5x3 videoslot
+'Mega Joker' Novomatic 5x4 videoslot
 'Mega Shine' AGT 5x3 videoslot
 'Mermaid's Pearl' Novomatic 5x3 videoslot
 'Merry Christmas' AGT 3x3 videoslot
@@ -158,13 +159,13 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 155 games, 74 algorithms, 9 providers
+total: 156 games, 75 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 54 games
+Novomatic: 55 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games
