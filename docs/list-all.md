@@ -10,6 +10,7 @@
 '50 Apples' Shine' AGT 5x4 videoslot
 '50 Happy Santa' AGT 5x4 videoslot
 'AI' AGT 5x3 videoslot
+'African Simba' Novomatic 5x3 videoslot
 'Age of Heroes' Novomatic 5x3 videoslot
 'Aladdin' AGT 5x4 videoslot
 'Always Hot' Novomatic 3x3 videoslot
@@ -44,6 +45,7 @@
 'Cops'n'Robbers' Play'n GO 5x3 videoslot
 'Crown' AGT 5x4 videoslot
 'Desert Treasure' Playtech 5x3 videoslot
+'Diamond 7' Novomatic 5x3 videoslot
 'Diamond Dogs' NetEnt 5x3 videoslot
 'Dolphin Treasure' Aristocrat 5x3 videoslot
 'Dolphins Pearl Deluxe' Novomatic 5x3 videoslot
@@ -159,13 +161,13 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 156 games, 75 algorithms, 9 providers
+total: 158 games, 76 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 55 games
+Novomatic: 57 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games

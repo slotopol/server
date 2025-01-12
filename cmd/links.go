@@ -15,6 +15,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/megajack/slotopoldeluxe"
 
 	// Novomatic
+	_ "github.com/slotopol/server/game/slot/novomatic/africansimba"
 	_ "github.com/slotopol/server/game/slot/novomatic/alwayshot"
 	_ "github.com/slotopol/server/game/slot/novomatic/bananasgobahamas"
 	_ "github.com/slotopol/server/game/slot/novomatic/beetlemania"
