@@ -23,6 +23,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/novomatic/chicago"
 	_ "github.com/slotopol/server/game/slot/novomatic/columbus"
 	_ "github.com/slotopol/server/game/slot/novomatic/dolphinspearl"
+	_ "github.com/slotopol/server/game/slot/novomatic/jaguarmoon"
 	_ "github.com/slotopol/server/game/slot/novomatic/jewels"
 	_ "github.com/slotopol/server/game/slot/novomatic/jewels4all"
 	_ "github.com/slotopol/server/game/slot/novomatic/justjewels"

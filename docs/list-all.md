@@ -87,6 +87,7 @@
 'Indian Dreaming' Aristocrat 5x3 videoslot
 'Infinity Gems' AGT 5x3 videoslot
 'Irish Luck' Playtech 5x3 videoslot
+'Jaguar Moon' Novomatic 5x3 videoslot
 'Jewels 4 All' Novomatic 5x3 videoslot
 'Jewels' Novomatic 5x3 videoslot
 'Joker Dolphin' Novomatic 5x3 videoslot
@@ -161,13 +162,13 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 158 games, 76 algorithms, 9 providers
+total: 159 games, 77 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 57 games
+Novomatic: 58 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games

@@ -29,7 +29,7 @@ type Stat struct {
 	FreeHits   uint64
 	BonusCount [8]uint64
 	JackCount  [4]uint64
-	lpm, spm   sync.Mutex
+	LPM, SPM   sync.Mutex
 }
 
 func (s *Stat) SetPlan(n uint64) {
@@ -48,13 +48,13 @@ func (s *Stat) Update(wins Wins) {
 	for _, wi := range wins {
 		if wi.Pay != 0 {
 			if wi.Line != 0 {
-				s.lpm.Lock()
+				s.LPM.Lock()
 				s.LinePay += wi.Pay * wi.Mult
-				s.lpm.Unlock()
+				s.LPM.Unlock()
 			} else {
-				s.spm.Lock()
+				s.SPM.Lock()
 				s.ScatPay += wi.Pay * wi.Mult
-				s.spm.Unlock()
+				s.SPM.Unlock()
 			}
 		}
 		if wi.Free != 0 {
@@ -78,12 +78,12 @@ func (s *Stat) Progress(ctx context.Context, steps <-chan time.Time, sel int, to
 			return
 		case <-steps:
 			var n = float64(atomic.LoadUint64(&s.Reshuffles))
-			s.lpm.Lock()
+			s.LPM.Lock()
 			var lp = s.LinePay
-			s.lpm.Unlock()
-			s.spm.Lock()
+			s.LPM.Unlock()
+			s.SPM.Lock()
 			var sp = s.ScatPay
-			s.spm.Unlock()
+			s.SPM.Unlock()
 			var pays = (lp + sp) / n / float64(sel) * 100
 			fmt.Printf("processed %.1fm, ready %2.2f%%, symbols pays %2.2f%%\n", n/1e6, n/total*100, pays)
 		}

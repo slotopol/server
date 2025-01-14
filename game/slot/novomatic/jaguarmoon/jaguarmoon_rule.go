@@ -1,6 +1,6 @@
-package africansimba
+package jaguarmoon
 
-// See: https://www.slotsmate.com/software/novomatic/african-simba
+// See: https://www.slotsmate.com/software/novomatic/jaguar-moon
 
 import (
 	_ "embed"
@@ -8,29 +8,42 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed africansimba_reel.yaml
+//go:embed jaguarmoon_bon.yaml
+var rbon []byte
+
+var ReelsBon = slot.ReadObj[*slot.Reels5x](rbon)
+
+//go:embed jaguarmoon_reel.yaml
 var reels []byte
 
 var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [12][5]float64{
-	{},                     //  1 wild
-	{},                     //  2 scatter
-	{0, 0, 100, 500, 2500}, //  3 giraffe
-	{0, 0, 50, 150, 750},   //  4 buffalo
-	{0, 0, 25, 75, 250},    //  5 lemur
-	{0, 0, 25, 75, 250},    //  6 flamingo
-	{0, 0, 10, 25, 125},    //  7 ace
-	{0, 0, 10, 25, 125},    //  8 king
-	{0, 0, 10, 25, 125},    //  9 queen
-	{0, 0, 5, 20, 100},     // 10 jack
-	{0, 0, 5, 20, 100},     // 11 ten
-	{0, 0, 5, 20, 100},     // 12 nine
+	{},                   //  1 wild
+	{},                   //  2 scatter
+	{0, 0, 40, 200, 800}, //  3 wooman
+	{0, 0, 20, 60, 200},  //  4 panther
+	{0, 0, 10, 50, 100},  //  5 footprint
+	{0, 0, 10, 30, 100},  //  6 rings
+	{0, 0, 4, 10, 50},    //  7 ace
+	{0, 0, 4, 10, 50},    //  8 king
+	{0, 0, 4, 10, 50},    //  9 queen
+	{0, 0, 2, 8, 40},     // 10 jack
+	{0, 0, 2, 8, 40},     // 11 ten
+	{0, 0, 2, 8, 40},     // 12 nine
 }
+
+// Scatter freespins table
+var ScatFreespin = [6]int{0, 0, 8, 12, 15, 20} // 2 scatter
+
+// Free games multipliers
+var FreeMult = [6]float64{0, 0, 2, 3, 4, 5}
 
 type Game struct {
 	slot.Slotx[slot.Screen5x3] `yaml:",inline"`
+	// multiplier on freespins
+	M float64 `json:"m,omitempty" yaml:"m,omitempty" xml:"m,omitempty"`
 }
 
 // Declare conformity with SlotGame interface.
@@ -39,9 +52,10 @@ var _ slot.SlotGame = (*Game)(nil)
 func NewGame() *Game {
 	return &Game{
 		Slotx: slot.Slotx[slot.Screen5x3]{
-			Sel: 25,
+			Sel: 10,
 			Bet: 1,
 		},
+		M: 0,
 	}
 }
 
@@ -85,10 +99,10 @@ loop1:
 							}
 						}
 
-						if numl >= 3 && syml > 0 {
+						if numl >= 3 && syml > scat {
 							var mm float64 = 1 // mult mode
 							if g.FSR > 0 {
-								mm = 3
+								mm = g.M
 							}
 							// var li = (int(line[0])-1)*81 + (int(line[1])-1)*27 + (int(line[2])-1)*9 + (int(line[line[4]])-1)*3 + int(line[5])
 							*wins = append(*wins, slot.WinItem{
@@ -127,21 +141,56 @@ loop1:
 	}
 }
 
+func SymNum(s *slot.Screen5x3) (n, count slot.Pos) {
+	for x := range 3 { // only on reels 1, 2, 3
+		for y := range 3 {
+			if s[x][y] == scat {
+				n++
+				count++
+				if y < 2 && s[x][y+1] == scat {
+					count++
+				}
+			}
+		}
+	}
+	return
+}
+
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	if count := g.Scr.ScatNum(scat); count >= 3 {
+	if n, count := SymNum(&g.Scr); n == 3 {
+		var fs = ScatFreespin[count]
 		*wins = append(*wins, slot.WinItem{
 			Sym:  scat,
 			Num:  count,
 			XY:   g.Scr.ScatPos(scat),
-			Free: 12,
+			Free: fs,
 		})
 	}
 }
 
 func (g *Game) Spin(mrtp float64) {
-	var reels, _ = slot.FindReels(ReelsMap, mrtp)
-	g.Scr.Spin(reels)
+	if g.FSR == 0 {
+		var reels, _ = slot.FindReels(ReelsMap, mrtp)
+		g.Scr.Spin(reels)
+	} else {
+		g.Scr.Spin(ReelsBon)
+	}
+}
+
+func (g *Game) Prepare() {
+	if g.FSR == 0 {
+		g.M = 0
+	}
+}
+
+func (g *Game) Apply(wins slot.Wins) {
+	g.Slotx.Apply(wins)
+	for _, wi := range wins {
+		if wi.Free > 0 {
+			g.M = FreeMult[wi.Num-1]
+		}
+	}
 }
 
 func (g *Game) SetSel(sel int) error {

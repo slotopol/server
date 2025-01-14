@@ -8,11 +8,11 @@ local symset = {
 	3, --  4 buffalo  750
 	3, --  5 lemur    250
 	3, --  6 flamingo 250
-	3, --  7 ace      125
-	3, --  8 king     125
-	3, --  9 queen    125
-	3, -- 10 jack     100
-	3, -- 11 ten      100
+	4, --  7 ace      125
+	4, --  8 king     125
+	4, --  9 queen    125
+	4, -- 10 jack     100
+	4, -- 11 ten      100
 	4, -- 12 nine     100
 }
 
