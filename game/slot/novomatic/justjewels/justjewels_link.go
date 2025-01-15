@@ -13,6 +13,7 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Just Fruits"},        // see: https://www.slotsmate.com/software/novomatic/just-fruits
 	},
 	GP: game.GPsel |
+		game.GPcline |
 		game.GPfgno |
 		game.GPscat,
 	SX:  5,

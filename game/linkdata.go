@@ -12,19 +12,21 @@ type GP uint
 
 const ( // Game properties
 	GPsel    GP = 0b_0000_0000_0000_0001 // user can change lines
-	GPjack   GP = 0b_0000_0000_0000_0010 // cumulative jackpot is present
+	GPrline  GP = 0b_0000_0000_0000_0010 // pays left to right and right to left
+	GPcline  GP = 0b_0000_0000_0000_0100 // pays for combination at any position
+	GPjack   GP = 0b_0000_0000_0000_1000 // cumulative jackpot is present
 	GPfgno   GP = 0                      // free games are absent
-	GPfghas  GP = 0b_0000_0000_0000_0100 // non-retriggered free games are present
-	GPretrig GP = 0b_0000_0000_0000_1000 // free games are present and can be retriggered
-	GPfgmult GP = 0b_0000_0000_0001_0000 // any multipliers on free games
-	GPfgreel GP = 0b_0000_0000_0010_0000 // separate reels on free games
-	GPscat   GP = 0b_0000_0000_0100_0000 // has scatters
-	GPwild   GP = 0b_0000_0000_1000_0000 // has wild symbols
-	GPrwild  GP = 0b_0000_0001_0000_0000 // has reel wild symbols
-	GPbwild  GP = 0b_0000_0010_0000_0000 // has big wild (3x3)
-	GPwmult  GP = 0b_0000_0100_0000_0000 // has multiplier on wilds
-	GPbsym   GP = 0b_0000_1000_0000_0000 // has big symbol (usually 3x3 in the center on free games)
-	GPfill   GP = 0b_0001_0000_0000_0000 // has multiplier on filled screen
+	GPfghas  GP = 0b_0000_0000_0001_0000 // non-retriggered free games are present
+	GPretrig GP = 0b_0000_0000_0010_0000 // free games are present and can be retriggered
+	GPfgmult GP = 0b_0000_0000_0100_0000 // any multipliers on free games
+	GPfgreel GP = 0b_0000_0000_1000_0000 // separate reels on free games
+	GPscat   GP = 0b_0000_0001_0000_0000 // has scatters
+	GPwild   GP = 0b_0000_0010_0000_0000 // has wild symbols
+	GPrwild  GP = 0b_0000_0100_0000_0000 // has reel wild symbols
+	GPbwild  GP = 0b_0000_1000_0000_0000 // has big wild (3x3)
+	GPwmult  GP = 0b_0001_0000_0000_0000 // has multiplier on wilds
+	GPbsym   GP = 0b_0010_0000_0000_0000 // has big symbol (usually 3x3 in the center on free games)
+	GPfill   GP = 0b_0100_0000_0000_0000 // has multiplier on filled screen
 )
 
 type (

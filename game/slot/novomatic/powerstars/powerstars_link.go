@@ -11,6 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Power Stars"},
 	},
 	GP: game.GPsel |
+		game.GPrline |
 		game.GPfgno |
 		game.GPwild,
 	SX:  5,

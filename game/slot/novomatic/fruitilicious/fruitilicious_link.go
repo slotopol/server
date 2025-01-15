@@ -1,6 +1,6 @@
 //go:build !prod || full || novomatic
 
-package jewels
+package fruitilicious
 
 import (
 	"github.com/slotopol/server/game"
@@ -8,10 +8,9 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Jewels"},
+		{Prov: "Novomatic", Name: "Fruitilicious"},
 	},
-	GP: game.GPsel |
-		game.GPcline |
+	GP: game.GPrline |
 		game.GPfgno,
 	SX:  5,
 	SY:  3,

@@ -16,13 +16,13 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 159 games, 77 algorithms, 9 providers
+total: 160 games, 78 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 58 games
+Novomatic: 59 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games
@@ -30,6 +30,7 @@ Slotopol: 4 games
 
 *Last added games*:
 
+* '[Fruitilicious](https://www.slotsmate.com/software/novomatic/fruitilicious)' Novomatic 5x3 videoslot
 * '[Jaguar Moon](https://www.slotsmate.com/software/novomatic/jaguar-moon)' Novomatic 5x3, 243 ways videoslot
 * '[African Simba](https://www.slotsmate.com/software/novomatic/african-simba)' Novomatic 5x3, 243 ways videoslot
 * '[Mega Joker](https://www.slotsmate.com/software/novomatic/mega-joker)' Novomatic 5x4 videoslot
@@ -38,8 +39,6 @@ Slotopol: 4 games
 * '[Book of Ra](https://www.slotsmate.com/software/novomatic/book-of-ra-classic)' Novomatic 5x3 videoslot
 * '[Gate of Ra Deluxe](https://www.slotsmate.com/software/novomatic/gate-of-ra-deluxe)' Novomatic 5x3 videoslot
 * '[Faust](https://freeslotshub.com/novomatic/faust/)' Novomatic 5x3 videoslot
-* 'God of Sun' Novomatic 5x3 videoslot
-* 'Down Under' Novomatic 5x3 videoslot
 * 'Lord of the Ocean' Novomatic 5x3 videoslot
 * '[Valentine's Day](https://demo.agtsoftware.com/games/agt/valentine)' AGT 5x3 videoslot
 
