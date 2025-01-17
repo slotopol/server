@@ -87,15 +87,14 @@ const (
 	// POST /game/part
 
 	AEC_game_part_nobind
-	AEC_game_part_notopened
+	AEC_game_part_noscene
 	AEC_game_part_nouser
 	AEC_game_part_noaccess
-	AEC_game_part_sql
 
 	// POST /slot/info
 
 	AEC_game_info_nobind
-	AEC_game_info_notopened
+	AEC_game_info_noscene
 	AEC_game_info_nouser
 	AEC_game_info_noaccess
 	AEC_game_info_noprops
@@ -103,7 +102,7 @@ const (
 	// POST /game/rtp/get
 
 	AEC_game_rtpget_nobind
-	AEC_game_rtpget_notopened
+	AEC_game_rtpget_noscene
 	AEC_game_rtpget_noinfo
 	AEC_game_rtpget_noclub
 	AEC_game_rtpget_nouser
@@ -112,14 +111,14 @@ const (
 	// POST /slot/bet/get
 
 	AEC_slot_betget_nobind
-	AEC_slot_betget_notopened
+	AEC_slot_betget_noscene
 	AEC_slot_betget_notslot
 	AEC_slot_betget_noaccess
 
 	// POST /slot/bet/set
 
 	AEC_slot_betset_nobind
-	AEC_slot_betset_notopened
+	AEC_slot_betset_noscene
 	AEC_slot_betset_notslot
 	AEC_slot_betset_noaccess
 	AEC_slot_betset_badbet
@@ -127,14 +126,14 @@ const (
 	// POST /slot/sel/get
 
 	AEC_slot_selget_nobind
-	AEC_slot_selget_notopened
+	AEC_slot_selget_noscene
 	AEC_slot_selget_notslot
 	AEC_slot_selget_noaccess
 
 	// POST /slot/sel/set
 
 	AEC_slot_selset_nobind
-	AEC_slot_selset_notopened
+	AEC_slot_selset_noscene
 	AEC_slot_selset_notslot
 	AEC_slot_selset_noaccess
 	AEC_slot_selset_badsel
@@ -142,7 +141,7 @@ const (
 	// POST /slot/mode/set
 
 	AEC_slot_modeset_nobind
-	AEC_slot_modeset_notopened
+	AEC_slot_modeset_noscene
 	AEC_slot_modeset_notslot
 	AEC_slot_modeset_noaccess
 	AEC_slot_modeset_badmode
@@ -150,7 +149,7 @@ const (
 	// POST /slot/spin
 
 	AEC_slot_spin_nobind
-	AEC_slot_spin_notopened
+	AEC_slot_spin_noscene
 	AEC_slot_spin_notslot
 	AEC_slot_spin_noclub
 	AEC_slot_spin_nouser
@@ -165,7 +164,7 @@ const (
 	// POST /slot/doubleup
 
 	AEC_slot_doubleup_nobind
-	AEC_slot_doubleup_notopened
+	AEC_slot_doubleup_noscene
 	AEC_slot_doubleup_notslot
 	AEC_slot_doubleup_noclub
 	AEC_slot_doubleup_nouser
@@ -177,7 +176,7 @@ const (
 	// POST /slot/collect
 
 	AEC_slot_collect_nobind
-	AEC_slot_collect_notopened
+	AEC_slot_collect_noscene
 	AEC_slot_collect_notslot
 	AEC_slot_collect_noaccess
 	AEC_slot_collect_denied
@@ -185,14 +184,14 @@ const (
 	// POST /keno/bet/get
 
 	AEC_keno_betget_nobind
-	AEC_keno_betget_notopened
+	AEC_keno_betget_noscene
 	AEC_keno_betget_notslot
 	AEC_keno_betget_noaccess
 
 	// POST /keno/bet/set
 
 	AEC_keno_betset_nobind
-	AEC_keno_betset_notopened
+	AEC_keno_betset_noscene
 	AEC_keno_betset_notslot
 	AEC_keno_betset_noaccess
 	AEC_keno_betset_badbet
@@ -200,14 +199,14 @@ const (
 	// POST /keno/sel/get
 
 	AEC_keno_selget_nobind
-	AEC_keno_selget_notopened
+	AEC_keno_selget_noscene
 	AEC_keno_selget_notslot
 	AEC_keno_selget_noaccess
 
 	// POST /keno/sel/set
 
 	AEC_keno_selset_nobind
-	AEC_keno_selset_notopened
+	AEC_keno_selset_noscene
 	AEC_keno_selset_notslot
 	AEC_keno_selset_noaccess
 	AEC_keno_selset_badsel
@@ -215,14 +214,14 @@ const (
 	// POST /keno/sel/getslice
 
 	AEC_keno_selgetslice_nobind
-	AEC_keno_selgetslice_notopened
+	AEC_keno_selgetslice_noscene
 	AEC_keno_selgetslice_notslot
 	AEC_keno_selgetslice_noaccess
 
 	// POST /keno/sel/setslice
 
 	AEC_keno_selsetslice_nobind
-	AEC_keno_selsetslice_notopened
+	AEC_keno_selsetslice_noscene
 	AEC_keno_selsetslice_notslot
 	AEC_keno_selsetslice_noaccess
 	AEC_keno_selsetslice_badsel
@@ -230,7 +229,7 @@ const (
 	// POST /keno/spin
 
 	AEC_keno_spin_nobind
-	AEC_keno_spin_notopened
+	AEC_keno_spin_noscene
 	AEC_keno_spin_notslot
 	AEC_keno_spin_noclub
 	AEC_keno_spin_nouser

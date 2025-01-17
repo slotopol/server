@@ -32,8 +32,8 @@ func ApiSlotBetGet(c *gin.Context) {
 	}
 
 	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_slot_betget_notopened, ErrNotOpened)
+	if scene, err = GetScene(arg.GID); err != nil {
+		Ret404(c, AEC_slot_betget_noscene, err)
 		return
 	}
 	var game slot.SlotGame
@@ -69,8 +69,8 @@ func ApiSlotBetSet(c *gin.Context) {
 	}
 
 	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_slot_betset_notopened, ErrNotOpened)
+	if scene, err = GetScene(arg.GID); err != nil {
+		Ret404(c, AEC_slot_betset_noscene, err)
 		return
 	}
 	var game slot.SlotGame
@@ -112,8 +112,8 @@ func ApiSlotSelGet(c *gin.Context) {
 	}
 
 	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_slot_selget_notopened, ErrNotOpened)
+	if scene, err = GetScene(arg.GID); err != nil {
+		Ret404(c, AEC_slot_selget_noscene, err)
 		return
 	}
 	var game slot.SlotGame
@@ -149,8 +149,8 @@ func ApiSlotSelSet(c *gin.Context) {
 	}
 
 	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_slot_selset_notopened, ErrNotOpened)
+	if scene, err = GetScene(arg.GID); err != nil {
+		Ret404(c, AEC_slot_selset_noscene, err)
 		return
 	}
 	var game slot.SlotGame
@@ -189,8 +189,8 @@ func ApiSlotModeSet(c *gin.Context) {
 	}
 
 	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_slot_modeset_notopened, ErrNotOpened)
+	if scene, err = GetScene(arg.GID); err != nil {
+		Ret404(c, AEC_slot_modeset_noscene, err)
 		return
 	}
 	var game slot.SlotGame
@@ -237,8 +237,8 @@ func ApiSlotSpin(c *gin.Context) {
 	}
 
 	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_slot_spin_notopened, ErrNotOpened)
+	if scene, err = GetScene(arg.GID); err != nil {
+		Ret404(c, AEC_slot_spin_noscene, err)
 		return
 	}
 	var game slot.SlotGame
@@ -398,8 +398,8 @@ func ApiSlotDoubleup(c *gin.Context) {
 	}
 
 	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_slot_doubleup_notopened, ErrNotOpened)
+	if scene, err = GetScene(arg.GID); err != nil {
+		Ret404(c, AEC_slot_doubleup_noscene, err)
 		return
 	}
 	var game slot.SlotGame
@@ -506,8 +506,8 @@ func ApiSlotCollect(c *gin.Context) {
 	}
 
 	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_slot_collect_notopened, ErrNotOpened)
+	if scene, err = GetScene(arg.GID); err != nil {
+		Ret404(c, AEC_slot_collect_noscene, err)
 		return
 	}
 	var game slot.SlotGame

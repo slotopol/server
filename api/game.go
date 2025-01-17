@@ -75,7 +75,6 @@ func ApiGameJoin(c *gin.Context) {
 			Alias: alias,
 			CID:   arg.CID,
 			UID:   arg.UID,
-			Flow:  true,
 		},
 		Game: anygame,
 	}
@@ -89,7 +88,6 @@ func ApiGameJoin(c *gin.Context) {
 	}
 
 	Scenes.Set(scene.GID, scene)
-	user.games.Set(scene.GID, scene)
 
 	ret.GID = gid
 	ret.Game = anygame
@@ -121,8 +119,8 @@ func ApiGamePart(c *gin.Context) {
 	}
 
 	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_game_part_notopened, ErrNotOpened)
+	if scene, err = GetScene(arg.GID); err != nil {
+		Ret404(c, AEC_game_part_noscene, err)
 		return
 	}
 
@@ -138,17 +136,7 @@ func ApiGamePart(c *gin.Context) {
 		return
 	}
 
-	// update story entry
-	if Cfg.ClubUpdateBuffer > 1 {
-		go JoinBuf.Flow(cfg.XormStorage, arg.GID, false)
-	} else if err = JoinBuf.Flow(cfg.XormStorage, arg.GID, false); err != nil {
-		Ret500(c, AEC_game_part_sql, err)
-		return
-	}
-
-	scene.Flow = false
 	Scenes.Delete(arg.GID)
-	user.games.Delete(arg.GID)
 
 	Ret204(c)
 }
@@ -178,8 +166,8 @@ func ApiGameInfo(c *gin.Context) {
 	}
 
 	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_game_info_notopened, ErrNotOpened)
+	if scene, err = GetScene(arg.GID); err != nil {
+		Ret404(c, AEC_game_info_noscene, err)
 		return
 	}
 
@@ -232,8 +220,8 @@ func ApiGameRtpGet(c *gin.Context) {
 	}
 
 	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_game_rtpget_notopened, ErrNotOpened)
+	if scene, err = GetScene(arg.GID); err != nil {
+		Ret404(c, AEC_game_rtpget_noscene, err)
 		return
 	}
 

@@ -1,11 +1,14 @@
 package api
 
 import (
+	"encoding/json"
 	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
+
 	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/game"
 	"github.com/slotopol/server/util"
 )
 
@@ -52,7 +55,6 @@ type User struct {
 	Code   uint32    `xorm:"notnull default 0" json:"code,omitempty" yaml:"code,omitempty" xml:"code,omitempty"`       // verification code
 	Status UF        `xorm:"notnull default 0" json:"status,omitempty" yaml:"status,omitempty" xml:"status,omitempty"` // account status
 	GAL    AL        `xorm:"notnull default 0" json:"gal,omitempty" yaml:"gal,omitempty" xml:"gal,omitempty"`          // global access level
-	games  util.RWMap[uint64, *Scene]
 	props  util.RWMap[uint64, *Props]
 }
 
@@ -65,7 +67,6 @@ type Story struct {
 	Alias string    `xorm:"notnull" json:"alias" yaml:"alias" xml:"alias"`                                           // game type identifier
 	CID   uint64    `xorm:"notnull" json:"cid" yaml:"cid" xml:"cid,attr"`                                            // club ID
 	UID   uint64    `xorm:"notnull" json:"uid" yaml:"uid" xml:"uid,attr"`                                            // user ID
-	Flow  bool      `xorm:"notnull" json:"flow" yaml:"flow" xml:"flow,attr"`                                         // game is not closed
 }
 
 var StoryCounter uint64 // last GID
@@ -157,7 +158,7 @@ var Clubs util.RWMap[uint64, *Club]
 // All registered users, by UID.
 var Users util.RWMap[uint64, *User]
 
-// All scenes, by GID.
+// Scenes cache, by GID.
 var Scenes util.RWMap[uint64, *Scene]
 
 func MakeClub(cd ClubData) *Club {
@@ -249,7 +250,6 @@ func (club *Club) MRTP() float64 {
 }
 
 func (user *User) Init() {
-	user.games.Init(0)
 	user.props.Init(0)
 }
 
@@ -307,6 +307,34 @@ func GetRTP(user *User, club *Club) float64 {
 		return mrtp
 	}
 	return cfg.DefMRTP // default master RTP if no others found
+}
+
+func GetScene(gid uint64) (scene *Scene, err error) {
+	var ok bool
+	if scene, ok = Scenes.Get(gid); ok {
+		return
+	}
+
+	var tmp Scene
+	if ok, _ = cfg.XormStorage.ID(gid).Get(&tmp.Story); !ok {
+		err = ErrNotOpened
+		return
+	}
+	if scene.Game, ok = game.GameFactory[tmp.Alias]; !ok {
+		err = ErrNoAliase
+		return
+	}
+
+	scene = &tmp
+	Scenes.Set(gid, scene)
+
+	var rec Spinlog
+	if ok, _ = cfg.XormSpinlog.Where("gid = ?").Desc("ctime").Get(&rec); !ok {
+		return
+	}
+	scene.SID = rec.SID
+	err = json.Unmarshal(util.S2B(rec.Game), scene.Game)
+	return
 }
 
 func init() {

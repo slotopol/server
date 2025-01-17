@@ -167,6 +167,7 @@ func InitStorage() (err error) {
 			break
 		}
 	}
+	log.Printf("loaded %d clubs\n", api.Clubs.Len())
 
 	offset = 0
 	for {
@@ -183,6 +184,7 @@ func InitStorage() (err error) {
 			break
 		}
 	}
+	log.Printf("loaded %d users\n", api.Users.Len())
 
 	offset = 0
 	for {
@@ -212,12 +214,7 @@ func InitStorage() (err error) {
 	}
 	api.StoryCounter = uint64(i64)
 
-	// Close all games of previous server session
-	if _, err = session.Cols("flow").Update(&api.Story{Flow: false}); err != nil {
-		return
-	}
-
-	api.JoinBuf.Init(Cfg.ClubUpdateBuffer, Cfg.ClubInsertBuffer)
+	api.JoinBuf.Init(Cfg.ClubInsertBuffer)
 	return
 }
 

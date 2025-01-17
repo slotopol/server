@@ -218,8 +218,10 @@ func ApiUserDelete(c *gin.Context) {
 			ret.Wallets[cid] = props.Wallet
 		}
 	}
-	for gid := range user.games.Items() {
-		Scenes.Delete(gid)
+	for gid, scene := range Scenes.Items() {
+		if scene.UID == arg.UID {
+			Scenes.Delete(gid)
+		}
 	}
 
 	RetOk(c, ret)

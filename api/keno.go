@@ -31,8 +31,8 @@ func ApiKenoBetGet(c *gin.Context) {
 	}
 
 	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_keno_betget_notopened, ErrNotOpened)
+	if scene, err = GetScene(arg.GID); err != nil {
+		Ret404(c, AEC_keno_betget_noscene, err)
 		return
 	}
 	var game keno.KenoGame
@@ -68,8 +68,8 @@ func ApiKenoBetSet(c *gin.Context) {
 	}
 
 	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_keno_betset_notopened, ErrNotOpened)
+	if scene, err = GetScene(arg.GID); err != nil {
+		Ret404(c, AEC_keno_betset_noscene, err)
 		return
 	}
 	var game keno.KenoGame
@@ -111,8 +111,8 @@ func ApiKenoSelGet(c *gin.Context) {
 	}
 
 	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_keno_selget_notopened, ErrNotOpened)
+	if scene, err = GetScene(arg.GID); err != nil {
+		Ret404(c, AEC_keno_selget_noscene, err)
 		return
 	}
 	var game keno.KenoGame
@@ -148,8 +148,8 @@ func ApiKenoSelSet(c *gin.Context) {
 	}
 
 	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_keno_selset_notopened, ErrNotOpened)
+	if scene, err = GetScene(arg.GID); err != nil {
+		Ret404(c, AEC_keno_selset_noscene, err)
 		return
 	}
 	var game keno.KenoGame
@@ -191,8 +191,8 @@ func ApiKenoSelGetSlice(c *gin.Context) {
 	}
 
 	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_keno_selgetslice_notopened, ErrNotOpened)
+	if scene, err = GetScene(arg.GID); err != nil {
+		Ret404(c, AEC_keno_selgetslice_noscene, err)
 		return
 	}
 	var game keno.KenoGame
@@ -229,8 +229,8 @@ func ApiKenoSelSetSlice(c *gin.Context) {
 	}
 
 	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_keno_selsetslice_notopened, ErrNotOpened)
+	if scene, err = GetScene(arg.GID); err != nil {
+		Ret404(c, AEC_keno_selsetslice_noscene, err)
 		return
 	}
 	var game keno.KenoGame
@@ -276,8 +276,8 @@ func ApiKenoSpin(c *gin.Context) {
 	}
 
 	var scene *Scene
-	if scene, ok = Scenes.Get(arg.GID); !ok {
-		Ret404(c, AEC_keno_spin_notopened, ErrNotOpened)
+	if scene, err = GetScene(arg.GID); err != nil {
+		Ret404(c, AEC_keno_spin_noscene, err)
 		return
 	}
 	var game keno.KenoGame

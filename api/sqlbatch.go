@@ -8,11 +8,10 @@ import (
 )
 
 const (
-	sqlbank1  = `UPDATE club SET bank=bank+?, utime=CURRENT_TIMESTAMP WHERE cid=?`
-	sqlbank2  = `UPDATE props SET wallet=wallet+?, utime=CURRENT_TIMESTAMP WHERE uid=? AND cid=?`
-	sqlbank3  = `UPDATE props SET access=?, utime=CURRENT_TIMESTAMP WHERE uid=? AND cid=?`
-	sqlbank4  = `UPDATE props SET mrtp=?, utime=CURRENT_TIMESTAMP WHERE uid=? AND cid=?`
-	sqlstory1 = `UPDATE story SET flow=? WHERE gid=?`
+	sqlbank1 = `UPDATE club SET bank=bank+?, utime=CURRENT_TIMESTAMP WHERE cid=?`
+	sqlbank2 = `UPDATE props SET wallet=wallet+?, utime=CURRENT_TIMESTAMP WHERE uid=? AND cid=?`
+	sqlbank3 = `UPDATE props SET access=?, utime=CURRENT_TIMESTAMP WHERE uid=? AND cid=?`
+	sqlbank4 = `UPDATE props SET mrtp=?, utime=CURRENT_TIMESTAMP WHERE uid=? AND cid=?`
 )
 
 func SafeTransaction(engine *xorm.Engine, f func(*Session) error) (err error) {
@@ -181,47 +180,31 @@ func (sb *SqlBank) Flush(engine *xorm.Engine, d time.Duration) (err error) {
 }
 
 type SqlStory struct {
-	flow    map[uint64]bool
 	log     []*Story
-	flowcap int
 	logsize int
 	lft     time.Time // last flush time
 	mux     sync.Mutex
 }
 
-func (ss *SqlStory) Init(capacity, logsize int) {
+func (ss *SqlStory) Init(logsize int) {
 	ss.mux.Lock()
 	defer ss.mux.Unlock()
-	ss.flow = make(map[uint64]bool, capacity)
 	ss.log = make([]*Story, 0, logsize)
-	ss.flowcap = capacity
 	ss.logsize = logsize
 }
 
 func (ss *SqlStory) clear() {
-	clear(ss.flow)
 	ss.log = ss.log[:0]
 	ss.lft = time.Now()
 }
 
 func (ss *SqlStory) IsEmpty() bool {
-	return len(ss.flow) == 0 && len(ss.log) == 0
+	return len(ss.log) == 0
 }
 
 func (ss *SqlStory) transaction(session *Session) (err error) {
 	if len(ss.log) > 0 {
-		for _, s := range ss.log {
-			if f, ok := ss.flow[s.GID]; ok {
-				s.Flow = f
-				delete(ss.flow, s.GID)
-			}
-		}
 		if _, err = session.InsertMulti(&ss.log); err != nil {
-			return
-		}
-	}
-	for gid, flow := range ss.flow {
-		if _, err = session.Exec(sqlstory1, flow, gid); err != nil {
 			return
 		}
 	}
@@ -233,19 +216,6 @@ func (ss *SqlStory) Join(engine *xorm.Engine, s *Story) (err error) {
 	defer ss.mux.Unlock()
 	ss.log = append(ss.log, s)
 	if len(ss.log) >= ss.logsize {
-		if err = SafeTransaction(engine, ss.transaction); err != nil {
-			return
-		}
-		ss.clear()
-	}
-	return
-}
-
-func (ss *SqlStory) Flow(engine *xorm.Engine, gid uint64, flow bool) (err error) {
-	ss.mux.Lock()
-	defer ss.mux.Unlock()
-	ss.flow[gid] = flow
-	if len(ss.flow) >= ss.flowcap {
 		if err = SafeTransaction(engine, ss.transaction); err != nil {
 			return
 		}
