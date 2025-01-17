@@ -131,10 +131,10 @@ func TestPlay(t *testing.T) {
 		"uid":   uid, // player ID
 		"alias": "Novomatic / Dolphins Pearl",
 	}
-	ret = post(t, r, "/game/join", usrtoken, arg)
+	ret = post(t, r, "/game/new", usrtoken, arg)
 	gid = uint64(ret["gid"].(float64))
 	wallet = ret["wallet"].(float64)
-	t.Logf("[join] gid: %d, wallet: %.2f", gid, wallet)
+	t.Logf("[new] gid: %d, wallet: %.2f", gid, wallet)
 
 	var bet, sel = 1., 5
 	arg = gin.H{
@@ -239,11 +239,4 @@ func TestPlay(t *testing.T) {
 			t.Logf("[sel/set] gid: %d, sel: %d", gid, sel)
 		}
 	}
-
-	// Part game
-	arg = gin.H{
-		"gid": gid,
-	}
-	post(t, r, "/game/part", usrtoken, arg)
-	t.Logf("[part] gid: %d", gid)
 }

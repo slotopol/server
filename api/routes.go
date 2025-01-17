@@ -147,8 +147,8 @@ func SetupRouter(r *gin.Engine) {
 
 	// common game group
 	var rg = ra.Group("/game")
+	rg.POST("/new", ApiGameNew)
 	rg.POST("/join", ApiGameJoin)
-	rg.POST("/part", ApiGamePart)
 	rg.POST("/info", ApiGameInfo)
 	rg.POST("/rtp/get", ApiGameRtpGet)
 

@@ -75,21 +75,21 @@ const (
 	AEC_signin_hs256
 	AEC_signin_denyhash
 
+	// POST /game/new
+
+	AEC_game_new_nobind
+	AEC_game_new_noclub
+	AEC_game_new_nouser
+	AEC_game_new_noaccess
+	AEC_game_new_noalias
+	AEC_game_new_sql
+
 	// POST /game/join
 
 	AEC_game_join_nobind
-	AEC_game_join_noclub
 	AEC_game_join_nouser
 	AEC_game_join_noaccess
-	AEC_game_join_noalias
-	AEC_game_join_sql
-
-	// POST /game/part
-
-	AEC_game_part_nobind
-	AEC_game_part_noscene
-	AEC_game_part_nouser
-	AEC_game_part_noaccess
+	AEC_game_join_noscene
 
 	// POST /slot/info
 
