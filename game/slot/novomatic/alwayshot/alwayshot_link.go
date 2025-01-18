@@ -9,7 +9,9 @@ import (
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "Novomatic", Name: "Always Hot"},
-		{Prov: "AGT", Name: "Tropic Hot"}, // see: https://demo.agtsoftware.com/games/agt/tropichot
+		{Prov: "Novomatic", Name: "Always Hot Deluxe"}, // see: https://www.slotsmate.com/software/novomatic/always-hot-deluxe
+		{Prov: "Novomatic", Name: "Always American"},   // see: https://www.slotsmate.com/software/novomatic/always-american
+		{Prov: "AGT", Name: "Tropic Hot"},              // see: https://demo.agtsoftware.com/games/agt/tropichot
 	},
 	GP:  game.GPfgno,
 	SX:  3,

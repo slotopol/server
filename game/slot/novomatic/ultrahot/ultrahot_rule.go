@@ -1,5 +1,7 @@
 package ultrahot
 
+// See: https://www.slotsmate.com/software/novomatic/ultra-hot
+
 import (
 	_ "embed"
 
@@ -87,5 +89,5 @@ func (g *Game) Spin(mrtp float64) {
 }
 
 func (g *Game) SetSel(sel int) error {
-	return slot.ErrNoFeature
+	return g.SetSelNum(sel, len(BetLines))
 }

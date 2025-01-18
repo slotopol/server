@@ -16,13 +16,13 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 160 games, 78 algorithms, 9 providers
+total: 165 games, 78 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 59 games
+Novomatic: 64 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games
@@ -30,6 +30,9 @@ Slotopol: 4 games
 
 *Last added games*:
 
+* '[Golden Prophecies](https://www.slotsmate.com/software/novomatic/golden-prophecies)' Novomatic 5x3 videoslot
+* '[Always American](https://www.slotsmate.com/software/novomatic/always-american)' Novomatic 3x3 videoslot
+* '[Ultra Gems](https://www.slotsmate.com/software/novomatic/ultra-gems)' Novomatic 3x3 videoslot
 * '[Fruitilicious](https://www.slotsmate.com/software/novomatic/fruitilicious)' Novomatic 5x3 videoslot
 * '[Jaguar Moon](https://www.slotsmate.com/software/novomatic/jaguar-moon)' Novomatic 5x3, 243 ways videoslot
 * '[African Simba](https://www.slotsmate.com/software/novomatic/african-simba)' Novomatic 5x3, 243 ways videoslot
@@ -38,9 +41,7 @@ Slotopol: 4 games
 * '[Book of Ra Deluxe](https://www.slotsmate.com/software/novomatic/book-of-ra-deluxe)' Novomatic 5x3 videoslot
 * '[Book of Ra](https://www.slotsmate.com/software/novomatic/book-of-ra-classic)' Novomatic 5x3 videoslot
 * '[Gate of Ra Deluxe](https://www.slotsmate.com/software/novomatic/gate-of-ra-deluxe)' Novomatic 5x3 videoslot
-* '[Faust](https://freeslotshub.com/novomatic/faust/)' Novomatic 5x3 videoslot
 * 'Lord of the Ocean' Novomatic 5x3 videoslot
-* '[Valentine's Day](https://demo.agtsoftware.com/games/agt/valentine)' AGT 5x3 videoslot
 
 *Top-10 of most liked games released on server*:
 
@@ -52,7 +53,7 @@ Slotopol: 4 games
 * '[Egypt](https://demo.agtsoftware.com/games/agt/egypt)' AGT 5x3 videoslot with minislot for wilds multiplier
 * 'Fire Joker' Play'n GO 5x3 videoslot with jackpot on lined pays and big symbols on free games
 * '[Lucky Lady's Charm Deluxe](https://www.slotsmate.com/software/novomatic/lucky-ladys-charm-deluxe)' Novomatic 5x3 videoslot
-* 'Sizzling Hot Deluxe' Novomatic 5x3 videoslot
+* '[Sizzling Hot Deluxe](https://www.slotsmate.com/software/novomatic/sizzling-hot-deluxe)' Novomatic 5x3 videoslot
 * 'Plenty on Twenty' Novomatic 5x3 videoslot
 
 # How to build from sources
@@ -171,12 +172,12 @@ You can use token `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzbG90b3BvbCIs
 curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -X GET localhost:8080/refresh
 ```
 
-## Join and play the game
+## Create and play the game
 
-* Join to game. GID received at response will be used at all calls for access to this game instance. Also you will get initial game state, and user balance at this club.
+* Create new game. GID received at response will be used at all calls for access to this game instance. Also you will get initial game state, and user balance at this club.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"cid":1,"uid":3,"alias":"Novomatic/Joker Dolphin"}' -X POST localhost:8080/game/join
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"cid":1,"uid":3,"alias":"Novomatic/Joker Dolphin"}' -X POST localhost:8080/game/new
 ```
 
 Endpoint receives `alias` identifier to game that represents as concatenation of provider name and game name with slash. For example, `NetEnt/Tiki Wonders`. Whole list of all supported games can be obtained by [list](docs/list-all.md) command. Identifier turns to lowercase without spaces.
@@ -209,12 +210,6 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d
 
 ```sh
 curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/game/info
-```
-
-* Part game.
-
-```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/game/part
 ```
 
 ## Work with user account

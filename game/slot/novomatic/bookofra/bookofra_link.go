@@ -11,6 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Book of Ra"},        // see: https://www.slotsmate.com/software/novomatic/book-of-ra-classic
 		{Prov: "Novomatic", Name: "Book of Ra Deluxe"}, // see: https://www.slotsmate.com/software/novomatic/book-of-ra-deluxe
 		{Prov: "Novomatic", Name: "Gate of Ra Deluxe"}, // see: https://www.slotsmate.com/software/novomatic/gate-of-ra-deluxe
+		{Prov: "Novomatic", Name: "Golden Prophecies"}, // see: https://www.slotsmate.com/software/novomatic/golden-prophecies
 		{Prov: "Novomatic", Name: "Down Under"},
 		{Prov: "Novomatic", Name: "God of Sun"},
 		{Prov: "Novomatic", Name: "Lord of the Ocean"},

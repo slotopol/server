@@ -13,6 +13,8 @@
 'African Simba' Novomatic 5x3 videoslot
 'Age of Heroes' Novomatic 5x3 videoslot
 'Aladdin' AGT 5x4 videoslot
+'Always American' Novomatic 3x3 videoslot
+'Always Hot Deluxe' Novomatic 3x3 videoslot
 'Always Hot' Novomatic 3x3 videoslot
 'American Keno' Aristocrat 80 spots lottery
 'Anonymous' AGT 5x3 videoslot
@@ -69,6 +71,7 @@
 'Gate of Ra Deluxe' Novomatic 5x3 videoslot
 'Geisha Wonders' NetEnt 5x3 videoslot
 'God of Sun' Novomatic 5x3 videoslot
+'Golden Prophecies' Novomatic 5x3 videoslot
 'Golden Tour' Playtech 5x3 videoslot
 'Grand Theft' AGT 5x3 videoslot
 'Great Blue' Playtech 5x3 videoslot
@@ -153,6 +156,8 @@
 'Time Machine II' AGT 5x3 videoslot
 'Trolls' NetEnt 5x3 videoslot
 'Tropic Hot' AGT 3x3 videoslot
+'Ultra Gems' Novomatic 3x3 videoslot
+'Ultra Hot Deluxe' Novomatic 3x3 videoslot
 'Ultra Hot' Novomatic 3x3 videoslot
 'Unicorn Magic' Novomatic 5x3 videoslot
 'Valentine's Day' AGT 5x3 videoslot
@@ -163,13 +168,13 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 160 games, 78 algorithms, 9 providers
+total: 165 games, 78 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 59 games
+Novomatic: 64 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games

@@ -328,12 +328,16 @@ func GetScene(gid uint64) (scene *Scene, err error) {
 	scene = &tmp
 	Scenes.Set(gid, scene)
 
-	var rec Spinlog
-	if ok, _ = cfg.XormSpinlog.Where("gid = ?").Desc("ctime").Get(&rec); !ok {
-		return
+	if Cfg.UseSpinLog {
+		var rec Spinlog
+		if ok, _ = cfg.XormSpinlog.Where("gid = ?").Desc("ctime").Get(&rec); !ok {
+			return
+		}
+		scene.SID = rec.SID
+		err = json.Unmarshal(util.S2B(rec.Game), scene.Game)
+	} else {
+		InitScreen(scene.Game)
 	}
-	scene.SID = rec.SID
-	err = json.Unmarshal(util.S2B(rec.Game), scene.Game)
 	return
 }
 

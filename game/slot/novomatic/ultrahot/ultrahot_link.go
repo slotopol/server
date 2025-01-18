@@ -8,7 +8,9 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Ultra Hot"},
+		{Prov: "Novomatic", Name: "Ultra Hot"},        // see: https://www.slotsmate.com/software/novomatic/ultra-hot
+		{Prov: "Novomatic", Name: "Ultra Hot Deluxe"}, // see: https://www.slotsmate.com/software/novomatic/ultrahot-deluxe
+		{Prov: "Novomatic", Name: "Ultra Gems"},       // see: https://www.slotsmate.com/software/novomatic/ultra-gems
 	},
 	GP: game.GPfgno |
 		game.GPfill,

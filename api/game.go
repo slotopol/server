@@ -20,6 +20,16 @@ var (
 	JoinBuf = SqlStory{}
 )
 
+// Make game screen object.
+func InitScreen(game any) {
+	switch game := game.(type) {
+	case slot.SlotGame:
+		game.Spin(cfg.DefMRTP)
+	case keno.KenoGame:
+		game.Spin(cfg.DefMRTP)
+	}
+}
+
 // Creates new instance of game.
 func ApiGameNew(c *gin.Context) {
 	var err error
@@ -47,6 +57,7 @@ func ApiGameNew(c *gin.Context) {
 		Ret404(c, AEC_game_new_noclub, ErrNoClub)
 		return
 	}
+	_ = club
 
 	var user *User
 	if user, ok = Users.Get(arg.UID); !ok {
@@ -81,13 +92,7 @@ func ApiGameNew(c *gin.Context) {
 	}
 
 	// make game screen object
-	var rtp = GetRTP(user, club)
-	switch game := scene.Game.(type) {
-	case slot.SlotGame:
-		game.Spin(rtp)
-	case keno.KenoGame:
-		game.Spin(rtp)
-	}
+	InitScreen(scene.Game)
 
 	// insert new story entry
 	if Cfg.ClubInsertBuffer > 1 {
