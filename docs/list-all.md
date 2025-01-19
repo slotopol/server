@@ -81,6 +81,7 @@
 'Gryphons Gold' Novomatic 5x3 videoslot
 'Halloween' AGT 3x3 videoslot
 'Happy Santa' AGT 5x3 videoslot
+'Helena' Novomatic 5x3 videoslot
 'Holmes and Watson Deluxe' Novomatic 5x3 videoslot
 'Hot Clover' AGT 5x4 videoslot
 'Hot Cubes' Novomatic 5x3 videoslot
@@ -168,13 +169,13 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 165 games, 78 algorithms, 9 providers
+total: 166 games, 79 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 64 games
+Novomatic: 65 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games
