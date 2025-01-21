@@ -25,6 +25,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/novomatic/dolphinspearl"
 	_ "github.com/slotopol/server/game/slot/novomatic/fruitilicious"
 	_ "github.com/slotopol/server/game/slot/novomatic/helena"
+	_ "github.com/slotopol/server/game/slot/novomatic/inferno"
 	_ "github.com/slotopol/server/game/slot/novomatic/jaguarmoon"
 	_ "github.com/slotopol/server/game/slot/novomatic/jewels"
 	_ "github.com/slotopol/server/game/slot/novomatic/jewels4all"
