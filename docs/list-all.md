@@ -55,6 +55,7 @@
 'Double Hot' AGT 3x3 videoslot
 'Double Ice' AGT 3x3 videoslot
 'Down Under' Novomatic 5x3 videoslot
+'Dragon's Deep' Novomatic 5x3 videoslot
 'Dynasty Of Ming' Novomatic 5x3 videoslot
 'Egypt' AGT 5x3 videoslot
 'Excalibur' NetEnt 5x3 videoslot
@@ -170,13 +171,13 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 167 games, 80 algorithms, 9 providers
+total: 168 games, 81 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 66 games
+Novomatic: 67 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games

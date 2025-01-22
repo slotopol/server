@@ -16,6 +16,7 @@ type RWMap[K comparable, T any] struct {
 	mux sync.RWMutex
 }
 
+// Makes initial capacity, it can auto expand later.
 func (rwm *RWMap[K, T]) Init(capacity int) {
 	rwm.mux.Lock()
 	defer rwm.mux.Unlock()
