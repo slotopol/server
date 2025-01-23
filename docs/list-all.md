@@ -125,6 +125,8 @@
 'Pharaoh's Gold III' Novomatic 5x3 videoslot
 'Piggy Riches' NetEnt 5x3 videoslot
 'Pirates Gold' AGT 5x3 videoslot
+'Plenty of Fruit 20 hot' Novomatic 5x3 videoslot
+'Plenty of Jewels 20 hot' Novomatic 5x3 videoslot
 'Plenty on Twenty' Novomatic 5x3 videoslot
 'Polar Fox' Novomatic 5x3 videoslot
 'Power Stars' Novomatic 5x3 videoslot
@@ -171,13 +173,13 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 168 games, 81 algorithms, 9 providers
+total: 170 games, 82 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 67 games
+Novomatic: 69 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games

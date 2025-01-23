@@ -16,13 +16,13 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 168 games, 81 algorithms, 9 providers
+total: 170 games, 82 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 67 games
+Novomatic: 69 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games
@@ -30,6 +30,7 @@ Slotopol: 4 games
 
 *Last added games*:
 
+* '[Plenty of Jewels 20 hot](https://www.slotsmate.com/software/novomatic/plenty-of-jewels-20-hot)' Novomatic 5x3 videoslot
 * '[Dragon's Deep](https://www.slotsmate.com/software/novomatic/dragons-deep)' Novomatic 5x3 videoslot
 * '[Inferno](https://www.slotsmate.com/software/novomatic/inferno)' Novomatic 5x3 videoslot
 * '[Helena](https://www.slotsmate.com/software/novomatic/helena)' Novomatic 5x3 videoslot
@@ -41,8 +42,6 @@ Slotopol: 4 games
 * '[African Simba](https://www.slotsmate.com/software/novomatic/african-simba)' Novomatic 5x3, 243 ways videoslot
 * '[Mega Joker](https://www.slotsmate.com/software/novomatic/mega-joker)' Novomatic 5x4 videoslot
 * 'Aztec Gold' Megajack 5x3 videoslot with 'Aztec Pyramid' bonus game
-* '[Book of Ra Deluxe](https://www.slotsmate.com/software/novomatic/book-of-ra-deluxe)' Novomatic 5x3 videoslot
-* '[Book of Ra](https://www.slotsmate.com/software/novomatic/book-of-ra-classic)' Novomatic 5x3 videoslot
 
 *Top-10 of most liked games released on server*:
 

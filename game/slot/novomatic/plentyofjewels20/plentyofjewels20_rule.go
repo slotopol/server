@@ -1,4 +1,6 @@
-package plentyontwenty
+package plentyofjewels20
+
+// See: https://www.slotsmate.com/software/novomatic/plenty-of-jewels-20-hot
 
 import (
 	_ "embed"
@@ -6,44 +8,28 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed plentyontwenty_reel.yaml
+//go:embed plentyofjewels20_reel.yaml
 var reels []byte
 
 var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [8][5]float64{
-	{0, 0, 40, 400, 1000}, // seven
-	{0, 0, 20, 80, 400},   // bell
-	{0, 0, 20, 40, 200},   // melon
-	{0, 0, 20, 40, 200},   // plum
-	{0, 0, 10, 20, 100},   // orange
-	{0, 0, 10, 20, 100},   // lemon
-	{0, 0, 10, 20, 100},   // cherry
-	{},                    // star
+	{0, 0, 100, 1000, 5000}, // 1 diamond
+	{0, 0, 50, 200, 500},    // 2 topaz
+	{0, 0, 20, 50, 200},     // 3 sapphire
+	{0, 0, 20, 50, 200},     // 4 heliodor
+	{0, 0, 20, 50, 200},     // 5 ruby
+	{0, 0, 20, 50, 200},     // 6 tanzanite
+	{0, 0, 20, 50, 200},     // 7 emerald
+	{},                      // 8 star
 }
 
 // Scatters payment.
-var ScatPay = [5]float64{0, 0, 5, 20, 500} // star
-
-const (
-	jid = 1 // jackpot ID
-)
-
-// Jackpot win combinations.
-var Jackpot = [8][5]int{
-	{0, 0, 0, 0, 0}, // seven
-	{0, 0, 0, 0, 0}, // bell
-	{0, 0, 0, 0, 0}, // melon
-	{0, 0, 0, 0, 0}, // plum
-	{0, 0, 0, 0, 0}, // orange
-	{0, 0, 0, 0, 0}, // lemon
-	{0, 0, 0, 0, 0}, // cherry
-	{0, 0, 0, 0, 0}, // star
-}
+var ScatPay = [5]float64{0, 0, 10, 50, 250} // 8 star
 
 // Bet lines
-var BetLines = slot.BetLinesNvm20
+var BetLines = slot.BetLinesNvmJewels
 
 type Game struct {
 	slot.Slotx[slot.Screen5x3] `yaml:",inline"`
@@ -119,7 +105,6 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Num:  numw,
 				Line: li,
 				XY:   line.CopyL(numw),
-				Jack: Jackpot[wild-1][numw-1],
 			})
 		}
 	}
