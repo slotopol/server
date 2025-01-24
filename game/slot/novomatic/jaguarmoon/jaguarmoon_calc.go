@@ -33,8 +33,8 @@ func (s *Stat) Update(wins slot.Wins) {
 		if wi.BID != 0 {
 			atomic.AddUint64(&s.BonusCount[wi.BID], 1)
 		}
-		if wi.Jack != 0 {
-			atomic.AddUint64(&s.JackCount[wi.Jack], 1)
+		if wi.JID != 0 {
+			atomic.AddUint64(&s.JackCount[wi.JID], 1)
 		}
 	}
 	atomic.AddUint64(&s.Reshuffles, 1)

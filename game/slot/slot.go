@@ -26,9 +26,14 @@ type WinItem struct {
 	XY   Linex   `json:"xy" yaml:"xy" xml:"xy"`                                          // symbols positions on screen
 	Free int     `json:"free,omitempty" yaml:"free,omitempty" xml:"free,omitempty,attr"` // number of free spins
 	BID  int     `json:"bid,omitempty" yaml:"bid,omitempty" xml:"bid,omitempty,attr"`    // bonus identifier
-	Jack int     `json:"jack,omitempty" yaml:"jack,omitempty" xml:"jack,omitempty,attr"` // jackpot identifier
 	Bon  any     `json:"bon,omitempty" yaml:"bon,omitempty" xml:"bon,omitempty"`         // bonus game data
+	JID  int     `json:"jid,omitempty" yaml:"jid,omitempty" xml:"jid,omitempty,attr"`    // jackpot identifier
+	Jack float64 `json:"jack,omitempty" yaml:"jack,omitempty" xml:"jack,omitempty,attr"` // jackpot win
 }
+
+// Progressive jackpot calculated as P * Bet / JackBasis * JackFund
+// where P - is the reciprocal of the probability of occurrence
+const JackBasis = 100_000_000
 
 // Wins is full list of wins by all lines and scatters for some spin.
 type Wins []WinItem

@@ -31,24 +31,6 @@ var ScatPay = [5]float64{0, 2, 0, 0, 0} // 10 projector
 // Scatter freespins table
 var ScatFreespin = [5]int{0, 0, 8, 12, 20} // 10 projector
 
-const (
-	jid = 1 // jackpot ID
-)
-
-// Jackpot win combinations.
-var Jackpot = [10][5]int{
-	{0, 0, 0, 0, 0}, //  1 oscar
-	{0, 0, 0, 0, 0}, //  2 popcorn
-	{0, 0, 0, 0, 0}, //  3 poster
-	{0, 0, 0, 0, 0}, //  4 a
-	{0, 0, 0, 0, 0}, //  5 dummy
-	{0, 0, 0, 0, 0}, //  6 maw
-	{0, 0, 0, 0, 0}, //  7 starship
-	{0, 0, 0, 0, 0}, //  8 heart
-	{0, 0, 0, 0, 0}, //  9 masks
-	{0, 0, 0, 0, 0}, // 10 projector
-}
-
 // Bet lines
 var BetLines = slot.BetLinesNetEnt5x3[:25]
 

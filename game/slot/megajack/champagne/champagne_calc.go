@@ -65,7 +65,7 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("free games frequency: 1/%.5g\n", reshuf/float64(s.FreeHits))
 	fmt.Printf("champagne bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount[mjc]), rtpmjc)
 	if s.JackCount[jid] > 0 {
-		fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(reshuf/float64(s.JackCount[jid])))
+		fmt.Printf("jackpots: count %d, frequency 1/%.12g\n", s.JackCount[jid], reshuf/float64(s.JackCount[jid]))
 	}
 	fmt.Printf("RTP = sq*(rtp(sym)+rtp(mjc)) = %.5g*(%.5g+%.5g) = %.6f%%\n", sq, rtpsym, rtpmjc, rtp)
 	return rtp
@@ -106,7 +106,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("free games frequency: 1/%.5g\n", reshuf/float64(s.FreeHits))
 	fmt.Printf("champagne bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount[mjc]), rtpmjc)
 	if s.JackCount[jid] > 0 {
-		fmt.Printf("jackpots: count %d, frequency 1/%d\n", s.JackCount[jid], int(reshuf/float64(s.JackCount[jid])))
+		fmt.Printf("jackpots: count %d, frequency 1/%.12g\n", s.JackCount[jid], reshuf/float64(s.JackCount[jid]))
 	}
 	fmt.Printf("RTP = rtp(sym) + rtp(mjc) + q*rtp(fg) = %.5g + %.5g + %.5g*%.5g = %.6f%%\n", rtpsym, rtpmjc, q, rtpfs, rtp)
 	return rtp

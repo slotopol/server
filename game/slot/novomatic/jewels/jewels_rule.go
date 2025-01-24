@@ -22,21 +22,6 @@ var LinePay = [7][5]float64{
 	{0, 0, 5, 25, 100},    // 7 amethyst
 }
 
-const (
-	jid = 1 // jackpot ID
-)
-
-// Jackpot win combinations.
-var Jackpot = [7][5]int{
-	{0, 0, 0, 0, 0}, //  1 crown
-	{0, 0, 0, 0, 0}, //  2 gold
-	{0, 0, 0, 0, 0}, //  3 money
-	{0, 0, 0, 0, 0}, //  4 ruby
-	{0, 0, 0, 0, 0}, //  5 sapphire
-	{0, 0, 0, 0, 0}, //  6 emerald
-	{0, 0, 0, 0, 0}, //  7 amethyst
-}
-
 // Bet lines
 var BetLines = slot.BetLinesNvm10
 

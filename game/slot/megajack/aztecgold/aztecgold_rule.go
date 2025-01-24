@@ -128,7 +128,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Num:  numl,
 				Line: li,
 				XY:   line.CopyL(numl),
-				Jack: Jackpot[syml-1][numl-1],
+				JID:  Jackpot[syml-1][numl-1],
 			})
 		}
 	}

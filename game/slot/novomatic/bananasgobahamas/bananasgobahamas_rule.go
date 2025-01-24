@@ -41,27 +41,6 @@ var ScatPay = [5]float64{0, 2, 4, 20, 500} // 13 suitcase
 // Scatter freespins table
 var ScatFreespin = [5]int{0, 0, 45, 45, 45} // 13 suitcase
 
-const (
-	jid = 1 // jackpot ID
-)
-
-// Jackpot win combinations.
-var Jackpot = [13][5]int{
-	{0, 0, 0, 0, 0}, //  1 banana
-	{0, 0, 0, 0, 0}, //  2 strawberry
-	{0, 0, 0, 0, 0}, //  3 water
-	{0, 0, 0, 0, 0}, //  4 pineapple
-	{0, 0, 0, 0, 0}, //  5 mango
-	{0, 0, 0, 0, 0}, //  6 coconu
-	{0, 0, 0, 0, 0}, //  7 ace
-	{0, 0, 0, 0, 0}, //  8 king
-	{0, 0, 0, 0, 0}, //  9 queen
-	{0, 0, 0, 0, 0}, // 10 jack
-	{0, 0, 0, 0, 0}, // 11 ten
-	{0, 0, 0, 0, 0}, // 12 nine
-	{0, 0, 0, 0, 0}, // 13 suitcase
-}
-
 // Bet lines
 var BetLines = slot.BetLinesNvm10
 
@@ -141,7 +120,6 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Num:  numw,
 				Line: li,
 				XY:   line.CopyL(numw),
-				Jack: Jackpot[wild-1][numw-1],
 			})
 		}
 	}

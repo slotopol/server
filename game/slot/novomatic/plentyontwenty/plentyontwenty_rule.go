@@ -26,22 +26,6 @@ var LinePay = [8][5]float64{
 // Scatters payment.
 var ScatPay = [5]float64{0, 0, 5, 20, 500} // star
 
-const (
-	jid = 1 // jackpot ID
-)
-
-// Jackpot win combinations.
-var Jackpot = [8][5]int{
-	{0, 0, 0, 0, 0}, // seven
-	{0, 0, 0, 0, 0}, // bell
-	{0, 0, 0, 0, 0}, // melon
-	{0, 0, 0, 0, 0}, // plum
-	{0, 0, 0, 0, 0}, // orange
-	{0, 0, 0, 0, 0}, // lemon
-	{0, 0, 0, 0, 0}, // cherry
-	{0, 0, 0, 0, 0}, // star
-}
-
 // Bet lines
 var BetLines = slot.BetLinesNvm20
 
@@ -119,7 +103,6 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Num:  numw,
 				Line: li,
 				XY:   line.CopyL(numw),
-				Jack: Jackpot[wild-1][numw-1],
 			})
 		}
 	}

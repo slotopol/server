@@ -30,24 +30,6 @@ var LinePay = [10][5]float64{
 // Scatters payment.
 var ScatPay = [5]float64{0, 0, 2, 20, 500} // star
 
-const (
-	jid = 1 // jackpot ID
-)
-
-// Jackpot win combinations.
-var Jackpot = [10][5]int{
-	{0, 0, 0, 0, 0}, //  1 seven
-	{0, 0, 0, 0, 0}, //  2 bell
-	{0, 0, 0, 0, 0}, //  3 melon
-	{0, 0, 0, 0, 0}, //  4 grapes
-	{0, 0, 0, 0, 0}, //  5 plum
-	{0, 0, 0, 0, 0}, //  6 orange
-	{0, 0, 0, 0, 0}, //  7 lemon
-	{0, 0, 0, 0, 0}, //  8 cherry
-	{0, 0, 0, 0, 0}, //  9 wild
-	{0, 0, 0, 0, 0}, // 10 star
-}
-
 // Bet lines
 var BetLines = slot.BetLinesNvm5x4[:40]
 

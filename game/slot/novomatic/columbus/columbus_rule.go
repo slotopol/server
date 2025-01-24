@@ -32,24 +32,6 @@ var LinePay = [10][5]float64{
 	{},                       // 10 ship
 }
 
-const (
-	jid = 1 // jackpot ID
-)
-
-// Jackpot win combinations.
-var Jackpot = [10][5]int{
-	{0, 0, 0, 0, 0}, //  1 columbus
-	{0, 0, 0, 0, 0}, //  2 spain
-	{0, 0, 0, 0, 0}, //  3 necklace
-	{0, 0, 0, 0, 0}, //  4 sextant
-	{0, 0, 0, 0, 0}, //  5 ace
-	{0, 0, 0, 0, 0}, //  6 king
-	{0, 0, 0, 0, 0}, //  7 queen
-	{0, 0, 0, 0, 0}, //  8 jack
-	{0, 0, 0, 0, 0}, //  9 ten
-	{0, 0, 0, 0, 0}, // 10 ship
-}
-
 // Bet lines
 var BetLines = slot.BetLinesNvm10
 
@@ -132,7 +114,6 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Num:  numw,
 				Line: li,
 				XY:   line.CopyL(numw),
-				Jack: Jackpot[wild-1][numw-1],
 			})
 		}
 	}
