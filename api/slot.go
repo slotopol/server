@@ -278,40 +278,37 @@ func ApiSlotSpin(c *gin.Context) {
 		}
 	}
 
-	var (
-		bet      = game.GetBet()
-		sel      = game.GetSel()
-		totalbet float64
-		banksum  float64
-	)
-	if !game.FreeSpins() {
-		totalbet = bet * float64(sel)
-	}
+	var cost, isjp = game.Cost()
 
 	var props *Props
 	if props, ok = user.props.Get(scene.CID); !ok {
 		Ret500(c, AEC_slot_spin_noprops, ErrNoProps)
 		return
 	}
-	if props.Wallet < totalbet {
+	if props.Wallet < cost {
 		Ret403(c, AEC_slot_spin_nomoney, ErrNoMoney)
 		return
 	}
 
-	var bank = club.Bank()
+	var bank, fund, _ = club.GetCash()
 	var mrtp = GetRTP(user, club)
+	var jprate float64
+	if isjp {
+		jprate = club.Rate()
+	}
 
 	// spin until gain less than bank value
 	var wins slot.Wins
+	var debit float64
 	defer wins.Reset()
 	var n = 0
 	game.Prepare()
 	for {
-		game.Spin(mrtp)
+		game.Spin(mrtp - jprate)
 		game.Scanner(&wins)
-		game.Spawn(wins)
-		banksum = totalbet - wins.Gain()
-		if bank+banksum >= 0 || (bank < 0 && banksum > 0) {
+		game.Spawn(wins, fund, mrtp-jprate)
+		debit = cost*(1-jprate/100) - wins.Gain()
+		if bank+debit >= 0 || (bank < 0 && debit > 0) {
 			break
 		}
 		wins.Reset()
@@ -324,15 +321,16 @@ func ApiSlotSpin(c *gin.Context) {
 
 	// write gain and total bet as transaction
 	if Cfg.ClubUpdateBuffer > 1 {
-		go BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum)
-	} else if err = BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum); err != nil {
+		go BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, debit)
+	} else if err = BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, debit); err != nil {
 		Ret500(c, AEC_slot_spin_sqlbank, err)
 		return
 	}
 
 	// make changes to memory data
-	club.AddBank(banksum)
-	props.Wallet -= banksum
+	var jprent = cost * jprate / 100
+	club.AddCash(debit, jprent-wins.Jackpot(), 0)
+	props.Wallet += wins.Gain() - cost
 	game.Apply(wins)
 
 	// write spin result to log and get spin ID
@@ -449,19 +447,19 @@ func ApiSlotDoubleup(c *gin.Context) {
 			multgain = risk * float64(arg.Mult)
 		}
 	}
-	var banksum = risk - multgain
+	var debit = risk - multgain
 
 	// write gain and total bet as transaction
 	if Cfg.ClubUpdateBuffer > 1 {
-		go BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum)
-	} else if err = BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum); err != nil {
+		go BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, debit)
+	} else if err = BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, debit); err != nil {
 		Ret500(c, AEC_slot_doubleup_sqlbank, err)
 		return
 	}
 
 	// make changes to memory data
-	club.AddBank(banksum)
-	props.Wallet -= banksum
+	club.AddBank(debit)
+	props.Wallet -= debit
 
 	game.SetGain(multgain)
 

@@ -2,6 +2,7 @@ package slot
 
 import (
 	"encoding/json"
+	"math"
 	"os"
 
 	"gopkg.in/yaml.v3"
@@ -90,6 +91,15 @@ func LoadMap[T any](fpath string) (rm map[float64]T) {
 		panic(err)
 	}
 	return ReadMap[T](b)
+}
+
+func FindClosest[T any](reelsmap map[float64]T, mrtp float64) (val T, rtp float64) {
+	for p, v := range reelsmap {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			val, rtp = v, p
+		}
+	}
+	return
 }
 
 // (1 ,1) symbol is on left top corner

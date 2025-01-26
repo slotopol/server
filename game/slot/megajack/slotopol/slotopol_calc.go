@@ -85,7 +85,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	ExpEldorado()
 	ExpMonopoly()
 	fmt.Printf("*reels calculations*\n")
-	var reels, _ = slot.FindReels(ReelsMap, mrtp)
+	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 	var g = NewGame()
 	var sln float64 = 1
 	g.Sel = int(sln)
@@ -108,8 +108,8 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 	fmt.Printf("spin9 bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount[mje9]), rtpmje9)
 	fmt.Printf("monopoly bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount[mjm]), rtpmjm)
-	if s.JackCount[jid] > 0 {
-		fmt.Printf("jackpots: count %d, frequency 1/%.12g\n", s.JackCount[jid], reshuf/float64(s.JackCount[jid]))
+	if s.JackCount[mjj] > 0 {
+		fmt.Printf("jackpots: count %d, frequency 1/%.12g\n", s.JackCount[mjj], reshuf/float64(s.JackCount[mjj]))
 	}
 	fmt.Printf("RTP = %.5g(sym) + %.5g(mje9) + %.5g(mjm) = %.6f%%\n", rtpsym, rtpmje9, rtpmjm, rtp)
 	return rtp

@@ -80,7 +80,7 @@ func CalcStatEuro(ctx context.Context, x, y slot.Pos) float64 {
 }
 
 func CalcStat(ctx context.Context, mrtp float64) (rtp float64) {
-	var wc, _ = slot.FindReels(ChanceMap, mrtp) // wild chance
+	var wc, _ = slot.FindClosest(ChanceMap, mrtp) // wild chance
 
 	var b = 1 / wc
 	fmt.Printf("wild chance %.5g, b = %.5g\n", wc, b)

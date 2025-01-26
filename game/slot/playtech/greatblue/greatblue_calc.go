@@ -35,7 +35,7 @@ func FirstSreespins() (fsavr1 float64, multavr float64) {
 }
 
 func CalcStat(ctx context.Context, mrtp float64) float64 {
-	var reels, _ = slot.FindReels(ReelsMap, mrtp)
+	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 	var g = NewGame()
 	var sln float64 = 5
 	g.Sel = int(sln)

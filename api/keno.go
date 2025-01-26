@@ -304,17 +304,14 @@ func ApiKenoSpin(c *gin.Context) {
 		return
 	}
 
-	var (
-		bet     = game.GetBet()
-		banksum float64
-	)
+	var cost = game.GetBet()
 
 	var props *Props
 	if props, ok = user.props.Get(scene.CID); !ok {
 		Ret500(c, AEC_keno_spin_noprops, ErrNoProps)
 		return
 	}
-	if props.Wallet < bet {
+	if props.Wallet < cost {
 		Ret403(c, AEC_keno_spin_nomoney, ErrNoMoney)
 		return
 	}
@@ -324,12 +321,13 @@ func ApiKenoSpin(c *gin.Context) {
 
 	// spin until gain less than bank value
 	var wins keno.Wins
+	var debit float64
 	var n = 0
 	for {
 		game.Spin(mrtp)
 		game.Scanner(&wins)
-		banksum = bet - wins.Pay
-		if bank+banksum >= 0 || (bank < 0 && banksum > 0) {
+		debit = cost - wins.Pay
+		if bank+debit >= 0 || (bank < 0 && debit > 0) {
 			break
 		}
 		if n >= cfg.Cfg.MaxSpinAttempts {
@@ -341,15 +339,15 @@ func ApiKenoSpin(c *gin.Context) {
 
 	// write gain and total bet as transaction
 	if Cfg.ClubUpdateBuffer > 1 {
-		go BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum)
-	} else if err = BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, banksum); err != nil {
+		go BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, debit)
+	} else if err = BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, debit); err != nil {
 		Ret500(c, AEC_keno_spin_sqlbank, err)
 		return
 	}
 
 	// make changes to memory data
-	club.AddBank(banksum)
-	props.Wallet -= banksum
+	club.AddBank(debit)
+	props.Wallet -= debit
 
 	// write spin result to log and get spin ID
 	var sid = atomic.AddUint64(&SpinCounter, 1)

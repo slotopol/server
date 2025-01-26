@@ -141,14 +141,14 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 
 func (g *Game) Spin(mrtp float64) {
 	if g.FSR == 0 {
-		var reels, _ = slot.FindReels(ReelsMap, mrtp)
+		var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 		g.Scr.Spin(reels)
 	} else {
 		g.Scr.Spin(ReelsBon)
 	}
 }
 
-func (g *Game) Spawn(wins slot.Wins) {
+func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {
 	for i, wi := range wins {
 		switch wi.BID {
 		case acbn:

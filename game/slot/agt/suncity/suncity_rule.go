@@ -131,7 +131,7 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 
 func (g *Game) Spin(mrtp float64) {
 	if g.FSR == 0 {
-		var reels, _ = slot.FindReels(ReelsMap, mrtp)
+		var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 		g.Scr.Spin(reels)
 	} else {
 		g.Scr.Spin(ReelsBon)

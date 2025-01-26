@@ -11,6 +11,11 @@ var reels []byte
 
 var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
 
+//go:embed slotopol_jack.yaml
+var jack []byte
+
+var JackMap = slot.ReadMap[float64](jack)
+
 // Lined payment.
 var LinePay = [13][5]float64{
 	{},                        //  1 dollar
@@ -59,25 +64,8 @@ var LineBonus = [13][5]int{
 }
 
 const (
-	jid = 1 // jackpot ID
+	mjj = 1 // jackpot ID
 )
-
-// Jackpot win combinations.
-var Jackpot = [13][5]int{
-	{0, 0, 0, 0, 0},   //  1 dollar
-	{0, 0, 0, 0, 0},   //  2 cherry
-	{0, 0, 0, 0, 0},   //  3 plum
-	{0, 0, 0, 0, 0},   //  4 wmelon
-	{0, 0, 0, 0, 0},   //  5 grapes
-	{0, 0, 0, 0, 0},   //  6 ananas
-	{0, 0, 0, 0, 0},   //  7 lemon
-	{0, 0, 0, 0, 0},   //  8 drink
-	{0, 0, 0, 0, 0},   //  9 palm
-	{0, 0, 0, 0, 0},   // 10 yacht
-	{0, 0, 0, 0, jid}, // 11 eldorado
-	{0, 0, 0, 0, 0},   // 12 spin
-	{0, 0, 0, 0, 0},   // 13 dice
-}
 
 // Bet lines
 var BetLines = slot.BetLinesMgj
@@ -174,6 +162,10 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				XY:   line.CopyL(numl),
 			})
 		} else if payw > 0 {
+			var jid int
+			if numw == 5 {
+				jid = mjj
+			}
 			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * payw,
 				Mult: 1,
@@ -181,7 +173,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Num:  numw,
 				Line: li,
 				XY:   line.CopyL(numw),
-				JID:  Jackpot[wild-1][numw-1],
+				JID:  jid,
 			})
 		} else if syml > 0 && numl > 0 && LineBonus[syml-1][numl-1] > 0 {
 			*wins = append(*wins, slot.WinItem{
@@ -210,12 +202,16 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 	}
 }
 
+func (g *Game) Cost() (float64, bool) {
+	return g.Bet * float64(g.Sel), true
+}
+
 func (g *Game) Spin(mrtp float64) {
-	var reels, _ = slot.FindReels(ReelsMap, mrtp)
+	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 	g.Scr.Spin(reels)
 }
 
-func (g *Game) Spawn(wins slot.Wins) {
+func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {
 	for i, wi := range wins {
 		switch wi.BID {
 		case mje1:
@@ -228,6 +224,14 @@ func (g *Game) Spawn(wins slot.Wins) {
 			wins[i].Bon, wins[i].Pay = EldoradoSpawn(g.Bet, 9)
 		case mjm:
 			wins[i].Bon, wins[i].Pay = MonopolySpawn(g.Bet)
+		}
+		if wi.JID != 0 {
+			var bulk, _ = slot.FindClosest(JackMap, mrtp)
+			var jf = bulk * g.Bet / slot.JackBasis
+			if jf > 1 {
+				jf = 1
+			}
+			wi.Jack = jf * fund
 		}
 	}
 }

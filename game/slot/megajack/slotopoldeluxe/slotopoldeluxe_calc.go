@@ -14,7 +14,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	slotopol.ExpEldorado()
 	slotopol.ExpMonopoly()
 	fmt.Printf("*reels calculations*\n")
-	var reels, _ = slot.FindReels(ReelsMap, mrtp)
+	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 	var g = NewGame()
 	var sln float64 = 1
 	g.Sel = int(sln)
@@ -43,8 +43,8 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("spin3 bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount[mje3]), rtpmje3)
 	fmt.Printf("spin6 bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount[mje6]), rtpmje6)
 	fmt.Printf("monopoly bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount[mjm]), rtpmjm)
-	if s.JackCount[jid] > 0 {
-		fmt.Printf("jackpots: count %d, frequency 1/%.12g\n", s.JackCount[jid], reshuf/float64(s.JackCount[jid]))
+	if s.JackCount[mjj] > 0 {
+		fmt.Printf("jackpots: count %d, frequency 1/%.12g\n", s.JackCount[mjj], reshuf/float64(s.JackCount[mjj]))
 	}
 	fmt.Printf("RTP = %.5g(sym) + %.5g(mje) + %.5g(mjm) = %.6f%%\n", rtpsym, rtpmje1+rtpmje3+rtpmje6, rtpmjm, rtp)
 	return rtp

@@ -2,7 +2,6 @@ package slot
 
 import (
 	"errors"
-	"math"
 )
 
 type (
@@ -52,23 +51,33 @@ func (wins Wins) Gain() float64 {
 	return sum
 }
 
+// Total jackpot for spin.
+func (wins Wins) Jackpot() float64 {
+	var sum float64
+	for _, wi := range wins {
+		sum += wi.Jack
+	}
+	return sum
+}
+
 // SlotGame is common slots interface. Any slot game should implement this interface.
 type SlotGame interface {
-	Clone() SlotGame       // returns full cloned copy of itself
-	Screen() Screen        // returns screen object for this game, constat function
-	Scanner(*Wins)         // scan given screen and append result to wins, constat function
-	Spin(float64)          // fill the screen with random hits on reels closest to given RTP, constat function
-	Spawn(Wins)            // setup bonus games to wins results, constat function
-	Prepare()              // update game state before new spin
-	Apply(Wins)            // update game state to spin results
-	FreeSpins() bool       // returns if it free spins mode, constat function
-	GetGain() float64      // returns gain for double up games, constat function
-	SetGain(float64) error // set gain to given value on double up games
-	GetBet() float64       // returns current bet, constat function
-	SetBet(float64) error  // set bet to given value
-	GetSel() int           // returns number of selected bet lines, constat function
-	SetSel(int) error      // setup number of selected bet lines
-	SetMode(int) error     // change game mode depending on the user's choice
+	Clone() SlotGame              // returns full cloned copy of itself
+	Screen() Screen               // returns screen object for this game, constat function
+	Scanner(*Wins)                // scan given screen and append result to wins, constat function
+	Cost() (float64, bool)        // cost of spin on current bet and lines, constat function
+	Spin(float64)                 // fill the screen with random hits on reels closest to given RTP, constat function
+	Spawn(Wins, float64, float64) // setup bonus games to wins results, constat function
+	Prepare()                     // update game state before new spin
+	Apply(Wins)                   // update game state to spin results
+	FreeSpins() bool              // returns if it free spins mode, constat function
+	GetGain() float64             // returns gain for double up games, constat function
+	SetGain(float64) error        // set gain to given value on double up games
+	GetBet() float64              // returns current bet, constat function
+	SetBet(float64) error         // set bet to given value
+	GetSel() int                  // returns number of selected bet lines, constat function
+	SetSel(int) error             // setup number of selected bet lines
+	SetMode(int) error            // change game mode depending on the user's choice
 }
 
 // Reels for 3-reels slots.
@@ -143,15 +152,6 @@ func (r *Reels6x) Reshuffles() uint64 {
 	return uint64(len(r[0])) * uint64(len(r[1])) * uint64(len(r[2])) * uint64(len(r[3])) * uint64(len(r[4])) * uint64(len(r[5]))
 }
 
-func FindReels[T any](reelsmap map[float64]T, mrtp float64) (reels T, rtp float64) {
-	for p, r := range reelsmap {
-		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
-			reels, rtp = r, p
-		}
-	}
-	return
-}
-
 var (
 	ErrNoWay      = errors.New("no way to here")
 	ErrBetEmpty   = errors.New("bet is empty")
@@ -179,7 +179,14 @@ func (g *Slotx[T]) Screen() Screen {
 	return any(&g.Scr).(Screen)
 }
 
-func (g *Slotx[T]) Spawn(wins Wins) {
+func (g *Slotx[T]) Cost() (float64, bool) {
+	if g.FSR != 0 {
+		return 0, false
+	}
+	return g.Bet * float64(g.Sel), false
+}
+
+func (g *Slotx[T]) Spawn(wins Wins, fund, mrtp float64) {
 }
 
 func (g *Slotx[T]) Prepare() {

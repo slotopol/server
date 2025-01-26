@@ -142,7 +142,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 func (g *Game) Spin(mrtp float64) {
 	g.Scr.Spin(Reels)
 	if !g.FreeSpins() {
-		var _, wc = slot.FindReels(ChanceMap, mrtp) // wild chance
+		var _, wc = slot.FindClosest(ChanceMap, mrtp) // wild chance
 		var x, y slot.Pos
 		for x = 2; x <= 4; x++ {
 			if rand.Float64() < wc {

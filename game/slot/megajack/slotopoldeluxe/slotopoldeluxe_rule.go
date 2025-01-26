@@ -84,7 +84,7 @@ func (g *Game) Clone() slot.SlotGame {
 }
 
 const (
-	jid = 1 // jackpot ID
+	mjj = 1 // jackpot ID
 )
 
 // Not from lined paytable.
@@ -158,6 +158,10 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				XY:   line.CopyL(numl),
 			})
 		} else if payw > 0 {
+			var jid int
+			if numw == 5 {
+				jid = mjj
+			}
 			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * payw,
 				Mult: 1,
@@ -165,7 +169,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Num:  numw,
 				Line: li,
 				XY:   line.CopyL(numw),
-				JID:  slotopol.Jackpot[wild-1][numw-1],
+				JID:  jid,
 			})
 		} else if syml > 0 && numl > 0 && LineBonus[syml-1][numl-1] > 0 {
 			*wins = append(*wins, slot.WinItem{
@@ -194,12 +198,16 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 	}
 }
 
+func (g *Game) Cost() (float64, bool) {
+	return g.Bet * float64(g.Sel), true
+}
+
 func (g *Game) Spin(mrtp float64) {
-	var reels, _ = slot.FindReels(ReelsMap, mrtp)
+	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 	g.Scr.Spin(reels)
 }
 
-func (g *Game) Spawn(wins slot.Wins) {
+func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {
 	for i, wi := range wins {
 		switch wi.BID {
 		case mje1:
