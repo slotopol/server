@@ -320,17 +320,20 @@ func GetScene(gid uint64) (scene *Scene, err error) {
 		err = ErrNotOpened
 		return
 	}
-	if scene.Game, ok = game.GameFactory[tmp.Alias]; !ok {
+	var maker func() any
+	if maker, ok = game.GameFactory[tmp.Alias]; !ok {
 		err = ErrNoAliase
 		return
 	}
+	tmp.Game = maker()
 
 	scene = &tmp
 	Scenes.Set(gid, scene)
 
 	if Cfg.UseSpinLog {
 		var rec Spinlog
-		if ok, _ = cfg.XormSpinlog.Where("gid = ?").Desc("ctime").Get(&rec); !ok {
+		if ok, _ = cfg.XormSpinlog.Where("gid = ?", gid).Desc("ctime").Get(&rec); !ok {
+			InitScreen(scene.Game)
 			return
 		}
 		scene.SID = rec.SID

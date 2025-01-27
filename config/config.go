@@ -87,6 +87,8 @@ type CfgXormDrv struct {
 type CfgGameplay struct {
 	// Maximum value to add to wallet by one transaction.
 	AdjunctLimit float64 `json:"adjunct-limit" yaml:"adjunct-limit" mapstructure:"adjunct-limit"`
+	// Jackpot fund minimum. If spin gets jackpot with less value, that spin will be skipped.
+	MinJackpot float64 `json:"min-jackpot" yaml:"min-jackpot" mapstructure:"min-jackpot"`
 	// Maximum number of spin attempts at bad bank balance.
 	MaxSpinAttempts int `json:"max-spin-attempts" yaml:"max-spin-attempts" mapstructure:"max-spin-attempts"`
 }
@@ -143,6 +145,7 @@ var Cfg = &Config{
 	},
 	CfgGameplay: CfgGameplay{
 		AdjunctLimit:    100000,
+		MinJackpot:      10000,
 		MaxSpinAttempts: 300,
 	},
 }

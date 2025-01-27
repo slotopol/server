@@ -11,6 +11,11 @@ var reels []byte
 
 var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
 
+//go:embed aztecgold_jack.yaml
+var jack []byte
+
+var JackMap = slot.ReadMap[float64](jack)
+
 // Lined payment.
 var LinePay = [12][5]float64{
 	{0, 0, 5, 10, 100},     //  1 tomat
@@ -195,6 +200,14 @@ func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {
 		switch wi.BID {
 		case mjap:
 			wins[i].Bon, wins[i].Pay = AztecPyramidSpawn(g.Bet * float64(g.Sel))
+		}
+		if wi.JID != 0 {
+			var bulk, _ = slot.FindClosest(JackMap, mrtp)
+			var jf = bulk * g.Bet / slot.JackBasis
+			if jf > 1 {
+				jf = 1
+			}
+			wi.Jack = jf * fund
 		}
 	}
 }

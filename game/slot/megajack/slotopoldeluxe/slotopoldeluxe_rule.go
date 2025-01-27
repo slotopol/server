@@ -12,6 +12,11 @@ var reels []byte
 
 var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
 
+//go:embed slotopoldeluxe_jack.yaml
+var jack []byte
+
+var JackMap = slot.ReadMap[float64](jack)
+
 // Lined payment.
 var LinePay = [13][5]float64{
 	{},                        //  1 dollar
@@ -220,6 +225,14 @@ func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {
 			wins[i].Bon, wins[i].Pay = slotopol.EldoradoSpawn(g.Bet, 9)
 		case mjm:
 			wins[i].Bon, wins[i].Pay = slotopol.MonopolySpawn(g.Bet)
+		}
+		if wi.JID != 0 {
+			var bulk, _ = slot.FindClosest(JackMap, mrtp)
+			var jf = bulk * g.Bet / slot.JackBasis
+			if jf > 1 {
+				jf = 1
+			}
+			wi.Jack = jf * fund
 		}
 	}
 }

@@ -96,5 +96,7 @@ database:
 gameplay:
   # Maximum value to add to wallet by one transaction.
   adjunct-limit: 100000
+  # Jackpot fund minimum. If spin gets jackpot with less value, that spin will be skipped.
+  min-jackpot: 10000
   # Maximum number of spin attempts at bad bank balance.
   max-spin-attempts: 300

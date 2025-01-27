@@ -11,6 +11,11 @@ var reels []byte
 
 var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
 
+//go:embed champagne_jack.yaml
+var jack []byte
+
+var JackMap = slot.ReadMap[float64](jack)
+
 // Lined payment.
 var LinePay = [12][5]float64{
 	{},                        //  1 dollar
@@ -249,6 +254,14 @@ func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {
 		switch wi.BID {
 		case mjc:
 			wins[i].Bon, wins[i].Pay = ChampagneSpawn(g.Bet)
+		}
+		if wi.JID != 0 {
+			var bulk, _ = slot.FindClosest(JackMap, mrtp)
+			var jf = bulk * g.Bet / slot.JackBasis
+			if jf > 1 {
+				jf = 1
+			}
+			wi.Jack = jf * fund
 		}
 	}
 }

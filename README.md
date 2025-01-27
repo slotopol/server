@@ -182,6 +182,11 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d
 
 Endpoint receives `alias` identifier to game that represents as concatenation of provider name and game name with slash. For example, `NetEnt/Tiki Wonders`. Whole list of all supported games can be obtained by [list](docs/list-all.md) command. Identifier turns to lowercase without spaces.
 
+* Get information about opened game. Recivies GID. Response has game name, game state, last spin ID, user ID, club ID, and user balance at this club.
+
+```sh
+curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/game/info
+
 * Change number of selected bet lines.
 
 ```sh
