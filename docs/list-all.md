@@ -164,6 +164,7 @@
 'Ultra Gems' Novomatic 3x3 videoslot
 'Ultra Hot Deluxe' Novomatic 3x3 videoslot
 'Ultra Hot' Novomatic 3x3 videoslot
+'Ultra Sevens' Novomatic 5x3 videoslot
 'Unicorn Magic' Novomatic 5x3 videoslot
 'Valentine's Day' AGT 5x3 videoslot
 'Valkyrie' AGT 5x3 videoslot
@@ -173,13 +174,13 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 170 games, 82 algorithms, 9 providers
+total: 171 games, 83 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 69 games
+Novomatic: 70 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games

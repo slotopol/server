@@ -16,13 +16,13 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 170 games, 82 algorithms, 9 providers
+total: 171 games, 83 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 69 games
+Novomatic: 70 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games
@@ -30,6 +30,7 @@ Slotopol: 4 games
 
 *Last added games*:
 
+* '[Ultra Sevens](https://www.slotsmate.com/software/novomatic/ultra-sevens)' Novomatic 5x4 videoslot with 3 jackpots
 * '[Plenty of Jewels 20 hot](https://www.slotsmate.com/software/novomatic/plenty-of-jewels-20-hot)' Novomatic 5x3 videoslot
 * '[Dragon's Deep](https://www.slotsmate.com/software/novomatic/dragons-deep)' Novomatic 5x3 videoslot
 * '[Inferno](https://www.slotsmate.com/software/novomatic/inferno)' Novomatic 5x3 videoslot
@@ -111,7 +112,7 @@ Build [bot](https://github.com/slotopol/bot) as it described, and run some scrip
 
 **Database.** Service instance oriented on monopoly usage of it's database. It reads necessary database tables on start and avoids any `select` requests at all. Then it stores to database only changes and new data (`update` & `insert`). Those queries are buffered across API endpoints calls to increase performance with database conversations.
 
-It can be used embedded *sqlite* database engine, or *MySQL*, or *PostgreSQL* databases, its configured at `slot-app.yaml` settings file, and by default sqlite is used. Embedded sqlite engine useful for instance started on portable storage, same as flash drive or external SSD, and can serve small sets of players, 50-500 players at the same time. For big number of players it can be used dedicated server with MySQL or PostgreSQL on fast hosted disk.
+It can be used embedded *sqlite* database engine, or *MySQL*, or *PostgreSQL* databases, its configured at `slot-app.yaml` settings file, and by default sqlite is used. Embedded sqlite engine useful for instance started on portable storage, such as flash drive or external SSD, and can serve small sets of players, 50-500 players at the same time. For big number of players it can be used dedicated server with MySQL or PostgreSQL on fast hosted disk.
 
 **Clubs.** There is can be served several clubs. Each club have its own undepended bank, jackpot fund with rate to this fund from spins, and deposit. Bank of club is current balance of club to which arrives coins from users spins, and from which they gets a wins. There is exist linkage of users wins to bank: if bank have not enough coins to pay the win during users spins, this win combination will be skipped. Deposit of club does not used in games, it can be useful to transfer the coins from bank to fix the yield.
 

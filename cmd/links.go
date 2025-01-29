@@ -39,6 +39,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/novomatic/roaringforties"
 	_ "github.com/slotopol/server/game/slot/novomatic/sizzlinghot"
 	_ "github.com/slotopol/server/game/slot/novomatic/ultrahot"
+	_ "github.com/slotopol/server/game/slot/novomatic/ultrasevens"
 
 	// BetSoft
 	_ "github.com/slotopol/server/game/slot/betsoft/2millionbc"
