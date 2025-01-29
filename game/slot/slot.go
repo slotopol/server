@@ -31,8 +31,9 @@ type WinItem struct {
 }
 
 // Progressive jackpot calculated as P * Bet / JackBasis * JackFund
-// where P - is the reciprocal of the probability of occurrence
-const JackBasis = 100_000_000
+// where P - is the reciprocal of the probability of occurrence.
+// Maximum P=25000000 with maximum Bet=10.
+const JackBasis = 250_000_000
 
 // Wins is full list of wins by all lines and scatters for some spin.
 type Wins []WinItem

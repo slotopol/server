@@ -11,6 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "Megajack", Name: "Aztec Gold"},
 	},
 	GP: game.GPsel |
+		game.GPjack |
 		game.GPfgno |
 		game.GPscat |
 		game.GPrwild,

@@ -261,7 +261,7 @@ func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {
 			if jf > 1 {
 				jf = 1
 			}
-			wi.Jack = jf * fund
+			wins[i].Jack = jf * fund
 		}
 	}
 }

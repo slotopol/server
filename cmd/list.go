@@ -75,6 +75,9 @@ func incinfo(gi *game.GameInfo) bool {
 	if is, _ = listflags.GetBool("megaway"); is && gi.LN > 100 {
 		return true
 	}
+	if is, _ = listflags.GetBool("jack"); is && gi.GP&game.GPjack > 0 {
+		return true
+	}
 	if is, _ = listflags.GetBool("fg"); is && gi.GP&(game.GPfghas+game.GPretrig) > 0 {
 		return true
 	}
@@ -259,11 +262,12 @@ func init() {
 	listflags.Bool("fewlines", false, "include games with few lines, i.e. with less than 20")
 	listflags.Bool("multilines", false, "include games with few lines, i.e. with not less than 20")
 	listflags.Bool("megaway", false, "include games with multiways, i.e. with 243, 1024 ways")
+	listflags.Bool("jack", false, "include games with jackpots")
 	listflags.Bool("fg", false, "include games with any free games")
 	listflags.Bool("bonus", false, "include games with bonus games")
 
 	listCmd.MarkFlagsOneRequired("all",
 		"agt", "aristocrat", "betsoft", "megajack", "netent", "novomatic", "playngo", "playtech", "slotopol", "keno",
 		"3x", "4x", "5x", "6x", "3x3", "4x4", "5x3", "5x4", "6x3", "6x4",
-		"fewlines", "multilines", "megaway", "fg", "bonus")
+		"fewlines", "multilines", "megaway", "jack", "fg", "bonus")
 }

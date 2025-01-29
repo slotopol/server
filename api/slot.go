@@ -309,7 +309,7 @@ func ApiSlotSpin(c *gin.Context) {
 		game.Spawn(wins, fund, mrtp-jprate)
 		debit = cost*(1-jprate/100) - wins.Gain()
 		jack = wins.Jackpot()
-		if bank+debit >= 0 || (bank < 0 && debit > 0) || (jack > 0 && jack < Cfg.MinJackpot) {
+		if (bank+debit >= 0 || debit > 0) && (jack == 0 || jack > Cfg.MinJackpot) {
 			break
 		}
 		wins.Reset()
