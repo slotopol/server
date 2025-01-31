@@ -30,7 +30,7 @@ var LinePay = [10][5]float64{
 	{0, 0, 5, 25, 100},       //  7 queen
 	{0, 0, 5, 25, 100},       //  8 jack
 	{0, 0, 5, 25, 100},       //  9 ten
-	{0, 0, 0, 0, 0},          // 10 tomb
+	{},                       // 10 tomb
 }
 
 // Scatters payment.
@@ -106,31 +106,17 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 			}
 		}
 
-		var payw, payl float64
-		if numw > 0 {
-			payw = LinePay[book-1][numw-1]
-		}
-		if numl > 0 && syml > 0 {
-			payl = LinePay[syml-1][numl-1]
-		}
-		if payl > payw {
-			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * payl,
-				Mult: 1,
-				Sym:  syml,
-				Num:  numl,
-				Line: li,
-				XY:   line.CopyL(numl),
-			})
-		} else if payw > 0 {
-			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * payw,
-				Mult: 1,
-				Sym:  book,
-				Num:  numw,
-				Line: li,
-				XY:   line.CopyL(numw),
-			})
+		if syml > 0 {
+			if payl := LinePay[syml-1][numl-1]; payl > 0 {
+				*wins = append(*wins, slot.WinItem{
+					Pay:  g.Bet * payl,
+					Mult: 1,
+					Sym:  syml,
+					Num:  numl,
+					Line: li,
+					XY:   line.CopyL(numl),
+				})
+			}
 		}
 	}
 

@@ -57,6 +57,7 @@
 'Down Under' Novomatic 5x3 videoslot
 'Dragon's Deep' Novomatic 5x3 videoslot
 'Dynasty Of Ming' Novomatic 5x3 videoslot
+'Dynasty of Ra' Novomatic 5x3 videoslot
 'Egypt' AGT 5x3 videoslot
 'Excalibur' NetEnt 5x3 videoslot
 'Extra Spin III' AGT 5x3 videoslot
@@ -68,6 +69,7 @@
 'Fortune Teller' Play'n GO 5x3 videoslot
 'Fruit Shop' NetEnt 5x3 videoslot
 'Fruitilicious' Novomatic 5x3 videoslot
+'Fruits'n Royals' Novomatic 5x3 videoslot
 'Funky Seventies' NetEnt 5x4 videoslot
 'Gate of Ra Deluxe' Novomatic 5x3 videoslot
 'Geisha Wonders' NetEnt 5x3 videoslot
@@ -164,7 +166,7 @@
 'Ultra Gems' Novomatic 3x3 videoslot
 'Ultra Hot Deluxe' Novomatic 3x3 videoslot
 'Ultra Hot' Novomatic 3x3 videoslot
-'Ultra Sevens' Novomatic 5x3 videoslot
+'Ultra Sevens' Novomatic 5x4 videoslot
 'Unicorn Magic' Novomatic 5x3 videoslot
 'Valentine's Day' AGT 5x3 videoslot
 'Valkyrie' AGT 5x3 videoslot
@@ -174,13 +176,13 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 171 games, 83 algorithms, 9 providers
+total: 173 games, 84 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 70 games
+Novomatic: 72 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games

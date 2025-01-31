@@ -16,13 +16,13 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 171 games, 83 algorithms, 9 providers
+total: 173 games, 84 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 70 games
+Novomatic: 72 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games
@@ -30,6 +30,8 @@ Slotopol: 4 games
 
 *Last added games*:
 
+* '[Dynasty of Ra](https://www.slotsmate.com/software/novomatic/dynasty-of-ra)' Novomatic 5x3 videoslot
+* '[Fruits'n Royals](https://www.slotsmate.com/software/novomatic/fruits-n-royals)' Novomatic 5x3 videoslot
 * '[Ultra Sevens](https://www.slotsmate.com/software/novomatic/ultra-sevens)' Novomatic 5x4 videoslot with 3 jackpots
 * '[Plenty of Jewels 20 hot](https://www.slotsmate.com/software/novomatic/plenty-of-jewels-20-hot)' Novomatic 5x3 videoslot
 * '[Dragon's Deep](https://www.slotsmate.com/software/novomatic/dragons-deep)' Novomatic 5x3 videoslot
@@ -183,11 +185,6 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d
 
 Endpoint receives `alias` identifier to game that represents as concatenation of provider name and game name with slash. For example, `NetEnt/Tiki Wonders`. Whole list of all supported games can be obtained by [list](docs/list-all.md) command. Identifier turns to lowercase without spaces.
 
-* Get information about opened game. Recivies GID. Response has game name, game state, last spin ID, user ID, club ID, and user balance at this club.
-
-```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/game/info
-
 * Change number of selected bet lines.
 
 ```sh
@@ -199,6 +196,8 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d
 ```sh
 curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/slot/spin
 ```
+
+At parameters can be also given new bet value and number of selected lines, if there is no free spins now. So, data at the query can be seen such as `{"gid":1,"bet":2,"sel":5}`. Its can be useful for conversations only by spin-queries.
 
 * Double-up. If presents `gain` after spin, it can be multiplied by gamble. `mult` at argument is multiplier, and it will be `2` for red-black cards game. Returned `gain` will be multiplied on win, and zero on lose. `wallet` represents new balance of user.
 
@@ -212,7 +211,7 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d
 curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/slot/collect
 ```
 
-* Get information about current game scene.
+* Get information about opened game. Recivies GID. Response has game name, game state, last spin ID, user ID, club ID, and user balance at this club.
 
 ```sh
 curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/game/info

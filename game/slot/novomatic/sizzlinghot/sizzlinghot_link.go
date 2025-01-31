@@ -13,6 +13,7 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Age of Heroes"},       // see: https://www.slotsmate.com/software/novomatic/age-of-heroes
 		{Prov: "Novomatic", Name: "Hot Cubes"},           // see: https://www.slotsmate.com/software/novomatic/hot-cubes
 		{Prov: "Novomatic", Name: "Diamond 7"},           // see: https://www.slotsmate.com/software/novomatic/diamond-7
+		{Prov: "Novomatic", Name: "Fruits'n Royals"},     // see: https://www.slotsmate.com/software/novomatic/fruits-n-royals
 	},
 	GP: game.GPfgno |
 		game.GPscat,

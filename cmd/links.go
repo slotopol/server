@@ -24,6 +24,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/novomatic/columbus"
 	_ "github.com/slotopol/server/game/slot/novomatic/dolphinspearl"
 	_ "github.com/slotopol/server/game/slot/novomatic/dragonsdeep"
+	_ "github.com/slotopol/server/game/slot/novomatic/dynastyofra"
 	_ "github.com/slotopol/server/game/slot/novomatic/fruitilicious"
 	_ "github.com/slotopol/server/game/slot/novomatic/helena"
 	_ "github.com/slotopol/server/game/slot/novomatic/inferno"
