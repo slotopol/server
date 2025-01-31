@@ -29,7 +29,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	g.Sel = int(sln)
 	var s slot.Stat
 
-	var dur = slot.ScanReels5x(ctx, &s, g, reels,
+	slot.ScanReels5x(ctx, &s, g, reels,
 		time.Tick(2*time.Second), time.Tick(2*time.Second))
 
 	var reshuf = float64(s.Reshuffles)
@@ -38,7 +38,6 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	var qgolfbn = float64(s.BonusCount[golfbon]) / reshuf / sln
 	var rtpgolfbn = Egolfbn * qgolfbn * 100
 	var rtp = rtpsym + rtpgolfbn
-	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/float64(s.Planned())*100, g.Sel, dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	fmt.Printf("golf bonuses: count %d, rtp = %.6f%%\n", s.BonusCount[golfbon], rtpgolfbn)

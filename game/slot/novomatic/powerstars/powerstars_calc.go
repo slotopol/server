@@ -76,19 +76,18 @@ func CalcStatStars(ctx context.Context, wc2, wc3, wc4 bool) float64 {
 	}
 	fmt.Printf("calculations of star combinations [%c%c%c]\n", wcsym(wc2), wcsym(wc3), wcsym(wc4))
 
-	var dur = func() time.Duration {
+	func() time.Duration {
 		var t0 = time.Now()
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		s.SetPlan(reels.Reshuffles())
-		go s.Progress(ctx2, time.Tick(2*time.Second), g.Sel, float64(s.Planned()))
+		go s.Progress(ctx2, time.Tick(2*time.Second), g.Sel)
 		BruteForceStars(ctx2, &s, g, reels, wc2, wc3, wc4)
 		return time.Since(t0)
 	}()
 
 	var reshuf = float64(s.Reshuffles)
 	var lrtp = s.LinePay / reshuf / float64(g.Sel) * 100
-	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/float64(s.Planned())*100, g.Sel, dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	fmt.Printf("RTP[%c%c%c] = %.6f%%\n", wcsym(wc2), wcsym(wc3), wcsym(wc4), lrtp)

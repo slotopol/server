@@ -15,7 +15,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	g.Sel = int(sln)
 	var s slot.Stat
 
-	var dur = slot.ScanReels3x(ctx, &s, g, reels,
+	slot.ScanReels3x(ctx, &s, g, reels,
 		time.Tick(2*time.Second), time.Tick(2*time.Second))
 
 	var reshuf = float64(s.Reshuffles)
@@ -25,7 +25,6 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	var sq = 1 / (1 - q)
 	var rtpfs = sq * rtpsym
 	var rtp = rtpsym + q*rtpfs
-	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/float64(s.Planned())*100, g.Sel, dur)
 	fmt.Printf("reels lengths [%d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), reels.Reshuffles())
 	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)

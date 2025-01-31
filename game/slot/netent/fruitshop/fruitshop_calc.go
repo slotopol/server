@@ -15,7 +15,7 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 	g.FSR = 5 // set free spins mode
 	var s slot.Stat
 
-	var dur = slot.ScanReels5x(ctx, &s, g, reels,
+	slot.ScanReels5x(ctx, &s, g, reels,
 		time.Tick(2*time.Second), time.Tick(2*time.Second))
 
 	var reshuf = float64(s.Reshuffles)
@@ -23,7 +23,6 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 	var q = float64(s.FreeCount) / reshuf
 	var sq = 1 / (1 - q)
 	var rtp = sq * rtpsym
-	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/float64(s.Planned())*100, g.Sel, dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	fmt.Printf("symbols: rtp(sym) = %.6f%%\n", rtpsym)
@@ -45,7 +44,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var sln = float64(g.Sel)
 	var s slot.Stat
 
-	var dur = slot.ScanReels5x(ctx, &s, g, reels,
+	slot.ScanReels5x(ctx, &s, g, reels,
 		time.Tick(2*time.Second), time.Tick(2*time.Second))
 
 	var reshuf = float64(s.Reshuffles)
@@ -53,7 +52,6 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var q = float64(s.FreeCount) / reshuf
 	var sq = 1 / (1 - q)
 	var rtp = rtpsym + q*rtpfs
-	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", reshuf/float64(s.Planned())*100, g.Sel, dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	fmt.Printf("symbols: rtp(sym) = %.6f%%\n", rtpsym)
