@@ -13,14 +13,14 @@ import (
 
 type Stat struct {
 	planned    uint64
-	Reshuffles uint64
-	LinePay    float64
-	ScatPay    float64
-	FreeCount  uint64
-	FreeHits   uint64
-	BonusCount [8]uint64
-	JackCount  [4]uint64
-	LPM, SPM   sync.Mutex
+	reshuffles uint64
+	linepay    float64
+	scatpay    float64
+	freecount  uint64
+	freehits   uint64
+	bonuscount [8]uint64
+	jackcount  [4]uint64
+	lpm, spm   sync.Mutex
 }
 
 func (s *Stat) SetPlan(n uint64) {
@@ -32,50 +32,66 @@ func (s *Stat) Planned() uint64 {
 }
 
 func (s *Stat) Count() uint64 {
-	return atomic.LoadUint64(&s.Reshuffles)
+	return atomic.LoadUint64(&s.reshuffles)
 }
 
 func (s *Stat) LineRTP(sel int) float64 {
-	var reshuf = float64(atomic.LoadUint64(&s.Reshuffles))
-	s.LPM.Lock()
-	var lp = s.LinePay
-	s.LPM.Unlock()
+	var reshuf = float64(atomic.LoadUint64(&s.reshuffles))
+	s.lpm.Lock()
+	var lp = s.linepay
+	s.lpm.Unlock()
 	return lp / reshuf / float64(sel) * 100
 }
 
 func (s *Stat) ScatRTP(sel int) float64 {
-	var reshuf = float64(atomic.LoadUint64(&s.Reshuffles))
-	s.SPM.Lock()
-	var sp = s.ScatPay
-	s.SPM.Unlock()
+	var reshuf = float64(atomic.LoadUint64(&s.reshuffles))
+	s.spm.Lock()
+	var sp = s.scatpay
+	s.spm.Unlock()
 	return sp / reshuf / float64(sel) * 100
+}
+
+func (s *Stat) FreeCount() uint64 {
+	return atomic.LoadUint64(&s.freecount)
+}
+
+func (s *Stat) FreeHits() uint64 {
+	return atomic.LoadUint64(&s.freehits)
+}
+
+func (s *Stat) BonusCount(bid int) uint64 {
+	return atomic.LoadUint64(&s.bonuscount[bid])
+}
+
+func (s *Stat) JackCount(jid int) uint64 {
+	return atomic.LoadUint64(&s.jackcount[jid])
 }
 
 func (s *Stat) Update(wins slot.Wins) {
 	for _, wi := range wins {
 		if wi.Pay != 0 {
 			if wi.Line != 0 {
-				s.LPM.Lock()
-				s.LinePay += wi.Pay * wi.Mult
-				s.LPM.Unlock()
+				s.lpm.Lock()
+				s.linepay += wi.Pay * wi.Mult
+				s.lpm.Unlock()
 			} else {
-				s.SPM.Lock()
-				s.ScatPay += wi.Pay * wi.Mult
-				s.SPM.Unlock()
+				s.spm.Lock()
+				s.scatpay += wi.Pay * wi.Mult
+				s.spm.Unlock()
 			}
 		}
 		if wi.Free != 0 {
-			atomic.AddUint64(&s.FreeCount, uint64(wi.Free*int(FreeMult[wi.Num-1])))
-			atomic.AddUint64(&s.FreeHits, 1)
+			atomic.AddUint64(&s.freecount, uint64(wi.Free*int(FreeMult[wi.Num-1])))
+			atomic.AddUint64(&s.freehits, 1)
 		}
 		if wi.BID != 0 {
-			atomic.AddUint64(&s.BonusCount[wi.BID], 1)
+			atomic.AddUint64(&s.bonuscount[wi.BID], 1)
 		}
 		if wi.JID != 0 {
-			atomic.AddUint64(&s.JackCount[wi.JID], 1)
+			atomic.AddUint64(&s.jackcount[wi.JID], 1)
 		}
 	}
-	atomic.AddUint64(&s.Reshuffles, 1)
+	atomic.AddUint64(&s.reshuffles, 1)
 }
 
 func CalcStatBon(ctx context.Context) float64 {
@@ -113,14 +129,14 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		var reshuf = float64(s.Count())
 		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
 		var rtpsym = lrtp + srtp
-		var q = float64(s.FreeCount) / reshuf
+		var q = float64(s.FreeCount()) / reshuf
 		var sq = 1 / (1 - q)
 		var rtp = rtpsym + q*rtpfs
 		fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 			len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 		fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Printf("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount, q, sq)
-		fmt.Printf("free games frequency: 1/%.5g\n", reshuf/float64(s.FreeHits))
+		fmt.Printf("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount(), q, sq)
+		fmt.Printf("free games frequency: 1/%.5g\n", reshuf/float64(s.FreeHits()))
 		fmt.Printf("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, q, rtpfs, rtp)
 		return rtp
 	}

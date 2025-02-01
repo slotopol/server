@@ -25,14 +25,14 @@ type Stater interface {
 // Stat is statistics calculation for slot reels.
 type Stat struct {
 	planned    uint64
-	Reshuffles uint64
-	LinePay    float64
-	ScatPay    float64
-	FreeCount  uint64
-	FreeHits   uint64
-	BonusCount [8]uint64
-	JackCount  [4]uint64
-	LPM, SPM   sync.Mutex
+	reshuffles uint64
+	linepay    float64
+	scatpay    float64
+	freecount  uint64
+	freehits   uint64
+	bonuscount [8]uint64
+	jackcount  [4]uint64
+	lpm, spm   sync.Mutex
 }
 
 func (s *Stat) SetPlan(n uint64) {
@@ -44,50 +44,66 @@ func (s *Stat) Planned() uint64 {
 }
 
 func (s *Stat) Count() uint64 {
-	return atomic.LoadUint64(&s.Reshuffles)
+	return atomic.LoadUint64(&s.reshuffles)
 }
 
 func (s *Stat) LineRTP(sel int) float64 {
-	var reshuf = float64(atomic.LoadUint64(&s.Reshuffles))
-	s.LPM.Lock()
-	var lp = s.LinePay
-	s.LPM.Unlock()
+	var reshuf = float64(atomic.LoadUint64(&s.reshuffles))
+	s.lpm.Lock()
+	var lp = s.linepay
+	s.lpm.Unlock()
 	return lp / reshuf / float64(sel) * 100
 }
 
 func (s *Stat) ScatRTP(sel int) float64 {
-	var reshuf = float64(atomic.LoadUint64(&s.Reshuffles))
-	s.SPM.Lock()
-	var sp = s.ScatPay
-	s.SPM.Unlock()
+	var reshuf = float64(atomic.LoadUint64(&s.reshuffles))
+	s.spm.Lock()
+	var sp = s.scatpay
+	s.spm.Unlock()
 	return sp / reshuf / float64(sel) * 100
+}
+
+func (s *Stat) FreeCount() uint64 {
+	return atomic.LoadUint64(&s.freecount)
+}
+
+func (s *Stat) FreeHits() uint64 {
+	return atomic.LoadUint64(&s.freehits)
+}
+
+func (s *Stat) BonusCount(bid int) uint64 {
+	return atomic.LoadUint64(&s.bonuscount[bid])
+}
+
+func (s *Stat) JackCount(jid int) uint64 {
+	return atomic.LoadUint64(&s.jackcount[jid])
 }
 
 func (s *Stat) Update(wins Wins) {
 	for _, wi := range wins {
 		if wi.Pay != 0 {
 			if wi.Line != 0 {
-				s.LPM.Lock()
-				s.LinePay += wi.Pay * wi.Mult
-				s.LPM.Unlock()
+				s.lpm.Lock()
+				s.linepay += wi.Pay * wi.Mult
+				s.lpm.Unlock()
 			} else {
-				s.SPM.Lock()
-				s.ScatPay += wi.Pay * wi.Mult
-				s.SPM.Unlock()
+				s.spm.Lock()
+				s.scatpay += wi.Pay * wi.Mult
+				s.spm.Unlock()
 			}
 		}
 		if wi.Free != 0 {
-			atomic.AddUint64(&s.FreeCount, uint64(wi.Free))
-			atomic.AddUint64(&s.FreeHits, 1)
+			atomic.AddUint64(&s.freecount, uint64(wi.Free))
+			atomic.AddUint64(&s.freehits, 1)
 		}
 		if wi.BID != 0 {
-			atomic.AddUint64(&s.BonusCount[wi.BID], 1)
+			atomic.AddUint64(&s.bonuscount[wi.BID], 1)
 		}
 		if wi.JID != 0 {
-			atomic.AddUint64(&s.JackCount[wi.JID], 1)
+			atomic.AddUint64(&s.jackcount[wi.JID], 1)
 		}
 	}
-	atomic.AddUint64(&s.Reshuffles, 1)
+	atomic.AddUint64(&s.reshuffles, 1)
 }
 
 func Progress(ctx context.Context, s Stater, steps <-chan time.Time, calc func(io.Writer) float64) {
