@@ -80,9 +80,9 @@ func CalcStatStars(ctx context.Context, wc2, wc3, wc4 bool) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var lrtp = s.LineRTP(g.Sel)
-		fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
+		fmt.Fprintf(w, "reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 			len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
-		fmt.Printf("RTP[%c%c%c] = %.6f%%\n", wcsym(wc2), wcsym(wc3), wcsym(wc4), lrtp)
+		fmt.Fprintf(w, "RTP[%c%c%c] = %.6f%%\n", wcsym(wc2), wcsym(wc3), wcsym(wc4), lrtp)
 		return lrtp
 	}
 

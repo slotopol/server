@@ -63,9 +63,9 @@ func CalcStatEuro(ctx context.Context, x, y slot.Pos) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var lrtp = s.LineRTP(g.Sel)
-		fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
+		fmt.Fprintf(w, "reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 			len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
-		fmt.Printf("RTP[%d,%d] = %.6f%%\n", x, y, lrtp)
+		fmt.Fprintf(w, "RTP[%d,%d] = %.6f%%\n", x, y, lrtp)
 		return lrtp
 	}
 

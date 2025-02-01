@@ -36,11 +36,11 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var qgolfbn = float64(s.BonusCount(golfbon)) / reshuf / float64(g.Sel)
 		var rtpgolfbn = Egolfbn * qgolfbn * 100
 		var rtp = rtpsym + rtpgolfbn
-		fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
+		fmt.Fprintf(w, "reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 			len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
-		fmt.Printf("golf bonuses: count %d, rtp = %.6f%%\n", s.BonusCount(golfbon), rtpgolfbn)
-		fmt.Printf("golf bonuses frequency: 1/%.5g\n", reshuf/float64(s.BonusCount(golfbon)))
-		fmt.Printf("RTP = %.5g(lined) + %.5g(scatter) + %.5g(golf) = %.6f%%\n", lrtp, srtp, rtpgolfbn, rtp)
+		fmt.Fprintf(w, "golf bonuses: count %d, rtp = %.6f%%\n", s.BonusCount(golfbon), rtpgolfbn)
+		fmt.Fprintf(w, "golf bonuses frequency: 1/%.5g\n", reshuf/float64(s.BonusCount(golfbon)))
+		fmt.Fprintf(w, "RTP = %.5g(lined) + %.5g(scatter) + %.5g(golf) = %.6f%%\n", lrtp, srtp, rtpgolfbn, rtp)
 		return rtp
 	}
 
