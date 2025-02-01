@@ -17,21 +17,20 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*reels calculations*\n")
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 	var g = NewGame()
-	var sln float64 = 1
-	g.Sel = int(sln)
+	g.Sel = 1
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Reshuffles)
-		var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
+		var reshuf = float64(s.Count())
+		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
 		var rtpsym = lrtp + srtp
-		var qmje1 = float64(s.BonusCount[mje1]) / reshuf / sln
+		var qmje1 = float64(s.BonusCount[mje1]) / reshuf / float64(g.Sel)
 		var rtpmje1 = slotopol.Emje * 1 * qmje1 * 100
-		var qmje3 = float64(s.BonusCount[mje3]) / reshuf / sln
+		var qmje3 = float64(s.BonusCount[mje3]) / reshuf / float64(g.Sel)
 		var rtpmje3 = slotopol.Emje * 3 * qmje3 * 100
-		var qmje6 = float64(s.BonusCount[mje6]) / reshuf / sln
+		var qmje6 = float64(s.BonusCount[mje6]) / reshuf / float64(g.Sel)
 		var rtpmje6 = slotopol.Emje * 6 * qmje6 * 100
-		var qmjm = float64(s.BonusCount[mjm]) / reshuf / sln
+		var qmjm = float64(s.BonusCount[mjm]) / reshuf / float64(g.Sel)
 		var rtpmjm = slotopol.Emjm * qmjm * 100
 		var rtp = rtpsym + rtpmje1 + rtpmje3 + rtpmje6 + rtpmjm
 		fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",

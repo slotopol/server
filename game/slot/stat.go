@@ -20,7 +20,6 @@ type Stater interface {
 	LineRTP(sel int) float64
 	ScatRTP(sel int) float64
 	Update(wins Wins)
-	Progress(ctx context.Context, steps <-chan time.Time, calc func(io.Writer) float64)
 }
 
 // Stat is statistics calculation for slot reels.
@@ -91,13 +90,13 @@ func (s *Stat) Update(wins Wins) {
 	atomic.AddUint64(&s.Reshuffles, 1)
 }
 
-func (s *Stat) Progress(ctx context.Context, steps <-chan time.Time, calc func(io.Writer) float64) {
+func Progress(ctx context.Context, s Stater, steps <-chan time.Time, calc func(io.Writer) float64) {
 	for {
 		select {
 		case <-ctx.Done():
 			return
 		case <-steps:
-			var reshuf = float64(atomic.LoadUint64(&s.Reshuffles))
+			var reshuf = float64(s.Count())
 			var total = float64(s.Planned())
 			var rtp = calc(io.Discard)
 			fmt.Printf("processed %.1fm, ready %2.2f%%, RTP = %2.2f%%\n", reshuf/1e6, reshuf/total*100, rtp)
@@ -474,7 +473,7 @@ func ScanReels3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x,
 	defer cancel2()
 	if cfg.MCCount > 0 {
 		s.SetPlan(cfg.MCCount * 1e6)
-		go s.Progress(ctx2, mctick, calc)
+		go Progress(ctx2, s, mctick, calc)
 		if cfg.MTScan && !cfg.DevMode {
 			MonteCarloGo(ctx2, s, g, reels)
 		} else {
@@ -482,7 +481,7 @@ func ScanReels3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x,
 		}
 	} else {
 		s.SetPlan(reels.Reshuffles())
-		go s.Progress(ctx2, bftick, calc)
+		go Progress(ctx2, s, bftick, calc)
 		if cfg.MTScan && !cfg.DevMode {
 			BruteForce3xGo(ctx2, s, g, reels)
 		} else {
@@ -503,7 +502,7 @@ func ScanReels4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x,
 	defer cancel2()
 	if cfg.MCCount > 0 {
 		s.SetPlan(cfg.MCCount * 1e6)
-		go s.Progress(ctx2, mctick, calc)
+		go Progress(ctx2, s, mctick, calc)
 		if cfg.MTScan && !cfg.DevMode {
 			MonteCarloGo(ctx2, s, g, reels)
 		} else {
@@ -511,7 +510,7 @@ func ScanReels4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x,
 		}
 	} else {
 		s.SetPlan(reels.Reshuffles())
-		go s.Progress(ctx2, bftick, calc)
+		go Progress(ctx2, s, bftick, calc)
 		if cfg.MTScan && !cfg.DevMode {
 			BruteForce4xGo(ctx2, s, g, reels)
 		} else {
@@ -532,7 +531,7 @@ func ScanReels5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x,
 	defer cancel2()
 	if cfg.MCCount > 0 {
 		s.SetPlan(cfg.MCCount * 1e6)
-		go s.Progress(ctx2, mctick, calc)
+		go Progress(ctx2, s, mctick, calc)
 		if cfg.MTScan && !cfg.DevMode {
 			MonteCarloGo(ctx2, s, g, reels)
 		} else {
@@ -540,7 +539,7 @@ func ScanReels5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x,
 		}
 	} else {
 		s.SetPlan(reels.Reshuffles())
-		go s.Progress(ctx2, bftick, calc)
+		go Progress(ctx2, s, bftick, calc)
 		if cfg.MTScan && !cfg.DevMode {
 			BruteForce5xGo(ctx2, s, g, reels)
 		} else {

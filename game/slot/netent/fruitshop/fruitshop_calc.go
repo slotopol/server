@@ -12,13 +12,13 @@ import (
 func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 	var g = NewGame()
-	var sln = float64(g.Sel)
 	g.FSR = 5 // set free spins mode
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Reshuffles)
-		var rtpsym = s.LinePay / reshuf / sln * 100
+		var reshuf = float64(s.Count())
+		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
+		var rtpsym = lrtp + srtp
 		var q = float64(s.FreeCount) / reshuf
 		var sq = 1 / (1 - q)
 		var rtp = sq * rtpsym
@@ -44,12 +44,12 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*regular reels calculations*\n")
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 	var g = NewGame()
-	var sln = float64(g.Sel)
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Reshuffles)
-		var rtpsym = s.LinePay / reshuf / sln * 100
+		var reshuf = float64(s.Count())
+		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
+		var rtpsym = lrtp + srtp
 		var q = float64(s.FreeCount) / reshuf
 		var sq = 1 / (1 - q)
 		var rtp = rtpsym + q*rtpfs

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"sync"
 	"sync/atomic"
 	"time"
 
@@ -11,7 +12,43 @@ import (
 )
 
 type Stat struct {
-	slot.Stat
+	planned    uint64
+	Reshuffles uint64
+	LinePay    float64
+	ScatPay    float64
+	FreeCount  uint64
+	FreeHits   uint64
+	BonusCount [8]uint64
+	JackCount  [4]uint64
+	LPM, SPM   sync.Mutex
+}
+
+func (s *Stat) SetPlan(n uint64) {
+	atomic.StoreUint64(&s.planned, n)
+}
+
+func (s *Stat) Planned() uint64 {
+	return atomic.LoadUint64(&s.planned)
+}
+
+func (s *Stat) Count() uint64 {
+	return atomic.LoadUint64(&s.Reshuffles)
+}
+
+func (s *Stat) LineRTP(sel int) float64 {
+	var reshuf = float64(atomic.LoadUint64(&s.Reshuffles))
+	s.LPM.Lock()
+	var lp = s.LinePay
+	s.LPM.Unlock()
+	return lp / reshuf / float64(sel) * 100
+}
+
+func (s *Stat) ScatRTP(sel int) float64 {
+	var reshuf = float64(atomic.LoadUint64(&s.Reshuffles))
+	s.SPM.Lock()
+	var sp = s.ScatPay
+	s.SPM.Unlock()
+	return sp / reshuf / float64(sel) * 100
 }
 
 func (s *Stat) Update(wins slot.Wins) {
@@ -44,13 +81,11 @@ func (s *Stat) Update(wins slot.Wins) {
 func CalcStatBon(ctx context.Context) float64 {
 	var reels = ReelsBon
 	var g = NewGame()
-	var sln float64 = 10
-	g.Sel = int(sln)
+	g.Sel = 10 // bet on 243 ways
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Reshuffles)
-		var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
+		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
 		var rtpsym = lrtp + srtp
 		fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 			len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
@@ -71,13 +106,12 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*regular reels calculations*\n")
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 	var g = NewGame()
-	var sln float64 = 10
-	g.Sel = int(sln)
+	g.Sel = 10 // bet on 243 ways
 	var s Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Reshuffles)
-		var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
+		var reshuf = float64(s.Count())
+		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
 		var rtpsym = lrtp + srtp
 		var q = float64(s.FreeCount) / reshuf
 		var sq = 1 / (1 - q)

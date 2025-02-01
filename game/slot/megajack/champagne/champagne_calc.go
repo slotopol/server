@@ -42,18 +42,17 @@ func ExpBottle() {
 func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 	var g = NewGame()
-	var sln float64 = 1
-	g.Sel = int(sln)
+	g.Sel = 1
 	g.FSR = 15 // set free spins mode
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Reshuffles)
-		var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
+		var reshuf = float64(s.Count())
+		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
 		var rtpsym = lrtp + srtp
 		var q = float64(s.FreeCount) / reshuf
 		var sq = 1 / (1 - q)
-		var qmjc = float64(s.BonusCount[mjc]) / reshuf / sln
+		var qmjc = float64(s.BonusCount[mjc]) / reshuf / float64(g.Sel)
 		var rtpmjc = Emjc * qmjc * 100
 		var rtp = sq * (rtpsym + rtpmjc)
 		fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
@@ -85,17 +84,16 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*regular reels calculations*\n")
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 	var g = NewGame()
-	var sln float64 = 1
-	g.Sel = int(sln)
+	g.Sel = 1
 	g.FSR = 0 // no free spins
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Reshuffles)
-		var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
+		var reshuf = float64(s.Count())
+		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
 		var rtpsym = lrtp + srtp
 		var q = float64(s.FreeCount) / reshuf
-		var qmjc = float64(s.BonusCount[mjc]) / reshuf / sln
+		var qmjc = float64(s.BonusCount[mjc]) / reshuf / float64(g.Sel)
 		var rtpmjc = Emjc * qmjc * 100
 		var rtp = rtpsym + rtpmjc + q*rtpfs
 		fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",

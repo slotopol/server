@@ -12,12 +12,12 @@ import (
 func CalcStat(ctx context.Context, mrtp float64) float64 {
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 	var g = NewGame()
-	var sln float64 = 25
+	g.Sel = 25 // bet on 243 ways
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Reshuffles)
-		var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
+		var reshuf = float64(s.Count())
+		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
 		var rtpsym = lrtp + srtp
 		var q = float64(s.FreeCount) / reshuf
 		var sq = 1 / (1 - q)

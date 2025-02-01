@@ -88,17 +88,16 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*reels calculations*\n")
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 	var g = NewGame()
-	var sln float64 = 1
-	g.Sel = int(sln)
+	g.Sel = 1
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Reshuffles)
-		var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
+		var reshuf = float64(s.Count())
+		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
 		var rtpsym = lrtp + srtp
-		var qmje9 = float64(s.BonusCount[mje9]) / reshuf / sln
+		var qmje9 = float64(s.BonusCount[mje9]) / reshuf / float64(g.Sel)
 		var rtpmje9 = Emje * 9 * qmje9 * 100
-		var qmjm = float64(s.BonusCount[mjm]) / reshuf / sln
+		var qmjm = float64(s.BonusCount[mjm]) / reshuf / float64(g.Sel)
 		var rtpmjm = Emjm * qmjm * 100
 		var rtp = rtpsym + rtpmje9 + rtpmjm
 		fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",

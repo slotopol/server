@@ -38,13 +38,12 @@ func FirstSreespins() (fsavr1 float64, multavr float64) {
 func CalcStat(ctx context.Context, mrtp float64) float64 {
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 	var g = NewGame()
-	var sln float64 = 5
-	g.Sel = int(sln)
+	g.Sel = 5
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Reshuffles)
-		var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
+		var reshuf = float64(s.Count())
+		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
 		var rtpsym = lrtp + srtp
 		var fghits = float64(s.FreeHits)
 		var fsavr1, multavr = FirstSreespins()

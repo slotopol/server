@@ -32,14 +32,13 @@ func ExpDiamondLion() {
 func CalcStatBon(ctx context.Context) float64 {
 	var reels = ReelsBon
 	var g = NewGame()
-	var sln float64 = 1
-	g.Sel = int(sln)
+	g.Sel = 1
 	g.FSR = 4 // set free spins mode
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Reshuffles)
-		var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
+		var reshuf = float64(s.Count())
+		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
 		var rtpsym = lrtp + srtp
 		var q = float64(s.FreeCount) / reshuf
 		var sq = 1 / (1 - q)
@@ -71,19 +70,18 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*regular reels calculations*\n")
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 	var g = NewGame()
-	var sln float64 = 1
-	g.Sel = int(sln)
+	g.Sel = 1
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Reshuffles)
-		var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
+		var reshuf = float64(s.Count())
+		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
 		var rtpsym = lrtp + srtp
 		var q = float64(s.FreeCount) / reshuf
 		var sq = 1 / (1 - q)
 		var qacbn = 1 / float64(len(reels.Reel(5)))
 		var rtpacbn = Eacbn * qacbn * 100
-		var qdlbn = float64(s.BonusCount[dlbn]) / reshuf / sln
+		var qdlbn = float64(s.BonusCount[dlbn]) / reshuf / float64(g.Sel)
 		var rtpdlbn = Edlbn * qdlbn * 100
 		var rtp = rtpsym + rtpacbn + rtpdlbn + q*rtpfs
 		fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",

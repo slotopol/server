@@ -39,15 +39,13 @@ func BruteForceFire(ctx context.Context, s slot.Stater, g slot.SlotGame, reels s
 }
 
 func CalcStatSym(ctx context.Context, g *Game, reels slot.Reels, big slot.Sym) float64 {
-	var sln = float64(g.Sel)
 	var s slot.Stat
 
 	var ctx2, cancel2 = context.WithCancel(ctx)
 	defer cancel2()
 	BruteForceFire(ctx2, &s, g, reels, big)
 
-	var reshuf = float64(s.Reshuffles)
-	var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
+	var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
 	var rtpsym = lrtp + srtp
 	fmt.Printf("RTP[%d] = %.5g(lined) + %.5g(scatter) = %.6f%%\n", big, lrtp, srtp, rtpsym)
 	return rtpsym
@@ -75,13 +73,12 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*regular reels calculations*\n")
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 	var g = NewGame()
-	var sln float64 = 1
-	g.Sel = int(sln)
+	g.Sel = 1
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Reshuffles)
-		var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
+		var reshuf = float64(s.Count())
+		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
 		var rtpsym = lrtp + srtp
 		var q = float64(s.FreeCount) / reshuf
 		var rtp = rtpsym + q*rtpfs
