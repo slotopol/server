@@ -3,6 +3,7 @@ package slotopol
 import (
 	"context"
 	"fmt"
+	"io"
 	"math"
 	"time"
 
@@ -91,25 +92,27 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	g.Sel = int(sln)
 	var s slot.Stat
 
-	slot.ScanReels5x(ctx, &s, g, reels,
-		time.Tick(2*time.Second), time.Tick(2*time.Second))
-
-	var reshuf = float64(s.Reshuffles)
-	var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
-	var rtpsym = lrtp + srtp
-	var qmje9 = float64(s.BonusCount[mje9]) / reshuf / sln
-	var rtpmje9 = Emje * 9 * qmje9 * 100
-	var qmjm = float64(s.BonusCount[mjm]) / reshuf / sln
-	var rtpmjm = Emjm * qmjm * 100
-	var rtp = rtpsym + rtpmje9 + rtpmjm
-	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
-		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
-	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-	fmt.Printf("spin9 bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount[mje9]), rtpmje9)
-	fmt.Printf("monopoly bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount[mjm]), rtpmjm)
-	if s.JackCount[mjj] > 0 {
-		fmt.Printf("jackpots: count %d, frequency 1/%.12g\n", s.JackCount[mjj], reshuf/float64(s.JackCount[mjj]))
+	var calc = func(w io.Writer) float64 {
+		var reshuf = float64(s.Reshuffles)
+		var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
+		var rtpsym = lrtp + srtp
+		var qmje9 = float64(s.BonusCount[mje9]) / reshuf / sln
+		var rtpmje9 = Emje * 9 * qmje9 * 100
+		var qmjm = float64(s.BonusCount[mjm]) / reshuf / sln
+		var rtpmjm = Emjm * qmjm * 100
+		var rtp = rtpsym + rtpmje9 + rtpmjm
+		fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
+			len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
+		fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
+		fmt.Printf("spin9 bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount[mje9]), rtpmje9)
+		fmt.Printf("monopoly bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount[mjm]), rtpmjm)
+		if s.JackCount[mjj] > 0 {
+			fmt.Printf("jackpots: count %d, frequency 1/%.12g\n", s.JackCount[mjj], reshuf/float64(s.JackCount[mjj]))
+		}
+		fmt.Printf("RTP = %.5g(sym) + %.5g(mje9) + %.5g(mjm) = %.6f%%\n", rtpsym, rtpmje9, rtpmjm, rtp)
+		return rtp
 	}
-	fmt.Printf("RTP = %.5g(sym) + %.5g(mje9) + %.5g(mjm) = %.6f%%\n", rtpsym, rtpmje9, rtpmjm, rtp)
-	return rtp
+
+	return slot.ScanReels5x(ctx, &s, g, reels, calc,
+		time.Tick(2*time.Second), time.Tick(2*time.Second))
 }

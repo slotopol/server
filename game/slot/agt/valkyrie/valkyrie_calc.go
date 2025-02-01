@@ -3,6 +3,8 @@ package valkyrie
 import (
 	"context"
 	"fmt"
+	"io"
+	"os"
 	"time"
 
 	"github.com/slotopol/server/game/slot"
@@ -47,21 +49,26 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 	g.FSR = 15 // set free spins mode
 	var s slot.Stat
 
-	var ctx2, cancel2 = context.WithCancel(ctx)
-	defer cancel2()
-	s.SetPlan(uint64(len(reels.Reel(1))) * uint64(len(BonusReel)) * uint64(len(reels.Reel(5))))
-	BruteForceBon(ctx2, &s, g, reels)
-
-	var reshuf = float64(s.Reshuffles)
-	var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
-	if srtp > 0 {
-		panic("scatters are presents on bonus games")
+	var calc = func(w io.Writer) float64 {
+		var reshuf = float64(s.Reshuffles)
+		var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
+		if srtp > 0 {
+			panic("scatters are presents on bonus games")
+		}
+		var rtp = lrtp + srtp
+		fmt.Printf("reels lengths [%d, [%d], %d], total reshuffles %d\n",
+			len(reels.Reel(1)), len(BonusReel), len(reels.Reel(5)), reels.Reshuffles())
+		fmt.Printf("RTP = %.6f%%\n", rtp)
+		return rtp
 	}
-	var rtp = lrtp + srtp
-	fmt.Printf("reels lengths [%d, [%d], %d], total reshuffles %d\n",
-		len(reels.Reel(1)), len(BonusReel), len(reels.Reel(5)), reels.Reshuffles())
-	fmt.Printf("RTP = %.6f%%\n", rtp)
-	return rtp
+
+	func() {
+		var ctx2, cancel2 = context.WithCancel(ctx)
+		defer cancel2()
+		s.SetPlan(uint64(len(reels.Reel(1))) * uint64(len(BonusReel)) * uint64(len(reels.Reel(5))))
+		BruteForceBon(ctx2, &s, g, reels)
+	}()
+	return calc(os.Stdout)
 }
 
 func CalcStatReg(ctx context.Context, mrtp float64) float64 {
@@ -77,19 +84,21 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	g.Sel = int(sln)
 	var s slot.Stat
 
-	slot.ScanReels5x(ctx, &s, g, reels,
-		time.Tick(2*time.Second), time.Tick(2*time.Second))
+	var calc = func(w io.Writer) float64 {
+		var reshuf = float64(s.Reshuffles)
+		var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
+		var rtpsym = lrtp + srtp
+		var q = float64(s.FreeCount) / reshuf
+		var rtp = rtpsym + q*rtpfs
+		fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
+			len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
+		fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
+		fmt.Printf("free spins %d, q = %.6f\n", s.FreeCount, q)
+		fmt.Printf("free games frequency: 1/%.5g\n", reshuf/float64(s.FreeHits))
+		fmt.Printf("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, q, rtpfs, rtp)
+		return rtp
+	}
 
-	var reshuf = float64(s.Reshuffles)
-	var lrtp, srtp = s.LinePay / reshuf / sln * 100, s.ScatPay / reshuf / sln * 100
-	var rtpsym = lrtp + srtp
-	var q = float64(s.FreeCount) / reshuf
-	var rtp = rtpsym + q*rtpfs
-	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
-		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
-	fmt.Printf("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-	fmt.Printf("free spins %d, q = %.6f\n", s.FreeCount, q)
-	fmt.Printf("free games frequency: 1/%.5g\n", reshuf/float64(s.FreeHits))
-	fmt.Printf("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, q, rtpfs, rtp)
-	return rtp
+	return slot.ScanReels5x(ctx, &s, g, reels, calc,
+		time.Tick(2*time.Second), time.Tick(2*time.Second))
 }

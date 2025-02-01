@@ -3,6 +3,8 @@ package jewels4all
 import (
 	"context"
 	"fmt"
+	"io"
+	"os"
 	"time"
 
 	"github.com/slotopol/server/game/slot"
@@ -60,22 +62,25 @@ func CalcStatEuro(ctx context.Context, x, y slot.Pos) float64 {
 
 	fmt.Printf("calculations of euro at [%d,%d]\n", x, y)
 
+	var calc = func(w io.Writer) float64 {
+		var reshuf = float64(s.Reshuffles)
+		var lrtp = s.LinePay / reshuf / sln * 100
+		fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
+			len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
+		fmt.Printf("RTP[%d,%d] = %.6f%%\n", x, y, lrtp)
+		return lrtp
+	}
+
 	func() time.Duration {
 		var t0 = time.Now()
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		s.SetPlan(reels.Reshuffles())
-		go s.Progress(ctx2, time.Tick(2*time.Second), g.Sel)
+		go s.Progress(ctx2, time.Tick(2*time.Second), calc)
 		BruteForceEuro(ctx2, &s, g, reels, x, y)
 		return time.Since(t0)
 	}()
-
-	var reshuf = float64(s.Reshuffles)
-	var lrtp = s.LinePay / reshuf / sln * 100
-	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
-		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
-	fmt.Printf("RTP[%d,%d] = %.6f%%\n", x, y, lrtp)
-	return lrtp
+	return calc(os.Stdout)
 }
 
 func CalcStat(ctx context.Context, mrtp float64) (rtp float64) {

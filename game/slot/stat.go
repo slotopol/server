@@ -3,6 +3,8 @@ package slot
 import (
 	"context"
 	"fmt"
+	"io"
+	"os"
 	"runtime"
 	"sync"
 	"sync/atomic"
@@ -15,8 +17,10 @@ type Stater interface {
 	SetPlan(n uint64)
 	Planned() uint64
 	Count() uint64
+	LineRTP(sel int) float64
+	ScatRTP(sel int) float64
 	Update(wins Wins)
-	Progress(ctx context.Context, steps <-chan time.Time, sel int)
+	Progress(ctx context.Context, steps <-chan time.Time, calc func(io.Writer) float64)
 }
 
 // Stat is statistics calculation for slot reels.
@@ -42,6 +46,22 @@ func (s *Stat) Planned() uint64 {
 
 func (s *Stat) Count() uint64 {
 	return atomic.LoadUint64(&s.Reshuffles)
+}
+
+func (s *Stat) LineRTP(sel int) float64 {
+	var reshuf = float64(atomic.LoadUint64(&s.Reshuffles))
+	s.LPM.Lock()
+	var lp = s.LinePay
+	s.LPM.Unlock()
+	return lp / reshuf / float64(sel) * 100
+}
+
+func (s *Stat) ScatRTP(sel int) float64 {
+	var reshuf = float64(atomic.LoadUint64(&s.Reshuffles))
+	s.SPM.Lock()
+	var sp = s.ScatPay
+	s.SPM.Unlock()
+	return sp / reshuf / float64(sel) * 100
 }
 
 func (s *Stat) Update(wins Wins) {
@@ -71,23 +91,26 @@ func (s *Stat) Update(wins Wins) {
 	atomic.AddUint64(&s.Reshuffles, 1)
 }
 
-func (s *Stat) Progress(ctx context.Context, steps <-chan time.Time, sel int) {
+func (s *Stat) Progress(ctx context.Context, steps <-chan time.Time, calc func(io.Writer) float64) {
 	for {
 		select {
 		case <-ctx.Done():
 			return
 		case <-steps:
-			var n = float64(atomic.LoadUint64(&s.Reshuffles))
-			s.LPM.Lock()
-			var lp = s.LinePay
-			s.LPM.Unlock()
-			s.SPM.Lock()
-			var sp = s.ScatPay
-			s.SPM.Unlock()
-			var pays = (lp + sp) / n / float64(sel) * 100
+			var reshuf = float64(atomic.LoadUint64(&s.Reshuffles))
 			var total = float64(s.Planned())
-			fmt.Printf("processed %.1fm, ready %2.2f%%, symbols pays %2.2f%%\n", n/1e6, n/total*100, pays)
+			var rtp = calc(io.Discard)
+			fmt.Printf("processed %.1fm, ready %2.2f%%, RTP = %2.2f%%\n", reshuf/1e6, reshuf/total*100, rtp)
 		}
+	}
+}
+
+func PrintSymPays(s Stater, sel int) func(io.Writer) float64 {
+	return func(w io.Writer) float64 {
+		var lrtp, srtp = s.LineRTP(sel), s.ScatRTP(sel)
+		var rtpsym = lrtp + srtp
+		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
+		return rtpsym
 	}
 }
 
@@ -444,13 +467,14 @@ func MonteCarloGo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 }
 
 func ScanReels3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x,
-	bftick, mctick <-chan time.Time) time.Duration {
+	calc func(io.Writer) float64,
+	bftick, mctick <-chan time.Time) float64 {
 	var t0 = time.Now()
 	var ctx2, cancel2 = context.WithCancel(ctx)
 	defer cancel2()
 	if cfg.MCCount > 0 {
 		s.SetPlan(cfg.MCCount * 1e6)
-		go s.Progress(ctx2, mctick, g.GetSel())
+		go s.Progress(ctx2, mctick, calc)
 		if cfg.MTScan && !cfg.DevMode {
 			MonteCarloGo(ctx2, s, g, reels)
 		} else {
@@ -458,7 +482,7 @@ func ScanReels3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x,
 		}
 	} else {
 		s.SetPlan(reels.Reshuffles())
-		go s.Progress(ctx2, bftick, g.GetSel())
+		go s.Progress(ctx2, bftick, calc)
 		if cfg.MTScan && !cfg.DevMode {
 			BruteForce3xGo(ctx2, s, g, reels)
 		} else {
@@ -468,17 +492,18 @@ func ScanReels3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x,
 	var dur = time.Since(t0)
 	var comp = float64(s.Count()) / float64(s.Planned()) * 100
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", comp, g.GetSel(), dur)
-	return dur
+	return calc(os.Stdout)
 }
 
 func ScanReels4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x,
-	bftick, mctick <-chan time.Time) time.Duration {
+	calc func(io.Writer) float64,
+	bftick, mctick <-chan time.Time) float64 {
 	var t0 = time.Now()
 	var ctx2, cancel2 = context.WithCancel(ctx)
 	defer cancel2()
 	if cfg.MCCount > 0 {
 		s.SetPlan(cfg.MCCount * 1e6)
-		go s.Progress(ctx2, mctick, g.GetSel())
+		go s.Progress(ctx2, mctick, calc)
 		if cfg.MTScan && !cfg.DevMode {
 			MonteCarloGo(ctx2, s, g, reels)
 		} else {
@@ -486,7 +511,7 @@ func ScanReels4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x,
 		}
 	} else {
 		s.SetPlan(reels.Reshuffles())
-		go s.Progress(ctx2, bftick, g.GetSel())
+		go s.Progress(ctx2, bftick, calc)
 		if cfg.MTScan && !cfg.DevMode {
 			BruteForce4xGo(ctx2, s, g, reels)
 		} else {
@@ -496,17 +521,18 @@ func ScanReels4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x,
 	var dur = time.Since(t0)
 	var comp = float64(s.Count()) / float64(s.Planned()) * 100
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", comp, g.GetSel(), dur)
-	return dur
+	return calc(os.Stdout)
 }
 
 func ScanReels5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x,
-	bftick, mctick <-chan time.Time) time.Duration {
+	calc func(io.Writer) float64,
+	bftick, mctick <-chan time.Time) float64 {
 	var t0 = time.Now()
 	var ctx2, cancel2 = context.WithCancel(ctx)
 	defer cancel2()
 	if cfg.MCCount > 0 {
 		s.SetPlan(cfg.MCCount * 1e6)
-		go s.Progress(ctx2, mctick, g.GetSel())
+		go s.Progress(ctx2, mctick, calc)
 		if cfg.MTScan && !cfg.DevMode {
 			MonteCarloGo(ctx2, s, g, reels)
 		} else {
@@ -514,7 +540,7 @@ func ScanReels5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x,
 		}
 	} else {
 		s.SetPlan(reels.Reshuffles())
-		go s.Progress(ctx2, bftick, g.GetSel())
+		go s.Progress(ctx2, bftick, calc)
 		if cfg.MTScan && !cfg.DevMode {
 			BruteForce5xGo(ctx2, s, g, reels)
 		} else {
@@ -524,5 +550,5 @@ func ScanReels5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x,
 	var dur = time.Since(t0)
 	var comp = float64(s.Count()) / float64(s.Planned()) * 100
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", comp, g.GetSel(), dur)
-	return dur
+	return calc(os.Stdout)
 }
