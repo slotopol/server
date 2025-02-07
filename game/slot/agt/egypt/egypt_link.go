@@ -12,6 +12,7 @@ var Info = game.GameInfo{
 	},
 	GP: game.GPsel |
 		game.GPfgno |
+		game.GPrmult |
 		game.GPscat |
 		game.GPwild,
 	SX:  5,

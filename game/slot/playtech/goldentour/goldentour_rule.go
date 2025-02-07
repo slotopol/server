@@ -88,7 +88,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 			}
 		}
 
-		if numl > 0 && syml > 0 {
+		if numl >= 2 && syml > 0 {
 			if pay := LinePay[syml-1][numl-1]; pay > 0 {
 				*wins = append(*wins, slot.WinItem{
 					Pay:  g.Bet * pay,
@@ -99,7 +99,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 					XY:   line.CopyL(numl),
 				})
 			}
-		} else if numw > 0 {
+		} else if numw >= 2 {
 			if pay := LinePay[wild-1][numw-1]; pay > 0 {
 				*wins = append(*wins, slot.WinItem{
 					Pay:  g.Bet * pay,
@@ -136,7 +136,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				}
 			}
 
-			if numr > 0 && symr > 0 {
+			if numr >= 2 && symr > 0 {
 				if pay := LinePay[symr-1][numr-1]; pay > 0 {
 					*wins = append(*wins, slot.WinItem{
 						Pay:  g.Bet * pay,
@@ -147,7 +147,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 						XY:   line.CopyR5(numr),
 					})
 				}
-			} else if numw > 0 {
+			} else if numw >= 2 {
 				if pay := LinePay[wild-1][numw-1]; pay > 0 {
 					*wins = append(*wins, slot.WinItem{
 						Pay:  g.Bet * pay,

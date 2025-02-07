@@ -1,6 +1,6 @@
 //go:build !prod || full || agt
 
-package iceqween
+package icequeen
 
 import (
 	"github.com/slotopol/server/game"
@@ -22,8 +22,8 @@ var Info = game.GameInfo{
 	},
 	GP: game.GPsel |
 		game.GPretrig |
-		game.GPfgmult |
 		game.GPfgreel |
+		game.GPfgmult |
 		game.GPscat |
 		game.GPwild |
 		game.GPwmult,

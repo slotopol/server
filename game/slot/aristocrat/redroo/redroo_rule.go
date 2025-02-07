@@ -103,15 +103,17 @@ loop1:
 						}
 
 						if numl >= 2 && syml > 0 {
-							// var li = (int(line[0])-1)*256 + (int(line[1])-1)*64 + (int(line[2])-1)*16 + (int(line[line[4]])-1)*4 + int(line[5])
-							*wins = append(*wins, slot.WinItem{
-								Pay:  g.Bet * LinePay[syml-1][numl-1],
-								Mult: mw,
-								Sym:  syml,
-								Num:  numl,
-								Line: 1024,
-								XY:   line.CopyL(numl),
-							})
+							if payl := LinePay[syml-1][numl-1]; payl > 0 {
+								// var li = (int(line[0])-1)*256 + (int(line[1])-1)*64 + (int(line[2])-1)*16 + (int(line[line[4]])-1)*4 + int(line[5])
+								*wins = append(*wins, slot.WinItem{
+									Pay:  g.Bet * payl,
+									Mult: mw,
+									Sym:  syml,
+									Num:  numl,
+									Line: 1024,
+									XY:   line.CopyL(numl),
+								})
+							}
 							switch numl {
 							case 2:
 								continue loop2

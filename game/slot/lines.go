@@ -94,6 +94,7 @@ func LoadMap[T any](fpath string) (rm map[float64]T) {
 }
 
 func FindClosest[T any](reelsmap map[float64]T, mrtp float64) (val T, rtp float64) {
+	rtp = -1000 // lets to get first reels from map in any case
 	for p, v := range reelsmap {
 		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
 			val, rtp = v, p

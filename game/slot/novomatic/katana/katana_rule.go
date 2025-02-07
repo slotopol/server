@@ -96,7 +96,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				if syml == 0 {
 					numw = x
 				}
-			} else if syml == 0 && sx != scat {
+			} else if syml == 0 {
 				syml = sx
 			} else if sx != syml {
 				numl = x - 1
@@ -105,10 +105,10 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		}
 
 		var payw, payl float64
-		if numw > 0 {
+		if numw >= 3 {
 			payw = LinePay[wild-1][numw-1]
 		}
-		if numl > 0 && syml > 0 {
+		if numl >= 3 && syml > 0 {
 			payl = LinePay[syml-1][numl-1]
 		}
 		if payl > payw {

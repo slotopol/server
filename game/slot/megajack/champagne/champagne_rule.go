@@ -168,10 +168,10 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		}
 
 		var payw, payl float64
-		if numw > 0 {
+		if numw >= 2 {
 			payw = LinePay[wild-1][numw-1]
 		}
-		if numl > 0 && syml > 0 {
+		if numl >= 2 && syml > 0 {
 			payl = LinePay[syml-1][numl-1]
 		}
 		if payl > payw {

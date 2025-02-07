@@ -18,15 +18,16 @@ const ( // Game properties
 	GPfgno   GP = 0                      // free games are absent
 	GPfghas  GP = 0b_0000_0000_0001_0000 // non-retriggered free games are present
 	GPretrig GP = 0b_0000_0000_0010_0000 // free games are present and can be retriggered
-	GPfgmult GP = 0b_0000_0000_0100_0000 // any multipliers on free games
-	GPfgreel GP = 0b_0000_0000_1000_0000 // separate reels on free games
-	GPscat   GP = 0b_0000_0001_0000_0000 // has scatters
-	GPwild   GP = 0b_0000_0010_0000_0000 // has wild symbols
-	GPrwild  GP = 0b_0000_0100_0000_0000 // has reel wild symbols
-	GPbwild  GP = 0b_0000_1000_0000_0000 // has big wild (3x3)
-	GPwmult  GP = 0b_0001_0000_0000_0000 // has multiplier on wilds
-	GPbsym   GP = 0b_0010_0000_0000_0000 // has big symbol (usually 3x3 in the center on free games)
-	GPfill   GP = 0b_0100_0000_0000_0000 // has multiplier on filled screen
+	GPfgreel GP = 0b_0000_0000_0100_0000 // separate reels on free games
+	GPfgmult GP = 0b_0000_0000_1000_0000 // any multipliers on free games
+	GPrmult  GP = 0b_0000_0001_0000_0000 // any multipliers on regular games
+	GPscat   GP = 0b_0000_0010_0000_0000 // has scatters
+	GPwild   GP = 0b_0000_0100_0000_0000 // has wild symbols
+	GPrwild  GP = 0b_0000_1000_0000_0000 // has reel wild symbols
+	GPbwild  GP = 0b_0001_0000_0000_0000 // has big wild (3x3)
+	GPwmult  GP = 0b_0010_0000_0000_0000 // has multiplier on wilds
+	GPbsym   GP = 0b_0100_0000_0000_0000 // has big symbol (usually 3x3 in the center on free games)
+	GPfill   GP = 0b_1000_0000_0000_0000 // has multiplier on filled screen
 )
 
 type (

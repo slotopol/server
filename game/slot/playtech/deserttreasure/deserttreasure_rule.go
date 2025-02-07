@@ -100,10 +100,10 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		}
 
 		var payw, payl float64
-		if numw > 0 {
+		if numw >= 2 {
 			payw = LinePay[wild-1][numw-1]
 		}
-		if numl > 0 && syml > 0 {
+		if numl >= 2 && syml > 0 {
 			payl = LinePay[syml-1][numl-1]
 		}
 		if payl > payw {
@@ -138,7 +138,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	if count := g.Scr.ScatNum(scat); count >= 2 {
+	if count := g.Scr.ScatNum(scat); count >= 3 {
 		var mm float64 = 1 // mult mode
 		if g.FSR > 0 {
 			mm = 3

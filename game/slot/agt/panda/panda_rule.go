@@ -14,16 +14,16 @@ var reels []byte
 var ReelsMap = slot.ReadMap[*slot.Reels3x](reels)
 
 // Lined payment.
-var LinePay = [9][3]float64{
-	{0, 0, 500}, // 1 wild
-	{0, 0, 160}, // 2 bonsai
-	{0, 0, 80},  // 3 fish
-	{0, 0, 40},  // 4 fan
-	{0, 0, 20},  // 5 lamp
-	{0, 0, 20},  // 6 pot
-	{0, 0, 20},  // 7 flower
-	{0, 0, 10},  // 8 button
-	{},          // 9 scatter
+var LinePay = [9]float64{
+	500, // 1 wild
+	160, // 2 bonsai
+	80,  // 3 fish
+	40,  // 4 fan
+	20,  // 5 lamp
+	20,  // 6 pot
+	20,  // 7 flower
+	10,  // 8 button
+	0,   // 9 scatter
 }
 
 // Bet lines
@@ -65,7 +65,7 @@ func (g *Game) Scanner(wins *slot.Wins) {
 				if syml == 0 {
 					numw = x
 				}
-			} else if syml == 0 && sx != scat {
+			} else if syml == 0 {
 				syml = sx
 			} else if sx != syml {
 				numl = x - 1
@@ -74,7 +74,7 @@ func (g *Game) Scanner(wins *slot.Wins) {
 		}
 
 		if numw == 3 {
-			var pay = LinePay[wild-1][numw-1]
+			var pay = LinePay[wild-1]
 			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * pay,
 				Mult: 1,
@@ -84,7 +84,7 @@ func (g *Game) Scanner(wins *slot.Wins) {
 				XY:   line.CopyL(numw),
 			})
 		} else if numl == 3 {
-			var pay = LinePay[syml-1][numl-1]
+			var pay = LinePay[syml-1]
 			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * pay,
 				Mult: 1,

@@ -11,8 +11,8 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Jaguar Moon"},
 	},
 	GP: game.GPretrig |
-		game.GPfgmult |
 		game.GPfgreel |
+		game.GPfgmult |
 		game.GPscat |
 		game.GPwild,
 	SX:  5,

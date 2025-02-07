@@ -13,8 +13,8 @@ var Info = game.GameInfo{
 	},
 	GP: game.GPsel |
 		game.GPretrig |
-		game.GPfgmult |
 		game.GPfgreel |
+		game.GPfgmult |
 		game.GPscat |
 		game.GPwild |
 		game.GPwmult,
