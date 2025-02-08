@@ -39,6 +39,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/novomatic/plentyontwenty"
 	_ "github.com/slotopol/server/game/slot/novomatic/powerstars"
 	_ "github.com/slotopol/server/game/slot/novomatic/roaringforties"
+	_ "github.com/slotopol/server/game/slot/novomatic/secretelixir"
 	_ "github.com/slotopol/server/game/slot/novomatic/sizzlinghot"
 	_ "github.com/slotopol/server/game/slot/novomatic/ultrahot"
 	_ "github.com/slotopol/server/game/slot/novomatic/ultrasevens"

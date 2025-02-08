@@ -16,13 +16,13 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 174 games, 85 algorithms, 9 providers
+total: 175 games, 86 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 73 games
+Novomatic: 74 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games
@@ -30,6 +30,7 @@ Slotopol: 4 games
 
 *Last added games*:
 
+* '[Secret Elixir](https://www.slotsmate.com/software/novomatic/secret-elixir)' Novomatic 5x3 videoslot
 * '[Lovely Mermaid](https://www.slotsmate.com/software/novomatic/lovely-mermaid)' Novomatic 5x3 videoslot with jackpot
 * '[Dynasty of Ra](https://www.slotsmate.com/software/novomatic/dynasty-of-ra)' Novomatic 5x3 videoslot
 * '[Fruits'n Royals](https://www.slotsmate.com/software/novomatic/fruits-n-royals)' Novomatic 5x3 videoslot
@@ -47,18 +48,18 @@ Slotopol: 4 games
 * '[Mega Joker](https://www.slotsmate.com/software/novomatic/mega-joker)' Novomatic 5x4 videoslot
 * 'Aztec Gold' Megajack 5x3 videoslot with 'Aztec Pyramid' bonus game
 
-*Top-10 of most liked games released on server*:
+*Top-10 of games with most interesting algorithms released on server*:
 
-* 'Slotopol' Megajack 5x3 videoslot - it's the classic
+* 'Aztec Gold' Megajack 5x3 videoslot has unique 'Aztec Pyramid' bonus game
 * '[Book of Ra Deluxe](https://www.slotsmate.com/software/novomatic/book-of-ra-deluxe)' Novomatic 5x3 videoslot with special expanding symbol on free games
-* 'Aztec Gold' Megajack 5x3 videoslot with 'Aztec Pyramid' bonus game
 * 'Fruit Shop' NetEnt 5x3 videoslot with free spins on every win
 * '[Sun City](https://demo.agtsoftware.com/games/agt/suncity)' AGT 5x3 videoslot with free games continous by the luck
 * '[Egypt](https://demo.agtsoftware.com/games/agt/egypt)' AGT 5x3 videoslot with minislot for wilds multiplier
 * 'Fire Joker' Play'n GO 5x3 videoslot with jackpot on lined pays and big symbols on free games
-* '[Lucky Lady's Charm Deluxe](https://www.slotsmate.com/software/novomatic/lucky-ladys-charm-deluxe)' Novomatic 5x3 videoslot
+* '[Secret Elixir](https://www.slotsmate.com/software/novomatic/secret-elixir)' Novomatic 5x3 videoslot with multipliers on 5th reel
 * '[Dragon's Deep](https://www.slotsmate.com/software/novomatic/dragons-deep)' Novomatic 5x3 videoslot, some symbols become wilds on free games
-* '[Sizzling Hot Deluxe](https://www.slotsmate.com/software/novomatic/sizzling-hot-deluxe)' Novomatic 5x3 videoslot
+* '[Ultra Sevens](https://www.slotsmate.com/software/novomatic/ultra-sevens)' Novomatic 5x4 videoslot with 3 jackpots
+* '[Valentine's Day](https://demo.agtsoftware.com/games/agt/valentine)' AGT 5x3 videoslot with multipliers by screen filling
 
 # How to build from sources
 
