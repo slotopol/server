@@ -16,13 +16,13 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 175 games, 86 algorithms, 9 providers
+total: 176 games, 87 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 74 games
+Novomatic: 75 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games
@@ -30,6 +30,7 @@ Slotopol: 4 games
 
 *Last added games*:
 
+* '[Royal Dynasty](https://www.slotsmate.com/software/novomatic/royal-dynasty)' Novomatic 5x3 videoslot
 * '[Secret Elixir](https://www.slotsmate.com/software/novomatic/secret-elixir)' Novomatic 5x3 videoslot
 * '[Lovely Mermaid](https://www.slotsmate.com/software/novomatic/lovely-mermaid)' Novomatic 5x3 videoslot with jackpot
 * '[Dynasty of Ra](https://www.slotsmate.com/software/novomatic/dynasty-of-ra)' Novomatic 5x3 videoslot
@@ -43,10 +44,6 @@ Slotopol: 4 games
 * '[Always American](https://www.slotsmate.com/software/novomatic/always-american)' Novomatic 3x3 videoslot
 * '[Ultra Gems](https://www.slotsmate.com/software/novomatic/ultra-gems)' Novomatic 3x3 videoslot
 * '[Fruitilicious](https://www.slotsmate.com/software/novomatic/fruitilicious)' Novomatic 5x3 videoslot
-* '[Jaguar Moon](https://www.slotsmate.com/software/novomatic/jaguar-moon)' Novomatic 5x3, 243 ways videoslot
-* '[African Simba](https://www.slotsmate.com/software/novomatic/african-simba)' Novomatic 5x3, 243 ways videoslot
-* '[Mega Joker](https://www.slotsmate.com/software/novomatic/mega-joker)' Novomatic 5x4 videoslot
-* 'Aztec Gold' Megajack 5x3 videoslot with 'Aztec Pyramid' bonus game
 
 *Top-10 of games with most interesting algorithms released on server*:
 
