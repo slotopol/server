@@ -17,6 +17,7 @@ var listflags *pflag.FlagSet
 
 var (
 	fAll, fProp, fRTP bool
+	fMrtp, fDiff      float64
 )
 
 const listShort = "List of available games released on server"
@@ -155,13 +156,23 @@ func FormatGameInfo(gi *game.GameInfo, ai int) string {
 			b.WriteString(", has multiplier on filled screen")
 		}
 	}
-	if fRTP && len(gi.RTP) > 0 {
-		b.WriteString(", RTP: ")
-		for i, rtp := range gi.RTP {
-			if i > 0 {
-				b.WriteString(", ")
+	if len(gi.RTP) > 0 {
+		if fMrtp > 0 {
+			var rtp = gi.FindRTP(fMrtp)
+			fmt.Fprintf(&b, ", mrtp(%g)=%g", fMrtp, rtp)
+		}
+		if fDiff > 0 {
+			var diff = gi.FindRTP(fDiff) - fDiff
+			fmt.Fprintf(&b, ", diff(%g)=%.6g", fDiff, diff)
+		}
+		if fRTP {
+			b.WriteString(", RTP: ")
+			for i, rtp := range gi.RTP {
+				if i > 0 {
+					b.WriteString(", ")
+				}
+				fmt.Fprintf(&b, "%.2f", rtp)
 			}
-			fmt.Fprintf(&b, "%.2f", rtp)
 		}
 	}
 	return b.String()
@@ -236,6 +247,8 @@ func init() {
 
 	listflags.BoolVar(&fAll, "all", false, "include all provided games, overrides any other filters")
 	listflags.BoolVar(&fProp, "prop", false, "print properties for each game")
+	listflags.Float64Var(&fMrtp, "mrtp", 0, "RTP (Return to Player) of reels closest to given master RTP")
+	listflags.Float64Var(&fDiff, "diff", 0, "difference between master RTP and closest to it real reels RTP")
 	listflags.BoolVar(&fRTP, "rtp", false, "RTP (Return to Player) percents list of available reels for each game")
 
 	listflags.Bool("agt", false, "include games of 'AGT' provider")

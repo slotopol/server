@@ -45,26 +45,6 @@ const (
 	mjap = 7 // AztecPyramid
 )
 
-const (
-	jid = 1 // jackpot ID
-)
-
-// Jackpot win combinations.
-var Jackpot = [12][5]int{
-	{0, 0, 0, 0, 0},   //  1 tomat
-	{0, 0, 0, 0, 0},   //  2 corn
-	{0, 0, 0, 0, 0},   //  3 lama
-	{0, 0, 0, 0, 0},   //  4 frog
-	{0, 0, 0, 0, 0},   //  5 jaguar
-	{0, 0, 0, 0, 0},   //  6 condor
-	{0, 0, 0, 0, 0},   //  7 queen
-	{0, 0, 0, 0, 0},   //  8 king
-	{0, 0, 0, 0, jid}, //  9 dragon
-	{0, 0, 0, 0, 0},   // 10 scatter
-	{0, 0, 0, 0, 0},   // 11 idol
-	{0, 0, 0, 0, 0},   // 12 pyramid
-}
-
 // Bet lines
 var BetLines = slot.BetLinesMgj
 
@@ -89,7 +69,10 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-const wild, scat, bon = 11, 10, 12
+const (
+	mjj             = 1 // jackpot ID
+	wild, scat, bon = 11, 10, 12
+)
 
 func (g *Game) Scanner(wins *slot.Wins) {
 	g.ScanLined(wins)
@@ -126,6 +109,10 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		}
 
 		if pay := LinePay[syml-1][numl-1]; pay > 0 {
+			var jid int
+			if numl == 5 {
+				jid = mjj
+			}
 			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * pay,
 				Mult: 1,
@@ -133,7 +120,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Num:  numl,
 				Line: li,
 				XY:   line.CopyL(numl),
-				JID:  Jackpot[syml-1][numl-1],
+				JID:  jid,
 			})
 		}
 	}

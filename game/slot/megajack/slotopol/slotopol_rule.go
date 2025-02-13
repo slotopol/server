@@ -63,10 +63,6 @@ var LineBonus = [13][5]int{
 	{0, 0, 0, 0, mjm},  // 13 Monopoly
 }
 
-const (
-	mjj = 1 // jackpot ID
-)
-
 // Bet lines
 var BetLines = slot.BetLinesMgj
 
@@ -108,7 +104,10 @@ var special = [13]bool{
 	true,  // 13
 }
 
-const wild, scat = 11, 1
+const (
+	mjj        = 1     // jackpot ID
+	wild, scat = 11, 1 // symbols
+)
 
 func (g *Game) Scanner(wins *slot.Wins) {
 	g.ScanLined(wins)

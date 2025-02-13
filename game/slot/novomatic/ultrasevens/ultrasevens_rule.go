@@ -29,12 +29,6 @@ var LinePay = [7][5]float64{
 	{0, 5, 10, 50, 200},       // 7 cherry
 }
 
-const (
-	ssj1 = 1
-	ssj2 = 2
-	ssj3 = 3
-)
-
 // Bet lines
 var BetLines = slot.BetLinesNvm5x4[:]
 
@@ -58,6 +52,12 @@ func (g *Game) Clone() slot.SlotGame {
 	var clone = *g
 	return &clone
 }
+
+const (
+	ssj1 = 1
+	ssj2 = 2
+	ssj3 = 3
+)
 
 func Filled(screen *slot.Screen5x4) slot.Sym {
 	var sym = screen[4][3]

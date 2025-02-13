@@ -88,10 +88,6 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-const (
-	mjj = 1 // jackpot ID
-)
-
 // Not from lined paytable.
 var special = [13]bool{
 	true,  //  1
@@ -109,7 +105,10 @@ var special = [13]bool{
 	true,  // 13
 }
 
-const wild, scat = 11, 1
+const (
+	mjj        = 1     // jackpot ID
+	wild, scat = 11, 1 // symbols
+)
 
 func (g *Game) Scanner(wins *slot.Wins) {
 	g.ScanLined(wins)

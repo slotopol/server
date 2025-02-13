@@ -63,10 +63,9 @@ func (g *Game) Clone() slot.SlotGame {
 }
 
 const (
-	lmj = 1
+	lmj        = 1     // jackpot ID
+	wild, scat = 1, 13 // symbols
 )
-
-const wild, scat = 1, 13
 
 func (g *Game) Scanner(wins *slot.Wins) {
 	g.ScanLined(wins)

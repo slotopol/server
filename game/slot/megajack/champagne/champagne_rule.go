@@ -67,26 +67,6 @@ var LineBonus = [12][5]int{
 	{0, 0, 0, 0, mjc}, // 12 Champagne
 }
 
-const (
-	jid = 1 // jackpot ID
-)
-
-// Jackpot win combinations.
-var Jackpot = [12][5]int{
-	{0, 0, 0, 0, 0},   // //  1 dollar
-	{0, 0, 0, 0, 0},   // //  2 cherry
-	{0, 0, 0, 0, 0},   // //  3 plum
-	{0, 0, 0, 0, 0},   // //  4 wmelon
-	{0, 0, 0, 0, 0},   // //  5 grapes
-	{0, 0, 0, 0, 0},   // //  6 ananas
-	{0, 0, 0, 0, 0},   // //  7 lemon
-	{0, 0, 0, 0, 0},   // //  8 drink
-	{0, 0, 0, 0, 0},   // //  9 palm
-	{0, 0, 0, 0, 0},   // // 10 yacht
-	{0, 0, 0, 0, jid}, // // 11 eldorado
-	{0, 0, 0, 0, 0},   // // 12 fizz
-}
-
 // Bet lines
 var BetLines = slot.BetLinesMgj
 
@@ -127,7 +107,10 @@ var Special = [12]bool{
 	true,  // 12
 }
 
-const wild, scat = 11, 1
+const (
+	mjj        = 1     // jackpot ID
+	wild, scat = 11, 1 // symbols
+)
 
 func (g *Game) Scanner(wins *slot.Wins) {
 	g.ScanLined(wins)
@@ -194,6 +177,10 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 					XY:   line.CopyL(numw),
 				})
 			} else {
+				var jid int
+				if numl == 5 {
+					jid = mjj
+				}
 				*wins = append(*wins, slot.WinItem{
 					Pay:  g.Bet * payw,
 					Mult: 1,
@@ -201,7 +188,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 					Num:  numw,
 					Line: li,
 					XY:   line.CopyL(numw),
-					JID:  Jackpot[wild-1][numw-1],
+					JID:  jid,
 				})
 			}
 		} else if syml > 0 && numl > 0 && LineBonus[syml-1][numl-1] > 0 {

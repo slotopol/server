@@ -79,8 +79,8 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 			len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "pyramid bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount(mjap)), rtpmjap)
-		if s.JackCount(jid) > 0 {
-			fmt.Fprintf(w, "jackpots: count %d, frequency 1/%.12g\n", s.JackCount(jid), reshuf/float64(s.JackCount(jid)))
+		if s.JackCount(mjj) > 0 {
+			fmt.Fprintf(w, "jackpots: count %d, frequency 1/%.12g\n", s.JackCount(mjj), reshuf/float64(s.JackCount(mjj)))
 		}
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(mjap) = %.6f%%\n", rtpsym, rtpmjap, rtp)
 		return rtp
