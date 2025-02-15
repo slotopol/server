@@ -33,6 +33,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/novomatic/jewels4all"
 	_ "github.com/slotopol/server/game/slot/novomatic/justjewels"
 	_ "github.com/slotopol/server/game/slot/novomatic/katana"
+	_ "github.com/slotopol/server/game/slot/novomatic/kingsjester"
 	_ "github.com/slotopol/server/game/slot/novomatic/lovelymermaid"
 	_ "github.com/slotopol/server/game/slot/novomatic/megajoker"
 	_ "github.com/slotopol/server/game/slot/novomatic/plentyofjewels20"

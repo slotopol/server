@@ -110,6 +110,7 @@
 'Keno Luxury' Slotopol 80 spots lottery
 'Keno Sports' Slotopol 80 spots lottery
 'King Of Cards' Novomatic 5x3 videoslot
+'King's Jester' Novomatic 5x3 videoslot
 'Lord of the Ocean' Novomatic 5x3 videoslot
 'Lovely Mermaid' Novomatic 5x4 videoslot
 'Lucky Lady's Charm Deluxe' Novomatic 5x3 videoslot
@@ -179,13 +180,13 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 176 games, 87 algorithms, 9 providers
+total: 177 games, 88 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 75 games
+Novomatic: 76 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games
