@@ -82,12 +82,12 @@ type Scene struct {
 type AL uint
 
 const (
-	ALmem   AL = 1 << iota // user have access to club
-	ALgame                 // can change club game settings and users gameplay
-	ALuser                 // can change user properties and move user money to/from club deposit
-	ALclub                 // can change club bank, fund, deposit
-	ALadmin                // can change same access levels to other users
-	ALall   = ALgame | ALuser | ALclub | ALadmin
+	ALmember AL = 1 << iota // user have access to club
+	ALdealer                // can change club game settings and users gameplay
+	ALbooker                // can change user properties and move user money to/from club deposit
+	ALmaster                // can change club bank, fund, deposit
+	ALadmin                 // can change same access levels to other users
+	ALall    = ALmember | ALdealer | ALbooker | ALmaster | ALadmin
 )
 
 // Props contains properties for user at some club.

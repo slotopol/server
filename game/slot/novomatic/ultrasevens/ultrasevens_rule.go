@@ -119,6 +119,10 @@ func (g *Game) Scanner(wins *slot.Wins) {
 	}
 }
 
+func (g *Game) Cost() (float64, bool) {
+	return g.Bet * float64(g.Sel), true
+}
+
 func (g *Game) Spin(mrtp float64) {
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 	g.Scr.Spin(reels)

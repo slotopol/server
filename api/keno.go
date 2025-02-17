@@ -42,7 +42,7 @@ func ApiKenoBetGet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALgame == 0 {
+	if admin.UID != scene.UID && al&ALdealer == 0 {
 		Ret403(c, AEC_keno_betget_noaccess, ErrNoAccess)
 		return
 	}
@@ -79,7 +79,7 @@ func ApiKenoBetSet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALgame == 0 {
+	if admin.UID != scene.UID && al&ALdealer == 0 {
 		Ret403(c, AEC_keno_betset_noaccess, ErrNoAccess)
 		return
 	}
@@ -122,7 +122,7 @@ func ApiKenoSelGet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALgame == 0 {
+	if admin.UID != scene.UID && al&ALdealer == 0 {
 		Ret403(c, AEC_keno_selget_noaccess, ErrNoAccess)
 		return
 	}
@@ -159,7 +159,7 @@ func ApiKenoSelSet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALgame == 0 {
+	if admin.UID != scene.UID && al&ALdealer == 0 {
 		Ret403(c, AEC_keno_selset_noaccess, ErrNoAccess)
 		return
 	}
@@ -202,7 +202,7 @@ func ApiKenoSelGetSlice(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALgame == 0 {
+	if admin.UID != scene.UID && al&ALdealer == 0 {
 		Ret403(c, AEC_keno_selgetslice_noaccess, ErrNoAccess)
 		return
 	}
@@ -240,7 +240,7 @@ func ApiKenoSelSetSlice(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALgame == 0 {
+	if admin.UID != scene.UID && al&ALdealer == 0 {
 		Ret403(c, AEC_keno_selsetslice_noaccess, ErrNoAccess)
 		return
 	}
@@ -299,7 +299,7 @@ func ApiKenoSpin(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALgame == 0 {
+	if admin.UID != scene.UID && al&ALdealer == 0 {
 		Ret403(c, AEC_keno_spin_noaccess, ErrNoAccess)
 		return
 	}

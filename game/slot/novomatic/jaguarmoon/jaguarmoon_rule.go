@@ -169,6 +169,13 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 	}
 }
 
+func (g *Game) Cost() (float64, bool) {
+	if g.FSR != 0 {
+		return 0, false
+	}
+	return g.Bet * 10, false
+}
+
 func (g *Game) Spin(mrtp float64) {
 	if g.FSR == 0 {
 		var reels, _ = slot.FindClosest(ReelsMap, mrtp)

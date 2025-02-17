@@ -66,7 +66,7 @@ type SlotGame interface {
 	Clone() SlotGame              // returns full cloned copy of itself
 	Screen() Screen               // returns screen object for this game, constat function
 	Scanner(*Wins)                // scan given screen and append result to wins, constat function
-	Cost() (float64, bool)        // cost of spin on current bet and lines, constat function
+	Cost() (float64, bool)        // cost of spin on current bet and lines, and has it jackpot rate, constat function
 	Spin(float64)                 // fill the screen with random hits on reels closest to given RTP, constat function
 	Spawn(Wins, float64, float64) // setup bonus games to wins results, constat function
 	Prepare()                     // update game state before new spin

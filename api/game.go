@@ -66,7 +66,7 @@ func ApiGameNew(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if (al&ALmem == 0) || (admin != user && al&ALgame == 0) {
+	if (al&ALmember == 0) || (admin != user && al&ALdealer == 0) {
 		Ret403(c, AEC_game_new_noaccess, ErrNoAccess)
 		return
 	}
@@ -140,7 +140,7 @@ func ApiGameJoin(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if (al&ALmem == 0) || (admin != user && al&ALgame == 0) {
+	if (al&ALmember == 0) || (admin != user && al&ALdealer == 0) {
 		Ret403(c, AEC_game_join_noaccess, ErrNoAccess)
 		return
 	}
@@ -195,7 +195,7 @@ func ApiGameInfo(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
-	if admin != user && al&ALgame == 0 {
+	if admin != user && al&ALdealer == 0 {
 		Ret403(c, AEC_game_info_noaccess, ErrNoAccess)
 		return
 	}
@@ -261,7 +261,7 @@ func ApiGameRtpGet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
-	if admin != user && al&ALgame == 0 {
+	if admin != user && al&ALdealer == 0 {
 		Ret403(c, AEC_game_rtpget_noaccess, ErrNoAccess)
 		return
 	}

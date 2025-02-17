@@ -43,7 +43,7 @@ func ApiSlotBetGet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALgame == 0 {
+	if admin.UID != scene.UID && al&ALdealer == 0 {
 		Ret403(c, AEC_slot_betget_noaccess, ErrNoAccess)
 		return
 	}
@@ -80,7 +80,7 @@ func ApiSlotBetSet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALgame == 0 {
+	if admin.UID != scene.UID && al&ALdealer == 0 {
 		Ret403(c, AEC_slot_betset_noaccess, ErrNoAccess)
 		return
 	}
@@ -123,7 +123,7 @@ func ApiSlotSelGet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALgame == 0 {
+	if admin.UID != scene.UID && al&ALdealer == 0 {
 		Ret403(c, AEC_slot_selget_noaccess, ErrNoAccess)
 		return
 	}
@@ -160,7 +160,7 @@ func ApiSlotSelSet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALgame == 0 {
+	if admin.UID != scene.UID && al&ALdealer == 0 {
 		Ret403(c, AEC_slot_selset_noaccess, ErrNoAccess)
 		return
 	}
@@ -200,7 +200,7 @@ func ApiSlotModeSet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALgame == 0 {
+	if admin.UID != scene.UID && al&ALdealer == 0 {
 		Ret403(c, AEC_slot_modeset_noaccess, ErrNoAccess)
 		return
 	}
@@ -260,7 +260,7 @@ func ApiSlotSpin(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALgame == 0 {
+	if admin.UID != scene.UID && al&ALdealer == 0 {
 		Ret403(c, AEC_slot_spin_noaccess, ErrNoAccess)
 		return
 	}
@@ -420,7 +420,7 @@ func ApiSlotDoubleup(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALgame == 0 {
+	if admin.UID != scene.UID && al&ALdealer == 0 {
 		Ret403(c, AEC_slot_doubleup_noaccess, ErrNoAccess)
 		return
 	}
@@ -516,7 +516,7 @@ func ApiSlotCollect(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALgame == 0 {
+	if admin.UID != scene.UID && al&ALdealer == 0 {
 		Ret403(c, AEC_slot_collect_noaccess, ErrNoAccess)
 		return
 	}

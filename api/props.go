@@ -42,7 +42,7 @@ func ApiPropsGet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if admin != user && al&ALuser == 0 {
+	if admin != user && al&ALbooker == 0 {
 		Ret403(c, AEC_prop_get_noaccess, ErrNoAccess)
 		return
 	}
@@ -89,7 +89,7 @@ func ApiPropsWalletGet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if admin != user && al&ALuser == 0 {
+	if admin != user && al&ALbooker == 0 {
 		Ret403(c, AEC_prop_walletget_noaccess, ErrNoAccess)
 		return
 	}
@@ -137,7 +137,7 @@ func ApiPropsWalletAdd(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if al&ALuser == 0 {
+	if al&ALbooker == 0 {
 		Ret403(c, AEC_prop_walletadd_noaccess, ErrNoAccess)
 		return
 	}
@@ -202,7 +202,7 @@ func ApiPropsAlGet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if admin != user && al&(ALuser+ALadmin) == 0 {
+	if admin != user && al&(ALbooker+ALadmin) == 0 {
 		Ret403(c, AEC_prop_alget_noaccess, ErrNoAccess)
 		return
 	}
@@ -310,7 +310,7 @@ func ApiPropsRtpGet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if admin != user && al&ALuser == 0 {
+	if admin != user && al&ALbooker == 0 {
 		Ret403(c, AEC_prop_rtpget_noaccess, ErrNoAccess)
 		return
 	}
@@ -354,7 +354,7 @@ func ApiPropsRtpSet(c *gin.Context) {
 	}
 
 	var admin, al = MustAdmin(c, arg.CID)
-	if al&ALuser == 0 {
+	if al&ALbooker == 0 {
 		Ret403(c, AEC_prop_rtpset_noaccess, ErrNoAccess)
 		return
 	}

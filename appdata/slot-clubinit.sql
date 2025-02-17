@@ -3,12 +3,12 @@
 Tables of databases creates in code if them absent.
 Statements below with inserting executes if `club` table is empty.
 Users access levels (`gal` or `access` fields) are sum of followed ints:
-  1 - *member*, user have access to club
-  2 - *game*, can change club game settings
-  4 - *user*, can change user balance and move user money to/from club deposit
-  8 - *club*, can change club bank, fund, deposit
+   1 - *member*, user have access to club
+   2 - *dealer*, can change club game settings
+   4 - *booker*, can change user balance and move user money to/from club deposit
+   8 - *master*, can change club bank, fund, deposit
   16 - *admin*, can change same access levels to other users
-  30 - all rights
+  31 - all rights
 */
 
 INSERT INTO `club` (`cid`,`name`,`bank`,`fund`,`lock`,`rate`,`mrtp`) VALUES

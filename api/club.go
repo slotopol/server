@@ -102,7 +102,7 @@ func ApiClubInfo(c *gin.Context) {
 	}
 
 	var _, al = MustAdmin(c, arg.CID)
-	if al&ALclub == 0 {
+	if al&ALmaster == 0 {
 		Ret403(c, AEC_club_info_noaccess, ErrNoAccess)
 		return
 	}
@@ -134,7 +134,7 @@ func ApiClubRename(c *gin.Context) {
 	}
 
 	var _, al = MustAdmin(c, arg.CID)
-	if al&ALclub == 0 {
+	if al&ALmaster == 0 {
 		Ret403(c, AEC_club_rename_noaccess, ErrNoAccess)
 		return
 	}
@@ -184,7 +184,7 @@ func ApiClubCashin(c *gin.Context) {
 	}
 
 	var _, al = MustAdmin(c, arg.CID)
-	if al&ALclub == 0 {
+	if al&ALmaster == 0 {
 		Ret403(c, AEC_club_cashin_noaccess, ErrNoAccess)
 		return
 	}
