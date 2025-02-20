@@ -261,6 +261,8 @@ func ApiKenoSpin(c *gin.Context) {
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid" binding:"required"`
+		Bet     float64  `json:"bet,omitempty" yaml:"bet,omitempty" xml:"bet,omitempty"`
+		Sel     []int    `json:"sel,omitempty" yaml:"sel,omitempty" xml:"sel,omitempty"`
 	}
 	var ret struct {
 		XMLName xml.Name      `json:"-" yaml:"-" xml:"ret"`
@@ -302,6 +304,21 @@ func ApiKenoSpin(c *gin.Context) {
 	if admin.UID != scene.UID && al&ALdealer == 0 {
 		Ret403(c, AEC_keno_spin_noaccess, ErrNoAccess)
 		return
+	}
+
+	if arg.Bet != 0 {
+		if err = game.SetBet(arg.Bet); err != nil {
+			Ret403(c, AEC_keno_spin_badbet, err)
+			return
+		}
+	}
+	if len(arg.Sel) > 0 {
+		var bs keno.Bitset
+		bs.Pack(arg.Sel)
+		if err = game.SetSel(bs); err != nil {
+			Ret403(c, AEC_keno_spin_badsel, err)
+			return
+		}
 	}
 
 	var cost = game.GetBet()

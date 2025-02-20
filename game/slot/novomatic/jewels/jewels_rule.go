@@ -35,7 +35,7 @@ var _ slot.SlotGame = (*Game)(nil)
 func NewGame() *Game {
 	return &Game{
 		Slotx: slot.Slotx[slot.Screen5x3]{
-			Sel: 5,
+			Sel: len(BetLines),
 			Bet: 1,
 		},
 	}

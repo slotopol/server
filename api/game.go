@@ -243,7 +243,7 @@ func ApiGameRtpGet(c *gin.Context) {
 	}
 
 	var gi *game.GameInfo
-	if gi = game.GetInfo(scene.Alias); gi == nil {
+	if gi, ok = game.InfoMap[scene.Alias]; !ok {
 		Ret500(c, AEC_game_rtpget_noinfo, ErrNoAliase)
 		return
 	}
@@ -267,7 +267,7 @@ func ApiGameRtpGet(c *gin.Context) {
 	}
 
 	ret.MRTP = GetRTP(user, club)
-	ret.RTP = gi.FindRTP(ret.MRTP)
+	ret.RTP = gi.FindClosest(ret.MRTP)
 
 	RetOk(c, ret)
 }

@@ -17,6 +17,7 @@
 'Always Hot Deluxe' Novomatic 3x3 videoslot
 'Always Hot' Novomatic 3x3 videoslot
 'American Keno' Aristocrat 80 spots lottery
+'Angry Birds' Novomatic 5x3 videoslot
 'Anonymous' AGT 5x3 videoslot
 'Apples' Shine' AGT 5x3 videoslot
 'Arabian Nights 2' AGT 5x4 videoslot
@@ -180,13 +181,13 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 177 games, 88 algorithms, 9 providers
+total: 178 games, 88 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 76 games
+Novomatic: 77 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games

@@ -234,6 +234,8 @@ const (
 	AEC_keno_spin_noclub
 	AEC_keno_spin_nouser
 	AEC_keno_spin_noaccess
+	AEC_keno_spin_badbet
+	AEC_keno_spin_badsel
 	AEC_keno_spin_noprops
 	AEC_keno_spin_nomoney
 	AEC_keno_spin_badbank

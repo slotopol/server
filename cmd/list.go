@@ -158,11 +158,11 @@ func FormatGameInfo(gi *game.GameInfo, ai int) string {
 	}
 	if len(gi.RTP) > 0 {
 		if fMrtp > 0 {
-			var rtp = gi.FindRTP(fMrtp)
+			var rtp = gi.FindClosest(fMrtp)
 			fmt.Fprintf(&b, ", mrtp(%g)=%g", fMrtp, rtp)
 		}
 		if fDiff > 0 {
-			var diff = gi.FindRTP(fDiff) - fDiff
+			var diff = gi.FindClosest(fDiff) - fDiff
 			fmt.Fprintf(&b, ", diff(%g)=%.6g", fDiff, diff)
 		}
 		if fRTP {
@@ -187,7 +187,7 @@ var listCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var num, alg int
 		var prov = map[string]int{}
-		for _, gi := range game.GameList {
+		for _, gi := range game.InfoList {
 			var inc = incinfo(gi)
 			for _, ga := range gi.Aliases {
 				if inc || isProv(ga.Prov) {
@@ -198,7 +198,7 @@ var listCmd = &cobra.Command{
 
 		var gamelist = make([]string, num)
 		var i int
-		for _, gi := range game.GameList {
+		for _, gi := range game.InfoList {
 			var inc = incinfo(gi)
 			var has bool
 			for ai, ga := range gi.Aliases {

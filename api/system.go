@@ -57,5 +57,5 @@ func ApiMemUsage(c *gin.Context) {
 
 // Returns full list of all available games by game type IDs.
 func ApiGameList(c *gin.Context) {
-	RetOk(c, game.GameList)
+	RetOk(c, game.InfoList)
 }
