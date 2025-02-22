@@ -17,8 +17,6 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var lrtp = s.LineRTP(g.Sel)
-		fmt.Fprintf(w, "reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
-			len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 		fmt.Fprintf(w, "RTP = %.6f%%\n", lrtp)
 		return lrtp
 	}

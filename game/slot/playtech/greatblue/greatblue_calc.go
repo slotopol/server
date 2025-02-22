@@ -50,8 +50,6 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var q = fghits * fsavr1 / reshuf
 		var sq = 1 / (1 - fghits*multavr*15/reshuf)
 		var rtp = rtpsym + q*sq*rtpsym
-		fmt.Fprintf(w, "reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
-			len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "average plain freespins at 1st iteration: %g\n", fsavr1)
 		fmt.Fprintf(w, "average multiplier at free games: %g\n", multavr)

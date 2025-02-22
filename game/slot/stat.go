@@ -407,6 +407,8 @@ func ScanReels3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x,
 	var dur = time.Since(t0)
 	var comp = float64(s.Count()) / float64(s.Planned()) * 100
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", comp, g.GetSel(), dur)
+	fmt.Printf("reels lengths [%d, %d, %d], total reshuffles %d\n",
+		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), reels.Reshuffles())
 	return calc(os.Stdout)
 }
 
@@ -428,6 +430,8 @@ func ScanReels4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x,
 	var dur = time.Since(t0)
 	var comp = float64(s.Count()) / float64(s.Planned()) * 100
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", comp, g.GetSel(), dur)
+	fmt.Printf("reels lengths [%d, %d, %d, %d], total reshuffles %d\n",
+		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), reels.Reshuffles())
 	return calc(os.Stdout)
 }
 
@@ -449,6 +453,8 @@ func ScanReels5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x,
 	var dur = time.Since(t0)
 	var comp = float64(s.Count()) / float64(s.Planned()) * 100
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", comp, g.GetSel(), dur)
+	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
+		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 	return calc(os.Stdout)
 }
 
@@ -470,5 +476,7 @@ func ScanReels6x(ctx context.Context, s Stater, g SlotGame, reels *Reels6x,
 	var dur = time.Since(t0)
 	var comp = float64(s.Count()) / float64(s.Planned()) * 100
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", comp, g.GetSel(), dur)
+	fmt.Printf("reels lengths [%d, %d, %d, %d, %d, %d], total reshuffles %d\n",
+		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), len(reels.Reel(6)), reels.Reshuffles())
 	return calc(os.Stdout)
 }

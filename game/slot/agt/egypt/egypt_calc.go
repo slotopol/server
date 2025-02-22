@@ -30,8 +30,6 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
 		var rtpsym = lrtp + srtp
 		var rtp = rtpsym * Em
-		fmt.Fprintf(w, "reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
-			len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "RTP = %.5g(sym) * %.5g(Em) = %.6f%%\n", rtpsym, Em, rtp)
 		return rtpsym

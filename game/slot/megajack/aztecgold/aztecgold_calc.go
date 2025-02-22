@@ -75,8 +75,6 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var qmjap = float64(s.BonusCount(mjap)) / reshuf
 		var rtpmjap = Ebon * qmjap * 100
 		var rtp = rtpsym + rtpmjap
-		fmt.Fprintf(w, "reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
-			len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "pyramid bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount(mjap)), rtpmjap)
 		if s.JackCount(mjj) > 0 {

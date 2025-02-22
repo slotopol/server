@@ -100,8 +100,6 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var qmjm = float64(s.BonusCount(mjm)) / reshuf / float64(g.Sel)
 		var rtpmjm = Emjm * qmjm * 100
 		var rtp = rtpsym + rtpmje9 + rtpmjm
-		fmt.Fprintf(w, "reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
-			len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "spin9 bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount(mje9)), rtpmje9)
 		fmt.Fprintf(w, "monopoly bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount(mjm)), rtpmjm)

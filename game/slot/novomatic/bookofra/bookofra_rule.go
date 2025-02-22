@@ -45,7 +45,7 @@ var BetLines = slot.BetLinesNvm10
 type Game struct {
 	slot.Slotx[slot.Screen5x3] `yaml:",inline"`
 	// Expanding Symbol
-	ES slot.Sym `json:"es" yaml:"es" xml:"es"`
+	ES slot.Sym `json:"es,omitempty" yaml:"es,omitempty" xml:"es,omitempty"`
 }
 
 // Declare conformity with SlotGame interface.
