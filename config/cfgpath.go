@@ -27,8 +27,8 @@ var (
 	SqlPath string
 	// Monte Carlo method samples number, in millions
 	MCCount uint64
-	// Multithreaded scanning
-	MTScan bool
+	// Multithreaded scanning threads number
+	MTCount int
 )
 
 var (

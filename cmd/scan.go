@@ -69,7 +69,7 @@ func init() {
 	scanflags.StringArrayP("game", "g", nil, "identifier of game to scan")
 	scanflags.Float64P("mrtp", "r", cfg.DefMRTP, "master RTP to calculate nearest reels")
 	scanflags.Uint64Var(&cfg.MCCount, "mc", 0, "Monte Carlo method samples number, in millions")
-	scanflags.BoolVar(&cfg.MTScan, "mt", false, "multithreaded scanning")
+	scanflags.IntVar(&cfg.MTCount, "mt", 0, "multithreaded scanning threads number")
 
 	scanCmd.MarkFlagRequired("game")
 }
