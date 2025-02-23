@@ -4,38 +4,57 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"sync"
 	"time"
 
 	"github.com/slotopol/server/game/slot"
 )
 
-func BruteForceFire(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, big slot.Sym) {
-	var screen = g.Screen()
-	var wins slot.Wins
-	var x slot.Pos
-	for x = 2; x <= 4; x++ {
-		screen.Set(x, 1, big)
-		screen.Set(x, 2, big)
-		screen.Set(x, 3, big)
-	}
+func BruteForce5x3Big(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, big slot.Sym) {
+	var tn = slot.CorrectThrNum()
+	var tn64 = uint64(tn)
 	var r1 = reels.Reel(1)
 	var r5 = reels.Reel(5)
-	for i1 := range r1 {
-		screen.SetCol(1, r1, i1)
-		for i5 := range r5 {
-			screen.SetCol(5, r5, i5)
-			g.Scanner(&wins)
-			s.Update(wins)
-			wins.Reset()
-			if s.Count()&100 == 0 {
-				select {
-				case <-ctx.Done():
-					return
-				default:
+	var wg sync.WaitGroup
+	wg.Add(tn)
+	for ti := range tn64 {
+		var c = g.Clone()
+		var reshuf uint64
+		go func() {
+			defer wg.Done()
+
+			var screen = c.Screen()
+			var wins slot.Wins
+
+			var x slot.Pos
+			for x = 2; x <= 4; x++ {
+				screen.Set(x, 1, big)
+				screen.Set(x, 2, big)
+				screen.Set(x, 3, big)
+			}
+			for i1 := range r1 {
+				screen.SetCol(1, r1, i1)
+				for i5 := range r5 {
+					reshuf++
+					if reshuf%slot.CtxGranulation == 0 {
+						select {
+						case <-ctx.Done():
+							return
+						default:
+						}
+					}
+					if reshuf%tn64 != ti {
+						continue
+					}
+					screen.SetCol(5, r5, i5)
+					c.Scanner(&wins)
+					s.Update(wins)
+					wins.Reset()
 				}
 			}
-		}
+		}()
 	}
+	wg.Wait()
 }
 
 func CalcStatSym(ctx context.Context, g *Game, reels slot.Reels, big slot.Sym) float64 {
@@ -43,7 +62,7 @@ func CalcStatSym(ctx context.Context, g *Game, reels slot.Reels, big slot.Sym) f
 
 	var ctx2, cancel2 = context.WithCancel(ctx)
 	defer cancel2()
-	BruteForceFire(ctx2, &s, g, reels, big)
+	BruteForce5x3Big(ctx2, &s, g, reels, big)
 
 	var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
 	var rtpsym = lrtp + srtp

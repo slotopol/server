@@ -129,14 +129,19 @@ func PrintSymPays(s Stater, sel int) func(io.Writer) float64 {
 	}
 }
 
-const ctxgranulation = 100
+const CtxGranulation = 100
 
-func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x, tn int) {
+func CorrectThrNum() int {
 	if cfg.DevMode {
-		tn = 1
-	} else if tn == 0 {
-		tn = runtime.GOMAXPROCS(0)
+		return 1
+	} else if cfg.MTCount < 1 {
+		return runtime.GOMAXPROCS(0)
 	}
+	return cfg.MTCount
+}
+
+func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x) {
+	var tn = CorrectThrNum()
 	var tn64 = uint64(tn)
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)
@@ -158,7 +163,7 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x, tn 
 					screen.SetCol(2, r2, i2)
 					for i3 := range r3 {
 						reshuf++
-						if reshuf%ctxgranulation == 0 {
+						if reshuf%CtxGranulation == 0 {
 							select {
 							case <-ctx.Done():
 								return
@@ -180,12 +185,8 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x, tn 
 	wg.Wait()
 }
 
-func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x, tn int) {
-	if cfg.DevMode {
-		tn = 1
-	} else if tn == 0 {
-		tn = runtime.GOMAXPROCS(0)
-	}
+func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x) {
+	var tn = CorrectThrNum()
 	var tn64 = uint64(tn)
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)
@@ -210,7 +211,7 @@ func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x, tn 
 						screen.SetCol(3, r3, i3)
 						for i4 := range r4 {
 							reshuf++
-							if reshuf%ctxgranulation == 0 {
+							if reshuf%CtxGranulation == 0 {
 								select {
 								case <-ctx.Done():
 									return
@@ -233,12 +234,8 @@ func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x, tn 
 	wg.Wait()
 }
 
-func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x, tn int) {
-	if cfg.DevMode {
-		tn = 1
-	} else if tn == 0 {
-		tn = runtime.GOMAXPROCS(0)
-	}
+func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x) {
+	var tn = CorrectThrNum()
 	var tn64 = uint64(tn)
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)
@@ -266,7 +263,7 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x, tn 
 							screen.SetCol(4, r4, i4)
 							for i5 := range r5 {
 								reshuf++
-								if reshuf%ctxgranulation == 0 {
+								if reshuf%CtxGranulation == 0 {
 									select {
 									case <-ctx.Done():
 										return
@@ -290,12 +287,8 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x, tn 
 	wg.Wait()
 }
 
-func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels *Reels6x, tn int) {
-	if cfg.DevMode {
-		tn = 1
-	} else if tn == 0 {
-		tn = runtime.GOMAXPROCS(0)
-	}
+func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels *Reels6x) {
+	var tn = CorrectThrNum()
 	var tn64 = uint64(tn)
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)
@@ -326,7 +319,7 @@ func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels *Reels6x, tn 
 								screen.SetCol(5, r5, i5)
 								for i6 := range r6 {
 									reshuf++
-									if reshuf%ctxgranulation == 0 {
+									if reshuf%CtxGranulation == 0 {
 										select {
 										case <-ctx.Done():
 											return
@@ -351,12 +344,8 @@ func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels *Reels6x, tn 
 	wg.Wait()
 }
 
-func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels, tn int) {
-	if cfg.DevMode {
-		tn = 1
-	} else if tn == 0 {
-		tn = runtime.GOMAXPROCS(0)
-	}
+func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
+	var tn = CorrectThrNum()
 	var tn64 = uint64(tn)
 	var n = s.Planned()
 	var wg sync.WaitGroup
@@ -372,7 +361,7 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels, tn int) 
 
 			for range n / tn64 {
 				reshuf++
-				if reshuf%ctxgranulation == 0 {
+				if reshuf%CtxGranulation == 0 {
 					select {
 					case <-ctx.Done():
 						return
@@ -398,11 +387,11 @@ func ScanReels3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x,
 	if cfg.MCCount > 0 {
 		s.SetPlan(cfg.MCCount * 1e6)
 		go Progress(ctx2, s, mctick, calc)
-		MonteCarlo(ctx2, s, g, reels, cfg.MTCount)
+		MonteCarlo(ctx2, s, g, reels)
 	} else {
 		s.SetPlan(reels.Reshuffles())
 		go Progress(ctx2, s, bftick, calc)
-		BruteForce3x(ctx2, s, g, reels, cfg.MTCount)
+		BruteForce3x(ctx2, s, g, reels)
 	}
 	var dur = time.Since(t0)
 	var comp = float64(s.Count()) / float64(s.Planned()) * 100
@@ -421,11 +410,11 @@ func ScanReels4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x,
 	if cfg.MCCount > 0 {
 		s.SetPlan(cfg.MCCount * 1e6)
 		go Progress(ctx2, s, mctick, calc)
-		MonteCarlo(ctx2, s, g, reels, cfg.MTCount)
+		MonteCarlo(ctx2, s, g, reels)
 	} else {
 		s.SetPlan(reels.Reshuffles())
 		go Progress(ctx2, s, bftick, calc)
-		BruteForce4x(ctx2, s, g, reels, cfg.MTCount)
+		BruteForce4x(ctx2, s, g, reels)
 	}
 	var dur = time.Since(t0)
 	var comp = float64(s.Count()) / float64(s.Planned()) * 100
@@ -444,11 +433,11 @@ func ScanReels5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x,
 	if cfg.MCCount > 0 {
 		s.SetPlan(cfg.MCCount * 1e6)
 		go Progress(ctx2, s, mctick, calc)
-		MonteCarlo(ctx2, s, g, reels, cfg.MTCount)
+		MonteCarlo(ctx2, s, g, reels)
 	} else {
 		s.SetPlan(reels.Reshuffles())
 		go Progress(ctx2, s, bftick, calc)
-		BruteForce5x(ctx2, s, g, reels, cfg.MTCount)
+		BruteForce5x(ctx2, s, g, reels)
 	}
 	var dur = time.Since(t0)
 	var comp = float64(s.Count()) / float64(s.Planned()) * 100
@@ -467,11 +456,11 @@ func ScanReels6x(ctx context.Context, s Stater, g SlotGame, reels *Reels6x,
 	if cfg.MCCount > 0 {
 		s.SetPlan(cfg.MCCount * 1e6)
 		go Progress(ctx2, s, mctick, calc)
-		MonteCarlo(ctx2, s, g, reels, cfg.MTCount)
+		MonteCarlo(ctx2, s, g, reels)
 	} else {
 		s.SetPlan(reels.Reshuffles())
 		go Progress(ctx2, s, bftick, calc)
-		BruteForce6x(ctx2, s, g, reels, cfg.MTCount)
+		BruteForce6x(ctx2, s, g, reels)
 	}
 	var dur = time.Since(t0)
 	var comp = float64(s.Count()) / float64(s.Planned()) * 100
