@@ -5,60 +5,10 @@ import (
 	"fmt"
 	"io"
 	"os"
-	"sync"
 	"time"
 
 	"github.com/slotopol/server/game/slot"
 )
-
-func BruteForce5x3Big(ctx context.Context, s slot.Stater, g slot.SlotGame, reels *slot.Reels5x) {
-	var tn = slot.CorrectThrNum()
-	var tn64 = uint64(tn)
-	var r1 = reels.Reel(1)
-	var r5 = reels.Reel(5)
-	var wg sync.WaitGroup
-	wg.Add(tn)
-	for ti := range tn64 {
-		var c = g.Clone()
-		var reshuf uint64
-		go func() {
-			defer wg.Done()
-
-			var screen = c.Screen()
-			var wins slot.Wins
-
-			for i1 := range r1 {
-				screen.SetCol(1, r1, i1)
-				for _, big := range BonusReel {
-					var x slot.Pos
-					for x = 2; x <= 4; x++ {
-						screen.Set(x, 1, big)
-						screen.Set(x, 2, big)
-						screen.Set(x, 3, big)
-					}
-					for i5 := range r5 {
-						reshuf++
-						if reshuf%slot.CtxGranulation == 0 {
-							select {
-							case <-ctx.Done():
-								return
-							default:
-							}
-						}
-						if reshuf%tn64 != ti {
-							continue
-						}
-						screen.SetCol(5, r5, i5)
-						c.Scanner(&wins)
-						s.Update(wins)
-						wins.Reset()
-					}
-				}
-			}
-		}()
-	}
-	wg.Wait()
-}
 
 func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
@@ -81,7 +31,7 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		s.SetPlan(uint64(len(reels.Reel(1))) * uint64(len(BonusReel)) * uint64(len(reels.Reel(5))))
-		BruteForce5x3Big(ctx2, &s, g, reels)
+		slot.BruteForce5x3Big(ctx2, &s, g, reels.Reel(1), BonusReel, reels.Reel(5))
 	}()
 	return calc(os.Stdout)
 }

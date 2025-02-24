@@ -310,6 +310,15 @@ func (s *Screen5x3) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
+func (s *Screen5x3) SetBig(big Sym) {
+	var x Pos
+	for x = 1; x <= 3; x++ {
+		s[x][0] = big
+		s[x][1] = big
+		s[x][2] = big
+	}
+}
+
 func (s *Screen5x3) Spin(reels Reels) {
 	var x Pos
 	for x = 1; x <= 5; x++ {
@@ -317,6 +326,19 @@ func (s *Screen5x3) Spin(reels Reels) {
 		var hit = rand.N(len(reel))
 		s.SetCol(x, reel, hit)
 	}
+}
+
+func (s *Screen5x3) SpinBig(r1, rb, r5 []Sym) {
+	var hit int
+	// set 1 reel
+	hit = rand.N(len(r1))
+	s.SetCol(1, r1, hit)
+	// set center
+	var big = rb[rand.N(len(rb))]
+	s.SetBig(big)
+	// set 5 reel
+	hit = rand.N(len(r5))
+	s.SetCol(5, r5, hit)
 }
 
 func (s *Screen5x3) SymNum(sym Sym) (n Pos) {

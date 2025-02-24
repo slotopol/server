@@ -287,6 +287,48 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x) {
 	wg.Wait()
 }
 
+func BruteForce5x3Big(ctx context.Context, s Stater, g SlotGame, r1, rb, r5 []Sym) {
+	var tn = CorrectThrNum()
+	var tn64 = uint64(tn)
+	var wg sync.WaitGroup
+	wg.Add(tn)
+	for ti := range tn64 {
+		var c = g.Clone()
+		var reshuf uint64
+		go func() {
+			defer wg.Done()
+
+			var screen = c.Screen().(*Screen5x3)
+			var wins Wins
+
+			for i1 := range r1 {
+				screen.SetCol(1, r1, i1)
+				for _, big := range rb {
+					screen.SetBig(big)
+					for i5 := range r5 {
+						reshuf++
+						if reshuf%CtxGranulation == 0 {
+							select {
+							case <-ctx.Done():
+								return
+							default:
+							}
+						}
+						if reshuf%tn64 != ti {
+							continue
+						}
+						screen.SetCol(5, r5, i5)
+						c.Scanner(&wins)
+						s.Update(wins)
+						wins.Reset()
+					}
+				}
+			}
+		}()
+	}
+	wg.Wait()
+}
+
 func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels *Reels6x) {
 	var tn = CorrectThrNum()
 	var tn64 = uint64(tn)

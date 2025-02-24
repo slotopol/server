@@ -4,83 +4,33 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"sync"
+	"os"
 	"time"
 
 	"github.com/slotopol/server/game/slot"
 )
 
-func BruteForce5x3Big(ctx context.Context, s slot.Stater, g slot.SlotGame, reels slot.Reels, big slot.Sym) {
-	var tn = slot.CorrectThrNum()
-	var tn64 = uint64(tn)
-	var r1 = reels.Reel(1)
-	var r5 = reels.Reel(5)
-	var wg sync.WaitGroup
-	wg.Add(tn)
-	for ti := range tn64 {
-		var c = g.Clone()
-		var reshuf uint64
-		go func() {
-			defer wg.Done()
-
-			var screen = c.Screen()
-			var wins slot.Wins
-
-			var x slot.Pos
-			for x = 2; x <= 4; x++ {
-				screen.Set(x, 1, big)
-				screen.Set(x, 2, big)
-				screen.Set(x, 3, big)
-			}
-			for i1 := range r1 {
-				screen.SetCol(1, r1, i1)
-				for i5 := range r5 {
-					reshuf++
-					if reshuf%slot.CtxGranulation == 0 {
-						select {
-						case <-ctx.Done():
-							return
-						default:
-						}
-					}
-					if reshuf%tn64 != ti {
-						continue
-					}
-					screen.SetCol(5, r5, i5)
-					c.Scanner(&wins)
-					s.Update(wins)
-					wins.Reset()
-				}
-			}
-		}()
-	}
-	wg.Wait()
-}
-
-func CalcStatSym(ctx context.Context, g *Game, reels slot.Reels, big slot.Sym) float64 {
-	var s slot.Stat
-
-	var ctx2, cancel2 = context.WithCancel(ctx)
-	defer cancel2()
-	BruteForce5x3Big(ctx2, &s, g, reels, big)
-
-	var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
-	var rtpsym = lrtp + srtp
-	fmt.Printf("RTP[%d] = %.5g(lined) + %.5g(scatter) = %.6f%%\n", big, lrtp, srtp, rtpsym)
-	return rtpsym
-}
-
-func CalcStatBon(ctx context.Context, mrtp float64) (rtp float64) {
+func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
 	var g = NewGame()
 	g.Sel = 1
+	g.FSR = 10 // set free spins mode
+	var s slot.Stat
 
-	for big := slot.Sym(1); big <= 7; big++ {
-		rtp += CalcStatSym(ctx, g, reels, big)
+	var calc = func(w io.Writer) float64 {
+		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
+		var rtpsym = lrtp + srtp
+		fmt.Fprintf(w, "RTP = %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
+		return rtpsym
 	}
-	rtp /= 7
-	fmt.Printf("average freespins RTP = %.6f%%\n", rtp)
-	return
+
+	func() {
+		var ctx2, cancel2 = context.WithCancel(ctx)
+		defer cancel2()
+		s.SetPlan(uint64(len(reels.Reel(1))) * uint64(len(BonusReel)) * uint64(len(reels.Reel(5))))
+		slot.BruteForce5x3Big(ctx2, &s, g, reels.Reel(1), BonusReel, reels.Reel(5))
+	}()
+	return calc(os.Stdout)
 }
 
 func CalcStatReg(ctx context.Context, mrtp float64) float64 {

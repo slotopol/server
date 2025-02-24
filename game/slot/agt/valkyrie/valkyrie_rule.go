@@ -4,7 +4,6 @@ package valkyrie
 
 import (
 	_ "embed"
-	"math/rand/v2"
 
 	"github.com/slotopol/server/game/slot"
 )
@@ -135,24 +134,7 @@ func (g *Game) Spin(mrtp float64) {
 	if g.FSR == 0 {
 		g.Scr.Spin(reels)
 	} else {
-		var reel []slot.Sym
-		var hit int
-		// set 1 reel
-		reel = reels.Reel(1)
-		hit = rand.N(len(reel))
-		g.Scr.SetCol(1, reel, hit)
-		// set center
-		var big = BonusReel[rand.N(len(BonusReel))]
-		var x slot.Pos
-		for x = 2; x <= 4; x++ {
-			g.Scr.Set(x, 1, big)
-			g.Scr.Set(x, 2, big)
-			g.Scr.Set(x, 3, big)
-		}
-		// set 5 reel
-		reel = reels.Reel(5)
-		hit = rand.N(len(reel))
-		g.Scr.SetCol(5, reel, hit)
+		g.Scr.SpinBig(reels.Reel(1), BonusReel, reels.Reel(5))
 	}
 }
 
