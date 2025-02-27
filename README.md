@@ -16,13 +16,13 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 178 games, 88 algorithms, 9 providers
+total: 179 games, 89 algorithms, 9 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
 Megajack: 4 games
 NetEnt: 20 games
-Novomatic: 77 games
+Novomatic: 78 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games
@@ -30,6 +30,7 @@ Slotopol: 4 games
 
 *Last added games*:
 
+* '[Fairy Queen](https://www.slotsmate.com/software/novomatic/fairy-queen)' Novomatic 5x3 videoslot with win on every free spin
 * '[Angry Birds](https://www.slotsmate.com/software/novomatic/angry-birds)' Novomatic 5x3 videoslot
 * '[King's Jester](https://www.slotsmate.com/software/novomatic/kings-jester)' Novomatic 5x3 videoslot
 * '[Royal Dynasty](https://www.slotsmate.com/software/novomatic/royal-dynasty)' Novomatic 5x3 videoslot

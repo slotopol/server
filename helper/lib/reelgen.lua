@@ -95,6 +95,8 @@ function shuffle(t)
 	end
 end
 
+local maxiter = 10000
+
 function correctreel(reel, neighbours)
 	local iter = 0
 	while true do
@@ -149,7 +151,7 @@ function correctreel(reel, neighbours)
 		if n == 0 then
 			break
 		end
-		if iter >= 1000 then
+		if iter >= maxiter then
 			break
 		end
 	end
@@ -158,7 +160,7 @@ end
 
 function printreel(reel, iter)
 	if iter > 1 then
-		if iter >= 1000 then
+		if iter >= maxiter then
 			print"too many neighbours shuffle iterations"
 			return
 		else

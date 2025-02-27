@@ -1,0 +1,45 @@
+
+# *calculations for expanding symbol [2]*
+# symbols: 538.69(lined) + 1.7689(scatter) = 540.461608%
+# free spins 270, q = 0.0016228, sq = 1/(1-q) = 1.001625
+# free games frequency: 1/6162
+# RTP[2] = 540.461608%
+# *calculations for expanding symbol [3]*
+# symbols: 538.69(lined) + 1.7689(scatter) = 540.461608%
+# free spins 270, q = 0.0016228, sq = 1/(1-q) = 1.001625
+# free games frequency: 1/6162
+# RTP[3] = 540.461608%
+# *calculations for expanding symbol [4]*
+# RTP[4] = 2975.801653%
+# *calculations for expanding symbol [5]*
+# RTP[5] = 2363.404959%
+# *calculations for expanding symbol [6]*
+# RTP[6] = 2363.404959%
+# *calculations for expanding symbol [7]*
+# RTP[7] = 1631.173554%
+# *calculations for expanding symbol [8]*
+# RTP[8] = 1631.173554%
+# *calculations for expanding symbol [9]*
+# RTP[9] = 950.181818%
+# *calculations for expanding symbol [10]*
+# RTP[10] = 950.181818%
+# *calculations for expanding symbol [11]*
+# RTP[11] = 950.181818%
+# *calculations for expanding symbol [12]*
+# symbols: 335.51(lined) + 1.7689(scatter) = 337.276033%
+# free spins 270, q = 0.0016228, sq = 1/(1-q) = 1.001625
+# free games frequency: 1/6162
+# RTP[12] = 337.276033%
+# *calculations for expanding symbol [13]*
+# symbols: 0(lined) + 317.62(scatter) = 317.623441%
+# free spins 257670, q = 1.5487, sq = 1/(1-q) = -1.822389
+# free games frequency: 1/6.4569
+# RTP[13] = 317.623441%
+# free spins: q = 0.16675, sq = 1/(1-q) = 1.200115
+# free games frequency: 1/59.971
+# RTPfs = sq*rtp(sym) = 1.2001*855.94 = 1027.224599%
+- [] # 0
+- [] # 0
+- [2, 11, 7, 4, 12, 9, 4, 7, 9, 10, 6, 8, 2, 9, 3, 8, 7, 12, 4, 13, 11, 9, 10, 5, 11, 6, 10, 8, 6, 9, 11, 5, 8, 11, 6, 8, 12, 3, 11, 1, 12, 10, 5, 12, 1, 7, 10, 5, 12, 9, 3, 12, 2, 7, 10] # 55
+- [4, 9, 8, 5, 10, 9, 5, 10, 11, 2, 7, 10, 12, 3, 13, 10, 3, 7, 6, 11, 4, 8, 12, 1, 9, 12, 8, 11, 1, 12, 4, 11, 5, 7, 9, 11, 12, 8, 6, 12, 3, 11, 2, 9, 12, 10, 6, 7, 9, 2, 8, 5, 10, 6, 7] # 55
+- [3, 7, 2, 11, 9, 5, 11, 6, 12, 11, 3, 12, 10, 7, 2, 9, 3, 11, 10, 13, 4, 9, 5, 12, 7, 10, 12, 1, 8, 12, 9, 5, 7, 1, 8, 4, 9, 6, 11, 10, 9, 12, 5, 10, 7, 6, 8, 2, 12, 8, 6, 11, 8, 4, 10] # 55
