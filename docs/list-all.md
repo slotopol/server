@@ -42,6 +42,7 @@
 'Champagne' Megajack 5x3 videoslot
 'Cherry Hot' AGT 5x3 videoslot
 'Chicago' Novomatic 5x3 videoslot
+'Cleopatra' IGT 5x3 videoslot
 'Cold Spell' Novomatic 5x3 videoslot
 'Columbus Deluxe' Novomatic 5x3 videoslot
 'Columbus' Novomatic 5x3 videoslot
@@ -182,10 +183,11 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 179 games, 89 algorithms, 9 providers
+total: 180 games, 90 algorithms, 10 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
+IGT: 1 games
 Megajack: 4 games
 NetEnt: 20 games
 Novomatic: 78 games

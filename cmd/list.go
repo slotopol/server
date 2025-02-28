@@ -254,6 +254,7 @@ func init() {
 	listflags.Bool("agt", false, "include games of 'AGT' provider")
 	listflags.Bool("aristocrat", false, "include games of 'Aristocrat' provider")
 	listflags.Bool("betsoft", false, "include games of 'BetSoft' provider")
+	listflags.Bool("igt", false, "include games of 'IGT' provider")
 	listflags.Bool("megajack", false, "include games of 'Megajack' provider")
 	listflags.Bool("netent", false, "include games of 'NetExt' provider")
 	listflags.Bool("novomatic", false, "include games of 'Novomatic' provider")
@@ -280,7 +281,7 @@ func init() {
 	listflags.Bool("bonus", false, "include games with bonus games")
 
 	listCmd.MarkFlagsOneRequired("all",
-		"agt", "aristocrat", "betsoft", "megajack", "netent", "novomatic", "playngo", "playtech", "slotopol", "keno",
+		"agt", "aristocrat", "betsoft", "igt", "megajack", "netent", "novomatic", "playngo", "playtech", "slotopol", "keno",
 		"3x", "4x", "5x", "6x", "3x3", "4x4", "5x3", "5x4", "6x3", "6x4",
 		"fewlines", "multilines", "megaway", "jack", "fg", "bonus")
 }

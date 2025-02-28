@@ -107,4 +107,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/agt/valentinesday"
 	_ "github.com/slotopol/server/game/slot/agt/valkyrie"
 	_ "github.com/slotopol/server/game/slot/agt/wizard"
+
+	// IGT
+	_ "github.com/slotopol/server/game/slot/igt/cleopatra"
 )
