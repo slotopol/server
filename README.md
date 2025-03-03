@@ -62,7 +62,7 @@ Slotopol: 4 games
 
 # How to build from sources
 
-*Note: you can download the compiled binaries for Windows at [release](https://github.com/slotopol/server/releases/latest) section, or build docker image by [dockerfile](https://github.com/slotopol/server/blob/main/Dockerfile), or use compiled image from [docker hub](https://hub.docker.com/r/schwarzlichtbezirk/slotopol): `docker pull schwarzlichtbezirk/slotopol`.*
+*Note: you can download the compiled binaries for Windows at [release](https://github.com/slotopol/server/releases/latest) section, or build docker image by [dockerfile](https://github.com/slotopol/server/blob/main/Dockerfile), or use compiled image from [docker hub](https://hub.docker.com/r/schwarzlichtbezirk/slotopol): `docker pull schwarzlichtbezirk/slotopol` and start image [as it described](docs/docker-config.md).*
 
 1. Install [Golang](https://go.dev/dl/) of last version and GCC toolset.
 2. Clone project and download dependencies.

@@ -37,7 +37,7 @@ var (
 )
 
 var (
-	ErrNoCfgFile = errors.New("configyration file was not found")
+	ErrNoCfgFile = errors.New("configuration file was not found")
 )
 
 func InitConfig() {
@@ -57,6 +57,9 @@ func InitConfig() {
 	}()
 
 	// Config path
+	if val := os.Getenv("CFGFILE"); val != "" {
+		CfgFile = val
+	}
 	if CfgFile != "" {
 		if ok, _ := FileExists(CfgFile); !ok {
 			cobra.CheckErr(ErrNoCfgFile)
@@ -68,17 +71,13 @@ func InitConfig() {
 		// Search config in home directory with name "slot-app" (without extension).
 		viper.SetConfigName("slot-app")
 		viper.SetConfigType("yaml")
-		if env := os.Getenv("CFGFILE"); env != "" {
-			viper.AddConfigPath(env)
-		}
 		viper.AddConfigPath(filepath.Join(ExePath, sub))
 		viper.AddConfigPath(ExePath)
 		viper.AddConfigPath(sub)
 		viper.AddConfigPath("appdata")
 		viper.AddConfigPath(".")
-		if home, err := os.UserHomeDir(); err == nil {
-			viper.AddConfigPath(filepath.Join(home, "slotopol", sub))
-			viper.AddConfigPath(filepath.Join(home, sub))
+		if appdata, err := os.UserConfigDir(); err == nil {
+			viper.AddConfigPath(filepath.Join(appdata, "slotopol", "server"))
 		}
 		if env, ok := os.LookupEnv("GOBIN"); ok {
 			viper.AddConfigPath(filepath.Join(env, sub))
@@ -107,7 +106,6 @@ func InitConfig() {
 	if SqlPath == "" {
 		SqlPath = LookupInLocations("SQLPATH", "sqlite", "slot-club.sqlite")
 	}
-	cobra.CheckErr(os.MkdirAll(SqlPath, os.ModePerm))
 	log.Printf("sqlite path: %s\n", SqlPath)
 }
 
@@ -137,21 +135,20 @@ func FileExists(fpath string) (bool, error) {
 
 func LookupInLocations(env, sub, fname string) (fpath string) {
 	var list []string
-	if val, ok := os.LookupEnv(env); ok {
-		list, _ = AddDir(list, val)
+	if val := os.Getenv(env); val != "" {
+		fpath = val
+		cobra.CheckErr(os.MkdirAll(fpath, os.ModePerm))
+		return
 	}
 	list, _ = AddDir(list,
 		filepath.Join(ExePath, sub),
 		ExePath,
-		filepath.Join(CfgPath, "..", sub),
-		filepath.Join(CfgPath, ".."),
-		CfgPath,
 		sub,
+		"appdata",
 		".",
 	)
-	if home, err := os.UserHomeDir(); err == nil {
-		list, _ = AddDir(list, filepath.Join(home, "slotopol", sub))
-		list, _ = AddDir(list, filepath.Join(home, sub))
+	if appdata, err := os.UserCacheDir(); err == nil {
+		list, _ = AddDir(list, filepath.Join(appdata, "slotopol", "server"))
 	}
 	if env, ok := os.LookupEnv("GOBIN"); ok {
 		list, _ = AddDir(list, filepath.Join(env, sub))
@@ -162,6 +159,7 @@ func LookupInLocations(env, sub, fname string) (fpath string) {
 	}
 	if fpath = LookupDir(list, fname); fpath == "" {
 		fpath = filepath.Join(ExePath, sub)
+		cobra.CheckErr(os.MkdirAll(fpath, os.ModePerm))
 	}
 	return
 }

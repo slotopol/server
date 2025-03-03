@@ -3,13 +3,13 @@
 # It produces static C-libraries linkage.
 
 wd=$(realpath -s "$(dirname "$0")/..")
-mkdir -p "$GOPATH/bin/config"
+mkdir -p "$GOPATH/bin/config" "$GOPATH/bin/sqlite"
 cp -ruv "$wd/appdata/"* "$GOPATH/bin/config"
 
 # dockerfile has no access to git repository,
 # so update content of this variable by
 #   echo $(git describe --tags)
-buildvers="v0.8.0-6-g0ac497b"
+buildvers="v0.9.0"
 # See https://tc39.es/ecma262/#sec-date-time-string-format
 # time format acceptable for Date constructors.
 buildtime=$(date +'%FT%T.%3NZ')
