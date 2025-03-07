@@ -140,6 +140,7 @@
 'Ramses II' Novomatic 5x3 videoslot
 'Redroo' Aristocrat 5x4 videoslot
 'Reel Steal' NetEnt 5x3 videoslot
+'Rich Girl' IGT 5x3 videoslot
 'Roaring Forties' Novomatic 5x4 videoslot
 'Royal Dynasty' Novomatic 5x3 videoslot
 'Royal Treasures' Novomatic 5x3 videoslot
@@ -183,11 +184,11 @@
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
 
-total: 180 games, 90 algorithms, 10 providers
+total: 181 games, 91 algorithms, 10 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
-IGT: 1 games
+IGT: 2 games
 Megajack: 4 games
 NetEnt: 20 games
 Novomatic: 78 games
