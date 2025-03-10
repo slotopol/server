@@ -16,11 +16,11 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 181 games, 91 algorithms, 10 providers
+total: 182 games, 92 algorithms, 10 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
-IGT: 2 games
+IGT: 3 games
 Megajack: 4 games
 NetEnt: 20 games
 Novomatic: 78 games
@@ -269,4 +269,4 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d
 ```
 
 ---
-(c) schwarzlichtbezirk, 2024.
+(c) schwarzlichtbezirk, 2024-2025.

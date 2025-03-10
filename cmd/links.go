@@ -111,4 +111,5 @@ import (
 	// IGT
 	_ "github.com/slotopol/server/game/slot/igt/cleopatra"
 	_ "github.com/slotopol/server/game/slot/igt/richgirl"
+	_ "github.com/slotopol/server/game/slot/igt/wolfrun"
 )

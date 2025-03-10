@@ -183,12 +183,13 @@
 'Wild West' AGT 5x4 videoslot
 'Wild Witches' NetEnt 5x3 videoslot
 'Wizard' AGT 5x4 videoslot
+'Wolf Run' IGT 5x4 videoslot
 
-total: 181 games, 91 algorithms, 10 providers
+total: 182 games, 92 algorithms, 10 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
-IGT: 2 games
+IGT: 3 games
 Megajack: 4 games
 NetEnt: 20 games
 Novomatic: 78 games
