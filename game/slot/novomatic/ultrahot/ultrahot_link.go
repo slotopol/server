@@ -12,7 +12,8 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Ultra Hot Deluxe"}, // see: https://www.slotsmate.com/software/novomatic/ultrahot-deluxe
 		{Prov: "Novomatic", Name: "Ultra Gems"},       // see: https://www.slotsmate.com/software/novomatic/ultra-gems
 	},
-	GP: game.GPfgno |
+	GP: game.GPsel |
+		game.GPfgno |
 		game.GPfill,
 	SX:  3,
 	SY:  3,

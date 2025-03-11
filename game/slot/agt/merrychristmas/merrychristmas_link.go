@@ -10,8 +10,7 @@ var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "AGT", Name: "Merry Christmas"},
 	},
-	GP: game.GPsel |
-		game.GPretrig |
+	GP: game.GPretrig |
 		game.GPscat |
 		game.GPwild,
 	SX:  3,

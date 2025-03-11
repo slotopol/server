@@ -16,11 +16,11 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 182 games, 92 algorithms, 10 providers
+total: 183 games, 93 algorithms, 10 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
-IGT: 3 games
+IGT: 4 games
 Megajack: 4 games
 NetEnt: 20 games
 Novomatic: 78 games
@@ -31,6 +31,8 @@ Slotopol: 4 games
 
 *Last added games*:
 
+* '[Triple Diamond](https://www.slotsmate.com/software/igt/triple-diamond)' IGT 3x3 videoslot
+* '[Wolf Run](https://www.slotsmate.com/software/igt/wolf-run)' IGT 5x4 videoslot
 * '[Rich Girl](https://www.slotsmate.com/software/igt/rich-girl)' IGT 5x3 videoslot
 * '[Cleopatra](https://www.slotsmate.com/software/igt/igt-cleopatra)' IGT 5x3 videoslot
 * '[Fairy Queen](https://www.slotsmate.com/software/novomatic/fairy-queen)' Novomatic 5x3 videoslot with win on every free spin
@@ -44,8 +46,6 @@ Slotopol: 4 games
 * '[Ultra Sevens](https://www.slotsmate.com/software/novomatic/ultra-sevens)' Novomatic 5x4 videoslot with 3 jackpots
 * '[Plenty of Jewels 20 hot](https://www.slotsmate.com/software/novomatic/plenty-of-jewels-20-hot)' Novomatic 5x3 videoslot
 * '[Dragon's Deep](https://www.slotsmate.com/software/novomatic/dragons-deep)' Novomatic 5x3 videoslot
-* '[Inferno](https://www.slotsmate.com/software/novomatic/inferno)' Novomatic 5x3 videoslot
-* '[Helena](https://www.slotsmate.com/software/novomatic/helena)' Novomatic 5x3 videoslot
 
 *Top-10 of games with most interesting algorithms released on server*:
 
