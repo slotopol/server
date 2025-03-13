@@ -8,7 +8,6 @@ import (
 	"log"
 	"os"
 	"os/signal"
-	"regexp"
 	"syscall"
 	"time"
 
@@ -32,10 +31,6 @@ var (
 	ErrNoClubName = errors.New("name of 'club' database does not provided at data source name")
 	ErrNoSpinName = errors.New("name of 'spin' database does not provided at data source name")
 )
-
-const mysqlnewdb = "CREATE DATABASE IF NOT EXISTS `%s`"
-
-var snre = regexp.MustCompile(`^(\w+:.+@/)(\w+)`)
 
 func Startup() (exitctx context.Context) {
 	//var cancel context.CancelFunc
@@ -83,28 +78,17 @@ func InitStorage() (err error) {
 		if cfg.XormStorage, err = xorm.NewEngine(Cfg.DriverName, fpath); err != nil {
 			return
 		}
-
-	case "mysql":
-		if c := snre.FindStringSubmatch(Cfg.ClubSourceName); len(c) == 3 {
-			var dbname, rsn = c[2], c[1]
-			var engine *xorm.Engine
-			if engine, err = xorm.NewEngine(Cfg.DriverName, rsn); err != nil {
-				return
-			}
-			defer engine.Close()
-			if _, err = engine.Exec(fmt.Sprintf(mysqlnewdb, dbname)); err != nil {
-				return
-			}
+		if Cfg.ClubSourceName != ":memory:" {
+			log.Println("club db: sqlite")
+		} else {
+			log.Println("club db: memory")
 		}
+
+	case "mysql", "postgres":
 		if cfg.XormStorage, err = xorm.NewEngine(Cfg.DriverName, Cfg.ClubSourceName); err != nil {
 			return
 		}
-
-	case "postgres":
-		if cfg.XormStorage, err = xorm.NewEngine(Cfg.DriverName, Cfg.ClubSourceName); err != nil {
-			log.Println(Cfg.ClubSourceName)
-			return
-		}
+		log.Printf("club db: %s\n", Cfg.DriverName)
 	}
 	cfg.XormStorage.SetMapper(names.GonicMapper{})
 
@@ -230,27 +214,17 @@ func InitSpinlog() (err error) {
 		if cfg.XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, fpath); err != nil {
 			return
 		}
-
-	case "mysql":
-		if c := snre.FindStringSubmatch(Cfg.ClubSourceName); len(c) == 3 {
-			var dbname, rsn = c[2], c[1]
-			var engine *xorm.Engine
-			if engine, err = xorm.NewEngine(Cfg.DriverName, rsn); err != nil {
-				return
-			}
-			defer engine.Close()
-			if _, err = engine.Exec(fmt.Sprintf(mysqlnewdb, dbname)); err != nil {
-				return
-			}
+		if Cfg.ClubSourceName != ":memory:" {
+			log.Println("spin db: sqlite")
+		} else {
+			log.Println("spin db: memory")
 		}
+
+	case "mysql", "postgres":
 		if cfg.XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, Cfg.SpinSourceName); err != nil {
 			return
 		}
-
-	case "postgres":
-		if cfg.XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, Cfg.SpinSourceName); err != nil {
-			return
-		}
+		log.Printf("spin db: %s\n", Cfg.DriverName)
 	}
 	cfg.XormSpinlog.SetMapper(names.GonicMapper{})
 

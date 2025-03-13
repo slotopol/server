@@ -1,0 +1,44 @@
+# Basic use case to run Slotopol server with MySQL database in docker.
+
+services:
+
+  slotopol:
+    image: schwarzlichtbezirk/slotopol:latest
+    container_name: slotopol-srv
+    depends_on:
+      - database
+    ports:
+      - 8080:8080
+    networks:
+      slotopol-net:
+        aliases:
+          - slotopolhost
+    environment:
+      DBDRIVER: mysql
+      CLUBDSN: admin:jB44t78dHv@tcp(mysqlhost:3306)/slot
+      SPINDSN: admin:jB44t78dHv@tcp(mysqlhost:3306)/slot
+    restart: unless-stopped
+    stop_signal: SIGINT
+    stop_grace_period: 15s
+
+  database:
+    image: mysql:8.0-debian
+    container_name: slotopol-db
+    ports:
+      - 3306:3306
+    networks:
+      slotopol-net:
+        aliases:
+          - mysqlhost
+    environment:
+      MYSQL_ROOT_PASSWORD: dg8FxCm1hh
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: jB44t78dHv
+      MYSQL_DATABASE: slot
+
+networks:
+  slotopol-net:
+    name: slotopol-net
+    external: false
+    ipam:
+      driver: default

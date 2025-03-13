@@ -32,7 +32,7 @@ docker run -d -p 8080:8080 -v "D:/srv":/cache -e SQLPATH=/cache/sqlite schwarzli
 Default settings file can also be replaced. To replace only one settings file can by command:
 
 ```sh
-docker run -d -p 8080:8080 -v "D:/srv/config/slot-app.yaml":/go/bin/config/slot-app.yaml schwarzlichtbezirk/slotopol
+docker run -d -p 8080:8080 -v "D:/srv/config/slot-app.yaml":/go/bin/config/slot-app.yaml:ro schwarzlichtbezirk/slotopol
 ```
 
 If you mount folder volume with settings files, other configuration files also should be present there. In case of mounted folder with configuration files you can keep several settings files with different names in one folder, and provide specified file by `CFGFILE` environment variable. I.e. you can make `slot-app-mysql.yaml` file with connection to MySQL, and `slot-app-postgres.yaml` file with PostgreSQL connection for example.
