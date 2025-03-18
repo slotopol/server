@@ -1,4 +1,6 @@
 # Basic use case to run Slotopol server with MySQL database in docker.
+# Typical usage:
+#   docker compose -p slotopol-mysql -f "docker-compose.mysql.yaml" up -d --build
 
 services:
 
@@ -14,9 +16,9 @@ services:
         aliases:
           - slotopolhost
     environment:
-      DBDRIVER: mysql
-      CLUBDSN: admin:jB44t78dHv@tcp(mysqlhost:3306)/slot
-      SPINDSN: admin:jB44t78dHv@tcp(mysqlhost:3306)/slot
+      SLOTOPOL_DBDRIVER: mysql
+      SLOTOPOL_CLUBDSN: admin:jB44t78dHv@tcp(mysqlhost:3306)/slotopol
+      SLOTOPOL_SPINDSN: admin:jB44t78dHv@tcp(mysqlhost:3306)/slotopol
     restart: unless-stopped
     stop_signal: SIGINT
     stop_grace_period: 15s
@@ -34,7 +36,7 @@ services:
       MYSQL_ROOT_PASSWORD: dg8FxCm1hh
       MYSQL_USER: admin
       MYSQL_PASSWORD: jB44t78dHv
-      MYSQL_DATABASE: slot
+      MYSQL_DATABASE: slotopol
 
 networks:
   slotopol-net:

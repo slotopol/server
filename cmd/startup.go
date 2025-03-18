@@ -14,11 +14,11 @@ import (
 	"github.com/slotopol/server/api"
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/util"
-	"gopkg.in/yaml.v3"
 
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
+	"gopkg.in/yaml.v3"
 	"xorm.io/xorm"
 	"xorm.io/xorm/names"
 )

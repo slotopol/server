@@ -57,7 +57,7 @@ func InitConfig() {
 	}()
 
 	// Config path
-	if val := os.Getenv("CFGFILE"); val != "" {
+	if val := os.Getenv("SLOTOPOL_CFGFILE"); val != "" {
 		CfgFile = val
 	}
 	if CfgFile != "" {
@@ -88,9 +88,9 @@ func InitConfig() {
 		}
 	}
 
-	viper.BindEnv("database.driver-name", "DBDRIVER")
-	viper.BindEnv("database.club-source-name", "CLUBDSN")
-	viper.BindEnv("database.spin-source-name", "SPINDSN")
+	viper.BindEnv("database.driver-name", "SLOTOPOL_DBDRIVER")
+	viper.BindEnv("database.club-source-name", "SLOTOPOL_CLUBDSN")
+	viper.BindEnv("database.spin-source-name", "SLOTOPOL_SPINDSN")
 	viper.AutomaticEnv()
 
 	if err = viper.ReadInConfig(); err != nil {
@@ -104,7 +104,7 @@ func InitConfig() {
 
 	// Detect SQLite path.
 	if SqlPath == "" {
-		SqlPath = LookupInLocations("SQLPATH", "sqlite", "slot-club.sqlite")
+		SqlPath = LookupInLocations("SLOTOPOL_SQLPATH", "sqlite", "slot-club.sqlite")
 	}
 	log.Printf("sqlite path: %s\n", SqlPath)
 }
