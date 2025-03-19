@@ -54,6 +54,7 @@
 'Dolphin Treasure' Aristocrat 5x3 videoslot
 'Dolphins Pearl Deluxe' Novomatic 5x3 videoslot
 'Dolphins Pearl' Novomatic 5x3 videoslot
+'Double Diamond' IGT 3x3 videoslot
 'Double Hot' AGT 3x3 videoslot
 'Double Ice' AGT 3x3 videoslot
 'Down Under' Novomatic 5x3 videoslot
@@ -186,11 +187,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 183 games, 93 algorithms, 10 providers
+total: 184 games, 94 algorithms, 10 providers
 AGT: 56 games
 Aristocrat: 4 games
 BetSoft: 3 games
-IGT: 4 games
+IGT: 5 games
 Megajack: 4 games
 NetEnt: 20 games
 Novomatic: 78 games

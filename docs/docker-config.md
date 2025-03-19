@@ -68,7 +68,7 @@ Logs can be switched off by `SLOTOPOL_SPINDSN` is set to empty string.
 ```yaml
 # Basic use case to run Slotopol server with MySQL database in docker.
 # Typical usage:
-#   docker compose -p slotopol-mysql -f "docker-compose.mysql.yaml" up -d --build
+#   docker compose -p slotopol-mysql -f "docker-compose.yml" up -d --build
 
 services:
 
