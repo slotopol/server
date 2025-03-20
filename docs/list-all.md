@@ -71,6 +71,7 @@
 'Fire Keno' Slotopol 80 spots lottery
 'Firefighters' AGT 5x3 videoslot
 'Fortune Teller' Play'n GO 5x3 videoslot
+'Fruit Queen' AGT 5x6 videoslot
 'Fruit Shop' NetEnt 5x3 videoslot
 'Fruitilicious' Novomatic 5x3 videoslot
 'Fruits'n Royals' Novomatic 5x3 videoslot
@@ -139,6 +140,7 @@
 'Polar Fox' Novomatic 5x3 videoslot
 'Power Stars' Novomatic 5x3 videoslot
 'Ramses II' Novomatic 5x3 videoslot
+'Red Crown' AGT 5x4 videoslot
 'Redroo' Aristocrat 5x4 videoslot
 'Reel Steal' NetEnt 5x3 videoslot
 'Rich Girl' IGT 5x3 videoslot
@@ -187,8 +189,8 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 184 games, 94 algorithms, 10 providers
-AGT: 56 games
+total: 186 games, 95 algorithms, 10 providers
+AGT: 58 games
 Aristocrat: 4 games
 BetSoft: 3 games
 IGT: 5 games

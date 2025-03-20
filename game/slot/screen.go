@@ -28,7 +28,7 @@ type Screenx struct {
 // Declare conformity with Screen interface.
 var _ Screen = (*Screenx)(nil)
 
-func (s *Screenx) Init(sx, sy Pos) {
+func (s *Screenx) SetDim(sx, sy Pos) {
 	s.sx, s.sy = sx, sy
 }
 
@@ -59,6 +59,8 @@ func (s *Screenx) UpdateDim() (sx, sy Pos) {
 		sx, sy = 6, 4
 	case 5 * 5: // 25
 		sx, sy = 5, 5
+	case 5 * 6: // 30
+		sx, sy = 5, 6
 	}
 	s.sx, s.sy = sx, sy
 	return
@@ -117,21 +119,24 @@ func (s *Screenx) ScatNum(scat Sym) (n Pos) {
 func (s *Screenx) ScatPos(scat Sym) (l Linex) {
 	for i := range s.sx * s.sy {
 		if s.data[i] == scat {
-			l[i/s.sy+1] = i%s.sy + 1
+			l[i/s.sy] = i%s.sy + 1
 		}
 	}
 	return
 }
 
 func (s *Screenx) MarshalJSON() ([]byte, error) {
-	return json.Marshal(s.data[:s.Len()])
+	return json.Marshal(s.data[:s.sx*s.sy])
 }
 
 func (s *Screenx) UnmarshalJSON(b []byte) (err error) {
+	clear(s.data[:])
 	if err = json.Unmarshal(b, &s.data); err != nil {
 		return
 	}
-	s.UpdateDim()
+	if s.sx == 0 || s.sy == 0 {
+		s.UpdateDim()
+	}
 	return
 }
 

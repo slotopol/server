@@ -1,6 +1,6 @@
 //go:build !prod || full || agt
 
-package shiningstars100
+package fruitqueen
 
 import (
 	"github.com/slotopol/server/game"
@@ -8,16 +8,14 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "AGT", Name: "100 Shining Stars"},
-		{Prov: "AGT", Name: "50 Apples' Shine"}, // see: https://demo.agtsoftware.com/games/agt/applesshine50
-		{Prov: "AGT", Name: "Red Crown"},        // see: https://demo.agtsoftware.com/games/agt/redcrown
+		{Prov: "AGT", Name: "Fruit Queen"}, // see: https://demo.agtsoftware.com/games/agt/fruitqueen
 	},
 	GP: game.GPsel |
 		game.GPfgno |
 		game.GPscat |
-		game.GPrwild,
+		game.GPwild,
 	SX:  5,
-	SY:  4,
+	SY:  6,
 	SN:  len(LinePay),
 	LN:  len(BetLines),
 	BN:  0,
