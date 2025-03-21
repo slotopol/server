@@ -78,6 +78,7 @@
 'Funky Seventies' NetEnt 5x4 videoslot
 'Gate of Ra Deluxe' Novomatic 5x3 videoslot
 'Geisha Wonders' NetEnt 5x3 videoslot
+'Gems' AGT 5x3 videoslot
 'God of Sun' Novomatic 5x3 videoslot
 'Golden Prophecies' Novomatic 5x3 videoslot
 'Golden Tour' Playtech 5x3 videoslot
@@ -189,8 +190,8 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 186 games, 95 algorithms, 10 providers
-AGT: 58 games
+total: 187 games, 96 algorithms, 10 providers
+AGT: 59 games
 Aristocrat: 4 games
 BetSoft: 3 games
 IGT: 5 games

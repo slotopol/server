@@ -89,6 +89,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/agt/extraspin"
 	_ "github.com/slotopol/server/game/slot/agt/extraspin3"
 	_ "github.com/slotopol/server/game/slot/agt/fruitqueen"
+	_ "github.com/slotopol/server/game/slot/agt/gems"
 	_ "github.com/slotopol/server/game/slot/agt/halloween"
 	_ "github.com/slotopol/server/game/slot/agt/hotclover"
 	_ "github.com/slotopol/server/game/slot/agt/icefruits"
