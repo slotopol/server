@@ -8,6 +8,7 @@
 '40 Bigfoot' AGT 5x4 videoslot
 '5 Hot Hot Hot' AGT 3x3 videoslot
 '50 Apples' Shine' AGT 5x4 videoslot
+'50 Gems' AGT 5x4 videoslot
 '50 Happy Santa' AGT 5x4 videoslot
 'AI' AGT 5x3 videoslot
 'African Simba' Novomatic 5x3 videoslot
@@ -190,8 +191,8 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 187 games, 96 algorithms, 10 providers
-AGT: 59 games
+total: 188 games, 97 algorithms, 10 providers
+AGT: 60 games
 Aristocrat: 4 games
 BetSoft: 3 games
 IGT: 5 games

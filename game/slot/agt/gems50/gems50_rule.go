@@ -1,38 +1,30 @@
-package gems
+package gems50
 
-// See: https://demo.agtsoftware.com/games/agt/gems20
+// See: https://demo.agtsoftware.com/games/agt/gems50
 
 import (
 	_ "embed"
 
 	"github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot/agt/gems"
 )
 
-//go:embed gems_reel.yaml
+//go:embed gems50_reel.yaml
 var reels []byte
 
 var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
 
 // Lined payment.
-var LinePay = [8][5]float64{
-	{0, 0, 50, 500, 1000}, // 1 wild
-	{},                    // 2 scatter
-	{0, 0, 20, 80, 400},   // 3 diamond
-	{0, 0, 20, 40, 200},   // 4 heliodor
-	{0, 0, 20, 40, 200},   // 5 aquamarine
-	{0, 0, 12, 20, 100},   // 6 sapphire
-	{0, 0, 12, 20, 100},   // 7 emerald
-	{0, 0, 8, 16, 80},     // 8 topaz
-}
+var LinePay = gems.LinePay
 
 // Scatters payment.
-var ScatPay = [5]float64{0, 0, 5, 25, 500} // 2 scatter
+var ScatPay = gems.ScatPay
 
 // Bet lines
-var BetLines = slot.BetLinesAgt5x3[:20]
+var BetLines = slot.BetLinesAgt5x4[:50]
 
 type Game struct {
-	slot.Slotx[slot.Screen5x3] `yaml:",inline"`
+	slot.Slotx[slot.Screen5x4] `yaml:",inline"`
 }
 
 // Declare conformity with SlotGame interface.
@@ -40,7 +32,7 @@ var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{
-		Slotx: slot.Slotx[slot.Screen5x3]{
+		Slotx: slot.Slotx[slot.Screen5x4]{
 			Sel: len(BetLines),
 			Bet: 1,
 		},
