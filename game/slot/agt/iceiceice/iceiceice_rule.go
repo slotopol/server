@@ -70,7 +70,7 @@ func (g *Game) Scanner(wins *slot.Wins) {
 			var syml slot.Sym
 			var x slot.Pos
 			for x = 1; x <= 3; x++ {
-				var sx = g.Scr.Pos(x, line)
+				var sx = g.Scr.LY(x, line)
 				if sx == wild {
 					continue
 				} else if syml == 0 {
@@ -95,10 +95,10 @@ func (g *Game) Scanner(wins *slot.Wins) {
 			}
 		} else { // g.FSR == 0
 			var numl slot.Pos = 3
-			var syml = g.Scr.Pos(1, line)
+			var syml = g.Scr.LY(1, line)
 			var x slot.Pos
 			for x = 2; x <= 3; x++ {
-				var sx = g.Scr.Pos(x, line)
+				var sx = g.Scr.LY(x, line)
 				if sx != syml {
 					numl = x - 1
 					break

@@ -67,7 +67,7 @@ func (g *Game) Scanner(wins *slot.Wins) {
 	var fm float64 // fill mult
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
-		var sym1, sym2, sym3 = g.Scr.Pos(1, line), g.Scr.Pos(2, line), g.Scr.Pos(3, line)
+		var sym1, sym2, sym3 = g.Scr.LY(1, line), g.Scr.LY(2, line), g.Scr.LY(3, line)
 		if sym1 == sym2 && sym1 == sym3 {
 			if fm == 0 { // lazy calculation
 				fm = FillMult(&g.Scr)

@@ -91,7 +91,7 @@ loop1:
 						var syml slot.Sym
 						var x slot.Pos
 						for x = 1; x <= 5; x++ {
-							var sx = g.Scr.Pos(x, line)
+							var sx = g.Scr.LY(x, line)
 							if sx == wild {
 								mw *= g.MW[x-2]
 							} else if syml == 0 && sx != scat {

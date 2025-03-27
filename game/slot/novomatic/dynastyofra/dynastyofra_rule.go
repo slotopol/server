@@ -83,7 +83,7 @@ func (g *Game) ScanLinedReg(wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
-			var sx = g.Scr.Pos(x, line)
+			var sx = g.Scr.LY(x, line)
 			if sx == book {
 				continue
 			} else if syml == 0 {
@@ -125,10 +125,10 @@ loop1:
 				loop5:
 					for line[4] = 1; line[4] <= 3; line[4]++ {
 						var numl slot.Pos = 5
-						var syml = g.Scr.Pos(1, line)
+						var syml = g.Scr.LY(1, line)
 						var x slot.Pos
 						for x = 2; x <= 5; x++ {
-							var sx = g.Scr.Pos(x, line)
+							var sx = g.Scr.LY(x, line)
 							if sx != syml {
 								numl = x - 1
 								break

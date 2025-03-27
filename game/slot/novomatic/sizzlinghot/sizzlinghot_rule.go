@@ -29,7 +29,7 @@ var LinePay = [8][5]float64{
 var ScatPay = [5]float64{0, 0, 2, 10, 50} // star
 
 // Bet lines
-var BetLines = slot.BetLinesHot5
+var BetLines = slot.BetLinesNvm10
 
 type Game struct {
 	slot.Slotx[slot.Screen5x3] `yaml:",inline"`
@@ -41,7 +41,7 @@ var _ slot.SlotGame = (*Game)(nil)
 func NewGame() *Game {
 	return &Game{
 		Slotx: slot.Slotx[slot.Screen5x3]{
-			Sel: len(BetLines),
+			Sel: 5,
 			Bet: 1,
 		},
 	}
@@ -65,10 +65,10 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var line = BetLines[li-1]
 
 		var numl slot.Pos = 5
-		var syml = g.Scr.Pos(1, line)
+		var syml = g.Scr.LY(1, line)
 		var x slot.Pos
 		for x = 2; x <= 5; x++ {
-			var sx = g.Scr.Pos(x, line)
+			var sx = g.Scr.LY(x, line)
 			if sx != syml {
 				numl = x - 1
 				break
@@ -108,5 +108,5 @@ func (g *Game) Spin(mrtp float64) {
 }
 
 func (g *Game) SetSel(sel int) error {
-	return slot.ErrNoFeature
+	return g.SetSelNum(sel, len(BetLines))
 }

@@ -54,9 +54,9 @@ func (g *Game) Scanner(wins *slot.Wins) {
 		var x slot.Pos
 
 		var numl slot.Pos = 5
-		var syml = g.Scr.Pos(1, line)
+		var syml = g.Scr.LY(1, line)
 		for x = 2; x <= 5; x++ {
-			var sx = g.Scr.Pos(x, line)
+			var sx = g.Scr.LY(x, line)
 			if sx != syml {
 				numl = x - 1
 				break
@@ -77,9 +77,9 @@ func (g *Game) Scanner(wins *slot.Wins) {
 		}
 
 		var numr slot.Pos = 5
-		var symr = g.Scr.Pos(5, line)
+		var symr = g.Scr.LY(5, line)
 		for x = 4; x >= 1; x-- {
-			var sx = g.Scr.Pos(x, line)
+			var sx = g.Scr.LY(x, line)
 			if sx != symr {
 				numr = 5 - x
 				break

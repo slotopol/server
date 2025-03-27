@@ -53,9 +53,9 @@ func (g *Game) Scanner(wins *slot.Wins) {
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 		var m = map[slot.Sym]int{}
-		m[g.Scr.Pos(1, line)]++
-		m[g.Scr.Pos(2, line)]++
-		m[g.Scr.Pos(3, line)]++
+		m[g.Scr.LY(1, line)]++
+		m[g.Scr.LY(2, line)]++
+		m[g.Scr.LY(3, line)]++
 		if len(m) == 1 && m[0] == 0 { // 3 symbols
 			for sym := range m {
 				*wins = append(*wins, slot.WinItem{

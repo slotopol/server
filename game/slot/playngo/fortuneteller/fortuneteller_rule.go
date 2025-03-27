@@ -106,7 +106,7 @@ func (g *Game) ScanLinedReg(screen slot.Screen, wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
-			var sx = g.Scr.Pos(x, line)
+			var sx = g.Scr.LY(x, line)
 			if sx == wild {
 				if syml == 0 {
 					numw = x
@@ -158,7 +158,7 @@ func (g *Game) ScanLinedBon(screen slot.Screen, wins *slot.Wins) {
 		var x slot.Pos
 		var cw = true // continues wilds
 		for x = 1; x <= 5; x++ {
-			var sx = g.Scr.Pos(x, line)
+			var sx = g.Scr.LY(x, line)
 			if sx == wild {
 				if cw && syml == 0 {
 					numw = x

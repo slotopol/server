@@ -63,7 +63,7 @@ func (g *Game) Clone() slot.SlotGame {
 func (g *Game) Scanner(wins *slot.Wins) {
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
-		var sym1, sym2, sym3 = g.Scr.Pos(1, line), g.Scr.Pos(2, line), g.Scr.Pos(3, line)
+		var sym1, sym2, sym3 = g.Scr.LY(1, line), g.Scr.LY(2, line), g.Scr.LY(3, line)
 		if sym1 == sym2 && sym1 == sym3 {
 			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * LinePay[sym1-1],

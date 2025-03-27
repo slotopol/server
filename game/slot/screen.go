@@ -11,7 +11,7 @@ import (
 type Screen interface {
 	Dim() (Pos, Pos)                   // returns screen dimensions
 	At(x, y Pos) Sym                   // returns symbol at position (x, y), starts from (1, 1)
-	Pos(x Pos, line Linex) Sym         // returns symbol at position (x, line(x)), starts from (1, 1)
+	LY(x Pos, line Linex) Sym          // returns symbol at position (x, line(x)), starts from (1, 1)
 	Set(x, y Pos, sym Sym)             // setup symbol at given position
 	SetCol(x Pos, reel []Sym, pos int) // setup column on screen with given reel at given position
 	Spin(reels Reels)                  // fill the screen with random hits on those reels
@@ -74,7 +74,7 @@ func (s *Screenx) At(x, y Pos) Sym {
 	return s.data[(x-1)*s.sy+y-1]
 }
 
-func (s *Screenx) Pos(x Pos, line Linex) Sym {
+func (s *Screenx) LY(x Pos, line Linex) Sym {
 	return s.data[(x-1)*s.sy+line[x-1]-1]
 }
 
@@ -154,7 +154,7 @@ func (s *Screen3x3) At(x, y Pos) Sym {
 	return s[x-1][y-1]
 }
 
-func (s *Screen3x3) Pos(x Pos, line Linex) Sym {
+func (s *Screen3x3) LY(x Pos, line Linex) Sym {
 	return s[x-1][line[x-1]-1]
 }
 
@@ -227,7 +227,7 @@ func (s *Screen4x4) At(x, y Pos) Sym {
 	return s[x-1][y-1]
 }
 
-func (s *Screen4x4) Pos(x Pos, line Linex) Sym {
+func (s *Screen4x4) LY(x Pos, line Linex) Sym {
 	return s[x-1][line[x-1]-1]
 }
 
@@ -301,7 +301,7 @@ func (s *Screen5x3) At(x, y Pos) Sym {
 	return s[x-1][y-1]
 }
 
-func (s *Screen5x3) Pos(x Pos, line Linex) Sym {
+func (s *Screen5x3) LY(x Pos, line Linex) Sym {
 	return s[x-1][line[x-1]-1]
 }
 
@@ -395,7 +395,7 @@ func (s *Screen5x4) At(x, y Pos) Sym {
 	return s[x-1][y-1]
 }
 
-func (s *Screen5x4) Pos(x Pos, line Linex) Sym {
+func (s *Screen5x4) LY(x Pos, line Linex) Sym {
 	return s[x-1][line[x-1]-1]
 }
 
@@ -469,7 +469,7 @@ func (s *Screen6x3) At(x, y Pos) Sym {
 	return s[x-1][y-1]
 }
 
-func (s *Screen6x3) Pos(x Pos, line Linex) Sym {
+func (s *Screen6x3) LY(x Pos, line Linex) Sym {
 	return s[x-1][line[x-1]-1]
 }
 
@@ -541,7 +541,7 @@ func (s *Screen6x4) At(x, y Pos) Sym {
 	return s[x-1][y-1]
 }
 
-func (s *Screen6x4) Pos(x Pos, line Linex) Sym {
+func (s *Screen6x4) LY(x Pos, line Linex) Sym {
 	return s[x-1][line[x-1]-1]
 }
 

@@ -79,10 +79,10 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 		var mw float64 = 1 // mult wild
 		var numl slot.Pos = 5
-		var syml = g.Scr.Pos(1, line)
+		var syml = g.Scr.LY(1, line)
 		var x slot.Pos
 		for x = 2; x <= 5; x++ {
-			var sx = g.Scr.Pos(x, line)
+			var sx = g.Scr.LY(x, line)
 			if sx == wild {
 				mw = 2
 			} else if sx != syml {
@@ -105,10 +105,10 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		if numl < 5 {
 			var mw float64 = 1 // mult wild
 			var numr slot.Pos = 1
-			var symr = g.Scr.Pos(5, line)
+			var symr = g.Scr.LY(5, line)
 			var x slot.Pos
 			for x = 4; x > numl; x-- {
-				var sx = g.Scr.Pos(x, line)
+				var sx = g.Scr.LY(x, line)
 				if sx == wild {
 					mw = 2
 				} else if sx != symr {

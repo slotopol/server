@@ -60,7 +60,7 @@ func (g *Game) Scanner(wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 3; x++ {
-			var sx = g.Scr.Pos(x, line)
+			var sx = g.Scr.LY(x, line)
 			if sx == wild {
 				if syml == 0 {
 					numw = x

@@ -108,7 +108,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
-			var sx = g.Scr.Pos(x, line)
+			var sx = g.Scr.LY(x, line)
 			if sx == wild {
 				if syml == 0 {
 					numw = x
@@ -125,13 +125,13 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
-			var sx = g.Scr.Pos(x, line)
+			var sx = g.Scr.LY(x, line)
 			if sx != wild {
 				if sx != scat && sx != jazz {
 					syml = sx
 					numl = numw + 1
 					for x := numl + 1; x <= 5; x++ {
-						var sx = g.Scr.Pos(x, line)
+						var sx = g.Scr.LY(x, line)
 						if sx == syml || sx == wild {
 							numl++
 						} else {

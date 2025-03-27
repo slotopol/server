@@ -71,7 +71,6 @@ type SlotGame interface {
 	Spawn(Wins, float64, float64) // setup bonus games to wins results, constat function
 	Prepare()                     // update game state before new spin
 	Apply(Wins)                   // update game state to spin results
-	FreeSpins() bool              // returns if it free spins mode, constat function
 	GetGain() float64             // returns gain for double up games, constat function
 	SetGain(float64) error        // set gain to given value on double up games
 	GetBet() float64              // returns current bet, constat function
@@ -184,6 +183,9 @@ func (g *Slotx[T]) Cost() (float64, bool) {
 	if g.FSR != 0 {
 		return 0, false
 	}
+	if c, ok := any(&g.Scr).(Cascade); ok && c.Cascade() {
+		return 0, false
+	}
 	return g.Bet * float64(g.Sel), false
 }
 
@@ -210,10 +212,10 @@ func (g *Slotx[T]) Apply(wins Wins) {
 			g.FSR += wi.Free
 		}
 	}
-}
 
-func (g *Slotx[T]) FreeSpins() bool {
-	return g.FSR != 0
+	if c, ok := any(&g.Scr).(Cascade); ok {
+		c.Apply(wins)
+	}
 }
 
 func (g *Slotx[T]) GetGain() float64 {
@@ -236,7 +238,7 @@ func (g *Slotx[T]) SetBet(bet float64) error {
 	if bet == g.Bet {
 		return nil
 	}
-	if g.FreeSpins() {
+	if g.FSR != 0 {
 		return ErrDisabled
 	}
 	g.Bet = bet
@@ -257,7 +259,7 @@ func (g *Slotx[T]) SetSelNum(sel int, bln int) error {
 	if sel == g.Sel {
 		return nil
 	}
-	if g.FreeSpins() {
+	if g.FSR != 0 {
 		return ErrDisabled
 	}
 	g.Sel = sel

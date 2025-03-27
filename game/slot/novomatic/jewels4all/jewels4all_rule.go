@@ -79,16 +79,16 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var line = BetLines[li-1]
 
 		var num slot.Pos = 1
-		var sym3 = scrnwild.Pos(3, line)
+		var sym3 = scrnwild.LY(3, line)
 		var xy slot.Linex
 		xy.Set(3, line.At(3))
-		if sym2 := scrnwild.Pos(2, line); sym2 == sym3 || sym2 == wild || sym3 == wild {
+		if sym2 := scrnwild.LY(2, line); sym2 == sym3 || sym2 == wild || sym3 == wild {
 			if sym3 == wild {
 				sym3 = sym2
 			}
 			xy.Set(2, line.At(2))
 			num++
-			if sym1 := scrnwild.Pos(1, line); sym1 == sym3 || sym1 == wild || sym3 == wild {
+			if sym1 := scrnwild.LY(1, line); sym1 == sym3 || sym1 == wild || sym3 == wild {
 				if sym3 == wild {
 					sym3 = sym1
 				}
@@ -96,13 +96,13 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				num++
 			}
 		}
-		if sym4 := scrnwild.Pos(4, line); sym4 == sym3 || sym4 == wild || sym3 == wild {
+		if sym4 := scrnwild.LY(4, line); sym4 == sym3 || sym4 == wild || sym3 == wild {
 			if sym3 == wild {
 				sym3 = sym4
 			}
 			xy.Set(4, line.At(4))
 			num++
-			if sym5 := scrnwild.Pos(5, line); sym5 == sym3 || sym5 == wild || sym3 == wild {
+			if sym5 := scrnwild.LY(5, line); sym5 == sym3 || sym5 == wild || sym3 == wild {
 				if sym3 == wild {
 					sym3 = sym5
 				}

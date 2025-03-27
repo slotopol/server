@@ -89,9 +89,9 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var numl, numr slot.Pos
 		var payl, payr float64
 
-		syml, numl = g.Scr.Pos(1, line), 1
+		syml, numl = g.Scr.LY(1, line), 1
 		for x = 2; x <= 5; x++ {
-			var sx = g.Scr.Pos(x, line)
+			var sx = g.Scr.LY(x, line)
 			if sx != syml && !reelwild[x-1] {
 				break
 			}
@@ -100,9 +100,9 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		payl = LinePay[syml-1][numl-1]
 
 		if numl < 4 {
-			symr, numr = g.Scr.Pos(5, line), 1
+			symr, numr = g.Scr.LY(5, line), 1
 			for x = 4; x >= 2; x-- {
-				var sx = g.Scr.Pos(x, line)
+				var sx = g.Scr.LY(x, line)
 				if sx != symr && !reelwild[x-1] {
 					break
 				}
@@ -141,7 +141,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 func (g *Game) Spin(mrtp float64) {
 	g.Scr.Spin(Reels)
-	if !g.FreeSpins() {
+	if g.FSR == 0 {
 		var _, wc = slot.FindClosest(ChanceMap, mrtp) // wild chance
 		var x, y slot.Pos
 		for x = 2; x <= 4; x++ {
@@ -154,13 +154,7 @@ func (g *Game) Spin(mrtp float64) {
 }
 
 func (g *Game) Apply(wins slot.Wins) {
-	if g.FSR != 0 {
-		g.Gain += wins.Gain()
-		g.FSN++
-	} else {
-		g.Gain = wins.Gain()
-		g.FSN = 0
-	}
+	g.Slotx.Apply(wins)
 
 	var x, y slot.Pos
 	for x = 2; x <= 4; x++ {
@@ -170,15 +164,12 @@ func (g *Game) Apply(wins slot.Wins) {
 			for y = 1; y <= 3; y++ {
 				if g.Scr.At(x, y) == wild {
 					g.PRW[x-1] = 1
+					g.FSR = 1
 					break
 				}
 			}
 		}
 	}
-}
-
-func (g *Game) FreeSpins() bool {
-	return max(g.PRW[1], g.PRW[2], g.PRW[3]) > 0
 }
 
 func (g *Game) SetSel(sel int) error {

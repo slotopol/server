@@ -56,21 +56,21 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var line = BetLines[li-1]
 
 		var numl slot.Pos = 1
-		var syml = g.Scr.Pos(3, line)
+		var syml = g.Scr.LY(3, line)
 		var xy slot.Linex
 		xy.Set(3, line.At(3))
-		if g.Scr.Pos(2, line) == syml {
+		if g.Scr.LY(2, line) == syml {
 			xy.Set(2, line.At(2))
 			numl++
-			if g.Scr.Pos(1, line) == syml {
+			if g.Scr.LY(1, line) == syml {
 				xy.Set(1, line.At(1))
 				numl++
 			}
 		}
-		if g.Scr.Pos(4, line) == syml {
+		if g.Scr.LY(4, line) == syml {
 			xy.Set(4, line.At(4))
 			numl++
-			if g.Scr.Pos(5, line) == syml {
+			if g.Scr.LY(5, line) == syml {
 				xy.Set(5, line.At(5))
 				numl++
 			}
