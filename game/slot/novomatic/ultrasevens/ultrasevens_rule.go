@@ -33,7 +33,8 @@ var LinePay = [7][5]float64{
 var BetLines = slot.BetLinesNvm5x4[:]
 
 type Game struct {
-	slot.Slotx[slot.Screen5x4] `yaml:",inline"`
+	slot.Screen5x4 `yaml:",inline"`
+	slot.Slotx     `yaml:",inline"`
 }
 
 // Declare conformity with SlotGame interface.
@@ -41,7 +42,7 @@ var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{
-		Slotx: slot.Slotx[slot.Screen5x4]{
+		Slotx: slot.Slotx{
 			Sel: len(BetLines),
 			Bet: 1,
 		},
@@ -59,11 +60,11 @@ const (
 	ssj3 = 3
 )
 
-func Filled(screen *slot.Screen5x4) slot.Sym {
-	var sym = screen[4][3]
+func (g *Game) Filled() slot.Sym {
+	var sym = g.Scr[4][3]
 	for x := range 5 {
 		for y := range 4 {
-			if screen[x][y] != sym {
+			if g.Scr[x][y] != sym {
 				return 0
 			}
 		}
@@ -72,7 +73,7 @@ func Filled(screen *slot.Screen5x4) slot.Sym {
 }
 
 func (g *Game) Scanner(wins *slot.Wins) {
-	switch sym := Filled(&g.Scr); sym {
+	switch sym := g.Filled(); sym {
 	case 1:
 		*wins = append(*wins, slot.WinItem{
 			Sym: sym,
@@ -96,10 +97,10 @@ func (g *Game) Scanner(wins *slot.Wins) {
 		var line = BetLines[li-1]
 
 		var numl slot.Pos = 5
-		var syml = g.Scr.LY(1, line)
+		var syml = g.LY(1, line)
 		var x slot.Pos
 		for x = 2; x <= 5; x++ {
-			var sx = g.Scr.LY(x, line)
+			var sx = g.LY(x, line)
 			if sx != syml {
 				numl = x - 1
 				break
@@ -125,7 +126,7 @@ func (g *Game) Cost() (float64, bool) {
 
 func (g *Game) Spin(mrtp float64) {
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
-	g.Scr.Spin(reels)
+	g.ReelSpin(reels)
 }
 
 func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {

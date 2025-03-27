@@ -17,7 +17,6 @@ func AnyStarProb(b float64) float64 {
 }
 
 func BruteForceStars(ctx context.Context, s slot.Stater, g *Game, reels slot.Reels, wc2, wc3, wc4 bool) {
-	var screen = &g.Scr
 	var wins slot.Wins
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)
@@ -25,29 +24,29 @@ func BruteForceStars(ctx context.Context, s slot.Stater, g *Game, reels slot.Ree
 	var r4 = reels.Reel(4)
 	var r5 = reels.Reel(5)
 	for i1 := range r1 {
-		screen.SetCol(1, r1, i1)
+		g.SetCol(1, r1, i1)
 		for i2 := range r2 {
-			screen.SetCol(2, r2, i2)
+			g.SetCol(2, r2, i2)
 			for i3 := range r3 {
-				screen.SetCol(3, r3, i3)
+				g.SetCol(3, r3, i3)
 				for i4 := range r4 {
-					screen.SetCol(4, r4, i4)
+					g.SetCol(4, r4, i4)
 					for i5 := range r5 {
-						screen.SetCol(5, r5, i5)
-						var sym2, sym3, sym4 = screen.At(2, 1), screen.At(3, 1), screen.At(4, 1)
+						g.SetCol(5, r5, i5)
+						var sym2, sym3, sym4 = g.At(2, 1), g.At(3, 1), g.At(4, 1)
 						if wc2 {
-							screen.Set(2, 1, wild)
+							g.SetSym(2, 1, wild)
 						}
 						if wc3 {
-							screen.Set(3, 1, wild)
+							g.SetSym(3, 1, wild)
 						}
 						if wc4 {
-							screen.Set(4, 1, wild)
+							g.SetSym(4, 1, wild)
 						}
 						g.Scanner(&wins)
-						screen.Set(2, 1, sym2)
-						screen.Set(3, 1, sym3)
-						screen.Set(4, 1, sym4)
+						g.SetSym(2, 1, sym2)
+						g.SetSym(3, 1, sym3)
+						g.SetSym(4, 1, sym4)
 						s.Update(wins)
 						wins.Reset()
 						if s.Count()&100 == 0 {

@@ -11,7 +11,7 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-func BruteForce5x3es2(ctx context.Context, s slot.Stater, g slot.SlotGame, reels *slot.Reels5x, es slot.Sym) {
+func BruteForce5x3es2(ctx context.Context, s slot.Stater, g *Game, reels *slot.Reels5x, es slot.Sym) {
 	var tn = slot.CorrectThrNum()
 	var tn64 = uint64(tn)
 	var r3 = reels.Reel(3)
@@ -25,22 +25,24 @@ func BruteForce5x3es2(ctx context.Context, s slot.Stater, g slot.SlotGame, reels
 		go func() {
 			defer wg.Done()
 
-			var screen = c.Screen().(*slot.Screen5x3)
 			var wins slot.Wins
-
-			for x := 0; x < 2; x++ {
-				var r = &screen[x]
+			var x slot.Pos
+			for x = 1; x <= 2; x++ {
 				if es != scat {
-					r[0], r[1], r[2] = es, es, es
+					g.SetSym(x, 1, es)
+					g.SetSym(x, 2, es)
+					g.SetSym(x, 3, es)
 				} else {
-					r[0], r[1], r[2] = 0, scat, 0
+					g.SetSym(x, 1, 0)
+					g.SetSym(x, 2, scat)
+					g.SetSym(x, 3, 0)
 				}
 			}
 
 			for i3 := range r3 {
-				screen.SetCol(3, r3, i3)
+				c.SetCol(3, r3, i3)
 				for i4 := range r4 {
-					screen.SetCol(4, r4, i4)
+					c.SetCol(4, r4, i4)
 					for i5 := range r5 {
 						reshuf++
 						if reshuf%slot.CtxGranulation == 0 {
@@ -53,7 +55,7 @@ func BruteForce5x3es2(ctx context.Context, s slot.Stater, g slot.SlotGame, reels
 						if reshuf%tn64 != ti {
 							continue
 						}
-						screen.SetCol(5, r5, i5)
+						c.SetCol(5, r5, i5)
 						c.Scanner(&wins)
 						s.Update(wins)
 						wins.Reset()
@@ -65,7 +67,7 @@ func BruteForce5x3es2(ctx context.Context, s slot.Stater, g slot.SlotGame, reels
 	wg.Wait()
 }
 
-func BruteForce5x3es3(ctx context.Context, s slot.Stater, g slot.SlotGame, reels *slot.Reels5x, es slot.Sym) {
+func BruteForce5x3es3(ctx context.Context, s slot.Stater, g *Game, reels *slot.Reels5x, es slot.Sym) {
 	var tn = slot.CorrectThrNum()
 	var tn64 = uint64(tn)
 	var r4 = reels.Reel(4)
@@ -78,20 +80,22 @@ func BruteForce5x3es3(ctx context.Context, s slot.Stater, g slot.SlotGame, reels
 		go func() {
 			defer wg.Done()
 
-			var screen = c.Screen().(*slot.Screen5x3)
 			var wins slot.Wins
-
-			for x := 0; x < 3; x++ {
-				var r = &screen[x]
+			var x slot.Pos
+			for x = 1; x <= 3; x++ {
 				if es != scat {
-					r[0], r[1], r[2] = es, es, es
+					g.SetSym(x, 1, es)
+					g.SetSym(x, 2, es)
+					g.SetSym(x, 3, es)
 				} else {
-					r[0], r[1], r[2] = 0, scat, 0
+					g.SetSym(x, 1, 0)
+					g.SetSym(x, 2, scat)
+					g.SetSym(x, 3, 0)
 				}
 			}
 
 			for i4 := range r4 {
-				screen.SetCol(4, r4, i4)
+				c.SetCol(4, r4, i4)
 				for i5 := range r5 {
 					reshuf++
 					if reshuf%slot.CtxGranulation == 0 {
@@ -104,7 +108,7 @@ func BruteForce5x3es3(ctx context.Context, s slot.Stater, g slot.SlotGame, reels
 					if reshuf%tn64 != ti {
 						continue
 					}
-					screen.SetCol(5, r5, i5)
+					c.SetCol(5, r5, i5)
 					c.Scanner(&wins)
 					s.Update(wins)
 					wins.Reset()

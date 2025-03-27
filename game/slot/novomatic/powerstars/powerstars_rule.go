@@ -36,7 +36,8 @@ var LinePay = [9][5]float64{
 var BetLines = slot.BetLinesNvm10
 
 type Game struct {
-	slot.Slotx[slot.Screen5x3] `yaml:",inline"`
+	slot.Screen5x3 `yaml:",inline"`
+	slot.Slotx     `yaml:",inline"`
 	// Pinned reel wild
 	PRW [5]int `json:"prw" yaml:"prw" xml:"prw"`
 }
@@ -46,7 +47,7 @@ var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{
-		Slotx: slot.Slotx[slot.Screen5x3]{
+		Slotx: slot.Slotx{
 			Sel: len(BetLines),
 			Bet: 1,
 		},
@@ -74,7 +75,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 			reelwild[x-1] = true
 		} else {
 			for y = 1; y <= 3; y++ {
-				if g.Scr.At(x, y) == wild {
+				if g.At(x, y) == wild {
 					reelwild[x-1] = true
 					fs = 1
 					break
@@ -89,9 +90,9 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var numl, numr slot.Pos
 		var payl, payr float64
 
-		syml, numl = g.Scr.LY(1, line), 1
+		syml, numl = g.LY(1, line), 1
 		for x = 2; x <= 5; x++ {
-			var sx = g.Scr.LY(x, line)
+			var sx = g.LY(x, line)
 			if sx != syml && !reelwild[x-1] {
 				break
 			}
@@ -100,9 +101,9 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		payl = LinePay[syml-1][numl-1]
 
 		if numl < 4 {
-			symr, numr = g.Scr.LY(5, line), 1
+			symr, numr = g.LY(5, line), 1
 			for x = 4; x >= 2; x-- {
-				var sx = g.Scr.LY(x, line)
+				var sx = g.LY(x, line)
 				if sx != symr && !reelwild[x-1] {
 					break
 				}
@@ -140,14 +141,14 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 }
 
 func (g *Game) Spin(mrtp float64) {
-	g.Scr.Spin(Reels)
+	g.ReelSpin(Reels)
 	if g.FSR == 0 {
 		var _, wc = slot.FindClosest(ChanceMap, mrtp) // wild chance
 		var x, y slot.Pos
 		for x = 2; x <= 4; x++ {
 			if rand.Float64() < wc {
 				y = rand.N[slot.Pos](3) + 1
-				g.Scr.Set(x, y, wild)
+				g.SetSym(x, y, wild)
 			}
 		}
 	}
@@ -162,7 +163,7 @@ func (g *Game) Apply(wins slot.Wins) {
 			g.PRW[x-1]--
 		} else {
 			for y = 1; y <= 3; y++ {
-				if g.Scr.At(x, y) == wild {
+				if g.At(x, y) == wild {
 					g.PRW[x-1] = 1
 					g.FSR = 1
 					break

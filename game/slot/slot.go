@@ -63,8 +63,8 @@ func (wins Wins) Jackpot() float64 {
 
 // SlotGame is common slots interface. Any slot game should implement this interface.
 type SlotGame interface {
+	Screen
 	Clone() SlotGame              // returns full cloned copy of itself
-	Screen() Screen               // returns screen object for this game, constat function
 	Scanner(*Wins)                // scan given screen and append result to wins, constat function
 	Cost() (float64, bool)        // cost of spin on current bet and lines, and has it jackpot rate, constat function
 	Spin(float64)                 // fill the screen with random hits on reels closest to given RTP, constat function
@@ -162,8 +162,7 @@ var (
 )
 
 // Slotx is base struct for all slot games with subsequent screen.
-type Slotx[T any] struct {
-	Scr T       `json:"scr" yaml:"scr" xml:"scr"` // game screen
+type Slotx struct {
 	Sel int     `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
 	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
 
@@ -175,27 +174,20 @@ type Slotx[T any] struct {
 	FSR int `json:"fsr,omitempty" yaml:"fsr,omitempty" xml:"fsr,omitempty"`
 }
 
-func (g *Slotx[T]) Screen() Screen {
-	return any(&g.Scr).(Screen)
-}
-
-func (g *Slotx[T]) Cost() (float64, bool) {
+func (g *Slotx) Cost() (float64, bool) {
 	if g.FSR != 0 {
-		return 0, false
-	}
-	if c, ok := any(&g.Scr).(Cascade); ok && c.Cascade() {
 		return 0, false
 	}
 	return g.Bet * float64(g.Sel), false
 }
 
-func (g *Slotx[T]) Spawn(wins Wins, fund, mrtp float64) {
+func (g *Slotx) Spawn(wins Wins, fund, mrtp float64) {
 }
 
-func (g *Slotx[T]) Prepare() {
+func (g *Slotx) Prepare() {
 }
 
-func (g *Slotx[T]) Apply(wins Wins) {
+func (g *Slotx) Apply(wins Wins) {
 	if g.FSR != 0 {
 		g.Gain += wins.Gain()
 		g.FSN++
@@ -212,26 +204,22 @@ func (g *Slotx[T]) Apply(wins Wins) {
 			g.FSR += wi.Free
 		}
 	}
-
-	if c, ok := any(&g.Scr).(Cascade); ok {
-		c.Apply(wins)
-	}
 }
 
-func (g *Slotx[T]) GetGain() float64 {
+func (g *Slotx) GetGain() float64 {
 	return g.Gain
 }
 
-func (g *Slotx[T]) SetGain(gain float64) error {
+func (g *Slotx) SetGain(gain float64) error {
 	g.Gain = gain
 	return nil
 }
 
-func (g *Slotx[T]) GetBet() float64 {
+func (g *Slotx) GetBet() float64 {
 	return g.Bet
 }
 
-func (g *Slotx[T]) SetBet(bet float64) error {
+func (g *Slotx) SetBet(bet float64) error {
 	if bet <= 0 {
 		return ErrBetEmpty
 	}
@@ -245,11 +233,11 @@ func (g *Slotx[T]) SetBet(bet float64) error {
 	return nil
 }
 
-func (g *Slotx[T]) GetSel() int {
+func (g *Slotx) GetSel() int {
 	return g.Sel
 }
 
-func (g *Slotx[T]) SetSelNum(sel int, bln int) error {
+func (g *Slotx) SetSelNum(sel int, bln int) error {
 	if sel < 1 {
 		return ErrNoLineset
 	}
@@ -266,6 +254,6 @@ func (g *Slotx[T]) SetSelNum(sel int, bln int) error {
 	return nil
 }
 
-func (g *Slotx[T]) SetMode(int) error {
+func (g *Slotx) SetMode(int) error {
 	return ErrNoFeature
 }

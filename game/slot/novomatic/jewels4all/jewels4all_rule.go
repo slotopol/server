@@ -33,7 +33,8 @@ var LinePay = [8][5]float64{
 var BetLines = slot.BetLinesNvm10
 
 type Game struct {
-	slot.Slotx[slot.Screen5x3] `yaml:",inline"`
+	slot.Screen5x3 `yaml:",inline"`
+	slot.Slotx     `yaml:",inline"`
 }
 
 // Declare conformity with SlotGame interface.
@@ -41,7 +42,7 @@ var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{
-		Slotx: slot.Slotx[slot.Screen5x3]{
+		Slotx: slot.Slotx{
 			Sel: len(BetLines),
 			Bet: 1,
 		},
@@ -61,14 +62,14 @@ func (g *Game) Scanner(wins *slot.Wins) {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(wins *slot.Wins) {
-	var scrnwild slot.Screen5x3 = g.Scr
+	var scrnwild slot.Screen5x3 = g.Screen5x3
 	var x, y slot.Pos
 	for x = 1; x <= 5; x++ {
 		for y = 1; y <= 3; y++ {
-			if g.Scr.At(x, y) == wild {
+			if g.At(x, y) == wild {
 				for i := max(0, x-2); i <= min(4, x); i++ {
 					for j := max(0, y-2); j <= min(2, y); j++ {
-						scrnwild[i][j] = wild
+						scrnwild.Scr[i][j] = wild
 					}
 				}
 			}
@@ -125,11 +126,11 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 }
 
 func (g *Game) Spin(mrtp float64) {
-	g.Scr.Spin(Reels)
+	g.ReelSpin(Reels)
 	var _, wc = slot.FindClosest(ChanceMap, mrtp) // wild chance
 	if rand.Float64() < wc {
 		var x, y = rand.N[slot.Pos](5) + 1, rand.N[slot.Pos](3) + 1
-		g.Scr.Set(x, y, wild)
+		g.SetSym(x, y, wild)
 	}
 }
 

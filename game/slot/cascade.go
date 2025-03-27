@@ -5,13 +5,14 @@ import "math/rand/v2"
 type Cascade interface {
 	Screen
 	Cascade() bool
-	Apply(wins Wins)
+	Strike(wins Wins)
 }
 
 type Cascade5x3 struct {
 	Sym [5][3]Sym `json:"sym" yaml:"sym" xml:"sym"` // game screen with symbols
 	Hit [5][3]int `json:"hit" yaml:"hit" xml:"hit"` // hits to fall down
 	Pos [5]int    `json:"pos" yaml:"pos" xml:"pos"` // reels positions
+	CFN int       `json:"cfn" yaml:"cfn" xml:"cfn"` // cascade fall number
 }
 
 // Declare conformity with Cascade interface.
@@ -29,7 +30,7 @@ func (s *Cascade5x3) LY(x Pos, line Linex) Sym {
 	return s.Sym[x-1][line[x-1]-1]
 }
 
-func (s *Cascade5x3) Set(x, y Pos, sym Sym) {
+func (s *Cascade5x3) SetSym(x, y Pos, sym Sym) {
 	s.Sym[x-1][y-1] = sym
 }
 
@@ -39,7 +40,7 @@ func (s *Cascade5x3) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Cascade5x3) Spin(reels Reels) {
+func (s *Cascade5x3) ReelSpin(reels Reels) {
 	var r5x = reels.(*Reels5x)
 	if s.Cascade() {
 		s.Fall(r5x)
@@ -121,7 +122,7 @@ func (s *Cascade5x3) Cascade() bool {
 	return false
 }
 
-func (s *Cascade5x3) Apply(wins Wins) {
+func (s *Cascade5x3) Strike(wins Wins) {
 	clear(s.Hit[:])
 	for _, wi := range wins {
 		for x := range wi.Num {

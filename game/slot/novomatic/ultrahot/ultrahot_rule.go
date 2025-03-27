@@ -29,7 +29,8 @@ var LinePay = [8]float64{
 var BetLines = slot.BetLinesHot3
 
 type Game struct {
-	slot.Slotx[slot.Screen3x3] `yaml:",inline"`
+	slot.Screen3x3 `yaml:",inline"`
+	slot.Slotx     `yaml:",inline"`
 }
 
 // Declare conformity with SlotGame interface.
@@ -37,7 +38,7 @@ var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{
-		Slotx: slot.Slotx[slot.Screen3x3]{
+		Slotx: slot.Slotx{
 			Sel: len(BetLines),
 			Bet: 1,
 		},
@@ -49,14 +50,14 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-func FillMult(screen *slot.Screen3x3) float64 {
-	var sym = screen[0][0]
+func (g *Game) FillMult() float64 {
+	var sym = g.Scr[0][0]
 	if sym < 4 || sym > 7 {
 		return 1
 	}
-	if screen[1][0] != sym || screen[2][0] != sym ||
-		screen[0][1] != sym || screen[1][1] != sym || screen[2][1] != sym ||
-		screen[0][2] != sym || screen[1][2] != sym || screen[2][2] != sym {
+	if g.Scr[1][0] != sym || g.Scr[2][0] != sym ||
+		g.Scr[0][1] != sym || g.Scr[1][1] != sym || g.Scr[2][1] != sym ||
+		g.Scr[0][2] != sym || g.Scr[1][2] != sym || g.Scr[2][2] != sym {
 		return 1
 	}
 	return 2
@@ -66,10 +67,10 @@ func (g *Game) Scanner(wins *slot.Wins) {
 	var fm float64 // fill mult
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
-		var sym1, sym2, sym3 = g.Scr.LY(1, line), g.Scr.LY(2, line), g.Scr.LY(3, line)
+		var sym1, sym2, sym3 = g.LY(1, line), g.LY(2, line), g.LY(3, line)
 		if sym1 == sym2 && sym1 == sym3 {
 			if fm == 0 { // lazy calculation
-				fm = FillMult(&g.Scr)
+				fm = g.FillMult()
 			}
 			*wins = append(*wins, slot.WinItem{
 				Pay:  g.Bet * LinePay[sym1-1],
@@ -85,7 +86,7 @@ func (g *Game) Scanner(wins *slot.Wins) {
 
 func (g *Game) Spin(mrtp float64) {
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
-	g.Scr.Spin(reels)
+	g.ReelSpin(reels)
 }
 
 func (g *Game) SetSel(sel int) error {

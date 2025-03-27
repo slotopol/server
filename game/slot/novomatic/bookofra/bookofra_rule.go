@@ -43,7 +43,8 @@ var ScatFreespin = [5]int{0, 0, 10, 10, 10} // 10 tomb
 var BetLines = slot.BetLinesNvm10
 
 type Game struct {
-	slot.Slotx[slot.Screen5x3] `yaml:",inline"`
+	slot.Screen5x3 `yaml:",inline"`
+	slot.Slotx     `yaml:",inline"`
 	// Expanding Symbol
 	ES slot.Sym `json:"es,omitempty" yaml:"es,omitempty" xml:"es,omitempty"`
 }
@@ -53,7 +54,7 @@ var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{
-		Slotx: slot.Slotx[slot.Screen5x3]{
+		Slotx: slot.Slotx{
 			Sel: len(BetLines),
 			Bet: 1,
 		},
@@ -90,7 +91,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
-			var sx = g.Scr.LY(x, line)
+			var sx = g.LY(x, line)
 			if sx == book {
 				if syml == 0 {
 					numw = x
@@ -123,7 +124,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 	if g.ES == 0 {
 		return
 	}
-	var nume = g.Scr.ScatNum(g.ES)
+	var nume = g.ScatNum(g.ES)
 	if nume < 2 {
 		return
 	}
@@ -131,7 +132,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 	if paye == 0 {
 		return
 	}
-	var xye = g.Scr.ScatPos(g.ES)
+	var xye = g.ScatPos(g.ES)
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 		*wins = append(*wins, slot.WinItem{
@@ -147,14 +148,14 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	if count := g.Scr.ScatNum(book); count >= 3 {
+	if count := g.ScatNum(book); count >= 3 {
 		var pay, fs = ScatPay[count-1], ScatFreespin[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * float64(g.Sel) * pay,
 			Mult: 1,
 			Sym:  book,
 			Num:  count,
-			XY:   g.Scr.ScatPos(book),
+			XY:   g.ScatPos(book),
 			Free: fs,
 		})
 	}
@@ -163,9 +164,9 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 func (g *Game) Spin(mrtp float64) {
 	if g.FSR == 0 {
 		var reels, _ = slot.FindClosest(ReelsMap, mrtp)
-		g.Scr.Spin(reels)
+		g.ReelSpin(reels)
 	} else {
-		g.Scr.Spin(ReelsBon)
+		g.ReelSpin(ReelsBon)
 	}
 }
 

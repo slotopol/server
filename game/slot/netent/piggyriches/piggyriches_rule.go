@@ -34,7 +34,8 @@ var ScatPay = [5]float64{0, 2, 4, 15, 100} // 2 scatter
 var BetLines = slot.BetLinesNetEnt5x3[:15]
 
 type Game struct {
-	slot.Slotx[slot.Screen5x3] `yaml:",inline"`
+	slot.Screen5x3 `yaml:",inline"`
+	slot.Slotx     `yaml:",inline"`
 	// multiplier on freespins
 	M float64 `json:"m,omitempty" yaml:"m,omitempty" xml:"m,omitempty"`
 }
@@ -44,7 +45,7 @@ var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{
-		Slotx: slot.Slotx[slot.Screen5x3]{
+		Slotx: slot.Slotx{
 			Sel: len(BetLines),
 			Bet: 1,
 		},
@@ -74,7 +75,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
-			var sx = g.Scr.LY(x, line)
+			var sx = g.LY(x, line)
 			if sx == wild {
 				mw = 3
 			} else if syml == 0 && sx != scat {
@@ -106,14 +107,14 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	var count = g.Scr.ScatNum(scat)
+	var count = g.ScatNum(scat)
 	if g.FSR > 0 {
 		*wins = append(*wins, slot.WinItem{
 			Pay:  0,
 			Mult: 1,
 			Sym:  scat,
 			Num:  count,
-			XY:   g.Scr.ScatPos(scat),
+			XY:   g.ScatPos(scat),
 			Free: int(count),
 		})
 	} else if count >= 2 {
@@ -126,7 +127,7 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 			Mult: 1,
 			Sym:  scat,
 			Num:  count,
-			XY:   g.Scr.ScatPos(scat),
+			XY:   g.ScatPos(scat),
 			Free: fs,
 		})
 	}
@@ -134,7 +135,7 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 
 func (g *Game) Spin(mrtp float64) {
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
-	g.Scr.Spin(reels)
+	g.ReelSpin(reels)
 }
 
 func (g *Game) Prepare() {

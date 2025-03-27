@@ -30,7 +30,8 @@ var LinePay = [12][5]float64{
 }
 
 type Game struct {
-	slot.Slotx[slot.Screen5x3] `yaml:",inline"`
+	slot.Screen5x3 `yaml:",inline"`
+	slot.Slotx     `yaml:",inline"`
 }
 
 // Declare conformity with SlotGame interface.
@@ -38,7 +39,7 @@ var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{
-		Slotx: slot.Slotx[slot.Screen5x3]{
+		Slotx: slot.Slotx{
 			Sel: 25,
 			Bet: 1,
 		},
@@ -71,10 +72,10 @@ loop1:
 				loop5:
 					for line[4] = 1; line[4] <= 3; line[4]++ {
 						var numl slot.Pos = 5
-						var syml = g.Scr.LY(1, line)
+						var syml = g.LY(1, line)
 						var x slot.Pos
 						for x = 2; x <= 5; x++ {
-							var sx = g.Scr.LY(x, line)
+							var sx = g.LY(x, line)
 							if sx == wild {
 								continue
 							} else if syml == 0 {
@@ -129,11 +130,11 @@ loop1:
 
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	if count := g.Scr.ScatNum(scat); count >= 3 {
+	if count := g.ScatNum(scat); count >= 3 {
 		*wins = append(*wins, slot.WinItem{
 			Sym:  scat,
 			Num:  count,
-			XY:   g.Scr.ScatPos(scat),
+			XY:   g.ScatPos(scat),
 			Free: 12,
 		})
 	}
@@ -148,7 +149,7 @@ func (g *Game) Cost() (float64, bool) {
 
 func (g *Game) Spin(mrtp float64) {
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
-	g.Scr.Spin(reels)
+	g.ReelSpin(reels)
 }
 
 func (g *Game) SetSel(sel int) error {

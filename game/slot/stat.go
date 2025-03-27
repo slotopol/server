@@ -154,13 +154,11 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x) {
 		go func() {
 			defer wg.Done()
 
-			var screen = c.Screen()
 			var wins Wins
-
 			for i1 := range r1 {
-				screen.SetCol(1, r1, i1)
+				c.SetCol(1, r1, i1)
 				for i2 := range r2 {
-					screen.SetCol(2, r2, i2)
+					c.SetCol(2, r2, i2)
 					for i3 := range r3 {
 						reshuf++
 						if reshuf%CtxGranulation == 0 {
@@ -173,7 +171,7 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x) {
 						if reshuf%tn64 != ti {
 							continue
 						}
-						screen.SetCol(3, r3, i3)
+						c.SetCol(3, r3, i3)
 						c.Scanner(&wins)
 						s.Update(wins)
 						wins.Reset()
@@ -200,15 +198,13 @@ func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x) {
 		go func() {
 			defer wg.Done()
 
-			var screen = c.Screen()
 			var wins Wins
-
 			for i1 := range r1 {
-				screen.SetCol(1, r1, i1)
+				c.SetCol(1, r1, i1)
 				for i2 := range r2 {
-					screen.SetCol(2, r2, i2)
+					c.SetCol(2, r2, i2)
 					for i3 := range r3 {
-						screen.SetCol(3, r3, i3)
+						c.SetCol(3, r3, i3)
 						for i4 := range r4 {
 							reshuf++
 							if reshuf%CtxGranulation == 0 {
@@ -221,7 +217,7 @@ func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x) {
 							if reshuf%tn64 != ti {
 								continue
 							}
-							screen.SetCol(4, r4, i4)
+							c.SetCol(4, r4, i4)
 							c.Scanner(&wins)
 							s.Update(wins)
 							wins.Reset()
@@ -250,17 +246,15 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x) {
 		go func() {
 			defer wg.Done()
 
-			var screen = c.Screen()
 			var wins Wins
-
 			for i1 := range r1 {
-				screen.SetCol(1, r1, i1)
+				c.SetCol(1, r1, i1)
 				for i2 := range r2 {
-					screen.SetCol(2, r2, i2)
+					c.SetCol(2, r2, i2)
 					for i3 := range r3 {
-						screen.SetCol(3, r3, i3)
+						c.SetCol(3, r3, i3)
 						for i4 := range r4 {
-							screen.SetCol(4, r4, i4)
+							c.SetCol(4, r4, i4)
 							for i5 := range r5 {
 								reshuf++
 								if reshuf%CtxGranulation == 0 {
@@ -273,7 +267,7 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x) {
 								if reshuf%tn64 != ti {
 									continue
 								}
-								screen.SetCol(5, r5, i5)
+								c.SetCol(5, r5, i5)
 								c.Scanner(&wins)
 								s.Update(wins)
 								wins.Reset()
@@ -294,17 +288,16 @@ func BruteForce5x3Big(ctx context.Context, s Stater, g SlotGame, r1, rb, r5 []Sy
 	wg.Add(tn)
 	for ti := range tn64 {
 		var c = g.Clone()
+		var cb = c.(Bigger)
 		var reshuf uint64
 		go func() {
 			defer wg.Done()
 
-			var screen = c.Screen().(*Screen5x3)
 			var wins Wins
-
 			for i1 := range r1 {
-				screen.SetCol(1, r1, i1)
+				c.SetCol(1, r1, i1)
 				for _, big := range rb {
-					screen.SetBig(big)
+					cb.SetBig(big)
 					for i5 := range r5 {
 						reshuf++
 						if reshuf%CtxGranulation == 0 {
@@ -317,7 +310,7 @@ func BruteForce5x3Big(ctx context.Context, s Stater, g SlotGame, r1, rb, r5 []Sy
 						if reshuf%tn64 != ti {
 							continue
 						}
-						screen.SetCol(5, r5, i5)
+						c.SetCol(5, r5, i5)
 						c.Scanner(&wins)
 						s.Update(wins)
 						wins.Reset()
@@ -346,19 +339,17 @@ func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels *Reels6x) {
 		go func() {
 			defer wg.Done()
 
-			var screen = c.Screen()
 			var wins Wins
-
 			for i1 := range r1 {
-				screen.SetCol(1, r1, i1)
+				c.SetCol(1, r1, i1)
 				for i2 := range r2 {
-					screen.SetCol(2, r2, i2)
+					c.SetCol(2, r2, i2)
 					for i3 := range r3 {
-						screen.SetCol(3, r3, i3)
+						c.SetCol(3, r3, i3)
 						for i4 := range r4 {
-							screen.SetCol(4, r4, i4)
+							c.SetCol(4, r4, i4)
 							for i5 := range r5 {
-								screen.SetCol(5, r5, i5)
+								c.SetCol(5, r5, i5)
 								for i6 := range r6 {
 									reshuf++
 									if reshuf%CtxGranulation == 0 {
@@ -371,7 +362,7 @@ func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels *Reels6x) {
 									if reshuf%tn64 != ti {
 										continue
 									}
-									screen.SetCol(6, r6, i6)
+									c.SetCol(6, r6, i6)
 									c.Scanner(&wins)
 									s.Update(wins)
 									wins.Reset()
@@ -398,9 +389,7 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 		go func() {
 			defer wg.Done()
 
-			var screen = c.Screen()
 			var wins Wins
-
 			for range n / tn64 {
 				reshuf++
 				if reshuf%CtxGranulation == 0 {
@@ -410,7 +399,7 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 					default:
 					}
 				}
-				screen.Spin(reels)
+				c.ReelSpin(reels)
 				c.Scanner(&wins)
 				s.Update(wins)
 				wins.Reset()

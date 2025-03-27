@@ -11,7 +11,6 @@ import (
 )
 
 func BruteForceEuro(ctx context.Context, s slot.Stater, g *Game, reels slot.Reels, x, y slot.Pos) {
-	var screen = &g.Scr
 	var wins slot.Wins
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)
@@ -19,23 +18,23 @@ func BruteForceEuro(ctx context.Context, s slot.Stater, g *Game, reels slot.Reel
 	var r4 = reels.Reel(4)
 	var r5 = reels.Reel(5)
 	for i1 := range r1 {
-		screen.SetCol(1, r1, i1)
+		g.SetCol(1, r1, i1)
 		for i2 := range r2 {
-			screen.SetCol(2, r2, i2)
+			g.SetCol(2, r2, i2)
 			for i3 := range r3 {
-				screen.SetCol(3, r3, i3)
+				g.SetCol(3, r3, i3)
 				for i4 := range r4 {
-					screen.SetCol(4, r4, i4)
+					g.SetCol(4, r4, i4)
 					for i5 := range r5 {
-						screen.SetCol(5, r5, i5)
+						g.SetCol(5, r5, i5)
 						var sym slot.Sym
 						if x > 0 {
-							sym = screen.At(x, y)
-							screen.Set(x, y, wild)
+							sym = g.At(x, y)
+							g.SetSym(x, y, wild)
 						}
 						g.Scanner(&wins)
 						if x > 0 {
-							screen.Set(x, y, sym)
+							g.SetSym(x, y, sym)
 						}
 						s.Update(wins)
 						wins.Reset()

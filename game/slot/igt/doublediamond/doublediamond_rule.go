@@ -29,7 +29,8 @@ var BetLines = []slot.Linex{
 }
 
 type Game struct {
-	slot.Slotx[slot.Screen3x3] `yaml:",inline"`
+	slot.Screen3x3 `yaml:",inline"`
+	slot.Slotx     `yaml:",inline"`
 }
 
 // Declare conformity with SlotGame interface.
@@ -37,7 +38,7 @@ var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{
-		Slotx: slot.Slotx[slot.Screen3x3]{
+		Slotx: slot.Slotx{
 			Sel: len(BetLines),
 			Bet: 1,
 		},
@@ -53,9 +54,9 @@ func (g *Game) Scanner(wins *slot.Wins) {
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 		var m = map[slot.Sym]int{}
-		m[g.Scr.LY(1, line)]++
-		m[g.Scr.LY(2, line)]++
-		m[g.Scr.LY(3, line)]++
+		m[g.LY(1, line)]++
+		m[g.LY(2, line)]++
+		m[g.LY(3, line)]++
 		if len(m) == 1 && m[0] == 0 { // 3 symbols
 			for sym := range m {
 				*wins = append(*wins, slot.WinItem{
@@ -146,7 +147,7 @@ func (g *Game) Scanner(wins *slot.Wins) {
 
 func (g *Game) Spin(mrtp float64) {
 	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
-	g.Scr.Spin(reels)
+	g.ReelSpin(reels)
 }
 
 func (g *Game) SetSel(sel int) error {
