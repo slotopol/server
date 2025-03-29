@@ -154,9 +154,9 @@ const (
 	AEC_slot_spin_noclub
 	AEC_slot_spin_nouser
 	AEC_slot_spin_noaccess
+	AEC_slot_spin_noprops
 	AEC_slot_spin_badbet
 	AEC_slot_spin_badsel
-	AEC_slot_spin_noprops
 	AEC_slot_spin_nomoney
 	AEC_slot_spin_badbank
 	AEC_slot_spin_sqlbank

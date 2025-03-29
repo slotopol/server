@@ -47,7 +47,7 @@ func BruteForceStars(ctx context.Context, s slot.Stater, g *Game, reels slot.Ree
 						g.SetSym(2, 1, sym2)
 						g.SetSym(3, 1, sym3)
 						g.SetSym(4, 1, sym4)
-						s.Update(wins)
+						s.Update(wins, 1)
 						wins.Reset()
 						if s.Count()&100 == 0 {
 							select {

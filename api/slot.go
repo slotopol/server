@@ -265,6 +265,12 @@ func ApiSlotSpin(c *gin.Context) {
 		return
 	}
 
+	var props *Props
+	if props, ok = user.props.Get(scene.CID); !ok {
+		Ret500(c, AEC_slot_spin_noprops, ErrNoProps)
+		return
+	}
+
 	if arg.Bet != 0 {
 		if err = game.SetBet(arg.Bet); err != nil {
 			Ret403(c, AEC_slot_spin_badbet, err)
@@ -284,11 +290,6 @@ func ApiSlotSpin(c *gin.Context) {
 		cost, isjp = game.Cost()
 	}
 
-	var props *Props
-	if props, ok = user.props.Get(scene.CID); !ok {
-		Ret500(c, AEC_slot_spin_noprops, ErrNoProps)
-		return
-	}
 	if props.Wallet < cost {
 		Ret403(c, AEC_slot_spin_nomoney, ErrNoMoney)
 		return

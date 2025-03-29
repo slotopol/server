@@ -13,7 +13,7 @@ import (
 
 type Stat struct {
 	planned    uint64
-	reshuffles uint64
+	reshuffles [10]uint64
 	linepay    float64
 	scatpay    float64
 	freecount  uint64
@@ -32,11 +32,11 @@ func (s *Stat) Planned() uint64 {
 }
 
 func (s *Stat) Count() uint64 {
-	return atomic.LoadUint64(&s.reshuffles)
+	return atomic.LoadUint64(&s.reshuffles[0])
 }
 
 func (s *Stat) LineRTP(cost float64) float64 {
-	var reshuf = float64(atomic.LoadUint64(&s.reshuffles))
+	var reshuf = float64(atomic.LoadUint64(&s.reshuffles[0]))
 	s.lpm.Lock()
 	var lp = s.linepay
 	s.lpm.Unlock()
@@ -44,7 +44,7 @@ func (s *Stat) LineRTP(cost float64) float64 {
 }
 
 func (s *Stat) ScatRTP(cost float64) float64 {
-	var reshuf = float64(atomic.LoadUint64(&s.reshuffles))
+	var reshuf = float64(atomic.LoadUint64(&s.reshuffles[0]))
 	s.spm.Lock()
 	var sp = s.scatpay
 	s.spm.Unlock()
@@ -67,7 +67,7 @@ func (s *Stat) JackCount(jid int) uint64 {
 	return atomic.LoadUint64(&s.jackcount[jid])
 }
 
-func (s *Stat) Update(wins slot.Wins) {
+func (s *Stat) Update(wins slot.Wins, cfn int) {
 	for _, wi := range wins {
 		if wi.Pay != 0 {
 			if wi.Line != 0 {
@@ -91,7 +91,9 @@ func (s *Stat) Update(wins slot.Wins) {
 			atomic.AddUint64(&s.jackcount[wi.JID], 1)
 		}
 	}
-	atomic.AddUint64(&s.reshuffles, 1)
+	if cfn < len(s.reshuffles) {
+		atomic.AddUint64(&s.reshuffles[cfn-1], 1)
+	}
 }
 
 func CalcStatBon(ctx context.Context) float64 {

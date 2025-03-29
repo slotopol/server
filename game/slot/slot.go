@@ -63,7 +63,6 @@ func (wins Wins) Jackpot() float64 {
 
 // SlotGame is common slots interface. Any slot game should implement this interface.
 type SlotGame interface {
-	Screen
 	Clone() SlotGame              // returns full cloned copy of itself
 	Scanner(*Wins)                // scan given screen and append result to wins, constat function
 	Cost() (float64, bool)        // cost of spin on current bet and lines, and has it jackpot rate, constat function
@@ -79,6 +78,11 @@ type SlotGame interface {
 	GetSel() int                  // returns number of selected bet lines, constat function
 	SetSel(int) error             // setup number of selected bet lines
 	SetMode(int) error            // change game mode depending on the user's choice
+}
+
+type ClassicSlot interface {
+	Screen
+	SlotGame
 }
 
 // Reels for 3-reels slots.

@@ -19,13 +19,13 @@ type Stater interface {
 	Count() uint64
 	LineRTP(cost float64) float64
 	ScatRTP(cost float64) float64
-	Update(wins Wins)
+	Update(wins Wins, cfn int)
 }
 
 // Stat is statistics calculation for slot reels.
 type Stat struct {
 	planned    uint64
-	reshuffles uint64
+	reshuffles [10]uint64
 	linepay    float64
 	scatpay    float64
 	freecount  uint64
@@ -44,11 +44,11 @@ func (s *Stat) Planned() uint64 {
 }
 
 func (s *Stat) Count() uint64 {
-	return atomic.LoadUint64(&s.reshuffles)
+	return atomic.LoadUint64(&s.reshuffles[0])
 }
 
 func (s *Stat) LineRTP(cost float64) float64 {
-	var reshuf = float64(atomic.LoadUint64(&s.reshuffles))
+	var reshuf = float64(atomic.LoadUint64(&s.reshuffles[0]))
 	s.lpm.Lock()
 	var lp = s.linepay
 	s.lpm.Unlock()
@@ -56,7 +56,7 @@ func (s *Stat) LineRTP(cost float64) float64 {
 }
 
 func (s *Stat) ScatRTP(cost float64) float64 {
-	var reshuf = float64(atomic.LoadUint64(&s.reshuffles))
+	var reshuf = float64(atomic.LoadUint64(&s.reshuffles[0]))
 	s.spm.Lock()
 	var sp = s.scatpay
 	s.spm.Unlock()
@@ -79,7 +79,7 @@ func (s *Stat) JackCount(jid int) uint64 {
 	return atomic.LoadUint64(&s.jackcount[jid])
 }
 
-func (s *Stat) Update(wins Wins) {
+func (s *Stat) Update(wins Wins, cfn int) {
 	for _, wi := range wins {
 		if wi.Pay != 0 {
 			if wi.Line != 0 {
@@ -103,7 +103,9 @@ func (s *Stat) Update(wins Wins) {
 			atomic.AddUint64(&s.jackcount[wi.JID], 1)
 		}
 	}
-	atomic.AddUint64(&s.reshuffles, 1)
+	if cfn < len(s.reshuffles) {
+		atomic.AddUint64(&s.reshuffles[cfn-1], 1)
+	}
 }
 
 func Progress(ctx context.Context, s Stater, steps <-chan time.Time, calc func(io.Writer) float64) {
@@ -149,16 +151,17 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x) {
 	var wg sync.WaitGroup
 	wg.Add(tn)
 	for ti := range tn64 {
-		var c = g.Clone()
+		var sg = g.Clone().(ClassicSlot)     // classic slot game
+		var cs, iscascade = sg.(CascadeSlot) // cascade slot game
 		var reshuf uint64
 		go func() {
 			defer wg.Done()
 
 			var wins Wins
 			for i1 := range r1 {
-				c.SetCol(1, r1, i1)
+				sg.SetCol(1, r1, i1)
 				for i2 := range r2 {
-					c.SetCol(2, r2, i2)
+					sg.SetCol(2, r2, i2)
 					for i3 := range r3 {
 						reshuf++
 						if reshuf%CtxGranulation == 0 {
@@ -171,10 +174,24 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x) {
 						if reshuf%tn64 != ti {
 							continue
 						}
-						c.SetCol(3, r3, i3)
-						c.Scanner(&wins)
-						s.Update(wins)
-						wins.Reset()
+						sg.SetCol(3, r3, i3)
+						if iscascade {
+							for {
+								cs.NewFall()
+								cs.Scanner(&wins)
+								s.Update(wins, cs.FallNum())
+								cs.Strike(wins)
+								if len(wins) == 0 {
+									break
+								}
+								cs.NextFall(reels)
+								wins.Reset()
+							}
+						} else {
+							sg.Scanner(&wins)
+							s.Update(wins, 1)
+							wins.Reset()
+						}
 					}
 				}
 			}
@@ -193,18 +210,19 @@ func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x) {
 	var wg sync.WaitGroup
 	wg.Add(tn)
 	for ti := range tn64 {
-		var c = g.Clone()
+		var sg = g.Clone().(ClassicSlot)     // classic slot game
+		var cs, iscascade = sg.(CascadeSlot) // cascade slot game
 		var reshuf uint64
 		go func() {
 			defer wg.Done()
 
 			var wins Wins
 			for i1 := range r1 {
-				c.SetCol(1, r1, i1)
+				sg.SetCol(1, r1, i1)
 				for i2 := range r2 {
-					c.SetCol(2, r2, i2)
+					sg.SetCol(2, r2, i2)
 					for i3 := range r3 {
-						c.SetCol(3, r3, i3)
+						sg.SetCol(3, r3, i3)
 						for i4 := range r4 {
 							reshuf++
 							if reshuf%CtxGranulation == 0 {
@@ -217,10 +235,24 @@ func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x) {
 							if reshuf%tn64 != ti {
 								continue
 							}
-							c.SetCol(4, r4, i4)
-							c.Scanner(&wins)
-							s.Update(wins)
-							wins.Reset()
+							sg.SetCol(4, r4, i4)
+							if iscascade {
+								for {
+									cs.NewFall()
+									cs.Scanner(&wins)
+									s.Update(wins, cs.FallNum())
+									cs.Strike(wins)
+									if len(wins) == 0 {
+										break
+									}
+									cs.NextFall(reels)
+									wins.Reset()
+								}
+							} else {
+								sg.Scanner(&wins)
+								s.Update(wins, 1)
+								wins.Reset()
+							}
 						}
 					}
 				}
@@ -241,20 +273,21 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x) {
 	var wg sync.WaitGroup
 	wg.Add(tn)
 	for ti := range tn64 {
-		var c = g.Clone()
+		var sg = g.Clone().(ClassicSlot)     // classic slot game
+		var cs, iscascade = sg.(CascadeSlot) // cascade slot game
 		var reshuf uint64
 		go func() {
 			defer wg.Done()
 
 			var wins Wins
 			for i1 := range r1 {
-				c.SetCol(1, r1, i1)
+				sg.SetCol(1, r1, i1)
 				for i2 := range r2 {
-					c.SetCol(2, r2, i2)
+					sg.SetCol(2, r2, i2)
 					for i3 := range r3 {
-						c.SetCol(3, r3, i3)
+						sg.SetCol(3, r3, i3)
 						for i4 := range r4 {
-							c.SetCol(4, r4, i4)
+							sg.SetCol(4, r4, i4)
 							for i5 := range r5 {
 								reshuf++
 								if reshuf%CtxGranulation == 0 {
@@ -267,10 +300,24 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x) {
 								if reshuf%tn64 != ti {
 									continue
 								}
-								c.SetCol(5, r5, i5)
-								c.Scanner(&wins)
-								s.Update(wins)
-								wins.Reset()
+								sg.SetCol(5, r5, i5)
+								if iscascade {
+									for {
+										cs.NewFall()
+										cs.Scanner(&wins)
+										s.Update(wins, cs.FallNum())
+										cs.Strike(wins)
+										if len(wins) == 0 {
+											break
+										}
+										cs.NextFall(reels)
+										wins.Reset()
+									}
+								} else {
+									sg.Scanner(&wins)
+									s.Update(wins, 1)
+									wins.Reset()
+								}
 							}
 						}
 					}
@@ -287,15 +334,15 @@ func BruteForce5x3Big(ctx context.Context, s Stater, g SlotGame, r1, rb, r5 []Sy
 	var wg sync.WaitGroup
 	wg.Add(tn)
 	for ti := range tn64 {
-		var c = g.Clone()
-		var cb = c.(Bigger)
+		var sg = g.Clone().(ClassicSlot)
+		var cb = sg.(Bigger)
 		var reshuf uint64
 		go func() {
 			defer wg.Done()
 
 			var wins Wins
 			for i1 := range r1 {
-				c.SetCol(1, r1, i1)
+				sg.SetCol(1, r1, i1)
 				for _, big := range rb {
 					cb.SetBig(big)
 					for i5 := range r5 {
@@ -310,9 +357,9 @@ func BruteForce5x3Big(ctx context.Context, s Stater, g SlotGame, r1, rb, r5 []Sy
 						if reshuf%tn64 != ti {
 							continue
 						}
-						c.SetCol(5, r5, i5)
-						c.Scanner(&wins)
-						s.Update(wins)
+						sg.SetCol(5, r5, i5)
+						sg.Scanner(&wins)
+						s.Update(wins, 1)
 						wins.Reset()
 					}
 				}
@@ -334,22 +381,23 @@ func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels *Reels6x) {
 	var wg sync.WaitGroup
 	wg.Add(tn)
 	for ti := range tn64 {
-		var c = g.Clone()
+		var sg = g.Clone().(ClassicSlot)     // classic slot game
+		var cs, iscascade = sg.(CascadeSlot) // cascade slot game
 		var reshuf uint64
 		go func() {
 			defer wg.Done()
 
 			var wins Wins
 			for i1 := range r1 {
-				c.SetCol(1, r1, i1)
+				sg.SetCol(1, r1, i1)
 				for i2 := range r2 {
-					c.SetCol(2, r2, i2)
+					sg.SetCol(2, r2, i2)
 					for i3 := range r3 {
-						c.SetCol(3, r3, i3)
+						sg.SetCol(3, r3, i3)
 						for i4 := range r4 {
-							c.SetCol(4, r4, i4)
+							sg.SetCol(4, r4, i4)
 							for i5 := range r5 {
-								c.SetCol(5, r5, i5)
+								sg.SetCol(5, r5, i5)
 								for i6 := range r6 {
 									reshuf++
 									if reshuf%CtxGranulation == 0 {
@@ -362,10 +410,24 @@ func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels *Reels6x) {
 									if reshuf%tn64 != ti {
 										continue
 									}
-									c.SetCol(6, r6, i6)
-									c.Scanner(&wins)
-									s.Update(wins)
-									wins.Reset()
+									sg.SetCol(6, r6, i6)
+									if iscascade {
+										for {
+											cs.NewFall()
+											cs.Scanner(&wins)
+											s.Update(wins, cs.FallNum())
+											cs.Strike(wins)
+											if len(wins) == 0 {
+												break
+											}
+											cs.NextFall(reels)
+											wins.Reset()
+										}
+									} else {
+										sg.Scanner(&wins)
+										s.Update(wins, 1)
+										wins.Reset()
+									}
 								}
 							}
 						}
@@ -384,7 +446,8 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	var wg sync.WaitGroup
 	wg.Add(tn)
 	for range tn64 {
-		var c = g.Clone()
+		var sg = g.Clone().(ClassicSlot)     // classic slot game
+		var cs, iscascade = sg.(CascadeSlot) // cascade slot game
 		var reshuf uint64
 		go func() {
 			defer wg.Done()
@@ -399,10 +462,24 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 					default:
 					}
 				}
-				c.ReelSpin(reels)
-				c.Scanner(&wins)
-				s.Update(wins)
-				wins.Reset()
+				if iscascade {
+					for {
+						cs.NewFall()
+						cs.ReelSpin(reels)
+						cs.Scanner(&wins)
+						s.Update(wins, cs.FallNum())
+						cs.Strike(wins)
+						if len(wins) == 0 {
+							break
+						}
+						wins.Reset()
+					}
+				} else {
+					sg.ReelSpin(reels)
+					sg.Scanner(&wins)
+					s.Update(wins, 1)
+					wins.Reset()
+				}
 			}
 		}()
 	}

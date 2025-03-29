@@ -14,7 +14,7 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Golden Prophecies"}, // see: https://www.slotsmate.com/software/novomatic/golden-prophecies
 		{Prov: "Novomatic", Name: "Down Under"},
 		{Prov: "Novomatic", Name: "God of Sun"},
-		{Prov: "Novomatic", Name: "Lord of the Ocean"},
+		{Prov: "Novomatic", Name: "Lord of the Ocean"},          // see: https://casino.ru/lord-of-the-ocean-novomatic/
 		{Prov: "Novomatic", Name: "Faust"},                      // see: https://freeslotshub.com/novomatic/faust/
 		{Prov: "Novomatic", Name: "The Real King Gold Records"}, // see: https://www.slotsmate.com/software/novomatic/the-real-king-gold-records
 		{Prov: "Novomatic", Name: "Angry Birds"},                // see: https://www.slotsmate.com/software/novomatic/angry-birds

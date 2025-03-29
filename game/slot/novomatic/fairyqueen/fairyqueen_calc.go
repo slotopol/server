@@ -20,7 +20,7 @@ func BruteForce5x3es2(ctx context.Context, s slot.Stater, g *Game, reels *slot.R
 	var wg sync.WaitGroup
 	wg.Add(tn)
 	for ti := range tn64 {
-		var c = g.Clone()
+		var sg = g.Clone().(slot.ClassicSlot) // classic slot game
 		var reshuf uint64
 		go func() {
 			defer wg.Done()
@@ -40,9 +40,9 @@ func BruteForce5x3es2(ctx context.Context, s slot.Stater, g *Game, reels *slot.R
 			}
 
 			for i3 := range r3 {
-				c.SetCol(3, r3, i3)
+				sg.SetCol(3, r3, i3)
 				for i4 := range r4 {
-					c.SetCol(4, r4, i4)
+					sg.SetCol(4, r4, i4)
 					for i5 := range r5 {
 						reshuf++
 						if reshuf%slot.CtxGranulation == 0 {
@@ -55,9 +55,9 @@ func BruteForce5x3es2(ctx context.Context, s slot.Stater, g *Game, reels *slot.R
 						if reshuf%tn64 != ti {
 							continue
 						}
-						c.SetCol(5, r5, i5)
-						c.Scanner(&wins)
-						s.Update(wins)
+						sg.SetCol(5, r5, i5)
+						sg.Scanner(&wins)
+						s.Update(wins, 1)
 						wins.Reset()
 					}
 				}
@@ -75,7 +75,7 @@ func BruteForce5x3es3(ctx context.Context, s slot.Stater, g *Game, reels *slot.R
 	var wg sync.WaitGroup
 	wg.Add(tn)
 	for ti := range tn64 {
-		var c = g.Clone()
+		var sg = g.Clone().(slot.ClassicSlot) // classic slot game
 		var reshuf uint64
 		go func() {
 			defer wg.Done()
@@ -95,7 +95,7 @@ func BruteForce5x3es3(ctx context.Context, s slot.Stater, g *Game, reels *slot.R
 			}
 
 			for i4 := range r4 {
-				c.SetCol(4, r4, i4)
+				sg.SetCol(4, r4, i4)
 				for i5 := range r5 {
 					reshuf++
 					if reshuf%slot.CtxGranulation == 0 {
@@ -108,9 +108,9 @@ func BruteForce5x3es3(ctx context.Context, s slot.Stater, g *Game, reels *slot.R
 					if reshuf%tn64 != ti {
 						continue
 					}
-					c.SetCol(5, r5, i5)
-					c.Scanner(&wins)
-					s.Update(wins)
+					sg.SetCol(5, r5, i5)
+					sg.Scanner(&wins)
+					s.Update(wins, 1)
 					wins.Reset()
 				}
 			}
