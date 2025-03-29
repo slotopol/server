@@ -16,7 +16,8 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
+		var cost, _ = g.Cost()
+		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp
 		fmt.Fprintf(w, "RTP = %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		return rtpsym

@@ -67,6 +67,7 @@ type SlotGame interface {
 	Clone() SlotGame              // returns full cloned copy of itself
 	Scanner(*Wins)                // scan given screen and append result to wins, constat function
 	Cost() (float64, bool)        // cost of spin on current bet and lines, and has it jackpot rate, constat function
+	Free() bool                   // returns true on spins without pay, constat function
 	Spin(float64)                 // fill the screen with random hits on reels closest to given RTP, constat function
 	Spawn(Wins, float64, float64) // setup bonus games to wins results, constat function
 	Prepare()                     // update game state before new spin
@@ -175,10 +176,11 @@ type Slotx struct {
 }
 
 func (g *Slotx) Cost() (float64, bool) {
-	if g.FSR != 0 {
-		return 0, false
-	}
 	return g.Bet * float64(g.Sel), false
+}
+
+func (g *Slotx) Free() bool {
+	return g.FSR != 0
 }
 
 func (g *Slotx) Spawn(wins Wins, fund, mrtp float64) {

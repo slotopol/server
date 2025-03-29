@@ -278,7 +278,11 @@ func ApiSlotSpin(c *gin.Context) {
 		}
 	}
 
-	var cost, isjp = game.Cost()
+	var cost float64
+	var isjp bool
+	if !game.Free() {
+		cost, isjp = game.Cost()
+	}
 
 	var props *Props
 	if props, ok = user.props.Get(scene.CID); !ok {

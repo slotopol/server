@@ -22,7 +22,8 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var reshuf = float64(s.Count())
-		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
+		var cost, _ = g.Cost()
+		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp
 		var qmje1 = float64(s.BonusCount(mje1)) / reshuf / float64(g.Sel)
 		var rtpmje1 = slotopol.Emje * 1 * qmje1 * 100

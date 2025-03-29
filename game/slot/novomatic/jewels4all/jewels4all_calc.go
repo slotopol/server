@@ -61,7 +61,8 @@ func CalcStatEuro(ctx context.Context, x, y slot.Pos) float64 {
 	fmt.Printf("calculations of euro at [%d,%d]\n", x, y)
 
 	var calc = func(w io.Writer) float64 {
-		var lrtp = s.LineRTP(g.Sel)
+		var cost, _ = g.Cost()
+		var lrtp = s.LineRTP(cost)
 		fmt.Fprintf(w, "RTP[%d,%d] = %.6f%%\n", x, y, lrtp)
 		return lrtp
 	}

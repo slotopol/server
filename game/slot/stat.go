@@ -17,8 +17,8 @@ type Stater interface {
 	SetPlan(n uint64)
 	Planned() uint64
 	Count() uint64
-	LineRTP(sel int) float64
-	ScatRTP(sel int) float64
+	LineRTP(cost float64) float64
+	ScatRTP(cost float64) float64
 	Update(wins Wins)
 }
 
@@ -47,20 +47,20 @@ func (s *Stat) Count() uint64 {
 	return atomic.LoadUint64(&s.reshuffles)
 }
 
-func (s *Stat) LineRTP(sel int) float64 {
+func (s *Stat) LineRTP(cost float64) float64 {
 	var reshuf = float64(atomic.LoadUint64(&s.reshuffles))
 	s.lpm.Lock()
 	var lp = s.linepay
 	s.lpm.Unlock()
-	return lp / reshuf / float64(sel) * 100
+	return lp / reshuf / cost * 100
 }
 
-func (s *Stat) ScatRTP(sel int) float64 {
+func (s *Stat) ScatRTP(cost float64) float64 {
 	var reshuf = float64(atomic.LoadUint64(&s.reshuffles))
 	s.spm.Lock()
 	var sp = s.scatpay
 	s.spm.Unlock()
-	return sp / reshuf / float64(sel) * 100
+	return sp / reshuf / cost * 100
 }
 
 func (s *Stat) FreeCount() uint64 {
@@ -120,9 +120,9 @@ func Progress(ctx context.Context, s Stater, steps <-chan time.Time, calc func(i
 	}
 }
 
-func PrintSymPays(s Stater, sel int) func(io.Writer) float64 {
+func PrintSymPays(s Stater, cost float64) func(io.Writer) float64 {
 	return func(w io.Writer) float64 {
-		var lrtp, srtp = s.LineRTP(sel), s.ScatRTP(sel)
+		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		return rtpsym

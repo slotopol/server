@@ -226,9 +226,6 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 }
 
 func (g *Game) Cost() (float64, bool) {
-	if g.FSR != 0 {
-		return 0, true
-	}
 	return g.Bet * float64(g.Sel), true
 }
 

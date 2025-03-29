@@ -35,20 +35,20 @@ func (s *Stat) Count() uint64 {
 	return atomic.LoadUint64(&s.reshuffles)
 }
 
-func (s *Stat) LineRTP(sel int) float64 {
+func (s *Stat) LineRTP(cost float64) float64 {
 	var reshuf = float64(atomic.LoadUint64(&s.reshuffles))
 	s.lpm.Lock()
 	var lp = s.linepay
 	s.lpm.Unlock()
-	return lp / reshuf / float64(sel) * 100
+	return lp / reshuf / cost * 100
 }
 
-func (s *Stat) ScatRTP(sel int) float64 {
+func (s *Stat) ScatRTP(cost float64) float64 {
 	var reshuf = float64(atomic.LoadUint64(&s.reshuffles))
 	s.spm.Lock()
 	var sp = s.scatpay
 	s.spm.Unlock()
-	return sp / reshuf / float64(sel) * 100
+	return sp / reshuf / cost * 100
 }
 
 func (s *Stat) FreeCount() uint64 {
@@ -101,7 +101,8 @@ func CalcStatBon(ctx context.Context) float64 {
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
+		var cost, _ = g.Cost()
+		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp
 		fmt.Fprintf(w, "RTP = %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		return rtpsym
@@ -125,7 +126,8 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var reshuf = float64(s.Count())
-		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
+		var cost, _ = g.Cost()
+		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp
 		var q = float64(s.FreeCount()) / reshuf
 		var sq = 1 / (1 - q)

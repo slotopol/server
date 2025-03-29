@@ -18,7 +18,8 @@ func CalcStatBon(ctx context.Context) float64 {
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
+		var cost, _ = g.Cost()
+		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp
 		var rtp = rtpsym
 		fmt.Fprintf(w, "RTP = %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
@@ -46,7 +47,8 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		var fc = s.FreeHits() * Efs
 
 		var reshuf = float64(s.Count())
-		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
+		var cost, _ = g.Cost()
+		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp
 		var q = float64(fc) / reshuf
 		var rtp = rtpsym + (1+Pfs)*q*rtpfs

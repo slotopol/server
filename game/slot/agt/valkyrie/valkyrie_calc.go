@@ -18,7 +18,8 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
+		var cost, _ = g.Cost()
+		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		if srtp > 0 {
 			panic("scatters are presents on bonus games")
 		}
@@ -50,7 +51,8 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var reshuf = float64(s.Count())
-		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
+		var cost, _ = g.Cost()
+		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp
 		var q = float64(s.FreeCount()) / reshuf
 		var rtp = rtpsym + q*rtpfs

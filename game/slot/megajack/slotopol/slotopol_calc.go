@@ -93,7 +93,8 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var reshuf = float64(s.Count())
-		var lrtp, srtp = s.LineRTP(g.Sel), s.ScatRTP(g.Sel)
+		var cost, _ = g.Cost()
+		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp
 		var qmje9 = float64(s.BonusCount(mje9)) / reshuf / float64(g.Sel)
 		var rtpmje9 = Emje * 9 * qmje9 * 100

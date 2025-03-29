@@ -78,7 +78,8 @@ func CalcStatStars(ctx context.Context, wc2, wc3, wc4 bool) float64 {
 	fmt.Printf("calculations of star combinations [%c%c%c]\n", wcsym(wc2), wcsym(wc3), wcsym(wc4))
 
 	var calc = func(w io.Writer) float64 {
-		var lrtp = s.LineRTP(g.Sel)
+		var cost, _ = g.Cost()
+		var lrtp = s.LineRTP(cost)
 		fmt.Fprintf(w, "RTP[%c%c%c] = %.6f%%\n", wcsym(wc2), wcsym(wc3), wcsym(wc4), lrtp)
 		return lrtp
 	}
