@@ -38,7 +38,7 @@ func BruteForceEuro(ctx context.Context, s slot.Stater, g *Game, reels slot.Reel
 						}
 						s.Update(wins, 1)
 						wins.Reset()
-						if s.Count()&100 == 0 {
+						if s.Count(1)&100 == 0 {
 							select {
 							case <-ctx.Done():
 								return

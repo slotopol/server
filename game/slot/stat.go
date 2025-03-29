@@ -16,7 +16,7 @@ import (
 type Stater interface {
 	SetPlan(n uint64)
 	Planned() uint64
-	Count() uint64
+	Count(cfn int) uint64
 	LineRTP(cost float64) float64
 	ScatRTP(cost float64) float64
 	Update(wins Wins, cfn int)
@@ -43,8 +43,8 @@ func (s *Stat) Planned() uint64 {
 	return atomic.LoadUint64(&s.planned)
 }
 
-func (s *Stat) Count() uint64 {
-	return atomic.LoadUint64(&s.reshuffles[0])
+func (s *Stat) Count(cfn int) uint64 {
+	return atomic.LoadUint64(&s.reshuffles[cfn-1])
 }
 
 func (s *Stat) LineRTP(cost float64) float64 {
@@ -114,7 +114,7 @@ func Progress(ctx context.Context, s Stater, steps <-chan time.Time, calc func(i
 		case <-ctx.Done():
 			return
 		case <-steps:
-			var reshuf = float64(s.Count())
+			var reshuf = float64(s.Count(1))
 			var total = float64(s.Planned())
 			var rtp = calc(io.Discard)
 			fmt.Printf("processed %.1fm, ready %2.2f%%, RTP = %2.2f%%\n", reshuf/1e6, reshuf/total*100, rtp)
@@ -187,6 +187,8 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x) {
 								cs.NextFall(reels)
 								wins.Reset()
 							}
+							cs.SetCol(1, r1, i1)
+							cs.SetCol(2, r2, i2)
 						} else {
 							sg.Scanner(&wins)
 							s.Update(wins, 1)
@@ -248,6 +250,9 @@ func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x) {
 									cs.NextFall(reels)
 									wins.Reset()
 								}
+								cs.SetCol(1, r1, i1)
+								cs.SetCol(2, r2, i2)
+								cs.SetCol(3, r3, i3)
 							} else {
 								sg.Scanner(&wins)
 								s.Update(wins, 1)
@@ -313,6 +318,10 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x) {
 										cs.NextFall(reels)
 										wins.Reset()
 									}
+									cs.SetCol(1, r1, i1)
+									cs.SetCol(2, r2, i2)
+									cs.SetCol(3, r3, i3)
+									cs.SetCol(4, r4, i4)
 								} else {
 									sg.Scanner(&wins)
 									s.Update(wins, 1)
@@ -423,6 +432,11 @@ func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels *Reels6x) {
 											cs.NextFall(reels)
 											wins.Reset()
 										}
+										cs.SetCol(1, r1, i1)
+										cs.SetCol(2, r2, i2)
+										cs.SetCol(3, r3, i3)
+										cs.SetCol(4, r4, i4)
+										cs.SetCol(5, r5, i5)
 									} else {
 										sg.Scanner(&wins)
 										s.Update(wins, 1)
@@ -502,7 +516,7 @@ func ScanReels3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x,
 		BruteForce3x(ctx2, s, g, reels)
 	}
 	var dur = time.Since(t0)
-	var comp = float64(s.Count()) / float64(s.Planned()) * 100
+	var comp = float64(s.Count(1)) / float64(s.Planned()) * 100
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", comp, g.GetSel(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), reels.Reshuffles())
@@ -525,7 +539,7 @@ func ScanReels4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x,
 		BruteForce4x(ctx2, s, g, reels)
 	}
 	var dur = time.Since(t0)
-	var comp = float64(s.Count()) / float64(s.Planned()) * 100
+	var comp = float64(s.Count(1)) / float64(s.Planned()) * 100
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", comp, g.GetSel(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), reels.Reshuffles())
@@ -548,7 +562,7 @@ func ScanReels5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x,
 		BruteForce5x(ctx2, s, g, reels)
 	}
 	var dur = time.Since(t0)
-	var comp = float64(s.Count()) / float64(s.Planned()) * 100
+	var comp = float64(s.Count(1)) / float64(s.Planned()) * 100
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", comp, g.GetSel(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), reels.Reshuffles())
@@ -571,7 +585,7 @@ func ScanReels6x(ctx context.Context, s Stater, g SlotGame, reels *Reels6x,
 		BruteForce6x(ctx2, s, g, reels)
 	}
 	var dur = time.Since(t0)
-	var comp = float64(s.Count()) / float64(s.Planned()) * 100
+	var comp = float64(s.Count(1)) / float64(s.Planned()) * 100
 	fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", comp, g.GetSel(), dur)
 	fmt.Printf("reels lengths [%d, %d, %d, %d, %d, %d], total reshuffles %d\n",
 		len(reels.Reel(1)), len(reels.Reel(2)), len(reels.Reel(3)), len(reels.Reel(4)), len(reels.Reel(5)), len(reels.Reel(6)), reels.Reshuffles())

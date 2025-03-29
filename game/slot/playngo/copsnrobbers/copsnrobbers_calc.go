@@ -46,7 +46,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		// Correct free spins count with math expectation value
 		var fc = s.FreeHits() * Efs
 
-		var reshuf = float64(s.Count())
+		var reshuf = float64(s.Count(1))
 		var cost, _ = g.Cost()
 		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp

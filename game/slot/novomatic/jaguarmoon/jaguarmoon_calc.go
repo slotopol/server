@@ -31,8 +31,8 @@ func (s *Stat) Planned() uint64 {
 	return atomic.LoadUint64(&s.planned)
 }
 
-func (s *Stat) Count() uint64 {
-	return atomic.LoadUint64(&s.reshuffles[0])
+func (s *Stat) Count(cfn int) uint64 {
+	return atomic.LoadUint64(&s.reshuffles[cfn-1])
 }
 
 func (s *Stat) LineRTP(cost float64) float64 {
@@ -127,7 +127,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var s Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Count())
+		var reshuf = float64(s.Count(1))
 		var cost, _ = g.Cost()
 		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp

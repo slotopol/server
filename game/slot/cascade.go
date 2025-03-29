@@ -47,6 +47,7 @@ func (s *Cascade5x3) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range 3 {
 		s.Sym[x-1][y] = reel[(pos+y)%len(reel)]
 	}
+	s.Pos[x-1] = pos
 }
 
 func (s *Cascade5x3) ReelSpin(reels Reels) {
@@ -63,7 +64,6 @@ func (s *Cascade5x3) RiseFall(reels Reels) {
 		var reel = r5x[x]
 		var pos = rand.N(len(reel))
 		s.SetCol(x+1, reel, pos)
-		s.Pos[x] = pos
 	}
 }
 
@@ -75,7 +75,7 @@ func (s *Cascade5x3) NextFall(reels Reels) {
 		for y := range 3 {
 			if s.Hit[x][y] > 0 {
 				for i := range y {
-					s.Hit[x][y-i] = s.Hit[x][y-i-1]
+					s.Sym[x][y-i] = s.Sym[x][y-i-1]
 				}
 				n++
 			}
@@ -83,7 +83,8 @@ func (s *Cascade5x3) NextFall(reels Reels) {
 		// fall new symbols
 		s.Pos[x] -= n
 		for y := range n {
-			s.Sym[x][y] = r5x[x][(s.Pos[x]+y)%len(r5x[x])]
+			var pos = (s.Pos[x] + y + len(r5x[x])) % len(r5x[x])
+			s.Sym[x][y] = r5x[x][pos]
 		}
 	}
 }
@@ -147,9 +148,10 @@ func (s *Cascade5x3) FallNum() int {
 func (s *Cascade5x3) Strike(wins Wins) {
 	clear(s.Hit[:])
 	for _, wi := range wins {
-		for x := range wi.Num {
-			var y = wi.XY[x-1]
-			s.Hit[x][y] = 1
+		for x := range 5 {
+			if y := wi.XY[x]; y > 0 {
+				s.Hit[x][y-1] = 1
+			}
 		}
 	}
 }
@@ -184,6 +186,7 @@ func (s *Cascade5x4) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range 4 {
 		s.Sym[x-1][y] = reel[(pos+y)%len(reel)]
 	}
+	s.Pos[x-1] = pos
 }
 
 func (s *Cascade5x4) ReelSpin(reels Reels) {
@@ -200,7 +203,6 @@ func (s *Cascade5x4) RiseFall(reels Reels) {
 		var reel = r5x[x]
 		var pos = rand.N(len(reel))
 		s.SetCol(x+1, reel, pos)
-		s.Pos[x] = pos
 	}
 }
 
@@ -212,7 +214,7 @@ func (s *Cascade5x4) NextFall(reels Reels) {
 		for y := range 4 {
 			if s.Hit[x][y] > 0 {
 				for i := range y {
-					s.Hit[x][y-i] = s.Hit[x][y-i-1]
+					s.Sym[x][y-i] = s.Sym[x][y-i-1]
 				}
 				n++
 			}
@@ -220,7 +222,8 @@ func (s *Cascade5x4) NextFall(reels Reels) {
 		// fall new symbols
 		s.Pos[x] -= n
 		for y := range n {
-			s.Sym[x][y] = r5x[x][(s.Pos[x]+y)%len(r5x[x])]
+			var pos = (s.Pos[x] + y + len(r5x[x])) % len(r5x[x])
+			s.Sym[x][y] = r5x[x][pos]
 		}
 	}
 }
@@ -286,9 +289,10 @@ func (s *Cascade5x4) FallNum() int {
 func (s *Cascade5x4) Strike(wins Wins) {
 	clear(s.Hit[:])
 	for _, wi := range wins {
-		for x := range wi.Num {
-			var y = wi.XY[x-1]
-			s.Hit[x][y] = 1
+		for x := range 5 {
+			if y := wi.XY[x]; y > 0 {
+				s.Hit[x][y-1] = 1
+			}
 		}
 	}
 }
