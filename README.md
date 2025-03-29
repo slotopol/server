@@ -16,13 +16,13 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 188 games, 97 algorithms, 10 providers
+total: 189 games, 98 algorithms, 10 providers
 AGT: 60 games
 Aristocrat: 4 games
 BetSoft: 3 games
 IGT: 5 games
 Megajack: 4 games
-NetEnt: 20 games
+NetEnt: 21 games
 Novomatic: 78 games
 Play'n GO: 3 games
 Playtech: 7 games
@@ -31,6 +31,7 @@ Slotopol: 4 games
 
 *Last added games*:
 
+* '[Gonzo's Quest](https://www.slotsmate.com/software/netent/gonzos-quest)' NetEnt 5x3 cascade videoslot
 * '[50 Gems](https://demo.agtsoftware.com/games/agt/gems50)' AGT 5x4 videoslot
 * '[Gems](https://demo.agtsoftware.com/games/agt/gems20)' AGT 5x3 videoslot
 * '[Fruit Queen](https://demo.agtsoftware.com/games/agt/fruitqueen)' AGT 5x6 videoslot
@@ -56,6 +57,7 @@ Slotopol: 4 games
 
 * 'Aztec Gold' Megajack 5x3 videoslot has unique 'Aztec Pyramid' bonus game
 * '[Book of Ra Deluxe](https://www.slotsmate.com/software/novomatic/book-of-ra-deluxe)' Novomatic 5x3 videoslot with special expanding symbol on free games
+* '[Gonzo's Quest](https://www.slotsmate.com/software/netent/gonzos-quest)' NetEnt 5x3 cascade videoslot
 * 'Fruit Shop' NetEnt 5x3 videoslot with free spins on every win
 * '[Sun City](https://demo.agtsoftware.com/games/agt/suncity)' AGT 5x3 videoslot with free games continous by the luck
 * '[Egypt](https://demo.agtsoftware.com/games/agt/egypt)' AGT 5x3 videoslot with minislot for wilds multiplier
@@ -63,7 +65,6 @@ Slotopol: 4 games
 * '[Secret Elixir](https://www.slotsmate.com/software/novomatic/secret-elixir)' Novomatic 5x3 videoslot with multipliers on 5th reel
 * '[Dragon's Deep](https://www.slotsmate.com/software/novomatic/dragons-deep)' Novomatic 5x3 videoslot, some symbols become wilds on free games
 * '[Ultra Sevens](https://www.slotsmate.com/software/novomatic/ultra-sevens)' Novomatic 5x4 videoslot with 3 jackpots
-* '[Valentine's Day](https://demo.agtsoftware.com/games/agt/valentine)' AGT 5x3 videoslot with multipliers by screen filling
 
 # How to build from sources
 

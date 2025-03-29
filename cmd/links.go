@@ -55,6 +55,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/netent/arabiannights"
 	_ "github.com/slotopol/server/game/slot/netent/diamonddogs"
 	_ "github.com/slotopol/server/game/slot/netent/fruitshop"
+	_ "github.com/slotopol/server/game/slot/netent/gonzosquest"
 	_ "github.com/slotopol/server/game/slot/netent/groovysixties"
 	_ "github.com/slotopol/server/game/slot/netent/piggyriches"
 	_ "github.com/slotopol/server/game/slot/netent/reelsteal"

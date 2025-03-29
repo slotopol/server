@@ -220,9 +220,11 @@ func (s *Cascade5x4) NextFall(reels Reels) {
 			}
 		}
 		// fall new symbols
-		s.Pos[x] -= n
+		if s.Pos[x] -= n; s.Pos[x] < 0 {
+			s.Pos[x] += len(r5x[x])
+		}
 		for y := range n {
-			var pos = (s.Pos[x] + y + len(r5x[x])) % len(r5x[x])
+			var pos = (s.Pos[x] + y) % len(r5x[x])
 			s.Sym[x][y] = r5x[x][pos]
 		}
 	}

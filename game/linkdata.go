@@ -18,7 +18,7 @@ const ( // Game properties
 	GPcline                // pays for combination at any position
 	GPjack                 // cumulative jackpot is present
 
-	GPcsc    // cascade falls present
+	GPcasc   // cascade falls present
 	GPcmult  // multipliers on cascade falls
 	GPfghas  // non-retriggered free games are present
 	GPretrig // free games are present and can be retriggered
