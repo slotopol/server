@@ -16,14 +16,14 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 189 games, 98 algorithms, 10 providers
+total: 190 games, 99 algorithms, 10 providers
 AGT: 60 games
 Aristocrat: 4 games
 BetSoft: 3 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 21 games
-Novomatic: 78 games
+Novomatic: 79 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games
@@ -31,6 +31,7 @@ Slotopol: 4 games
 
 *Last added games*:
 
+* '[Flame Dancer](https://casino.ru/flame-dancer-novomatic/)' Novomatic 5x3 videoslot
 * '[Gonzo's Quest](https://www.slotsmate.com/software/netent/gonzos-quest)' NetEnt 5x3 cascade videoslot
 * '[50 Gems](https://demo.agtsoftware.com/games/agt/gems50)' AGT 5x4 videoslot
 * '[Gems](https://demo.agtsoftware.com/games/agt/gems20)' AGT 5x3 videoslot
@@ -50,8 +51,6 @@ Slotopol: 4 games
 * '[Dynasty of Ra](https://www.slotsmate.com/software/novomatic/dynasty-of-ra)' Novomatic 5x3 videoslot
 * '[Fruits'n Royals](https://www.slotsmate.com/software/novomatic/fruits-n-royals)' Novomatic 5x3 videoslot
 * '[Ultra Sevens](https://www.slotsmate.com/software/novomatic/ultra-sevens)' Novomatic 5x4 videoslot with 3 jackpots
-* '[Plenty of Jewels 20 hot](https://www.slotsmate.com/software/novomatic/plenty-of-jewels-20-hot)' Novomatic 5x3 videoslot
-* '[Dragon's Deep](https://www.slotsmate.com/software/novomatic/dragons-deep)' Novomatic 5x3 videoslot
 
 *Top-10 of games with most interesting algorithms released on server*:
 
