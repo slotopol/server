@@ -176,10 +176,12 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x) {
 						}
 						sg.SetCol(3, r3, i3)
 						if iscascade {
+							var cfn int
 							for {
 								cs.NewFall()
+								cfn++
 								cs.Scanner(&wins)
-								s.Update(wins, cs.FallNum())
+								s.Update(wins, cfn)
 								cs.Strike(wins)
 								if len(wins) == 0 {
 									break
@@ -187,8 +189,10 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x) {
 								cs.NextFall(reels)
 								wins.Reset()
 							}
-							cs.SetCol(1, r1, i1)
-							cs.SetCol(2, r2, i2)
+							if cfn > 1 {
+								cs.SetCol(1, r1, i1)
+								cs.SetCol(2, r2, i2)
+							}
 						} else {
 							sg.Scanner(&wins)
 							s.Update(wins, 1)
@@ -239,10 +243,12 @@ func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x) {
 							}
 							sg.SetCol(4, r4, i4)
 							if iscascade {
+								var cfn int
 								for {
 									cs.NewFall()
+									cfn++
 									cs.Scanner(&wins)
-									s.Update(wins, cs.FallNum())
+									s.Update(wins, cfn)
 									cs.Strike(wins)
 									if len(wins) == 0 {
 										break
@@ -250,9 +256,11 @@ func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x) {
 									cs.NextFall(reels)
 									wins.Reset()
 								}
-								cs.SetCol(1, r1, i1)
-								cs.SetCol(2, r2, i2)
-								cs.SetCol(3, r3, i3)
+								if cfn > 1 {
+									cs.SetCol(1, r1, i1)
+									cs.SetCol(2, r2, i2)
+									cs.SetCol(3, r3, i3)
+								}
 							} else {
 								sg.Scanner(&wins)
 								s.Update(wins, 1)
@@ -307,10 +315,12 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x) {
 								}
 								sg.SetCol(5, r5, i5)
 								if iscascade {
+									var cfn int
 									for {
 										cs.NewFall()
+										cfn++
 										cs.Scanner(&wins)
-										s.Update(wins, cs.FallNum())
+										s.Update(wins, cfn)
 										cs.Strike(wins)
 										if len(wins) == 0 {
 											break
@@ -318,10 +328,12 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x) {
 										cs.NextFall(reels)
 										wins.Reset()
 									}
-									cs.SetCol(1, r1, i1)
-									cs.SetCol(2, r2, i2)
-									cs.SetCol(3, r3, i3)
-									cs.SetCol(4, r4, i4)
+									if cfn > 1 {
+										cs.SetCol(1, r1, i1)
+										cs.SetCol(2, r2, i2)
+										cs.SetCol(3, r3, i3)
+										cs.SetCol(4, r4, i4)
+									}
 								} else {
 									sg.Scanner(&wins)
 									s.Update(wins, 1)
@@ -421,10 +433,12 @@ func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels *Reels6x) {
 									}
 									sg.SetCol(6, r6, i6)
 									if iscascade {
+										var cfn int
 										for {
 											cs.NewFall()
+											cfn++
 											cs.Scanner(&wins)
-											s.Update(wins, cs.FallNum())
+											s.Update(wins, cfn)
 											cs.Strike(wins)
 											if len(wins) == 0 {
 												break
@@ -432,11 +446,13 @@ func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels *Reels6x) {
 											cs.NextFall(reels)
 											wins.Reset()
 										}
-										cs.SetCol(1, r1, i1)
-										cs.SetCol(2, r2, i2)
-										cs.SetCol(3, r3, i3)
-										cs.SetCol(4, r4, i4)
-										cs.SetCol(5, r5, i5)
+										if cfn > 1 {
+											cs.SetCol(1, r1, i1)
+											cs.SetCol(2, r2, i2)
+											cs.SetCol(3, r3, i3)
+											cs.SetCol(4, r4, i4)
+											cs.SetCol(5, r5, i5)
+										}
 									} else {
 										sg.Scanner(&wins)
 										s.Update(wins, 1)
@@ -477,11 +493,13 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 					}
 				}
 				if iscascade {
+					var cfn int
 					for {
 						cs.NewFall()
+						cfn++
 						cs.ReelSpin(reels)
 						cs.Scanner(&wins)
-						s.Update(wins, cs.FallNum())
+						s.Update(wins, cfn)
 						cs.Strike(wins)
 						if len(wins) == 0 {
 							break

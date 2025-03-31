@@ -96,7 +96,11 @@ func isProv(prov string) bool {
 func FormatGameInfo(gi *game.GameInfo, ai int) string {
 	var b strings.Builder
 	if gi.SN > 0 {
-		fmt.Fprintf(&b, "'%s' %s %dx%d videoslot", gi.Aliases[ai].Name, gi.Aliases[ai].Prov, gi.SX, gi.SY)
+		if gi.GP&game.GPcasc > 0 {
+			fmt.Fprintf(&b, "'%s' %s %dx%d cascade videoslot", gi.Aliases[ai].Name, gi.Aliases[ai].Prov, gi.SX, gi.SY)
+		} else {
+			fmt.Fprintf(&b, "'%s' %s %dx%d videoslot", gi.Aliases[ai].Name, gi.Aliases[ai].Prov, gi.SX, gi.SY)
+		}
 	} else {
 		fmt.Fprintf(&b, "'%s' %s %d spots lottery", gi.Aliases[ai].Name, gi.Aliases[ai].Prov, gi.SX)
 	}
@@ -148,6 +152,9 @@ func FormatGameInfo(gi *game.GameInfo, ai int) string {
 		}
 		if gi.GP&game.GPbwild > 0 {
 			b.WriteString(", has big wilds")
+		}
+		if gi.GP&game.GPwturn > 0 {
+			b.WriteString(", symbols turns to wilds")
 		}
 		if gi.GP&game.GPbsym > 0 {
 			b.WriteString(", has big symbols")

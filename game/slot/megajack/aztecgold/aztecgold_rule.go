@@ -83,11 +83,10 @@ func (g *Game) Scanner(wins *slot.Wins) {
 // Lined symbols calculation.
 func (g *Game) ScanLined(wins *slot.Wins) {
 	var reelwild [5]bool
-	var x, y slot.Pos
-	for x = 2; x <= 4; x++ {
-		for y = 1; y <= 3; y++ {
-			if g.At(x, y) == wild {
-				reelwild[x-1] = true
+	for x := 1; x < 4; x++ { // 2, 3, 4 reel only
+		for y := 0; y < 3; y++ {
+			if g.Scr[x][y] == wild {
+				reelwild[x] = true
 				break
 			}
 		}

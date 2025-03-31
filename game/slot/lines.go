@@ -176,7 +176,7 @@ var BetLinesNvm10 = []Linex{
 }
 
 // Novomatic 5x3 slots bet 20 lines (new games)
-var BetLinesNvm20 = []Linex{
+var BetLinesNvm20v1 = []Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3
@@ -200,7 +200,7 @@ var BetLinesNvm20 = []Linex{
 }
 
 // Novomatic 5x3 slots bet 20 lines (new games)
-var BetLinesNvmJewels = []Linex{
+var BetLinesNvm20v2 = []Linex{
 	{2, 2, 2, 2, 2}, // 1
 	{1, 1, 1, 1, 1}, // 2
 	{3, 3, 3, 3, 3}, // 3

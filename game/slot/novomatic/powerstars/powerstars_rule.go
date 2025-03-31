@@ -68,16 +68,15 @@ func (g *Game) Scanner(wins *slot.Wins) {
 // Lined symbols calculation.
 func (g *Game) ScanLined(wins *slot.Wins) {
 	var reelwild [5]bool
-	var fs int
-	var x, y slot.Pos
-	for x = 2; x <= 4; x++ {
-		if g.PRW[x-1] > 0 {
-			reelwild[x-1] = true
+	var fs bool
+	for x := 1; x < 4; x++ { // 2, 3, 4 reel only
+		if g.PRW[x] > 0 {
+			reelwild[x] = true
 		} else {
-			for y = 1; y <= 3; y++ {
-				if g.At(x, y) == wild {
-					reelwild[x-1] = true
-					fs = 1
+			for y := 0; y < 3; y++ {
+				if g.Scr[x][y] == wild {
+					reelwild[x] = true
+					fs = true
 					break
 				}
 			}
@@ -89,6 +88,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var syml, symr slot.Sym
 		var numl, numr slot.Pos
 		var payl, payr float64
+		var x slot.Pos
 
 		syml, numl = g.LY(1, line), 1
 		for x = 2; x <= 5; x++ {
@@ -131,10 +131,10 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				XY:   line.CopyL(numr),
 			})
 		}
-		if fs > 0 {
+		if fs {
 			*wins = append(*wins, slot.WinItem{
 				Sym:  wild,
-				Free: fs,
+				Free: 1,
 			})
 		}
 	}

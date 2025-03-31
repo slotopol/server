@@ -39,7 +39,7 @@ var ScatPay = [5]float64{0, 0, 2, 20, 200} // 12 katana
 var ScatFreespin = [5]int{0, 0, 10, 10, 10} // 12 katana
 
 // Bet lines
-var BetLines = slot.BetLinesNvm20
+var BetLines = slot.BetLinesNvm20v1
 
 type Game struct {
 	slot.Screen5x3 `yaml:",inline"`
@@ -74,11 +74,10 @@ func (g *Game) Scanner(wins *slot.Wins) {
 func (g *Game) ScanLined(wins *slot.Wins) {
 	var reelwild [5]bool
 	if g.FSR > 0 {
-		var x, y slot.Pos
-		for x = 1; x <= 5; x++ {
-			for y = 1; y <= 3; y++ {
-				if g.At(x, y) == wild {
-					reelwild[x-1] = true
+		for x := 0; x < 5; x++ {
+			for y := 0; y < 3; y++ {
+				if g.Scr[x][y] == wild {
+					reelwild[x] = true
 					break
 				}
 			}

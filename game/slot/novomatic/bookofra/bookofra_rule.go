@@ -107,7 +107,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 			}
 		}
 
-		if syml > 0 {
+		if numl >= 2 && syml > 0 {
 			if payl := LinePay[syml-1][numl-1]; payl > 0 {
 				*wins = append(*wins, slot.WinItem{
 					Pay:  g.Bet * payl,

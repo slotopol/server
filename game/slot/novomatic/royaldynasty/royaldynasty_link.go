@@ -15,7 +15,8 @@ var Info = game.GameInfo{
 		game.GPfgreel |
 		game.GPscat |
 		game.GPwild |
-		game.GPwmult,
+		game.GPwmult |
+		game.GPwturn,
 	SX:  5,
 	SY:  3,
 	SN:  len(LinePay),

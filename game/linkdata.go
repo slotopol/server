@@ -13,10 +13,10 @@ type GP uint
 const ( // Game properties
 	GPfgno GP = 0 // free games are absent
 
-	GPsel   GP = 1 << iota // user can change lines
-	GPrline                // pays left to right and right to left
-	GPcline                // pays for combination at any position
-	GPjack                 // cumulative jackpot is present
+	GPsel  GP = 1 << iota // user can change lines
+	GPrpay                // pays left to right and right to left
+	GPcpay                // pays for combination at any position
+	GPjack                // cumulative jackpot is present
 
 	GPcasc   // cascade falls present
 	GPcmult  // multipliers on cascade falls
@@ -31,10 +31,11 @@ const ( // Game properties
 	GPwild  // has wild symbols
 	GPrwild // has reel wild symbols
 	GPbwild // has big wild (3x3)
-	GPwmult // has multiplier on wilds
+	GPwturn // symbols turns to wilds
 
-	GPbsym // has big symbol (usually 3x3 in the center on free games)
-	GPfill // has multiplier on filled screen
+	GPwmult // has multiplier on wilds
+	GPbsym  // has big symbol (usually 3x3 in the center on free games)
+	GPfill  // has multiplier on filled screen
 )
 
 type (

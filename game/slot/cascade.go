@@ -6,7 +6,6 @@ type Cascade interface {
 	Screen
 	Cascade() bool        // returns true on avalanche continue
 	NewFall()             // set fall number before fall
-	FallNum() int         // returns cascade fall number
 	RiseFall(reels Reels) // first fall in cascade
 	NextFall(reels Reels) // any next fall in cascade
 	Strike(wins Wins)     // strike win symbols on the screen
@@ -139,10 +138,6 @@ func (s *Cascade5x3) NewFall() {
 	} else {
 		s.CFN = 1
 	}
-}
-
-func (s *Cascade5x3) FallNum() int {
-	return s.CFN
 }
 
 func (s *Cascade5x3) Strike(wins Wins) {
@@ -282,10 +277,6 @@ func (s *Cascade5x4) NewFall() {
 	} else {
 		s.CFN = 1
 	}
-}
-
-func (s *Cascade5x4) FallNum() int {
-	return s.CFN
 }
 
 func (s *Cascade5x4) Strike(wins Wins) {
