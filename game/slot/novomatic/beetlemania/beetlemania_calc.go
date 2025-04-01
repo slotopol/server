@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"math"
-	"time"
 
 	"github.com/slotopol/server/game/slot"
 )
@@ -33,8 +32,7 @@ func CalcStatBon(ctx context.Context) float64 {
 		return rtp
 	}
 
-	return slot.ScanReels5x(ctx, &s, g, reels, calc,
-		time.Tick(2*time.Second), time.Tick(2*time.Second))
+	return slot.ScanReels5x(ctx, &s, g, reels, calc)
 }
 
 func CalcStatReg(ctx context.Context, mrtp float64) float64 {
@@ -63,6 +61,5 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		return rtp
 	}
 
-	return slot.ScanReels5x(ctx, &s, g, reels, calc,
-		time.Tick(2*time.Second), time.Tick(2*time.Second))
+	return slot.ScanReels5x(ctx, &s, g, reels, calc)
 }
