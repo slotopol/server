@@ -10,7 +10,8 @@ var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "BetSoft", Name: "2 Million B.C."},
 	},
-	GP: game.GPsel |
+	GP: game.GPlpay |
+		game.GPsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPscat,

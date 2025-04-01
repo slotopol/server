@@ -14,7 +14,8 @@ var Info = game.GameInfo{
 		{Prov: "AGT", Name: "Arabian Nights 2"}, // see: https://demo.agtsoftware.com/games/agt/arabiannights2
 		{Prov: "AGT", Name: "Casino"},           // see: https://demo.agtsoftware.com/games/agt/casino
 	},
-	GP: game.GPsel |
+	GP: game.GPlpay |
+		game.GPsel |
 		game.GPretrig |
 		game.GPscat |
 		game.GPwild,

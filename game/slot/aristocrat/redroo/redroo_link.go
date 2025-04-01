@@ -10,7 +10,8 @@ var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "Aristocrat", Name: "Redroo"},
 	},
-	GP: game.GPretrig |
+	GP: game.GPlpay |
+		game.GPretrig |
 		game.GPscat |
 		game.GPwild |
 		game.GPwmult,

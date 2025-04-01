@@ -10,7 +10,8 @@ var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "Novomatic", Name: "Mega Joker"}, // see: https://www.slotsmate.com/software/novomatic/mega-joker
 	},
-	GP: game.GPfgno |
+	GP: game.GPlpay |
+		game.GPfgno |
 		game.GPscat |
 		game.GPwild,
 	SX:  5,

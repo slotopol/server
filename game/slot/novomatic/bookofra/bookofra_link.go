@@ -19,7 +19,8 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "The Real King Gold Records"}, // see: https://www.slotsmate.com/software/novomatic/the-real-king-gold-records
 		{Prov: "Novomatic", Name: "Angry Birds"},                // see: https://www.slotsmate.com/software/novomatic/angry-birds
 	},
-	GP: game.GPsel |
+	GP: game.GPlpay |
+		game.GPsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPscat |

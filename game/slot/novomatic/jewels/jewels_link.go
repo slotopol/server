@@ -10,8 +10,8 @@ var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "Novomatic", Name: "Jewels"},
 	},
-	GP: game.GPsel |
-		game.GPcpay |
+	GP: game.GPcpay |
+		game.GPsel |
 		game.GPfgno,
 	SX:  5,
 	SY:  3,

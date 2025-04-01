@@ -10,7 +10,8 @@ var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "AGT", Name: "50 Gems"}, // see: https://demo.agtsoftware.com/games/agt/gems50
 	},
-	GP: game.GPsel |
+	GP: game.GPlpay |
+		game.GPsel |
 		game.GPfgno |
 		game.GPscat |
 		game.GPwild,

@@ -10,7 +10,8 @@ var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "Play'n GO", Name: "Fire Joker"},
 	},
-	GP: game.GPfghas |
+	GP: game.GPlpay |
+		game.GPfghas |
 		game.GPscat |
 		game.GPbsym,
 	SX:  5,

@@ -10,7 +10,8 @@ var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "Novomatic", Name: "Royal Dynasty"}, // see: https://www.slotsmate.com/software/novomatic/royal-dynasty
 	},
-	GP: game.GPsel |
+	GP: game.GPlpay |
+		game.GPsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPscat |

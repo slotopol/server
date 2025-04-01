@@ -13,7 +13,8 @@ var Info = game.GameInfo{
 		{Prov: "NetEnt", Name: "Pandora's Box"},
 		{Prov: "NetEnt", Name: "Wild Witches"},
 	},
-	GP: game.GPsel |
+	GP: game.GPlpay |
+		game.GPsel |
 		game.GPretrig |
 		game.GPfgmult |
 		game.GPscat |

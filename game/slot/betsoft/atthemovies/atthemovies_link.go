@@ -11,7 +11,8 @@ var Info = game.GameInfo{
 		{Prov: "BetSoft", Name: "At the Movies"},
 		{Prov: "BetSoft", Name: "Sushi Bar"},
 	},
-	GP: game.GPsel |
+	GP: game.GPlpay |
+		game.GPsel |
 		game.GPretrig |
 		game.GPfgmult |
 		game.GPscat |

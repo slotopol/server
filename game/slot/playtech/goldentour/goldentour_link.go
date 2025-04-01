@@ -10,8 +10,8 @@ var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "Playtech", Name: "Golden Tour"},
 	},
-	GP: game.GPsel |
-		game.GPrpay |
+	GP: game.GPrpay |
+		game.GPsel |
 		game.GPfgno |
 		game.GPscat |
 		game.GPwild,

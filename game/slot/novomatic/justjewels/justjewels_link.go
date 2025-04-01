@@ -12,8 +12,8 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Just Jewels Deluxe"}, // see: https://www.slotsmate.com/software/novomatic/just-jewels-deluxe
 		{Prov: "Novomatic", Name: "Just Fruits"},        // see: https://www.slotsmate.com/software/novomatic/just-fruits
 	},
-	GP: game.GPsel |
-		game.GPcpay |
+	GP: game.GPcpay |
+		game.GPsel |
 		game.GPfgno |
 		game.GPscat,
 	SX:  5,

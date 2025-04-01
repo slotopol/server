@@ -10,7 +10,8 @@ var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "NetEnt", Name: "Fruit Shop"},
 	},
-	GP: game.GPretrig |
+	GP: game.GPlpay |
+		game.GPretrig |
 		game.GPfgmult |
 		game.GPwild |
 		game.GPwmult,

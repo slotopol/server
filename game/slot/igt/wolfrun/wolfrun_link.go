@@ -10,7 +10,8 @@ var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "IGT", Name: "Wolf Run"}, // see: https://www.slotsmate.com/software/igt/wolf-run
 	},
-	GP: game.GPsel |
+	GP: game.GPlpay |
+		game.GPsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPscat |

@@ -20,7 +20,8 @@ var Info = game.GameInfo{
 		{Prov: "AGT", Name: "Pirates Gold"},    // see: https://demo.agtsoftware.com/games/agt/piratesgold
 		{Prov: "AGT", Name: "The Leprechaun"},  // see: https://demo.agtsoftware.com/games/agt/leprechaun
 	},
-	GP: game.GPsel |
+	GP: game.GPlpay |
+		game.GPsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPfgmult |

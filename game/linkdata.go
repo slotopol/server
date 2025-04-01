@@ -11,31 +11,35 @@ import (
 type GP uint
 
 const ( // Game properties
-	GPfgno GP = 0 // free games are absent
-
-	GPsel  GP = 1 << iota // user can change lines
+	GPlpay GP = 1 << iota // pays left to right
 	GPrpay                // pays left to right and right to left
 	GPcpay                // pays for combination at any position
-	GPjack                // cumulative jackpot is present
+	FPspay                // pays by scatters only
 
-	GPcasc   // cascade falls present
-	GPcmult  // multipliers on cascade falls
+	GPsel   // user can change lines
+	GPjack  // cumulative jackpot is present
+	GPcasc  // cascade falls present
+	GPcmult // multipliers on cascade falls
+
 	GPfghas  // non-retriggered free games are present
 	GPretrig // free games are present and can be retriggered
-
 	GPfgreel // separate reels on free games
 	GPfgmult // any multipliers on free games
-	GPrmult  // any multipliers on regular games
-	GPscat   // has scatters
 
+	GPrmult // any multipliers on regular games
+	GPscat  // has scatters
 	GPwild  // has wild symbols
 	GPrwild // has reel wild symbols
+
 	GPbwild // has big wild (3x3)
 	GPwturn // symbols turns to wilds
-
 	GPwmult // has multiplier on wilds
 	GPbsym  // has big symbol (usually 3x3 in the center on free games)
-	GPfill  // has multiplier on filled screen
+
+	GPfill // has multiplier on filled screen
+
+	GPfgno GP = 0 // free games are absent
+
 )
 
 type (

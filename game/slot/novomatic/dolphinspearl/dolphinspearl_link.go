@@ -32,7 +32,8 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Cold Spell"},      // see: https://www.slotsmate.com/software/novomatic/cold-spell
 		{Prov: "Novomatic", Name: "Mermaid's Pearl"}, // see: https://www.slotsmate.com/software/novomatic/mermaids-pearl
 	},
-	GP: game.GPsel |
+	GP: game.GPlpay |
+		game.GPsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPfgmult |

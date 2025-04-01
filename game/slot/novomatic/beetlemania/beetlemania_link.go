@@ -12,7 +12,8 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Beetle Mania Deluxe"},
 		{Prov: "Novomatic", Name: "Hot Target"}, // see: https://www.slotsmate.com/software/novomatic/hot-target
 	},
-	GP: game.GPsel |
+	GP: game.GPlpay |
+		game.GPsel |
 		game.GPfghas |
 		game.GPfgreel |
 		game.GPscat |

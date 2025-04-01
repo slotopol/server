@@ -15,7 +15,8 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Diamond 7"},           // see: https://www.slotsmate.com/software/novomatic/diamond-7
 		{Prov: "Novomatic", Name: "Fruits'n Royals"},     // see: https://www.slotsmate.com/software/novomatic/fruits-n-royals
 	},
-	GP: game.GPfgno |
+	GP: game.GPlpay |
+		game.GPfgno |
 		game.GPscat,
 	SX:  5,
 	SY:  3,

@@ -13,7 +13,8 @@ var Info = game.GameInfo{
 		{Prov: "AGT", Name: "Book of Set"}, // see: https://demo.agtsoftware.com/games/agt/bookofset
 		{Prov: "AGT", Name: "Pharaoh II"},  // see: https://demo.agtsoftware.com/games/agt/pharaoh2
 	},
-	GP: game.GPsel |
+	GP: game.GPlpay |
+		game.GPsel |
 		game.GPretrig |
 		game.GPscat |
 		game.GPwild,

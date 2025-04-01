@@ -12,7 +12,8 @@ var Info = game.GameInfo{
 		{Prov: "AGT", Name: "Happy Santa"}, // see: https://demo.agtsoftware.com/games/agt/happysanta
 		{Prov: "AGT", Name: "Bigfoot"},     // see: https://demo.agtsoftware.com/games/agt/bigfoot
 	},
-	GP: game.GPsel |
+	GP: game.GPlpay |
+		game.GPsel |
 		game.GPfgno |
 		game.GPscat |
 		game.GPwild,

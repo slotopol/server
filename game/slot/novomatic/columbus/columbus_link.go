@@ -13,7 +13,8 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Marco Polo"},
 		{Prov: "Novomatic", Name: "Holmes and Watson Deluxe"}, // see: https://www.slotsmate.com/software/novomatic/holmes-and-watson-deluxe
 	},
-	GP: game.GPsel |
+	GP: game.GPlpay |
+		game.GPsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPscat |

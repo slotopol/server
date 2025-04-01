@@ -10,7 +10,8 @@ var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "AGT", Name: "Hot Clover"},
 	},
-	GP: game.GPfgno |
+	GP: game.GPlpay |
+		game.GPfgno |
 		game.GPscat |
 		game.GPrwild,
 	SX:  5,

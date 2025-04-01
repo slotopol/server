@@ -10,7 +10,8 @@ var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "Novomatic", Name: "African Simba"},
 	},
-	GP: game.GPretrig |
+	GP: game.GPlpay |
+		game.GPretrig |
 		game.GPfgmult |
 		game.GPscat |
 		game.GPwild,

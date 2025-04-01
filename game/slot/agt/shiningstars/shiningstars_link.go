@@ -12,7 +12,8 @@ var Info = game.GameInfo{
 		{Prov: "AGT", Name: "Green Hot"},     // see: https://demo.agtsoftware.com/games/agt/greenhot
 		{Prov: "AGT", Name: "Apples' Shine"}, // see: https://demo.agtsoftware.com/games/agt/applesshine
 	},
-	GP: game.GPfgno |
+	GP: game.GPlpay |
+		game.GPfgno |
 		game.GPscat |
 		game.GPrwild,
 	SX:  5,

@@ -10,7 +10,8 @@ var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "Novomatic", Name: "Ultra Sevens"}, // see: https://www.slotsmate.com/software/novomatic/ultra-sevens
 	},
-	GP: game.GPfgno |
+	GP: game.GPlpay |
+		game.GPfgno |
 		game.GPjack |
 		game.GPscat,
 	SX:  5,

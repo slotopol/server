@@ -10,7 +10,8 @@ var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "NetEnt", Name: "Gonzo's Quest"}, // see: https://www.slotsmate.com/software/netent/gonzos-quest
 	},
-	GP: game.GPcasc |
+	GP: game.GPlpay |
+		game.GPcasc |
 		game.GPcmult |
 		game.GPretrig |
 		game.GPfgmult |

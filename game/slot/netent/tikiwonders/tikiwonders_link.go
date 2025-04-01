@@ -11,7 +11,8 @@ var Info = game.GameInfo{
 		{Prov: "NetEnt", Name: "Tiki Wonders"},
 		{Prov: "NetEnt", Name: "Geisha Wonders"},
 	},
-	GP: game.GPsel |
+	GP: game.GPlpay |
+		game.GPsel |
 		game.GPretrig |
 		game.GPfgmult |
 		game.GPscat |

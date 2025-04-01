@@ -11,7 +11,8 @@ var Info = game.GameInfo{
 		{Prov: "AGT", Name: "Wizard"},           // see: https://demo.agtsoftware.com/games/agt/wizard
 		{Prov: "AGT", Name: "Around The World"}, // see: https://demo.agtsoftware.com/games/agt/aroundtheworld
 	},
-	GP: game.GPsel |
+	GP: game.GPlpay |
+		game.GPsel |
 		game.GPretrig |
 		game.GPscat |
 		game.GPwild,

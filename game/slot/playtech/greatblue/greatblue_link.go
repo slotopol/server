@@ -11,7 +11,8 @@ var Info = game.GameInfo{
 		{Prov: "Playtech", Name: "Great Blue"}, // see: https://freeslotshub.com/playtech/great-blue/
 		{Prov: "Playtech", Name: "Irish Luck"}, // see: https://freeslotshub.com/playtech/irish-luck/
 	},
-	GP: game.GPsel |
+	GP: game.GPlpay |
+		game.GPsel |
 		game.GPretrig |
 		game.GPfgmult |
 		game.GPscat |
