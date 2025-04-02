@@ -2,7 +2,7 @@ local path = arg[0]:match("(.*[/\\])")
 dofile(path.."../../lib/reelgen.lua")
 
 local symsetbon = {
-	0, --  1 wild      (reel 2, 3, 4)
+	0, --  1 wild      (2, 3, 4 reel)
 	0, --  2 scatter   (not used)
 	3, --  3 wooman    800
 	3, --  4 panther   200
@@ -17,7 +17,7 @@ local symsetbon = {
 }
 
 local symset = {
-	0, --  1 wild      (reel 2, 3, 4)
+	0, --  1 wild      (2, 3, 4 reel)
 	0, --  2 scatter   (insert directly)
 	4, --  3 wooman    800
 	4, --  4 panther   200

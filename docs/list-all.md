@@ -130,6 +130,7 @@
 'Mega Shine' AGT 5x3 videoslot
 'Mermaid's Pearl' Novomatic 5x3 videoslot
 'Merry Christmas' AGT 3x3 videoslot
+'Oliver's Bar' Novomatic 5x3 videoslot
 'Panda' AGT 3x3 videoslot
 'Pandora's Box' NetEnt 5x3 videoslot
 'Panther Moon' Playtech 5x3 videoslot
@@ -193,14 +194,14 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 190 games, 99 algorithms, 10 providers
+total: 191 games, 100 algorithms, 10 providers
 AGT: 60 games
 Aristocrat: 4 games
 BetSoft: 3 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 21 games
-Novomatic: 79 games
+Novomatic: 80 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 4 games

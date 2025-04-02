@@ -14,7 +14,7 @@ local symset = {
 	4, -- 10 jack     100
 	4, -- 11 ten      100
 	4, -- 12 nine     100
-	1, -- 13 scatter  100
+	1, -- 13 scatter
 }
 
 local neighbours = {
