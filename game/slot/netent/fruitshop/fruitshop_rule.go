@@ -1,6 +1,6 @@
 package fruitshop
 
-// See: https://slotsspot.com/online-free-slots/fruit-shop-slot/
+// See: https://www.slotsmate.com/software/netent/fruit-shop
 
 import (
 	_ "embed"

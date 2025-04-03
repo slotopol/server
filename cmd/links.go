@@ -28,6 +28,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/novomatic/fairyqueen"
 	_ "github.com/slotopol/server/game/slot/novomatic/flamedancer"
 	_ "github.com/slotopol/server/game/slot/novomatic/fruitilicious"
+	_ "github.com/slotopol/server/game/slot/novomatic/fruitsensation"
 	_ "github.com/slotopol/server/game/slot/novomatic/helena"
 	_ "github.com/slotopol/server/game/slot/novomatic/inferno"
 	_ "github.com/slotopol/server/game/slot/novomatic/jaguarmoon"
