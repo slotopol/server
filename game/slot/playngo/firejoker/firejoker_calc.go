@@ -27,7 +27,6 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 	func() {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		s.SetPlan(uint64(len(reels.Reel(1))) * uint64(len(BonusReel)) * uint64(len(reels.Reel(5))))
 		slot.BruteForce5x3Big(ctx2, &s, g, reels.Reel(1), BonusReel, reels.Reel(5))
 	}()
 	return calc(os.Stdout)
