@@ -20,6 +20,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/novomatic/bananasgobahamas"
 	_ "github.com/slotopol/server/game/slot/novomatic/beetlemania"
 	_ "github.com/slotopol/server/game/slot/novomatic/bookofra"
+	_ "github.com/slotopol/server/game/slot/novomatic/cashfarm"
 	_ "github.com/slotopol/server/game/slot/novomatic/chicago"
 	_ "github.com/slotopol/server/game/slot/novomatic/columbus"
 	_ "github.com/slotopol/server/game/slot/novomatic/dolphinspearl"
