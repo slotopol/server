@@ -2,6 +2,7 @@ package slot
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"io"
 	"os"
@@ -145,7 +146,16 @@ func PrintSymPays(s Stater, cost float64) func(io.Writer) float64 {
 	}
 }
 
-const CtxGranulation = 100
+type CalcAlg = func(ctx context.Context, s Stater, g SlotGame, reels Reels)
+
+const (
+	CtxGranulation = 100
+	CascadeLimit   = 15
+)
+
+var (
+	ErrAvalanche = errors.New("too many cascades")
+)
 
 func CorrectThrNum() int {
 	if cfg.DevMode {
@@ -155,8 +165,6 @@ func CorrectThrNum() int {
 	}
 	return cfg.MTCount
 }
-
-type CalcAlg = func(ctx context.Context, s Stater, g SlotGame, reels Reels)
 
 func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	s.SetPlan(reels.Reshuffles())
@@ -197,6 +205,9 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 							for {
 								cs.NewFall()
 								cfn++
+								if cfn > CascadeLimit {
+									panic(ErrAvalanche)
+								}
 								cs.Scanner(&wins)
 								s.Update(wins, cfn)
 								cs.Strike(wins)
@@ -265,6 +276,9 @@ func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 								for {
 									cs.NewFall()
 									cfn++
+									if cfn > CascadeLimit {
+										panic(ErrAvalanche)
+									}
 									cs.Scanner(&wins)
 									s.Update(wins, cfn)
 									cs.Strike(wins)
@@ -338,6 +352,9 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 									for {
 										cs.NewFall()
 										cfn++
+										if cfn > CascadeLimit {
+											panic(ErrAvalanche)
+										}
 										cs.Scanner(&wins)
 										s.Update(wins, cfn)
 										cs.Strike(wins)
@@ -458,6 +475,9 @@ func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 										for {
 											cs.NewFall()
 											cfn++
+											if cfn > CascadeLimit {
+												panic(ErrAvalanche)
+											}
 											cs.Scanner(&wins)
 											s.Update(wins, cfn)
 											cs.Strike(wins)
@@ -519,6 +539,9 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 					for {
 						cs.NewFall()
 						cfn++
+						if cfn > CascadeLimit {
+							panic(ErrAvalanche)
+						}
 						cs.ReelSpin(reels)
 						cs.Scanner(&wins)
 						s.Update(wins, cfn)
@@ -583,6 +606,9 @@ func MonteCarloPrec(ctx context.Context, s Stater, g SlotGame, reels Reels, calc
 					for {
 						cs.NewFall()
 						cfn++
+						if cfn > CascadeLimit {
+							panic(ErrAvalanche)
+						}
 						cs.ReelSpin(reels)
 						cs.Scanner(&wins)
 						s.Update(wins, cfn)

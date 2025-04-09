@@ -165,10 +165,11 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 	}
 	if count := g.ScatNum(bon); count >= 3 {
 		*wins = append(*wins, slot.WinItem{
-			Sym: bon,
-			Num: count,
-			XY:  g.ScatPos(bon),
-			BID: mjap,
+			Mult: 1,
+			Sym:  bon,
+			Num:  count,
+			XY:   g.ScatPos(bon),
+			BID:  mjap,
 		})
 	}
 }

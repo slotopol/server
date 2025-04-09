@@ -194,6 +194,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 			}
 		} else if syml > 0 && numl > 0 && LineBonus[syml-1][numl-1] > 0 {
 			*wins = append(*wins, slot.WinItem{
+				Mult: 1,
 				Sym:  syml,
 				Num:  numl,
 				Line: li,
