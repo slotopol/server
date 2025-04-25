@@ -12,7 +12,7 @@ var Info = game.GameInfo{
 		{Prov: "NetEnt", Name: "Secret Of Horus"},
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgmult |
 		game.GPscat |

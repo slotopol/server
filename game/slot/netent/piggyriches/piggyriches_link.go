@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "NetEnt", Name: "Piggy Riches", Year: 2014}, // see: https://casino.ru/piggy-riches-netent/
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPfghas |
 		game.GPfgmult |
 		game.GPscat |

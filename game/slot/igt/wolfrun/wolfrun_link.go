@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "IGT", Name: "Wolf Run", Year: 2017}, // see: https://www.slotsmate.com/software/igt/wolf-run
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPscat |

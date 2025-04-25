@@ -12,7 +12,7 @@ var Info = game.GameInfo{
 		{Prov: "NetEnt", Name: "Voodoo Vibes"},
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPfgmult |

@@ -21,7 +21,7 @@ var Info = game.GameInfo{
 		{Prov: "AGT", Name: "The Leprechaun"},  // see: https://demo.agtsoftware.com/games/agt/leprechaun
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPfgmult |

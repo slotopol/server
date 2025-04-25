@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Royal Dynasty"}, // see: https://www.slotsmate.com/software/novomatic/royal-dynasty
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPscat |

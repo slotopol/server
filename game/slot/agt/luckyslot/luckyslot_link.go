@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "AGT", Name: "Lucky Slot"},
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPfgno |
 		game.GPscat |
 		game.GPrwild,

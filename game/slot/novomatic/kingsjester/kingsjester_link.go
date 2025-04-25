@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "King's Jester"}, // see: https://www.slotsmate.com/software/novomatic/kings-jester
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPjack |
 		game.GPscat |

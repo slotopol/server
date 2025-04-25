@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Chicago", Year: 2013},
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgmult |
 		game.GPscat |

@@ -13,7 +13,7 @@ var Info = game.GameInfo{
 		{Prov: "NetEnt", Name: "Super Eighties"},  // See: https://www.youtube.com/watch?v=Wj49gwfRtz8
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgmult |
 		game.GPscat |

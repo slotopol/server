@@ -18,7 +18,7 @@ var Info = game.GameInfo{
 	SX:  5,
 	SY:  4,
 	SN:  len(LinePay),
-	LN:  1024,
+	WN:  1024,
 	BN:  0,
 	RTP: game.MakeRtpList(ReelsMap),
 }

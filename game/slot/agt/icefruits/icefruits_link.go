@@ -12,7 +12,7 @@ var Info = game.GameInfo{
 		{Prov: "AGT", Name: "Mega Shine"}, // see: https://demo.agtsoftware.com/games/agt/megashine
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPfgno |
 		game.GPscat |
 		game.GPwild,

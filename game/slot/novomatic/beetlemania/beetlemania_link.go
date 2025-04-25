@@ -13,7 +13,7 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Hot Target"}, // see: https://www.slotsmate.com/software/novomatic/hot-target
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPfghas |
 		game.GPfgreel |
 		game.GPscat |

@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "Megajack", Name: "Champagne", Year: 1988},
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPjack |
 		game.GPretrig |
 		game.GPfgmult |

@@ -14,7 +14,7 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Holmes and Watson Deluxe"},    // see: https://www.slotsmate.com/software/novomatic/holmes-and-watson-deluxe
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPscat |

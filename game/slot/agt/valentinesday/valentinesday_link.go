@@ -11,9 +11,9 @@ var Info = game.GameInfo{
 		{Prov: "AGT", Name: "Valentine's Day"},
 	},
 	GP: game.GPlpay |
+		game.GPfill |
 		game.GPfgno |
-		game.GPscat |
-		game.GPfill,
+		game.GPscat,
 	SX:  5,
 	SY:  3,
 	SN:  len(LinePay),

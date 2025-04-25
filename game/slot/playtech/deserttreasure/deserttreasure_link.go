@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "Playtech", Name: "Desert Treasure"},
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgmult |
 		game.GPfgreel |

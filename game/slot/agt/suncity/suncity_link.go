@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "AGT", Name: "Sun City"},
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPfghas |
 		game.GPfgreel |
 		game.GPscat |

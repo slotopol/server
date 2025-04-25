@@ -13,7 +13,7 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Always American"},   // see: https://www.slotsmate.com/software/novomatic/always-american
 		{Prov: "AGT", Name: "Tropic Hot"},              // see: https://demo.agtsoftware.com/games/agt/tropichot
 	},
-	GP: game.GPsel |
+	GP: game.GPlsel |
 		game.GPfgno,
 	SX:  3,
 	SY:  3,

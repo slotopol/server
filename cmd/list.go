@@ -75,7 +75,7 @@ func incinfo(gi *game.GameInfo) bool {
 	if is, _ = listflags.GetBool("multilines"); is && gi.LN >= 20 {
 		return true
 	}
-	if is, _ = listflags.GetBool("ways"); is && gi.LN > 100 {
+	if is, _ = listflags.GetBool("ways"); is && gi.WN > 0 {
 		return true
 	}
 	if is, _ = listflags.GetBool("jack"); is && gi.GP&game.GPjack > 0 {
@@ -125,17 +125,21 @@ func FormatGameInfo(gi *game.GameInfo, ai int) string {
 		if gi.SN > 0 {
 			fmt.Fprintf(&b, ", %d symbols", gi.SN)
 		}
-		if gi.LN > 100 {
-			fmt.Fprintf(&b, ", %d ways", gi.LN)
-		} else if gi.LN > 0 {
-			if gi.GP&game.GPsel == 0 {
+		if gi.LN > 0 {
+			if gi.GP&game.GPlsel == 0 {
 				fmt.Fprintf(&b, ", constant %d lines", gi.LN)
 			} else {
 				fmt.Fprintf(&b, ", %d lines", gi.LN)
 			}
 		}
+		if gi.WN > 0 {
+			fmt.Fprintf(&b, ", %d ways", gi.WN)
+		}
 		if gi.GP&game.GPjack > 0 {
 			b.WriteString(", has jackpot")
+		}
+		if gi.GP&game.GPfill > 0 {
+			b.WriteString(", has multiplier on filled screen")
 		}
 		if gi.GP&(game.GPfghas+game.GPretrig) > 0 {
 			b.WriteString(", ")
@@ -175,9 +179,6 @@ func FormatGameInfo(gi *game.GameInfo, ai int) string {
 		}
 		if gi.GP&game.GPbsym > 0 {
 			b.WriteString(", has big symbols")
-		}
-		if gi.GP&game.GPfill > 0 {
-			b.WriteString(", has multiplier on filled screen")
 		}
 	}
 	if len(gi.RTP) > 0 {

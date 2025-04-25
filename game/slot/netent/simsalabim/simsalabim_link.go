@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "NetEnt", Name: "Simsalabim"},
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgmult |
 		game.GPfgreel |

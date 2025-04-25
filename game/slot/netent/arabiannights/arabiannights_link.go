@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "NetEnt", Name: "Arabian Nights"},
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPfgmult |

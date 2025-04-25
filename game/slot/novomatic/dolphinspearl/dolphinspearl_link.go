@@ -33,7 +33,7 @@ var Info = game.GameInfo{
 		{Prov: "Aristocrat", Name: "Dolphin Treasure"},                 // See: https://freeslotshub.com/aristocrat/dolphin-treasure/
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPfgmult |

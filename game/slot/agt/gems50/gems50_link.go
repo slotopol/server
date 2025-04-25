@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "AGT", Name: "50 Gems"}, // see: https://demo.agtsoftware.com/games/agt/gems50
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPfgno |
 		game.GPscat |
 		game.GPwild,

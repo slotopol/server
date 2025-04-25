@@ -13,7 +13,7 @@ var Info = game.GameInfo{
 		{Prov: "AGT", Name: "40 Bigfoot"},     // see: https://demo.agtsoftware.com/games/agt/bigfoot40
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPfgno |
 		game.GPscat |
 		game.GPwild,

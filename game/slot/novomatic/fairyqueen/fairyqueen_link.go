@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Fairy Queen", Year: 2009}, // see: https://www.slotsmate.com/software/novomatic/fairy-queen
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPscat |

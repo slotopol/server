@@ -16,8 +16,13 @@ const ( // Game properties
 	GPcpay                // pays for combination at any position
 	FPspay                // pays by scatters only
 
-	GPsel   // user can change lines
-	GPjack  // cumulative jackpot is present
+	GPlsel // user can select bet lines
+	GPwsel // user can change ways set
+	GPjack // cumulative jackpot is present
+	GPfill // has multiplier on filled screen
+
+	_
+	_
 	GPcasc  // cascade falls present
 	GPcmult // multipliers on cascade falls
 
@@ -36,10 +41,7 @@ const ( // Game properties
 	GPwmult // has multiplier on wilds
 	GPbsym  // has big symbol (usually 3x3 in the center on free games)
 
-	GPfill // has multiplier on filled screen
-
 	GPfgno GP = 0 // free games are absent
-
 )
 
 type (
@@ -56,6 +58,7 @@ type (
 		SY      int         `json:"sy,omitempty" yaml:"sy,omitempty" xml:"sy,omitempty"` // screen height
 		SN      int         `json:"sn,omitempty" yaml:"sn,omitempty" xml:"sn,omitempty"` // number of symbols
 		LN      int         `json:"ln,omitempty" yaml:"ln,omitempty" xml:"ln,omitempty"` // number of lines
+		WN      int         `json:"wn,omitempty" yaml:"wn,omitempty" xml:"wn,omitempty"` // number of ways
 		BN      int         `json:"bn,omitempty" yaml:"bn,omitempty" xml:"bn,omitempty"` // number of bonuses
 		RTP     []float64   `json:"rtp" yaml:"rtp" xml:"rtp"`                            // 'Return to Player' percents list
 	}

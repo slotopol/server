@@ -12,7 +12,7 @@ var Info = game.GameInfo{
 		{Prov: "Playtech", Name: "Safari Heat"},
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPfgmult |

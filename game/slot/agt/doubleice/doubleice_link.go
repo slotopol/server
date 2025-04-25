@@ -11,8 +11,8 @@ var Info = game.GameInfo{
 		{Prov: "AGT", Name: "Double Ice"},
 		{Prov: "AGT", Name: "Double Hot"}, // see: https://demo.agtsoftware.com/games/agt/double
 	},
-	GP: game.GPfgno |
-		game.GPfill,
+	GP: game.GPfill |
+		game.GPfgno,
 	SX:  3,
 	SY:  3,
 	SN:  len(LinePay),

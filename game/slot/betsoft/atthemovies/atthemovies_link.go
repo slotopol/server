@@ -12,7 +12,7 @@ var Info = game.GameInfo{
 		{Prov: "BetSoft", Name: "Sushi Bar"},
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgmult |
 		game.GPscat |

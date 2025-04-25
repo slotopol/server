@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Bananas Go Bahamas", Year: 2005}, // see: https://www.slotsmate.com/software/novomatic/bananas-go-bahamas
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPscat |

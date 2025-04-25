@@ -14,7 +14,7 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Royal Jewels"},                   // see: https://casino.ru/garden-of-riches-novomatic/
 	},
 	GP: game.GPcpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPfgno |
 		game.GPscat,
 	SX:  5,

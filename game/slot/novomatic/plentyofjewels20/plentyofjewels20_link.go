@@ -12,7 +12,7 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Plenty of Fruit 20 hot"},  // see: https://www.slotsmate.com/software/novomatic/plenty-of-fruit-20-hot
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPfgno |
 		game.GPscat |
 		game.GPwild,

@@ -14,7 +14,7 @@ var Info = game.GameInfo{
 		{Prov: "AGT", Name: "Pharaoh II"},  // see: https://demo.agtsoftware.com/games/agt/pharaoh2
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPscat |
 		game.GPwild,

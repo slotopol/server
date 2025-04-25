@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "IGT", Name: "Cleopatra", Year: 2012}, // see: https://www.slotsmate.com/software/igt/igt-cleopatra
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgmult |
 		game.GPscat |

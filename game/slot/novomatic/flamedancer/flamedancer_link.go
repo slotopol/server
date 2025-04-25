@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Flame Dancer", Year: 2012}, // see: https://casino.ru/flame-dancer-novomatic/
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPscat |
 		game.GPwild |

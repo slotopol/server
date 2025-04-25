@@ -20,7 +20,7 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Angry Birds"},                   // see: https://www.slotsmate.com/software/novomatic/angry-birds
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPscat |

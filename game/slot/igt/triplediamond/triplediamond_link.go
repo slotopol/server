@@ -10,7 +10,7 @@ var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "IGT", Name: "Triple Diamond", Year: 2005}, // see: https://www.slotsmate.com/software/igt/triple-diamond
 	},
-	GP: game.GPsel |
+	GP: game.GPlsel |
 		game.GPfgno |
 		game.GPwild |
 		game.GPwmult,

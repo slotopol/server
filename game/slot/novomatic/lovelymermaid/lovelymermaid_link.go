@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Lovely Mermaid"}, // see: https://www.slotsmate.com/software/novomatic/lovely-mermaid
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPjack |
 		game.GPscat |

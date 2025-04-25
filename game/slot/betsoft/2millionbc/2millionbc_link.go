@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "BetSoft", Name: "2 Million B.C."},
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPretrig |
 		game.GPfgreel |
 		game.GPscat,

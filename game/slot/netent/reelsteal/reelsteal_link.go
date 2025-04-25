@@ -11,7 +11,7 @@ var Info = game.GameInfo{
 		{Prov: "NetEnt", Name: "Reel Steal"},
 	},
 	GP: game.GPlpay |
-		game.GPsel |
+		game.GPlsel |
 		game.GPfghas |
 		game.GPfgmult |
 		game.GPscat |
