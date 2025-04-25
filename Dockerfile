@@ -7,7 +7,7 @@
 ##
 
 # Use image with golang last version as builder.
-FROM golang:1.24-bullseye AS build
+FROM golang:1.24-bookworm AS build
 
 # See https://stackoverflow.com/questions/64462922/docker-multi-stage-build-go-image-x509-certificate-signed-by-unknown-authorit
 RUN apt-get update && apt-get install -y ca-certificates openssl

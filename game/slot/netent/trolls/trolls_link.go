@@ -8,8 +8,8 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "NetEnt", Name: "Trolls"},
-		{Prov: "NetEnt", Name: "Excalibur"},
+		{Prov: "NetEnt", Name: "Trolls", Year: 2009},    // see: https://casino.ru/trolls-netent/
+		{Prov: "NetEnt", Name: "Excalibur", Year: 2011}, // see: https://casino.ru/excalibur-netent/
 		{Prov: "NetEnt", Name: "Pandora's Box"},
 		{Prov: "NetEnt", Name: "Wild Witches"},
 	},

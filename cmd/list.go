@@ -18,6 +18,8 @@ var listflags *pflag.FlagSet
 var (
 	fAll, fProp, fRTP bool
 	fMrtp, fDiff      float64
+	fYear             []int
+	fOlder, fNewer    int
 )
 
 const listShort = "List of available games released on server"
@@ -73,7 +75,7 @@ func incinfo(gi *game.GameInfo) bool {
 	if is, _ = listflags.GetBool("multilines"); is && gi.LN >= 20 {
 		return true
 	}
-	if is, _ = listflags.GetBool("megaway"); is && gi.LN > 100 {
+	if is, _ = listflags.GetBool("ways"); is && gi.LN > 100 {
 		return true
 	}
 	if is, _ = listflags.GetBool("jack"); is && gi.GP&game.GPjack > 0 {
@@ -91,6 +93,21 @@ func incinfo(gi *game.GameInfo) bool {
 func isProv(prov string) bool {
 	var is, _ = listflags.GetBool(util.ToID(prov))
 	return is
+}
+
+func isYear(year int) bool {
+	if fOlder != 0 && year != 0 && year <= fOlder {
+		return true
+	}
+	if fNewer != 0 && year != 0 && year >= fNewer {
+		return true
+	}
+	for _, y := range fYear {
+		if year == y {
+			return true
+		}
+	}
+	return false
 }
 
 func FormatGameInfo(gi *game.GameInfo, ai int) string {
@@ -197,7 +214,7 @@ var listCmd = &cobra.Command{
 		for _, gi := range game.InfoList {
 			var inc = incinfo(gi)
 			for _, ga := range gi.Aliases {
-				if inc || isProv(ga.Prov) {
+				if inc || isProv(ga.Prov) || isYear(ga.Year) {
 					num++
 				}
 			}
@@ -209,7 +226,7 @@ var listCmd = &cobra.Command{
 			var inc = incinfo(gi)
 			var has bool
 			for ai, ga := range gi.Aliases {
-				if inc || isProv(ga.Prov) {
+				if inc || isProv(ga.Prov) || isYear(ga.Year) {
 					has = true
 					prov[ga.Prov]++
 					gamelist[i] = FormatGameInfo(gi, ai)
@@ -269,6 +286,9 @@ func init() {
 	listflags.Bool("playtech", false, "include games of 'Playtech' provider")
 	listflags.Bool("slotopol", false, "include games of this 'Slotopol' provider")
 
+	listflags.IntSliceVarP(&fYear, "year", "y", nil, "year(s) of issue")
+	listflags.IntVar(&fOlder, "older", 0, "year of issue is older than...")
+	listflags.IntVar(&fNewer, "newer", 0, "year of issue is newer than...")
 	listflags.Bool("keno", false, "include keno games")
 	listflags.Bool("3x", false, "include games with 3 reels")
 	listflags.Bool("4x", false, "include games with 4 reels")
@@ -282,13 +302,14 @@ func init() {
 	listflags.Bool("6x4", false, "include games with 6x4 screen")
 	listflags.Bool("fewlines", false, "include games with few lines, i.e. with less than 20")
 	listflags.Bool("multilines", false, "include games with few lines, i.e. with not less than 20")
-	listflags.Bool("megaway", false, "include games with multiways, i.e. with 243, 1024 ways")
+	listflags.Bool("ways", false, "include games with multiways, i.e. with 243, 1024 ways")
 	listflags.Bool("jack", false, "include games with jackpots")
 	listflags.Bool("fg", false, "include games with any free games")
 	listflags.Bool("bonus", false, "include games with bonus games")
 
 	listCmd.MarkFlagsOneRequired("all",
-		"agt", "aristocrat", "betsoft", "igt", "megajack", "netent", "novomatic", "playngo", "playtech", "slotopol", "keno",
+		"agt", "aristocrat", "betsoft", "igt", "megajack", "netent", "novomatic", "playngo", "playtech", "slotopol",
+		"year", "older", "newer", "keno",
 		"3x", "4x", "5x", "6x", "3x3", "4x4", "5x3", "5x4", "6x3", "6x4",
-		"fewlines", "multilines", "megaway", "jack", "fg", "bonus")
+		"fewlines", "multilines", "ways", "jack", "fg", "bonus")
 }

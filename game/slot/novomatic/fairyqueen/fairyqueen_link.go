@@ -8,7 +8,7 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Fairy Queen"}, // see: https://www.slotsmate.com/software/novomatic/fairy-queen
+		{Prov: "Novomatic", Name: "Fairy Queen", Year: 2009}, // see: https://www.slotsmate.com/software/novomatic/fairy-queen
 	},
 	GP: game.GPlpay |
 		game.GPsel |

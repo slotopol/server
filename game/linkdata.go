@@ -46,6 +46,7 @@ type (
 	GameAlias struct {
 		Prov string `json:"prov" yaml:"prov" xml:"prov"`
 		Name string `json:"name" yaml:"name" xml:"name"`
+		Year int    `json:"year" yaml:"year" xml:"year"`
 	}
 
 	GameInfo struct {

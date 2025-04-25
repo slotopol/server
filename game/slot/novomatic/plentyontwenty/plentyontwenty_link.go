@@ -8,7 +8,7 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Plenty on Twenty"},
+		{Prov: "Novomatic", Name: "Plenty on Twenty", Year: 2006}, // see: https://casino.ru/plenty-on-twenty-novomatic/
 	},
 	GP: game.GPlpay |
 		game.GPsel |

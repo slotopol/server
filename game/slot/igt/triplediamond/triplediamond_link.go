@@ -8,7 +8,7 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "IGT", Name: "Triple Diamond"}, // see: https://www.slotsmate.com/software/igt/triple-diamond
+		{Prov: "IGT", Name: "Triple Diamond", Year: 2005}, // see: https://www.slotsmate.com/software/igt/triple-diamond
 	},
 	GP: game.GPsel |
 		game.GPfgno |

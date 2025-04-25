@@ -8,7 +8,7 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Flame Dancer"}, // see: https://casino.ru/flame-dancer-novomatic/
+		{Prov: "Novomatic", Name: "Flame Dancer", Year: 2012}, // see: https://casino.ru/flame-dancer-novomatic/
 	},
 	GP: game.GPlpay |
 		game.GPsel |

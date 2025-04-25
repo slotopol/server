@@ -8,7 +8,7 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Megajack", Name: "Aztec Gold"},
+		{Prov: "Megajack", Name: "Aztec Gold", Year: 1988},
 	},
 	GP: game.GPlpay |
 		game.GPsel |

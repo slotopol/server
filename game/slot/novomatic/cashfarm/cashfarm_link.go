@@ -8,7 +8,7 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Cash Farm"}, // see: https://casino.ru/cash-farm-novomatic/
+		{Prov: "Novomatic", Name: "Cash Farm", Year: 2013}, // see: https://casino.ru/cash-farm-novomatic/
 	},
 	GP: game.GPlpay |
 		game.GPcasc |

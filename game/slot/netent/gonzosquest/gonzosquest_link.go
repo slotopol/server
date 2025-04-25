@@ -8,7 +8,7 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "NetEnt", Name: "Gonzo's Quest"}, // see: https://www.slotsmate.com/software/netent/gonzos-quest
+		{Prov: "NetEnt", Name: "Gonzo's Quest", Year: 2011}, // see: https://www.slotsmate.com/software/netent/gonzos-quest
 	},
 	GP: game.GPlpay |
 		game.GPcasc |

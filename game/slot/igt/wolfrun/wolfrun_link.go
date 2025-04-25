@@ -8,7 +8,7 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "IGT", Name: "Wolf Run"}, // see: https://www.slotsmate.com/software/igt/wolf-run
+		{Prov: "IGT", Name: "Wolf Run", Year: 2017}, // see: https://www.slotsmate.com/software/igt/wolf-run
 	},
 	GP: game.GPlpay |
 		game.GPsel |

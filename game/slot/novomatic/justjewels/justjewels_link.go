@@ -8,10 +8,10 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Just Jewels"},        // see: https://www.slotsmate.com/software/novomatic/just-jewels
-		{Prov: "Novomatic", Name: "Just Jewels Deluxe"}, // see: https://www.slotsmate.com/software/novomatic/just-jewels-deluxe
-		{Prov: "Novomatic", Name: "Just Fruits"},        // see: https://www.slotsmate.com/software/novomatic/just-fruits
-		{Prov: "Novomatic", Name: "Royal Jewels"},       // see: https://casino.ru/garden-of-riches-novomatic/
+		{Prov: "Novomatic", Name: "Just Jewels"},                    // see: https://www.slotsmate.com/software/novomatic/just-jewels
+		{Prov: "Novomatic", Name: "Just Jewels Deluxe", Year: 2010}, // see: https://www.slotsmate.com/software/novomatic/just-jewels-deluxe
+		{Prov: "Novomatic", Name: "Just Fruits"},                    // see: https://www.slotsmate.com/software/novomatic/just-fruits
+		{Prov: "Novomatic", Name: "Royal Jewels"},                   // see: https://casino.ru/garden-of-riches-novomatic/
 	},
 	GP: game.GPcpay |
 		game.GPsel |

@@ -8,7 +8,7 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Fruit Sensation"}, // see: https://casino.ru/fruit-sensation-novomatic/
+		{Prov: "Novomatic", Name: "Fruit Sensation", Year: 2012}, // see: https://casino.ru/fruit-sensation-novomatic/
 	},
 	GP: game.GPlpay |
 		game.GPfgno,

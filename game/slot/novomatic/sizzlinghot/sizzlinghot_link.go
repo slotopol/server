@@ -8,12 +8,12 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Sizzling Hot"},        // see: https://www.slotsmate.com/software/novomatic/novomatic-sizzling-hot
-		{Prov: "Novomatic", Name: "Sizzling Hot Deluxe"}, // see: https://www.slotsmate.com/software/novomatic/sizzling-hot-deluxe
-		{Prov: "Novomatic", Name: "Age of Heroes"},       // see: https://www.slotsmate.com/software/novomatic/age-of-heroes
-		{Prov: "Novomatic", Name: "Hot Cubes"},           // see: https://www.slotsmate.com/software/novomatic/hot-cubes
-		{Prov: "Novomatic", Name: "Diamond 7"},           // see: https://www.slotsmate.com/software/novomatic/diamond-7
-		{Prov: "Novomatic", Name: "Fruits'n Royals"},     // see: https://www.slotsmate.com/software/novomatic/fruits-n-royals
+		{Prov: "Novomatic", Name: "Sizzling Hot", Year: 2003},        // see: https://www.slotsmate.com/software/novomatic/novomatic-sizzling-hot
+		{Prov: "Novomatic", Name: "Sizzling Hot Deluxe", Year: 2007}, // see: https://www.slotsmate.com/software/novomatic/sizzling-hot-deluxe
+		{Prov: "Novomatic", Name: "Age of Heroes"},                   // see: https://www.slotsmate.com/software/novomatic/age-of-heroes
+		{Prov: "Novomatic", Name: "Hot Cubes"},                       // see: https://www.slotsmate.com/software/novomatic/hot-cubes
+		{Prov: "Novomatic", Name: "Diamond 7"},                       // see: https://www.slotsmate.com/software/novomatic/diamond-7
+		{Prov: "Novomatic", Name: "Fruits'n Royals"},                 // see: https://www.slotsmate.com/software/novomatic/fruits-n-royals
 	},
 	GP: game.GPlpay |
 		game.GPfgno |

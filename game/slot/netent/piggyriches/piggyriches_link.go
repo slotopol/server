@@ -8,7 +8,7 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "NetEnt", Name: "Piggy Riches"},
+		{Prov: "NetEnt", Name: "Piggy Riches", Year: 2014}, // see: https://casino.ru/piggy-riches-netent/
 	},
 	GP: game.GPlpay |
 		game.GPsel |
