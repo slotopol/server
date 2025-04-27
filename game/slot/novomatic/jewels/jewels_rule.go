@@ -47,8 +47,9 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-func (g *Game) Scanner(wins *slot.Wins) {
+func (g *Game) Scanner(wins *slot.Wins) error {
 	g.ScanLined(wins)
+	return nil
 }
 
 // Lined symbols calculation.

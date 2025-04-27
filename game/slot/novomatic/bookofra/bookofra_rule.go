@@ -68,9 +68,10 @@ func (g *Game) Clone() slot.SlotGame {
 
 const book = 10
 
-func (g *Game) Scanner(wins *slot.Wins) {
+func (g *Game) Scanner(wins *slot.Wins) error {
 	g.ScanLined(wins)
 	g.ScanScatters(wins)
+	return nil
 }
 
 func LineES(src, xye slot.Linex) (dst slot.Linex) {

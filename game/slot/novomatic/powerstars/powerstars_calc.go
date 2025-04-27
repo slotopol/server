@@ -23,6 +23,7 @@ func BruteForceStars(ctx context.Context, s slot.Stater, g *Game, reels slot.Ree
 	var r3 = reels.Reel(3)
 	var r4 = reels.Reel(4)
 	var r5 = reels.Reel(5)
+	var reshuf uint64
 	for i1 := range r1 {
 		g.SetCol(1, r1, i1)
 		for i2 := range r2 {
@@ -32,6 +33,14 @@ func BruteForceStars(ctx context.Context, s slot.Stater, g *Game, reels slot.Ree
 				for i4 := range r4 {
 					g.SetCol(4, r4, i4)
 					for i5 := range r5 {
+						reshuf++
+						if reshuf%slot.CtxGranulation == 0 {
+							select {
+							case <-ctx.Done():
+								return
+							default:
+							}
+						}
 						g.SetCol(5, r5, i5)
 						var sym2, sym3, sym4 = g.At(2, 1), g.At(3, 1), g.At(4, 1)
 						if wc2 {
@@ -49,13 +58,6 @@ func BruteForceStars(ctx context.Context, s slot.Stater, g *Game, reels slot.Ree
 						g.SetSym(4, 1, sym4)
 						s.Update(wins, 1)
 						wins.Reset()
-						if s.Count(1)&100 == 0 {
-							select {
-							case <-ctx.Done():
-								return
-							default:
-							}
-						}
 					}
 				}
 			}
@@ -92,7 +94,7 @@ func CalcStatStars(ctx context.Context, wc2, wc3, wc4 bool) float64 {
 		go slot.Progress(ctx2, &s, calc)
 		BruteForceStars(ctx2, &s, g, reels, wc2, wc3, wc4)
 		var dur = time.Since(t0)
-		var comp = float64(s.Count(1)) / float64(s.Planned()) * 100
+		var comp = float64(s.Reshuf(1)) / float64(s.Planned()) * 100
 		fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", comp, g.GetSel(), dur)
 	}()
 	return calc(os.Stdout)

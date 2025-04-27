@@ -73,7 +73,7 @@ func (g *Game) Clone() slot.SlotGame {
 
 const wild, scat1, scat2 = 1, 11, 12
 
-func (g *Game) Scanner(wins *slot.Wins) {
+func (g *Game) Scanner(wins *slot.Wins) error {
 	if g.FSR == 0 {
 		g.ScanLinedReg(wins)
 		g.ScanScattersReg(wins)
@@ -81,6 +81,7 @@ func (g *Game) Scanner(wins *slot.Wins) {
 		g.ScanLinedBon(wins)
 		g.ScanScattersBon(wins)
 	}
+	return nil
 }
 
 // Lined symbols calculation regular games.

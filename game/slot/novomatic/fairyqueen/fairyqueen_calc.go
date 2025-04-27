@@ -127,7 +127,7 @@ func CalcStatBon(ctx context.Context, es slot.Sym) (float64, float64) {
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Count(1))
+		var reshuf = float64(s.Count())
 		var cost, _ = g.Cost()
 		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp
@@ -153,7 +153,7 @@ func CalcStatBon(ctx context.Context, es slot.Sym) (float64, float64) {
 			BruteForce5x3es3(ctx2, &s, g, reels, g.ES)
 		}
 	}()
-	return calc(os.Stdout), float64(s.FreeCount()) / float64(s.Count(1))
+	return calc(os.Stdout), float64(s.FreeCount()) / float64(s.Count())
 }
 
 func CalcStatReg(ctx context.Context, mrtp float64) float64 {
@@ -188,7 +188,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Count(1))
+		var reshuf = float64(s.Count())
 		var cost, _ = g.Cost()
 		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp

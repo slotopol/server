@@ -51,7 +51,7 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-func (g *Game) Scanner(wins *slot.Wins) {
+func (g *Game) Scanner(wins *slot.Wins) error {
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 		var sym1, sym2, sym3 = g.LY(1, line), g.LY(2, line), g.LY(3, line)
@@ -66,6 +66,7 @@ func (g *Game) Scanner(wins *slot.Wins) {
 			})
 		}
 	}
+	return nil
 }
 
 func (g *Game) Spin(mrtp float64) {

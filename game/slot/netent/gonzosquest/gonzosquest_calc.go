@@ -14,11 +14,11 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf1 = float64(s.Count(1))
-		var reshuf2 = float64(s.Count(2))
-		var reshuf3 = float64(s.Count(3))
-		var reshuf4 = float64(s.Count(4))
-		var reshuf5 = float64(s.Count(5))
+		var reshuf1 = float64(s.Reshuf(1))
+		var reshuf2 = float64(s.Reshuf(2))
+		var reshuf3 = float64(s.Reshuf(3))
+		var reshuf4 = float64(s.Reshuf(4))
+		var reshuf5 = float64(s.Reshuf(5))
 		var cost, _ = g.Cost()
 		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp

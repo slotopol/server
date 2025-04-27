@@ -111,9 +111,10 @@ const (
 	wild, scat = 11, 1 // symbols
 )
 
-func (g *Game) Scanner(wins *slot.Wins) {
+func (g *Game) Scanner(wins *slot.Wins) error {
 	g.ScanLined(wins)
 	g.ScanScatters(wins)
+	return nil
 }
 
 // Lined symbols calculation.

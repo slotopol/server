@@ -66,13 +66,14 @@ func (g *Game) Clone() slot.SlotGame {
 
 const book = 11
 
-func (g *Game) Scanner(wins *slot.Wins) {
+func (g *Game) Scanner(wins *slot.Wins) error {
 	if g.FSR == 0 {
 		g.ScanLinedReg(wins)
 	} else {
 		g.ScanLinedBon(wins)
 	}
 	g.ScanScatters(wins)
+	return nil
 }
 
 // Lined symbols calculation on regular games.

@@ -72,7 +72,7 @@ func (g *Game) Filled() slot.Sym {
 	return sym
 }
 
-func (g *Game) Scanner(wins *slot.Wins) {
+func (g *Game) Scanner(wins *slot.Wins) (err error) {
 	switch sym := g.Filled(); sym {
 	case 1:
 		*wins = append(*wins, slot.WinItem{
@@ -118,6 +118,7 @@ func (g *Game) Scanner(wins *slot.Wins) {
 			})
 		}
 	}
+	return
 }
 
 func (g *Game) Cost() (float64, bool) {

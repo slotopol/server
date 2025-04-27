@@ -13,6 +13,7 @@ import (
 type Stat struct {
 	planned    uint64
 	reshuffles [10]uint64
+	errcount   uint64
 	linepay    float64
 	scatpay    float64
 	freecount  uint64
@@ -30,12 +31,20 @@ func (s *Stat) Planned() uint64 {
 	return atomic.LoadUint64(&s.planned)
 }
 
-func (s *Stat) Count(cfn int) uint64 {
+func (s *Stat) Count() uint64 {
+	return atomic.LoadUint64(&s.reshuffles[0]) - atomic.LoadUint64(&s.errcount)
+}
+
+func (s *Stat) Reshuf(cfn int) uint64 {
 	return atomic.LoadUint64(&s.reshuffles[cfn-1])
 }
 
+func (s *Stat) IncErr() {
+	atomic.AddUint64(&s.errcount, 1)
+}
+
 func (s *Stat) LineRTP(cost float64) float64 {
-	var reshuf = float64(atomic.LoadUint64(&s.reshuffles[0]))
+	var reshuf = float64(atomic.LoadUint64(&s.reshuffles[0]) - atomic.LoadUint64(&s.errcount))
 	s.lpm.Lock()
 	var lp = s.linepay
 	s.lpm.Unlock()
@@ -43,7 +52,7 @@ func (s *Stat) LineRTP(cost float64) float64 {
 }
 
 func (s *Stat) ScatRTP(cost float64) float64 {
-	var reshuf = float64(atomic.LoadUint64(&s.reshuffles[0]))
+	var reshuf = float64(atomic.LoadUint64(&s.reshuffles[0]) - atomic.LoadUint64(&s.errcount))
 	s.spm.Lock()
 	var sp = s.scatpay
 	s.spm.Unlock()
@@ -125,7 +134,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var s Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Count(1))
+		var reshuf = float64(s.Count())
 		var cost, _ = g.Cost()
 		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp

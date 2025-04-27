@@ -53,7 +53,7 @@ func (g *Game) Clone() slot.SlotGame {
 
 const wild, scat = 1, 9
 
-func (g *Game) Scanner(wins *slot.Wins) {
+func (g *Game) Scanner(wins *slot.Wins) error {
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
 
@@ -105,6 +105,7 @@ func (g *Game) Scanner(wins *slot.Wins) {
 			Free: int(count),
 		})
 	}
+	return nil
 }
 
 func (g *Game) Spin(mrtp float64) {

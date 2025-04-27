@@ -308,9 +308,18 @@ func ApiSlotSpin(c *gin.Context) {
 	defer wins.Reset()
 	var n = 0
 	game.Prepare()
-	for {
-		game.Spin(mrtp - jprate)
-		game.Scanner(&wins)
+	for { // repeat until spin will fit into bank
+		for { // repeat until get valid screen
+			game.Spin(mrtp - jprate)
+			if game.Scanner(&wins) == nil {
+				break
+			}
+			n++
+			if n > cfg.Cfg.MaxSpinAttempts {
+				Ret500(c, AEC_slot_spin_badbank, ErrBadBank)
+				return
+			}
+		}
 		game.Spawn(wins, fund, mrtp-jprate)
 		debit = cost*(1-jprate/100) - wins.Gain()
 		jack = wins.Jackpot()
@@ -318,11 +327,6 @@ func ApiSlotSpin(c *gin.Context) {
 			break
 		}
 		wins.Reset()
-		if n >= cfg.Cfg.MaxSpinAttempts {
-			Ret500(c, AEC_slot_spin_badbank, ErrBadBank)
-			return
-		}
-		n++
 	}
 
 	// write gain and total bet as transaction

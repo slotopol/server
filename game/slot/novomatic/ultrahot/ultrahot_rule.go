@@ -63,7 +63,7 @@ func (g *Game) FillMult() float64 {
 	return 2
 }
 
-func (g *Game) Scanner(wins *slot.Wins) {
+func (g *Game) Scanner(wins *slot.Wins) error {
 	var fm float64 // fill mult
 	for li := 1; li <= g.Sel; li++ {
 		var line = BetLines[li-1]
@@ -82,6 +82,7 @@ func (g *Game) Scanner(wins *slot.Wins) {
 			})
 		}
 	}
+	return nil
 }
 
 func (g *Game) Spin(mrtp float64) {
