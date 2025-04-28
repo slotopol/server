@@ -104,7 +104,6 @@ func CalcStat(ctx context.Context, mrtp float64) (rtp float64) {
 	var wc, _ = slot.FindClosest(ChanceMap, mrtp) // wild chance
 
 	var b = 1 / wc
-	fmt.Printf("wild chance %.5g, b = %.5g\n", wc, b)
 	var rtp000 = CalcStatStars(ctx, false, false, false)
 	var rtp100 = CalcStatStars(ctx, true, false, false)
 	var rtp010 = CalcStatStars(ctx, false, true, false)
@@ -115,8 +114,9 @@ func CalcStat(ctx context.Context, mrtp float64) (rtp float64) {
 	var rtp111 = CalcStatStars(ctx, true, true, true)
 	var q = AnyStarProb(b)
 	var rtpfs = ((rtp100+rtp010+rtp001)*(b-1)*(b-1) + (rtp110+rtp011+rtp101)*(b-1) + rtp111) / (b*b + (b-1)*b + (b-1)*(b-1))
-	rtp = rtp000 + q*rtpfs
+	rtp = (1-q)*rtp000 + q*rtpfs
+	fmt.Printf("wild chance: 1/%.5g\n", 1/wc)
 	fmt.Printf("free spins: q = %.5g, 1/q = %.5g, rtpfs = %.6f%%\n", q, 1/q, rtpfs)
-	fmt.Printf("RTP = %.5g(sym) + q*%.5g(fg) = %.6f%%\n", rtp000, rtpfs, rtp)
+	fmt.Printf("RTP = (1-q)*%.5g(sym) + q*%.5g(fg) = %.6f%%\n", rtp000, rtpfs, rtp)
 	return
 }

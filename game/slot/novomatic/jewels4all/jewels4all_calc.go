@@ -84,8 +84,6 @@ func CalcStatEuro(ctx context.Context, x, y slot.Pos) float64 {
 func CalcStat(ctx context.Context, mrtp float64) (rtp float64) {
 	var wc, _ = slot.FindClosest(ChanceMap, mrtp) // wild chance
 
-	var b = 1 / wc
-	fmt.Printf("wild chance %.5g, b = %.5g\n", wc, b)
 	var rtp00 = CalcStatEuro(ctx, 0, 0)
 	var rtpeu float64
 	var x, y slot.Pos
@@ -95,8 +93,9 @@ func CalcStat(ctx context.Context, mrtp float64) (rtp float64) {
 		}
 	}
 	rtpeu /= 15
-	rtp = rtp00 + wc*rtpeu
+	rtp = (1-wc)*rtp00 + wc*rtpeu
 	fmt.Printf("euro avr: rtpeu = %.6f%%\n", rtpeu)
-	fmt.Printf("RTP = %.5g(sym) + wc*%.5g(eu) = %.6f%%\n", rtp00, rtpeu, rtp)
+	fmt.Printf("wild chance: 1/%.5g\n", 1/wc)
+	fmt.Printf("RTP = (1-wc)*%.5g(sym) + wc*%.5g(eu) = %.6f%%\n", rtp00, rtpeu, rtp)
 	return
 }

@@ -235,10 +235,10 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 						} else {
 							if sg.Scanner(&wins) == nil {
 								s.Update(wins, 1)
-								wins.Reset()
 							} else {
 								s.IncErr()
 							}
+							wins.Reset()
 						}
 					}
 				}
@@ -310,10 +310,10 @@ func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 							} else {
 								if sg.Scanner(&wins) == nil {
 									s.Update(wins, 1)
-									wins.Reset()
 								} else {
 									s.IncErr()
 								}
+								wins.Reset()
 							}
 						}
 					}
@@ -390,10 +390,10 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 								} else {
 									if sg.Scanner(&wins) == nil {
 										s.Update(wins, 1)
-										wins.Reset()
 									} else {
 										s.IncErr()
 									}
+									wins.Reset()
 								}
 							}
 						}
@@ -438,10 +438,10 @@ func BruteForce5x3Big(ctx context.Context, s Stater, g SlotGame, r1, rb, r5 []Sy
 						sg.SetCol(5, r5, i5)
 						if sg.Scanner(&wins) == nil {
 							s.Update(wins, 1)
-							wins.Reset()
 						} else {
 							s.IncErr()
 						}
+						wins.Reset()
 					}
 				}
 			}
@@ -518,8 +518,11 @@ func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 											cs.SetCol(5, r5, i5)
 										}
 									} else {
-										sg.Scanner(&wins)
-										s.Update(wins, 1)
+										if sg.Scanner(&wins) == nil {
+											s.Update(wins, 1)
+										} else {
+											s.IncErr()
+										}
 										wins.Reset()
 									}
 								}
@@ -576,8 +579,11 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 					}
 				} else {
 					sg.ReelSpin(reels)
-					sg.Scanner(&wins)
-					s.Update(wins, 1)
+					if sg.Scanner(&wins) == nil {
+						s.Update(wins, 1)
+					} else {
+						s.IncErr()
+					}
 					wins.Reset()
 				}
 			}
@@ -645,10 +651,10 @@ func MonteCarloPrec(ctx context.Context, s Stater, g SlotGame, reels Reels, calc
 					sg.ReelSpin(reels)
 					if sg.Scanner(&wins) == nil {
 						s.Update(wins, 1)
-						wins.Reset()
 					} else {
 						s.IncErr()
 					}
+					wins.Reset()
 				}
 			}
 		}()
