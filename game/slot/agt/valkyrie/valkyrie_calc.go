@@ -48,15 +48,15 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Count())
+		var reshuf = s.Count()
 		var cost, _ = g.Cost()
 		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp
-		var q = float64(s.FreeCount()) / reshuf
+		var q = s.FreeCount() / reshuf
 		var rtp = rtpsym + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "free spins %d, q = %.6f\n", s.FreeCount(), q)
-		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", reshuf/float64(s.FreeHits()))
+		fmt.Fprintf(w, "free spins %g, q = %.6f\n", s.FreeCount(), q)
+		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", reshuf/s.FreeHits())
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, q, rtpfs, rtp)
 		return rtp
 	}

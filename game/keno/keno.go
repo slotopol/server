@@ -81,11 +81,11 @@ type Wins struct {
 
 // KenoGame is common keno interface. Any keno game should implement this interface.
 type KenoGame interface {
-	Scanner(*Wins)        // scan given screen and append result to wins, constat function
-	Spin(float64)         // fill the screen with random hits on reels closest to given RTP, constat function
-	GetBet() float64      // returns current bet, constat function
+	Scanner(*Wins)        // scan given screen and append result to wins, constant function
+	Spin(float64)         // fill the screen with random hits on reels closest to given RTP, constant function
+	GetBet() float64      // returns current bet, constant function
 	SetBet(float64) error // set bet to given value
-	GetSel() Bitset       // returns current selected numbers, constat function
+	GetSel() Bitset       // returns current selected numbers, constant function
 	SetSel(Bitset) error  // set current selected numbers
 }
 

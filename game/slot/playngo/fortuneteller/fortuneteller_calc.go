@@ -30,15 +30,15 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Count())
+		var reshuf = s.Count()
 		var cost, _ = g.Cost()
 		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp
-		var qcbn = float64(s.BonusCount(cbn)) / reshuf / float64(g.Sel)
+		var qcbn = s.BonusCount(cbn) / reshuf / float64(g.Sel)
 		var rtpcbn = Ecards * qcbn * 100
 		var rtp = rtpsym + rtpcbn
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "cards bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount(cbn)), rtpcbn)
+		fmt.Fprintf(w, "cards bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonusCount(cbn), rtpcbn)
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(cards) = %.6f%%\n", rtpsym, rtpcbn, rtp)
 		return rtp
 	}
@@ -62,18 +62,18 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Count())
+		var reshuf = s.Count()
 		var cost, _ = g.Cost()
 		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp
-		var q = float64(s.FreeCount()) / reshuf
-		var qcbn = float64(s.BonusCount(cbn)) / reshuf / float64(g.Sel)
+		var q = s.FreeCount() / reshuf
+		var qcbn = s.BonusCount(cbn) / reshuf / float64(g.Sel)
 		var rtpcbn = Ecards * qcbn * 100
 		var rtp = rtpsym + rtpcbn + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "free spins %d, q = %.6f\n", s.FreeCount(), q)
-		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", reshuf/float64(s.FreeHits()))
-		fmt.Fprintf(w, "cards bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/float64(s.BonusCount(cbn)), rtpcbn)
+		fmt.Fprintf(w, "free spins %g, q = %.6f\n", s.FreeCount(), q)
+		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", reshuf/s.FreeHits())
+		fmt.Fprintf(w, "cards bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonusCount(cbn), rtpcbn)
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(cards) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, rtpcbn, q, rtpfs, rtp)
 		return rtp
 	}

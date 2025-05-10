@@ -16,12 +16,9 @@ import (
 
 type Stater interface {
 	SetPlan(n uint64)
-	Planned() uint64
-	Count() uint64
-	Reshuf(cfn int) uint64
+	Planned() float64
+	Reshuf(cfn int) float64
 	IncErr()
-	LineRTP(cost float64) float64
-	ScatRTP(cost float64) float64
 	Update(wins Wins, cfn int)
 }
 
@@ -43,16 +40,16 @@ func (s *Stat) SetPlan(n uint64) {
 	atomic.StoreUint64(&s.planned, n)
 }
 
-func (s *Stat) Planned() uint64 {
-	return atomic.LoadUint64(&s.planned)
+func (s *Stat) Planned() float64 {
+	return float64(atomic.LoadUint64(&s.planned))
 }
 
-func (s *Stat) Count() uint64 {
-	return atomic.LoadUint64(&s.reshuffles[0]) - atomic.LoadUint64(&s.errcount)
+func (s *Stat) Count() float64 {
+	return float64(atomic.LoadUint64(&s.reshuffles[0]) - atomic.LoadUint64(&s.errcount))
 }
 
-func (s *Stat) Reshuf(cfn int) uint64 {
-	return atomic.LoadUint64(&s.reshuffles[cfn-1])
+func (s *Stat) Reshuf(cfn int) float64 {
+	return float64(atomic.LoadUint64(&s.reshuffles[cfn-1]))
 }
 
 func (s *Stat) IncErr() {
@@ -75,20 +72,20 @@ func (s *Stat) ScatRTP(cost float64) float64 {
 	return sp / reshuf / cost * 100
 }
 
-func (s *Stat) FreeCount() uint64 {
-	return atomic.LoadUint64(&s.freecount)
+func (s *Stat) FreeCount() float64 {
+	return float64(atomic.LoadUint64(&s.freecount))
 }
 
-func (s *Stat) FreeHits() uint64 {
-	return atomic.LoadUint64(&s.freehits)
+func (s *Stat) FreeHits() float64 {
+	return float64(atomic.LoadUint64(&s.freehits))
 }
 
-func (s *Stat) BonusCount(bid int) uint64 {
-	return atomic.LoadUint64(&s.bonuscount[bid])
+func (s *Stat) BonusCount(bid int) float64 {
+	return float64(atomic.LoadUint64(&s.bonuscount[bid]))
 }
 
-func (s *Stat) JackCount(jid int) uint64 {
-	return atomic.LoadUint64(&s.jackcount[jid])
+func (s *Stat) JackCount(jid int) float64 {
+	return float64(atomic.LoadUint64(&s.jackcount[jid]))
 }
 
 func (s *Stat) Update(wins Wins, cfn int) {
@@ -130,8 +127,8 @@ func Progress(ctx context.Context, s Stater, calc func(io.Writer) float64) {
 		case <-ctx.Done():
 			return
 		case <-steps:
-			var reshuf = float64(s.Count())
-			var total = float64(s.Planned())
+			var reshuf = s.Reshuf(1)
+			var total = s.Planned()
 			var rtp = calc(io.Discard)
 			var dur = time.Since(t0)
 			if total > 0 {
@@ -145,15 +142,6 @@ func Progress(ctx context.Context, s Stater, calc func(io.Writer) float64) {
 					reshuf/1e6, dur.Truncate(stepdur), rtp)
 			}
 		}
-	}
-}
-
-func PrintSymPays(s Stater, cost float64) func(io.Writer) float64 {
-	return func(w io.Writer) float64 {
-		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
-		var rtpsym = lrtp + srtp
-		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		return rtpsym
 	}
 }
 
@@ -540,7 +528,7 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	s.SetPlan(cfg.MCCount * 1e6)
 	var tn = CorrectThrNum()
 	var tn64 = uint64(tn)
-	var n = s.Planned()
+	var n = uint64(s.Planned())
 	var wg sync.WaitGroup
 	wg.Add(tn)
 	for range tn64 {
@@ -684,10 +672,10 @@ func ScanReels(ctx context.Context, s Stater, g SlotGame, reels Reels,
 	}
 	var dur = time.Since(t0)
 	if s.Planned() > 0 {
-		var comp = float64(s.Reshuf(1)) / float64(s.Planned()) * 100
+		var comp = s.Reshuf(1) / s.Planned() * 100
 		fmt.Printf("completed %.5g%%, selected %d lines, time spent %v            \n", comp, g.GetSel(), dur)
 	} else {
-		fmt.Printf("produced %.1fm, selected %d lines, time spent %v            \n", float64(s.Reshuf(1))/1e6, g.GetSel(), dur)
+		fmt.Printf("produced %.1fm, selected %d lines, time spent %v            \n", s.Reshuf(1)/1e6, g.GetSel(), dur)
 	}
 	fmt.Printf("reels lengths %s, total reshuffles %d\n", reels.String(), reels.Reshuffles())
 	return calc(os.Stdout)

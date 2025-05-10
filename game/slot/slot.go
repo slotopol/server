@@ -66,18 +66,18 @@ func (wins Wins) Jackpot() float64 {
 // SlotGame is common slots interface. Any slot game should implement this interface.
 type SlotGame interface {
 	Clone() SlotGame              // returns full cloned copy of itself
-	Scanner(*Wins) error          // scan given screen and append result to wins, constat function
-	Cost() (float64, bool)        // cost of spin on current bet and lines, and has it jackpot rate, constat function
-	Free() bool                   // returns true on spins without pay, constat function
-	Spin(float64)                 // fill the screen with random hits on reels closest to given RTP, constat function
-	Spawn(Wins, float64, float64) // setup bonus games to wins results, constat function
+	Scanner(*Wins) error          // scan given screen and append result to wins, constant function
+	Cost() (float64, bool)        // cost of spin on current bet and lines, and has it jackpot rate, constant function
+	Free() bool                   // returns true on spins without pay, constant function
+	Spin(float64)                 // fill the screen with random hits on reels closest to given RTP, constant function
+	Spawn(Wins, float64, float64) // setup bonus games to wins results, constant function
 	Prepare()                     // update game state before new spin
 	Apply(Wins)                   // update game state to spin results
-	GetGain() float64             // returns gain for double up games, constat function
+	GetGain() float64             // returns gain for double up games, constant function
 	SetGain(float64) error        // set gain to given value on double up games
-	GetBet() float64              // returns current bet, constat function
+	GetBet() float64              // returns current bet, constant function
 	SetBet(float64) error         // set bet to given value
-	GetSel() int                  // returns number of selected bet lines, constat function
+	GetSel() int                  // returns number of selected bet lines, constant function
 	SetSel(int) error             // setup number of selected bet lines
 	SetMode(int) error            // change game mode depending on the user's choice
 }

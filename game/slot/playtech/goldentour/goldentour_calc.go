@@ -29,15 +29,14 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Count())
+		var reshuf = s.Count()
 		var cost, _ = g.Cost()
 		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp
-		var qgolfbn = float64(s.BonusCount(golfbon)) / reshuf / float64(g.Sel)
+		var qgolfbn = s.BonusCount(golfbon) / reshuf / float64(g.Sel)
 		var rtpgolfbn = Egolfbn * qgolfbn * 100
 		var rtp = rtpsym + rtpgolfbn
-		fmt.Fprintf(w, "golf bonuses: count %d, rtp = %.6f%%\n", s.BonusCount(golfbon), rtpgolfbn)
-		fmt.Fprintf(w, "golf bonuses frequency: 1/%.5g\n", reshuf/float64(s.BonusCount(golfbon)))
+		fmt.Fprintf(w, "golf bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonusCount(golfbon), rtpgolfbn)
 		fmt.Fprintf(w, "RTP = %.5g(lined) + %.5g(scatter) + %.5g(golf) = %.6f%%\n", lrtp, srtp, rtpgolfbn, rtp)
 		return rtp
 	}

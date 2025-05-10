@@ -27,16 +27,16 @@ func (s *Stat) SetPlan(n uint64) {
 	atomic.StoreUint64(&s.planned, n)
 }
 
-func (s *Stat) Planned() uint64 {
-	return atomic.LoadUint64(&s.planned)
+func (s *Stat) Planned() float64 {
+	return float64(atomic.LoadUint64(&s.planned))
 }
 
-func (s *Stat) Count() uint64 {
-	return atomic.LoadUint64(&s.reshuffles[0]) - atomic.LoadUint64(&s.errcount)
+func (s *Stat) Count() float64 {
+	return float64(atomic.LoadUint64(&s.reshuffles[0]) - atomic.LoadUint64(&s.errcount))
 }
 
-func (s *Stat) Reshuf(cfn int) uint64 {
-	return atomic.LoadUint64(&s.reshuffles[cfn-1])
+func (s *Stat) Reshuf(cfn int) float64 {
+	return float64(atomic.LoadUint64(&s.reshuffles[cfn-1]))
 }
 
 func (s *Stat) IncErr() {
@@ -59,20 +59,20 @@ func (s *Stat) ScatRTP(cost float64) float64 {
 	return sp / reshuf / cost * 100
 }
 
-func (s *Stat) FreeCount() uint64 {
-	return atomic.LoadUint64(&s.freecount)
+func (s *Stat) FreeCount() float64 {
+	return float64(atomic.LoadUint64(&s.freecount))
 }
 
-func (s *Stat) FreeHits() uint64 {
-	return atomic.LoadUint64(&s.freehits)
+func (s *Stat) FreeHits() float64 {
+	return float64(atomic.LoadUint64(&s.freehits))
 }
 
-func (s *Stat) BonusCount(bid int) uint64 {
-	return atomic.LoadUint64(&s.bonuscount[bid])
+func (s *Stat) BonusCount(bid int) float64 {
+	return float64(atomic.LoadUint64(&s.bonuscount[bid]))
 }
 
-func (s *Stat) JackCount(jid int) uint64 {
-	return atomic.LoadUint64(&s.jackcount[jid])
+func (s *Stat) JackCount(jid int) float64 {
+	return float64(atomic.LoadUint64(&s.jackcount[jid]))
 }
 
 func (s *Stat) Update(wins slot.Wins, cfn int) {
@@ -134,16 +134,16 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var s Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = float64(s.Count())
+		var reshuf = s.Count()
 		var cost, _ = g.Cost()
 		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
 		var rtpsym = lrtp + srtp
-		var q = float64(s.FreeCount()) / reshuf
+		var q = s.FreeCount() / reshuf
 		var sq = 1 / (1 - q)
 		var rtp = rtpsym + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount(), q, sq)
-		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", reshuf/float64(s.FreeHits()))
+		fmt.Fprintf(w, "free spins %g, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount(), q, sq)
+		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", reshuf/s.FreeHits())
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, q, rtpfs, rtp)
 		return rtp
 	}

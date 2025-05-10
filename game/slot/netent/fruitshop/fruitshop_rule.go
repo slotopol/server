@@ -1,5 +1,6 @@
 package fruitshop
 
+// See: https://games.netent.com/video-slots/fruit-shop/
 // See: https://www.slotsmate.com/software/netent/fruit-shop
 
 import (

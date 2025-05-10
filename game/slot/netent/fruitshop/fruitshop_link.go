@@ -8,7 +8,7 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "NetEnt", Name: "Fruit Shop", Year: 2011}, // see: https://www.slotsmate.com/software/netent/fruit-shop
+		{Prov: "NetEnt", Name: "Fruit Shop", Year: 2011}, // see: https://games.netent.com/video-slots/fruit-shop/
 	},
 	GP: game.GPlpay |
 		game.GPretrig |

@@ -9,7 +9,7 @@ end
 function makereel(symset, neighbours)
 	-- make not-shuffled reel
 	local reel = {}
-	for sym, n in ipairs(symset) do
+	for sym, n in pairs(symset) do
 		for _ = 1, n do
 			table.insert(reel, sym)
 		end
