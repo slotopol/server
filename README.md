@@ -16,13 +16,13 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 194 games, 102 algorithms, 10 providers
+total: 195 games, 103 algorithms, 10 providers
 AGT: 60 games
 Aristocrat: 4 games
 BetSoft: 3 games
 IGT: 5 games
 Megajack: 4 games
-NetEnt: 21 games
+NetEnt: 22 games
 Novomatic: 83 games
 Play'n GO: 3 games
 Playtech: 7 games
@@ -31,6 +31,7 @@ Slotopol: 4 games
 
 *Last added games*:
 
+* '[Flowers](https://games.netent.com/video-slots/flowers/)' NetEnt 5x3 videoslot
 * '[Cash Farm](https://casino.ru/cash-farm-novomatic/)' Novomatic 5x3 cascade videoslot with bonus game
 * '[Fruit Sensation](https://casino.ru/fruit-sensation-novomatic/)' Novomatic 5x3 videoslot
 * '[Oliver's Bar](https://casino.ru/olivers-bar-novomatic/)' Novomatic 5x3 videoslot

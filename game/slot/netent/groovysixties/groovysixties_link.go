@@ -8,9 +8,9 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "NetEnt", Name: "Groovy Sixties"},
-		{Prov: "NetEnt", Name: "Funky Seventies"}, // See: https://www.youtube.com/watch?v=a-qF9ZOpRP0
-		{Prov: "NetEnt", Name: "Super Eighties"},  // See: https://www.youtube.com/watch?v=Wj49gwfRtz8
+		{Prov: "NetEnt", Name: "Groovy Sixties", Year: 2009},
+		{Prov: "NetEnt", Name: "Funky Seventies", Year: 2009}, // See: https://www.youtube.com/watch?v=a-qF9ZOpRP0
+		{Prov: "NetEnt", Name: "Super Eighties", Year: 2009},  // See: https://www.youtube.com/watch?v=Wj49gwfRtz8
 	},
 	GP: game.GPlpay |
 		game.GPlsel |

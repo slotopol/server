@@ -1,6 +1,6 @@
 //go:build !prod || full || netent
 
-package reelsteal
+package flowers
 
 import (
 	"github.com/slotopol/server/game"
@@ -8,15 +8,14 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "NetEnt", Name: "Reel Steal", Year: 2008},
+		{Prov: "NetEnt", Name: "Flowers", Year: 2013}, // see: https://games.netent.com/video-slots/flowers/
 	},
 	GP: game.GPlpay |
 		game.GPlsel |
-		game.GPfghas |
+		game.GPretrig |
+		game.GPfgreel |
 		game.GPfgmult |
-		game.GPscat |
-		game.GPwild |
-		game.GPwmult,
+		game.GPwild,
 	SX:  5,
 	SY:  3,
 	SN:  len(LinePay),

@@ -58,6 +58,7 @@ import (
 	// NetEnt
 	_ "github.com/slotopol/server/game/slot/netent/arabiannights"
 	_ "github.com/slotopol/server/game/slot/netent/diamonddogs"
+	_ "github.com/slotopol/server/game/slot/netent/flowers"
 	_ "github.com/slotopol/server/game/slot/netent/fruitshop"
 	_ "github.com/slotopol/server/game/slot/netent/gonzosquest"
 	_ "github.com/slotopol/server/game/slot/netent/groovysixties"

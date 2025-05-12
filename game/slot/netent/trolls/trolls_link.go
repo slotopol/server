@@ -9,9 +9,9 @@ import (
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "NetEnt", Name: "Trolls", Year: 2009},    // see: https://casino.ru/trolls-netent/
-		{Prov: "NetEnt", Name: "Excalibur", Year: 2011}, // see: https://casino.ru/excalibur-netent/
-		{Prov: "NetEnt", Name: "Pandora's Box"},
-		{Prov: "NetEnt", Name: "Wild Witches"},
+		{Prov: "NetEnt", Name: "Excalibur", Year: 2013}, // see: https://casino.ru/excalibur-netent/
+		{Prov: "NetEnt", Name: "Pandora's Box", Year: 2009},
+		{Prov: "NetEnt", Name: "Wild Witches", Year: 2010},
 	},
 	GP: game.GPlpay |
 		game.GPlsel |

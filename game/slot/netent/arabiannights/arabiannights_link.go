@@ -8,7 +8,7 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "NetEnt", Name: "Arabian Nights"},
+		{Prov: "NetEnt", Name: "Arabian Nights", Year: 2013},
 	},
 	GP: game.GPlpay |
 		game.GPlsel |

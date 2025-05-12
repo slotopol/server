@@ -8,7 +8,7 @@ import (
 
 var Info = game.GameInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Megajack", Name: "Slotopol Deluxe", Year: 1988},
+		{Prov: "Megajack", Name: "Slotopol Deluxe", Year: 1999},
 	},
 	GP: game.GPlpay |
 		game.GPlsel |
