@@ -6,24 +6,27 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-var Info = game.GameInfo{
+var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "BetSoft", Name: "At the Movies"},
 		{Prov: "BetSoft", Name: "Sushi Bar"},
 	},
-	GP: game.GPlpay |
-		game.GPlsel |
-		game.GPretrig |
-		game.GPfgmult |
-		game.GPscat |
-		game.GPwild |
-		game.GPwmult,
-	SX:  5,
-	SY:  3,
-	SN:  len(LinePay),
-	LN:  len(BetLines),
-	BN:  0,
-	RTP: game.MakeRtpList(ReelsMap),
+	AlgDescr: game.AlgDescr{
+		GT: game.GTslot,
+		GP: game.GPlpay |
+			game.GPlsel |
+			game.GPretrig |
+			game.GPfgmult |
+			game.GPscat |
+			game.GPwild |
+			game.GPwmult,
+		SX:  5,
+		SY:  3,
+		SN:  len(LinePay),
+		LN:  len(BetLines),
+		BN:  0,
+		RTP: game.MakeRtpList(ReelsMap),
+	},
 }
 
 func init() {

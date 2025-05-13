@@ -24,7 +24,7 @@ func (kp *Paytable) HasSel(sel int) bool {
 	return false
 }
 
-func (kp *Paytable) Scanner(scrn *Screen, wins *Wins, bet float64) {
+func (kp *Paytable) Scanner(scrn *Screen, wins *Wins, bet float64) error {
 	wins.Sel = 0
 	wins.Num = 0
 	for i := range 80 {
@@ -36,6 +36,7 @@ func (kp *Paytable) Scanner(scrn *Screen, wins *Wins, bet float64) {
 		}
 	}
 	wins.Pay = kp[wins.Sel][wins.Num] * bet
+	return nil
 }
 
 func (kp *Paytable) CalcStat(ctx context.Context) float64 {
@@ -81,7 +82,7 @@ type Wins struct {
 
 // KenoGame is common keno interface. Any keno game should implement this interface.
 type KenoGame interface {
-	Scanner(*Wins)        // scan given screen and append result to wins, constant function
+	Scanner(*Wins) error  // scan given screen and append result to wins, constant function
 	Spin(float64)         // fill the screen with random hits on reels closest to given RTP, constant function
 	GetBet() float64      // returns current bet, constant function
 	SetBet(float64) error // set bet to given value

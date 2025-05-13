@@ -6,7 +6,7 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-var Info = game.GameInfo{
+var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "AGT", Name: "Ice Queen"},       // see: https://demo.agtsoftware.com/games/agt/iceqween
 		{Prov: "AGT", Name: "STALKER"},         // see: https://demo.agtsoftware.com/games/agt/stalker
@@ -20,20 +20,23 @@ var Info = game.GameInfo{
 		{Prov: "AGT", Name: "Pirates Gold"},    // see: https://demo.agtsoftware.com/games/agt/piratesgold
 		{Prov: "AGT", Name: "The Leprechaun"},  // see: https://demo.agtsoftware.com/games/agt/leprechaun
 	},
-	GP: game.GPlpay |
-		game.GPlsel |
-		game.GPretrig |
-		game.GPfgreel |
-		game.GPfgmult |
-		game.GPscat |
-		game.GPwild |
-		game.GPwmult,
-	SX:  5,
-	SY:  3,
-	SN:  len(LinePay),
-	LN:  len(BetLines),
-	BN:  0,
-	RTP: game.MakeRtpList(ReelsMap),
+	AlgDescr: game.AlgDescr{
+		GT: game.GTslot,
+		GP: game.GPlpay |
+			game.GPlsel |
+			game.GPretrig |
+			game.GPfgreel |
+			game.GPfgmult |
+			game.GPscat |
+			game.GPwild |
+			game.GPwmult,
+		SX:  5,
+		SY:  3,
+		SN:  len(LinePay),
+		LN:  len(BetLines),
+		BN:  0,
+		RTP: game.MakeRtpList(ReelsMap),
+	},
 }
 
 func init() {

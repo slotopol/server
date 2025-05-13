@@ -31,12 +31,15 @@ Get the list of available 'NetExt' and 'BetSoft' games only:
 Get the list of available 'Play'n GO' games with RTP list for each:
   %[1]s list --playngo --rtp`
 
-func incinfo(gi *game.GameInfo) bool {
+func incinfo(gi *game.AlgInfo) bool {
 	if fAll {
 		return true
 	}
 	var is bool
-	if is, _ = listflags.GetBool("keno"); is && gi.SX == 80 {
+	if is, _ = listflags.GetBool("slot"); is && gi.GT == game.GTslot {
+		return true
+	}
+	if is, _ = listflags.GetBool("keno"); is && gi.GT == game.GTkeno {
 		return true
 	}
 	if is, _ = listflags.GetBool("3x"); is && gi.SX == 3 {
@@ -110,7 +113,7 @@ func isYear(year int) bool {
 	return false
 }
 
-func FormatGameInfo(gi *game.GameInfo, ai int) string {
+func FormatGameInfo(gi *game.AlgInfo, ai int) string {
 	var b strings.Builder
 	if gi.SN > 0 {
 		if gi.GP&game.GPcasc > 0 {
@@ -290,7 +293,8 @@ func init() {
 	listflags.IntSliceVarP(&fYear, "year", "y", nil, "year(s) of issue")
 	listflags.IntVar(&fOlder, "older", 0, "year of issue is older than...")
 	listflags.IntVar(&fNewer, "newer", 0, "year of issue is newer than...")
-	listflags.Bool("keno", false, "include keno games")
+	listflags.Bool("slot", false, "include all slot games")
+	listflags.Bool("keno", false, "include all keno games")
 	listflags.Bool("3x", false, "include games with 3 reels")
 	listflags.Bool("4x", false, "include games with 4 reels")
 	listflags.Bool("5x", false, "include games with 5 reels")
@@ -310,7 +314,7 @@ func init() {
 
 	listCmd.MarkFlagsOneRequired("all",
 		"agt", "aristocrat", "betsoft", "igt", "megajack", "netent", "novomatic", "playngo", "playtech", "slotopol",
-		"year", "older", "newer", "keno",
+		"year", "older", "newer", "slot", "keno",
 		"3x", "4x", "5x", "6x", "3x3", "4x4", "5x3", "5x4", "6x3", "6x4",
 		"fewlines", "multilines", "ways", "jack", "fg", "bonus")
 }

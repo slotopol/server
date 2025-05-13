@@ -6,7 +6,7 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-var Info = game.GameInfo{
+var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "Novomatic", Name: "Dolphins Pearl", Year: 2001},        // see: https://www.slotsmate.com/software/novomatic/dolphins-pearl
 		{Prov: "Novomatic", Name: "Dolphins Pearl Deluxe", Year: 2006}, // see: https://www.slotsmate.com/software/novomatic/dolphins-pearl-deluxe
@@ -32,20 +32,23 @@ var Info = game.GameInfo{
 		{Prov: "Novomatic", Name: "Mermaid's Pearl"},                   // see: https://www.slotsmate.com/software/novomatic/mermaids-pearl
 		{Prov: "Aristocrat", Name: "Dolphin Treasure"},                 // See: https://freeslotshub.com/aristocrat/dolphin-treasure/
 	},
-	GP: game.GPlpay |
-		game.GPlsel |
-		game.GPretrig |
-		game.GPfgreel |
-		game.GPfgmult |
-		game.GPscat |
-		game.GPwild |
-		game.GPwmult,
-	SX:  5,
-	SY:  3,
-	SN:  len(LinePay),
-	LN:  len(BetLines),
-	BN:  0,
-	RTP: game.MakeRtpList(ReelsMap),
+	AlgDescr: game.AlgDescr{
+		GT: game.GTslot,
+		GP: game.GPlpay |
+			game.GPlsel |
+			game.GPretrig |
+			game.GPfgreel |
+			game.GPfgmult |
+			game.GPscat |
+			game.GPwild |
+			game.GPwmult,
+		SX:  5,
+		SY:  3,
+		SN:  len(LinePay),
+		LN:  len(BetLines),
+		BN:  0,
+		RTP: game.MakeRtpList(ReelsMap),
+	},
 }
 
 func init() {

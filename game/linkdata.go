@@ -8,9 +8,16 @@ import (
 	"github.com/slotopol/server/util"
 )
 
-type GP uint
+type GT uint // Game type
 
-const ( // Game properties
+const (
+	GTslot GT = 1 + iota
+	GTkeno
+)
+
+type GP uint // Game properties
+
+const (
 	GPlpay GP = 1 << iota // pays left to right
 	GPrpay                // pays left to right and right to left
 	GPcpay                // pays for combination at any position
@@ -51,23 +58,33 @@ type (
 		Year int    `json:"year" yaml:"year" xml:"year"`
 	}
 
+	AlgDescr struct {
+		GT  GT        `json:"gt,omitempty" yaml:"gt,omitempty" xml:"gt,omitempty"` // game type
+		GP  GP        `json:"gp,omitempty" yaml:"gp,omitempty" xml:"gp,omitempty"` // game properties
+		SX  int       `json:"sx,omitempty" yaml:"sx,omitempty" xml:"sx,omitempty"` // screen width
+		SY  int       `json:"sy,omitempty" yaml:"sy,omitempty" xml:"sy,omitempty"` // screen height
+		SN  int       `json:"sn,omitempty" yaml:"sn,omitempty" xml:"sn,omitempty"` // number of symbols
+		LN  int       `json:"ln,omitempty" yaml:"ln,omitempty" xml:"ln,omitempty"` // number of lines
+		WN  int       `json:"wn,omitempty" yaml:"wn,omitempty" xml:"wn,omitempty"` // number of ways
+		BN  int       `json:"bn,omitempty" yaml:"bn,omitempty" xml:"bn,omitempty"` // number of bonuses
+		RTP []float64 `json:"rtp" yaml:"rtp" xml:"rtp"`                            // 'Return to Player' percents list
+	}
+
+	AlgInfo struct {
+		Aliases  []GameAlias `json:"aliases" yaml:"aliases" xml:"aliases"`
+		AlgDescr `yaml:",inline"`
+	}
+
 	GameInfo struct {
-		Aliases []GameAlias `json:"aliases" yaml:"aliases" xml:"aliases"`
-		GP      GP          `json:"gp,omitempty" yaml:"gp,omitempty" xml:"gp,omitempty"` // game properties
-		SX      int         `json:"sx,omitempty" yaml:"sx,omitempty" xml:"sx,omitempty"` // screen width
-		SY      int         `json:"sy,omitempty" yaml:"sy,omitempty" xml:"sy,omitempty"` // screen height
-		SN      int         `json:"sn,omitempty" yaml:"sn,omitempty" xml:"sn,omitempty"` // number of symbols
-		LN      int         `json:"ln,omitempty" yaml:"ln,omitempty" xml:"ln,omitempty"` // number of lines
-		WN      int         `json:"wn,omitempty" yaml:"wn,omitempty" xml:"wn,omitempty"` // number of ways
-		BN      int         `json:"bn,omitempty" yaml:"bn,omitempty" xml:"bn,omitempty"` // number of bonuses
-		RTP     []float64   `json:"rtp" yaml:"rtp" xml:"rtp"`                            // 'Return to Player' percents list
+		GameAlias `yaml:",inline"`
+		*AlgDescr `yaml:",inline"`
 	}
 
 	Scanner func(context.Context, float64) float64
 )
 
-var InfoList = []*GameInfo{}
-var InfoMap = map[string]*GameInfo{}
+var InfoList = []*AlgInfo{}
+var InfoMap = map[string]*AlgInfo{}
 var GameFactory = map[string]func() any{}
 var ScanFactory = map[string]Scanner{}
 
@@ -80,7 +97,7 @@ func MakeRtpList[T any](reelsmap map[float64]T) []float64 {
 	return list
 }
 
-func (gi *GameInfo) SetupFactory(game func() any, scan Scanner) {
+func (gi *AlgInfo) SetupFactory(game func() any, scan Scanner) {
 	InfoList = append(InfoList, gi)
 	for _, ga := range gi.Aliases {
 		var aid = util.ToID(ga.Prov + "/" + ga.Name)
@@ -90,7 +107,7 @@ func (gi *GameInfo) SetupFactory(game func() any, scan Scanner) {
 	}
 }
 
-func (gi *GameInfo) FindClosest(mrtp float64) (rtp float64) {
+func (gi *AlgInfo) FindClosest(mrtp float64) (rtp float64) {
 	rtp = -1000 // lets to get first reels from map in any case
 	for _, p := range gi.RTP {
 		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {

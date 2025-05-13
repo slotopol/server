@@ -6,24 +6,27 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-var Info = game.GameInfo{
+var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "NetEnt", Name: "Groovy Sixties", Year: 2009},
 		{Prov: "NetEnt", Name: "Funky Seventies", Year: 2009}, // See: https://www.youtube.com/watch?v=a-qF9ZOpRP0
 		{Prov: "NetEnt", Name: "Super Eighties", Year: 2009},  // See: https://www.youtube.com/watch?v=Wj49gwfRtz8
 	},
-	GP: game.GPlpay |
-		game.GPlsel |
-		game.GPretrig |
-		game.GPfgmult |
-		game.GPscat |
-		game.GPwild,
-	SX:  5,
-	SY:  4,
-	SN:  len(LinePay),
-	LN:  len(BetLines),
-	BN:  0,
-	RTP: game.MakeRtpList(ReelsMap),
+	AlgDescr: game.AlgDescr{
+		GT: game.GTslot,
+		GP: game.GPlpay |
+			game.GPlsel |
+			game.GPretrig |
+			game.GPfgmult |
+			game.GPscat |
+			game.GPwild,
+		SX:  5,
+		SY:  4,
+		SN:  len(LinePay),
+		LN:  len(BetLines),
+		BN:  0,
+		RTP: game.MakeRtpList(ReelsMap),
+	},
 }
 
 func init() {

@@ -6,24 +6,27 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-var Info = game.GameInfo{
+var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "Novomatic", Name: "Royal Dynasty"}, // see: https://www.slotsmate.com/software/novomatic/royal-dynasty
 	},
-	GP: game.GPlpay |
-		game.GPlsel |
-		game.GPretrig |
-		game.GPfgreel |
-		game.GPscat |
-		game.GPwild |
-		game.GPwmult |
-		game.GPwturn,
-	SX:  5,
-	SY:  3,
-	SN:  len(LinePay),
-	LN:  len(BetLines),
-	BN:  0,
-	RTP: game.MakeRtpList(ReelsMap),
+	AlgDescr: game.AlgDescr{
+		GT: game.GTslot,
+		GP: game.GPlpay |
+			game.GPlsel |
+			game.GPretrig |
+			game.GPfgreel |
+			game.GPscat |
+			game.GPwild |
+			game.GPwmult |
+			game.GPwturn,
+		SX:  5,
+		SY:  3,
+		SN:  len(LinePay),
+		LN:  len(BetLines),
+		BN:  0,
+		RTP: game.MakeRtpList(ReelsMap),
+	},
 }
 
 func init() {

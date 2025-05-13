@@ -7,6 +7,7 @@ import (
 	"sync/atomic"
 
 	"github.com/gin-gonic/gin"
+
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/game/keno"
 	"github.com/slotopol/server/util"
@@ -340,18 +341,22 @@ func ApiKenoSpin(c *gin.Context) {
 	var wins keno.Wins
 	var debit float64
 	var n = 0
-	for {
-		game.Spin(mrtp)
-		game.Scanner(&wins)
+	for { // repeat until spin will fit into bank
+		for { // repeat until get valid screen
+			game.Spin(mrtp)
+			if game.Scanner(&wins) == nil {
+				break
+			}
+			n++
+			if n > cfg.Cfg.MaxSpinAttempts {
+				Ret500(c, AEC_keno_spin_badbank, ErrBadBank)
+				return
+			}
+		}
 		debit = cost - wins.Pay
 		if bank+debit >= 0 || (bank < 0 && debit > 0) {
 			break
 		}
-		if n >= cfg.Cfg.MaxSpinAttempts {
-			Ret500(c, AEC_keno_spin_badbank, ErrBadBank)
-			return
-		}
-		n++
 	}
 
 	// write gain and total bet as transaction

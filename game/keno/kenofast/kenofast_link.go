@@ -8,17 +8,20 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-var Info = game.GameInfo{
+var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "AGT", Name: "Keno Fast"},
 	},
-	GP:  0,
-	SX:  80,
-	SY:  0,
-	SN:  0,
-	LN:  0,
-	BN:  0,
-	RTP: []float64{95.616967},
+	AlgDescr: game.AlgDescr{
+		GT:  game.GTkeno,
+		GP:  0,
+		SX:  80,
+		SY:  0,
+		SN:  0,
+		LN:  0,
+		BN:  0,
+		RTP: []float64{95.616967},
+	},
 }
 
 func init() {

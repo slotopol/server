@@ -8,6 +8,7 @@ import (
 	"sync/atomic"
 
 	"github.com/gin-gonic/gin"
+
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/game/slot"
 	"github.com/slotopol/server/util"

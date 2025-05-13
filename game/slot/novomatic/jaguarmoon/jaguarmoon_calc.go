@@ -23,6 +23,9 @@ type Stat struct {
 	lpm, spm   sync.Mutex
 }
 
+// Declare conformity with Stater interface.
+var _ slot.Stater = (*Stat)(nil)
+
 func (s *Stat) SetPlan(n uint64) {
 	atomic.StoreUint64(&s.planned, n)
 }
