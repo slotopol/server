@@ -2,7 +2,9 @@ package cmd
 
 import (
 	"fmt"
+	"regexp"
 	"sort"
+	"strconv"
 	"strings"
 
 	cfg "github.com/slotopol/server/config"
@@ -13,116 +15,161 @@ import (
 	"github.com/spf13/pflag"
 )
 
-var listflags *pflag.FlagSet
-
-var (
-	fAll, fProp, fRTP bool
-	fMrtp, fDiff      float64
-	fYear             []int
-	fOlder, fNewer    int
-)
-
 const listShort = "List of available games released on server"
 const listLong = ``
 const listExmp = `Get the list of all available games:
-  %[1]s list --all
-Get the list of available 'NetExt' and 'BetSoft' games only:
-  %[1]s list --netent --betsoft
-Get the list of available 'Play'n GO' games with RTP list for each:
-  %[1]s list --playngo --rtp`
+  %[1]s list
+Get the list of slots with cascade falls:
+  %[1]s list -i casc
+Get the list of 'NetExt' and 'BetSoft' games:
+  %[1]s list -i netent -i betsoft
+Get the list of Megajack games and any games with 3 reels:
+  %[1]s list -i megajack -i 3x
+Get the list of games with screen 3x3 without 'AGT' games:
+  %[1]s list -i 3x3 -e agt
+Get the list of 'Play'n GO' games with RTP list for each:
+  %[1]s list -i playngo --rtp`
 
-func incinfo(gi *game.AlgInfo) bool {
-	if fAll {
-		return true
+var listflags *pflag.FlagSet
+
+var (
+	fSort            bool
+	fProp, fRTP      bool
+	fMrtp, fDiff     float64
+	inclist, exclist []string
+)
+
+type filter func(*game.GameInfo) bool
+
+var FiltMap = map[string]filter{
+	"all":  func(gi *game.GameInfo) bool { return true },
+	"slot": func(gi *game.GameInfo) bool { return gi.GT == game.GTslot },
+
+	"keno":       func(gi *game.GameInfo) bool { return gi.GT == game.GTkeno },
+	"agt":        func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "agt" },
+	"aristocrat": func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "aristocrat" },
+	"betsoft":    func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "betsoft" },
+	"igt":        func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "igt" },
+	"megajack":   func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "megajack" },
+	"netent":     func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "netent" },
+	"novomatic":  func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "novomatic" },
+	"playngo":    func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "playngo" },
+	"playtech":   func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "playtech" },
+	"slotopol":   func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "slotopol" },
+
+	"lines": func(gi *game.GameInfo) bool { return gi.LN > 0 },
+	"ways":  func(gi *game.GameInfo) bool { return gi.WN > 0 },
+	"casc":  func(gi *game.GameInfo) bool { return gi.GT == game.GTslot && gi.GP&game.GPcasc > 0 },
+	"jack":  func(gi *game.GameInfo) bool { return gi.GP&game.GPjack > 0 },
+	"fg":    func(gi *game.GameInfo) bool { return gi.GP&(game.GPfghas+game.GPretrig) > 0 },
+	"bon":   func(gi *game.GameInfo) bool { return gi.BN > 0 },
+}
+var (
+	finclist, fexclist []filter
+	reReel             = regexp.MustCompile(`^(\d)x$`)
+	reScrn             = regexp.MustCompile(`^(\d)x(\d)$`)
+	reYEQ              = regexp.MustCompile(`^y=(\d{2}|\d{4})$`)
+	reYLT              = regexp.MustCompile(`^y<(\d{2}|\d{4})$`)
+	reYGT              = regexp.MustCompile(`^y>(\d{2}|\d{4})$`)
+	reLNEQ             = regexp.MustCompile(`^ln=(\d{1,3})$`)
+	reLNLT             = regexp.MustCompile(`^ln<(\d{1,3})$`)
+	reLNGT             = regexp.MustCompile(`^ln>(\d{1,3})$`)
+	reWNEQ             = regexp.MustCompile(`^wn=(\d{1,4})$`)
+	reWNLT             = regexp.MustCompile(`^wn<(\d{1,4})$`)
+	reWNGT             = regexp.MustCompile(`^wn>(\d{1,4})$`)
+)
+
+func getfilter(key string) filter {
+	key = util.ToLower(key)
+	if f, ok := FiltMap[key]; ok {
+		return f
 	}
+	if s := reReel.FindStringSubmatch(key); len(s) > 0 {
+		var x, _ = strconv.Atoi(s[1])
+		return func(gi *game.GameInfo) bool { return gi.SX == x }
+	}
+	if s := reScrn.FindStringSubmatch(key); len(s) > 0 {
+		var x, _ = strconv.Atoi(s[1])
+		var y, _ = strconv.Atoi(s[2])
+		return func(gi *game.GameInfo) bool { return gi.SX == x && gi.SY == y }
+	}
+	if s := reYEQ.FindStringSubmatch(key); len(s) > 0 {
+		var year, _ = strconv.Atoi(s[1])
+		if year < 100 {
+			year += 2000
+		}
+		return func(gi *game.GameInfo) bool { return gi.Year == year }
+	}
+	if s := reYLT.FindStringSubmatch(key); len(s) > 0 {
+		var year, _ = strconv.Atoi(s[1])
+		if year < 100 {
+			year += 2000
+		}
+		return func(gi *game.GameInfo) bool { return gi.Year < year }
+	}
+	if s := reYGT.FindStringSubmatch(key); len(s) > 0 {
+		var year, _ = strconv.Atoi(s[1])
+		if year < 100 {
+			year += 2000
+		}
+		return func(gi *game.GameInfo) bool { return gi.Year > year }
+	}
+	if s := reLNEQ.FindStringSubmatch(key); len(s) > 0 {
+		var ln, _ = strconv.Atoi(s[1])
+		return func(gi *game.GameInfo) bool { return gi.LN == ln }
+	}
+	if s := reLNLT.FindStringSubmatch(key); len(s) > 0 {
+		var ln, _ = strconv.Atoi(s[1])
+		return func(gi *game.GameInfo) bool { return gi.LN > 0 && gi.LN < ln }
+	}
+	if s := reLNGT.FindStringSubmatch(key); len(s) > 0 {
+		var ln, _ = strconv.Atoi(s[1])
+		return func(gi *game.GameInfo) bool { return gi.LN > ln }
+	}
+	if s := reWNEQ.FindStringSubmatch(key); len(s) > 0 {
+		var wn, _ = strconv.Atoi(s[1])
+		return func(gi *game.GameInfo) bool { return gi.WN == wn }
+	}
+	if s := reWNLT.FindStringSubmatch(key); len(s) > 0 {
+		var wn, _ = strconv.Atoi(s[1])
+		return func(gi *game.GameInfo) bool { return gi.WN > 0 && gi.WN < wn }
+	}
+	if s := reWNGT.FindStringSubmatch(key); len(s) > 0 {
+		var wn, _ = strconv.Atoi(s[1])
+		return func(gi *game.GameInfo) bool { return gi.WN > wn }
+	}
+	return nil
+}
+
+func passes(gi *game.GameInfo) bool {
 	var is bool
-	if is, _ = listflags.GetBool("slot"); is && gi.GT == game.GTslot {
-		return true
-	}
-	if is, _ = listflags.GetBool("keno"); is && gi.GT == game.GTkeno {
-		return true
-	}
-	if is, _ = listflags.GetBool("3x"); is && gi.SX == 3 {
-		return true
-	}
-	if is, _ = listflags.GetBool("4x"); is && gi.SX == 4 {
-		return true
-	}
-	if is, _ = listflags.GetBool("5x"); is && gi.SX == 5 {
-		return true
-	}
-	if is, _ = listflags.GetBool("6x"); is && gi.SX == 6 {
-		return true
-	}
-	if is, _ = listflags.GetBool("3x3"); is && gi.SX == 3 && gi.SY == 3 {
-		return true
-	}
-	if is, _ = listflags.GetBool("4x4"); is && gi.SX == 4 && gi.SY == 4 {
-		return true
-	}
-	if is, _ = listflags.GetBool("5x3"); is && gi.SX == 5 && gi.SY == 3 {
-		return true
-	}
-	if is, _ = listflags.GetBool("5x4"); is && gi.SX == 5 && gi.SY == 4 {
-		return true
-	}
-	if is, _ = listflags.GetBool("6x3"); is && gi.SX == 6 && gi.SY == 3 {
-		return true
-	}
-	if is, _ = listflags.GetBool("6x4"); is && gi.SX == 6 && gi.SY == 4 {
-		return true
-	}
-	if is, _ = listflags.GetBool("fewlines"); is && gi.LN < 20 {
-		return true
-	}
-	if is, _ = listflags.GetBool("multilines"); is && gi.LN >= 20 {
-		return true
-	}
-	if is, _ = listflags.GetBool("ways"); is && gi.WN > 0 {
-		return true
-	}
-	if is, _ = listflags.GetBool("jack"); is && gi.GP&game.GPjack > 0 {
-		return true
-	}
-	if is, _ = listflags.GetBool("fg"); is && gi.GP&(game.GPfghas+game.GPretrig) > 0 {
-		return true
-	}
-	if is, _ = listflags.GetBool("bonus"); is && gi.BN > 0 {
-		return true
-	}
-	return false
-}
-
-func isProv(prov string) bool {
-	var is, _ = listflags.GetBool(util.ToID(prov))
-	return is
-}
-
-func isYear(year int) bool {
-	if fOlder != 0 && year != 0 && year <= fOlder {
-		return true
-	}
-	if fNewer != 0 && year != 0 && year >= fNewer {
-		return true
-	}
-	for _, y := range fYear {
-		if year == y {
-			return true
+	for _, f := range finclist {
+		if f(gi) {
+			is = true
+			break
 		}
 	}
-	return false
+	if !is {
+		return false
+	}
+	for _, f := range fexclist {
+		if f(gi) {
+			return false
+		}
+	}
+	return true
 }
 
-func FormatGameInfo(gi *game.AlgInfo, ai int) string {
+func FormatGameInfo(gi *game.GameInfo) string {
 	var b strings.Builder
 	if gi.SN > 0 {
 		if gi.GP&game.GPcasc > 0 {
-			fmt.Fprintf(&b, "'%s' %s %dx%d cascade videoslot", gi.Aliases[ai].Name, gi.Aliases[ai].Prov, gi.SX, gi.SY)
+			fmt.Fprintf(&b, "'%s' %s %dx%d cascade videoslot", gi.Name, gi.Prov, gi.SX, gi.SY)
 		} else {
-			fmt.Fprintf(&b, "'%s' %s %dx%d videoslot", gi.Aliases[ai].Name, gi.Aliases[ai].Prov, gi.SX, gi.SY)
+			fmt.Fprintf(&b, "'%s' %s %dx%d videoslot", gi.Name, gi.Prov, gi.SX, gi.SY)
 		}
 	} else {
-		fmt.Fprintf(&b, "'%s' %s %d spots lottery", gi.Aliases[ai].Name, gi.Aliases[ai].Prov, gi.SX)
+		fmt.Fprintf(&b, "'%s' %s %d spots lottery", gi.Name, gi.Prov, gi.SX)
 	}
 	if fProp {
 		if gi.SN > 0 {
@@ -213,51 +260,61 @@ var listCmd = &cobra.Command{
 	Long:    listLong,
 	Example: fmt.Sprintf(listExmp, cfg.AppName),
 	Run: func(cmd *cobra.Command, args []string) {
-		var num, alg int
-		var prov = map[string]int{}
-		for _, gi := range game.InfoList {
-			var inc = incinfo(gi)
-			for _, ga := range gi.Aliases {
-				if inc || isProv(ga.Prov) || isYear(ga.Year) {
-					num++
-				}
+		var f filter
+		for _, key := range inclist {
+			if f = getfilter(key); f == nil {
+				fmt.Printf("filter with name '%s' does not recognized\n", key)
+				continue
 			}
+			finclist = append(finclist, f)
+		}
+		for _, key := range exclist {
+			if f = getfilter(key); f == nil {
+				fmt.Printf("filter with name '%s' does not recognized\n", key)
+				continue
+			}
+			fexclist = append(fexclist, f)
 		}
 
-		var gamelist = make([]string, num)
-		var i int
-		for _, gi := range game.InfoList {
-			var inc = incinfo(gi)
-			var has bool
-			for ai, ga := range gi.Aliases {
-				if inc || isProv(ga.Prov) || isYear(ga.Year) {
-					has = true
-					prov[ga.Prov]++
-					gamelist[i] = FormatGameInfo(gi, ai)
-					i++
-				}
+		var alg = map[*game.AlgDescr]int{}
+		var prov = map[string]int{}
+		var gamelist = make([]*game.GameInfo, 0, 256)
+		for _, gi := range game.InfoMap {
+			if passes(gi) {
+				alg[gi.AlgDescr]++
+				prov[gi.Prov]++
+				gamelist = append(gamelist, gi)
 			}
-			if has {
-				alg++
-			}
-		}
-		var provlist = make([]string, len(prov))
-		i = 0
-		for p, n := range prov {
-			provlist[i] = fmt.Sprintf("%s: %d games", p, n)
-			i++
 		}
 
 		if is, _ := listflags.GetBool("name"); is {
 			fmt.Println()
-			sort.Strings(gamelist)
-			for _, s := range gamelist {
-				fmt.Println(s)
+			sort.Slice(gamelist, func(i, j int) bool {
+				var gii, gij = gamelist[i], gamelist[j]
+				if fSort {
+					if gii.Prov == gij.Prov {
+						return gii.Name < gij.Name
+					}
+					return gii.Prov < gij.Prov
+				} else {
+					if gii.Name == gij.Name {
+						return gii.Prov < gij.Prov
+					}
+					return gii.Name < gij.Name
+				}
+			})
+			for _, gi := range gamelist {
+				fmt.Println(FormatGameInfo(gi))
 			}
 		}
 		if is, _ := listflags.GetBool("stat"); is {
+			var provlist = make([]string, 0, len(prov))
+			for p, n := range prov {
+				provlist = append(provlist, fmt.Sprintf("%s: %d games", p, n))
+			}
+
 			fmt.Println()
-			fmt.Printf("total: %d games, %d algorithms, %d providers\n", num, alg, len(prov))
+			fmt.Printf("total: %d games, %d algorithms, %d providers\n", len(gamelist), len(alg), len(prov))
 			sort.Strings(provlist)
 			for _, s := range provlist {
 				fmt.Println(s)
@@ -271,50 +328,46 @@ func init() {
 
 	listflags = listCmd.Flags()
 	listflags.BoolP("name", "n", true, "list of provided games names")
-	listflags.BoolP("stat", "s", true, "summary statistics of provided games")
+	listflags.BoolP("stat", "t", true, "summary statistics of provided games")
 
-	listflags.BoolVar(&fAll, "all", false, "include all provided games, overrides any other filters")
-	listflags.BoolVar(&fProp, "prop", false, "print properties for each game")
+	listflags.BoolVarP(&fSort, "sort", "s", false, "sort by provider, else sort by names")
+	listflags.BoolVarP(&fProp, "prop", "p", false, "print properties for each game")
 	listflags.Float64Var(&fMrtp, "mrtp", 0, "RTP (Return to Player) of reels closest to given master RTP")
 	listflags.Float64Var(&fDiff, "diff", 0, "difference between master RTP and closest to it real reels RTP")
-	listflags.BoolVar(&fRTP, "rtp", false, "RTP (Return to Player) percents list of available reels for each game")
+	listflags.BoolVarP(&fRTP, "rtp", "r", false, "RTP (Return to Player) percents list of available reels for each game")
 
-	listflags.Bool("agt", false, "include games of 'AGT' provider")
-	listflags.Bool("aristocrat", false, "include games of 'Aristocrat' provider")
-	listflags.Bool("betsoft", false, "include games of 'BetSoft' provider")
-	listflags.Bool("igt", false, "include games of 'IGT' provider")
-	listflags.Bool("megajack", false, "include games of 'Megajack' provider")
-	listflags.Bool("netent", false, "include games of 'NetExt' provider")
-	listflags.Bool("novomatic", false, "include games of 'Novomatic' provider")
-	listflags.Bool("playngo", false, "include games of 'Play'n GO' provider")
-	listflags.Bool("playtech", false, "include games of 'Playtech' provider")
-	listflags.Bool("slotopol", false, "include games of this 'Slotopol' provider")
+	listflags.StringSliceVarP(&inclist, "include", "i", []string{"all"}, "filter(s) to include games, filters can be as follows:\n"+
+		"slot - all slot games\n"+
+		"keno - all keno games\n"+
+		"agt - games of 'AGT' provider\n"+
+		"aristocrat - games of 'Aristocrat' provider\n"+
+		"betsoft - games of 'BetSoft' provider\n"+
+		"igt - games of 'IGT' provider\n"+
+		"megajack - games of 'Megajack' provider\n"+
+		"netent - games of 'NetExt' provider\n"+
+		"novomatic - games of 'Novomatic' provider\n"+
+		"playngo - games of 'Play'n GO' provider\n"+
+		"playtech - games of 'Playtech' provider\n"+
+		"slotopol - games of this 'Slotopol' provider\n"+
+		"3x, 4x, 5x, ... - games with 3, 4, 5, ... reels\n"+
+		"3x3, 4x4, 5x3, ... - games with 3x3, 4x4, 5x3, ... screen dimension\n"+
+		"lines - games with wins counted by lines\n"+
+		"ln=10 - games with 10 bet lines (or some other pointed)\n"+
+		"ln<10 - games with less than 10 bet lines (or some other pointed)\n"+
+		"ln>10 - games with greater than 10 bet lines (or some other pointed)\n"+
+		"ways - games with wins counted by multiways, i.e. with 243, 1024 ways\n"+
+		"wn=243 - games with 243 ways (or some other pointed)\n"+
+		"wn<243 - games with less than 243 ways (or some other pointed)\n"+
+		"wn>243 - games with greater than 243 ways (or some other pointed)\n"+
+		"casc - slots with cascade falls\n"+
+		"jack - games with jackpots\n"+
+		"fg - games with any free games\n"+
+		"bon - games with bonus games\n"+
+		"y=15, y=2015 - games released in 2015 year (or some other pointed year)\n"+
+		"y<15, y<2015 - games released before 2015 year (or some other pointed year)\n"+
+		"y>15, y>2015 - games released after 2015 year (or some other pointed year)\n"+
+		"all - all games")
+	listflags.StringSliceVarP(&exclist, "exclude", "e", nil, "filter(s) to exclude games, filters are same as for include option")
 
-	listflags.IntSliceVarP(&fYear, "year", "y", nil, "year(s) of issue")
-	listflags.IntVar(&fOlder, "older", 0, "year of issue is older than...")
-	listflags.IntVar(&fNewer, "newer", 0, "year of issue is newer than...")
-	listflags.Bool("slot", false, "include all slot games")
-	listflags.Bool("keno", false, "include all keno games")
-	listflags.Bool("3x", false, "include games with 3 reels")
-	listflags.Bool("4x", false, "include games with 4 reels")
-	listflags.Bool("5x", false, "include games with 5 reels")
-	listflags.Bool("6x", false, "include games with 5 reels")
-	listflags.Bool("3x3", false, "include games with 3x3 screen")
-	listflags.Bool("4x4", false, "include games with 4x4 screen")
-	listflags.Bool("5x3", false, "include games with 5x3 screen")
-	listflags.Bool("5x4", false, "include games with 5x4 screen")
-	listflags.Bool("6x3", false, "include games with 6x3 screen")
-	listflags.Bool("6x4", false, "include games with 6x4 screen")
-	listflags.Bool("fewlines", false, "include games with few lines, i.e. with less than 20")
-	listflags.Bool("multilines", false, "include games with few lines, i.e. with not less than 20")
-	listflags.Bool("ways", false, "include games with multiways, i.e. with 243, 1024 ways")
-	listflags.Bool("jack", false, "include games with jackpots")
-	listflags.Bool("fg", false, "include games with any free games")
-	listflags.Bool("bonus", false, "include games with bonus games")
-
-	listCmd.MarkFlagsOneRequired("all",
-		"agt", "aristocrat", "betsoft", "igt", "megajack", "netent", "novomatic", "playngo", "playtech", "slotopol",
-		"year", "older", "newer", "slot", "keno",
-		"3x", "4x", "5x", "6x", "3x3", "4x4", "5x3", "5x4", "6x3", "6x4",
-		"fewlines", "multilines", "ways", "jack", "fg", "bonus")
+	listflags.SortFlags = false
 }

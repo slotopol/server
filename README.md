@@ -107,14 +107,16 @@ slot_win_x64 web
 The [list of all](docs/list-all.md) provided games can be obtained by command:
 
 ```cmd
-slot_win_x64 list --all
+slot_win_x64 list
 ```
 
 To find out the list of available RTPs can be with command like this
 
 ```cmd
-slot_win_x64 list --megajack --rtp
+slot_win_x64 list -i megajack --rtp
 ```
+
+See `slot_win_x64 list -h` with full list of available command line parameters for list-command with filters.
 
 # How to test workflow
 

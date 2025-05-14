@@ -83,8 +83,8 @@ type (
 	Scanner func(context.Context, float64) float64
 )
 
-var InfoList = []*AlgInfo{}
-var InfoMap = map[string]*AlgInfo{}
+var AlgList = []*AlgInfo{}
+var InfoMap = map[string]*GameInfo{}
 var GameFactory = map[string]func() any{}
 var ScanFactory = map[string]Scanner{}
 
@@ -97,19 +97,22 @@ func MakeRtpList[T any](reelsmap map[float64]T) []float64 {
 	return list
 }
 
-func (gi *AlgInfo) SetupFactory(game func() any, scan Scanner) {
-	InfoList = append(InfoList, gi)
-	for _, ga := range gi.Aliases {
+func (ai *AlgInfo) SetupFactory(game func() any, scan Scanner) {
+	AlgList = append(AlgList, ai)
+	for _, ga := range ai.Aliases {
 		var aid = util.ToID(ga.Prov + "/" + ga.Name)
-		InfoMap[aid] = gi
+		InfoMap[aid] = &GameInfo{
+			GameAlias: ga,
+			AlgDescr:  &ai.AlgDescr,
+		}
 		GameFactory[aid] = game
 		ScanFactory[aid] = scan // can be nil
 	}
 }
 
-func (gi *AlgInfo) FindClosest(mrtp float64) (rtp float64) {
+func (ad *AlgDescr) FindClosest(mrtp float64) (rtp float64) {
 	rtp = -1000 // lets to get first reels from map in any case
-	for _, p := range gi.RTP {
+	for _, p := range ad.RTP {
 		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
 			rtp = p
 		}

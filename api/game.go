@@ -242,7 +242,7 @@ func ApiGameRtpGet(c *gin.Context) {
 		return
 	}
 
-	var gi *game.AlgInfo
+	var gi *game.GameInfo
 	if gi, ok = game.InfoMap[scene.Alias]; !ok {
 		Ret500(c, AEC_game_rtpget_noinfo, ErrNoAliase)
 		return
