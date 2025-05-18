@@ -2,14 +2,11 @@ package cmd
 
 import (
 	"fmt"
-	"regexp"
 	"sort"
-	"strconv"
 	"strings"
 
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/game"
-	"github.com/slotopol/server/util"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -38,127 +35,6 @@ var (
 	fMrtp, fDiff     float64
 	inclist, exclist []string
 )
-
-type filter func(*game.GameInfo) bool
-
-var FiltMap = map[string]filter{
-	"all":  func(gi *game.GameInfo) bool { return true },
-	"slot": func(gi *game.GameInfo) bool { return gi.GT == game.GTslot },
-
-	"keno":       func(gi *game.GameInfo) bool { return gi.GT == game.GTkeno },
-	"agt":        func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "agt" },
-	"aristocrat": func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "aristocrat" },
-	"betsoft":    func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "betsoft" },
-	"igt":        func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "igt" },
-	"megajack":   func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "megajack" },
-	"netent":     func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "netent" },
-	"novomatic":  func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "novomatic" },
-	"playngo":    func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "playngo" },
-	"playtech":   func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "playtech" },
-	"slotopol":   func(gi *game.GameInfo) bool { return util.ToID(gi.Prov) == "slotopol" },
-
-	"lines": func(gi *game.GameInfo) bool { return gi.LN > 0 },
-	"ways":  func(gi *game.GameInfo) bool { return gi.WN > 0 },
-	"casc":  func(gi *game.GameInfo) bool { return gi.GT == game.GTslot && gi.GP&game.GPcasc > 0 },
-	"jack":  func(gi *game.GameInfo) bool { return gi.GP&game.GPjack > 0 },
-	"fg":    func(gi *game.GameInfo) bool { return gi.GP&(game.GPfghas+game.GPretrig) > 0 },
-	"bon":   func(gi *game.GameInfo) bool { return gi.BN > 0 },
-}
-var (
-	finclist, fexclist []filter
-	reReel             = regexp.MustCompile(`^(\d)x$`)
-	reScrn             = regexp.MustCompile(`^(\d)x(\d)$`)
-	reYEQ              = regexp.MustCompile(`^y=(\d{2}|\d{4})$`)
-	reYLT              = regexp.MustCompile(`^y<(\d{2}|\d{4})$`)
-	reYGT              = regexp.MustCompile(`^y>(\d{2}|\d{4})$`)
-	reLNEQ             = regexp.MustCompile(`^ln=(\d{1,3})$`)
-	reLNLT             = regexp.MustCompile(`^ln<(\d{1,3})$`)
-	reLNGT             = regexp.MustCompile(`^ln>(\d{1,3})$`)
-	reWNEQ             = regexp.MustCompile(`^wn=(\d{1,4})$`)
-	reWNLT             = regexp.MustCompile(`^wn<(\d{1,4})$`)
-	reWNGT             = regexp.MustCompile(`^wn>(\d{1,4})$`)
-)
-
-func getfilter(key string) filter {
-	key = util.ToLower(key)
-	if f, ok := FiltMap[key]; ok {
-		return f
-	}
-	if s := reReel.FindStringSubmatch(key); len(s) > 0 {
-		var x, _ = strconv.Atoi(s[1])
-		return func(gi *game.GameInfo) bool { return gi.SX == x }
-	}
-	if s := reScrn.FindStringSubmatch(key); len(s) > 0 {
-		var x, _ = strconv.Atoi(s[1])
-		var y, _ = strconv.Atoi(s[2])
-		return func(gi *game.GameInfo) bool { return gi.SX == x && gi.SY == y }
-	}
-	if s := reYEQ.FindStringSubmatch(key); len(s) > 0 {
-		var year, _ = strconv.Atoi(s[1])
-		if year < 100 {
-			year += 2000
-		}
-		return func(gi *game.GameInfo) bool { return gi.Year == year }
-	}
-	if s := reYLT.FindStringSubmatch(key); len(s) > 0 {
-		var year, _ = strconv.Atoi(s[1])
-		if year < 100 {
-			year += 2000
-		}
-		return func(gi *game.GameInfo) bool { return gi.Year < year }
-	}
-	if s := reYGT.FindStringSubmatch(key); len(s) > 0 {
-		var year, _ = strconv.Atoi(s[1])
-		if year < 100 {
-			year += 2000
-		}
-		return func(gi *game.GameInfo) bool { return gi.Year > year }
-	}
-	if s := reLNEQ.FindStringSubmatch(key); len(s) > 0 {
-		var ln, _ = strconv.Atoi(s[1])
-		return func(gi *game.GameInfo) bool { return gi.LN == ln }
-	}
-	if s := reLNLT.FindStringSubmatch(key); len(s) > 0 {
-		var ln, _ = strconv.Atoi(s[1])
-		return func(gi *game.GameInfo) bool { return gi.LN > 0 && gi.LN < ln }
-	}
-	if s := reLNGT.FindStringSubmatch(key); len(s) > 0 {
-		var ln, _ = strconv.Atoi(s[1])
-		return func(gi *game.GameInfo) bool { return gi.LN > ln }
-	}
-	if s := reWNEQ.FindStringSubmatch(key); len(s) > 0 {
-		var wn, _ = strconv.Atoi(s[1])
-		return func(gi *game.GameInfo) bool { return gi.WN == wn }
-	}
-	if s := reWNLT.FindStringSubmatch(key); len(s) > 0 {
-		var wn, _ = strconv.Atoi(s[1])
-		return func(gi *game.GameInfo) bool { return gi.WN > 0 && gi.WN < wn }
-	}
-	if s := reWNGT.FindStringSubmatch(key); len(s) > 0 {
-		var wn, _ = strconv.Atoi(s[1])
-		return func(gi *game.GameInfo) bool { return gi.WN > wn }
-	}
-	return nil
-}
-
-func passes(gi *game.GameInfo) bool {
-	var is bool
-	for _, f := range finclist {
-		if f(gi) {
-			is = true
-			break
-		}
-	}
-	if !is {
-		return false
-	}
-	for _, f := range fexclist {
-		if f(gi) {
-			return false
-		}
-	}
-	return true
-}
 
 func FormatGameInfo(gi *game.GameInfo) string {
 	var b strings.Builder
@@ -260,16 +136,17 @@ var listCmd = &cobra.Command{
 	Long:    listLong,
 	Example: fmt.Sprintf(listExmp, cfg.AppName),
 	Run: func(cmd *cobra.Command, args []string) {
-		var f filter
+		var finclist, fexclist []game.Filter
+		var f game.Filter
 		for _, key := range inclist {
-			if f = getfilter(key); f == nil {
+			if f = game.GetFilter(key); f == nil {
 				fmt.Printf("filter with name '%s' does not recognized\n", key)
 				continue
 			}
 			finclist = append(finclist, f)
 		}
 		for _, key := range exclist {
-			if f = getfilter(key); f == nil {
+			if f = game.GetFilter(key); f == nil {
 				fmt.Printf("filter with name '%s' does not recognized\n", key)
 				continue
 			}
@@ -280,7 +157,7 @@ var listCmd = &cobra.Command{
 		var prov = map[string]int{}
 		var gamelist = make([]*game.GameInfo, 0, 256)
 		for _, gi := range game.InfoMap {
-			if passes(gi) {
+			if game.Passes(gi, finclist, fexclist) {
 				alg[gi.AlgDescr]++
 				prov[gi.Prov]++
 				gamelist = append(gamelist, gi)
@@ -352,20 +229,20 @@ func init() {
 		"3x, 4x, 5x, ... - games with 3, 4, 5, ... reels\n"+
 		"3x3, 4x4, 5x3, ... - games with 3x3, 4x4, 5x3, ... screen dimension\n"+
 		"lines - games with wins counted by lines\n"+
-		"ln=10 - games with 10 bet lines (or some other pointed)\n"+
-		"ln<10 - games with less than 10 bet lines (or some other pointed)\n"+
-		"ln>10 - games with greater than 10 bet lines (or some other pointed)\n"+
+		"ln=10, lneq10 - games with 10 bet lines (or some other pointed)\n"+
+		"ln<10, lnlt10 - games with less than 10 bet lines (or some other pointed)\n"+
+		"ln>10, lngt10 - games with greater than 10 bet lines (or some other pointed)\n"+
 		"ways - games with wins counted by multiways, i.e. with 243, 1024 ways\n"+
-		"wn=243 - games with 243 ways (or some other pointed)\n"+
-		"wn<243 - games with less than 243 ways (or some other pointed)\n"+
-		"wn>243 - games with greater than 243 ways (or some other pointed)\n"+
+		"wn=243, wneq243 - games with 243 ways (or some other pointed)\n"+
+		"wn<243, wnlt243 - games with less than 243 ways (or some other pointed)\n"+
+		"wn>243, wngt243 - games with greater than 243 ways (or some other pointed)\n"+
 		"casc - slots with cascade falls\n"+
 		"jack - games with jackpots\n"+
 		"fg - games with any free games\n"+
 		"bon - games with bonus games\n"+
-		"y=15, y=2015 - games released in 2015 year (or some other pointed year)\n"+
-		"y<15, y<2015 - games released before 2015 year (or some other pointed year)\n"+
-		"y>15, y>2015 - games released after 2015 year (or some other pointed year)\n"+
+		"y=15, y=2015, yeq15 - games released in 2015 year (or some other pointed year)\n"+
+		"y<15, y<2015, ylt15 - games released before 2015 year (or some other pointed year)\n"+
+		"y>15, y>2015, ygt15 - games released after 2015 year (or some other pointed year)\n"+
 		"all - all games")
 	listflags.StringSliceVarP(&exclist, "exclude", "e", nil, "filter(s) to exclude games, filters are same as for include option")
 

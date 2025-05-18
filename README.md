@@ -147,14 +147,22 @@ If any response have HTTP status >= 400, body in this case contains error object
 First of all you can get a list of games supported by server. This call can be without authorization.
 
 ```sh
-curl -X GET localhost:8080/gamelist
+curl -X GET localhost:8080/game/algs
 ```
 
 Response has array with available algorithms descriptions. Each structure has a list of games aliases, that shares one algorithm. Field `rtp` has the list of reels with predefined RTP. There is example of structure with info:
 
 ```json
-{"aliases":[{"prov":"NetEnt","name":"Trolls"},{"prov":"NetEnt","name":"Excalibur"},{"prov":"NetEnt","name":"Pandora's Box"},{"prov":"NetEnt","name":"Wild Witches"}],"gp":865,"sx":5,"sy":3,"sn":14,"ln":20,"rtp":[87.788791,89.230191,91.925079,93.061471,93.903358,95.183523,96.6485,98.193276,101.929305,110.298257]}
+,{"aliases":[{"prov":"NetEnt","name":"Trolls","year":2009},{"prov":"NetEnt","name":"Excalibur","year":2013},{"prov":"NetEnt","name":"Pandora's Box","year":2009},{"prov":"NetEnt","name":"Wild Witches","year":2010}],"gt":1,"gp":4628497,"sx":5,"sy":3,"sn":14,"ln":20,"rtp":[87.788791,89.230191,91.925079,93.061471,93.903358,95.183523,96.6485,98.193276,101.929305,110.298257]},
 ```
+
+To get filtered list of games can be used call like
+
+```sh
+curl -X GET localhost:8080/game/list?inc=playngo+megajack
+```
+
+Where `inc` contains space separated list of filters like in `list` command line parameters, see `slot_win_x64 list -h` for details.
 
 `/ping`, `/servinfo` and `/memusage`, `/signis`, `/sendcode`, `/activate`, `/signup` and `/signin` endpoints also does not expects authorization.
 

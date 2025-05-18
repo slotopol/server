@@ -6,7 +6,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	cfg "github.com/slotopol/server/config"
-	"github.com/slotopol/server/game"
 )
 
 // save server start time
@@ -53,9 +52,4 @@ func ApiMemUsage(c *gin.Context) {
 		"gccpufraction": mem.GCCPUFraction,
 	}
 	RetOk(c, ret)
-}
-
-// Returns full list of all available algorithms.
-func ApiGameList(c *gin.Context) {
-	RetOk(c, game.AlgList)
 }

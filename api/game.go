@@ -2,6 +2,9 @@ package api
 
 import (
 	"encoding/xml"
+	"fmt"
+	"sort"
+	"strings"
 	"sync/atomic"
 
 	"github.com/gin-gonic/gin"
@@ -12,6 +15,93 @@ import (
 	"github.com/slotopol/server/game/slot"
 	"github.com/slotopol/server/util"
 )
+
+// Returns full list of all available algorithms.
+func ApiGameAlgs(c *gin.Context) {
+	RetOk(c, game.AlgList)
+}
+
+// List of available games selected by filters.
+func ApiGameList(c *gin.Context) {
+	var err error
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		Include string   `json:"include" yaml:"include" xml:"include" form:"inc"`
+		Exclude string   `json:"exclude" yaml:"exclude" xml:"exclude" form:"exc"`
+		Sort    bool     `json:"sort" yaml:"sort" xml:"sort" form:"sort"`
+	}
+	var ret struct {
+		XMLName xml.Name         `json:"-" yaml:"-" xml:"ret"`
+		List    []*game.GameInfo `json:"list" yaml:"list" xml:"list>gi"`
+		AlgNum  int              `json:"algnum" yaml:"algnum" xml:"algnum"`
+		PrvNum  int              `json:"prvnum" yaml:"prvnum" xml:"prvnum"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, AEC_game_list_nobind, err)
+		return
+	}
+	if len(arg.Include) == 0 {
+		arg.Include = "all"
+	}
+	var include = strings.Split(arg.Include, " ")
+	var exclude = strings.Split(arg.Exclude, " ")
+
+	var finclist, fexclist []game.Filter
+	var f game.Filter
+	for _, key := range include {
+		if key == "" {
+			continue
+		}
+		if f = game.GetFilter(key); f == nil {
+			Ret400(c, AEC_game_list_inc, fmt.Errorf("filter with name '%s' does not recognized", key))
+			return
+		}
+		finclist = append(finclist, f)
+	}
+	for _, key := range exclude {
+		if key == "" {
+			continue
+		}
+		if f = game.GetFilter(key); f == nil {
+			Ret400(c, AEC_game_list_exc, fmt.Errorf("filter with name '%s' does not recognized", key))
+			return
+		}
+		fexclist = append(fexclist, f)
+	}
+
+	var alg = map[*game.AlgDescr]int{}
+	var prov = map[string]int{}
+	var gamelist = make([]*game.GameInfo, 0, 256)
+	for _, gi := range game.InfoMap {
+		if game.Passes(gi, finclist, fexclist) {
+			alg[gi.AlgDescr]++
+			prov[gi.Prov]++
+			gamelist = append(gamelist, gi)
+		}
+	}
+
+	sort.Slice(gamelist, func(i, j int) bool {
+		var gii, gij = gamelist[i], gamelist[j]
+		if arg.Sort {
+			if gii.Prov == gij.Prov {
+				return gii.Name < gij.Name
+			}
+			return gii.Prov < gij.Prov
+		} else {
+			if gii.Name == gij.Name {
+				return gii.Prov < gij.Prov
+			}
+			return gii.Name < gij.Name
+		}
+	})
+
+	ret.List = gamelist
+	ret.AlgNum = len(alg)
+	ret.PrvNum = len(prov)
+
+	RetOk(c, ret)
+}
 
 var (
 	SpinBuf util.SqlBuf[Spinlog]

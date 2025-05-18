@@ -84,6 +84,12 @@ const (
 	AEC_game_new_noalias
 	AEC_game_new_sql
 
+	// GET /game/list
+
+	AEC_game_list_nobind
+	AEC_game_list_inc
+	AEC_game_list_exc
+
 	// POST /game/join
 
 	AEC_game_join_nobind

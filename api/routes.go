@@ -133,7 +133,6 @@ func SetupRouter(r *gin.Engine) {
 	r.Any("/ping", ApiPing)
 	r.GET("/servinfo", ApiServInfo)
 	r.GET("/memusage", ApiMemUsage)
-	r.GET("/gamelist", ApiGameList)
 
 	// authorization
 	r.Any("/signis", ApiSignis)
@@ -146,6 +145,8 @@ func SetupRouter(r *gin.Engine) {
 	var ra = r.Group("/", Auth(true))
 
 	// common game group
+	r.GET("/game/algs", ApiGameAlgs)
+	r.GET("/game/list", ApiGameList)
 	var rg = ra.Group("/game")
 	rg.POST("/new", ApiGameNew)
 	rg.POST("/join", ApiGameJoin)
