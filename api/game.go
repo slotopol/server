@@ -76,7 +76,7 @@ func ApiGameList(c *gin.Context) {
 	for _, gi := range game.InfoMap {
 		if game.Passes(gi, finclist, fexclist) {
 			alg[gi.AlgDescr]++
-			prov[gi.Prov]++
+			prov[util.ToID(gi.Prov)]++
 			gamelist = append(gamelist, gi)
 		}
 	}
@@ -182,7 +182,7 @@ func ApiGameNew(c *gin.Context) {
 	}
 
 	// make game screen object
-	InitScreen(scene.Game)
+	InitScreen(anygame)
 
 	// insert new story entry
 	if Cfg.ClubInsertBuffer > 1 {

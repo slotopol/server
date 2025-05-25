@@ -7,6 +7,7 @@ import (
 
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
@@ -159,7 +160,7 @@ var listCmd = &cobra.Command{
 		for _, gi := range game.InfoMap {
 			if game.Passes(gi, finclist, fexclist) {
 				alg[gi.AlgDescr]++
-				prov[gi.Prov]++
+				prov[util.ToID(gi.Prov)]++
 				gamelist = append(gamelist, gi)
 			}
 		}

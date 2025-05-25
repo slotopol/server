@@ -198,6 +198,7 @@ func TestPlay(t *testing.T) {
 				arg = gin.H{
 					"gid":  gid,
 					"mult": 2,
+					"half": rand.Float64() < 0.25,
 				}
 				ret = post(t, r, "/slot/doubleup", usrtoken, arg)
 				var gain = ret["gain"].(float64)

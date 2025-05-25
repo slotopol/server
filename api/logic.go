@@ -121,12 +121,13 @@ var SpinCounter uint64 // last spin log ID
 type Multlog struct {
 	ID     uint64    `xorm:"pk" json:"id" yaml:"id" xml:"id,attr"`
 	CTime  time.Time `xorm:"created 'ctime' notnull default CURRENT_TIMESTAMP" json:"ctime" yaml:"ctime" xml:"ctime"`
-	GID    uint64    `xorm:"notnull" json:"gid" yaml:"gid" xml:"gid,attr"`    // game ID
-	MRTP   float64   `xorm:"notnull" json:"mrtp" yaml:"mrtp" xml:"mrtp,attr"` // master RTP
-	Mult   int       `xorm:"notnull" json:"mult" yaml:"mult" xml:"mult"`      // multiplier
-	Risk   float64   `xorm:"notnull" json:"risk" yaml:"risk" xml:"risk"`
-	Gain   float64   `xorm:"notnull" json:"gain" yaml:"gain" xml:"gain"`
-	Wallet float64   `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"`
+	GID    uint64    `xorm:"notnull" json:"gid" yaml:"gid" xml:"gid,attr"`     // game ID
+	MRTP   float64   `xorm:"notnull" json:"mrtp" yaml:"mrtp" xml:"mrtp,attr"`  // master RTP
+	Mult   float64   `xorm:"notnull" json:"mult" yaml:"mult" xml:"mult"`       // multiplier
+	Risk   float64   `xorm:"notnull" json:"risk" yaml:"risk" xml:"risk"`       // the amount that is being gambled out
+	Win    bool      `xorm:"notnull" json:"win" yaml:"win" xml:"win"`          // double up is win
+	Gain   float64   `xorm:"notnull" json:"gain" yaml:"gain" xml:"gain"`       // total gain after double up
+	Wallet float64   `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"` // wallet after double up
 }
 
 var MultCounter uint64 // last multiplier log ID
@@ -330,17 +331,18 @@ func GetScene(gid uint64) (scene *Scene, err error) {
 	scene = &tmp
 	Scenes.Set(gid, scene)
 
-	if Cfg.UseSpinLog {
-		var rec Spinlog
-		if ok, _ = cfg.XormSpinlog.Where("gid = ?", gid).Desc("ctime").Get(&rec); !ok {
-			InitScreen(scene.Game)
-			return
-		}
-		scene.SID = rec.SID
-		err = json.Unmarshal(util.S2B(rec.Game), scene.Game)
-	} else {
+	if !Cfg.UseSpinLog {
 		InitScreen(scene.Game)
+		return
 	}
+
+	var rec Spinlog
+	if ok, _ = cfg.XormSpinlog.Where("gid = ?", gid).Desc("ctime").Get(&rec); !ok {
+		InitScreen(scene.Game)
+		return
+	}
+	scene.SID = rec.SID
+	err = json.Unmarshal(util.S2B(rec.Game), scene.Game)
 	return
 }
 

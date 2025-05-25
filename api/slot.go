@@ -392,11 +392,14 @@ func ApiSlotDoubleup(c *gin.Context) {
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid" binding:"required"`
-		Mult    int      `json:"mult" yaml:"mult" xml:"mult" form:"mult" binding:"gte=2,lte=10"`
+		Mult    float64  `json:"mult" yaml:"mult" xml:"mult" form:"mult" binding:"gt=1,lte=10"`
+		Half    bool     `json:"half" yaml:"half" xml:"half" form:"half"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
 		ID      uint64   `json:"id" yaml:"id" xml:"id,attr"`
+		Win     bool     `json:"win" yaml:"win" xml:"win"`
+		Risk    float64  `json:"risk" yaml:"risk" xml:"risk"`
 		Gain    float64  `json:"gain" yaml:"gain" xml:"gain"`
 		Wallet  float64  `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
@@ -441,24 +444,31 @@ func ApiSlotDoubleup(c *gin.Context) {
 		return
 	}
 
-	var risk = game.GetGain()
+	var oldgain = game.GetGain()
+	var risk = oldgain
 	if risk == 0 {
 		Ret403(c, AEC_slot_doubleup_nogain, ErrNoGain)
 		return
+	}
+	if arg.Half {
+		risk /= 2
 	}
 
 	var bank = club.Bank()
 	var mrtp = GetRTP(user, club)
 
-	var multgain float64 // new multiplied gain
-	if bank >= risk*float64(arg.Mult) {
+	var win bool       // true on double up is win
+	var upgain float64 // gain by double up
+	if bank >= risk*arg.Mult {
 		var r = rand.Float64()
-		var side = 1 / float64(arg.Mult) * mrtp / 100
+		var side = 1 / arg.Mult * mrtp / 100
 		if r < side {
-			multgain = risk * float64(arg.Mult)
+			win = true
+			upgain = risk * arg.Mult
 		}
 	}
-	var debit = risk - multgain
+	var debit = risk - upgain
+	var newgain = oldgain - risk + upgain
 
 	// write gain and total bet as transaction
 	if Cfg.ClubUpdateBuffer > 1 {
@@ -472,7 +482,7 @@ func ApiSlotDoubleup(c *gin.Context) {
 	club.AddBank(debit)
 	props.Wallet -= debit
 
-	game.SetGain(multgain)
+	game.SetGain(newgain)
 
 	// write doubleup result to log and get spin ID
 	var id = atomic.AddUint64(&MultCounter, 1)
@@ -484,7 +494,8 @@ func ApiSlotDoubleup(c *gin.Context) {
 				MRTP:   mrtp,
 				Mult:   arg.Mult,
 				Risk:   risk,
-				Gain:   multgain,
+				Win:    win,
+				Gain:   newgain,
 				Wallet: props.Wallet,
 			}
 			if err = MultBuf.Put(cfg.XormSpinlog, rec); err != nil {
@@ -495,7 +506,9 @@ func ApiSlotDoubleup(c *gin.Context) {
 
 	// prepare result
 	ret.ID = id
-	ret.Gain = multgain
+	ret.Win = win
+	ret.Risk = risk
+	ret.Gain = newgain
 	ret.Wallet = props.Wallet
 
 	RetOk(c, ret)
