@@ -24,5 +24,5 @@ var Info = game.AlgInfo{
 }
 
 func init() {
-	Info.SetupFactory(func() any { return NewGame() }, CalcStat)
+	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
 }

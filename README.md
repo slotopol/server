@@ -144,7 +144,15 @@ If any response have HTTP status >= 400, body in this case contains error object
 
 ## Without authorization
 
-First of all you can get a list of games supported by server. This call can be without authorization.
+First of all you can test replies existence and service is running:
+
+```sh
+curl -i localhost:8080/ping
+```
+
+Any riplies have `Server` header with content like `slotopol/v0.10.0 (windows; amd64)`. By prefix `slotopol/` you can detect that service is our.
+
+Then you can get a list of games supported by server. This call can be without authorization.
 
 ```sh
 curl -X GET localhost:8080/game/algs
@@ -164,7 +172,7 @@ curl -X GET localhost:8080/game/list?inc=playngo+megajack
 
 Where `inc` contains space separated list of filters like in `list` command line parameters, see `slot_win_x64 list -h` for details.
 
-`/ping`, `/servinfo` and `/memusage`, `/signis`, `/sendcode`, `/activate`, `/signup` and `/signin` endpoints also does not expects authorization.
+`/servinfo` and `/memusage`, `/signis`, `/sendcode`, `/activate`, `/signup` and `/signin` endpoints also does not expects authorization.
 
 ## Authorization
 

@@ -62,11 +62,10 @@ type User struct {
 // Each instance of game have own GID. Alias - is game type identifier.
 type Story struct {
 	GID   uint64    `xorm:"pk" json:"gid" yaml:"gid" xml:"gid,attr"`                                                 // game ID
-	CTime time.Time `xorm:"created 'ctime' notnull default CURRENT_TIMESTAMP" json:"ctime" yaml:"ctime" xml:"ctime"` // creation time
-	UTime time.Time `xorm:"updated 'utime' notnull default CURRENT_TIMESTAMP" json:"utime" yaml:"utime" xml:"utime"` // update time
-	Alias string    `xorm:"notnull" json:"alias" yaml:"alias" xml:"alias"`                                           // game type identifier
 	CID   uint64    `xorm:"notnull" json:"cid" yaml:"cid" xml:"cid,attr"`                                            // club ID
 	UID   uint64    `xorm:"notnull" json:"uid" yaml:"uid" xml:"uid,attr"`                                            // user ID
+	Alias string    `xorm:"notnull" json:"alias" yaml:"alias" xml:"alias"`                                           // game type identifier
+	CTime time.Time `xorm:"created 'ctime' notnull default CURRENT_TIMESTAMP" json:"ctime" yaml:"ctime" xml:"ctime"` // creation time
 }
 
 var StoryCounter uint64 // last GID
@@ -74,8 +73,8 @@ var StoryCounter uint64 // last GID
 // Scene represents game with all the connected environment.
 type Scene struct {
 	Story `yaml:",inline"`
-	SID   uint64 `json:"sid" yaml:"sid" xml:"sid,attr"` // last spin ID
-	Game  any    `json:"game" yaml:"game" xml:"game"`
+	SID   uint64      `json:"sid" yaml:"sid" xml:"sid,attr"` // last spin ID
+	Game  game.Gamble `json:"game" yaml:"game" xml:"game"`
 }
 
 // Access level.
@@ -107,8 +106,8 @@ var PropMaster []Props
 
 type Spinlog struct {
 	SID    uint64    `xorm:"pk" json:"sid" yaml:"sid" xml:"sid,attr"`                                                 // spin ID
-	CTime  time.Time `xorm:"created 'ctime' notnull default CURRENT_TIMESTAMP" json:"ctime" yaml:"ctime" xml:"ctime"` // creation time
 	GID    uint64    `xorm:"notnull" json:"gid" yaml:"gid" xml:"gid,attr"`                                            // game ID
+	CTime  time.Time `xorm:"created 'ctime' notnull default CURRENT_TIMESTAMP" json:"ctime" yaml:"ctime" xml:"ctime"` // creation time
 	MRTP   float64   `xorm:"notnull" json:"mrtp" yaml:"mrtp" xml:"mrtp,attr"`                                         // master RTP
 	Game   string    `xorm:"notnull" json:"game" yaml:"game" xml:"game"`                                              // game data
 	Wins   string    `xorm:"text" json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`                   // list of wins marshaled to JSON
@@ -120,8 +119,8 @@ var SpinCounter uint64 // last spin log ID
 
 type Multlog struct {
 	ID     uint64    `xorm:"pk" json:"id" yaml:"id" xml:"id,attr"`
+	GID    uint64    `xorm:"notnull" json:"gid" yaml:"gid" xml:"gid,attr"` // game ID
 	CTime  time.Time `xorm:"created 'ctime' notnull default CURRENT_TIMESTAMP" json:"ctime" yaml:"ctime" xml:"ctime"`
-	GID    uint64    `xorm:"notnull" json:"gid" yaml:"gid" xml:"gid,attr"`     // game ID
 	MRTP   float64   `xorm:"notnull" json:"mrtp" yaml:"mrtp" xml:"mrtp,attr"`  // master RTP
 	Mult   float64   `xorm:"notnull" json:"mult" yaml:"mult" xml:"mult"`       // multiplier
 	Risk   float64   `xorm:"notnull" json:"risk" yaml:"risk" xml:"risk"`       // the amount that is being gambled out
@@ -134,10 +133,10 @@ var MultCounter uint64 // last multiplier log ID
 
 type Walletlog struct {
 	ID     uint64    `xorm:"pk autoincr" json:"id" yaml:"id" xml:"id,attr"`
-	CTime  time.Time `xorm:"created 'ctime' notnull default CURRENT_TIMESTAMP" json:"ctime" yaml:"ctime" xml:"ctime"` // creation time
 	CID    uint64    `xorm:"notnull index(bid)" json:"cid" yaml:"cid" xml:"cid,attr"`                                 // club ID
 	UID    uint64    `xorm:"notnull index(bid)" json:"uid" yaml:"uid" xml:"uid,attr"`                                 // user ID
 	AID    uint64    `xorm:"notnull" json:"aid" yaml:"aid" xml:"aid"`                                                 // admin ID
+	CTime  time.Time `xorm:"created 'ctime' notnull default CURRENT_TIMESTAMP" json:"ctime" yaml:"ctime" xml:"ctime"` // creation time
 	Wallet float64   `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"`                                        // new value in coins
 	Sum    float64   `xorm:"notnull" json:"sum" yaml:"sum" xml:"sum"`
 }
@@ -321,7 +320,7 @@ func GetScene(gid uint64) (scene *Scene, err error) {
 		err = ErrNotOpened
 		return
 	}
-	var maker func() any
+	var maker func() game.Gamble
 	if maker, ok = game.GameFactory[tmp.Alias]; !ok {
 		err = ErrNoAliase
 		return

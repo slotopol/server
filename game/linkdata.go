@@ -8,6 +8,12 @@ import (
 	"github.com/slotopol/server/util"
 )
 
+type Gamble interface {
+	Spin(float64)         // fill the screen with random hits on reels closest to given RTP, constant function
+	GetBet() float64      // returns current bet, constant function
+	SetBet(float64) error // set bet to given value
+}
+
 type GT uint // Game type
 
 const (
@@ -85,7 +91,7 @@ type (
 
 var AlgList = []*AlgInfo{}
 var InfoMap = map[string]*GameInfo{}
-var GameFactory = map[string]func() any{}
+var GameFactory = map[string]func() Gamble{}
 var ScanFactory = map[string]Scanner{}
 
 func MakeRtpList[T any](reelsmap map[float64]T) []float64 {
@@ -97,7 +103,7 @@ func MakeRtpList[T any](reelsmap map[float64]T) []float64 {
 	return list
 }
 
-func (ai *AlgInfo) SetupFactory(game func() any, scan Scanner) {
+func (ai *AlgInfo) SetupFactory(game func() Gamble, scan Scanner) {
 	AlgList = append(AlgList, ai)
 	for _, ga := range ai.Aliases {
 		var aid = util.ToID(ga.Prov + "/" + ga.Name)

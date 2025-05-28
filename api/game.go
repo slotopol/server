@@ -11,8 +11,6 @@ import (
 
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/game"
-	"github.com/slotopol/server/game/keno"
-	"github.com/slotopol/server/game/slot"
 	"github.com/slotopol/server/util"
 )
 
@@ -111,13 +109,8 @@ var (
 )
 
 // Make game screen object.
-func InitScreen(game any) {
-	switch game := game.(type) {
-	case slot.SlotGame:
-		game.Spin(cfg.DefMRTP)
-	case keno.KenoGame:
-		game.Spin(cfg.DefMRTP)
-	}
+func InitScreen(g game.Gamble) {
+	g.Spin(cfg.DefMRTP)
 }
 
 // Creates new instance of game.
@@ -174,9 +167,9 @@ func ApiGameNew(c *gin.Context) {
 	scene = &Scene{
 		Story: Story{
 			GID:   gid,
-			Alias: alias,
 			CID:   arg.CID,
 			UID:   arg.UID,
+			Alias: alias,
 		},
 		Game: anygame,
 	}

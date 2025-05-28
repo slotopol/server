@@ -17,20 +17,15 @@ const (
 func SafeTransaction(engine *xorm.Engine, f func(*Session) error) (err error) {
 	var session = engine.NewSession()
 	defer session.Close()
-	defer func() {
-		if err != nil {
-			session.Rollback()
-		} else {
-			err = session.Commit()
-		}
-	}()
 
 	if err = session.Begin(); err != nil {
 		return
 	}
 	if err = f(session); err != nil {
+		session.Rollback()
 		return
 	}
+	err = session.Commit()
 	return
 }
 
