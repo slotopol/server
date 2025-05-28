@@ -16,6 +16,7 @@ var FiltMap = map[string]Filter{
 	"keno":       func(gi *GameInfo) bool { return gi.GT == GTkeno },
 	"agt":        func(gi *GameInfo) bool { return util.ToID(gi.Prov) == "agt" },
 	"aristocrat": func(gi *GameInfo) bool { return util.ToID(gi.Prov) == "aristocrat" },
+	"ct":         func(gi *GameInfo) bool { return util.ToID(gi.Prov) == "ct" || util.ToID(gi.Prov) == "ctinteractive" },
 	"betsoft":    func(gi *GameInfo) bool { return util.ToID(gi.Prov) == "betsoft" },
 	"igt":        func(gi *GameInfo) bool { return util.ToID(gi.Prov) == "igt" },
 	"megajack":   func(gi *GameInfo) bool { return util.ToID(gi.Prov) == "megajack" },

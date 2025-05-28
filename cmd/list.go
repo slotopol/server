@@ -220,6 +220,7 @@ func init() {
 		"agt - games of 'AGT' provider\n"+
 		"aristocrat - games of 'Aristocrat' provider\n"+
 		"betsoft - games of 'BetSoft' provider\n"+
+		"ct - games of 'CT Interactive' provider\n"+
 		"igt - games of 'IGT' provider\n"+
 		"megajack - games of 'Megajack' provider\n"+
 		"netent - games of 'NetExt' provider\n"+

@@ -16,21 +16,23 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 195 games, 103 algorithms, 10 providers
-AGT: 60 games
-Aristocrat: 6 games
-BetSoft: 3 games
-IGT: 5 games
-Megajack: 4 games
-NetEnt: 22 games
-Novomatic: 83 games
-Play'n GO: 3 games
-Playtech: 7 games
-Slotopol: 2 games
+total: 196 games, 104 algorithms, 11 providers
+agt: 60 games
+aristocrat: 6 games
+betsoft: 3 games
+ctinteractive: 1 games
+igt: 5 games
+megajack: 4 games
+netent: 22 games
+novomatic: 83 games
+playngo: 3 games
+playtech: 7 games
+slotopol: 2 games
 ```
 
 *Last added games*:
 
+* '[Dancing Bananas](https://www.slotsmate.com/software/ct-interactive/dancing-bananas)' CT Interactive 5x3 videoslot
 * '[Flowers](https://games.netent.com/video-slots/flowers/)' NetEnt 5x3 videoslot
 * '[Cash Farm](https://casino.ru/cash-farm-novomatic/)' Novomatic 5x3 cascade videoslot with bonus game
 * '[Fruit Sensation](https://casino.ru/fruit-sensation-novomatic/)' Novomatic 5x3 videoslot
@@ -48,13 +50,6 @@ Slotopol: 2 games
 * '[Cleopatra](https://www.slotsmate.com/software/igt/igt-cleopatra)' IGT 5x3 videoslot
 * '[Fairy Queen](https://www.slotsmate.com/software/novomatic/fairy-queen)' Novomatic 5x3 videoslot with win on every free spin
 * '[Angry Birds](https://www.slotsmate.com/software/novomatic/angry-birds)' Novomatic 5x3 videoslot
-* '[King's Jester](https://www.slotsmate.com/software/novomatic/kings-jester)' Novomatic 5x3 videoslot
-* '[Royal Dynasty](https://www.slotsmate.com/software/novomatic/royal-dynasty)' Novomatic 5x3 videoslot
-* '[Secret Elixir](https://www.slotsmate.com/software/novomatic/secret-elixir)' Novomatic 5x3 videoslot
-* '[Lovely Mermaid](https://www.slotsmate.com/software/novomatic/lovely-mermaid)' Novomatic 5x3 videoslot with jackpot
-* '[Dynasty of Ra](https://www.slotsmate.com/software/novomatic/dynasty-of-ra)' Novomatic 5x3 videoslot
-* '[Fruits'n Royals](https://www.slotsmate.com/software/novomatic/fruits-n-royals)' Novomatic 5x3 videoslot
-* '[Ultra Sevens](https://www.slotsmate.com/software/novomatic/ultra-sevens)' Novomatic 5x4 videoslot with 3 jackpots
 
 *Top-10 of games with most interesting algorithms released on server*:
 

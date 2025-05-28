@@ -62,7 +62,7 @@ require (
 // Advice: add to file `.vscode/settings.json` followed lines:
 // {
 //     "gopls": {
-//         "buildFlags": ["-tags", "full megajack novomatic netent betsoft playtech playngo aristocrat agt igt keno"],
+//         "buildFlags": ["-tags", "full keno agt aristocrat betsoft ct igt megajack netent novomatic playngo playtech"],
 //     }
 // }
 // Advice: upgrade this file by command line

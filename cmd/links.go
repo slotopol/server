@@ -8,11 +8,75 @@ import (
 	_ "github.com/slotopol/server/game/keno/kenofast"
 	_ "github.com/slotopol/server/game/keno/kenoluxury"
 
+	// AGT
+	_ "github.com/slotopol/server/game/slot/agt/aislot"
+	_ "github.com/slotopol/server/game/slot/agt/aladdin"
+	_ "github.com/slotopol/server/game/slot/agt/cherryhot"
+	_ "github.com/slotopol/server/game/slot/agt/doubleice"
+	_ "github.com/slotopol/server/game/slot/agt/egypt"
+	_ "github.com/slotopol/server/game/slot/agt/extraspin"
+	_ "github.com/slotopol/server/game/slot/agt/extraspin3"
+	_ "github.com/slotopol/server/game/slot/agt/fruitqueen"
+	_ "github.com/slotopol/server/game/slot/agt/gems"
+	_ "github.com/slotopol/server/game/slot/agt/gems50"
+	_ "github.com/slotopol/server/game/slot/agt/halloween"
+	_ "github.com/slotopol/server/game/slot/agt/hotclover"
+	_ "github.com/slotopol/server/game/slot/agt/icefruits"
+	_ "github.com/slotopol/server/game/slot/agt/iceiceice"
+	_ "github.com/slotopol/server/game/slot/agt/icequeen"
+	_ "github.com/slotopol/server/game/slot/agt/infinitygems"
+	_ "github.com/slotopol/server/game/slot/agt/jokers"
+	_ "github.com/slotopol/server/game/slot/agt/jokers100"
+	_ "github.com/slotopol/server/game/slot/agt/luckyslot"
+	_ "github.com/slotopol/server/game/slot/agt/merrychristmas"
+	_ "github.com/slotopol/server/game/slot/agt/panda"
+	_ "github.com/slotopol/server/game/slot/agt/santa"
+	_ "github.com/slotopol/server/game/slot/agt/sevenhot"
+	_ "github.com/slotopol/server/game/slot/agt/shiningstars"
+	_ "github.com/slotopol/server/game/slot/agt/shiningstars100"
+	_ "github.com/slotopol/server/game/slot/agt/suncity"
+	_ "github.com/slotopol/server/game/slot/agt/valentinesday"
+	_ "github.com/slotopol/server/game/slot/agt/valkyrie"
+	_ "github.com/slotopol/server/game/slot/agt/wizard"
+
+	// Aristocrat
+	_ "github.com/slotopol/server/game/slot/aristocrat/indiandreaming"
+	_ "github.com/slotopol/server/game/slot/aristocrat/redroo"
+
+	// BetSoft
+	_ "github.com/slotopol/server/game/slot/betsoft/2millionbc"
+	_ "github.com/slotopol/server/game/slot/betsoft/atthemovies"
+
+	// CT Interactive
+	_ "github.com/slotopol/server/game/slot/ct/dancingbananas"
+
+	// IGT
+	_ "github.com/slotopol/server/game/slot/igt/cleopatra"
+	_ "github.com/slotopol/server/game/slot/igt/doublediamond"
+	_ "github.com/slotopol/server/game/slot/igt/richgirl"
+	_ "github.com/slotopol/server/game/slot/igt/triplediamond"
+	_ "github.com/slotopol/server/game/slot/igt/wolfrun"
+
 	// Megajack
 	_ "github.com/slotopol/server/game/slot/megajack/aztecgold"
 	_ "github.com/slotopol/server/game/slot/megajack/champagne"
 	_ "github.com/slotopol/server/game/slot/megajack/slotopol"
 	_ "github.com/slotopol/server/game/slot/megajack/slotopoldeluxe"
+
+	// NetEnt
+	_ "github.com/slotopol/server/game/slot/netent/arabiannights"
+	_ "github.com/slotopol/server/game/slot/netent/diamonddogs"
+	_ "github.com/slotopol/server/game/slot/netent/flowers"
+	_ "github.com/slotopol/server/game/slot/netent/fruitshop"
+	_ "github.com/slotopol/server/game/slot/netent/gonzosquest"
+	_ "github.com/slotopol/server/game/slot/netent/groovysixties"
+	_ "github.com/slotopol/server/game/slot/netent/piggyriches"
+	_ "github.com/slotopol/server/game/slot/netent/reelsteal"
+	_ "github.com/slotopol/server/game/slot/netent/simsalabim"
+	_ "github.com/slotopol/server/game/slot/netent/spellcast"
+	_ "github.com/slotopol/server/game/slot/netent/thrillspin"
+	_ "github.com/slotopol/server/game/slot/netent/tikiwonders"
+	_ "github.com/slotopol/server/game/slot/netent/trolls"
 
 	// Novomatic
 	_ "github.com/slotopol/server/game/slot/novomatic/africansimba"
@@ -51,24 +115,10 @@ import (
 	_ "github.com/slotopol/server/game/slot/novomatic/ultrahot"
 	_ "github.com/slotopol/server/game/slot/novomatic/ultrasevens"
 
-	// BetSoft
-	_ "github.com/slotopol/server/game/slot/betsoft/2millionbc"
-	_ "github.com/slotopol/server/game/slot/betsoft/atthemovies"
-
-	// NetEnt
-	_ "github.com/slotopol/server/game/slot/netent/arabiannights"
-	_ "github.com/slotopol/server/game/slot/netent/diamonddogs"
-	_ "github.com/slotopol/server/game/slot/netent/flowers"
-	_ "github.com/slotopol/server/game/slot/netent/fruitshop"
-	_ "github.com/slotopol/server/game/slot/netent/gonzosquest"
-	_ "github.com/slotopol/server/game/slot/netent/groovysixties"
-	_ "github.com/slotopol/server/game/slot/netent/piggyriches"
-	_ "github.com/slotopol/server/game/slot/netent/reelsteal"
-	_ "github.com/slotopol/server/game/slot/netent/simsalabim"
-	_ "github.com/slotopol/server/game/slot/netent/spellcast"
-	_ "github.com/slotopol/server/game/slot/netent/thrillspin"
-	_ "github.com/slotopol/server/game/slot/netent/tikiwonders"
-	_ "github.com/slotopol/server/game/slot/netent/trolls"
+	// Play'n GO
+	_ "github.com/slotopol/server/game/slot/playngo/copsnrobbers"
+	_ "github.com/slotopol/server/game/slot/playngo/firejoker"
+	_ "github.com/slotopol/server/game/slot/playngo/fortuneteller"
 
 	// Playtech
 	_ "github.com/slotopol/server/game/slot/playtech/captainstreasure"
@@ -76,51 +126,4 @@ import (
 	_ "github.com/slotopol/server/game/slot/playtech/goldentour"
 	_ "github.com/slotopol/server/game/slot/playtech/greatblue"
 	_ "github.com/slotopol/server/game/slot/playtech/panthermoon"
-
-	// Play'n GO
-	_ "github.com/slotopol/server/game/slot/playngo/copsnrobbers"
-	_ "github.com/slotopol/server/game/slot/playngo/firejoker"
-	_ "github.com/slotopol/server/game/slot/playngo/fortuneteller"
-
-	// Aristocrat
-	_ "github.com/slotopol/server/game/slot/aristocrat/indiandreaming"
-	_ "github.com/slotopol/server/game/slot/aristocrat/redroo"
-
-	// AGT
-	_ "github.com/slotopol/server/game/slot/agt/aislot"
-	_ "github.com/slotopol/server/game/slot/agt/aladdin"
-	_ "github.com/slotopol/server/game/slot/agt/cherryhot"
-	_ "github.com/slotopol/server/game/slot/agt/doubleice"
-	_ "github.com/slotopol/server/game/slot/agt/egypt"
-	_ "github.com/slotopol/server/game/slot/agt/extraspin"
-	_ "github.com/slotopol/server/game/slot/agt/extraspin3"
-	_ "github.com/slotopol/server/game/slot/agt/fruitqueen"
-	_ "github.com/slotopol/server/game/slot/agt/gems"
-	_ "github.com/slotopol/server/game/slot/agt/gems50"
-	_ "github.com/slotopol/server/game/slot/agt/halloween"
-	_ "github.com/slotopol/server/game/slot/agt/hotclover"
-	_ "github.com/slotopol/server/game/slot/agt/icefruits"
-	_ "github.com/slotopol/server/game/slot/agt/iceiceice"
-	_ "github.com/slotopol/server/game/slot/agt/icequeen"
-	_ "github.com/slotopol/server/game/slot/agt/infinitygems"
-	_ "github.com/slotopol/server/game/slot/agt/jokers"
-	_ "github.com/slotopol/server/game/slot/agt/jokers100"
-	_ "github.com/slotopol/server/game/slot/agt/luckyslot"
-	_ "github.com/slotopol/server/game/slot/agt/merrychristmas"
-	_ "github.com/slotopol/server/game/slot/agt/panda"
-	_ "github.com/slotopol/server/game/slot/agt/santa"
-	_ "github.com/slotopol/server/game/slot/agt/sevenhot"
-	_ "github.com/slotopol/server/game/slot/agt/shiningstars"
-	_ "github.com/slotopol/server/game/slot/agt/shiningstars100"
-	_ "github.com/slotopol/server/game/slot/agt/suncity"
-	_ "github.com/slotopol/server/game/slot/agt/valentinesday"
-	_ "github.com/slotopol/server/game/slot/agt/valkyrie"
-	_ "github.com/slotopol/server/game/slot/agt/wizard"
-
-	// IGT
-	_ "github.com/slotopol/server/game/slot/igt/cleopatra"
-	_ "github.com/slotopol/server/game/slot/igt/doublediamond"
-	_ "github.com/slotopol/server/game/slot/igt/richgirl"
-	_ "github.com/slotopol/server/game/slot/igt/triplediamond"
-	_ "github.com/slotopol/server/game/slot/igt/wolfrun"
 )
