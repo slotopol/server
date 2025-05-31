@@ -8,7 +8,7 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Fruit Sensation", Year: 2012}, // see: https://casino.ru/fruit-sensation-novomatic/
+		{Prov: "Novomatic", Name: "Fruit Sensation", Date: game.Year(2012)}, // see: https://casino.ru/fruit-sensation-novomatic/
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

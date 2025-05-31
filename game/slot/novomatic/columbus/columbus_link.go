@@ -8,10 +8,10 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Columbus", Year: 2005},        // see: https://casino.ru/columbus-novomatic/
-		{Prov: "Novomatic", Name: "Columbus Deluxe", Year: 2008}, // see: https://www.slotsmate.com/software/novomatic/columbus-deluxe
-		{Prov: "Novomatic", Name: "Marco Polo", Year: 2008},      // see: https://casino.ru/marco-polo-novomatic/
-		{Prov: "Novomatic", Name: "Holmes and Watson Deluxe"},    // see: https://www.slotsmate.com/software/novomatic/holmes-and-watson-deluxe
+		{Prov: "Novomatic", Name: "Columbus", Date: game.Year(2005)},        // see: https://casino.ru/columbus-novomatic/
+		{Prov: "Novomatic", Name: "Columbus Deluxe", Date: game.Year(2008)}, // see: https://www.slotsmate.com/software/novomatic/columbus-deluxe
+		{Prov: "Novomatic", Name: "Marco Polo", Date: game.Year(2008)},      // see: https://casino.ru/marco-polo-novomatic/
+		{Prov: "Novomatic", Name: "Holmes and Watson Deluxe"},               // see: https://www.slotsmate.com/software/novomatic/holmes-and-watson-deluxe
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

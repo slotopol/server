@@ -59,9 +59,9 @@ const (
 
 type (
 	GameAlias struct {
-		Prov string `json:"prov" yaml:"prov" xml:"prov"`
-		Name string `json:"name" yaml:"name" xml:"name"`
-		Year int    `json:"year" yaml:"year" xml:"year"`
+		Prov string    `json:"prov" yaml:"prov" xml:"prov"`
+		Name string    `json:"name" yaml:"name" xml:"name"`
+		Date util.Unix `json:"date,omitempty" yaml:"date,omitempty" xml:"date,omitempty"`
 	}
 
 	AlgDescr struct {
@@ -93,6 +93,11 @@ var AlgList = []*AlgInfo{}
 var InfoMap = map[string]*GameInfo{}
 var GameFactory = map[string]func() Gamble{}
 var ScanFactory = map[string]Scanner{}
+
+var (
+	Year = util.Year
+	Date = util.Date
+)
 
 func MakeRtpList[T any](reelsmap map[float64]T) []float64 {
 	var list = make([]float64, 0, len(reelsmap))

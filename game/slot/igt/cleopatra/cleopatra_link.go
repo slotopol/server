@@ -8,7 +8,7 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "IGT", Name: "Cleopatra", Year: 2012}, // see: https://www.slotsmate.com/software/igt/igt-cleopatra
+		{Prov: "IGT", Name: "Cleopatra", Date: game.Year(2012)}, // see: https://www.slotsmate.com/software/igt/igt-cleopatra
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

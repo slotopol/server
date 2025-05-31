@@ -66,21 +66,21 @@ func GetFilter(key string) Filter {
 		if year < 100 {
 			year += 2000
 		}
-		return func(gi *GameInfo) bool { return gi.Year == year }
+		return func(gi *GameInfo) bool { return gi.Date.Year() == year }
 	}
 	if s := reYLT.FindStringSubmatch(key); len(s) > 0 {
 		var year, _ = strconv.Atoi(s[2])
 		if year < 100 {
 			year += 2000
 		}
-		return func(gi *GameInfo) bool { return gi.Year < year }
+		return func(gi *GameInfo) bool { return gi.Date.Year() < year }
 	}
 	if s := reYGT.FindStringSubmatch(key); len(s) > 0 {
 		var year, _ = strconv.Atoi(s[2])
 		if year < 100 {
 			year += 2000
 		}
-		return func(gi *GameInfo) bool { return gi.Year > year }
+		return func(gi *GameInfo) bool { return gi.Date.Year() > year }
 	}
 	if s := reLNEQ.FindStringSubmatch(key); len(s) > 0 {
 		var ln, _ = strconv.Atoi(s[2])

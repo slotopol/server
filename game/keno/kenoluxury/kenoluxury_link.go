@@ -10,8 +10,8 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Aristocrat", Name: "Keno Luxury", Year: 2013},
-		{Prov: "Aristocrat", Name: "Keno Sports", Year: 2013},
+		{Prov: "Aristocrat", Name: "Keno Luxury", Date: game.Year(2013)},
+		{Prov: "Aristocrat", Name: "Keno Sports", Date: game.Year(2013)},
 	},
 	AlgDescr: game.AlgDescr{
 		GT:  game.GTkeno,
