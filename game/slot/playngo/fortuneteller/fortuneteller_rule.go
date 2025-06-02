@@ -1,6 +1,7 @@
 package fortuneteller
 
 // See: https://freeslotshub.com/playngo/fortune-teller/
+// See: https://www.slotsmate.com/software/play-n-go/play-n-go-fortune-teller
 // See: https://www.youtube.com/watch?v=bFQq3cCz9XY
 
 import (

@@ -245,6 +245,7 @@ func init() {
 		"y=15, y=2015, yeq15 - games released in 2015 year (or some other pointed year)\n"+
 		"y<15, y<2015, ylt15 - games released before 2015 year (or some other pointed year)\n"+
 		"y>15, y>2015, ygt15 - games released after 2015 year (or some other pointed year)\n"+
+		"nodate - games with unknown release date\n"+
 		"all - all games")
 	listflags.StringSliceVarP(&exclist, "exclude", "e", nil, "filter(s) to exclude games, filters are same as for include option")
 

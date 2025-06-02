@@ -1,5 +1,7 @@
 package atthemovies
 
+// See: https://www.slotsmate.com/software/betsoft/at-the-movies
+
 import (
 	_ "embed"
 

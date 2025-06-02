@@ -8,7 +8,7 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Play'n GO", Name: "Cops'n'Robbers"},
+		{Prov: "Play'n GO", Name: "Cops'n'Robbers", Date: game.Date(2014, 12, 1)}, // see: https://www.slotsmate.com/software/play-n-go/cops-n-robbers
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

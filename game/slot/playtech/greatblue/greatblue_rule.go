@@ -1,6 +1,7 @@
 package greatblue
 
 // See: https://freeslotshub.com/playtech/great-blue/
+// See: https://www.slotsmate.com/software/playtech/great-blue
 
 import (
 	_ "embed"

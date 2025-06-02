@@ -1,6 +1,7 @@
 package goldentour
 
 // See: https://freeslotshub.com/playtech/golden-tour/
+// See: https://www.slotsmate.com/software/playtech/golden-tour
 
 import (
 	_ "embed"

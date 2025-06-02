@@ -1,5 +1,7 @@
 package deserttreasure
 
+// See: https://www.slotsmate.com/software/playtech/playtech-desert-treasure
+
 import (
 	_ "embed"
 

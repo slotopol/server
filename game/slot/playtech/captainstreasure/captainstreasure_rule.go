@@ -1,6 +1,7 @@
 package captainstreasure
 
 // See: https://freeslotshub.com/playtech/captains-treasure/
+// See: https://www.slotsmate.com/software/playtech/captain-treasure
 
 import (
 	_ "embed"

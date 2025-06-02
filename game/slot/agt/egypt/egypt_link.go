@@ -8,7 +8,7 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "AGT", Name: "Egypt"},
+		{Prov: "AGT", Name: "Egypt", Date: game.Year(2025)},
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

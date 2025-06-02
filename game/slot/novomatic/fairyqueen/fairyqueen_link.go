@@ -8,7 +8,7 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Fairy Queen", Date: game.Year(2009)}, // see: https://www.slotsmate.com/software/novomatic/fairy-queen
+		{Prov: "Novomatic", Name: "Fairy Queen", Date: game.Date(2013, 11, 28)}, // see: https://www.slotsmate.com/software/novomatic/fairy-queen
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

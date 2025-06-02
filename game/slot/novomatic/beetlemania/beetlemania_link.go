@@ -8,9 +8,9 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Beetle Mania"},
-		{Prov: "Novomatic", Name: "Beetle Mania Deluxe"},
-		{Prov: "Novomatic", Name: "Hot Target"}, // see: https://www.slotsmate.com/software/novomatic/hot-target
+		{Prov: "Novomatic", Name: "Beetle Mania", Date: game.Year(2009)}, // see: https://www.slotsmate.com/software/novomatic/beetle-mania
+		{Prov: "Novomatic", Name: "Beetle Mania Deluxe", Date: game.Date(2007, 11, 13)},
+		{Prov: "Novomatic", Name: "Hot Target", Date: game.Date(2009, 9, 12)}, // see: https://www.slotsmate.com/software/novomatic/hot-target
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

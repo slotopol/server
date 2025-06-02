@@ -1,5 +1,7 @@
 package twomillionbc
 
+// See: https://www.slotsmate.com/software/betsoft/2-million-bc
+
 import (
 	_ "embed"
 

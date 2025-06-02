@@ -9,8 +9,8 @@ import (
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "AGT", Name: "100 Shining Stars"},
-		{Prov: "AGT", Name: "50 Apples' Shine"}, // see: https://demo.agtsoftware.com/games/agt/applesshine50
-		{Prov: "AGT", Name: "Red Crown"},        // see: https://demo.agtsoftware.com/games/agt/redcrown
+		{Prov: "AGT", Name: "50 Apples' Shine"},                 // see: https://demo.agtsoftware.com/games/agt/applesshine50
+		{Prov: "AGT", Name: "Red Crown", Date: game.Year(2025)}, // see: https://demo.agtsoftware.com/games/agt/redcrown
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

@@ -1,6 +1,7 @@
 package copsnrobbers
 
 // See: https://freeslotshub.com/playngo/cop-the-lot/
+// See: https://www.slotsmate.com/software/play-n-go/cops-n-robbers
 
 import (
 	_ "embed"

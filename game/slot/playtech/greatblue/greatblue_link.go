@@ -8,8 +8,8 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Playtech", Name: "Great Blue"}, // see: https://freeslotshub.com/playtech/great-blue/
-		{Prov: "Playtech", Name: "Irish Luck"}, // see: https://freeslotshub.com/playtech/irish-luck/
+		{Prov: "Playtech", Name: "Great Blue", Date: game.Date(2013, 1, 1)}, // see: https://www.slotsmate.com/software/playtech/great-blue
+		{Prov: "Playtech", Name: "Irish Luck", Date: game.Date(2009, 1, 1)}, // see: https://www.slotsmate.com/software/playtech/irish-luck
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

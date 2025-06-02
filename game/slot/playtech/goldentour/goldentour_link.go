@@ -8,7 +8,7 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Playtech", Name: "Golden Tour"},
+		{Prov: "Playtech", Name: "Golden Tour", Date: game.Date(2009, 1, 25)}, // see: https://www.slotsmate.com/software/playtech/golden-tour
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

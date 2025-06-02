@@ -8,7 +8,7 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "NetEnt", Name: "Flowers", Date: game.Year(2013)}, // see: https://games.netent.com/video-slots/flowers/
+		{Prov: "NetEnt", Name: "Flowers", Date: game.Date(2013, 11, 11)}, // see: https://games.netent.com/video-slots/flowers/
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

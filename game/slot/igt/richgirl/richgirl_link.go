@@ -8,7 +8,7 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "IGT", Name: "Rich Girl"}, // see: https://www.slotsmate.com/software/igt/rich-girl
+		{Prov: "IGT", Name: "Rich Girl", Date: game.Date(2014, 5, 13)}, // see: https://www.slotsmate.com/software/igt/rich-girl
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

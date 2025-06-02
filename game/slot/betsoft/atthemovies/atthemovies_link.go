@@ -8,8 +8,8 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "BetSoft", Name: "At the Movies"},
-		{Prov: "BetSoft", Name: "Sushi Bar"},
+		{Prov: "BetSoft", Name: "At the Movies", Date: game.Year(2012)}, // see: https://www.slotsmate.com/software/betsoft/at-the-movies
+		{Prov: "BetSoft", Name: "Sushi Bar", Date: game.Year(2014)},     // see: https://www.slotsmate.com/software/betsoft/sushi-bar
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

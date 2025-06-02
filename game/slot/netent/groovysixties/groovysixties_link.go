@@ -8,9 +8,9 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "NetEnt", Name: "Groovy Sixties", Date: game.Year(2009)},
-		{Prov: "NetEnt", Name: "Funky Seventies", Date: game.Year(2009)}, // See: https://www.youtube.com/watch?v=a-qF9ZOpRP0
-		{Prov: "NetEnt", Name: "Super Eighties", Date: game.Year(2009)},  // See: https://www.youtube.com/watch?v=Wj49gwfRtz8
+		{Prov: "NetEnt", Name: "Groovy Sixties", Date: game.Date(2009, 6, 15)},
+		{Prov: "NetEnt", Name: "Funky Seventies", Date: game.Date(2009, 6, 15)}, // See: https://www.youtube.com/watch?v=a-qF9ZOpRP0
+		{Prov: "NetEnt", Name: "Super Eighties", Date: game.Date(2009, 6, 15)},  // See: https://www.youtube.com/watch?v=Wj49gwfRtz8
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

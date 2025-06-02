@@ -1,6 +1,7 @@
 package reelsteal
 
 // See: https://www.youtube.com/watch?v=5wEFg65Maa0
+// See: https://www.slotsmate.com/software/netent/reel-steal
 
 import (
 	_ "embed"

@@ -1,6 +1,7 @@
 package panthermoon
 
 // See: https://freeslotshub.com/novomatic/panther-moon/
+// See: https://www.slotsmate.com/software/playtech/panther-moon
 
 import (
 	_ "embed"

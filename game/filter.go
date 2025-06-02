@@ -26,12 +26,13 @@ var FiltMap = map[string]Filter{
 	"playtech":   func(gi *GameInfo) bool { return util.ToID(gi.Prov) == "playtech" },
 	"slotopol":   func(gi *GameInfo) bool { return util.ToID(gi.Prov) == "slotopol" },
 
-	"lines": func(gi *GameInfo) bool { return gi.LN > 0 },
-	"ways":  func(gi *GameInfo) bool { return gi.WN > 0 },
-	"casc":  func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPcasc > 0 },
-	"jack":  func(gi *GameInfo) bool { return gi.GP&GPjack > 0 },
-	"fg":    func(gi *GameInfo) bool { return gi.GP&(GPfghas+GPretrig) > 0 },
-	"bon":   func(gi *GameInfo) bool { return gi.BN > 0 },
+	"lines":  func(gi *GameInfo) bool { return gi.LN > 0 },
+	"ways":   func(gi *GameInfo) bool { return gi.WN > 0 },
+	"casc":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPcasc > 0 },
+	"jack":   func(gi *GameInfo) bool { return gi.GP&GPjack > 0 },
+	"fg":     func(gi *GameInfo) bool { return gi.GP&(GPfghas+GPretrig) > 0 },
+	"bon":    func(gi *GameInfo) bool { return gi.BN > 0 },
+	"nodate": func(gi *GameInfo) bool { return gi.Date == 0 },
 }
 var (
 	reReel = regexp.MustCompile(`^(\d)x$`)
@@ -73,14 +74,14 @@ func GetFilter(key string) Filter {
 		if year < 100 {
 			year += 2000
 		}
-		return func(gi *GameInfo) bool { return gi.Date.Year() < year }
+		return func(gi *GameInfo) bool { return gi.Date != 0 && gi.Date.Year() < year }
 	}
 	if s := reYGT.FindStringSubmatch(key); len(s) > 0 {
 		var year, _ = strconv.Atoi(s[2])
 		if year < 100 {
 			year += 2000
 		}
-		return func(gi *GameInfo) bool { return gi.Date.Year() > year }
+		return func(gi *GameInfo) bool { return gi.Date != 0 && gi.Date.Year() > year }
 	}
 	if s := reLNEQ.FindStringSubmatch(key); len(s) > 0 {
 		var ln, _ = strconv.Atoi(s[2])
@@ -88,11 +89,11 @@ func GetFilter(key string) Filter {
 	}
 	if s := reLNLT.FindStringSubmatch(key); len(s) > 0 {
 		var ln, _ = strconv.Atoi(s[2])
-		return func(gi *GameInfo) bool { return gi.LN > 0 && gi.LN < ln }
+		return func(gi *GameInfo) bool { return gi.LN != 0 && gi.LN < ln }
 	}
 	if s := reLNGT.FindStringSubmatch(key); len(s) > 0 {
 		var ln, _ = strconv.Atoi(s[2])
-		return func(gi *GameInfo) bool { return gi.LN > ln }
+		return func(gi *GameInfo) bool { return gi.LN != 0 && gi.LN > ln }
 	}
 	if s := reWNEQ.FindStringSubmatch(key); len(s) > 0 {
 		var wn, _ = strconv.Atoi(s[2])
@@ -100,11 +101,11 @@ func GetFilter(key string) Filter {
 	}
 	if s := reWNLT.FindStringSubmatch(key); len(s) > 0 {
 		var wn, _ = strconv.Atoi(s[2])
-		return func(gi *GameInfo) bool { return gi.WN > 0 && gi.WN < wn }
+		return func(gi *GameInfo) bool { return gi.WN != 0 && gi.WN < wn }
 	}
 	if s := reWNGT.FindStringSubmatch(key); len(s) > 0 {
 		var wn, _ = strconv.Atoi(s[2])
-		return func(gi *GameInfo) bool { return gi.WN > wn }
+		return func(gi *GameInfo) bool { return gi.WN != 0 && gi.WN > wn }
 	}
 	return nil
 }

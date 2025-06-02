@@ -1,5 +1,7 @@
 package arabiannights
 
+// See: https://www.slotsmate.com/software/netent/arabian-nights
+
 import (
 	_ "embed"
 

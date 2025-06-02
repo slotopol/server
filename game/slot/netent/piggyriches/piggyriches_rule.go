@@ -1,5 +1,7 @@
 package piggyriches
 
+// See: https://www.slotsmate.com/software/netent/piggy-riches
+
 import (
 	_ "embed"
 
