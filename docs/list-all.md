@@ -76,11 +76,12 @@
 'Flame Dancer' Novomatic 5x3 videoslot
 'Flowers' NetEnt 5x3 videoslot
 'Fortune Teller' Play'n GO 5x3 videoslot
+'Fruit Galaxy' CT Interactive 5x4 videoslot
 'Fruit Queen' AGT 5x6 videoslot
 'Fruit Sensation' Novomatic 5x3 videoslot
 'Fruit Shop' NetEnt 5x3 videoslot
 'Fruitilicious' Novomatic 5x3 videoslot
-'Fruits'n Royals' Novomatic 5x3 videoslot
+'Fruits 'n Royals' Novomatic 5x3 videoslot
 'Funky Seventies' NetEnt 5x4 videoslot
 'Gate of Ra Deluxe' Novomatic 5x3 videoslot
 'Geisha Wonders' NetEnt 5x3 videoslot
@@ -105,7 +106,7 @@
 'Ice Fruits' AGT 5x3 videoslot
 'Ice Ice Ice' AGT 3x3 videoslot
 'Ice Queen' AGT 5x3 videoslot
-'Indian Dreaming' Aristocrat 5x3 videoslot
+'Indian Cash Catcher' Aristocrat 5x3 videoslot
 'Inferno' Novomatic 5x3 videoslot
 'Infinity Gems' AGT 5x3 videoslot
 'Irish Luck' Playtech 5x3 videoslot
@@ -199,11 +200,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 196 games, 104 algorithms, 11 providers
+total: 197 games, 105 algorithms, 11 providers
 agt: 60 games
 aristocrat: 6 games
 betsoft: 3 games
-ctinteractive: 1 games
+ctinteractive: 2 games
 igt: 5 games
 megajack: 4 games
 netent: 22 games

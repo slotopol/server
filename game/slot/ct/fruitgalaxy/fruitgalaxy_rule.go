@@ -1,6 +1,6 @@
-package dancingbananas
+package fruitgalaxy
 
-// See: https://www.slotsmate.com/software/ct-interactive/dancing-bananas
+// See: https://www.slotsmate.com/software/ct-interactive/fruit-galaxy
 
 import (
 	_ "embed"
@@ -8,7 +8,7 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed dancingbananas_reel.yaml
+//go:embed fruitgalaxy_reel.yaml
 var reels []byte
 
 var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
@@ -16,8 +16,8 @@ var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
 // Lined payment.
 var LinePay = [11][5]float64{
 	{},                     //  1 wild (on 2, 3, 4 reels)
-	{},                     //  2 star (on all reels)
-	{},                     //  3 dollar (on 1, 3, 5 reels)
+	{},                     //  2 UFO (on all reels)
+	{},                     //  3 banana (on 1, 3, 5 reels)
 	{0, 10, 50, 200, 3000}, //  4 seven
 	{0, 0, 40, 100, 500},   //  5 apple
 	{0, 0, 40, 100, 500},   //  6 orange
@@ -29,14 +29,14 @@ var LinePay = [11][5]float64{
 }
 
 // Scatters payment.
-var ScatPay1 = [5]float64{0, 0, 3, 20, 100} // 2 star
-var ScatPay2 = [5]float64{0, 0, 20}         // 3 dollar
+var ScatPay1 = [5]float64{0, 0, 3, 20, 100} // 2 UFO
+var ScatPay2 = [5]float64{0, 0, 20}         // 3 banana
 
 // Bet lines
-var BetLines = slot.BetLinesMgj[:10]
+var BetLines = slot.BetLinesNetEnt5x4[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Screen5x4 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 

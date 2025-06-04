@@ -2,9 +2,9 @@ local path = arg[0]:match("(.*[/\\])")
 dofile(path.."../../lib/reelgen.lua")
 
 local symset = {
-	1, --  1 wild   (on 2, 3, 4 reels)
-	1, --  2 star   (on all reels)
-	2, --  3 dollar (on 1, 3, 5 reels)
+	1, --  1 wild (on 2, 3, 4 reels)
+	1, --  2 UFO (on all reels)
+	2, --  3 banana (on 1, 3, 5 reels)
 	2, --  4 seven  3000
 	3, --  5 apple  500
 	3, --  6 orange 500
@@ -17,8 +17,8 @@ local symset = {
 
 local chunklen = {
 	1, --  1 wild (on 2, 3, 4 reels)
-	1, --  2 star (on all reels)
-	1, --  3 dollar (on 1, 3, 5 reels)
+	1, --  2 UFO (on all reels)
+	1, --  3 banana (on 1, 3, 5 reels)
 	1, --  4 seven
 	3, --  5 apple
 	3, --  6 orange
@@ -30,4 +30,4 @@ local chunklen = {
 }
 
 math.randomseed(os.time())
-printreel(makereelhot(symset, 3, {[1]=true, [2]=true, [3]=true}, chunklen))
+printreel(makereelhot(symset, 4, {[1]=true, [2]=true, [3]=true}, chunklen))
