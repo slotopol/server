@@ -1,6 +1,6 @@
 //go:build !prod || full || ct
 
-package fruitgalaxy
+package hitthehot
 
 import (
 	"github.com/slotopol/server/game"
@@ -8,16 +8,16 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Fruit Galaxy", Date: game.Date(2021, 5, 5)}, // see: https://www.slotsmate.com/software/ct-interactive/fruit-galaxy
+		{Prov: "CT Interactive", Name: "Hit the Hot", Date: game.Date(2020, 12, 17)}, // see: https://www.slotsmate.com/software/ct-interactive/hit-the-hot
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,
 		GP: game.GPlpay |
 			game.GPfgno |
 			game.GPscat |
-			game.GPrwild,
+			game.GPwild,
 		SX:  5,
-		SY:  4,
+		SY:  3,
 		SN:  len(LinePay),
 		LN:  len(BetLines),
 		BN:  0,

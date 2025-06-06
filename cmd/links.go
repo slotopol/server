@@ -50,6 +50,7 @@ import (
 	// CT Interactive
 	_ "github.com/slotopol/server/game/slot/ct/dancingbananas"
 	_ "github.com/slotopol/server/game/slot/ct/fruitgalaxy"
+	_ "github.com/slotopol/server/game/slot/ct/hitthehot"
 
 	// IGT
 	_ "github.com/slotopol/server/game/slot/igt/cleopatra"

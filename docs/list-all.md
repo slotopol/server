@@ -99,6 +99,7 @@
 'Halloween' AGT 3x3 videoslot
 'Happy Santa' AGT 5x3 videoslot
 'Helena' Novomatic 5x3 videoslot
+'Hit the Hot' CT Interactive 5x3 videoslot
 'Holmes and Watson Deluxe' Novomatic 5x3 videoslot
 'Hot Clover' AGT 5x4 videoslot
 'Hot Cubes' Novomatic 5x3 videoslot
@@ -200,16 +201,16 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 197 games, 105 algorithms, 11 providers
-agt: 60 games
-aristocrat: 6 games
-betsoft: 3 games
-ctinteractive: 2 games
-igt: 5 games
-megajack: 4 games
-netent: 22 games
-novomatic: 83 games
-playngo: 3 games
-playtech: 7 games
-slotopol: 2 games
+total: 198 games, 106 algorithms, 11 providers
+AGT: 60 games
+Aristocrat: 6 games
+BetSoft: 3 games
+CT Interactive: 3 games
+IGT: 5 games
+Megajack: 4 games
+NetEnt: 22 games
+Novomatic: 83 games
+Play'n GO: 3 games
+Playtech: 7 games
+Slotopol: 2 games
 ```
