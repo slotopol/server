@@ -16,11 +16,11 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 198 games, 106 algorithms, 11 providers
+total: 199 games, 107 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 3 games
+CT Interactive: 4 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,7 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Clover Party](https://www.slotsmate.com/software/ct-interactive/clover-party)' CT Interactive 5x3 videoslot
 * '[Hit the Hot](https://www.slotsmate.com/software/ct-interactive/hit-the-hot)' CT Interactive 5x3 videoslot
 * '[Fruit Galaxy](https://www.slotsmate.com/software/ct-interactive/fruit-galaxy)' CT Interactive 5x4 videoslot
 * '[Dancing Bananas](https://www.slotsmate.com/software/ct-interactive/dancing-bananas)' CT Interactive 5x3 videoslot
@@ -66,7 +67,7 @@ Slotopol: 2 games
 * '[Dragon's Deep](https://www.slotsmate.com/software/novomatic/dragons-deep)' Novomatic 5x3 videoslot, some symbols become wilds on free games
 * '[Ultra Sevens](https://www.slotsmate.com/software/novomatic/ultra-sevens)' Novomatic 5x4 videoslot with 3 jackpots
 
-# How to build from sources
+## How to build from sources
 
 *Note: you can download the compiled binaries for Windows at [release](https://github.com/slotopol/server/releases/latest) section, or build docker image by [dockerfile](https://github.com/slotopol/server/blob/main/Dockerfile), or use compiled image from [docker hub](https://hub.docker.com/r/schwarzlichtbezirk/slotopol): `docker pull schwarzlichtbezirk/slotopol` and start image [as it described](docs/docker-config.md).*
 
@@ -115,11 +116,11 @@ slot_win_x64 list -i megajack --rtp
 
 See `slot_win_x64 list -h` with full list of available command line parameters for list-command with filters.
 
-# How to test workflow
+## How to test workflow
 
 Build [bot](https://github.com/slotopol/bot) as it described, and run some scripts at `script` folder of project. See [readme](https://github.com/slotopol/bot/blob/main/README.md) for details.
 
-# Architecture and logic
+## Architecture and logic
 
 **Database.** Service instance oriented on monopoly usage of it's database. It reads necessary database tables on start and avoids any `select` requests at all. Then it stores to database only changes and new data (`update` & `insert`). Those queries are buffered across API endpoints calls to increase performance with database conversations.
 
@@ -131,7 +132,7 @@ It can be used embedded *sqlite* database engine, or *MySQL*, or *PostgreSQL* da
 
 Each user can play several games at the same time. Each started game have game ID related to user ID and club ID. Any game actions ties to game ID.
 
-# How to use HTTP API
+## How to use HTTP API
 
 Any API endpoints can receive data in JSON, XML, YAML, or TOML format, depended by `Content-Type` header. If `Content-Type` header not given, JSON will be used to decode as default. `Accept` header if it given, defines response data format. If it absent, same format as at request will be used.
 
@@ -139,7 +140,7 @@ In most cases used `POST`-method of HTTP.
 
 If any response have HTTP status >= 400, body in this case contains error object with `what` field with message and unique source point error `code`.
 
-## Without authorization
+### Without authorization
 
 First of all you can test replies existence and service is running:
 
@@ -171,7 +172,7 @@ Where `inc` contains space separated list of filters like in `list` command line
 
 `/servinfo` and `/memusage`, `/signis`, `/sendcode`, `/activate`, `/signup` and `/signin` endpoints also does not expects authorization.
 
-## Authorization
+### Authorization
 
 There is supported basic authorization and bearer authorization (with JWT-tokens). Authorization data can be provided by 4 ways: in header `Authorization`, at query parameters, at cookies, and at post form.
 
@@ -200,7 +201,7 @@ You can use token `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzbG90b3BvbCIs
 curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -X GET localhost:8080/refresh
 ```
 
-## Create and play the game
+### Create and play the game
 
 * Create new game. GID received at response will be used at all calls for access to this game instance. Also you will get initial game state, and user balance at this club.
 
@@ -242,7 +243,7 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d
 curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/game/info
 ```
 
-## Work with user account
+### Work with user account
 
 * Check up user account existence. It can be done by email or user identifier (`uid` parameter). Call returns true `uid` and `email` if account is found, or zero user identifier if account does not registered.
 

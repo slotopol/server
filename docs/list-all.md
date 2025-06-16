@@ -45,6 +45,7 @@
 'Cherry Hot' AGT 5x3 videoslot
 'Chicago' Novomatic 5x3 videoslot
 'Cleopatra' IGT 5x3 videoslot
+'Clover Party' CT Interactive 5x3 videoslot
 'Cold Spell' Novomatic 5x3 videoslot
 'Columbus' Novomatic 5x3 videoslot
 'Columbus Deluxe' Novomatic 5x3 videoslot
@@ -201,11 +202,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 198 games, 106 algorithms, 11 providers
+total: 199 games, 107 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 3 games
+CT Interactive: 4 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

@@ -48,6 +48,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/betsoft/atthemovies"
 
 	// CT Interactive
+	_ "github.com/slotopol/server/game/slot/ct/cloverparty"
 	_ "github.com/slotopol/server/game/slot/ct/dancingbananas"
 	_ "github.com/slotopol/server/game/slot/ct/fruitgalaxy"
 	_ "github.com/slotopol/server/game/slot/ct/hitthehot"
