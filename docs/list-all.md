@@ -178,6 +178,7 @@
 'Super Eighties' NetEnt 5x4 videoslot
 'Sushi Bar' BetSoft 5x3 videoslot
 'Tesla' AGT 5x3 videoslot
+'The Great Cabaret' CT Interactive 5x3 videoslot
 'The Leprechaun' AGT 5x3 videoslot
 'The Money Game' Novomatic 5x3 videoslot
 'The Money Game Deluxe' Novomatic 5x3 videoslot
@@ -202,11 +203,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 199 games, 107 algorithms, 11 providers
+total: 200 games, 108 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 4 games
+CT Interactive: 5 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

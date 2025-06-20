@@ -1,6 +1,6 @@
 //go:build !prod || full || ct
 
-package cloverparty
+package thegreatcabaret
 
 import (
 	"github.com/slotopol/server/game"
@@ -8,14 +8,16 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Clover Party", Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/clover-party
+		{Prov: "CT Interactive", Name: "The Great Cabaret", Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/the-great-cabaret
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,
 		GP: game.GPlpay |
-			game.GPfgno |
+			game.GPretrig |
+			game.GPfgmult |
 			game.GPscat |
-			game.GPwild,
+			game.GPwild |
+			game.GPwmult,
 		SX:  5,
 		SY:  3,
 		SN:  len(LinePay),
@@ -26,5 +28,5 @@ var Info = game.AlgInfo{
 }
 
 func init() {
-	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
+	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
 }
