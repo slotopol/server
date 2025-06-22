@@ -159,7 +159,7 @@ function correctreel(reel, neighbours)
 end
 
 function printreel(reel, iter)
-	if iter > 1 then
+	if iter and iter > 1 then
 		if iter >= maxiter then
 			print"too many neighbours shuffle iterations"
 			return

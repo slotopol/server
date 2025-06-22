@@ -53,6 +53,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/fruitgalaxy"
 	_ "github.com/slotopol/server/game/slot/ct/hitthehot"
 	_ "github.com/slotopol/server/game/slot/ct/thegreatcabaret"
+	_ "github.com/slotopol/server/game/slot/ct/tropicdancer"
 
 	// IGT
 	_ "github.com/slotopol/server/game/slot/igt/cleopatra"

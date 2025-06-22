@@ -188,6 +188,7 @@
 'Time Machine II' AGT 5x3 videoslot
 'Triple Diamond' IGT 3x3 videoslot
 'Trolls' NetEnt 5x3 videoslot
+'Tropic Dancer' CT Interactive 5x3 videoslot
 'Tropic Hot' AGT 3x3 videoslot
 'Ultra Gems' Novomatic 3x3 videoslot
 'Ultra Hot' Novomatic 3x3 videoslot
@@ -203,11 +204,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 200 games, 108 algorithms, 11 providers
+total: 201 games, 109 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 5 games
+CT Interactive: 6 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
