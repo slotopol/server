@@ -32,6 +32,7 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[20 Mega Fresh](https://www.slotsmate.com/software/ct-interactive/20-mega-fresh)' CT Interactive 5x3 videoslot
 * '[Tropic Dancer](https://www.slotsmate.com/software/ct-interactive/tropic-dancer)' CT Interactive 5x3 videoslot
 * '[The Great Cabaret](https://www.slotsmate.com/software/ct-interactive/the-great-cabaret)' CT Interactive 5x3 videoslot
 * '[Clover Party](https://www.slotsmate.com/software/ct-interactive/clover-party)' CT Interactive 5x3 videoslot
