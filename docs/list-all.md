@@ -5,6 +5,7 @@
 '100 Jokers' AGT 5x4 videoslot
 '100 Shining Stars' AGT 5x4 videoslot
 '2 Million B.C.' BetSoft 5x3 videoslot
+'20 Mega Fresh' CT Interactive 5x3 videoslot
 '40 Bigfoot' AGT 5x4 videoslot
 '5 Hot Hot Hot' AGT 3x3 videoslot
 '50 Apples' Shine' AGT 5x4 videoslot
@@ -84,6 +85,7 @@
 'Fruitilicious' Novomatic 5x3 videoslot
 'Fruits 'n Royals' Novomatic 5x3 videoslot
 'Funky Seventies' NetEnt 5x4 videoslot
+'Fusion Fruit Beat' CT Interactive 5x3 videoslot
 'Gate of Ra Deluxe' Novomatic 5x3 videoslot
 'Geisha Wonders' NetEnt 5x3 videoslot
 'Gems' AGT 5x3 videoslot
@@ -204,11 +206,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 201 games, 109 algorithms, 11 providers
+total: 203 games, 110 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 6 games
+CT Interactive: 8 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

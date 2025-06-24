@@ -16,11 +16,11 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 201 games, 109 algorithms, 11 providers
+total: 203 games, 110 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 6 games
+CT Interactive: 8 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,7 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Fusion Fruit Beat](https://www.slotsmate.com/software/ct-interactive/fusion-fruit-beat)' CT Interactive 5x3 videoslot
 * '[20 Mega Fresh](https://www.slotsmate.com/software/ct-interactive/20-mega-fresh)' CT Interactive 5x3 videoslot
 * '[Tropic Dancer](https://www.slotsmate.com/software/ct-interactive/tropic-dancer)' CT Interactive 5x3 videoslot
 * '[The Great Cabaret](https://www.slotsmate.com/software/ct-interactive/the-great-cabaret)' CT Interactive 5x3 videoslot
@@ -52,10 +53,6 @@ Slotopol: 2 games
 * '[Double Diamond](https://www.slotsmate.com/software/igt/double-diamond)' IGT 3x3 videoslot
 * '[Triple Diamond](https://www.slotsmate.com/software/igt/triple-diamond)' IGT 3x3 videoslot
 * '[Wolf Run](https://www.slotsmate.com/software/igt/wolf-run)' IGT 5x4 videoslot
-* '[Rich Girl](https://www.slotsmate.com/software/igt/rich-girl)' IGT 5x3 videoslot
-* '[Cleopatra](https://www.slotsmate.com/software/igt/igt-cleopatra)' IGT 5x3 videoslot
-* '[Fairy Queen](https://www.slotsmate.com/software/novomatic/fairy-queen)' Novomatic 5x3 videoslot with win on every free spin
-* '[Angry Birds](https://www.slotsmate.com/software/novomatic/angry-birds)' Novomatic 5x3 videoslot
 
 *Top-10 of games with most interesting algorithms released on server*:
 
