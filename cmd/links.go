@@ -52,6 +52,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/dancingbananas"
 	_ "github.com/slotopol/server/game/slot/ct/fruitgalaxy"
 	_ "github.com/slotopol/server/game/slot/ct/fusionfruitbeat"
+	_ "github.com/slotopol/server/game/slot/ct/groovyautomat"
 	_ "github.com/slotopol/server/game/slot/ct/hitthehot"
 	_ "github.com/slotopol/server/game/slot/ct/thegreatcabaret"
 	_ "github.com/slotopol/server/game/slot/ct/tropicdancer"

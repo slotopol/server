@@ -96,6 +96,7 @@
 'Grand Theft' AGT 5x3 videoslot
 'Great Blue' Playtech 5x3 videoslot
 'Green Hot' AGT 5x3 videoslot
+'Groovy Automat' CT Interactive 5x3 videoslot
 'Groovy Sixties' NetEnt 5x4 videoslot
 'Gryphons Gold' Novomatic 5x3 videoslot
 'Gryphons Gold Deluxe' Novomatic 5x3 videoslot
@@ -206,11 +207,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 203 games, 110 algorithms, 11 providers
+total: 204 games, 111 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 8 games
+CT Interactive: 9 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
