@@ -2,10 +2,14 @@ package api
 
 import (
 	"runtime"
+	"strings"
 	"time"
 
-	"github.com/gin-gonic/gin"
 	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/util"
+
+	"github.com/gin-gonic/gin"
+	"github.com/klauspost/cpuid/v2"
 )
 
 // save server start time
@@ -19,17 +23,26 @@ func ApiPing(c *gin.Context) {
 // Static service system information.
 func ApiServInfo(c *gin.Context) {
 	var ret = gin.H{
+		// this service
 		"buildvers": cfg.BuildVers,
 		"buildtime": cfg.BuildTime,
 		"started":   starttime.Format(time.RFC3339),
-		"govers":    runtime.Version(),
-		"os":        runtime.GOOS,
-		"arch":      runtime.GOARCH,
-		"numcpu":    runtime.NumCPU(),
-		"maxprocs":  runtime.GOMAXPROCS(0),
-		"exepath":   cfg.ExePath,
-		"cfgpath":   cfg.CfgPath,
-		"sqlpath":   cfg.SqlPath,
+		// Go version & OS
+		"govers":   runtime.Version(),
+		"os":       runtime.GOOS,
+		"arch":     runtime.GOARCH,
+		"maxprocs": runtime.GOMAXPROCS(0),
+		// CPU
+		"cpubrand": cpuid.CPU.BrandName,
+		"cpuvend":  cpuid.CPU.VendorString,
+		"cpuphys":  cpuid.CPU.PhysicalCores,
+		"cpulogic": cpuid.CPU.LogicalCores,
+		"cpufreq":  cpuid.CPU.Hz,
+		"cpufeat":  strings.Join(cpuid.CPU.FeatureSet(), ","),
+		// paths
+		"exepath": util.ToSlash(cfg.ExePath),
+		"cfgpath": util.ToSlash(cfg.CfgPath),
+		"sqlpath": util.ToSlash(cfg.SqlPath),
 	}
 	RetOk(c, ret)
 }

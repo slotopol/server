@@ -157,6 +157,7 @@ const (
 
 var (
 	ErrAvalanche = errors.New("too many cascades")
+	ErrScanCasc  = errors.New("error occurs on cascade scanner")
 )
 
 func CorrectThrNum() int {
@@ -210,7 +211,9 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 								if cfn > CascadeLimit {
 									panic(ErrAvalanche)
 								}
-								cs.Scanner(&wins)
+								if cs.Scanner(&wins) != nil {
+									panic(ErrScanCasc)
+								}
 								s.Update(wins, cfn)
 								cs.Strike(wins)
 								if len(wins) == 0 {
@@ -284,7 +287,9 @@ func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 									if cfn > CascadeLimit {
 										panic(ErrAvalanche)
 									}
-									cs.Scanner(&wins)
+									if cs.Scanner(&wins) != nil {
+										panic(ErrScanCasc)
+									}
 									s.Update(wins, cfn)
 									cs.Strike(wins)
 									if len(wins) == 0 {
@@ -363,7 +368,9 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 										if cfn > CascadeLimit {
 											panic(ErrAvalanche)
 										}
-										cs.Scanner(&wins)
+										if cs.Scanner(&wins) != nil {
+											panic(ErrScanCasc)
+										}
 										s.Update(wins, cfn)
 										cs.Strike(wins)
 										if len(wins) == 0 {
@@ -492,7 +499,9 @@ func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 											if cfn > CascadeLimit {
 												panic(ErrAvalanche)
 											}
-											cs.Scanner(&wins)
+											if cs.Scanner(&wins) != nil {
+												panic(ErrScanCasc)
+											}
 											s.Update(wins, cfn)
 											cs.Strike(wins)
 											if len(wins) == 0 {
@@ -560,7 +569,9 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 							panic(ErrAvalanche)
 						}
 						cs.ReelSpin(reels)
-						cs.Scanner(&wins)
+						if cs.Scanner(&wins) != nil {
+							panic(ErrScanCasc)
+						}
 						s.Update(wins, cfn)
 						cs.Strike(wins)
 						if len(wins) == 0 {
@@ -630,7 +641,9 @@ func MonteCarloPrec(ctx context.Context, s Stater, g SlotGame, reels Reels, calc
 							panic(ErrAvalanche)
 						}
 						cs.ReelSpin(reels)
-						cs.Scanner(&wins)
+						if cs.Scanner(&wins) != nil {
+							panic(ErrScanCasc)
+						}
 						s.Update(wins, cfn)
 						cs.Strike(wins)
 						if len(wins) == 0 {
