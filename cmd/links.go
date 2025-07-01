@@ -57,6 +57,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/hitthehot"
 	_ "github.com/slotopol/server/game/slot/ct/thegreatcabaret"
 	_ "github.com/slotopol/server/game/slot/ct/tropicdancer"
+	_ "github.com/slotopol/server/game/slot/ct/vikingsfun"
 	_ "github.com/slotopol/server/game/slot/ct/winstorm"
 
 	// IGT

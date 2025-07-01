@@ -203,6 +203,7 @@
 'Valentine's Day' AGT 5x3 videoslot
 'Valkyrie' AGT 5x3 videoslot
 'Viking's Treasure' NetEnt 5x3 videoslot
+'Vikings Fun' CT Interactive 5x3 videoslot
 'Voodoo Vibes' NetEnt 5x3 videoslot
 'Wild West' AGT 5x4 videoslot
 'Wild Witches' NetEnt 5x3 videoslot
@@ -210,11 +211,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 207 games, 113 algorithms, 11 providers
+total: 208 games, 114 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 12 games
+CT Interactive: 13 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

@@ -16,11 +16,11 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 207 games, 113 algorithms, 11 providers
+total: 208 games, 114 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 12 games
+CT Interactive: 13 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,7 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Vikings Fun](https://www.slotsmate.com/software/ct-interactive/vikings-fun)' CT Interactive 5x3 videoslot, some symbols become wilds on free games
 * '[Win Storm](https://www.slotsmate.com/software/ct-interactive/win-storm)' CT Interactive 5x3 cascade videoslot
 * '[Lord of Luck](https://www.slotsmate.com/software/ct-interactive/lord-of-luck)' CT Interactive 5x4 videoslot
 * '[Double Hot Habanero](https://www.slotsmate.com/software/ct-interactive/double-hot-habanero)' CT Interactive 5x3 videoslot
@@ -65,7 +66,7 @@ Slotopol: 2 games
 * '[Egypt](https://demo.agtsoftware.com/games/agt/egypt)' AGT 5x3 videoslot with minislot for wilds multiplier
 * 'Fire Joker' Play'n GO 5x3 videoslot with jackpot on lined pays and big symbols on free games
 * '[Secret Elixir](https://www.slotsmate.com/software/novomatic/secret-elixir)' Novomatic 5x3 videoslot with multipliers on 5th reel
-* '[Dragon's Deep](https://www.slotsmate.com/software/novomatic/dragons-deep)' Novomatic 5x3 videoslot, some symbols become wilds on free games
+* '[Vikings Fun](https://www.slotsmate.com/software/ct-interactive/vikings-fun)' CT Interactive 5x3 videoslot, some symbols become wilds on free games
 * '[Ultra Sevens](https://www.slotsmate.com/software/novomatic/ultra-sevens)' Novomatic 5x4 videoslot with 3 jackpots
 
 ## How to build from sources
