@@ -346,6 +346,11 @@ const (
 	AEC_club_info_noclub
 	AEC_club_info_noaccess
 
+	// POST /club/jpfund
+
+	AEC_club_jpfund_nobind
+	AEC_club_jpfund_noclub
+
 	// POST /club/rename
 
 	AEC_club_rename_nobind

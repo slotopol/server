@@ -112,6 +112,35 @@ func ApiClubInfo(c *gin.Context) {
 	RetOk(c, ret)
 }
 
+// Returns full jackpot value.
+func ApiClubJpfund(c *gin.Context) {
+	var err error
+	var ok bool
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required"`
+	}
+	var ret struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
+		JpFund  float64  `json:"jpfund" yaml:"jpfund" xml:"jpfund"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, AEC_club_jpfund_nobind, err)
+		return
+	}
+
+	var club *Club
+	if club, ok = Clubs.Get(arg.CID); !ok {
+		Ret500(c, AEC_club_jpfund_noclub, ErrNoClub)
+		return
+	}
+
+	ret.JpFund = club.Fund()
+
+	RetOk(c, ret)
+}
+
 // Rename the club.
 func ApiClubRename(c *gin.Context) {
 	var err error

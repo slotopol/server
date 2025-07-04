@@ -230,6 +230,7 @@ func ApiSlotSpin(c *gin.Context) {
 		Game    slot.SlotGame `json:"game" yaml:"game" xml:"game"`
 		Wins    slot.Wins     `json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
 		Wallet  float64       `json:"wallet" yaml:"wallet" xml:"wallet"`
+		JpFund  float64       `json:"jpfund,omitempty" yaml:"jpfund,omitempty" xml:"jpfund,omitempty"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -381,6 +382,9 @@ func ApiSlotSpin(c *gin.Context) {
 	ret.Game = game
 	ret.Wins = wins
 	ret.Wallet = props.Wallet
+	if isjp {
+		ret.JpFund = fund
+	}
 
 	RetOk(c, ret)
 }

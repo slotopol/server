@@ -196,6 +196,7 @@ func SetupRouter(r *gin.Engine) {
 	rc.POST("/list", ApiClubList)
 	rc.POST("/is", ApiClubIs)
 	rc.POST("/info", ApiClubInfo)
+	rc.POST("/jpfund", ApiClubJpfund)
 	rc.POST("/rename", ApiClubRename)
 	rc.POST("/cashin", ApiClubCashin)
 }
