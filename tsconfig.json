@@ -1,0 +1,53 @@
+{
+  "compilerOptions": {
+    /* Base Options: */
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "ES2020", // Modern JavaScript target
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "moduleDetection": "force",
+    /* Strictness */
+    "strict": true,
+    "noUncheckedIndexedAccess": true, // Recommended for stricter array/object access
+    // "noImplicitAny": true, // Covered by strict
+    // "strictNullChecks": true, // Covered by strict
+    // "strictFunctionTypes": true, // Covered by strict
+    // "strictBindCallApply": true, // Covered by strict
+    // "strictPropertyInitialization": true, // Covered by strict
+    // "noImplicitThis": true, // Covered by strict
+    // "alwaysStrict": true, // Covered by strict
+    /* If NOT transpiling with TypeScript: */
+    "module": "preserve", // Preserve ES modules for other tools to handle
+    "noEmit": true, // Do not emit JS files if using another bundler/transpiler
+    /* If your code runs in the DOM: */
+    // "lib": ["es2020", "dom", "dom.iterable"],
+    /* If your code runs in Node.js: */
+    "lib": ["es2020"], // Adjusted for server-side/Node.js if no DOM access
+    /* Module Resolution Options */
+    "moduleResolution": "node", // Classic Node.js module resolution
+    "baseUrl": ".", // Base directory for module resolution
+    "paths": { // Optional: For path aliases
+      "@/*": ["./*"] // Example: import foo from '@/foo'
+    },
+    /* Source Map Options */
+    "sourceMap": true, // Generate source maps for debugging
+    /* Output Formatting */
+    "pretty": true, // Pretty print compiler output
+    /* Experimental Options */
+    // "experimentalDecorators": true,
+    // "emitDecoratorMetadata": true,
+    /* Advanced Options */
+    "forceConsistentCasingInFileNames": true, // Disallow inconsistently-cased references to the same file.
+    // "outDir": "./dist", // Example output directory if noEmit is false
+    // "rootDir": "./src", // Example root directory of source files
+  },
+  "include": [ // Which files to include in compilation
+    "**/*.ts"
+    // "src/**/*.ts", // More specific example
+    // "tests/**/*.ts"
+  ],
+  "exclude": [ // Which files to exclude
+    "node_modules"
+  ]
+}
