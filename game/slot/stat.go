@@ -75,6 +75,10 @@ func (s *Stat) ScatRTP(cost float64) float64 {
 	return sp / reshuf / cost * 100
 }
 
+func (s *Stat) FreeCountU() uint64 {
+	return atomic.LoadUint64(&s.freecount)
+}
+
 func (s *Stat) FreeCount() float64 {
 	return float64(atomic.LoadUint64(&s.freecount))
 }

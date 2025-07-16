@@ -23,7 +23,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var sq = 1 / (1 - q)
 		var rtp = rtpsym + q*sq*rtpsym
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "free spins %g, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount(), q, sq)
+		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCountU(), q, sq)
 		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", reshuf/s.FreeHits())
 		fmt.Fprintf(w, "jackpots1: count %g, frequency 1/%.12g\n", s.JackCount(kjj1), reshuf/s.JackCount(kjj1))
 		fmt.Fprintf(w, "jackpots2: count %g, frequency 1/%.12g\n", s.JackCount(kjj2), reshuf/s.JackCount(kjj2))

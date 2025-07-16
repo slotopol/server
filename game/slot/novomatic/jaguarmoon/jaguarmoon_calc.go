@@ -62,6 +62,10 @@ func (s *Stat) ScatRTP(cost float64) float64 {
 	return sp / reshuf / cost * 100
 }
 
+func (s *Stat) FreeCountU() uint64 {
+	return atomic.LoadUint64(&s.freecount)
+}
+
 func (s *Stat) FreeCount() float64 {
 	return float64(atomic.LoadUint64(&s.freecount))
 }
@@ -145,7 +149,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		var sq = 1 / (1 - q)
 		var rtp = rtpsym + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "free spins %g, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount(), q, sq)
+		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCountU(), q, sq)
 		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", reshuf/s.FreeHits())
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, q, rtpfs, rtp)
 		return rtp

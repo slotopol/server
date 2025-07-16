@@ -26,7 +26,7 @@ func CalcStatBon(ctx context.Context) float64 {
 		var sq = 1 / (1 - q)
 		var rtp = sq * rtpsym
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "free spins %g, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount(), q, sq)
+		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCountU(), q, sq)
 		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", reshuf/s.FreeHits())
 		fmt.Fprintf(w, "RTP = sq*rtp(sym) = %.5g*%.5g = %.6f%%\n", sq, rtpsym, rtp)
 		return rtp
@@ -58,7 +58,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		var rtpne12 = Ene12 * qne12 * 100
 		var rtp = rtpsym + rtpne12 + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "free spins %g, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount(), q, sq)
+		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCountU(), q, sq)
 		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", reshuf/s.FreeHits())
 		fmt.Fprintf(w, "ne12 bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonusCount(ne12), rtpne12)
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(ne12) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, rtpne12, q, rtpfs, rtp)
