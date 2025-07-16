@@ -21,7 +21,7 @@ var LinePay = jokers.LinePay
 var ScatPay = jokers.ScatPay
 
 // Bet lines
-var BetLines = slot.BetLinesAgt5x4[:]
+var BetLines = slot.BetLinesAgt5x4[:100]
 
 type Game struct {
 	slot.Screen5x4 `yaml:",inline"`

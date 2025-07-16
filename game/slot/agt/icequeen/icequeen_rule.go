@@ -19,7 +19,7 @@ var (
 )
 
 // Bet lines
-var BetLines = slot.BetLinesAgt5x3[:]
+var BetLines = slot.BetLinesAgt5x3[:30]
 
 type Game struct {
 	slot.Screen5x3 `yaml:",inline"`

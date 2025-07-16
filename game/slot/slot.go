@@ -75,12 +75,17 @@ type SlotGame interface {
 	Apply(Wins)                   // update game state to spin results
 	GetGain() float64             // returns gain for double up games, constant function
 	SetGain(float64) error        // set gain to given value on double up games
-	GetBet() float64              // returns current bet, constant function
-	SetBet(float64) error         // set bet to given value
+	GetBet() float64              // returns current bet per line, constant function
+	SetBet(float64) error         // set bet per line to given value
 	GetSel() int                  // returns number of selected bet lines, constant function
 	SetSel(int) error             // setup number of selected bet lines
 	SetMode(int) error            // change game mode depending on the user's choice
 }
+
+// Remark: "Scanner" method should return error only if generated screen does not appear
+// to game rules, and can not be calculated. Screen combination with error will be
+// dropped out. If screen appear to rules it should be calculated in any case.
+// If scanner algorithm receives wrong data - its case for panic.
 
 type ClassicSlot interface {
 	Screen

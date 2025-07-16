@@ -1,6 +1,6 @@
-package aladdin
+package treasurehill
 
-// See: https://demo.agtsoftware.com/games/agt/aladdin
+// See: https://www.slotsmate.com/software/ct-interactive/treasure-hill
 
 import (
 	_ "embed"
@@ -8,29 +8,29 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed aladdin_reel.yaml
+//go:embed treasurehill_reel.yaml
 var reels []byte
 
 var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [12][5]float64{
-	{0, 0, 100, 225, 1000}, //  1 wild
-	{},                     //  2 scatter
-	{0, 0, 50, 200, 600},   //  3 prince
-	{0, 0, 50, 200, 600},   //  4 princess
-	{0, 0, 25, 150, 400},   //  5 castle
-	{0, 0, 25, 150, 350},   //  6 ruby
-	{0, 0, 10, 100, 200},   //  7 shoes
-	{0, 0, 10, 100, 200},   //  8 carpet
-	{0, 0, 5, 50, 125},     //  9 ace
-	{0, 0, 5, 50, 125},     // 10 king
-	{0, 0, 5, 25, 100},     // 11 queen
-	{0, 0, 5, 25, 100},     // 12 jack
+	{0, 0, 65, 300, 1000}, //  1 wild
+	{},                    //  2 scatter (on 2, 3, 4 reels)
+	{0, 0, 15, 200, 400},  //  3 clover
+	{0, 0, 15, 200, 400},  //  4 horseshoe
+	{0, 0, 15, 80, 400},   //  5 treasure
+	{0, 0, 15, 80, 400},   //  6 rainbow
+	{0, 0, 5, 50, 200},    //  7 beer
+	{0, 0, 5, 50, 200},    //  8 smoke
+	{0, 0, 5, 10, 100},    //  9 ace
+	{0, 0, 5, 10, 100},    // 10 king
+	{0, 0, 5, 10, 100},    // 11 queen
+	{0, 0, 5, 10, 100},    // 12 jack
 }
 
 // Bet lines
-var BetLines = slot.BetLinesAgt5x4[:100]
+var BetLines = slot.BetLineCT5x4[:50]
 
 type Game struct {
 	slot.Screen5x4 `yaml:",inline"`
@@ -116,7 +116,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
 	if count := g.ScatNum(scat); count >= 3 {
-		const pay, fs = 2, 10
+		const pay, fs = 5, 10
 		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * float64(g.Sel) * pay,
 			Mult: 1,
@@ -134,5 +134,5 @@ func (g *Game) Spin(mrtp float64) {
 }
 
 func (g *Game) SetSel(sel int) error {
-	return g.SetSelNum(sel, len(BetLines))
+	return slot.ErrNoFeature
 }
