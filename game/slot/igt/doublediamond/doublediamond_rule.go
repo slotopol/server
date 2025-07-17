@@ -51,8 +51,7 @@ func (g *Game) Clone() slot.SlotGame {
 }
 
 func (g *Game) Scanner(wins *slot.Wins) error {
-	for li := 1; li <= g.Sel; li++ {
-		var line = BetLines[li-1]
+	for li, line := range BetLines[:g.Sel] {
 		var m = map[slot.Sym]int{}
 		m[g.LY(1, line)]++
 		m[g.LY(2, line)]++
@@ -64,7 +63,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 					Mult: 1,
 					Sym:  sym,
 					Num:  3,
-					Line: li,
+					Line: li + 1,
 					XY:   line,
 				})
 			}
@@ -78,7 +77,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 					Mult: 2,
 					Sym:  sym,
 					Num:  3,
-					Line: li,
+					Line: li + 1,
 					XY:   line,
 				})
 			}
@@ -92,7 +91,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 					Mult: 4,
 					Sym:  sym,
 					Num:  3,
-					Line: li,
+					Line: li + 1,
 					XY:   line,
 				})
 			}
@@ -102,7 +101,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				Mult: 2,
 				Sym:  6,
 				Num:  1,
-				Line: li,
+				Line: li + 1,
 				XY:   line,
 			})
 		} else if m[6] == 1 { // 1 cherry
@@ -111,7 +110,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				Mult: 1,
 				Sym:  6,
 				Num:  1,
-				Line: li,
+				Line: li + 1,
 				XY:   line,
 			})
 		} else if m[6] == 2 { // 2 cherry
@@ -120,7 +119,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				Mult: 1,
 				Sym:  6,
 				Num:  2,
-				Line: li,
+				Line: li + 1,
 				XY:   line,
 			})
 		} else if m[1] == 1 && m[0] == 0 && m[2] == 0 { // any bar with diamond
@@ -129,7 +128,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				Mult: 2,
 				Sym:  0,
 				Num:  3,
-				Line: li,
+				Line: li + 1,
 				XY:   line,
 			})
 		} else if m[1] == 0 && m[0] == 0 && m[2] == 0 { // any bar without diamond
@@ -138,7 +137,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				Mult: 1,
 				Sym:  0,
 				Num:  3,
-				Line: li,
+				Line: li + 1,
 				XY:   line,
 			})
 		}

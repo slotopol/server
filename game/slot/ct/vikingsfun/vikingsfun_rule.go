@@ -71,9 +71,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 
 // Lined symbols calculation for regular games.
 func (g *Game) ScanLinedReg(wins *slot.Wins) {
-	for li := 1; li <= g.Sel; li++ {
-		var line = BetLines[li-1]
-
+	for li, line := range BetLines[:g.Sel] {
 		var numw, numl slot.Pos = 0, 5
 		var syml slot.Sym
 		var x slot.Pos
@@ -104,7 +102,7 @@ func (g *Game) ScanLinedReg(wins *slot.Wins) {
 				Mult: 1,
 				Sym:  syml,
 				Num:  numl,
-				Line: li,
+				Line: li + 1,
 				XY:   line.CopyL(numl),
 			})
 		} else if payw > 0 {
@@ -113,7 +111,7 @@ func (g *Game) ScanLinedReg(wins *slot.Wins) {
 				Mult: 1,
 				Sym:  wild,
 				Num:  numw,
-				Line: li,
+				Line: li + 1,
 				XY:   line.CopyL(numw),
 			})
 		}
@@ -122,9 +120,7 @@ func (g *Game) ScanLinedReg(wins *slot.Wins) {
 
 // Lined symbols calculation for bonus games.
 func (g *Game) ScanLinedBon(wins *slot.Wins) {
-	for li := 1; li <= g.Sel; li++ {
-		var line = BetLines[li-1]
-
+	for li, line := range BetLines[:g.Sel] {
 		var numw, numl slot.Pos = 0, 5
 		var symw, syml slot.Sym
 		var x slot.Pos
@@ -160,7 +156,7 @@ func (g *Game) ScanLinedBon(wins *slot.Wins) {
 				Mult: 1,
 				Sym:  syml,
 				Num:  numl,
-				Line: li,
+				Line: li + 1,
 				XY:   line.CopyL(numl),
 			})
 		} else if payw > 0 {
@@ -169,7 +165,7 @@ func (g *Game) ScanLinedBon(wins *slot.Wins) {
 				Mult: 1,
 				Sym:  symw,
 				Num:  numw,
-				Line: li,
+				Line: li + 1,
 				XY:   line.CopyL(numw),
 			})
 		}

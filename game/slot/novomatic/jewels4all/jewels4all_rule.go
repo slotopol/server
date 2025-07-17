@@ -77,9 +77,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		}
 	}
 
-	for li := 1; li <= g.Sel; li++ {
-		var line = BetLines[li-1]
-
+	for li, line := range BetLines[:g.Sel] {
 		var num slot.Pos = 1
 		var sym3 = scrnwild.LY(3, line)
 		var xy slot.Linex
@@ -119,7 +117,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Mult: 1,
 				Sym:  sym3,
 				Num:  num,
-				Line: li,
+				Line: li + 1,
 				XY:   xy,
 			})
 		}

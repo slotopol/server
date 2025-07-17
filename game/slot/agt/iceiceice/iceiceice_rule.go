@@ -63,9 +63,7 @@ func (g *Game) Clone() slot.SlotGame {
 const wild, scat = 1, 7
 
 func (g *Game) Scanner(wins *slot.Wins) error {
-	for li := 1; li <= g.Sel; li++ {
-		var line = BetLines[li-1]
-
+	for li, line := range BetLines[:g.Sel] {
 		if g.FSR > 0 {
 			var numl slot.Pos = 3
 			var syml slot.Sym
@@ -90,7 +88,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 					Mult: 1,
 					Sym:  syml,
 					Num:  3,
-					Line: li,
+					Line: li + 1,
 					XY:   line, // whole line is used
 				})
 			}
@@ -111,7 +109,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 					Mult: 1,
 					Sym:  syml,
 					Num:  3,
-					Line: li,
+					Line: li + 1,
 					XY:   line, // whole line is used
 				})
 			}

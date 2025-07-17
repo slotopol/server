@@ -78,9 +78,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 
 // Lined symbols calculation on regular games.
 func (g *Game) ScanLinedReg(wins *slot.Wins) {
-	for li := 1; li <= g.Sel; li++ {
-		var line = BetLines[li-1]
-
+	for li, line := range BetLines[:g.Sel] {
 		var numl slot.Pos = 5
 		var syml slot.Sym
 		var x slot.Pos
@@ -103,7 +101,7 @@ func (g *Game) ScanLinedReg(wins *slot.Wins) {
 					Mult: 1,
 					Sym:  syml,
 					Num:  numl,
-					Line: li,
+					Line: li + 1,
 					XY:   line.CopyL(numl),
 				})
 			}
@@ -179,9 +177,8 @@ loop1:
 
 	wi.Pay = pays
 	wi.Mult = 1
-	for li := 1; li <= g.Sel; li++ {
-		var line = BetLines[li-1]
-		wi.Line = li
+	for li, line := range BetLines[:g.Sel] {
+		wi.Line = li + 1
 		wi.XY = line.CopyL(wi.Num)
 		*wins = append(*wins, wi)
 	}

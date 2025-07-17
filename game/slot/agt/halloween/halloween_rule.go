@@ -62,8 +62,7 @@ func (g *Game) Clone() slot.SlotGame {
 }
 
 func (g *Game) Scanner(wins *slot.Wins) error {
-	for li := 1; li <= g.Sel; li++ {
-		var line = BetLines[li-1]
+	for li, line := range BetLines[:g.Sel] {
 		var sym1, sym2, sym3 = g.LY(1, line), g.LY(2, line), g.LY(3, line)
 		if sym1 == sym2 && sym1 == sym3 {
 			*wins = append(*wins, slot.WinItem{
@@ -71,7 +70,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				Mult: 1,
 				Sym:  sym1,
 				Num:  3,
-				Line: li,
+				Line: li + 1,
 				XY:   line, // whole line is used
 			})
 		}

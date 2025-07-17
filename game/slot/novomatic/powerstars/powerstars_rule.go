@@ -84,8 +84,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		}
 	}
 
-	for li := 1; li <= g.Sel; li++ {
-		var line = BetLines[li-1]
+	for li, line := range BetLines[:g.Sel] {
 		var syml, symr slot.Sym
 		var numl, numr slot.Pos
 		var payl, payr float64
@@ -119,7 +118,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Mult: 1,
 				Sym:  syml,
 				Num:  numl,
-				Line: li,
+				Line: li + 1,
 				XY:   line.CopyL(numl),
 			})
 		} else if payr > 0 {
@@ -128,7 +127,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Mult: 1,
 				Sym:  symr,
 				Num:  numr,
-				Line: li,
+				Line: li + 1,
 				XY:   line.CopyL(numr),
 			})
 		}
