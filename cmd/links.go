@@ -55,10 +55,10 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/fusionfruitbeat"
 	_ "github.com/slotopol/server/game/slot/ct/groovyautomat"
 	_ "github.com/slotopol/server/game/slot/ct/hitthehot"
-	_ "github.com/slotopol/server/game/slot/ct/thegreatcabaret"
 	_ "github.com/slotopol/server/game/slot/ct/treasurehill"
 	_ "github.com/slotopol/server/game/slot/ct/tropicdancer"
 	_ "github.com/slotopol/server/game/slot/ct/vikingsfun"
+	_ "github.com/slotopol/server/game/slot/ct/wildhills"
 	_ "github.com/slotopol/server/game/slot/ct/winstorm"
 
 	// IGT

@@ -206,17 +206,18 @@
 'Viking's Treasure' NetEnt 5x3 videoslot
 'Vikings Fun' CT Interactive 5x3 videoslot
 'Voodoo Vibes' NetEnt 5x3 videoslot
+'Wild Hills' CT Interactive 5x3 videoslot
 'Wild West' AGT 5x4 videoslot
 'Wild Witches' NetEnt 5x3 videoslot
 'Win Storm' CT Interactive 5x3 cascade videoslot
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 209 games, 115 algorithms, 11 providers
+total: 210 games, 115 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 14 games
+CT Interactive: 15 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

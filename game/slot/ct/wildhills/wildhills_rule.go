@@ -1,6 +1,6 @@
-package thegreatcabaret
+package wildhills
 
-// See: https://www.slotsmate.com/software/ct-interactive/the-great-cabaret
+// See: https://www.slotsmate.com/software/ct-interactive/wild-hills
 
 import (
 	_ "embed"
@@ -8,7 +8,7 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed thegreatcabaret_reel.yaml
+//go:embed wildhills_reel.yaml
 var reels []byte
 
 var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
@@ -17,11 +17,11 @@ var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
 var LinePay = [13][5]float64{
 	{0, 10, 250, 2500, 10000}, //  1 wild
 	{},                        //  2 scatter
-	{0, 2, 25, 125, 750},      //  3 red
-	{0, 2, 25, 125, 750},      //  4 blonde
-	{0, 0, 20, 100, 400},      //  5 pianist
-	{0, 0, 15, 75, 250},       //  6 accordionist
-	{0, 0, 15, 75, 250},       //  7 violinist
+	{0, 2, 25, 125, 750},      //  3 ram
+	{0, 2, 25, 125, 750},      //  4 goat
+	{0, 0, 20, 100, 400},      //  5 dove
+	{0, 0, 15, 75, 250},       //  6 gopher
+	{0, 0, 15, 75, 250},       //  7 hare
 	{0, 0, 10, 50, 125},       //  8 ace
 	{0, 0, 10, 50, 125},       //  9 king
 	{0, 0, 5, 25, 100},        // 10 queen

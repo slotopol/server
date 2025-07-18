@@ -1,4 +1,4 @@
-package thegreatcabaret
+package wildhills
 
 import (
 	"context"
