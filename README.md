@@ -16,11 +16,11 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 210 games, 115 algorithms, 11 providers
+total: 211 games, 116 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 15 games
+CT Interactive: 16 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,7 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Sapphire Lagoon](https://www.slotsmate.com/software/ct-interactive/sapphire-lagoon)' CT Interactive 5x3 videoslot
 * '[Wild Hills](https://www.slotsmate.com/software/ct-interactive/wild-hills)' CT Interactive 5x3 videoslot
 * '[Treasure Hill](https://www.slotsmate.com/software/ct-interactive/treasure-hill)' CT Interactive 5x4 videoslot
 * '[Vikings Fun](https://www.slotsmate.com/software/ct-interactive/vikings-fun)' CT Interactive 5x3 videoslot, some symbols become wilds on free games
@@ -55,8 +56,6 @@ Slotopol: 2 games
 * '[Gonzo's Quest](https://www.slotsmate.com/software/netent/gonzos-quest)' NetEnt 5x3 cascade videoslot
 * '[50 Gems](https://demo.agtsoftware.com/games/agt/gems50)' AGT 5x4 videoslot
 * '[Gems](https://demo.agtsoftware.com/games/agt/gems20)' AGT 5x3 videoslot
-* '[Fruit Queen](https://demo.agtsoftware.com/games/agt/fruitqueen)' AGT 5x6 videoslot
-* '[Red Crown](https://demo.agtsoftware.com/games/agt/redcrown)' AGT 5x4 videoslot
 
 *Top-10 of games with most interesting algorithms released on server*:
 

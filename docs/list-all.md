@@ -168,6 +168,7 @@
 'STALKER' AGT 5x3 videoslot
 'Safari Heat' Playtech 5x3 videoslot
 'Santa' AGT 4x4 videoslot
+'Sapphire Lagoon' CT Interactive 5x3 videoslot
 'Secret Elixir' Novomatic 5x3 videoslot
 'Secret Forest' Novomatic 5x3 videoslot
 'Secret Of Horus' NetEnt 5x3 videoslot
@@ -213,11 +214,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 210 games, 115 algorithms, 11 providers
+total: 211 games, 116 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 15 games
+CT Interactive: 16 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
