@@ -78,6 +78,7 @@
 'Firefighters' AGT 5x3 videoslot
 'Flame Dancer' Novomatic 5x3 videoslot
 'Flowers' NetEnt 5x3 videoslot
+'Forest Nymph' CT Interactive 5x3 videoslot
 'Fortune Teller' Play'n GO 5x3 videoslot
 'Fruit Galaxy' CT Interactive 5x4 videoslot
 'Fruit Queen' AGT 5x6 videoslot
@@ -116,7 +117,9 @@
 'Inferno' Novomatic 5x3 videoslot
 'Infinity Gems' AGT 5x3 videoslot
 'Irish Luck' Playtech 5x3 videoslot
+'Jade Heaven' CT Interactive 5x3 videoslot
 'Jaguar Moon' Novomatic 5x3 videoslot
+'Jaguar Warrior' CT Interactive 5x3 videoslot
 'Jewels' Novomatic 5x3 videoslot
 'Jewels 4 All' Novomatic 5x3 videoslot
 'Joker Dolphin' Novomatic 5x3 videoslot
@@ -137,6 +140,7 @@
 'Lucky Lady's Charm' Novomatic 5x3 videoslot
 'Lucky Lady's Charm Deluxe' Novomatic 5x3 videoslot
 'Lucky Slot' AGT 5x3 videoslot
+'Magician Dreaming' CT Interactive 5x3 videoslot
 'Marco Polo' Novomatic 5x3 videoslot
 'Mega Joker' Novomatic 5x4 videoslot
 'Mega Shine' AGT 5x3 videoslot
@@ -214,11 +218,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 211 games, 116 algorithms, 11 providers
+total: 215 games, 116 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 16 games
+CT Interactive: 20 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

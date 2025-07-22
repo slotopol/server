@@ -16,11 +16,11 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 211 games, 116 algorithms, 11 providers
+total: 215 games, 116 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 16 games
+CT Interactive: 20 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,10 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Jade Heaven](https://www.slotsmate.com/software/ct-interactive/jade-heaven)' CT Interactive 5x3 videoslot
+* '[Forest Nymph](https://www.slotsmate.com/software/ct-interactive/forest-nymph)' CT Interactive 5x3 videoslot
+* '[Magician Dreaming](https://www.slotsmate.com/software/ct-interactive/magician-dreaming)' CT Interactive 5x3 videoslot
+* '[Jaguar Warrior](https://www.slotsmate.com/software/ct-interactive/jaguar-warrior)' CT Interactive 5x3 videoslot
 * '[Sapphire Lagoon](https://www.slotsmate.com/software/ct-interactive/sapphire-lagoon)' CT Interactive 5x3 videoslot
 * '[Wild Hills](https://www.slotsmate.com/software/ct-interactive/wild-hills)' CT Interactive 5x3 videoslot
 * '[Treasure Hill](https://www.slotsmate.com/software/ct-interactive/treasure-hill)' CT Interactive 5x4 videoslot
