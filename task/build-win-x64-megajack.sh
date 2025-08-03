@@ -14,6 +14,7 @@ buildtime=$(date +'%FT%T.%3NZ')
 go env -w GOOS=windows GOARCH=amd64 CGO_ENABLED=1
 go build -o "$GOPATH/bin/slot_win_x64_megajack.exe" -v\
  -tags="jsoniter prod megajack"\
+ -buildvcs=false\
  -ldflags="-linkmode external -extldflags -static\
  -X 'github.com/slotopol/server/config.BuildVers=$buildvers'\
  -X 'github.com/slotopol/server/config.BuildTime=$buildtime'"\

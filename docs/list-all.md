@@ -39,6 +39,7 @@
 'Book of Ra' Novomatic 5x3 videoslot
 'Book of Ra Deluxe' Novomatic 5x3 videoslot
 'Book of Set' AGT 5x3 videoslot
+'Britania' CT Interactive 5x3 videoslot
 'Captain's Treasure' Playtech 5x3 videoslot
 'Cash Farm' Novomatic 5x3 cascade videoslot
 'Casino' AGT 5x4 videoslot
@@ -218,11 +219,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 215 games, 116 algorithms, 11 providers
+total: 216 games, 117 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 20 games
+CT Interactive: 21 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
