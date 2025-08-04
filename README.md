@@ -16,11 +16,11 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 216 games, 117 algorithms, 11 providers
+total: 217 games, 118 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 21 games
+CT Interactive: 22 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,7 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Fortune Pyramid](https://www.slotsmate.com/software/ct-interactive/fortune-pyramid)' CT Interactive 5x3 videoslot
 * '[Britania](https://www.slotsmate.com/software/ct-interactive/britania)' CT Interactive 5x3 videoslot
 * '[Jade Heaven](https://www.slotsmate.com/software/ct-interactive/jade-heaven)' CT Interactive 5x3 videoslot
 * '[Forest Nymph](https://www.slotsmate.com/software/ct-interactive/forest-nymph)' CT Interactive 5x3 videoslot
@@ -59,8 +60,6 @@ Slotopol: 2 games
 * '[Oliver's Bar](https://casino.ru/olivers-bar-novomatic/)' Novomatic 5x3 videoslot
 * '[Flame Dancer](https://casino.ru/flame-dancer-novomatic/)' Novomatic 5x3 videoslot
 * '[Gonzo's Quest](https://www.slotsmate.com/software/netent/gonzos-quest)' NetEnt 5x3 cascade videoslot
-* '[50 Gems](https://demo.agtsoftware.com/games/agt/gems50)' AGT 5x4 videoslot
-* '[Gems](https://demo.agtsoftware.com/games/agt/gems20)' AGT 5x3 videoslot
 
 *Top-10 of games with most interesting algorithms released on server*:
 

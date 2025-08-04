@@ -80,6 +80,7 @@
 'Flame Dancer' Novomatic 5x3 videoslot
 'Flowers' NetEnt 5x3 videoslot
 'Forest Nymph' CT Interactive 5x3 videoslot
+'Fortune Pyramid' CT Interactive 5x3 videoslot
 'Fortune Teller' Play'n GO 5x3 videoslot
 'Fruit Galaxy' CT Interactive 5x4 videoslot
 'Fruit Queen' AGT 5x6 videoslot
@@ -219,11 +220,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 216 games, 117 algorithms, 11 providers
+total: 217 games, 118 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 21 games
+CT Interactive: 22 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
