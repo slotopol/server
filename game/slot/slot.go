@@ -6,8 +6,8 @@ import (
 )
 
 type (
-	Sym byte // symbol type
-	Pos int8 // screen or line position
+	Sym int8 // symbol type
+	Pos int8 // screen or line position with 1-based index
 )
 
 type Reels interface {

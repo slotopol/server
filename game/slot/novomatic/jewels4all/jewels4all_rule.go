@@ -64,12 +64,11 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 // Lined symbols calculation.
 func (g *Game) ScanLined(wins *slot.Wins) {
 	var scrnwild slot.Screen5x3 = g.Screen5x3
-	var x, y slot.Pos
-	for x = 1; x <= 5; x++ {
-		for y = 1; y <= 3; y++ {
-			if g.At(x, y) == wild {
-				for i := max(0, x-2); i <= min(4, x); i++ {
-					for j := max(0, y-2); j <= min(2, y); j++ {
+	for x := range 5 {
+		for y := range 3 {
+			if g.Scr[x][y] == wild {
+				for i := max(0, x-1); i <= min(4, x+1); i++ {
+					for j := max(0, y-1); j <= min(2, y+1); j++ {
 						scrnwild.Scr[i][j] = wild
 					}
 				}

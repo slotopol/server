@@ -1,4 +1,6 @@
-package katana
+package chillibomb
+
+// See: https://www.slotsmate.com/software/ct-interactive/chilli-bomb
 
 import (
 	_ "embed"
@@ -6,40 +8,32 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed katana_bon.yaml
-var rbon []byte
-
-var ReelsBon = slot.ReadObj[*slot.Reels5x](rbon)
-
-//go:embed katana_reel.yaml
+//go:embed chillibomb_reel.yaml
 var reels []byte
 
 var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
 
 // Lined payment.
 var LinePay = [12][5]float64{
-	{0, 0, 100, 500, 1000}, // 1  shogun
-	{0, 0, 80, 250, 800},   // 2  geisha
-	{0, 0, 40, 200, 600},   // 3  general
-	{0, 0, 40, 200, 600},   // 4  archers
-	{0, 0, 30, 150, 500},   // 5  template
-	{0, 0, 30, 150, 500},   // 6  gazebo
-	{0, 0, 10, 50, 200},    // 7  ace
-	{0, 0, 10, 30, 150},    // 8  king
-	{0, 0, 10, 30, 150},    // 9  queen
-	{0, 0, 10, 20, 100},    // 10 jack
-	{0, 0, 10, 20, 100},    // 11 ten
-	{},                     // 12 katana
+	{0, 0, 100, 200, 1000}, //  1 wild
+	{},                     //  2 chilli
+	{},                     //  3 scatter
+	{0, 0, 40, 50, 500},    //  4 seven
+	{0, 0, 25, 50, 200},    //  5 avocado
+	{0, 0, 25, 50, 200},    //  6 peach
+	{0, 0, 20, 50, 200},    //  7 apple
+	{0, 0, 20, 50, 200},    //  8 watermelon
+	{0, 0, 20, 50, 100},    //  9 orange
+	{0, 0, 20, 50, 100},    // 10 lemon
+	{0, 0, 20, 50, 100},    // 11 plum
+	{0, 0, 20, 50, 100},    // 12 cherry
 }
 
 // Scatters payment.
-var ScatPay = [5]float64{0, 0, 2, 20, 200} // 12 katana
-
-// Scatter freespins table
-var ScatFreespin = [5]int{0, 0, 10, 10, 10} // 12 katana
+var ScatPay = [5]float64{0, 0, 10, 20, 500} // 2 scatter
 
 // Bet lines
-var BetLines = slot.BetLinesNvm20v1
+var BetLines = slot.BetLinesAgt5x3[:20]
 
 type Game struct {
 	slot.Screen5x3 `yaml:",inline"`
@@ -63,7 +57,7 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-const wild, scat = 1, 12
+const wild, chilli, scat = 1, 2, 3
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	g.ScanLined(wins)
@@ -73,13 +67,14 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(wins *slot.Wins) {
-	var reelwild [5]bool
-	if g.FSR > 0 {
-		for x := range 5 {
-			for y := range 3 {
-				if g.Scr[x][y] == wild {
-					reelwild[x] = true
-					break
+	var scrnwild slot.Screen5x3 = g.Screen5x3
+	for y := range 3 {
+		if g.Scr[2][y] == chilli {
+			for i := max(0, 1); i <= min(4, 3); i++ {
+				for j := max(0, y-1); j <= min(2, y+1); j++ {
+					if scrnwild.Scr[i][j] != scat {
+						scrnwild.Scr[i][j] = wild
+					}
 				}
 			}
 		}
@@ -90,8 +85,8 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
-			var sx = g.LY(x, line)
-			if sx == wild || reelwild[x-1] {
+			var sx = scrnwild.LY(x, line)
+			if sx == wild {
 				if syml == 0 {
 					numw = x
 				}
@@ -135,27 +130,22 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
 	if count := g.ScatNum(scat); count >= 3 {
-		var pay, fs = ScatPay[count-1], ScatFreespin[count-1]
+		var pay = ScatPay[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay:  g.Bet * float64(g.Sel) * pay,
 			Mult: 1,
 			Sym:  scat,
 			Num:  count,
 			XY:   g.ScatPos(scat),
-			Free: fs,
 		})
 	}
 }
 
 func (g *Game) Spin(mrtp float64) {
-	if g.FSR == 0 {
-		var reels, _ = slot.FindClosest(ReelsMap, mrtp)
-		g.ReelSpin(reels)
-	} else {
-		g.ReelSpin(ReelsBon)
-	}
+	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
+	g.ReelSpin(reels)
 }
 
 func (g *Game) SetSel(sel int) error {
-	return g.SetSelNum(sel, len(BetLines))
+	return slot.ErrNoFeature
 }

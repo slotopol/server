@@ -46,6 +46,7 @@
 'Champagne' Megajack 5x3 videoslot
 'Cherry Hot' AGT 5x3 videoslot
 'Chicago' Novomatic 5x3 videoslot
+'Chilli Bomb' CT Interactive 5x3 videoslot
 'Cleopatra' IGT 5x3 videoslot
 'Clover Party' CT Interactive 5x3 videoslot
 'Cold Spell' Novomatic 5x3 videoslot
@@ -220,11 +221,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 217 games, 118 algorithms, 11 providers
+total: 218 games, 119 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 22 games
+CT Interactive: 23 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
