@@ -186,6 +186,7 @@
 'Sizzling Hot Deluxe' Novomatic 5x3 videoslot
 'Slotopol' Megajack 5x3 videoslot
 'Slotopol Deluxe' Megajack 5x3 videoslot
+'Smiley x Wild' CT Interactive 5x3 videoslot
 'Spellcast' NetEnt 5x3 videoslot
 'Sun City' AGT 5x3 videoslot
 'Super Eighties' NetEnt 5x4 videoslot
@@ -221,11 +222,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 218 games, 119 algorithms, 11 providers
+total: 219 games, 120 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 23 games
+CT Interactive: 24 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
