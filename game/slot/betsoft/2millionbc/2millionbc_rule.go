@@ -49,10 +49,8 @@ const (
 type Game struct {
 	slot.Screen5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
-	// acorns number
-	AN int `json:"an" yaml:"an" xml:"an"`
-	// acorns bet
-	AB float64 `json:"ab" yaml:"ab" xml:"ab"`
+	AP             float64 `json:"ap" yaml:"ap" xml:"ap"` // acorns pay
+	AC             int     `json:"an" yaml:"an" xml:"an"` // acorns counter
 }
 
 // Declare conformity with SlotGame interface.
@@ -130,7 +128,7 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 	}
 
 	if g.At(5, 1) == acorn || g.At(5, 2) == acorn || g.At(5, 3) == acorn {
-		if (g.AN+1)%3 == 0 {
+		if (g.AC+1)%3 == 0 {
 			*wins = append(*wins, slot.WinItem{
 				Mult: 1,
 				Sym:  acorn,
@@ -154,7 +152,7 @@ func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {
 	for i, wi := range wins {
 		switch wi.BID {
 		case acbn:
-			wins[i].Pay = AcornSpawn(g.AB + g.Bet*float64(g.Sel))
+			wins[i].Pay = AcornSpawn(g.AP + g.Bet*float64(g.Sel))
 		case dlbn:
 			wins[i].Pay = DiamondLionSpawn(g.Bet)
 		}
@@ -165,12 +163,12 @@ func (g *Game) Apply(wins slot.Wins) {
 	g.Slotx.Apply(wins)
 
 	if g.At(5, 1) == acorn || g.At(5, 2) == acorn || g.At(5, 3) == acorn {
-		g.AN++
-		g.AN %= 3
-		if g.AN > 0 {
-			g.AB += g.Bet * float64(g.Sel)
+		g.AC++
+		g.AC %= 3
+		if g.AC > 0 {
+			g.AP += g.Bet * float64(g.Sel)
 		} else {
-			g.AB = 0
+			g.AP = 0
 		}
 	}
 }

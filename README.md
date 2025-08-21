@@ -16,11 +16,11 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 219 games, 120 algorithms, 11 providers
+total: 220 games, 121 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 24 games
+CT Interactive: 25 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,7 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Neon Bananas](https://www.slotsmate.com/software/ct-interactive/neon-bananas)' CT Interactive 5x3 videoslot with 2 kinds of bonuses
 * '[Smiley x Wild](https://www.slotsmate.com/software/ct-interactive/smiley-x-wild)' CT Interactive 5x3 videoslot
 * '[Chilli Bomb](https://www.slotsmate.com/software/ct-interactive/chilli-bomb)' CT Interactive 5x3 videoslot
 * '[Fortune Pyramid](https://www.slotsmate.com/software/ct-interactive/fortune-pyramid)' CT Interactive 5x3 videoslot
@@ -60,8 +61,6 @@ Slotopol: 2 games
 * '[Cash Farm](https://casino.ru/cash-farm-novomatic/)' Novomatic 5x3 cascade videoslot with bonus game
 * '[Fruit Sensation](https://casino.ru/fruit-sensation-novomatic/)' Novomatic 5x3 videoslot
 * '[Oliver's Bar](https://casino.ru/olivers-bar-novomatic/)' Novomatic 5x3 videoslot
-* '[Flame Dancer](https://casino.ru/flame-dancer-novomatic/)' Novomatic 5x3 videoslot
-* '[Gonzo's Quest](https://www.slotsmate.com/software/netent/gonzos-quest)' NetEnt 5x3 cascade videoslot
 
 *Top-10 of games with most interesting algorithms released on server*:
 

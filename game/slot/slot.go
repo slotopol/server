@@ -86,6 +86,7 @@ type SlotGame interface {
 // to game rules, and can not be calculated. Screen combination with error will be
 // dropped out. If screen appear to rules it should be calculated in any case.
 // If scanner algorithm receives wrong data - its case for panic.
+// The scanning method should never change the game state.
 
 type ClassicSlot interface {
 	Screen

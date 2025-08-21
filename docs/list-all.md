@@ -149,6 +149,7 @@
 'Mega Shine' AGT 5x3 videoslot
 'Mermaid's Pearl' Novomatic 5x3 videoslot
 'Merry Christmas' AGT 3x3 videoslot
+'Neon Bananas' CT Interactive 5x3 videoslot
 'Oliver's Bar' Novomatic 5x3 videoslot
 'Panda' AGT 3x3 videoslot
 'Pandora's Box' NetEnt 5x3 videoslot
@@ -222,11 +223,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 219 games, 120 algorithms, 11 providers
+total: 220 games, 121 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 24 games
+CT Interactive: 25 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
