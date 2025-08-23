@@ -195,6 +195,7 @@
 'Tesla' AGT 5x3 videoslot
 'The Great Cabaret' CT Interactive 5x3 videoslot
 'The Leprechaun' AGT 5x3 videoslot
+'The Mighty Aztecs' CT Interactive 5x3 videoslot
 'The Money Game' Novomatic 5x3 videoslot
 'The Money Game Deluxe' Novomatic 5x3 videoslot
 'The Real King Gold Records' Novomatic 5x3 videoslot
@@ -223,11 +224,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 220 games, 121 algorithms, 11 providers
+total: 221 games, 122 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 25 games
+CT Interactive: 26 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

@@ -61,6 +61,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/neonbananas"
 	_ "github.com/slotopol/server/game/slot/ct/sapphirelagoon"
 	_ "github.com/slotopol/server/game/slot/ct/smileyxwild"
+	_ "github.com/slotopol/server/game/slot/ct/themightyaztecs"
 	_ "github.com/slotopol/server/game/slot/ct/treasurehill"
 	_ "github.com/slotopol/server/game/slot/ct/tropicdancer"
 	_ "github.com/slotopol/server/game/slot/ct/vikingsfun"
