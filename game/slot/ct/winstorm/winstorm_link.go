@@ -8,7 +8,8 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Win Storm", Date: game.Date(2020, 12, 27)}, // see: https://www.slotsmate.com/software/ct-interactive/win-storm
+		{Prov: "CT Interactive", Name: "Win Storm", Date: game.Date(2020, 12, 27)},  // see: https://www.slotsmate.com/software/ct-interactive/win-storm
+		{Prov: "CT Interactive", Name: "Dark Woods", Date: game.Date(2020, 12, 16)}, // see: https://www.slotsmate.com/software/ct-interactive/dark-woods
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

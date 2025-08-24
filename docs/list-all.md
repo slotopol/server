@@ -48,13 +48,16 @@
 'Chicago' Novomatic 5x3 videoslot
 'Chilli Bomb' CT Interactive 5x3 videoslot
 'Cleopatra' IGT 5x3 videoslot
+'Clover Joker' CT Interactive 5x3 videoslot
 'Clover Party' CT Interactive 5x3 videoslot
+'Clover Wheel' CT Interactive 5x3 videoslot
 'Cold Spell' Novomatic 5x3 videoslot
 'Columbus' Novomatic 5x3 videoslot
 'Columbus Deluxe' Novomatic 5x3 videoslot
 'Cops'n'Robbers' Play'n GO 5x3 videoslot
 'Crown' AGT 5x4 videoslot
 'Dancing Bananas' CT Interactive 5x3 videoslot
+'Dark Woods' CT Interactive 5x3 cascade videoslot
 'Desert Treasure' Playtech 5x3 videoslot
 'Diamond 7' Novomatic 5x3 videoslot
 'Diamond Dogs' NetEnt 5x3 videoslot
@@ -95,6 +98,7 @@
 'Geisha Wonders' NetEnt 5x3 videoslot
 'Gems' AGT 5x3 videoslot
 'God of Sun' Novomatic 5x3 videoslot
+'Golden Amulet' CT Interactive 5x3 videoslot
 'Golden Prophecies' Novomatic 5x3 videoslot
 'Golden Tour' Playtech 5x3 videoslot
 'Gonzo's Quest' NetEnt 5x3 cascade videoslot
@@ -149,6 +153,7 @@
 'Mega Shine' AGT 5x3 videoslot
 'Mermaid's Pearl' Novomatic 5x3 videoslot
 'Merry Christmas' AGT 3x3 videoslot
+'Mighty Moon' CT Interactive 5x3 videoslot
 'Neon Bananas' CT Interactive 5x3 videoslot
 'Oliver's Bar' Novomatic 5x3 videoslot
 'Panda' AGT 3x3 videoslot
@@ -224,11 +229,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 221 games, 122 algorithms, 11 providers
+total: 226 games, 122 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 26 games
+CT Interactive: 31 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

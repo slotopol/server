@@ -9,6 +9,7 @@ import (
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "CT Interactive", Name: "Groovy Automat", Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/groovy-automat
+		{Prov: "CT Interactive", Name: "Golden Amulet", Date: game.Date(2020, 11, 26)},  // see: https://www.slotsmate.com/software/ct-interactive/golden-amulet
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

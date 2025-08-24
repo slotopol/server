@@ -16,11 +16,11 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 221 games, 122 algorithms, 11 providers
+total: 226 games, 122 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 26 games
+CT Interactive: 31 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,11 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Golden Amulet](https://www.slotsmate.com/software/ct-interactive/golden-amulet)' CT Interactive 5x3 videoslot
+* '[Clover Wheel](https://www.slotsmate.com/software/ct-interactive/clover-wheel)' CT Interactive 5x3 videoslot with 2 kinds of bonuses
+* '[Clover Joker](https://www.slotsmate.com/software/ct-interactive/clover-joker)' CT Interactive 5x3 videoslot
+* '[Mighty Moon](https://www.slotsmate.com/software/ct-interactive/mighty-moon)' CT Interactive 5x3 videoslot with 2 kinds of bonuses
+* '[Dark Woods](https://www.slotsmate.com/software/ct-interactive/dark-woods)' CT Interactive 5x3 cascade videoslot
 * '[The Mighty Aztecs](https://www.slotsmate.com/software/ct-interactive/the-mighty-aztecs)' CT Interactive 5x3 videoslot with 2 kinds of bonuses
 * '[Neon Bananas](https://www.slotsmate.com/software/ct-interactive/neon-bananas)' CT Interactive 5x3 videoslot with 2 kinds of bonuses
 * '[Smiley x Wild](https://www.slotsmate.com/software/ct-interactive/smiley-x-wild)' CT Interactive 5x3 videoslot
