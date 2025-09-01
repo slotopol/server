@@ -63,6 +63,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/smileyxwild"
 	_ "github.com/slotopol/server/game/slot/ct/themightyaztecs"
 	_ "github.com/slotopol/server/game/slot/ct/treasurehill"
+	_ "github.com/slotopol/server/game/slot/ct/treasurekingdom"
 	_ "github.com/slotopol/server/game/slot/ct/tropicdancer"
 	_ "github.com/slotopol/server/game/slot/ct/vikingsfun"
 	_ "github.com/slotopol/server/game/slot/ct/wildhills"
