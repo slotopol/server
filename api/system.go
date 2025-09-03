@@ -1,6 +1,7 @@
 package api
 
 import (
+	"os"
 	"runtime"
 	"strings"
 	"time"
@@ -12,8 +13,18 @@ import (
 	"github.com/klauspost/cpuid/v2"
 )
 
+func isRunningInContainer() bool {
+	if _, err := os.Stat("/.dockerenv"); err == nil {
+		return true // File exists, likely running in Docker
+	}
+	return false // File does not exist, not running in Docker or an error occurred
+}
+
 // save server start time
 var starttime = time.Now()
+
+// save if running in container
+var indocker = isRunningInContainer()
 
 // Check service response.
 func ApiPing(c *gin.Context) {
@@ -32,6 +43,7 @@ func ApiServInfo(c *gin.Context) {
 		"os":       runtime.GOOS,
 		"arch":     runtime.GOARCH,
 		"maxprocs": runtime.GOMAXPROCS(0),
+		"indocker": indocker,
 		// CPU
 		"cpubrand": cpuid.CPU.BrandName,
 		"cpuvend":  cpuid.CPU.VendorString,

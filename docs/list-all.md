@@ -1,5 +1,5 @@
 
-# slot_win_x64 list --all
+# slot_win_x64 list -i=all
 
 ```text
 '100 Jokers' AGT 5x4 videoslot
@@ -204,6 +204,7 @@
 'The Money Game' Novomatic 5x3 videoslot
 'The Money Game Deluxe' Novomatic 5x3 videoslot
 'The Real King Gold Records' Novomatic 5x3 videoslot
+'The Temple of Astarta' CT Interactive 5x3 videoslot
 'Thrill Spin' NetEnt 5x3 videoslot
 'Tiki Wonders' NetEnt 5x3 videoslot
 'Time Machine II' AGT 5x3 videoslot
@@ -230,11 +231,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 227 games, 123 algorithms, 11 providers
+total: 228 games, 124 algorithms, 11 providers
 AGT: 60 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 32 games
+CT Interactive: 33 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
