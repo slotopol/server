@@ -1,6 +1,6 @@
 package hotclover
 
-// See: https://demo.agtsoftware.com/games/agt/hotclover100
+// See: https://agtsoftware.com/games/agt/hotclover100
 
 import (
 	_ "embed"

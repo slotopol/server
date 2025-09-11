@@ -1,6 +1,6 @@
 package extraspin3
 
-// See: https://demo.agtsoftware.com/games/agt/extraspin3
+// See: https://agtsoftware.com/games/agt/extraspin3
 
 import (
 	"github.com/slotopol/server/game/slot"

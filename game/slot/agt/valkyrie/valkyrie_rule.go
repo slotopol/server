@@ -1,6 +1,6 @@
 package valkyrie
 
-// See: https://demo.agtsoftware.com/games/agt/valkyrie
+// See: https://agtsoftware.com/games/agt/valkyrie
 
 import (
 	_ "embed"

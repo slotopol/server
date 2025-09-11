@@ -8,10 +8,10 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "AGT", Name: "AI"},          // see: https://demo.agtsoftware.com/games/agt/aislot
-		{Prov: "AGT", Name: "Tesla"},       // see: https://demo.agtsoftware.com/games/agt/tesla
-		{Prov: "AGT", Name: "Book of Set"}, // see: https://demo.agtsoftware.com/games/agt/bookofset
-		{Prov: "AGT", Name: "Pharaoh II"},  // see: https://demo.agtsoftware.com/games/agt/pharaoh2
+		{Prov: "AGT", Name: "AI"},          // see: https://agtsoftware.com/games/agt/aislot
+		{Prov: "AGT", Name: "Tesla"},       // see: https://agtsoftware.com/games/agt/tesla
+		{Prov: "AGT", Name: "Book of Set"}, // see: https://agtsoftware.com/games/agt/bookofset
+		{Prov: "AGT", Name: "Pharaoh II"},  // see: https://agtsoftware.com/games/agt/pharaoh2
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

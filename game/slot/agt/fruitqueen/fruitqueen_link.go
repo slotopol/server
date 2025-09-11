@@ -8,7 +8,7 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "AGT", Name: "Fruit Queen"}, // see: https://demo.agtsoftware.com/games/agt/fruitqueen
+		{Prov: "AGT", Name: "Fruit Queen"}, // see: https://agtsoftware.com/games/agt/fruitqueen
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

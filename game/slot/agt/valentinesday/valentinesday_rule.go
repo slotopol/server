@@ -1,6 +1,6 @@
 package valentinesday
 
-// See: https://demo.agtsoftware.com/games/agt/valentine
+// See: https://agtsoftware.com/games/agt/valentine
 
 import (
 	_ "embed"

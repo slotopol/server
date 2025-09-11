@@ -1,6 +1,6 @@
 package panda
 
-// See: https://demo.agtsoftware.com/games/agt/panda
+// See: https://agtsoftware.com/games/agt/panda
 
 import (
 	_ "embed"

@@ -76,8 +76,8 @@ Slotopol: 2 games
 * '[Book of Ra Deluxe](https://www.slotsmate.com/software/novomatic/book-of-ra-deluxe)' Novomatic 5x3 videoslot with special expanding symbol on free games
 * '[Gonzo's Quest](https://www.slotsmate.com/software/netent/gonzos-quest)' NetEnt 5x3 cascade videoslot
 * '[Fruit Shop](https://www.slotsmate.com/software/netent/fruit-shop)' NetEnt 5x3 videoslot with free spins on every win
-* '[Sun City](https://demo.agtsoftware.com/games/agt/suncity)' AGT 5x3 videoslot with free games continous by the luck
-* '[Egypt](https://demo.agtsoftware.com/games/agt/egypt)' AGT 5x3 videoslot with minislot for wilds multiplier
+* '[Sun City](https://agtsoftware.com/games/agt/suncity)' AGT 5x3 videoslot with free games continous by the luck
+* '[Egypt](https://agtsoftware.com/games/agt/egypt)' AGT 5x3 videoslot with minislot for wilds multiplier
 * 'Fire Joker' Play'n GO 5x3 videoslot with jackpot on lined pays and big symbols on free games
 * '[Secret Elixir](https://www.slotsmate.com/software/novomatic/secret-elixir)' Novomatic 5x3 videoslot with multipliers on 5th reel
 * '[Vikings Fun](https://www.slotsmate.com/software/ct-interactive/vikings-fun)' CT Interactive 5x3 videoslot, some symbols become wilds on free games

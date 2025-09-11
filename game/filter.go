@@ -28,10 +28,13 @@ var FiltMap = map[string]Filter{
 
 	"lines":  func(gi *GameInfo) bool { return gi.LN > 0 },
 	"ways":   func(gi *GameInfo) bool { return gi.WN > 0 },
-	"casc":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPcasc > 0 },
-	"jack":   func(gi *GameInfo) bool { return gi.GP&GPjack > 0 },
-	"fg":     func(gi *GameInfo) bool { return gi.GP&(GPfghas+GPretrig) > 0 },
 	"bon":    func(gi *GameInfo) bool { return gi.BN > 0 },
+	"jack":   func(gi *GameInfo) bool { return gi.GP&GPjack > 0 },
+	"casc":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPcasc > 0 },
+	"fg":     func(gi *GameInfo) bool { return gi.GP&(GPfghas+GPretrig) > 0 },
+	"rw":     func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPrwild > 0 },
+	"bw":     func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPbwild > 0 },
+	"big":    func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPbsym > 0 },
 	"nodate": func(gi *GameInfo) bool { return gi.Date == 0 },
 }
 var (

@@ -1,6 +1,6 @@
 package aislot
 
-// See: https://demo.agtsoftware.com/games/agt/aislot
+// See: https://agtsoftware.com/games/agt/aislot
 
 import (
 	_ "embed"

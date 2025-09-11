@@ -237,10 +237,13 @@ func init() {
 		"wn=243, wneq243 - games with 243 ways (or some other pointed)\n"+
 		"wn<243, wnlt243 - games with less than 243 ways (or some other pointed)\n"+
 		"wn>243, wngt243 - games with greater than 243 ways (or some other pointed)\n"+
-		"casc - slots with cascade falls\n"+
-		"jack - games with jackpots\n"+
-		"fg - games with any free games\n"+
 		"bon - games with bonus games\n"+
+		"jack - games with jackpots\n"+
+		"casc - slots with cascade falls\n"+
+		"fg - games with any free games\n"+
+		"rw - slots with reel wild symbols\n"+
+		"bw - slots with big wilds (3x3)\n"+
+		"big - slots with big symbol (usually 3x3 in the center on free games)\n"+
 		"y=15, y=2015, yeq15 - games released in 2015 year (or some other pointed year)\n"+
 		"y<15, y<2015, ylt15 - games released before 2015 year (or some other pointed year)\n"+
 		"y>15, y>2015, ygt15 - games released after 2015 year (or some other pointed year)\n"+

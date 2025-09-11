@@ -1,6 +1,6 @@
 package doubleice
 
-// See: https://demo.agtsoftware.com/games/agt/doubleice
+// See: https://agtsoftware.com/games/agt/doubleice
 
 import (
 	_ "embed"

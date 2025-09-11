@@ -1,6 +1,6 @@
 package halloween
 
-// See: https://demo.agtsoftware.com/games/agt/halloween
+// See: https://agtsoftware.com/games/agt/halloween
 
 import (
 	_ "embed"

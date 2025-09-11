@@ -1,6 +1,6 @@
 package luckyslot
 
-// See: https://demo.agtsoftware.com/games/agt/luckyslot
+// See: https://agtsoftware.com/games/agt/luckyslot
 
 import (
 	_ "embed"

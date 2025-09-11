@@ -1,6 +1,6 @@
 package gems50
 
-// See: https://demo.agtsoftware.com/games/agt/gems50
+// See: https://agtsoftware.com/games/agt/gems50
 
 import (
 	_ "embed"

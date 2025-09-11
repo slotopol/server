@@ -1,6 +1,6 @@
 package extraspin
 
-// See: https://demo.agtsoftware.com/games/agt/extraspin
+// See: https://agtsoftware.com/games/agt/extraspin
 
 import (
 	_ "embed"

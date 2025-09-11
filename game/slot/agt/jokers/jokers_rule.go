@@ -1,6 +1,6 @@
 package jokers
 
-// See: https://demo.agtsoftware.com/games/agt/jokers20
+// See: https://agtsoftware.com/games/agt/jokers20
 
 import (
 	_ "embed"

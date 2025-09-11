@@ -1,6 +1,6 @@
 package iceiceice
 
-// See: https://demo.agtsoftware.com/games/agt/iceiceice
+// See: https://agtsoftware.com/games/agt/iceiceice
 
 import (
 	_ "embed"

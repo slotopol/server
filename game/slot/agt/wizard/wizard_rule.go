@@ -1,6 +1,6 @@
 package wizard
 
-// See: https://demo.agtsoftware.com/games/agt/wizard
+// See: https://agtsoftware.com/games/agt/wizard
 
 import (
 	_ "embed"

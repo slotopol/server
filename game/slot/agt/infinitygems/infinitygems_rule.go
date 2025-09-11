@@ -1,6 +1,6 @@
 package infinitygems
 
-// See: https://demo.agtsoftware.com/games/agt/infinitygems
+// See: https://agtsoftware.com/games/agt/infinitygems
 
 import (
 	_ "embed"

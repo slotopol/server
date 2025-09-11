@@ -8,8 +8,8 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "AGT", Name: "Wizard"},           // see: https://demo.agtsoftware.com/games/agt/wizard
-		{Prov: "AGT", Name: "Around The World"}, // see: https://demo.agtsoftware.com/games/agt/aroundtheworld
+		{Prov: "AGT", Name: "Wizard"},           // see: https://agtsoftware.com/games/agt/wizard
+		{Prov: "AGT", Name: "Around The World"}, // see: https://agtsoftware.com/games/agt/aroundtheworld
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

@@ -9,8 +9,8 @@ import (
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "AGT", Name: "100 Jokers"},
-		{Prov: "AGT", Name: "50 Happy Santa"}, // see: https://demo.agtsoftware.com/games/agt/happysanta50
-		{Prov: "AGT", Name: "40 Bigfoot"},     // see: https://demo.agtsoftware.com/games/agt/bigfoot40
+		{Prov: "AGT", Name: "50 Happy Santa"}, // see: https://agtsoftware.com/games/agt/happysanta50
+		{Prov: "AGT", Name: "40 Bigfoot"},     // see: https://agtsoftware.com/games/agt/bigfoot40
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

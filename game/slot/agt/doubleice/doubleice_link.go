@@ -9,7 +9,7 @@ import (
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "AGT", Name: "Double Ice"},
-		{Prov: "AGT", Name: "Double Hot"}, // see: https://demo.agtsoftware.com/games/agt/double
+		{Prov: "AGT", Name: "Double Hot"}, // see: https://agtsoftware.com/games/agt/double
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

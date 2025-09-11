@@ -1,6 +1,6 @@
 package icefruits
 
-// See: https://demo.agtsoftware.com/games/agt/megaice
+// See: https://agtsoftware.com/games/agt/megaice
 
 import (
 	_ "embed"

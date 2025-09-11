@@ -11,7 +11,7 @@ var Info = game.AlgInfo{
 		{Prov: "Novomatic", Name: "Always Hot", Date: game.Date(2008, 11, 17)},
 		{Prov: "Novomatic", Name: "Always Hot Deluxe", Date: game.Date(2008, 11, 18)}, // see: https://www.slotsmate.com/software/novomatic/always-hot-deluxe
 		{Prov: "Novomatic", Name: "Always American", Date: game.Date(2016, 4, 15)},    // see: https://www.slotsmate.com/software/novomatic/always-american
-		{Prov: "AGT", Name: "Tropic Hot"},                                             // see: https://demo.agtsoftware.com/games/agt/tropichot
+		{Prov: "AGT", Name: "Tropic Hot"},                                             // see: https://agtsoftware.com/games/agt/tropichot
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

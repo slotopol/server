@@ -1,6 +1,6 @@
 package aladdin
 
-// See: https://demo.agtsoftware.com/games/agt/aladdin
+// See: https://agtsoftware.com/games/agt/aladdin
 
 import (
 	_ "embed"

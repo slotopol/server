@@ -1,6 +1,6 @@
 package suncity
 
-// See: https://demo.agtsoftware.com/games/agt/suncity
+// See: https://agtsoftware.com/games/agt/suncity
 
 import (
 	_ "embed"

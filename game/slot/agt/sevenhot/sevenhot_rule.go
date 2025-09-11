@@ -1,6 +1,6 @@
 package sevenhot
 
-// See: https://demo.agtsoftware.com/games/agt/sevenhot20
+// See: https://agtsoftware.com/games/agt/sevenhot20
 
 import (
 	_ "embed"

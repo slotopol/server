@@ -1,6 +1,6 @@
 package merrychristmas
 
-// See: https://demo.agtsoftware.com/games/agt/christmas
+// See: https://agtsoftware.com/games/agt/christmas
 
 import (
 	_ "embed"

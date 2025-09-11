@@ -14,17 +14,17 @@ import (
 )
 
 func isRunningInContainer() bool {
-	if _, err := os.Stat("/.dockerenv"); err == nil {
-		return true // File exists, likely running in Docker
+	if _, err := os.Stat("/.dockerenv"); err != nil {
+		return false // File does not exist, not running in Docker or an error occurred
 	}
-	return false // File does not exist, not running in Docker or an error occurred
+	return true // File exists, likely running in Docker
 }
 
 // save server start time
 var starttime = time.Now()
 
-// save if running in container
-var indocker = isRunningInContainer()
+// cached service info response
+var srvinfo gin.H // lazy init
 
 // Check service response.
 func ApiPing(c *gin.Context) {
@@ -33,30 +33,32 @@ func ApiPing(c *gin.Context) {
 
 // Static service system information.
 func ApiServInfo(c *gin.Context) {
-	var ret = gin.H{
-		// this service
-		"buildvers": cfg.BuildVers,
-		"buildtime": cfg.BuildTime,
-		"started":   starttime.Format(time.RFC3339),
-		// Go version & OS
-		"govers":   runtime.Version(),
-		"os":       runtime.GOOS,
-		"arch":     runtime.GOARCH,
-		"maxprocs": runtime.GOMAXPROCS(0),
-		"indocker": indocker,
-		// CPU
-		"cpubrand": cpuid.CPU.BrandName,
-		"cpuvend":  cpuid.CPU.VendorString,
-		"cpuphys":  cpuid.CPU.PhysicalCores,
-		"cpulogic": cpuid.CPU.LogicalCores,
-		"cpufreq":  cpuid.CPU.Hz,
-		"cpufeat":  strings.Join(cpuid.CPU.FeatureSet(), ","),
-		// paths
-		"exepath": util.ToSlash(cfg.ExePath),
-		"cfgpath": util.ToSlash(cfg.CfgPath),
-		"sqlpath": util.ToSlash(cfg.SqlPath),
+	if srvinfo == nil {
+		srvinfo = gin.H{
+			// this service
+			"buildvers": cfg.BuildVers,
+			"buildtime": cfg.BuildTime,
+			"started":   starttime.Format(time.RFC3339),
+			// Go version & OS
+			"govers":   runtime.Version(),
+			"os":       runtime.GOOS,
+			"arch":     runtime.GOARCH,
+			"maxprocs": runtime.GOMAXPROCS(0),
+			"indocker": isRunningInContainer(),
+			// CPU
+			"cpubrand": cpuid.CPU.BrandName,
+			"cpuvend":  cpuid.CPU.VendorString,
+			"cpuphys":  cpuid.CPU.PhysicalCores,
+			"cpulogic": cpuid.CPU.LogicalCores,
+			"cpufreq":  cpuid.CPU.Hz,
+			"cpufeat":  strings.Join(cpuid.CPU.FeatureSet(), ","),
+			// paths
+			"exepath": util.ToSlash(cfg.ExePath),
+			"cfgpath": util.ToSlash(cfg.CfgPath),
+			"sqlpath": util.ToSlash(cfg.SqlPath),
+		}
 	}
-	RetOk(c, ret)
+	RetOk(c, srvinfo)
 }
 
 // Memory usage footprint.

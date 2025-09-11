@@ -1,6 +1,6 @@
 package cherryhot
 
-// See: https://demo.agtsoftware.com/games/agt/cherryhot
+// See: https://agtsoftware.com/games/agt/cherryhot
 
 import (
 	_ "embed"

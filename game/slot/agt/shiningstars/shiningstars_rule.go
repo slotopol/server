@@ -1,6 +1,6 @@
 package shiningstars
 
-// See: https://demo.agtsoftware.com/games/agt/shiningstars
+// See: https://agtsoftware.com/games/agt/shiningstars
 
 import (
 	_ "embed"

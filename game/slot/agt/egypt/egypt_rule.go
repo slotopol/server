@@ -1,6 +1,6 @@
 package egypt
 
-// See: https://demo.agtsoftware.com/games/agt/egypt
+// See: https://agtsoftware.com/games/agt/egypt
 
 import (
 	_ "embed"

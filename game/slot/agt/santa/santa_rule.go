@@ -1,6 +1,6 @@
 package santa
 
-// See: https://demo.agtsoftware.com/games/agt/santa
+// See: https://agtsoftware.com/games/agt/santa
 
 import (
 	_ "embed"
