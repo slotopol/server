@@ -16,8 +16,8 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 228 games, 124 algorithms, 11 providers
-AGT: 60 games
+total: 229 games, 124 algorithms, 11 providers
+AGT: 61 games
 Aristocrat: 6 games
 BetSoft: 3 games
 CT Interactive: 33 games
@@ -32,6 +32,7 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Aquaman](https://agtsoftware.com/games/agt/aquaman)' AGT 5x3 videoslot
 * '[The Temple of Astarta](https://www.slotsmate.com/software/ct-interactive/the-temple-of-astarta)' CT Interactive 5x3 videoslot
 * '[Treasure Kingdom](https://www.slotsmate.com/software/ct-interactive/treasure-kingdom)' CT Interactive 5x3 videoslot
 * '[Golden Amulet](https://www.slotsmate.com/software/ct-interactive/golden-amulet)' CT Interactive 5x3 videoslot
@@ -87,7 +88,7 @@ Slotopol: 2 games
 
 *Note: you can download the compiled binaries for Windows at [release](https://github.com/slotopol/server/releases/latest) section, or build docker image by [dockerfile](https://github.com/slotopol/server/blob/main/Dockerfile), or use compiled image from [docker hub](https://hub.docker.com/r/schwarzlichtbezirk/slotopol): `docker pull schwarzlichtbezirk/slotopol` and start image [as it described](docs/docker-config.md).*
 
-1. Install [Golang](https://go.dev/dl/) of last version and GCC toolset.
+1. Install [Golang](https://go.dev/dl/) of last version and GCC toolchain *(tip: for Windows it can be MinGW-w64 distribution from [WinLibs](https://winlibs.com/))*.
 2. Clone project and download dependencies.
 3. Build project with script at `task` directory.
 

@@ -7,7 +7,7 @@
 ##
 
 # Use image with golang last version as builder.
-FROM golang:1.24-bookworm AS build
+FROM golang:1.25-bookworm AS build
 
 # Make project root folder as current dir.
 WORKDIR /go/src/github.com/slotopol/server

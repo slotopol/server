@@ -43,8 +43,8 @@ func ApiServInfo(c *gin.Context) {
 			"govers":   runtime.Version(),
 			"os":       runtime.GOOS,
 			"arch":     runtime.GOARCH,
-			"maxprocs": runtime.GOMAXPROCS(0),
 			"indocker": isRunningInContainer(),
+			"maxprocs": runtime.GOMAXPROCS(0),
 			// CPU
 			"cpubrand": cpuid.CPU.BrandName,
 			"cpuvend":  cpuid.CPU.VendorString,
@@ -67,8 +67,6 @@ func ApiMemUsage(c *gin.Context) {
 	runtime.ReadMemStats(&mem)
 
 	var ret = gin.H{
-		"buildvers":     cfg.BuildVers,
-		"buildtime":     cfg.BuildTime,
 		"running":       time.Since(starttime) / time.Millisecond,
 		"heapalloc":     mem.HeapAlloc,
 		"heapsys":       mem.HeapSys,

@@ -22,6 +22,7 @@
 'Angry Birds' Novomatic 5x3 videoslot
 'Anonymous' AGT 5x3 videoslot
 'Apples' Shine' AGT 5x3 videoslot
+'Aquaman' AGT 5x3 videoslot
 'Arabian Nights' AGT 5x3 videoslot
 'Arabian Nights' NetEnt 5x3 videoslot
 'Arabian Nights 2' AGT 5x4 videoslot
@@ -231,8 +232,8 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 228 games, 124 algorithms, 11 providers
-AGT: 60 games
+total: 229 games, 124 algorithms, 11 providers
+AGT: 61 games
 Aristocrat: 6 games
 BetSoft: 3 games
 CT Interactive: 33 games
