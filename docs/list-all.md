@@ -76,6 +76,7 @@
 'Egypt' AGT 5x3 videoslot
 'Excalibur' NetEnt 5x3 videoslot
 'Extra Spin' AGT 5x3 videoslot
+'Extra Spin II' AGT 5x4 videoslot
 'Extra Spin III' AGT 5x3 videoslot
 'Fairy Queen' Novomatic 5x3 videoslot
 'Faust' Novomatic 5x3 videoslot
@@ -142,6 +143,7 @@
 'Keno Sports' Aristocrat 80 spots lottery
 'King Of Cards' Novomatic 5x3 videoslot
 'King's Jester' Novomatic 5x3 videoslot
+'Live Fruits' AGT 5x3 videoslot
 'Lord of Luck' CT Interactive 5x4 videoslot
 'Lord of the Ocean' Novomatic 5x3 videoslot
 'Lovely Mermaid' Novomatic 5x4 videoslot
@@ -232,8 +234,8 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 229 games, 124 algorithms, 11 providers
-AGT: 61 games
+total: 231 games, 125 algorithms, 11 providers
+AGT: 63 games
 Aristocrat: 6 games
 BetSoft: 3 games
 CT Interactive: 33 games

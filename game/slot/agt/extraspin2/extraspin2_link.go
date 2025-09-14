@@ -1,6 +1,6 @@
 //go:build !prod || full || agt
 
-package sevenhot
+package extraspin2
 
 import (
 	"github.com/slotopol/server/game"
@@ -8,17 +8,18 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "AGT", Name: "Seven Hot"},
-		{Prov: "AGT", Name: "Live Fruits", Date: game.Year(2025)}, // see: https://agtsoftware.com/games/agt/livefruits
+		{Prov: "AGT", Name: "Extra Spin II"}, // see: https://agtsoftware.com/games/agt/extraspin2
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,
 		GP: game.GPlpay |
 			game.GPlsel |
-			game.GPfgno |
-			game.GPscat,
+			game.GPretrig |
+			game.GPfgmult |
+			game.GPscat |
+			game.GPwild,
 		SX:  5,
-		SY:  3,
+		SY:  4,
 		SN:  len(LinePay),
 		LN:  len(BetLines),
 		BN:  0,
