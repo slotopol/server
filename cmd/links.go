@@ -56,6 +56,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/doublehothabanero"
 	_ "github.com/slotopol/server/game/slot/ct/fortunepyramid"
 	_ "github.com/slotopol/server/game/slot/ct/fruitgalaxy"
+	_ "github.com/slotopol/server/game/slot/ct/fullofluck"
 	_ "github.com/slotopol/server/game/slot/ct/fusionfruitbeat"
 	_ "github.com/slotopol/server/game/slot/ct/groovyautomat"
 	_ "github.com/slotopol/server/game/slot/ct/hitthehot"

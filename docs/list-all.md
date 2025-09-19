@@ -94,6 +94,7 @@
 'Fruit Shop' NetEnt 5x3 videoslot
 'Fruitilicious' Novomatic 5x3 videoslot
 'Fruits 'n Royals' Novomatic 5x3 videoslot
+'Full of Luck' CT Interactive 5x3 videoslot
 'Funky Seventies' NetEnt 5x4 videoslot
 'Fusion Fruit Beat' CT Interactive 5x3 videoslot
 'Gate of Ra Deluxe' Novomatic 5x3 videoslot
@@ -234,11 +235,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 231 games, 125 algorithms, 11 providers
+total: 232 games, 126 algorithms, 11 providers
 AGT: 63 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 33 games
+CT Interactive: 34 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
