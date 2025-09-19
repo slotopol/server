@@ -47,19 +47,30 @@ func (s *Stat) IncErr() {
 }
 
 func (s *Stat) LineRTP(cost float64) float64 {
-	var reshuf = float64(atomic.LoadUint64(&s.reshuffles[0]) - atomic.LoadUint64(&s.errcount))
 	s.lpm.Lock()
 	var lp = s.linepay
 	s.lpm.Unlock()
-	return lp / reshuf / cost * 100
+	return lp / s.Count() / cost * 100
 }
 
 func (s *Stat) ScatRTP(cost float64) float64 {
-	var reshuf = float64(atomic.LoadUint64(&s.reshuffles[0]) - atomic.LoadUint64(&s.errcount))
 	s.spm.Lock()
 	var sp = s.scatpay
 	s.spm.Unlock()
-	return sp / reshuf / cost * 100
+	return sp / s.Count() / cost * 100
+}
+
+func (s *Stat) SymRTP(cost float64) (lrtp, srtp float64) {
+	s.lpm.Lock()
+	var lp = s.linepay
+	s.lpm.Unlock()
+	s.spm.Lock()
+	var sp = s.scatpay
+	s.spm.Unlock()
+	var reshuf = s.Count()
+	lrtp = lp / reshuf / cost * 100
+	srtp = sp / reshuf / cost * 100
+	return
 }
 
 func (s *Stat) FreeCountU() uint64 {
@@ -70,8 +81,26 @@ func (s *Stat) FreeCount() float64 {
 	return float64(atomic.LoadUint64(&s.freecount))
 }
 
+// Returns (q, sq), where q = free spins quantifier, sq = 1/(1-q)
+// sum of a decreasing geometric progression for retriggered free spins.
+func (s *Stat) FSQ() (q float64, sq float64) {
+	q = s.FreeCount() / s.Count()
+	sq = 1 / (1 - q)
+	return
+}
+
 func (s *Stat) FreeHits() float64 {
 	return float64(atomic.LoadUint64(&s.freehits))
+}
+
+// Quantifier of free games per reshuffles.
+func (s *Stat) FGQ() float64 {
+	return s.FreeHits() / s.Count()
+}
+
+// Free Games Frequency: average number of reshuffles per free games hit.
+func (s *Stat) FGF() float64 {
+	return s.Count() / s.FreeHits()
 }
 
 func (s *Stat) BonusCount(bid int) float64 {
@@ -119,7 +148,7 @@ func CalcStatBon(ctx context.Context) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var cost, _ = g.Cost()
-		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
+		var lrtp, srtp = s.SymRTP(cost)
 		var rtpsym = lrtp + srtp
 		fmt.Fprintf(w, "RTP = %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		return rtpsym
@@ -141,16 +170,14 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var s Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = s.Count()
 		var cost, _ = g.Cost()
-		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
+		var lrtp, srtp = s.SymRTP(cost)
 		var rtpsym = lrtp + srtp
-		var q = s.FreeCount() / reshuf
-		var sq = 1 / (1 - q)
+		var q, sq = s.FSQ()
 		var rtp = rtpsym + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCountU(), q, sq)
-		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", reshuf/s.FreeHits())
+		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, q, rtpfs, rtp)
 		return rtp
 	}

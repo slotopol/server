@@ -36,16 +36,14 @@ func CalcStatBon(ctx context.Context) float64 {
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = s.Count()
 		var cost, _ = g.Cost()
-		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
+		var lrtp, srtp = s.SymRTP(cost)
 		var rtpsym = lrtp + srtp
-		var q = s.FreeCount() / reshuf
-		var sq = 1 / (1 - q)
+		var q, sq = s.FSQ()
 		var rtp = sq * rtpsym
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCountU(), q, sq)
-		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", reshuf/s.FreeHits())
+		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "RTP = sq*rtp(sym) = %.5g*%.5g = %.6f%%\n", sq, rtpsym, rtp)
 		return rtp
 	}
@@ -73,10 +71,9 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var calc = func(w io.Writer) float64 {
 		var reshuf = s.Count()
 		var cost, _ = g.Cost()
-		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
+		var lrtp, srtp = s.SymRTP(cost)
 		var rtpsym = lrtp + srtp
-		var q = s.FreeCount() / reshuf
-		var sq = 1 / (1 - q)
+		var q, sq = s.FSQ()
 		var qacbn = 1 / float64(len(reels.Reel(5)))
 		var rtpacbn = Eacbn * qacbn * 100
 		var qdlbn = s.BonusCount(dlbn) / reshuf / float64(g.Sel)
@@ -84,7 +81,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		var rtp = rtpsym + rtpacbn + rtpdlbn + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCountU(), q, sq)
-		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", reshuf/s.FreeHits())
+		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "acorn bonuses: frequency 1/%d, rtp = %.6f%%\n", len(reels.Reel(5)), rtpacbn)
 		fmt.Fprintf(w, "diamond lion bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonusCount(dlbn), rtpdlbn)
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(acorn) + %.5g(dl) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, rtpacbn, rtpdlbn, q, rtpfs, rtp)

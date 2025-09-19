@@ -20,10 +20,9 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var reshuf4 = s.Reshuf(4)
 		var reshuf5 = s.Reshuf(5)
 		var cost, _ = g.Cost()
-		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
+		var lrtp, srtp = s.SymRTP(cost)
 		var rtpsym = lrtp + srtp
-		var q = s.FreeCount() / reshuf1
-		var sq = 1 / (1 - q)
+		var q, sq = s.FSQ()
 		var rtpfs = sq * 3 * rtpsym
 		var rtp = rtpsym + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)

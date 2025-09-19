@@ -60,19 +60,30 @@ func (s *Stat) IncErr() {
 }
 
 func (s *Stat) LineRTP(cost float64) float64 {
-	var reshuf = float64(atomic.LoadUint64(&s.reshuffles[0]) - atomic.LoadUint64(&s.errcount))
 	s.lpm.Lock()
 	var lp = s.linepay
 	s.lpm.Unlock()
-	return lp / reshuf / cost * 100
+	return lp / s.Count() / cost * 100
 }
 
 func (s *Stat) ScatRTP(cost float64) float64 {
-	var reshuf = float64(atomic.LoadUint64(&s.reshuffles[0]) - atomic.LoadUint64(&s.errcount))
 	s.spm.Lock()
 	var sp = s.scatpay
 	s.spm.Unlock()
-	return sp / reshuf / cost * 100
+	return sp / s.Count() / cost * 100
+}
+
+func (s *Stat) SymRTP(cost float64) (lrtp, srtp float64) {
+	s.lpm.Lock()
+	var lp = s.linepay
+	s.lpm.Unlock()
+	s.spm.Lock()
+	var sp = s.scatpay
+	s.spm.Unlock()
+	var reshuf = s.Count()
+	lrtp = lp / reshuf / cost * 100
+	srtp = sp / reshuf / cost * 100
+	return
 }
 
 func (s *Stat) FreeCountU() uint64 {
@@ -83,8 +94,26 @@ func (s *Stat) FreeCount() float64 {
 	return float64(atomic.LoadUint64(&s.freecount))
 }
 
+// Returns (q, sq), where q = free spins quantifier, sq = 1/(1-q)
+// sum of a decreasing geometric progression for retriggered free spins.
+func (s *Stat) FSQ() (q float64, sq float64) {
+	q = s.FreeCount() / s.Count()
+	sq = 1 / (1 - q)
+	return
+}
+
 func (s *Stat) FreeHits() float64 {
 	return float64(atomic.LoadUint64(&s.freehits))
+}
+
+// Quantifier of free games per reshuffles.
+func (s *Stat) FGQ() float64 {
+	return s.FreeHits() / s.Count()
+}
+
+// Free Games Frequency: average number of reshuffles per free games hit.
+func (s *Stat) FGF() float64 {
+	return s.Count() / s.FreeHits()
 }
 
 func (s *Stat) BonusCount(bid int) float64 {

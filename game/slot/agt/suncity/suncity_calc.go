@@ -19,7 +19,7 @@ func CalcStatBon(ctx context.Context) (rtp, num float64) {
 	var calc = func(w io.Writer) float64 {
 		var reshuf = s.Count()
 		var cost, _ = g.Cost()
-		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
+		var lrtp, srtp = s.SymRTP(cost)
 		if srtp > 0 {
 			panic("scatters have no pays")
 		}
@@ -49,7 +49,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var calc = func(w io.Writer) float64 {
 		var reshuf = s.Count()
 		var cost, _ = g.Cost()
-		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
+		var lrtp, srtp = s.SymRTP(cost)
 		if srtp > 0 {
 			panic("scatters have no pays")
 		}

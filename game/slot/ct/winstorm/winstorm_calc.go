@@ -20,7 +20,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var reshuf4 = s.Reshuf(4)
 		var reshuf5 = s.Reshuf(5)
 		var cost, _ = g.Cost()
-		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
+		var lrtp, srtp = s.SymRTP(cost)
 		var rtpsym = lrtp + srtp
 		fmt.Fprintf(w, "fall[2] = %.10g, freq = 1/%.5g\n", reshuf2, reshuf1/reshuf2)
 		fmt.Fprintf(w, "fall[3] = %.10g, freq = 1/%.5g, freq2 = 1/%.5g\n", reshuf3, reshuf1/reshuf3, reshuf2/reshuf3)

@@ -70,7 +70,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	var calc = func(w io.Writer) float64 {
 		var reshuf = s.Count()
 		var cost, _ = g.Cost()
-		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
+		var lrtp, srtp = s.SymRTP(cost)
 		var rtpsym = lrtp + srtp
 		var qmjap = s.BonusCount(mjap) / reshuf
 		var rtpmjap = Ebon * qmjap * 100

@@ -24,7 +24,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var reshuf4 = s.Reshuf(4)
 		var reshuf5 = s.Reshuf(5)
 		var cost, _ = g.Cost()
-		var lrtp, srtp = s.LineRTP(cost), s.ScatRTP(cost)
+		var lrtp, srtp = s.SymRTP(cost)
 		var rtpsym = lrtp + srtp
 		var qfarm = s.BonusCount(farmbn) / reshuf1
 		var rtpbon = Ebon * qfarm * 100
