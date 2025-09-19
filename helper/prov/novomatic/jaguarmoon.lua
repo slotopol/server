@@ -19,16 +19,16 @@ local symsetbon = {
 local symset = {
 	0, --  1 wild      (2, 3, 4 reel)
 	0, --  2 scatter   (insert directly)
-	4, --  3 wooman    800
-	4, --  4 panther   200
-	4, --  5 footprint 100
-	4, --  6 rings     100
-	4, --  7 ace       50
-	4, --  8 king      50
-	4, --  9 queen     50
-	4, -- 10 jack      40
-	4, -- 11 ten       40
-	4, -- 12 nine      40
+	3, --  3 wooman    800
+	3, --  4 panther   200
+	3, --  5 footprint 100
+	3, --  6 rings     100
+	3, --  7 ace       50
+	3, --  8 king      50
+	3, --  9 queen     50
+	3, -- 10 jack      40
+	3, -- 11 ten       40
+	3, -- 12 nine      40
 }
 
 local neighbours = {
@@ -47,10 +47,28 @@ local neighbours = {
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, }, -- 12 nine
 }
 
+local scat = 2
+local function ins1(reel)
+	table.insert(reel, 1, scat)
+	table.insert(reel, 1, scat)
+end
+local function ins2(reel)
+	for i = 5, #reel do
+		if neighbours[scat][reel[i - 2]] < 2 and
+			neighbours[scat][reel[i - 1]] < 1 and
+			neighbours[scat][reel[i + 1]] < 1 and
+			neighbours[scat][reel[i - 2]] < 2 then
+			table.insert(reel, i, scat)
+			table.insert(reel, i, scat)
+			break
+		end
+	end
+end
+
 math.randomseed(os.time())
 printreel(makereel(symsetbon, neighbours))
 local reel, iter = makereel(symset, neighbours)
 printreel(reel, iter)
-table.insert(reel, 1, 2)
-table.insert(reel, 1, 2)
+ins1(reel)
+ins2(reel)
 printreel(reel, iter)

@@ -152,6 +152,7 @@ func (g *Game) BonNum() (n, count slot.Pos) {
 				if y < 2 && g.Scr[x][y+1] == scat {
 					count++
 				}
+				break
 			}
 		}
 	}
@@ -161,7 +162,7 @@ func (g *Game) BonNum() (n, count slot.Pos) {
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
 	if n, count := g.BonNum(); n == 3 {
-		var fs = ScatFreespin[count]
+		var fs = ScatFreespin[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Sym:  scat,
 			Num:  count,
