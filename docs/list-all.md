@@ -191,6 +191,7 @@
 'Secret Of Horus' NetEnt 5x3 videoslot
 'Seven Hot' AGT 5x3 videoslot
 'Shining Stars' AGT 5x3 videoslot
+'Shining Treasures' CT Interactive 5x3 videoslot
 'Simsalabim' NetEnt 5x3 videoslot
 'Sizzling Hot' Novomatic 5x3 videoslot
 'Sizzling Hot Deluxe' Novomatic 5x3 videoslot
@@ -235,11 +236,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 232 games, 126 algorithms, 11 providers
+total: 233 games, 127 algorithms, 11 providers
 AGT: 63 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 34 games
+CT Interactive: 35 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
