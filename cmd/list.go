@@ -24,8 +24,12 @@ Get the list of Megajack games and any games with 3 reels:
   %[1]s list -i megajack -i 3x
 Get the list of games with screen 3x3 without 'AGT' games:
   %[1]s list -i 3x3 -e agt
-Get the list of 'Play'n GO' games with RTP list for each:
-  %[1]s list -i playngo --rtp`
+Get the list of 'AGT' games with screen 3x3 only:
+  %[1]s list -i agt+3x3
+Get the list of 'AGT' games with big symbols and free games:
+  %[1]s list -i agt+big+fg
+Get the list of Megajack games with properties and RTP list for each:
+  %[1]s list -i megajack -p --rtp`
 
 var listflags *pflag.FlagSet
 
@@ -60,6 +64,9 @@ func FormatGameInfo(gi *game.GameInfo) string {
 		}
 		if gi.WN > 0 {
 			fmt.Fprintf(&b, ", %d ways", gi.WN)
+		}
+		if gi.BN > 0 {
+			fmt.Fprintf(&b, ", %d bonus games", gi.BN)
 		}
 		if gi.GP&game.GPjack > 0 {
 			b.WriteString(", has jackpot")
@@ -136,27 +143,45 @@ var listCmd = &cobra.Command{
 	Long:    listLong,
 	Example: fmt.Sprintf(listExmp, cfg.AppName),
 	Run: func(cmd *cobra.Command, args []string) {
-		var finclist, fexclist []game.Filter
+		var finclist, fexclist [][]game.Filter
 		var f game.Filter
-		for _, key := range inclist {
-			if f = game.GetFilter(key); f == nil {
-				fmt.Printf("filter with name '%s' does not recognized\n", key)
+		var flist []game.Filter
+		for _, inc := range inclist {
+			if inc == "" {
 				continue
 			}
-			finclist = append(finclist, f)
+			var keys = strings.Split(inc, "+")
+			flist = nil
+			for _, key := range keys {
+				if f = game.GetFilter(key); f == nil {
+					fmt.Printf("filter with name '%s' does not recognized\n", key)
+					continue
+				}
+				flist = append(flist, f)
+			}
+			finclist = append(finclist, flist)
 		}
-		for _, key := range exclist {
-			if f = game.GetFilter(key); f == nil {
-				fmt.Printf("filter with name '%s' does not recognized\n", key)
+		for _, exc := range exclist {
+			if exc == "" {
 				continue
 			}
-			fexclist = append(fexclist, f)
+			var keys = strings.Split(exc, "+")
+			flist = nil
+			for _, key := range keys {
+				if f = game.GetFilter(key); f == nil {
+					fmt.Printf("filter with name '%s' does not recognized\n", key)
+					continue
+				}
+				flist = append(flist, f)
+			}
+			fexclist = append(fexclist, flist)
 		}
 
 		var alg = map[*game.AlgDescr]int{}
 		var prov = map[string]int{}
 		var gamelist = make([]*game.GameInfo, 0, 256)
-		for _, gi := range game.InfoMap {
+		for aid, gi := range game.InfoMap {
+			_ = aid
 			if game.Passes(gi, finclist, fexclist) {
 				alg[gi.AlgDescr]++
 				prov[gi.Prov]++
@@ -213,7 +238,7 @@ func init() {
 	listflags.Float64Var(&fDiff, "diff", 0, "difference between master RTP and closest to it real reels RTP")
 	listflags.BoolVarP(&fRTP, "rtp", "r", false, "RTP (Return to Player) percents list of available reels for each game")
 
-	listflags.StringSliceVarP(&inclist, "include", "i", []string{"all"}, "filter(s) to include games, filters can be as follows:\n"+
+	listflags.StringSliceVarP(&inclist, "include", "i", []string{"all"}, "filter(s) to include games, filters can be as follows and could be combined with '+' sign:\n"+
 		"slot - all slot games\n"+
 		"keno - all keno games\n"+
 		"agt - games of 'AGT' provider\n"+

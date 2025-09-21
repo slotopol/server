@@ -45,27 +45,31 @@ func ApiGameList(c *gin.Context) {
 	var include = strings.Split(arg.Include, " ")
 	var exclude = strings.Split(arg.Exclude, " ")
 
-	var finclist, fexclist []game.Filter
+	var finclist, fexclist [][]game.Filter
 	var f game.Filter
-	for _, key := range include {
-		if key == "" {
-			continue
+	var flist []game.Filter
+	for _, inc := range include {
+		var keys = strings.Split(inc, "&")
+		flist = nil
+		for _, key := range keys {
+			if f = game.GetFilter(key); f == nil {
+				Ret400(c, AEC_game_list_inc, fmt.Errorf("filter with name '%s' does not recognized", key))
+				return
+			}
+			flist = append(flist, f)
 		}
-		if f = game.GetFilter(key); f == nil {
-			Ret400(c, AEC_game_list_inc, fmt.Errorf("filter with name '%s' does not recognized", key))
-			return
-		}
-		finclist = append(finclist, f)
+		finclist = append(finclist, flist)
 	}
-	for _, key := range exclude {
-		if key == "" {
-			continue
+	for _, exc := range exclude {
+		var keys = strings.Split(exc, "&")
+		flist = nil
+		for _, key := range keys {
+			if f = game.GetFilter(key); f == nil {
+				Ret400(c, AEC_game_list_exc, fmt.Errorf("filter with name '%s' does not recognized", key))
+				return
+			}
 		}
-		if f = game.GetFilter(key); f == nil {
-			Ret400(c, AEC_game_list_exc, fmt.Errorf("filter with name '%s' does not recognized", key))
-			return
-		}
-		fexclist = append(fexclist, f)
+		fexclist = append(fexclist, flist)
 	}
 
 	var alg = map[*game.AlgDescr]int{}

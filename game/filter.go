@@ -113,19 +113,32 @@ func GetFilter(key string) Filter {
 	return nil
 }
 
-func Passes(gi *GameInfo, finclist, fexclist []Filter) bool {
+func Passes(gi *GameInfo, finclist, fexclist [][]Filter) bool {
 	var is bool
-	for _, f := range finclist {
-		if f(gi) {
-			is = true
+	for _, sum := range finclist {
+		if len(sum) == 0 {
+			continue
+		}
+		is = true
+		for _, f := range sum {
+			is = is && f(gi)
+		}
+		if is {
 			break
 		}
 	}
 	if !is {
 		return false
 	}
-	for _, f := range fexclist {
-		if f(gi) {
+	for _, sum := range fexclist {
+		if len(sum) == 0 {
+			continue
+		}
+		is = true
+		for _, f := range sum {
+			is = is && f(gi)
+		}
+		if is {
 			return false
 		}
 	}
