@@ -49,7 +49,7 @@ const (
 	GPwild  // has wild symbols
 	GPrwild // has reel wild symbols
 
-	GPbwild // has big wild (3x3)
+	GPbwild // has big (3x3) or expanding wild
 	GPwturn // symbols turns to wilds
 	GPwmult // has multiplier on wilds
 	GPbsym  // has big symbol (usually 3x3 in the center on free games)

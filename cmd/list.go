@@ -238,7 +238,7 @@ func init() {
 	listflags.Float64Var(&fDiff, "diff", 0, "difference between master RTP and closest to it real reels RTP")
 	listflags.BoolVarP(&fRTP, "rtp", "r", false, "RTP (Return to Player) percents list of available reels for each game")
 
-	listflags.StringSliceVarP(&inclist, "include", "i", []string{"all"}, "filter(s) to include games, filters can be as follows and could be combined with '+' sign:\n"+
+	listflags.StringSliceVarP(&inclist, "include", "i", []string{"all"}, "filter(s) to include games, filters can be as follows and could be conjuncted with '+' sign:\n"+
 		"slot - all slot games\n"+
 		"keno - all keno games\n"+
 		"agt - games of 'AGT' provider\n"+

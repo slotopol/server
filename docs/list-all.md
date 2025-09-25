@@ -53,6 +53,7 @@
 'Clover Party' CT Interactive 5x3 videoslot
 'Clover Wheel' CT Interactive 5x3 videoslot
 'Cold Spell' Novomatic 5x3 videoslot
+'Colibri Wild' CT Interactive 5x4 videoslot
 'Columbus' Novomatic 5x3 videoslot
 'Columbus Deluxe' Novomatic 5x3 videoslot
 'Cops'n'Robbers' Play'n GO 5x3 videoslot
@@ -123,6 +124,7 @@
 'Ice Fruits' AGT 5x3 videoslot
 'Ice Ice Ice' AGT 3x3 videoslot
 'Ice Queen' AGT 5x3 videoslot
+'Ice Rubies' CT Interactive 5x4 videoslot
 'Indian Cash Catcher' Aristocrat 5x3 videoslot
 'Inferno' Novomatic 5x3 videoslot
 'Infinity Gems' AGT 5x3 videoslot
@@ -158,6 +160,8 @@
 'Mermaid's Pearl' Novomatic 5x3 videoslot
 'Merry Christmas' AGT 3x3 videoslot
 'Mighty Moon' CT Interactive 5x3 videoslot
+'Money Pipe' CT Interactive 5x4 videoslot
+'More Dragons' CT Interactive 5x4 videoslot
 'Neon Bananas' CT Interactive 5x3 videoslot
 'Oliver's Bar' Novomatic 5x3 videoslot
 'Panda' AGT 3x3 videoslot
@@ -236,11 +240,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 233 games, 127 algorithms, 11 providers
+total: 237 games, 128 algorithms, 11 providers
 AGT: 63 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 35 games
+CT Interactive: 39 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

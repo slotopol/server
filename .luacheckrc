@@ -4,7 +4,8 @@
 -- see: https://github.com/lunarmodules/luacheck
 
 globals = {
-	"makereel", "makereelhot", "shuffle", "correctreel", "printreel",
+	"shuffle", "tcopy", "tableglue",
+	"correctreel", "makereel", "makereelhot", "printreel",
 	"combin", "kenoprob", "kenoprobtable", "kenortp",
 }
 

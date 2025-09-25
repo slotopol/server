@@ -54,17 +54,6 @@ local chunklen = {
 	4, -- 10 jack
 }
 
-local function tableglue(t1, t2)
-	local t = {}
-	for _, v in ipairs(t1) do
-		table.insert(t, v)
-	end
-	for _, v in ipairs(t2) do
-		table.insert(t, v)
-	end
-	return t
-end
-
 math.randomseed(os.time())
 local reel1, iter1 = makereel(symset1, neighbours)
 local reel2, iter2 = makereelhot(symset2, 3, {[2]=true}, chunklen, true)

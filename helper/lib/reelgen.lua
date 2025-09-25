@@ -6,6 +6,104 @@ reelmt.__newindex = function(t, i, v)
 	rawset(t, (i - 1) % rawlen(t) + 1, v)
 end
 
+local maxiter = 10000
+
+function shuffle(t)
+	for i = #t, 1, -1 do
+		local j = math.random(i)
+		t[i], t[j] = t[j], t[i]
+	end
+end
+
+function tcopy(t)
+	local t2 = {}
+	for k, v in pairs(t) do
+		t2[k] = v
+	end
+	return t2
+end
+
+function tableglue(...)
+	local args = { ... }
+	if #args == 1 then
+		args = args[1]
+		if type(args) ~= "table" then
+			error("tableglue: argument is not a table list")
+		end
+	end
+	local t = {}
+	for _, ti in ipairs(args) do
+		if type(ti) ~= "table" then
+			error("tableglue: argument is not a table")
+		end
+		for _, v in ipairs(ti) do
+			t[#t+1] = v
+		end
+	end
+	return t
+end
+
+function correctreel(reel, neighbours)
+	local iter = 0
+	while true do
+		local n = 0
+		for i = 1, #reel do
+			local symi = reel[i]
+			local b
+			b = neighbours[symi][reel[i - 3]]
+			if b >= 3 then
+				local j = math.random(#reel - b * 2 - 1)
+				if j >= i-3 then j = j+7 end
+				reel[i - 3], reel[j] = reel[j], reel[i - 3]
+				n = n + 1
+			end
+			b = neighbours[symi][reel[i - 2]]
+			if b >= 2 then
+				local j = math.random(#reel - b * 2 - 1)
+				if j >= i-2 then j = j+5 end
+				reel[i - 2], reel[j] = reel[j], reel[i - 2]
+				n = n + 1
+			end
+			b = neighbours[symi][reel[i - 1]]
+			if b >= 1 then
+				local j = math.random(#reel - b * 2 - 1)
+				if j >= i-1 then j = j+3 end
+				reel[i - 1], reel[j] = reel[j], reel[i - 1]
+				n = n + 1
+			end
+			b = neighbours[symi][reel[i + 1]]
+			if b >= 1 then
+				local j = math.random(#reel - b * 2 - 1)
+				if j >= i-1 then j = j+3 end
+				reel[i + 1], reel[j] = reel[j], reel[i + 1]
+				n = n + 1
+			end
+			b = neighbours[symi][reel[i + 2]]
+			if b >= 2 then
+				local j = math.random(#reel - b * 2 - 1)
+				if j >= i-2 then j = j+5 end
+				reel[i + 2], reel[j] = reel[j], reel[i + 2]
+				n = n + 1
+			end
+			b = neighbours[symi][reel[i + 3]]
+			if b >= 3 then
+				local j = math.random(#reel - b * 2 - 1)
+				if j >= i-3 then j = j+7 end
+				reel[i + 3], reel[j] = reel[j], reel[i + 3]
+				n = n + 1
+			end
+		end
+		iter = iter + 1
+		if n == 0 then
+			break
+		end
+		if iter >= maxiter then
+			break
+		end
+	end
+	return iter
+end
+
 function makereel(symset, neighbours)
 	-- make not-shuffled reel
 	local reel = {}
@@ -86,76 +184,6 @@ function makereelhot(symset, sy, scat, chunklen, strict)
 		end
 	end
 	return reel, iter
-end
-
-function shuffle(t)
-	for i = #t, 1, -1 do
-		local j = math.random(i)
-		t[i], t[j] = t[j], t[i]
-	end
-end
-
-local maxiter = 10000
-
-function correctreel(reel, neighbours)
-	local iter = 0
-	while true do
-		local n = 0
-		for i = 1, #reel do
-			local symi = reel[i]
-			local b
-			b = neighbours[symi][reel[i - 3]]
-			if b >= 3 then
-				local j = math.random(#reel - b * 2 - 1)
-				if j >= i-3 then j = j+7 end
-				reel[i - 3], reel[j] = reel[j], reel[i - 3]
-				n = n + 1
-			end
-			b = neighbours[symi][reel[i - 2]]
-			if b >= 2 then
-				local j = math.random(#reel - b * 2 - 1)
-				if j >= i-2 then j = j+5 end
-				reel[i - 2], reel[j] = reel[j], reel[i - 2]
-				n = n + 1
-			end
-			b = neighbours[symi][reel[i - 1]]
-			if b >= 1 then
-				local j = math.random(#reel - b * 2 - 1)
-				if j >= i-1 then j = j+3 end
-				reel[i - 1], reel[j] = reel[j], reel[i - 1]
-				n = n + 1
-			end
-			b = neighbours[symi][reel[i + 1]]
-			if b >= 1 then
-				local j = math.random(#reel - b * 2 - 1)
-				if j >= i-1 then j = j+3 end
-				reel[i + 1], reel[j] = reel[j], reel[i + 1]
-				n = n + 1
-			end
-			b = neighbours[symi][reel[i + 2]]
-			if b >= 2 then
-				local j = math.random(#reel - b * 2 - 1)
-				if j >= i-2 then j = j+5 end
-				reel[i + 2], reel[j] = reel[j], reel[i + 2]
-				n = n + 1
-			end
-			b = neighbours[symi][reel[i + 3]]
-			if b >= 3 then
-				local j = math.random(#reel - b * 2 - 1)
-				if j >= i-3 then j = j+7 end
-				reel[i + 3], reel[j] = reel[j], reel[i + 3]
-				n = n + 1
-			end
-		end
-		iter = iter + 1
-		if n == 0 then
-			break
-		end
-		if iter >= maxiter then
-			break
-		end
-	end
-	return iter
 end
 
 function printreel(reel, iter)
