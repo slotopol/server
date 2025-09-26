@@ -101,7 +101,7 @@ func CalcStatStars(ctx context.Context, wc2, wc3, wc4 bool) float64 {
 }
 
 func CalcStat(ctx context.Context, mrtp float64) (rtp float64) {
-	var wc, _ = slot.FindClosest(ChanceMap, mrtp) // wild chance
+	var wc, _ = ChanceMap.FindClosest(mrtp) // wild chance
 
 	var b = 1 / wc
 	var rtp000 = CalcStatStars(ctx, false, false, false)

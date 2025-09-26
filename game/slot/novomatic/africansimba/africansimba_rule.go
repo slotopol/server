@@ -146,7 +146,7 @@ func (g *Game) Cost() (float64, bool) {
 }
 
 func (g *Game) Spin(mrtp float64) {
-	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
+	var reels, _ = ReelsMap.FindClosest(mrtp)
 	g.ReelSpin(reels)
 }
 

@@ -77,7 +77,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 }
 
 func (g *Game) Spin(mrtp float64) {
-	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
+	var reels, _ = ReelsMap.FindClosest(mrtp)
 	g.ReelSpin(reels)
 }
 

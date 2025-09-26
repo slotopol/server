@@ -9,7 +9,7 @@ import (
 )
 
 func CalcStat(ctx context.Context, mrtp float64) float64 {
-	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
+	var reels, _ = ReelsMap.FindClosest(mrtp)
 	var g = NewGame()
 	g.Sel = 1
 	var s slot.Stat

@@ -13,7 +13,7 @@ import (
 const Ebon = 50
 
 func CalcStat(ctx context.Context, mrtp float64) float64 {
-	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
+	var reels, _ = ReelsMap.FindClosest(mrtp)
 	var g = NewGame()
 	var s slot.Stat
 

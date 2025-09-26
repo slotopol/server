@@ -14,7 +14,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	slotopol.ExpEldorado()
 	slotopol.ExpMonopoly()
 	fmt.Printf("*reels calculations*\n")
-	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
+	var reels, _ = ReelsMap.FindClosest(mrtp)
 	var g = NewGame()
 	g.Sel = 1
 	var s slot.Stat

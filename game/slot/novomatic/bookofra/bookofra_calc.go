@@ -51,7 +51,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("RTPfs = %.6f%%\n", rtpfs)
 
 	fmt.Printf("*regular reels calculations*\n")
-	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
+	var reels, _ = ReelsMap.FindClosest(mrtp)
 	var g = NewGame()
 	g.Sel = 1
 	var s slot.Stat

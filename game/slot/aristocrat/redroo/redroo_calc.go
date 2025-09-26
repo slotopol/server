@@ -9,7 +9,7 @@ import (
 )
 
 func CalcStatBon(ctx context.Context, mrtp float64) float64 {
-	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
+	var reels, _ = ReelsMap.FindClosest(mrtp)
 	var g = NewGame()
 	g.FSR = 12 // set free spins mode
 	g.MW = [3]float64{2.5, 2.5, 2.5}
@@ -38,7 +38,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		return 0
 	}
 	fmt.Printf("*regular reels calculations*\n")
-	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
+	var reels, _ = ReelsMap.FindClosest(mrtp)
 	var g = NewGame()
 	g.MW = [3]float64{1, 1, 1}
 	var s slot.Stat

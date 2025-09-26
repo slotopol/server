@@ -178,7 +178,7 @@ func (g *Game) Cost() (float64, bool) {
 }
 
 func (g *Game) Spin(mrtp float64) {
-	var reels, _ = slot.FindClosest(ReelsMap, mrtp)
+	var reels, _ = ReelsMap.FindClosest(mrtp)
 	g.ReelSpin(reels)
 }
 
@@ -189,7 +189,7 @@ func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {
 			wins[i].Bon, wins[i].Pay = AztecPyramidSpawn(g.Bet * float64(g.Sel))
 		}
 		if wi.JID != 0 {
-			var bulk, _ = slot.FindClosest(JackMap, mrtp)
+			var bulk, _ = JackMap.FindClosest(mrtp)
 			var jf = bulk * g.Bet / slot.JackBasis
 			if jf > 1 {
 				jf = 1
