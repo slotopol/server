@@ -74,8 +74,15 @@ func LoadEmbedData() {
 	for _, b := range game.LoadMap {
 		game.MustReadChain(b)
 	}
+	for _, ai := range game.AlgList {
+		if ai.Update != nil {
+			ai.Update(ai)
+		}
+	}
 	var d = time.Since(t0)
-	log.Printf("loaded %d embedded data chunks in %s\n", len(game.LoadMap), d.String())
+	if d > time.Millisecond*100 || cfg.Verbose {
+		log.Printf("loaded %d embedded data chunks in %s\n", len(game.LoadMap), d.String())
+	}
 }
 
 func LoadDataFiles() (err error) {

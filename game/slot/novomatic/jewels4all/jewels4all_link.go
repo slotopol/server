@@ -16,13 +16,13 @@ var Info = game.AlgInfo{
 			game.GPlsel |
 			game.GPfgno |
 			game.GPbwild,
-		SX:  5,
-		SY:  3,
-		SN:  len(LinePay),
-		LN:  len(BetLines),
-		BN:  0,
-		RTP: game.MakeRtpList(ChanceMap),
+		SX: 5,
+		SY: 3,
+		SN: len(LinePay),
+		LN: len(BetLines),
+		BN: 0,
 	},
+	Update: func(ai *game.AlgInfo) { ai.RTP = game.MakeRtpList(ChanceMap) },
 }
 
 func init() {

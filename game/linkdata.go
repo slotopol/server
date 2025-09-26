@@ -79,6 +79,7 @@ type (
 	AlgInfo struct {
 		Aliases  []GameAlias `json:"aliases" yaml:"aliases" xml:"aliases"`
 		AlgDescr `yaml:",inline"`
+		Update   func(ai *AlgInfo) `json:"-" yaml:"-" xml:"-"` // closure to update fields
 	}
 
 	GameInfo struct {

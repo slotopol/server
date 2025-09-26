@@ -19,13 +19,13 @@ var Info = game.AlgInfo{
 			game.GPfgreel |
 			game.GPscat |
 			game.GPwild,
-		SX:  5,
-		SY:  3,
-		SN:  len(LinePay),
-		LN:  len(BetLines),
-		BN:  1,
-		RTP: game.MakeRtpList(ReelsMap),
+		SX: 5,
+		SY: 3,
+		SN: len(LinePay),
+		LN: len(BetLines),
+		BN: 1,
 	},
+	Update: func(ai *game.AlgInfo) { ai.RTP = game.MakeRtpList(ReelsMap) },
 }
 
 func init() {

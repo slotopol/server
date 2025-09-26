@@ -237,10 +237,10 @@ func init() {
 
 	listflags = listCmd.Flags()
 	listflags.BoolP("name", "n", true, "list of provided games names")
-	listflags.BoolP("stat", "t", true, "summary statistics of provided games")
+	listflags.BoolP("stat", "s", true, "summary statistics of provided games")
 
-	listflags.BoolVarP(&fSort, "sort", "s", false, "sort by provider, else sort by names")
-	listflags.BoolVarP(&fProp, "prop", "p", false, "print properties for each game")
+	listflags.BoolVar(&fSort, "sort", false, "sort by provider, else sort by names")
+	listflags.BoolVar(&fProp, "prop", false, "print properties for each game")
 	listflags.Float64Var(&fMrtp, "mrtp", 0, "RTP (Return to Player) of reels closest to given master RTP")
 	listflags.Float64Var(&fDiff, "diff", 0, "difference between master RTP and closest to it real reels RTP")
 	listflags.BoolVarP(&fRTP, "rtp", "r", false, "RTP (Return to Player) percents list of available reels for each game")

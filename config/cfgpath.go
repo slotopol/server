@@ -15,6 +15,8 @@ import (
 var (
 	// Developer mode, running at debugger.
 	DevMode bool
+	// Prints more verbose information to log.
+	Verbose bool
 	// AppName is name of this application without extension.
 	AppName = util.PathName(os.Args[0])
 	// Executable path.
@@ -50,7 +52,9 @@ func InitConfig() {
 	if DevMode {
 		log.Println("*running in developer mode*")
 	}
-	log.Printf("version: %s, builton: %s\n", BuildVers, BuildTime)
+	if Verbose {
+		log.Printf("version: %s, builton: %s\n", BuildVers, BuildTime)
+	}
 
 	ExePath = func() string {
 		if str, err := os.Executable(); err == nil {
@@ -103,14 +107,18 @@ func InitConfig() {
 		cobra.CheckErr(viper.Unmarshal(&Cfg))
 		CfgFile = viper.ConfigFileUsed()
 		CfgPath = filepath.Dir(CfgFile)
-		log.Printf("config path: %s\n", CfgPath)
+		if Verbose {
+			log.Printf("config path: %s\n", CfgPath)
+		}
 	}
 
 	// Detect SQLite path.
 	if SqlPath == "" {
 		SqlPath = LookupInLocations("SLOTOPOL_SQLPATH", "sqlite", "slot-club.sqlite")
 	}
-	log.Printf("sqlite path: %s\n", SqlPath)
+	if Verbose {
+		log.Printf("sqlite path: %s\n", SqlPath)
+	}
 }
 
 // DirExists check up directory existence.
