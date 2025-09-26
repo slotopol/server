@@ -29,5 +29,5 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
-	game.LoadMap["novomatic/plentyofjewels20/reel"] = &ReelsMap
+	game.DataRouter["novomatic/plentyofjewels20/reel"] = &ReelsMap
 }

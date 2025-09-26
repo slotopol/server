@@ -28,5 +28,5 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
-	game.LoadMap["ctinteractive/sapphirelagoon/reel"] = &ReelsMap
+	game.DataRouter["ctinteractive/sapphirelagoon/reel"] = &ReelsMap
 }

@@ -31,6 +31,7 @@ var scanCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var err error
 		var exitctx = Startup()
+		LoadEmbedData()
 		if err = LoadDataFiles(); err != nil {
 			log.Fatalln("can not load game data files: %s", err.Error())
 			return

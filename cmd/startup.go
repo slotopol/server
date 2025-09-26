@@ -69,6 +69,15 @@ func Startup() (exitctx context.Context) {
 	return
 }
 
+func LoadEmbedData() {
+	var t0 = time.Now()
+	for _, b := range game.LoadMap {
+		game.MustReadChain(b)
+	}
+	var d = time.Since(t0)
+	log.Printf("loaded %d embedded data chunks in %s\n", len(game.LoadMap), d.String())
+}
+
 func LoadDataFiles() (err error) {
 	for _, root := range cfg.ObjPath {
 		fs.WalkDir(os.DirFS(root), ".", func(fpath string, d fs.DirEntry, err error) error {
@@ -311,6 +320,7 @@ func SqlLoop(exitctx context.Context) {
 }
 
 func Init() (err error) {
+	LoadEmbedData()
 	if err = LoadDataFiles(); err != nil {
 		err = fmt.Errorf("can not load game data files: %w", err)
 		return

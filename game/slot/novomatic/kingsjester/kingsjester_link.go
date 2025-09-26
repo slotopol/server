@@ -30,6 +30,6 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
-	game.LoadMap["novomatic/kingsjester/reel"] = &ReelsMap
-	game.LoadMap["novomatic/kingsjester/jack"] = &JackMap
+	game.DataRouter["novomatic/kingsjester/reel"] = &ReelsMap
+	game.DataRouter["novomatic/kingsjester/jack"] = &JackMap
 }

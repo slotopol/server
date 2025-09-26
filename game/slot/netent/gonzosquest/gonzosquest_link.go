@@ -30,5 +30,5 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
-	game.LoadMap["netent/gonzosquest/reel"] = &ReelsMap
+	game.DataRouter["netent/gonzosquest/reel"] = &ReelsMap
 }
