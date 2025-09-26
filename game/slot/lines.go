@@ -77,7 +77,7 @@ func LoadObj[T any](fpath string) (obj T) {
 	return ReadObj[T](b)
 }
 
-func ReadMap[T any](b []byte) (rm map[float64]T) {
+func ReadMap[T any](b []byte) (rm ReelsMap[T]) {
 	var err error
 	if err = yaml.Unmarshal(b, &rm); err != nil {
 		panic(err)
@@ -85,7 +85,7 @@ func ReadMap[T any](b []byte) (rm map[float64]T) {
 	return
 }
 
-func LoadMap[T any](fpath string) (rm map[float64]T) {
+func LoadMap[T any](fpath string) (rm ReelsMap[T]) {
 	var b, err = os.ReadFile(fpath)
 	if err != nil {
 		panic(err)

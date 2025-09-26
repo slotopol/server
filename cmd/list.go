@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"log"
 	"sort"
 	"strings"
 
@@ -143,6 +144,11 @@ var listCmd = &cobra.Command{
 	Long:    listLong,
 	Example: fmt.Sprintf(listExmp, cfg.AppName),
 	Run: func(cmd *cobra.Command, args []string) {
+		if err := LoadDataFiles(); err != nil {
+			log.Fatalln("can not load game data files: %s", err.Error())
+			return
+		}
+
 		var finclist, fexclist [][]game.Filter
 		var f game.Filter
 		var flist []game.Filter

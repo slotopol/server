@@ -3,6 +3,7 @@ package slot
 import (
 	"errors"
 	"fmt"
+	"math"
 )
 
 type (
@@ -179,6 +180,22 @@ func (r *Reels6x) Reshuffles() uint64 {
 
 func (r *Reels6x) String() string {
 	return fmt.Sprintf("[%d, %d, %d, %d, %d, %d]", len(r[0]), len(r[1]), len(r[2]), len(r[3]), len(r[4]), len(r[5]))
+}
+
+type ReelsMap[T any] map[float64]T
+
+func (m ReelsMap[T]) Clear() {
+	clear(m)
+}
+
+func (m ReelsMap[T]) FindClosest(mrtp float64) (val T, rtp float64) {
+	rtp = -1000 // lets to get first reels from map in any case
+	for p, v := range m {
+		if math.Abs(mrtp-p) < math.Abs(mrtp-rtp) {
+			val, rtp = v, p
+		}
+	}
+	return
 }
 
 var (

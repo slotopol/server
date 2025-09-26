@@ -29,4 +29,6 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
+	game.LoadMap["agt/suncity/bon"] = &ReelsBon
+	game.LoadMap["agt/suncity/reel"] = &ReelsMap
 }

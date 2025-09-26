@@ -53,4 +53,6 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
+	game.LoadMap["novomatic/dolphinspearl/bon"] = &ReelsBon
+	game.LoadMap["novomatic/dolphinspearl/reel"] = &ReelsMap
 }

@@ -26,4 +26,5 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
+	game.LoadMap["ctinteractive/groovyautomat/reel"] = &ReelsMap
 }

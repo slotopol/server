@@ -5,14 +5,17 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io/fs"
 	"log"
 	"os"
 	"os/signal"
+	"path/filepath"
 	"syscall"
 	"time"
 
 	"github.com/slotopol/server/api"
 	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/game"
 	"github.com/slotopol/server/util"
 
 	_ "github.com/go-sql-driver/mysql"
@@ -63,6 +66,33 @@ func Startup() (exitctx context.Context) {
 		signal.Stop(sigint)
 		signal.Stop(sigterm)
 	}()
+	return
+}
+
+func LoadDataFiles() (err error) {
+	for _, root := range cfg.ObjPath {
+		fs.WalkDir(os.DirFS(root), ".", func(fpath string, d fs.DirEntry, err error) error {
+			if err != nil {
+				return err
+			}
+			if d.IsDir() {
+				return nil
+			}
+			var fullpath = filepath.Join(root, fpath)
+			if ext := util.ToLower(filepath.Ext(fullpath)); ext != ".yaml" && ext != ".yml" {
+				return nil
+			}
+			var b []byte
+			if b, err = os.ReadFile(fullpath); err != nil {
+				return err
+			}
+			if err = game.ReadChain(b); err != nil {
+				return fmt.Errorf("can not read game data from %s: %w", fullpath, err)
+			}
+			log.Printf("loaded game data from: %s\n", fullpath)
+			return nil
+		})
+	}
 	return
 }
 
@@ -281,6 +311,10 @@ func SqlLoop(exitctx context.Context) {
 }
 
 func Init() (err error) {
+	if err = LoadDataFiles(); err != nil {
+		err = fmt.Errorf("can not load game data files: %w", err)
+		return
+	}
 	if err = InitStorage(); err != nil {
 		err = fmt.Errorf("can not init XORM records storage: %w", err)
 		return

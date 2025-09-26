@@ -27,4 +27,5 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
+	game.LoadMap["playngo/firejoker/reel"] = &ReelsMap
 }

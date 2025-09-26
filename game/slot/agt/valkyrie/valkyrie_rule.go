@@ -11,7 +11,7 @@ import (
 //go:embed valkyrie_bon.yaml
 var rbon []byte
 
-var BonusReel = slot.ReadObj[[]slot.Sym](rbon)
+var ReelsBon = slot.ReadObj[[]slot.Sym](rbon)
 
 //go:embed valkyrie_reel.yaml
 var reels []byte
@@ -134,7 +134,7 @@ func (g *Game) Spin(mrtp float64) {
 	if g.FSR == 0 {
 		g.ReelSpin(reels)
 	} else {
-		g.Screen5x3.SpinBig(reels.Reel(1), BonusReel, reels.Reel(5))
+		g.Screen5x3.SpinBig(reels.Reel(1), ReelsBon, reels.Reel(5))
 	}
 }
 

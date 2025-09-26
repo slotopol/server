@@ -12,14 +12,14 @@ import (
 	"github.com/spf13/pflag"
 )
 
-var scanflags *pflag.FlagSet
-
 const scanShort = "Slots games reels scanning"
 const scanLong = `Calculate RTP (Return to Player) percentage for specified slot game reels.`
 const scanExmp = `Scan reels for "Slotopol" game for reels set nearest to 100%%:
   %[1]s scan --game=megajack/slotopol --mrtp=100
 Scan reels for "Dolphins Pearl" and "Katana" games for reels set nearest to 94.5%%:
   %[1]s scan -g="Novomatic / Dolphins Pearl" -g=novomatic/katana -r=94.5`
+
+var scanflags *pflag.FlagSet
 
 // scanCmd represents the scan command
 var scanCmd = &cobra.Command{
@@ -31,6 +31,10 @@ var scanCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var err error
 		var exitctx = Startup()
+		if err = LoadDataFiles(); err != nil {
+			log.Fatalln("can not load game data files: %s", err.Error())
+			return
+		}
 
 		var mrtp float64
 		if mrtp, err = scanflags.GetFloat64("mrtp"); err != nil {

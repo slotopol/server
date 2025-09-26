@@ -4,11 +4,15 @@ import (
 	"fmt"
 
 	cfg "github.com/slotopol/server/config"
+
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 )
 
 const rootShort = "Slots games backend"
 const rootLong = `This application implements web server and reels scanner for slots games.`
+
+var rootflags *pflag.FlagSet
 
 var (
 	rootCmd = &cobra.Command{
@@ -22,10 +26,11 @@ var (
 func init() {
 	cobra.OnInitialize(cfg.InitConfig)
 
-	var flags = rootCmd.PersistentFlags()
-	flags.StringVarP(&cfg.CfgFile, "config", "c", "", "config file (default is config/slot-app.yaml at executable location)")
-	flags.StringVarP(&cfg.SqlPath, "sqlite", "q", "", "sqlite databases path (default same as config file path)")
-	flags.BoolVarP(&cfg.DevMode, "devmode", "d", false, "start application in developer mode")
+	rootflags = rootCmd.PersistentFlags()
+	rootflags.StringVarP(&cfg.CfgFile, "config", "c", "", "config file (default is config/slot-app.yaml at executable location)")
+	rootflags.StringVarP(&cfg.SqlPath, "sqlite", "q", "", "sqlite databases path (default same as config file path)")
+	rootflags.StringArrayVarP(&cfg.ObjPath, "fpath", "f", nil, "additional paths to yaml files or folders with game specific data (can be repeated)")
+	rootflags.BoolVarP(&cfg.DevMode, "devmode", "d", false, "start application in developer mode")
 	rootCmd.SetVersionTemplate(fmt.Sprintf("version: %s, builton: %s", cfg.BuildVers, cfg.BuildTime))
 }
 

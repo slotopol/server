@@ -31,4 +31,6 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
+	game.LoadMap["playngo/copsnrobbers/bon"] = &ReelsBon
+	game.LoadMap["playngo/copsnrobbers/reel"] = &ReelsMap
 }

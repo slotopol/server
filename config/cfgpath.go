@@ -25,6 +25,8 @@ var (
 	CfgPath string
 	// SQLite-files path.
 	SqlPath string
+	// List of paths to yaml files with game specific data to load on start up.
+	ObjPath []string
 	// Multithreaded scanning threads number
 	MTCount int
 	// Monte Carlo method samples number, in millions

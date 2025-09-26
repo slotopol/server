@@ -89,10 +89,12 @@ type (
 	Scanner func(context.Context, float64) float64
 )
 
-var AlgList = []*AlgInfo{}
-var InfoMap = map[string]*GameInfo{}
-var GameFactory = map[string]func() Gamble{}
-var ScanFactory = map[string]Scanner{}
+var (
+	AlgList     = []*AlgInfo{}
+	InfoMap     = map[string]*GameInfo{}
+	GameFactory = map[string]func() Gamble{}
+	ScanFactory = map[string]Scanner{}
+)
 
 var (
 	Year = util.Year
