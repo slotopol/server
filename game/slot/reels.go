@@ -3,9 +3,6 @@ package slot
 import (
 	"fmt"
 	"math"
-	"os"
-
-	"gopkg.in/yaml.v3"
 )
 
 type Reels interface {
@@ -133,36 +130,4 @@ func (m ReelsMap[T]) FindClosest(mrtp float64) (val T, rtp float64) {
 		}
 	}
 	return
-}
-
-func ReadObj[T any](b []byte) (obj T) {
-	var err error
-	if err = yaml.Unmarshal(b, &obj); err != nil {
-		panic(err)
-	}
-	return
-}
-
-func LoadObj[T any](fpath string) (obj T) {
-	var b, err = os.ReadFile(fpath)
-	if err != nil {
-		panic(err)
-	}
-	return ReadObj[T](b)
-}
-
-func ReadMap[T any](b []byte) (rm ReelsMap[T]) {
-	var err error
-	if err = yaml.Unmarshal(b, &rm); err != nil {
-		panic(err)
-	}
-	return
-}
-
-func DataRouter[T any](fpath string) (rm ReelsMap[T]) {
-	var b, err = os.ReadFile(fpath)
-	if err != nil {
-		panic(err)
-	}
-	return ReadMap[T](b)
 }

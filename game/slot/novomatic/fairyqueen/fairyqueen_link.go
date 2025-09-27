@@ -3,8 +3,19 @@
 package fairyqueen
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game"
 )
+
+//go:embed fairyqueen_es.yaml
+var esreel []byte
+
+//go:embed fairyqueen_bon.yaml
+var rbon []byte
+
+//go:embed fairyqueen_reel.yaml
+var reels []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -32,4 +43,5 @@ func init() {
 	game.DataRouter["novomatic/fairyqueen/es"] = &ReelExpSym
 	game.DataRouter["novomatic/fairyqueen/bon"] = &ReelsBon
 	game.DataRouter["novomatic/fairyqueen/reel"] = &ReelsMap
+	game.LoadMap = append(game.LoadMap, esreel, rbon, reels)
 }

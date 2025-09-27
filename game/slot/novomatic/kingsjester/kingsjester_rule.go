@@ -3,20 +3,12 @@ package kingsjester
 // See: https://www.slotsmate.com/software/novomatic/kings-jester
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed kingsjester_reel.yaml
-var reels []byte
+var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
-var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
-
-//go:embed kingsjester_jack.yaml
-var jack []byte
-
-var JackMap = slot.ReadMap[[2]float64](jack)
+var JackMap slot.ReelsMap[[2]float64]
 
 // Lined payment.
 var LinePay = [14][5]float64{

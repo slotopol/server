@@ -3,21 +3,14 @@ package bookofra
 // See: https://www.slotsmate.com/software/novomatic/book-of-ra-deluxe
 
 import (
-	_ "embed"
 	"math/rand/v2"
 
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed bookofra_bon.yaml
-var rbon []byte
+var ReelsBon *slot.Reels5x
 
-var ReelsBon = slot.ReadObj[*slot.Reels5x](rbon)
-
-//go:embed bookofra_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
+var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
 // Lined payment.
 var LinePay = [10][5]float64{

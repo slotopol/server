@@ -3,26 +3,16 @@ package fairyqueen
 // See: https://www.slotsmate.com/software/novomatic/fairy-queen
 
 import (
-	_ "embed"
 	"math/rand/v2"
 
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed fairyqueen_es.yaml
-var esreel []byte
+var ReelExpSym []slot.Sym
 
-var ReelExpSym = slot.ReadObj[[]slot.Sym](esreel)
+var ReelsBon *slot.Reels5x
 
-//go:embed fairyqueen_bon.yaml
-var rbon []byte
-
-var ReelsBon = slot.ReadObj[*slot.Reels5x](rbon)
-
-//go:embed fairyqueen_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
+var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
 // Lined payment.
 var LinePay = [13][5]float64{

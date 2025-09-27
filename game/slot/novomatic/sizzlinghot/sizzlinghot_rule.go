@@ -3,15 +3,10 @@ package sizzlinghot
 // See: https://www.slotsmate.com/software/novomatic/sizzling-hot-deluxe
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed sizzlinghot_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
+var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
 // Lined payment.
 var LinePay = [8][5]float64{

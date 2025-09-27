@@ -3,15 +3,10 @@ package fruitsensation
 // See: https://casino.ru/fruit-sensation-novomatic/
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed fruitsensation_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
+var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
 // Lined payment.
 var LinePay = [7][5]float64{

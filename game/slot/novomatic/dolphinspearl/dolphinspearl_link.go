@@ -3,8 +3,16 @@
 package dolphinspearl
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game"
 )
+
+//go:embed dolphinspearl_bon.yaml
+var rbon []byte
+
+//go:embed dolphinspearl_reel.yaml
+var reels []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -55,4 +63,5 @@ func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
 	game.DataRouter["novomatic/dolphinspearl/bon"] = &ReelsBon
 	game.DataRouter["novomatic/dolphinspearl/reel"] = &ReelsMap
+	game.LoadMap = append(game.LoadMap, rbon, reels)
 }

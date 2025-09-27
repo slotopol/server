@@ -3,20 +3,12 @@ package ultrasevens
 // See: https://www.slotsmate.com/software/novomatic/ultra-sevens
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed ultrasevens_reel.yaml
-var reels []byte
+var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
-var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
-
-//go:embed ultrasevens_jack.yaml
-var jack []byte
-
-var JackMap = slot.ReadMap[[3]float64](jack)
+var JackMap slot.ReelsMap[[3]float64]
 
 // Lined payment.
 var LinePay = [7][5]float64{

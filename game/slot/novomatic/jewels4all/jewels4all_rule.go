@@ -1,21 +1,14 @@
 package jewels4all
 
 import (
-	_ "embed"
 	"math/rand/v2"
 
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed jewels4all_reel.yaml
-var reels []byte
+var Reels *slot.Reels5x
 
-var Reels = slot.ReadObj[*slot.Reels5x](reels)
-
-//go:embed jewels4all_chance.yaml
-var chance []byte
-
-var ChanceMap = slot.ReadMap[float64](chance)
+var ChanceMap slot.ReelsMap[float64]
 
 // Lined payment.
 var LinePay = [8][5]float64{

@@ -3,20 +3,12 @@ package bananasgobahamas
 // See: https://www.slotsmate.com/software/novomatic/bananas-go-bahamas
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed bananasgobahamas_bon.yaml
-var rbon []byte
+var ReelsBon *slot.Reels5x
 
-var ReelsBon = slot.ReadObj[*slot.Reels5x](rbon)
-
-//go:embed bananasgobahamas_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
+var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
 // Lined payment.
 var LinePay = [13][5]float64{

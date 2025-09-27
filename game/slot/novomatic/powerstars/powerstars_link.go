@@ -3,8 +3,16 @@
 package powerstars
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game"
 )
+
+//go:embed powerstars_reel.yaml
+var reels []byte
+
+//go:embed powerstars_chance.yaml
+var chance []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -29,4 +37,5 @@ func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
 	game.DataRouter["novomatic/powerstars/reel"] = &Reels
 	game.DataRouter["novomatic/powerstars/chance"] = &ChanceMap
+	game.LoadMap = append(game.LoadMap, reels, chance)
 }

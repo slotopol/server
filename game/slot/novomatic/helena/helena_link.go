@@ -3,8 +3,16 @@
 package helena
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game"
 )
+
+//go:embed helena_bon.yaml
+var rbon []byte
+
+//go:embed helena_reel.yaml
+var reels []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -33,4 +41,5 @@ func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
 	game.DataRouter["novomatic/helena/bon"] = &ReelsBon
 	game.DataRouter["novomatic/helena/reel"] = &ReelsMap
+	game.LoadMap = append(game.LoadMap, rbon, reels)
 }

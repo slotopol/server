@@ -3,15 +3,10 @@ package alwayshot
 // See: https://freeslotshub.com/novomatic/always-hot/
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed alwayshot_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels3x](reels)
+var ReelsMap slot.ReelsMap[*slot.Reels3x]
 
 // Lined payment.
 var LinePay = [9]float64{

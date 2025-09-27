@@ -3,21 +3,14 @@ package powerstars
 // See: https://freeslotshub.com/novomatic/power-stars/
 
 import (
-	_ "embed"
 	"math/rand/v2"
 
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed powerstars_reel.yaml
-var reels []byte
+var Reels *slot.Reels5x
 
-var Reels = slot.ReadObj[*slot.Reels5x](reels)
-
-//go:embed powerstars_chance.yaml
-var chance []byte
-
-var ChanceMap = slot.ReadMap[float64](chance)
+var ChanceMap slot.ReelsMap[float64]
 
 // Lined payment.
 var LinePay = [9][5]float64{

@@ -1,20 +1,12 @@
 package katana
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed katana_bon.yaml
-var rbon []byte
+var ReelsBon *slot.Reels5x
 
-var ReelsBon = slot.ReadObj[*slot.Reels5x](rbon)
-
-//go:embed katana_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
+var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
 // Lined payment.
 var LinePay = [12][5]float64{
