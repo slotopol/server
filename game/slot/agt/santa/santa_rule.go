@@ -3,15 +3,10 @@ package santa
 // See: https://agtsoftware.com/games/agt/santa
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed santa_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels4x](reels)
+var ReelsMap slot.ReelsMap[*slot.Reels4x]
 
 // Lined payment.
 var LinePay = [10][5]float64{

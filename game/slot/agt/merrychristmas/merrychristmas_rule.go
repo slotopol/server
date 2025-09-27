@@ -3,15 +3,10 @@ package merrychristmas
 // See: https://agtsoftware.com/games/agt/christmas
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed merrychristmas_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels3x](reels)
+var ReelsMap slot.ReelsMap[*slot.Reels3x]
 
 // Lined payment.
 var LinePay = [8]float64{

@@ -78,6 +78,13 @@ func LoadEmbedData() {
 		if ai.Update != nil {
 			ai.Update(ai)
 		}
+		if len(ai.RTP) == 0 {
+			var id string
+			if len(ai.Aliases) > 0 {
+				id = util.ToID(ai.Aliases[0].Prov + "/" + ai.Aliases[0].Name)
+			}
+			panic(fmt.Errorf("RTP list does not complete for %s", id))
+		}
 	}
 	var d = time.Since(t0)
 	if d > time.Millisecond*500 || cfg.Verbose {

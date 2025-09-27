@@ -30,7 +30,7 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 	func() {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		slot.BruteForce5x3Big(ctx2, &s, g, reels.Reel(1), ReelsBon, reels.Reel(5))
+		slot.BruteForce5x3Big(ctx2, &s, g, reels.Reel(1), ReelBig, reels.Reel(5))
 	}()
 	return calc(os.Stdout)
 }

@@ -12,7 +12,7 @@ import (
 //go:embed fairyqueen_es.yaml
 var esreel []byte
 
-var ExpSymReel = slot.ReadObj[[]slot.Sym](esreel)
+var ReelExpSym = slot.ReadObj[[]slot.Sym](esreel)
 
 //go:embed fairyqueen_bon.yaml
 var rbon []byte
@@ -192,7 +192,7 @@ func (g *Game) Spin(mrtp float64) {
 
 func (g *Game) Prepare() {
 	if g.FSR > 0 { // setup expanding symbol
-		g.ES = ExpSymReel[rand.N(len(ExpSymReel))]
+		g.ES = ReelExpSym[rand.N(len(ReelExpSym))]
 	} else {
 		g.ES = 0
 	}

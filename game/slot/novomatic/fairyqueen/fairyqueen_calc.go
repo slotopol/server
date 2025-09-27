@@ -168,12 +168,12 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		}
 	}
 	var rtpsym, qfs float64
-	for _, es := range ExpSymReel {
+	for _, es := range ReelExpSym {
 		rtpsym += rtpe[es]
 		qfs += qe[es]
 	}
-	rtpsym /= float64(len(ExpSymReel))
-	qfs /= float64(len(ExpSymReel))
+	rtpsym /= float64(len(ReelExpSym))
+	qfs /= float64(len(ReelExpSym))
 	var sqfs = 1 / (1 - qfs)
 	var rtpfs = sqfs * rtpsym
 	fmt.Printf("free spins: q = %.5g, sq = 1/(1-q) = %.6f\n", qfs, sqfs)

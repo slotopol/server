@@ -3,15 +3,10 @@ package panda
 // See: https://agtsoftware.com/games/agt/panda
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed panda_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels3x](reels)
+var ReelsMap slot.ReelsMap[*slot.Reels3x]
 
 // Lined payment.
 var LinePay = [9]float64{

@@ -11,6 +11,10 @@ type Cascade interface {
 	Strike(wins Wins)     // strike win symbols on the screen
 }
 
+// Remark: On cascading slots, the reels must not match, otherwise,
+// if the same positions appear on the reels during a spin, there
+// will be an endless avalanche.
+
 type CascadeSlot interface {
 	Cascade
 	SlotGame

@@ -5,17 +5,11 @@ import (
 	"github.com/slotopol/server/game/slot/novomatic/dolphinspearl"
 )
 
-// Copy data from dolphinspearl.
+// Copy data from novomatic/dolphinspearl.
 var (
 	LinePay      = dolphinspearl.LinePay
 	ScatPay      = dolphinspearl.ScatPay
 	ScatFreespin = dolphinspearl.ScatFreespin
-
-	ReelsBon = dolphinspearl.ReelsBon
-	ReelsMap = dolphinspearl.ReelsMap
-
-	CalcStatReg = dolphinspearl.CalcStatReg
-	CalcStatBon = dolphinspearl.CalcStatBon
 )
 
 // Bet lines
@@ -131,10 +125,10 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 
 func (g *Game) Spin(mrtp float64) {
 	if g.FSR == 0 {
-		var reels, _ = ReelsMap.FindClosest(mrtp)
+		var reels, _ = dolphinspearl.ReelsMap.FindClosest(mrtp)
 		g.ReelSpin(reels)
 	} else {
-		g.ReelSpin(ReelsBon)
+		g.ReelSpin(dolphinspearl.ReelsBon)
 	}
 }
 

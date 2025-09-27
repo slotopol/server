@@ -4,6 +4,7 @@ package icequeen
 
 import (
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/game/slot/novomatic/dolphinspearl"
 )
 
 var Info = game.AlgInfo{
@@ -36,10 +37,9 @@ var Info = game.AlgInfo{
 		LN: len(BetLines),
 		BN: 0,
 	},
-	Update: func(ai *game.AlgInfo) { ai.RTP = game.MakeRtpList(ReelsMap) },
+	Update: func(ai *game.AlgInfo) { ai.RTP = game.MakeRtpList(dolphinspearl.ReelsMap) },
 }
 
 func init() {
-	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
-	game.DataRouter["agt/icequeen/reel"] = &ReelsMap
+	Info.SetupFactory(func() game.Gamble { return NewGame() }, dolphinspearl.CalcStatReg)
 }

@@ -3,8 +3,13 @@
 package jokers100
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game"
 )
+
+//go:embed jokers100_reel.yaml
+var reels []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -30,5 +35,6 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
-	game.DataRouter["agt/jokers100/reel"] = &ReelsMap
+	game.DataRouter["agt/100jokers/reel"] = &ReelsMap
+	game.LoadMap = append(game.LoadMap, reels)
 }

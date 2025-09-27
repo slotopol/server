@@ -3,15 +3,10 @@ package iceiceice
 // See: https://agtsoftware.com/games/agt/iceiceice
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed iceiceice_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels3x](reels)
+var ReelsMap slot.ReelsMap[*slot.Reels3x]
 
 // Lined payment.
 var LinePay = [7]float64{

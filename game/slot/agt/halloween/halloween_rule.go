@@ -3,15 +3,10 @@ package halloween
 // See: https://agtsoftware.com/games/agt/halloween
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed halloween_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels3x](reels)
+var ReelsMap slot.ReelsMap[*slot.Reels3x]
 
 // Lined payment.
 var LinePay = [8]float64{

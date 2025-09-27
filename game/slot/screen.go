@@ -310,8 +310,9 @@ type Screen5x3 struct {
 	Scr [5][3]Sym `json:"scr" yaml:"scr" xml:"scr"`
 }
 
-// Declare conformity with Screen interface.
+// Declare conformity with Screen & Bigger interface.
 var _ Screen = (*Screen5x3)(nil)
+var _ Bigger = (*Screen5x3)(nil)
 
 func (s *Screen5x3) Dim() (Pos, Pos) {
 	return 5, 3

@@ -7,14 +7,8 @@ import (
 	"github.com/slotopol/server/game/slot/agt/extraspin"
 )
 
-// Copy data from extraspin.
-var (
-	LinePay = extraspin.LinePay
-
-	ReelsMap = extraspin.ReelsMap
-
-	CalcStat = extraspin.CalcStat
-)
+// Lined payment.
+var LinePay = extraspin.LinePay
 
 // Bet lines
 var BetLines = slot.BetLinesAgt5x3[:10]
@@ -111,7 +105,7 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 }
 
 func (g *Game) Spin(mrtp float64) {
-	var reels, _ = ReelsMap.FindClosest(mrtp)
+	var reels, _ = extraspin.ReelsMap.FindClosest(mrtp)
 	g.ReelSpin(reels)
 }
 

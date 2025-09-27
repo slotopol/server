@@ -4,6 +4,7 @@ package extraspin3
 
 import (
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/game/slot/agt/extraspin"
 )
 
 var Info = game.AlgInfo{
@@ -23,10 +24,9 @@ var Info = game.AlgInfo{
 		LN: len(BetLines),
 		BN: 0,
 	},
-	Update: func(ai *game.AlgInfo) { ai.RTP = game.MakeRtpList(ReelsMap) },
+	Update: func(ai *game.AlgInfo) { ai.RTP = game.MakeRtpList(extraspin.ReelsMap) },
 }
 
 func init() {
-	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
-	game.DataRouter["agt/extraspin3/reel"] = &ReelsMap
+	Info.SetupFactory(func() game.Gamble { return NewGame() }, extraspin.CalcStat)
 }
