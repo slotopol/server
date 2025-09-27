@@ -8,7 +8,7 @@ import (
 
 var BonusReel = []slot.Sym{1, 2, 3, 4, 5, 6, 7}
 
-var ReelsMap = slot.ReelsMap[*slot.Reels5x]{}
+var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
 // Lined payment.
 var LinePay = [13][5]float64{

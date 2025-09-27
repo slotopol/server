@@ -1,21 +1,13 @@
 package simsalabim
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 	"github.com/slotopol/server/game/slot/netent/diamonddogs"
 )
 
-//go:embed simsalabim_bon.yaml
-var rbon []byte
+var ReelsBon *slot.Reels5x
 
-var ReelsBon = slot.ReadObj[*slot.Reels5x](rbon)
-
-//go:embed simsalabim_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
+var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
 // Lined payment.
 var LinePay = [11][5]float64{

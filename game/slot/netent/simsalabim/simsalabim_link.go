@@ -3,8 +3,16 @@
 package simsalabim
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game"
 )
+
+//go:embed simsalabim_bon.yaml
+var rbon []byte
+
+//go:embed simsalabim_reel.yaml
+var reels []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -30,5 +38,7 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
+	game.DataRouter["netent/simsalabim/bon"] = &ReelsBon
 	game.DataRouter["netent/simsalabim/reel"] = &ReelsMap
+	game.LoadMap = append(game.LoadMap, rbon, reels)
 }

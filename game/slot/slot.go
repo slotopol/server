@@ -2,20 +2,12 @@ package slot
 
 import (
 	"errors"
-	"fmt"
 )
 
 type (
 	Sym int8 // symbol type
 	Pos int8 // screen or line position with 1-based index
 )
-
-type Reels interface {
-	Cols() int          // returns number of columns
-	Reel(col Pos) []Sym // returns reel at given column, index from
-	Reshuffles() uint64 // returns total number of reshuffles
-	fmt.Stringer
-}
 
 // WinItem describes win on each line or by scatters.
 type WinItem struct {

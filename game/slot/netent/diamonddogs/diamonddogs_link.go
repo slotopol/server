@@ -3,8 +3,16 @@
 package diamonddogs
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game"
 )
+
+//go:embed diamonddogs_bon.yaml
+var rbon []byte
+
+//go:embed diamonddogs_reel.yaml
+var reels []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -33,4 +41,5 @@ func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
 	game.DataRouter["netent/diamonddogs/bon"] = &ReelsBon
 	game.DataRouter["netent/diamonddogs/reel"] = &ReelsMap
+	game.LoadMap = append(game.LoadMap, rbon, reels)
 }

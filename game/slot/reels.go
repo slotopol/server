@@ -8,6 +8,13 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+type Reels interface {
+	Cols() int          // returns number of columns
+	Reel(col Pos) []Sym // returns reel at given column, index from
+	Reshuffles() uint64 // returns total number of reshuffles
+	fmt.Stringer
+}
+
 // Reels for 3-reels slots.
 type Reels3x [3][]Sym
 
@@ -28,6 +35,10 @@ func (r *Reels3x) Reshuffles() uint64 {
 
 func (r *Reels3x) String() string {
 	return fmt.Sprintf("[%d, %d, %d]", len(r[0]), len(r[1]), len(r[2]))
+}
+
+func (r *Reels3x) Clear() {
+	clear(r[:])
 }
 
 // Reels for 4-reels slots.
@@ -52,6 +63,10 @@ func (r *Reels4x) String() string {
 	return fmt.Sprintf("[%d, %d, %d, %d]", len(r[0]), len(r[1]), len(r[2]), len(r[3]))
 }
 
+func (r *Reels4x) Clear() {
+	clear(r[:])
+}
+
 // Reels for 5-reels slots.
 type Reels5x [5][]Sym
 
@@ -74,6 +89,10 @@ func (r *Reels5x) String() string {
 	return fmt.Sprintf("[%d, %d, %d, %d, %d]", len(r[0]), len(r[1]), len(r[2]), len(r[3]), len(r[4]))
 }
 
+func (r *Reels5x) Clear() {
+	clear(r[:])
+}
+
 // Reels for 6-reels slots.
 type Reels6x [6][]Sym
 
@@ -94,6 +113,10 @@ func (r *Reels6x) Reshuffles() uint64 {
 
 func (r *Reels6x) String() string {
 	return fmt.Sprintf("[%d, %d, %d, %d, %d, %d]", len(r[0]), len(r[1]), len(r[2]), len(r[3]), len(r[4]), len(r[5]))
+}
+
+func (r *Reels6x) Clear() {
+	clear(r[:])
 }
 
 type ReelsMap[T any] map[float64]T
