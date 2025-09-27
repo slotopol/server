@@ -3,15 +3,10 @@ package shiningtreasures
 // See: https://www.slotsmate.com/software/ct-interactive/shining-treasures
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed shiningtreasures_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
+var ReelsMap = slot.ReelsMap[*slot.Reels5x]{}
 
 // Lined payment.
 var LinePay = [10][5]float64{

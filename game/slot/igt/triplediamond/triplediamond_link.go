@@ -3,8 +3,13 @@
 package triplediamond
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game"
 )
+
+//go:embed triplediamond_reel.yaml
+var reels []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -28,4 +33,5 @@ var Info = game.AlgInfo{
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
 	game.DataRouter["igt/triplediamond/reel"] = &ReelsMap
+	game.LoadMap = append(game.LoadMap, reels)
 }

@@ -3,15 +3,10 @@ package vikingsfun
 // See: https://www.slotsmate.com/software/ct-interactive/vikings-fun
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed vikingsfun_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
+var ReelsMap = slot.ReelsMap[*slot.Reels5x]{}
 
 // Lined payment.
 var LinePay = [11][5]float64{

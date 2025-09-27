@@ -1,21 +1,13 @@
 package slotopoldeluxe
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 	"github.com/slotopol/server/game/slot/megajack/slotopol"
 )
 
-//go:embed slotopoldeluxe_reel.yaml
-var reels []byte
+var ReelsMap = slot.ReelsMap[*slot.Reels5x]{}
 
-var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
-
-//go:embed slotopoldeluxe_jack.yaml
-var jack []byte
-
-var JackMap = slot.ReadMap[float64](jack)
+var JackMap = slot.ReelsMap[float64]{}
 
 // Lined payment.
 var LinePay = [13][5]float64{

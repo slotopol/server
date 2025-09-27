@@ -3,16 +3,12 @@ package smileyxwild
 // See: https://www.slotsmate.com/software/ct-interactive/smiley-x-wild
 
 import (
-	_ "embed"
 	"math/rand/v2"
 
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed smileyxwild_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
+var ReelsMap = slot.ReelsMap[*slot.Reels5x]{}
 
 // Lined payment.
 var LinePay = [8][5]float64{

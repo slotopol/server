@@ -3,20 +3,12 @@ package richgirl
 // See: https://www.slotsmate.com/software/igt/rich-girl
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed richgirl_bon.yaml
-var rbon []byte
+var ReelsBon = &slot.Reels5x{}
 
-var ReelsBon = slot.ReadObj[*slot.Reels5x](rbon)
-
-//go:embed richgirl_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
+var ReelsMap = slot.ReelsMap[*slot.Reels5x]{}
 
 // Lined payment on regular games.
 var LinePayReg = [12][5]float64{

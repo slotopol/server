@@ -9,15 +9,9 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed panthermoon_bon.yaml
-var rbon []byte
+var ReelsBon = &slot.Reels5x{}
 
-var ReelsBon = slot.ReadObj[*slot.Reels5x](rbon)
-
-//go:embed panthermoon_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
+var ReelsMap = slot.ReelsMap[*slot.Reels5x]{}
 
 // Lined payment.
 var LinePay = [13][5]float64{

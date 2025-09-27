@@ -3,15 +3,10 @@ package sapphirelagoon
 // See: https://www.slotsmate.com/software/ct-interactive/sapphire-lagoon
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed sapphirelagoon_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
+var ReelsMap = slot.ReelsMap[*slot.Reels5x]{}
 
 // Lined payment.
 var LinePay = [10][5]float64{

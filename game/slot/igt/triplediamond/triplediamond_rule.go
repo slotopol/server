@@ -3,15 +3,10 @@ package triplediamond
 // See: https://www.slotsmate.com/software/igt/triple-diamond
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 )
 
-//go:embed triplediamond_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels3x](reels)
+var ReelsMap = slot.ReelsMap[*slot.Reels3x]{}
 
 // Lined payment.
 var LinePay = [5]float64{

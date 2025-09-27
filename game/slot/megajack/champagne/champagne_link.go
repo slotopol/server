@@ -3,8 +3,16 @@
 package champagne
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game"
 )
+
+//go:embed champagne_reel.yaml
+var reels []byte
+
+//go:embed champagne_jack.yaml
+var jack []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -32,4 +40,5 @@ func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
 	game.DataRouter["megajack/champagne/reel"] = &ReelsMap
 	game.DataRouter["megajack/champagne/jack"] = &JackMap
+	game.LoadMap = append(game.LoadMap, reels, jack)
 }

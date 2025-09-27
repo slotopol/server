@@ -3,17 +3,12 @@ package firejoker
 // See: https://freeslotshub.com/playngo/fire-joker/
 
 import (
-	_ "embed"
-
 	"github.com/slotopol/server/game/slot"
 )
 
 var BonusReel = []slot.Sym{1, 2, 3, 4, 5, 6, 7}
 
-//go:embed firejoker_reel.yaml
-var reels []byte
-
-var ReelsMap = slot.ReadMap[*slot.Reels5x](reels)
+var ReelsMap = slot.ReelsMap[*slot.Reels5x]{}
 
 // Lined payment.
 var LinePay = [13][5]float64{

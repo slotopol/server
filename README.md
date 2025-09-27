@@ -124,7 +124,7 @@ sudo chmod +x ./task/*.sh
 Then web-service can be started:
 
 ```cmd
-slot_win_x64 web
+slot_win_x64 -v web
 ```
 
 The [list of all](docs/list-all.md) provided games can be obtained by command:

@@ -80,7 +80,7 @@ func LoadEmbedData() {
 		}
 	}
 	var d = time.Since(t0)
-	if d > time.Millisecond*100 || cfg.Verbose {
+	if d > time.Millisecond*500 || cfg.Verbose {
 		log.Printf("loaded %d embedded data chunks in %s\n", len(game.LoadMap), d.String())
 	}
 }
