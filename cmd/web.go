@@ -26,27 +26,43 @@ var webCmd = &cobra.Command{
 	Long:    webLong,
 	Example: fmt.Sprintf(webExmp, cfg.AppName),
 	Run: func(cmd *cobra.Command, args []string) {
-		var err error
-
 		if cfg.DevMode {
 			gin.SetMode(gin.DebugMode)
 		} else {
 			gin.SetMode(gin.ReleaseMode)
 		}
 
+		var err error
 		var exitctx = Startup()
-		if err = Init(); err != nil {
+
+		// Load yaml-files
+		LoadInternalYaml(exitctx)
+		if err = LoadExternalYaml(exitctx); err != nil {
+			log.Fatalln("can not load yaml files: %s", err.Error())
+			return
+		}
+		UpdateAlgList()
+
+		// Working with SQL
+		if err = InitSQL(); err != nil {
 			log.Fatalln(err.Error())
 			return
 		}
+		defer func() {
+			if err = DoneSQL(); err != nil {
+				log.Fatalln(err.Error())
+				return
+			}
+		}()
 		go SqlLoop(exitctx)
 
+		// Web router engine
 		var r = gin.New()
 		r.SetTrustedProxies(Cfg.TrustedProxies)
 		r.HandleMethodNotAllowed = true
 		api.SetupRouter(r)
 
-		// starts HTTP listeners
+		// Starts HTTP listeners
 		var wg errgroup.Group
 		for _, addr := range Cfg.PortHTTP {
 			log.Printf("start http on %s\n", addr)
@@ -92,10 +108,6 @@ var webCmd = &cobra.Command{
 		}
 		if err = wg.Wait(); err != nil {
 			log.Println(err.Error())
-			return
-		}
-		if err = Done(); err != nil {
-			log.Fatalln(err.Error())
 			return
 		}
 	},

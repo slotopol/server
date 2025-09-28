@@ -70,22 +70,14 @@ func Startup() (exitctx context.Context) {
 	return
 }
 
-func LoadEmbedData() {
+// Load data from embed yaml chunks.
+func LoadInternalYaml(ctx context.Context) {
 	var t0 = time.Now()
 	for _, b := range game.LoadMap {
+		if ctx.Err() != nil {
+			return
+		}
 		game.MustReadChain(bytes.NewReader(b))
-	}
-	for _, ai := range game.AlgList {
-		if ai.Update != nil {
-			ai.Update(ai)
-		}
-		if len(ai.RTP) == 0 {
-			var id string
-			if len(ai.Aliases) > 0 {
-				id = util.ToID(ai.Aliases[0].Prov + "/" + ai.Aliases[0].Name)
-			}
-			panic(fmt.Errorf("RTP list does not complete for %s", id))
-		}
 	}
 	var d = time.Since(t0)
 	if d > time.Millisecond*500 || cfg.Verbose {
@@ -93,10 +85,14 @@ func LoadEmbedData() {
 	}
 }
 
-func LoadDataFiles() (err error) {
+// Load data from extermal yaml files.
+func LoadExternalYaml(ctx context.Context) (err error) {
 	for _, root := range cfg.ObjPath {
 		err = fs.WalkDir(os.DirFS(root), ".", func(fpath string, d fs.DirEntry, err error) error {
 			if err != nil {
+				return err
+			}
+			if err = ctx.Err(); err != nil {
 				return err
 			}
 			if d.IsDir() {
@@ -112,9 +108,9 @@ func LoadDataFiles() (err error) {
 			}
 			defer r.Close()
 			if err = game.ReadChain(r); err != nil {
-				return fmt.Errorf("can not read game data from %s: %w", fullpath, err)
+				return fmt.Errorf("can not read data from %s: %w", fullpath, err)
 			}
-			log.Printf("loaded game data from: %s\n", fullpath)
+			log.Printf("loaded data from: %s\n", fullpath)
 			return nil
 		})
 		if err != nil {
@@ -122,6 +118,21 @@ func LoadDataFiles() (err error) {
 		}
 	}
 	return
+}
+
+func UpdateAlgList() {
+	for _, ai := range game.AlgList {
+		if ai.Update != nil {
+			ai.Update(ai)
+		}
+		if len(ai.RTP) == 0 {
+			var id string
+			if len(ai.Aliases) > 0 {
+				id = util.ToID(ai.Aliases[0].Prov + "/" + ai.Aliases[0].Name)
+			}
+			panic(fmt.Errorf("RTP list does not complete for %s", id))
+		}
+	}
 }
 
 func InitStorage() (err error) {
@@ -338,12 +349,7 @@ func SqlLoop(exitctx context.Context) {
 	}
 }
 
-func Init() (err error) {
-	LoadEmbedData()
-	if err = LoadDataFiles(); err != nil {
-		err = fmt.Errorf("can not load game data files: %w", err)
-		return
-	}
+func InitSQL() (err error) {
 	if err = InitStorage(); err != nil {
 		err = fmt.Errorf("can not init XORM records storage: %w", err)
 		return
@@ -360,7 +366,7 @@ func Init() (err error) {
 	return
 }
 
-func Done() (err error) {
+func DoneSQL() (err error) {
 	var errs []error
 	for _, bat := range api.BankBat {
 		errs = append(errs, bat.Flush(cfg.XormStorage, 0))

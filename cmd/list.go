@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"sort"
@@ -144,11 +145,16 @@ var listCmd = &cobra.Command{
 	Long:    listLong,
 	Example: fmt.Sprintf(listExmp, cfg.AppName),
 	Run: func(cmd *cobra.Command, args []string) {
-		LoadEmbedData()
-		if err := LoadDataFiles(); err != nil {
-			log.Fatalln("can not load game data files: %s", err.Error())
+		var err error
+		var exitctx = context.Background()
+
+		// Load yaml-files
+		LoadInternalYaml(exitctx)
+		if err = LoadExternalYaml(exitctx); err != nil {
+			log.Fatalln("can not load yaml files: %s", err.Error())
 			return
 		}
+		UpdateAlgList()
 
 		var finclist, fexclist [][]game.Filter
 		var f game.Filter

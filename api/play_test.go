@@ -2,6 +2,7 @@ package api_test
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"io"
 	"math/rand/v2"
@@ -93,11 +94,18 @@ func TestPlay(t *testing.T) {
 	var wallet, gain float64
 	var fsr int
 
+	var exitctx = context.Background()
+
+	// Load yaml-files
+	cmd.LoadInternalYaml(exitctx)
+	cmd.UpdateAlgList()
+
 	// Prepare in-memory database
 	cfg.CfgPath = "../appdata"
-	if err := cmd.Init(); err != nil {
+	if err := cmd.InitSQL(); err != nil {
 		t.Fatal(err)
 	}
+	defer cmd.DoneSQL()
 
 	gin.SetMode(gin.TestMode)
 	var r = gin.New()

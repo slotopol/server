@@ -31,11 +31,14 @@ var scanCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var err error
 		var exitctx = Startup()
-		LoadEmbedData()
-		if err = LoadDataFiles(); err != nil {
-			log.Fatalln("can not load game data files: %s", err.Error())
+
+		// Load yaml-files
+		LoadInternalYaml(exitctx)
+		if err = LoadExternalYaml(exitctx); err != nil {
+			log.Fatalln("can not load yaml files: %s", err.Error())
 			return
 		}
+		UpdateAlgList()
 
 		var mrtp float64
 		if mrtp, err = scanflags.GetFloat64("mrtp"); err != nil {
