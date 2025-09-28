@@ -8,11 +8,8 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed aztecgold_reel.yaml
-var reels []byte
-
-//go:embed aztecgold_jack.yaml
-var jack []byte
+//go:embed aztecgold_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -39,5 +36,5 @@ func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
 	game.DataRouter["megajack/aztecgold/reel"] = &ReelsMap
 	game.DataRouter["megajack/aztecgold/jack"] = &JackMap
-	game.LoadMap = append(game.LoadMap, reels, jack)
+	game.LoadMap = append(game.LoadMap, data)
 }

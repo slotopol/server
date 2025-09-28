@@ -8,11 +8,8 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed valkyrie_big.yaml
-var breel []byte
-
-//go:embed valkyrie_reel.yaml
-var reels []byte
+//go:embed valkyrie_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -40,5 +37,5 @@ func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
 	game.DataRouter["agt/valkyrie/big"] = &ReelBig
 	game.DataRouter["agt/valkyrie/reel"] = &ReelsMap
-	game.LoadMap = append(game.LoadMap, breel, reels)
+	game.LoadMap = append(game.LoadMap, data)
 }

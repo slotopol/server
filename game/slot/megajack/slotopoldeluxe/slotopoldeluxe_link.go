@@ -8,11 +8,8 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed slotopoldeluxe_reel.yaml
-var reels []byte
-
-//go:embed slotopoldeluxe_jack.yaml
-var jack []byte
+//go:embed slotopoldeluxe_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -40,5 +37,5 @@ func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
 	game.DataRouter["megajack/slotopoldeluxe/reel"] = &ReelsMap
 	game.DataRouter["megajack/slotopoldeluxe/jack"] = &JackMap
-	game.LoadMap = append(game.LoadMap, reels, jack)
+	game.LoadMap = append(game.LoadMap, data)
 }

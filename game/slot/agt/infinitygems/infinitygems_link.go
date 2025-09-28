@@ -8,11 +8,8 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed infinitygems_bon.yaml
-var rbon []byte
-
-//go:embed infinitygems_reel.yaml
-var reels []byte
+//go:embed infinitygems_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -40,5 +37,5 @@ func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
 	game.DataRouter["agt/infinitygems/bon"] = &ReelsBon
 	game.DataRouter["agt/infinitygems/reel"] = &ReelsMap
-	game.LoadMap = append(game.LoadMap, rbon, reels)
+	game.LoadMap = append(game.LoadMap, data)
 }

@@ -1,11 +1,9 @@
 package game
 
 import (
-	"bytes"
 	"errors"
 	"fmt"
 	"io"
-	"os"
 
 	"gopkg.in/yaml.v3"
 )
@@ -16,16 +14,16 @@ var LoadMap = [][]byte{} // storage for loaded data
 
 var ErrNoObj = errors.New("unknown object id")
 
-// ReadChain reads and decodes a sequence of objects from a byte slice.
+// ReadChain reads and decodes a sequence of objects from a stream.
 // Each object is identified by a string id, followed by its YAML representation.
 // The objects are looked up in the DataRouter map.
 // If an object implements the Clearer interface, its Clear method is called before decoding.
-func ReadChain(b []byte) (err error) {
+func ReadChain(r io.Reader) (err error) {
 	type Clearer interface {
 		Clear()
 	}
 
-	var dec = yaml.NewDecoder(bytes.NewReader(b))
+	var dec = yaml.NewDecoder(r)
 	for {
 		var id string
 		if err = dec.Decode(&id); err != nil {
@@ -50,17 +48,8 @@ func ReadChain(b []byte) (err error) {
 }
 
 // MustReadChain is like ReadChain but panics if an error occurs.
-func MustReadChain(b []byte) {
-	if err := ReadChain(b); err != nil {
+func MustReadChain(r io.Reader) {
+	if err := ReadChain(r); err != nil {
 		panic(err)
 	}
-}
-
-// LoadChain reads and decodes a sequence of objects from a YAML file.
-func LoadChain(fpath string) (err error) {
-	var b []byte
-	if b, err = os.ReadFile(fpath); err != nil {
-		return
-	}
-	return ReadChain(b)
 }

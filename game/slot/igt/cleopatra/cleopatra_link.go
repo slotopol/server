@@ -8,8 +8,8 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed cleopatra_reel.yaml
-var reels []byte
+//go:embed cleopatra_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -36,5 +36,5 @@ var Info = game.AlgInfo{
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
 	game.DataRouter["igt/cleopatra/reel"] = &ReelsMap
-	game.LoadMap = append(game.LoadMap, reels)
+	game.LoadMap = append(game.LoadMap, data)
 }

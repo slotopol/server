@@ -8,11 +8,8 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed 2millionbc_bon.yaml
-var rbon []byte
-
-//go:embed 2millionbc_reel.yaml
-var reels []byte
+//go:embed 2millionbc_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -38,5 +35,5 @@ func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
 	game.DataRouter["betsoft/2millionbc/bon"] = &ReelsBon
 	game.DataRouter["betsoft/2millionbc/reel"] = &ReelsMap
-	game.LoadMap = append(game.LoadMap, rbon, reels)
+	game.LoadMap = append(game.LoadMap, data)
 }

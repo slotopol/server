@@ -8,8 +8,8 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed redroo_reel.yaml
-var reels []byte
+//go:embed redroo_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -34,5 +34,5 @@ var Info = game.AlgInfo{
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
 	game.DataRouter["aristocrat/redroo/reel"] = &ReelsMap
-	game.LoadMap = append(game.LoadMap, reels)
+	game.LoadMap = append(game.LoadMap, data)
 }

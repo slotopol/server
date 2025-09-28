@@ -5,6 +5,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"io"
 	"io/fs"
 	"log"
 	"os"
@@ -72,7 +73,7 @@ func Startup() (exitctx context.Context) {
 func LoadEmbedData() {
 	var t0 = time.Now()
 	for _, b := range game.LoadMap {
-		game.MustReadChain(b)
+		game.MustReadChain(bytes.NewReader(b))
 	}
 	for _, ai := range game.AlgList {
 		if ai.Update != nil {
@@ -88,13 +89,13 @@ func LoadEmbedData() {
 	}
 	var d = time.Since(t0)
 	if d > time.Millisecond*500 || cfg.Verbose {
-		log.Printf("loaded %d embedded data chunks in %s\n", len(game.LoadMap), d.String())
+		log.Printf("loaded %d embedded yaml chunks in %s\n", len(game.LoadMap), d.String())
 	}
 }
 
 func LoadDataFiles() (err error) {
 	for _, root := range cfg.ObjPath {
-		fs.WalkDir(os.DirFS(root), ".", func(fpath string, d fs.DirEntry, err error) error {
+		err = fs.WalkDir(os.DirFS(root), ".", func(fpath string, d fs.DirEntry, err error) error {
 			if err != nil {
 				return err
 			}
@@ -105,16 +106,20 @@ func LoadDataFiles() (err error) {
 			if ext := util.ToLower(filepath.Ext(fullpath)); ext != ".yaml" && ext != ".yml" {
 				return nil
 			}
-			var b []byte
-			if b, err = os.ReadFile(fullpath); err != nil {
+			var r io.ReadCloser
+			if r, err = os.Open(fullpath); err != nil {
 				return err
 			}
-			if err = game.ReadChain(b); err != nil {
+			defer r.Close()
+			if err = game.ReadChain(r); err != nil {
 				return fmt.Errorf("can not read game data from %s: %w", fullpath, err)
 			}
 			log.Printf("loaded game data from: %s\n", fullpath)
 			return nil
 		})
+		if err != nil {
+			return
+		}
 	}
 	return
 }
