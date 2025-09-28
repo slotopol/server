@@ -8,11 +8,8 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed jaguarmoon_bon.yaml
-var rbon []byte
-
-//go:embed jaguarmoon_reel.yaml
-var reels []byte
+//go:embed jaguarmoon_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -39,5 +36,5 @@ func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
 	game.DataRouter["novomatic/jaguarmoon/bon"] = &ReelsBon
 	game.DataRouter["novomatic/jaguarmoon/reel"] = &ReelsMap
-	game.LoadMap = append(game.LoadMap, rbon, reels)
+	game.LoadMap = append(game.LoadMap, data)
 }

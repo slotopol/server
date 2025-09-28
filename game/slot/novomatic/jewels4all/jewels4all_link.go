@@ -8,11 +8,8 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed jewels4all_reel.yaml
-var reels []byte
-
-//go:embed jewels4all_chance.yaml
-var chance []byte
+//go:embed jewels4all_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -37,5 +34,5 @@ func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
 	game.DataRouter["novomatic/jewels4all/reel"] = &Reels
 	game.DataRouter["novomatic/jewels4all/chance"] = &ChanceMap
-	game.LoadMap = append(game.LoadMap, reels, chance)
+	game.LoadMap = append(game.LoadMap, data)
 }

@@ -8,8 +8,8 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed cloverparty_reel.yaml
-var reels []byte
+//go:embed cloverparty_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -34,5 +34,5 @@ var Info = game.AlgInfo{
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
 	game.DataRouter["ctinteractive/cloverparty/reel"] = &ReelsMap
-	game.LoadMap = append(game.LoadMap, reels)
+	game.LoadMap = append(game.LoadMap, data)
 }

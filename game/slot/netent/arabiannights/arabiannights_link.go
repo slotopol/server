@@ -8,11 +8,8 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed arabiannights_bon.yaml
-var rbon []byte
-
-//go:embed arabiannights_reel.yaml
-var reels []byte
+//go:embed arabiannights_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -41,5 +38,5 @@ func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
 	game.DataRouter["netent/arabiannights/bon"] = &ReelsBon
 	game.DataRouter["netent/arabiannights/reel"] = &ReelsMap
-	game.LoadMap = append(game.LoadMap, rbon, reels)
+	game.LoadMap = append(game.LoadMap, data)
 }

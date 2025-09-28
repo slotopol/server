@@ -8,11 +8,8 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed kingsjester_reel.yaml
-var reels []byte
-
-//go:embed kingsjester_jack.yaml
-var jack []byte
+//go:embed kingsjester_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -40,5 +37,5 @@ func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
 	game.DataRouter["novomatic/kingsjester/reel"] = &ReelsMap
 	game.DataRouter["novomatic/kingsjester/jack"] = &JackMap
-	game.LoadMap = append(game.LoadMap, reels, jack)
+	game.LoadMap = append(game.LoadMap, data)
 }

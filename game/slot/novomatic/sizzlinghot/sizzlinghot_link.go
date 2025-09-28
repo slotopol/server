@@ -8,8 +8,8 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed sizzlinghot_reel.yaml
-var reels []byte
+//go:embed sizzlinghot_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -37,5 +37,5 @@ var Info = game.AlgInfo{
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
 	game.DataRouter["novomatic/sizzlinghot/reel"] = &ReelsMap
-	game.LoadMap = append(game.LoadMap, reels)
+	game.LoadMap = append(game.LoadMap, data)
 }

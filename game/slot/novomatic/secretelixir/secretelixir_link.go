@@ -8,11 +8,8 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed secretelixir_bon.yaml
-var rbon []byte
-
-//go:embed secretelixir_reel.yaml
-var reels []byte
+//go:embed secretelixir_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -41,5 +38,5 @@ func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
 	game.DataRouter["novomatic/secretelixir/bon"] = &ReelsBon
 	game.DataRouter["novomatic/secretelixir/reel"] = &ReelsMap
-	game.LoadMap = append(game.LoadMap, rbon, reels)
+	game.LoadMap = append(game.LoadMap, data)
 }

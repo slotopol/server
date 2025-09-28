@@ -8,11 +8,8 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed ultrasevens_reel.yaml
-var reels []byte
-
-//go:embed ultrasevens_jack.yaml
-var jack []byte
+//go:embed ultrasevens_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -37,5 +34,5 @@ func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
 	game.DataRouter["novomatic/ultrasevens/reel"] = &ReelsMap
 	game.DataRouter["novomatic/ultrasevens/jack"] = &JackMap
-	game.LoadMap = append(game.LoadMap, reels, jack)
+	game.LoadMap = append(game.LoadMap, data)
 }

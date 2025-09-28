@@ -8,12 +8,12 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed fruitilicious_reel.yaml
-var reels []byte
+//go:embed fruitilicious_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Fruitilicious", Date: game.Year(2009)},
+		{Prov: "Novomatic", Name: "Fruitilicious", Date: game.Date(2009, 1, 14)},
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,
@@ -31,5 +31,5 @@ var Info = game.AlgInfo{
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
 	game.DataRouter["novomatic/fruitilicious/reel"] = &ReelsMap
-	game.LoadMap = append(game.LoadMap, reels)
+	game.LoadMap = append(game.LoadMap, data)
 }

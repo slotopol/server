@@ -8,8 +8,8 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed plentyofjewels20_reel.yaml
-var reels []byte
+//go:embed plentyofjewels20_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -35,5 +35,5 @@ var Info = game.AlgInfo{
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
 	game.DataRouter["novomatic/plentyofjewels20hot/reel"] = &ReelsMap
-	game.LoadMap = append(game.LoadMap, reels)
+	game.LoadMap = append(game.LoadMap, data)
 }
