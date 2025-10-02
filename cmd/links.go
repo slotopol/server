@@ -52,6 +52,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/britania"
 	_ "github.com/slotopol/server/game/slot/ct/chillibomb"
 	_ "github.com/slotopol/server/game/slot/ct/cloverparty"
+	_ "github.com/slotopol/server/game/slot/ct/colibriwild"
 	_ "github.com/slotopol/server/game/slot/ct/dancingbananas"
 	_ "github.com/slotopol/server/game/slot/ct/doublehothabanero"
 	_ "github.com/slotopol/server/game/slot/ct/fortunepyramid"
