@@ -50,6 +50,7 @@ import (
 
 	// CT Interactive
 	_ "github.com/slotopol/server/game/slot/ct/britania"
+	_ "github.com/slotopol/server/game/slot/ct/cherrycrown"
 	_ "github.com/slotopol/server/game/slot/ct/chillibomb"
 	_ "github.com/slotopol/server/game/slot/ct/cloverparty"
 	_ "github.com/slotopol/server/game/slot/ct/colibriwild"
