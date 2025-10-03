@@ -58,6 +58,12 @@ const (
 )
 
 type (
+	// GameAlias structure describes the game target of algorithm.
+	// Several games can shares single algorithm, and in this case
+	// all those games presents in the list of aliases for this algorithm.
+	// All game rules, paytables and lines should be equal for this games,
+	// except maximum number of selected lines can differ. If maximum number
+	// of lines differ, algorithm receives largest number.
 	GameAlias struct {
 		Prov string    `json:"prov" yaml:"prov" xml:"prov"`
 		Name string    `json:"name" yaml:"name" xml:"name"`
@@ -115,6 +121,9 @@ func (ai *AlgInfo) SetupFactory(game func() Gamble, scan Scanner) {
 	AlgList = append(AlgList, ai)
 	for _, ga := range ai.Aliases {
 		var aid = util.ToID(ga.Prov + "/" + ga.Name)
+		if _, ok := InfoMap[aid]; ok {
+			panic(ErrAidHas)
+		}
 		InfoMap[aid] = &GameInfo{
 			GameAlias: ga,
 			AlgDescr:  &ai.AlgDescr,

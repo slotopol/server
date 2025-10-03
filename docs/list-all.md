@@ -88,6 +88,7 @@
 'Flame Dancer' Novomatic 5x3 videoslot
 'Flowers' NetEnt 5x3 videoslot
 'Forest Nymph' CT Interactive 5x3 videoslot
+'Fortune Fish' CT Interactive 5x3 videoslot
 'Fortune Pyramid' CT Interactive 5x3 videoslot
 'Fortune Teller' Play'n GO 5x3 videoslot
 'Fruit Galaxy' CT Interactive 5x4 videoslot
@@ -164,6 +165,7 @@
 'Money Pipe' CT Interactive 5x4 videoslot
 'More Dragons' CT Interactive 5x4 videoslot
 'Neon Bananas' CT Interactive 5x3 videoslot
+'Ocean Legends' CT Interactive 5x3 videoslot
 'Oliver's Bar' Novomatic 5x3 videoslot
 'Panda' AGT 3x3 videoslot
 'Pandora's Box' NetEnt 5x3 videoslot
@@ -242,11 +244,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 239 games, 130 algorithms, 11 providers
+total: 241 games, 130 algorithms, 11 providers
 AGT: 63 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 41 games
+CT Interactive: 43 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

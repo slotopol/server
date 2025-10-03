@@ -12,7 +12,10 @@ var DataRouter = map[string]any{} // object router for data loading
 
 var LoadMap = [][]byte{} // storage for loaded data
 
-var ErrNoObj = errors.New("unknown object id")
+var (
+	ErrNoObj  = errors.New("unknown object id")
+	ErrAidHas = errors.New("algorithm ID already declared")
+)
 
 // ReadChain reads and decodes a sequence of objects from a stream.
 // Each object is identified by a string id, followed by its YAML representation.

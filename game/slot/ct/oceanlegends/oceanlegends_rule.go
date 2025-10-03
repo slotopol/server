@@ -1,6 +1,6 @@
-package thetempleofastarta
+package oceanlegends
 
-// See: https://www.slotsmate.com/software/ct-interactive/the-temple-of-astarta
+// See: https://www.slotsmate.com/software/ct-interactive/ocean-legends
 
 import (
 	"github.com/slotopol/server/game/slot"
@@ -12,10 +12,10 @@ var ReelsMap slot.ReelsMap[*slot.Reels5x]
 var LinePay = [10][5]float64{
 	{},                    //  1 wild
 	{},                    //  2 scatter
-	{0, 0, 50, 200, 1000}, //  3 woman
-	{0, 0, 15, 75, 200},   //  4 kentaur
-	{0, 0, 5, 50, 150},    //  5 cup
-	{0, 0, 5, 50, 150},    //  6 horn
+	{0, 0, 50, 200, 1000}, //  3 aryan
+	{0, 0, 15, 75, 200},   //  4 nymph
+	{0, 0, 5, 50, 150},    //  5 pot
+	{0, 0, 5, 50, 150},    //  6 vase
 	{0, 0, 5, 15, 100},    //  7 ace
 	{0, 0, 5, 15, 100},    //  8 king
 	{0, 0, 5, 15, 100},    //  9 queen

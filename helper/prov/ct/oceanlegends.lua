@@ -4,10 +4,10 @@ dofile(path.."../../lib/reelgen.lua")
 local symset1 = {
 	1, --  1 wild    (on 2, 3, 4, 5 reels)
 	1, --  2 scatter
-	3, --  3 woman   1000
-	3, --  4 kentaur 200
-	3, --  5 cup     150
-	3, --  6 horn    150
+	3, --  3 aryan   1000
+	3, --  4 nymph   200
+	3, --  5 pot     150
+	3, --  6 vase    150
 	4, --  7 ace     100
 	4, --  8 king    100
 	4, --  9 queen   100
@@ -18,10 +18,10 @@ local neighbours = {
 	--1, 2, 3, 4, 5, 6, 7, 8, 9,10,
 	{ 2, 2, 1, 1, 1, 1, 0, 0, 0, 0,}, --  1 wild
 	{ 2, 2, 1, 1, 1, 1, 0, 0, 0, 0,}, --  2 scatter
-	{ 1, 1, 2, 1, 1, 1, 0, 0, 0, 0,}, --  3 woman
-	{ 1, 1, 1, 2, 1, 1, 0, 0, 0, 0,}, --  4 kentaur
-	{ 1, 1, 1, 1, 2, 1, 0, 0, 0, 0,}, --  5 cup
-	{ 1, 1, 1, 1, 1, 2, 0, 0, 0, 0,}, --  6 horn
+	{ 1, 1, 2, 1, 1, 1, 0, 0, 0, 0,}, --  3 aryan
+	{ 1, 1, 1, 2, 1, 1, 0, 0, 0, 0,}, --  4 nymph
+	{ 1, 1, 1, 1, 2, 1, 0, 0, 0, 0,}, --  5 pot
+	{ 1, 1, 1, 1, 1, 2, 0, 0, 0, 0,}, --  6 vase
 	{ 0, 0, 0, 0, 0, 0, 2, 0, 0, 0,}, --  7 ace
 	{ 0, 0, 0, 0, 0, 0, 0, 2, 0, 0,}, --  8 king
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,}, --  9 queen
@@ -31,10 +31,10 @@ local neighbours = {
 local symset2 = {
 	4, --  1 wild    (on 2, 3, 4, 5 reels)
 	1, --  2 scatter
-	4, --  3 woman
-	4, --  4 kentaur
-	4, --  5 cup
-	4, --  6 horn
+	4, --  3 aryan
+	4, --  4 nymph
+	4, --  5 pot
+	4, --  6 vase
 	4, --  7 ace
 	4, --  8 king
 	4, --  9 queen
@@ -44,10 +44,10 @@ local symset2 = {
 local chunklen = {
 	1, --  1 wild
 	1, --  2 scatter
-	4, --  3 woman
-	4, --  4 kentaur
-	4, --  5 cup
-	4, --  6 horn
+	4, --  3 aryan
+	4, --  4 nymph
+	4, --  5 pot
+	4, --  6 vase
 	4, --  7 ace
 	4, --  8 king
 	4, --  9 queen

@@ -1,4 +1,4 @@
-package thetempleofastarta
+package oceanlegends
 
 import (
 	"context"

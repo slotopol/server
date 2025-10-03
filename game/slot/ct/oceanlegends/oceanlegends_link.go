@@ -1,6 +1,6 @@
 //go:build !prod || full || ct
 
-package thetempleofastarta
+package oceanlegends
 
 import (
 	_ "embed"
@@ -8,11 +8,12 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed thetempleofastarta_data.yaml
+//go:embed oceanlegends_data.yaml
 var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
+		{Prov: "CT Interactive", Name: "Ocean Legends", Date: game.Date(2020, 11, 26)},         // see: https://www.slotsmate.com/software/ct-interactive/ocean-legends
 		{Prov: "CT Interactive", Name: "The Temple of Astarta", Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/the-temple-of-astarta
 	},
 	AlgDescr: game.AlgDescr{
@@ -33,6 +34,6 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
-	game.DataRouter["ctinteractive/thetempleofastarta/reel"] = &ReelsMap
+	game.DataRouter["ctinteractive/oceanlegends/reel"] = &ReelsMap
 	game.LoadMap = append(game.LoadMap, data)
 }
