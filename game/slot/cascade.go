@@ -6,7 +6,7 @@ type Cascade interface {
 	Screen
 	Cascade() bool        // returns true on avalanche continue
 	NewFall()             // set fall number before fall
-	RiseFall(reels Reels) // first fall in cascade
+	TopFall(reels Reels)  // first fall in cascade
 	NextFall(reels Reels) // any next fall in cascade
 	Strike(wins Wins)     // strike win symbols on the screen
 }
@@ -48,7 +48,7 @@ func (s *Cascade5x3) SetSym(x, y Pos, sym Sym) {
 
 func (s *Cascade5x3) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range 3 {
-		s.Sym[x-1][y] = reel[(pos+y)%len(reel)]
+		s.Sym[x-1][y] = ReelAt(reel, pos+y)
 	}
 	s.Pos[x-1] = pos
 }
@@ -57,11 +57,11 @@ func (s *Cascade5x3) ReelSpin(reels Reels) {
 	if s.CFN > 1 {
 		s.NextFall(reels)
 	} else {
-		s.RiseFall(reels)
+		s.TopFall(reels)
 	}
 }
 
-func (s *Cascade5x3) RiseFall(reels Reels) {
+func (s *Cascade5x3) TopFall(reels Reels) {
 	var r5x = reels.(*Reels5x)
 	for x := range Pos(5) {
 		var reel = r5x[x]
@@ -84,10 +84,9 @@ func (s *Cascade5x3) NextFall(reels Reels) {
 			}
 		}
 		// fall new symbols
-		s.Pos[x] = (s.Pos[x] - n + len(r5x[x])) % len(r5x[x])
+		s.Pos[x] -= n
 		for y := range n {
-			var pos = (s.Pos[x] + y) % len(r5x[x])
-			s.Sym[x][y] = r5x[x][pos]
+			s.Sym[x][y] = ReelAt(r5x[x], s.Pos[x]+y)
 		}
 	}
 }
@@ -183,7 +182,7 @@ func (s *Cascade5x4) SetSym(x, y Pos, sym Sym) {
 
 func (s *Cascade5x4) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range 4 {
-		s.Sym[x-1][y] = reel[(pos+y)%len(reel)]
+		s.Sym[x-1][y] = ReelAt(reel, pos+y)
 	}
 	s.Pos[x-1] = pos
 }
@@ -192,11 +191,11 @@ func (s *Cascade5x4) ReelSpin(reels Reels) {
 	if s.CFN > 1 {
 		s.NextFall(reels)
 	} else {
-		s.RiseFall(reels)
+		s.TopFall(reels)
 	}
 }
 
-func (s *Cascade5x4) RiseFall(reels Reels) {
+func (s *Cascade5x4) TopFall(reels Reels) {
 	var r5x = reels.(*Reels5x)
 	for x := range Pos(5) {
 		var reel = r5x[x]
@@ -219,12 +218,9 @@ func (s *Cascade5x4) NextFall(reels Reels) {
 			}
 		}
 		// fall new symbols
-		if s.Pos[x] -= n; s.Pos[x] < 0 {
-			s.Pos[x] += len(r5x[x])
-		}
+		s.Pos[x] -= n
 		for y := range n {
-			var pos = (s.Pos[x] + y) % len(r5x[x])
-			s.Sym[x][y] = r5x[x][pos]
+			s.Sym[x][y] = ReelAt(r5x[x], s.Pos[x]+y)
 		}
 	}
 }

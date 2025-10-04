@@ -12,6 +12,13 @@ type Reels interface {
 	fmt.Stringer
 }
 
+// ReelAt returns symbol on the reel at true cyclic position.
+// Incoming "pos" can be greater than reel length, or can be negative.
+func ReelAt(reel []Sym, pos int) Sym {
+	var n = len(reel)
+	return reel[(n+pos%n)%n]
+}
+
 // Reels for 3-reels slots.
 type Reels3x [3][]Sym
 

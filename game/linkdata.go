@@ -27,7 +27,7 @@ const (
 	GPlpay GP = 1 << iota // pays left to right
 	GPrpay                // pays left to right and right to left
 	GPcpay                // pays for combination at any position
-	FPspay                // pays by scatters only
+	FPspay                // pays by clusters
 
 	GPlsel // user can select bet lines
 	GPwsel // user can change ways set
@@ -35,9 +35,9 @@ const (
 	GPfill // has multiplier on filled screen
 
 	_
-	_
-	GPcasc  // cascade falls present
-	GPcmult // multipliers on cascade falls
+	GPcrise // cascade rises present
+	GPcfall // cascade falls present
+	GPcmult // multipliers on cascade avalanche
 
 	GPfghas  // non-retriggered free games are present
 	GPretrig // free games are present and can be retriggered
@@ -54,7 +54,8 @@ const (
 	GPwmult // has multiplier on wilds
 	GPbsym  // has big symbol (usually 3x3 in the center on free games)
 
-	GPfgno GP = 0 // free games are absent
+	GPfgno GP = 0                 // free games are absent
+	GPcasc GP = GPcrise | GPcfall // any cascade game
 )
 
 type (

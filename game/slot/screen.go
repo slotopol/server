@@ -89,7 +89,7 @@ func (s *Screenx) SetSym(x, y Pos, sym Sym) {
 func (s *Screenx) SetCol(x Pos, reel []Sym, pos int) {
 	var i = (x - 1) * s.sy
 	for y := range s.sy {
-		s.data[i+y] = reel[(pos+int(y))%len(reel)]
+		s.data[i+y] = ReelAt(reel, pos+int(y))
 	}
 }
 
@@ -180,7 +180,7 @@ func (s *Screen3x3) SetSym(x, y Pos, sym Sym) {
 
 func (s *Screen3x3) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range 3 {
-		s.Scr[x-1][y] = reel[(pos+y)%len(reel)]
+		s.Scr[x-1][y] = ReelAt(reel, pos+y)
 	}
 }
 
@@ -255,7 +255,7 @@ func (s *Screen4x4) SetSym(x, y Pos, sym Sym) {
 
 func (s *Screen4x4) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range 4 {
-		s.Scr[x-1][y] = reel[(pos+y)%len(reel)]
+		s.Scr[x-1][y] = ReelAt(reel, pos+y)
 	}
 }
 
@@ -332,7 +332,7 @@ func (s *Screen5x3) SetSym(x, y Pos, sym Sym) {
 
 func (s *Screen5x3) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range 3 {
-		s.Scr[x-1][y] = reel[(pos+y)%len(reel)]
+		s.Scr[x-1][y] = ReelAt(reel, pos+y)
 	}
 }
 
@@ -428,7 +428,7 @@ func (s *Screen5x4) SetSym(x, y Pos, sym Sym) {
 
 func (s *Screen5x4) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range 4 {
-		s.Scr[x-1][y] = reel[(pos+y)%len(reel)]
+		s.Scr[x-1][y] = ReelAt(reel, pos+y)
 	}
 }
 
@@ -504,7 +504,7 @@ func (s *Screen6x3) SetSym(x, y Pos, sym Sym) {
 
 func (s *Screen6x3) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range 3 {
-		s.Scr[x-1][y] = reel[(pos+y)%len(reel)]
+		s.Scr[x-1][y] = ReelAt(reel, pos+y)
 	}
 }
 
@@ -578,7 +578,7 @@ func (s *Screen6x4) SetSym(x, y Pos, sym Sym) {
 
 func (s *Screen6x4) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range 4 {
-		s.Scr[x-1][y] = reel[(pos+y)%len(reel)]
+		s.Scr[x-1][y] = ReelAt(reel, pos+y)
 	}
 }
 
