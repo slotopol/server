@@ -239,7 +239,7 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 						if iscascade {
 							var cfn int
 							for {
-								cs.NewFall()
+								cs.UntoFall()
 								cfn++
 								if cfn > CascadeLimit {
 									panic(ErrAvalanche)
@@ -252,7 +252,7 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 								if len(wins) == 0 {
 									break
 								}
-								cs.NextFall(reels)
+								cs.PushFall(reels)
 								wins.Reset()
 							}
 							if cfn > 1 {
@@ -315,7 +315,7 @@ func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 							if iscascade {
 								var cfn int
 								for {
-									cs.NewFall()
+									cs.UntoFall()
 									cfn++
 									if cfn > CascadeLimit {
 										panic(ErrAvalanche)
@@ -328,7 +328,7 @@ func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 									if len(wins) == 0 {
 										break
 									}
-									cs.NextFall(reels)
+									cs.PushFall(reels)
 									wins.Reset()
 								}
 								if cfn > 1 {
@@ -396,7 +396,7 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 								if iscascade {
 									var cfn int
 									for {
-										cs.NewFall()
+										cs.UntoFall()
 										cfn++
 										if cfn > CascadeLimit {
 											panic(ErrAvalanche)
@@ -409,7 +409,7 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 										if len(wins) == 0 {
 											break
 										}
-										cs.NextFall(reels)
+										cs.PushFall(reels)
 										wins.Reset()
 									}
 									if cfn > 1 {
@@ -527,7 +527,7 @@ func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 									if iscascade {
 										var cfn int
 										for {
-											cs.NewFall()
+											cs.UntoFall()
 											cfn++
 											if cfn > CascadeLimit {
 												panic(ErrAvalanche)
@@ -540,7 +540,7 @@ func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 											if len(wins) == 0 {
 												break
 											}
-											cs.NextFall(reels)
+											cs.PushFall(reels)
 											wins.Reset()
 										}
 										if cfn > 1 {
@@ -596,7 +596,7 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 				if iscascade {
 					var cfn int
 					for {
-						cs.NewFall()
+						cs.UntoFall()
 						cfn++
 						if cfn > CascadeLimit {
 							panic(ErrAvalanche)
@@ -668,7 +668,7 @@ func MonteCarloPrec(ctx context.Context, s Stater, g SlotGame, reels Reels, calc
 				if iscascade {
 					var cfn int
 					for {
-						cs.NewFall()
+						cs.UntoFall()
 						cfn++
 						if cfn > CascadeLimit {
 							panic(ErrAvalanche)

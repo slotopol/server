@@ -110,7 +110,7 @@ func (g *Game) Spin(mrtp float64) {
 }
 
 func (g *Game) Prepare() {
-	g.NewFall()
+	g.UntoFall()
 }
 
 func (g *Game) Apply(wins slot.Wins) {

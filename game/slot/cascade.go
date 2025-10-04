@@ -4,10 +4,8 @@ import "math/rand/v2"
 
 type Cascade interface {
 	Screen
-	Cascade() bool        // returns true on avalanche continue
-	NewFall()             // set fall number before fall
-	TopFall(reels Reels)  // first fall in cascade
-	NextFall(reels Reels) // any next fall in cascade
+	UntoFall()            // set fall number before scanner call
+	PushFall(reels Reels) // fill screen on fall in avalanche chain
 	Strike(wins Wins)     // strike win symbols on the screen
 }
 
@@ -24,7 +22,8 @@ type Cascade5x3 struct {
 	Sym [5][3]Sym `json:"sym" yaml:"sym" xml:"sym"` // game screen with symbols
 	Hit [5][3]int `json:"hit" yaml:"hit" xml:"hit"` // hits to fall down
 	Pos [5]int    `json:"pos" yaml:"pos" xml:"pos"` // reels positions
-	CFN int       `json:"cfn" yaml:"cfn" xml:"cfn"` // cascade fall number
+	// cascade fall number
+	CFN int `json:"cfn,omitempty" yaml:"cfn,omitempty" xml:"cfn,omitempty"`
 }
 
 // Declare conformity with Cascade interface.
@@ -55,7 +54,7 @@ func (s *Cascade5x3) SetCol(x Pos, reel []Sym, pos int) {
 
 func (s *Cascade5x3) ReelSpin(reels Reels) {
 	if s.CFN > 1 {
-		s.NextFall(reels)
+		s.PushFall(reels)
 	} else {
 		s.TopFall(reels)
 	}
@@ -70,7 +69,7 @@ func (s *Cascade5x3) TopFall(reels Reels) {
 	}
 }
 
-func (s *Cascade5x3) NextFall(reels Reels) {
+func (s *Cascade5x3) PushFall(reels Reels) {
 	var r5x = reels.(*Reels5x)
 	for x := range 5 {
 		// fall old symbols
@@ -126,6 +125,7 @@ func (s *Cascade5x3) ScatPos(scat Sym) (l Linex) {
 	return
 }
 
+// Returns true on avalanche continue.
 func (s *Cascade5x3) Cascade() bool {
 	for _, r := range s.Hit {
 		if r[0] > 0 || r[1] > 0 || r[2] > 0 {
@@ -135,7 +135,7 @@ func (s *Cascade5x3) Cascade() bool {
 	return false
 }
 
-func (s *Cascade5x3) NewFall() {
+func (s *Cascade5x3) UntoFall() {
 	if s.Cascade() {
 		s.CFN++
 	} else {
@@ -189,7 +189,7 @@ func (s *Cascade5x4) SetCol(x Pos, reel []Sym, pos int) {
 
 func (s *Cascade5x4) ReelSpin(reels Reels) {
 	if s.CFN > 1 {
-		s.NextFall(reels)
+		s.PushFall(reels)
 	} else {
 		s.TopFall(reels)
 	}
@@ -204,7 +204,7 @@ func (s *Cascade5x4) TopFall(reels Reels) {
 	}
 }
 
-func (s *Cascade5x4) NextFall(reels Reels) {
+func (s *Cascade5x4) PushFall(reels Reels) {
 	var r5x = reels.(*Reels5x)
 	for x := range 5 {
 		// fall old symbols
@@ -262,6 +262,7 @@ func (s *Cascade5x4) ScatPos(scat Sym) (l Linex) {
 	return
 }
 
+// Returns true on avalanche continue.
 func (s *Cascade5x4) Cascade() bool {
 	for _, r := range s.Hit {
 		if r[0] > 0 || r[1] > 0 || r[2] > 0 || r[3] > 0 {
@@ -271,7 +272,7 @@ func (s *Cascade5x4) Cascade() bool {
 	return false
 }
 
-func (s *Cascade5x4) NewFall() {
+func (s *Cascade5x4) UntoFall() {
 	if s.Cascade() {
 		s.CFN++
 	} else {
@@ -288,4 +289,32 @@ func (s *Cascade5x4) Strike(wins Wins) {
 			}
 		}
 	}
+}
+
+// FullGain calculates total gain on avalanche chain for cascading slots.
+func FullGain(game SlotGame, wins Wins, fund, mrtp float64) (gain, jack float64) {
+	if len(wins) == 0 {
+		return
+	}
+	gain = wins.Gain()
+	jack = wins.Jackpot()
+	if _, ok := game.(CascadeSlot); ok {
+		var casc = game.Clone().(CascadeSlot)
+		casc.Strike(wins)
+		var cw Wins
+		for {
+			casc.UntoFall()
+			casc.Spin(mrtp)
+			casc.Scanner(&cw)
+			if len(cw) == 0 {
+				break
+			}
+			game.Spawn(cw, fund, mrtp)
+			gain += cw.Gain()
+			jack += cw.Jackpot()
+			casc.Strike(cw)
+			cw.Reset()
+		}
+	}
+	return
 }

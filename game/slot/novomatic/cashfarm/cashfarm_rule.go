@@ -150,7 +150,7 @@ func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {
 }
 
 func (g *Game) Prepare() {
-	g.NewFall()
+	g.UntoFall()
 }
 
 func (g *Game) Apply(wins slot.Wins) {
