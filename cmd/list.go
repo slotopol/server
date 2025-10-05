@@ -151,7 +151,7 @@ var listCmd = &cobra.Command{
 		// Load yaml-files
 		LoadInternalYaml(exitctx)
 		if err = LoadExternalYaml(exitctx); err != nil {
-			log.Fatalln("can not load yaml files: %s", err.Error())
+			log.Fatalf("can not load yaml files: %s", err.Error())
 			return
 		}
 		UpdateAlgList()

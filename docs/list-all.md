@@ -32,6 +32,7 @@
 'Aztec Gold' Megajack 5x3 videoslot
 'Banana Splash' Novomatic 5x3 videoslot
 'Bananas Go Bahamas' Novomatic 5x3 videoslot
+'Bavarian Forest' CT Interactive 5x3 videoslot
 'Beetle Mania' Novomatic 5x3 videoslot
 'Beetle Mania Deluxe' Novomatic 5x3 videoslot
 'Big Five' AGT 5x3 videoslot
@@ -162,6 +163,7 @@
 'Mermaid's Pearl' Novomatic 5x3 videoslot
 'Merry Christmas' AGT 3x3 videoslot
 'Mighty Moon' CT Interactive 5x3 videoslot
+'Mighty Rex' CT Interactive 5x3 videoslot
 'Money Pipe' CT Interactive 5x4 videoslot
 'More Dragons' CT Interactive 5x4 videoslot
 'Neon Bananas' CT Interactive 5x3 videoslot
@@ -244,11 +246,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 241 games, 130 algorithms, 11 providers
+total: 243 games, 131 algorithms, 11 providers
 AGT: 63 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 43 games
+CT Interactive: 45 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
