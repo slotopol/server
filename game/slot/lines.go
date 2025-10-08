@@ -14,51 +14,113 @@ func (l *Linex) Set(x Pos, val Pos) {
 	l[x-1] = val
 }
 
-func (l *Linex) Cover(op Linex) *Linex {
-	for i, v := range op {
-		if v > 0 {
-			l[i] = v
+func (l *Linex) Add(op Linex) *Linex {
+	for x, y := range op {
+		if y > 0 {
+			l[x] = y
 		}
 	}
 	return l
 }
 
-func (l *Linex) Len() int {
-	for i := 7; i >= 0; i-- {
-		if l[i] > 0 {
-			return i + 1
-		}
-	}
-	return 0
-}
-
-func (l *Linex) Copy(pos, num Pos) (dst Linex) {
+// Copy of chunk at given position.
+func (l *Linex) HitxPos(pos, num Pos) (dst Hitx) {
 	var x1, x2 Pos
 	if num >= 0 {
 		x1, x2 = pos-1, pos-1+num
 	} else {
 		x1, x2 = pos+num, pos
 	}
-	copy(dst[x1:x2], l[x1:x2])
+	for x := x1; x < x2; x++ {
+		dst[x][0], dst[x][1] = x+1, l[x]
+	}
 	return
 }
 
-func (l *Linex) CopyL(num Pos) (dst Linex) {
-	copy(dst[:num], l[:num])
+// Copy of left chunk.
+func (l *Linex) HitxL(num Pos) (dst Hitx) {
+	for x := range num {
+		dst[x][0], dst[x][1] = x+1, l[x]
+	}
 	return
 }
 
-func (l *Linex) CopyR5(num Pos) (dst Linex) {
-	copy(dst[5-num:5], l[5-num:5])
+// Copy of right chunk for 5-reels slot.
+func (l *Linex) HitxR5(num Pos) (dst Hitx) {
+	for x := 5 - num; x < 5; x++ {
+		dst[x][0], dst[x][1] = x+1, l[x]
+	}
 	return
+}
+
+func (l *Linex) Len() int {
+	for x := 7; x >= 0; x-- {
+		if l[x] > 0 {
+			return x + 1
+		}
+	}
+	return 0
+}
+
+func (l *Linex) IsZero() bool {
+	return l.Len() == 0
 }
 
 func (l Linex) MarshalJSON() ([]byte, error) {
 	return json.Marshal(l[:l.Len()])
 }
 
-func (l *Linex) IsZero() bool {
-	return l.Len() == 0
+const HitxSize = 24
+
+// Hitx is array of 1-based coordinates (X, Y) on game screen with hit symbols.
+type Hitx [HitxSize][2]Pos
+
+// Make mirror copy of Linex.
+func L2H(op Linex) (c Hitx) {
+	var i int
+	for x, y := range op {
+		if y > 0 {
+			c[i][0], c[i][1] = Pos(x+1), y
+			i++
+		}
+	}
+	c[i][0] = 0
+	return
+}
+
+func (c *Hitx) Push(x, y Pos) {
+	var i = c.Len()
+	c[i][0], c[i][1] = x, y
+	c[i+1][0] = 0
+}
+
+// Add points from Linex to this object.
+func (c *Hitx) Add(op Linex) {
+	var i = c.Len()
+	for x, y := range op {
+		if y > 0 {
+			c[i][0], c[i][1] = Pos(x+1), y
+			i++
+		}
+	}
+	c[i][0] = 0
+}
+
+func (c *Hitx) Len() int {
+	for i, p := range c {
+		if p[0] == 0 {
+			return i
+		}
+	}
+	return HitxSize
+}
+
+func (c *Hitx) IsZero() bool {
+	return c.Len() == 0
+}
+
+func (c *Hitx) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c[:c.Len()])
 }
 
 // (1 ,1) symbol is on left top corner

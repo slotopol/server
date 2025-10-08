@@ -496,7 +496,7 @@ func ApiSlotDoubleup(c *gin.Context) {
 				ID:     id,
 				GID:    arg.GID,
 				MRTP:   mrtp,
-				MP:     arg.Mult,
+				Mult:   arg.Mult,
 				Risk:   risk,
 				Win:    win,
 				Gain:   newgain,

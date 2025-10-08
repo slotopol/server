@@ -110,7 +110,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Sym: syml,
 				Num: numl,
 				LI:  li + 1,
-				XY:  line.CopyL(numl),
+				XY:  line.HitxL(numl),
 				JID: jid,
 			})
 		}
@@ -128,17 +128,22 @@ func (g *Game) AztecNum() (n slot.Pos) {
 	return
 }
 
-func (g *Game) AztecPos() (l slot.Linex) {
-	for x := range 5 {
-		var r = g.Scr[x]
+func (s *Game) ScatWildPos() (c slot.Hitx) {
+	var x, i slot.Pos
+	for x = range 5 {
+		var r = s.Scr[x]
 		if r[0] == scat || r[0] == wild {
-			l[x] = 1
+			c[i][0], c[i][1] = x+1, 1
+			i++
 		} else if r[1] == scat || r[1] == wild {
-			l[x] = 2
+			c[i][0], c[i][1] = x+1, 2
+			i++
 		} else if r[2] == scat || r[2] == wild {
-			l[x] = 3
+			c[i][0], c[i][1] = x+1, 3
+			i++
 		}
 	}
+	c[i][0] = 0
 	return
 }
 
@@ -151,7 +156,7 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 			MP:  1,
 			Sym: scat,
 			Num: count,
-			XY:  g.AztecPos(),
+			XY:  g.ScatWildPos(),
 		})
 	}
 	if count := g.ScatNum(bon); count >= 3 {

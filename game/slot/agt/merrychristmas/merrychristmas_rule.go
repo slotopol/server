@@ -73,7 +73,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				Sym: wild,
 				Num: numw,
 				LI:  li + 1,
-				XY:  line.CopyL(numw),
+				XY:  line.HitxL(numw),
 			})
 		} else if numl == 3 {
 			var pay = LinePay[syml-1]
@@ -83,7 +83,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				Sym: syml,
 				Num: numl,
 				LI:  li + 1,
-				XY:  line.CopyL(numl),
+				XY:  line.HitxL(numl),
 			})
 		}
 	}

@@ -16,7 +16,7 @@ type WinItem struct {
 	Sym Sym     `json:"sym,omitempty" yaml:"sym,omitempty" xml:"sym,omitempty,attr"` // win symbol
 	Num Pos     `json:"num,omitempty" yaml:"num,omitempty" xml:"num,omitempty,attr"` // number of win symbols
 	LI  int     `json:"li,omitempty" yaml:"li,omitempty" xml:"li,omitempty,attr"`    // line index (0 for scatters and not lined combinations)
-	XY  Linex   `json:"xy,omitempty" yaml:"xy,omitempty" xml:"xy,omitempty"`         // symbols positions on screen
+	XY  Hitx    `json:"xy,omitempty" yaml:"xy,omitempty,flow" xml:"xy,omitempty"`    // symbols (X, Y) positions on screen
 	FS  int     `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty,attr"`    // number of free spins
 	BID int     `json:"bid,omitempty" yaml:"bid,omitempty" xml:"bid,omitempty,attr"` // bonus identifier
 	Bon any     `json:"bon,omitempty" yaml:"bon,omitempty" xml:"bon,omitempty"`      // bonus game data

@@ -100,7 +100,7 @@ loop1:
 								Sym: syml,
 								Num: numl,
 								LI:  243,
-								XY:  line.CopyL(numl),
+								XY:  line.HitxL(numl),
 							})
 							switch numl {
 							case 3:
@@ -130,6 +130,25 @@ loop1:
 	}
 }
 
+func (s *Game) ScatWildPos() (c slot.Hitx) {
+	var x, i slot.Pos
+	for x = range 5 {
+		var r = s.Scr[x]
+		if r[0] == scat || r[0] == wild {
+			c[i][0], c[i][1] = x+1, 1
+			i++
+		} else if r[1] == scat || r[1] == wild {
+			c[i][0], c[i][1] = x+1, 2
+			i++
+		} else if r[2] == scat || r[2] == wild {
+			c[i][0], c[i][1] = x+1, 3
+			i++
+		}
+	}
+	c[i][0] = 0
+	return
+}
+
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
 	var sn, wn = g.ScatNum(scat), g.ScatNum(wild)
@@ -139,14 +158,12 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 			mw = 5
 		}
 		var pay = ScatPay[count-1]
-		var line = g.ScatPos(scat)
-		line.Cover(g.ScatPos(wild))
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * pay,
 			MP:  mw,
 			Sym: scat,
 			Num: count,
-			XY:  line,
+			XY:  g.ScatWildPos(),
 			FS:  12,
 		})
 	}

@@ -59,7 +59,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 					Sym: sym,
 					Num: 3,
 					LI:  li + 1,
-					XY:  line,
+					XY:  slot.L2H(line),
 				})
 			}
 		} else if len(m) == 2 && m[1] == 1 && m[0] == 0 { // 2 symbols and diamond
@@ -73,7 +73,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 					Sym: sym,
 					Num: 3,
 					LI:  li + 1,
-					XY:  line,
+					XY:  slot.L2H(line),
 				})
 			}
 		} else if len(m) == 2 && m[1] == 2 && m[0] == 0 { // 1 symbol and 2 diamonds
@@ -87,7 +87,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 					Sym: sym,
 					Num: 3,
 					LI:  li + 1,
-					XY:  line,
+					XY:  slot.L2H(line),
 				})
 			}
 		} else if m[1] == 1 && m[6] == 1 { // 1 cherry with diamond
@@ -97,7 +97,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				Sym: 6,
 				Num: 1,
 				LI:  li + 1,
-				XY:  line,
+				XY:  slot.L2H(line),
 			})
 		} else if m[6] == 1 { // 1 cherry
 			*wins = append(*wins, slot.WinItem{
@@ -106,7 +106,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				Sym: 6,
 				Num: 1,
 				LI:  li + 1,
-				XY:  line,
+				XY:  slot.L2H(line),
 			})
 		} else if m[6] == 2 { // 2 cherry
 			*wins = append(*wins, slot.WinItem{
@@ -115,7 +115,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				Sym: 6,
 				Num: 2,
 				LI:  li + 1,
-				XY:  line,
+				XY:  slot.L2H(line),
 			})
 		} else if m[1] == 1 && m[0] == 0 && m[2] == 0 { // any bar with diamond
 			*wins = append(*wins, slot.WinItem{
@@ -124,7 +124,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				Sym: 0,
 				Num: 3,
 				LI:  li + 1,
-				XY:  line,
+				XY:  slot.L2H(line),
 			})
 		} else if m[1] == 0 && m[0] == 0 && m[2] == 0 { // any bar without diamond
 			*wins = append(*wins, slot.WinItem{
@@ -133,7 +133,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				Sym: 0,
 				Num: 3,
 				LI:  li + 1,
-				XY:  line,
+				XY:  slot.L2H(line),
 			})
 		}
 	}

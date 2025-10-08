@@ -73,7 +73,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				Sym: sym1,
 				Num: 3,
 				LI:  li + 1,
-				XY:  line, // whole line is used
+				XY:  slot.L2H(line), // whole line is used
 			})
 		}
 	}

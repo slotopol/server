@@ -92,7 +92,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 					Sym: syml,
 					Num: numl,
 					LI:  li + 1,
-					XY:  line.CopyL(numl),
+					XY:  line.HitxL(numl),
 				})
 			}
 		} else if numw >= 2 {
@@ -103,7 +103,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 					Sym: wild,
 					Num: numw,
 					LI:  li + 1,
-					XY:  line.CopyL(numw),
+					XY:  line.HitxL(numw),
 				})
 			}
 		}
@@ -140,7 +140,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 						Sym: symr,
 						Num: numr,
 						LI:  li + 1,
-						XY:  line.CopyR5(numr),
+						XY:  line.HitxR5(numr),
 					})
 				}
 			} else if numw >= 2 {
@@ -151,7 +151,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 						Sym: wild,
 						Num: numw,
 						LI:  li + 1,
-						XY:  line.CopyR5(numw),
+						XY:  line.HitxR5(numw),
 					})
 				}
 			}

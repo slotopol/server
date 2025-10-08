@@ -67,12 +67,12 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 	return nil
 }
 
-func LineES(src, xye slot.Linex) (dst slot.Linex) {
-	for x := range 5 {
-		if xye[x] > 0 {
-			dst[x] = src[x]
-		}
+func LineES(src slot.Linex, xye slot.Hitx) (dst slot.Hitx) {
+	var i slot.Pos
+	for i = 0; xye[i][0] > 0; i++ {
+		dst[i][0], dst[i][1] = xye[i][0], src[xye[i][0]-1]
 	}
+	dst[i][0] = 0
 	return
 }
 
@@ -107,7 +107,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 					Sym: syml,
 					Num: numl,
 					LI:  li + 1,
-					XY:  line.CopyL(numl),
+					XY:  line.HitxL(numl),
 				})
 			}
 		}

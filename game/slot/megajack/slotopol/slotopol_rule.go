@@ -150,7 +150,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Sym: syml,
 				Num: numl,
 				LI:  li + 1,
-				XY:  line.CopyL(numl),
+				XY:  line.HitxL(numl),
 			})
 		} else if payw > 0 {
 			var jid int
@@ -163,7 +163,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Sym: wild,
 				Num: numw,
 				LI:  li + 1,
-				XY:  line.CopyL(numw),
+				XY:  line.HitxL(numw),
 				JID: jid,
 			})
 		} else if syml > 0 && numl > 0 && LineBonus[syml-1][numl-1] > 0 {
@@ -172,7 +172,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Sym: syml,
 				Num: numl,
 				LI:  li + 1,
-				XY:  line.CopyL(numl),
+				XY:  line.HitxL(numl),
 				BID: LineBonus[syml-1][numl-1],
 			})
 		}

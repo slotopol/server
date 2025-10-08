@@ -91,7 +91,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Sym: syml,
 				Num: numl,
 				LI:  li + 1,
-				XY:  line.CopyL(numl),
+				XY:  line.HitxL(numl),
 			})
 		}
 		if syml == diamond && numl >= 3 {
@@ -100,7 +100,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Sym: diamond,
 				Num: numl,
 				LI:  li + 1,
-				XY:  line.CopyL(numl),
+				XY:  line.HitxL(numl),
 				BID: dlbn,
 			})
 		}

@@ -111,17 +111,22 @@ func (s *Cascade5x3) ScatNum(scat Sym) (n Pos) {
 	return
 }
 
-func (s *Cascade5x3) ScatPos(scat Sym) (l Linex) {
-	for x := range 5 {
+func (s *Cascade5x3) ScatPos(scat Sym) (c Hitx) {
+	var x, i Pos
+	for x = range 5 {
 		var r = s.Sym[x]
 		if r[0] == scat {
-			l[x] = 1
+			c[i][0], c[i][1] = x+1, 1
+			i++
 		} else if r[1] == scat {
-			l[x] = 2
+			c[i][0], c[i][1] = x+1, 2
+			i++
 		} else if r[2] == scat {
-			l[x] = 3
+			c[i][0], c[i][1] = x+1, 3
+			i++
 		}
 	}
+	c[i][0] = 0
 	return
 }
 
@@ -146,10 +151,8 @@ func (s *Cascade5x3) UntoFall() {
 func (s *Cascade5x3) Strike(wins Wins) {
 	clear(s.Hit[:])
 	for _, wi := range wins {
-		for x := range 5 {
-			if y := wi.XY[x]; y > 0 {
-				s.Hit[x][y-1] = 1
-			}
+		for i := 0; wi.XY[i][0] > 0; i++ {
+			s.Hit[wi.XY[i][0]-1][wi.XY[i][1]-1] = 1
 		}
 	}
 }
@@ -246,19 +249,25 @@ func (s *Cascade5x4) ScatNum(scat Sym) (n Pos) {
 	return
 }
 
-func (s *Cascade5x4) ScatPos(scat Sym) (l Linex) {
-	for x := range 5 {
+func (s *Cascade5x4) ScatPos(scat Sym) (c Hitx) {
+	var x, i Pos
+	for x = range 5 {
 		var r = s.Sym[x]
 		if r[0] == scat {
-			l[x] = 1
+			c[i][0], c[i][1] = x+1, 1
+			i++
 		} else if r[1] == scat {
-			l[x] = 2
+			c[i][0], c[i][1] = x+1, 2
+			i++
 		} else if r[2] == scat {
-			l[x] = 3
+			c[i][0], c[i][1] = x+1, 3
+			i++
 		} else if r[3] == scat {
-			l[x] = 4
+			c[i][0], c[i][1] = x+1, 4
+			i++
 		}
 	}
+	c[i][0] = 0
 	return
 }
 
@@ -283,10 +292,8 @@ func (s *Cascade5x4) UntoFall() {
 func (s *Cascade5x4) Strike(wins Wins) {
 	clear(s.Hit[:])
 	for _, wi := range wins {
-		for x := range 5 {
-			if y := wi.XY[x]; y > 0 {
-				s.Hit[x][y-1] = 1
-			}
+		for i := 0; wi.XY[i][0] > 0; i++ {
+			s.Hit[wi.XY[i][0]-1][wi.XY[i][1]-1] = 1
 		}
 	}
 }

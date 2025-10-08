@@ -76,20 +76,24 @@ func (g *Game) ScatNumCont() (n slot.Pos) {
 	return
 }
 
-func (g *Game) ScatPosCont() (l slot.Linex) {
-	var x int
+func (g *Game) ScatPosCont() (c slot.Hitx) {
+	var x, i slot.Pos
 	for x = 0; x < 5; x++ {
 		var r = g.Scr[x]
 		if r[0] == scat {
-			l[x] = 1
+			c[i][0], c[i][1] = x+1, 1
+			i++
 		} else if r[1] == scat {
-			l[x] = 2
+			c[i][0], c[i][1] = x+1, 2
+			i++
 		} else if r[2] == scat {
-			l[x] = 3
+			c[i][0], c[i][1] = x+1, 3
+			i++
 		} else {
 			break // scatters should be continuous
 		}
 	}
+	c[i][0] = 0
 	return
 }
 
@@ -150,7 +154,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Sym: syml,
 				Num: numl,
 				LI:  li + 1,
-				XY:  line.CopyL(numl),
+				XY:  line.HitxL(numl),
 			})
 		} else if payw > 0 {
 			*wins = append(*wins, slot.WinItem{
@@ -159,7 +163,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Sym: wild,
 				Num: numw,
 				LI:  li + 1,
-				XY:  line.CopyL(numw),
+				XY:  line.HitxL(numw),
 			})
 		}
 	}
@@ -178,8 +182,8 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 		} else {
 			return // ignore scatters on freespins
 		}
-		var xy slot.Linex
-		xy.Set(3, y)
+		var xy slot.Hitx
+		xy.Push(3, y)
 		*wins = append(*wins, slot.WinItem{
 			MP:  1,
 			Sym: jazz,

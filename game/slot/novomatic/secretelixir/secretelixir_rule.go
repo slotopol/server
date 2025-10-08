@@ -91,9 +91,9 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		}
 		if payl > payw {
 			var ml = float64(g.LY(5, line))
-			var xy = line.CopyL(numl)
+			var xy = line.HitxL(numl)
 			if ml > 1 {
-				xy[4] = line[4]
+				xy.Push(5, line[4])
 			}
 			*wins = append(*wins, slot.WinItem{
 				Pay: g.Bet * payl,
@@ -105,9 +105,9 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 			})
 		} else if payw > 0 {
 			var ml = float64(g.LY(5, line))
-			var xy = line.CopyL(numl)
+			var xy = line.HitxL(numw)
 			if ml > 1 {
-				xy[4] = line[4]
+				xy.Push(5, line[4])
 			}
 			*wins = append(*wins, slot.WinItem{
 				Pay: g.Bet * payw,

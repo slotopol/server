@@ -94,7 +94,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Sym: syml,
 				Num: numl,
 				LI:  li + 1,
-				XY:  line.CopyL(numl),
+				XY:  line.HitxL(numl),
 			})
 		}
 
@@ -120,7 +120,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 					Sym: symr,
 					Num: numr,
 					LI:  li + 1,
-					XY:  line.CopyR5(numr),
+					XY:  line.HitxR5(numr),
 				})
 			}
 		}

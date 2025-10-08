@@ -77,7 +77,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Sym: syml,
 				Num: numl,
 				LI:  li + 1,
-				XY:  line.CopyL(numl),
+				XY:  line.HitxL(numl),
 			})
 		} else if payw > 0 {
 			*wins = append(*wins, slot.WinItem{
@@ -86,7 +86,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				Sym: wild,
 				Num: numw,
 				LI:  li + 1,
-				XY:  line.CopyL(numw),
+				XY:  line.HitxL(numw),
 			})
 		}
 	}

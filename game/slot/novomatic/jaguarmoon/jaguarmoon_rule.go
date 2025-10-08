@@ -105,7 +105,7 @@ loop1:
 								Sym: syml,
 								Num: numl,
 								LI:  243,
-								XY:  line.CopyL(numl),
+								XY:  line.HitxL(numl),
 							})
 							switch numl {
 							case 3:

@@ -98,7 +98,7 @@ func (g *Game) ScanLinedReg(wins *slot.Wins) {
 				Sym: syml,
 				Num: numl,
 				LI:  li + 1,
-				XY:  line.CopyL(numl),
+				XY:  line.HitxL(numl),
 			})
 		}
 	}
@@ -140,7 +140,7 @@ func (g *Game) ScanLinedBon(wins *slot.Wins) {
 				Sym: syml,
 				Num: numl,
 				LI:  li + 1,
-				XY:  line.CopyL(numl),
+				XY:  line.HitxL(numl),
 			})
 		}
 	}

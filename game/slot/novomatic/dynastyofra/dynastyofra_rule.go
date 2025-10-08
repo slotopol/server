@@ -94,7 +94,7 @@ func (g *Game) ScanLinedReg(wins *slot.Wins) {
 					Sym: syml,
 					Num: numl,
 					LI:  li + 1,
-					XY:  line.CopyL(numl),
+					XY:  line.HitxL(numl),
 				})
 			}
 		}
@@ -131,7 +131,7 @@ loop1:
 							if payl := LinePay[syml-1][numl-1]; payl > pays {
 								wi.Sym = syml
 								wi.Num = numl
-								wi.XY = line.CopyL(numl)
+								wi.XY = line.HitxL(numl)
 								pays = payl
 								switch numl {
 								case 3:
@@ -171,7 +171,7 @@ loop1:
 	wi.MP = 1
 	for li, line := range BetLines[:g.Sel] {
 		wi.LI = li + 1
-		wi.XY = line.CopyL(wi.Num)
+		wi.XY = line.HitxL(wi.Num)
 		*wins = append(*wins, wi)
 	}
 }

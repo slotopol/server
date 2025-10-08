@@ -64,7 +64,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				Sym: syml,
 				Num: numl,
 				LI:  li + 1,
-				XY:  line.CopyL(numl),
+				XY:  line.HitxL(numl),
 			})
 		}
 	}
