@@ -4,7 +4,60 @@ import (
 	"encoding/json"
 )
 
+const HitxSize = 24
+
+// Hitx is array of 1-based coordinates (X, Y) on game screen with hit symbols.
+type Hitx [HitxSize][2]Pos
+
+func (c *Hitx) Push(x, y Pos) {
+	var i = c.Len()
+	c[i][0], c[i][1] = x, y
+	c[i+1][0] = 0
+}
+
+// Add points from Linex to this object.
+func (c *Hitx) Add(op Linex) {
+	var i = c.Len()
+	for x, y := range op {
+		if y > 0 {
+			c[i][0], c[i][1] = Pos(x+1), y
+			i++
+		}
+	}
+	c[i][0] = 0
+}
+
+func (c *Hitx) Len() int {
+	for i, p := range c {
+		if p[0] == 0 {
+			return i
+		}
+	}
+	return HitxSize
+}
+
+func (c *Hitx) IsZero() bool {
+	return c.Len() == 0
+}
+
+func (c *Hitx) MarshalJSON() ([]byte, error) {
+	return json.Marshal(c[:c.Len()])
+}
+
 type Linex [8]Pos
+
+// Make mirror copy of Linex.
+func L2H(op Linex) (c Hitx) {
+	var i int
+	for x, y := range op {
+		if y > 0 {
+			c[i][0], c[i][1] = Pos(x+1), y
+			i++
+		}
+	}
+	c[i][0] = 0
+	return
+}
 
 func (l *Linex) At(x Pos) Pos {
 	return l[x-1]
@@ -68,59 +121,6 @@ func (l *Linex) IsZero() bool {
 
 func (l Linex) MarshalJSON() ([]byte, error) {
 	return json.Marshal(l[:l.Len()])
-}
-
-const HitxSize = 24
-
-// Hitx is array of 1-based coordinates (X, Y) on game screen with hit symbols.
-type Hitx [HitxSize][2]Pos
-
-// Make mirror copy of Linex.
-func L2H(op Linex) (c Hitx) {
-	var i int
-	for x, y := range op {
-		if y > 0 {
-			c[i][0], c[i][1] = Pos(x+1), y
-			i++
-		}
-	}
-	c[i][0] = 0
-	return
-}
-
-func (c *Hitx) Push(x, y Pos) {
-	var i = c.Len()
-	c[i][0], c[i][1] = x, y
-	c[i+1][0] = 0
-}
-
-// Add points from Linex to this object.
-func (c *Hitx) Add(op Linex) {
-	var i = c.Len()
-	for x, y := range op {
-		if y > 0 {
-			c[i][0], c[i][1] = Pos(x+1), y
-			i++
-		}
-	}
-	c[i][0] = 0
-}
-
-func (c *Hitx) Len() int {
-	for i, p := range c {
-		if p[0] == 0 {
-			return i
-		}
-	}
-	return HitxSize
-}
-
-func (c *Hitx) IsZero() bool {
-	return c.Len() == 0
-}
-
-func (c *Hitx) MarshalJSON() ([]byte, error) {
-	return json.Marshal(c[:c.Len()])
 }
 
 // (1 ,1) symbol is on left top corner

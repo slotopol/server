@@ -107,6 +107,7 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 			MP:  mm,
 			Sym: scat,
 			Num: count,
+			XY:  g.SymPos(scat),
 			FS:  fs,
 		})
 	}

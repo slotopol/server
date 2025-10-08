@@ -16,6 +16,7 @@ type Screen interface {
 	SetCol(x Pos, reel []Sym, pos int) // setup column on screen with given reel at given position
 	ReelSpin(reels Reels)              // fill the screen with random hits on those reels
 	SymNum(sym Sym) (n Pos)            // returns number of symbols on the screen that can repeats on reel
+	SymPos(sym Sym) Hitx               // returns symbols positions on the screen that can repeats on reel
 	ScatNum(scat Sym) (n Pos)          // returns number of scatters on the screen
 	ScatPos(scat Sym) Hitx             // returns scatters positions on the screen
 }
@@ -110,6 +111,20 @@ func (s *Screenx) SymNum(sym Sym) (n Pos) {
 			n++
 		}
 	}
+	return
+}
+
+func (s *Screenx) SymPos(sym Sym) (c Hitx) {
+	var x, y, i Pos
+	for x = range s.sx {
+		for y = range s.sy {
+			if s.data[x*s.sy+y] == sym {
+				c[i][0], c[i][1] = x+1, y+1
+				i++
+			}
+		}
+	}
+	c[i][0] = 0
 	return
 }
 
@@ -211,6 +226,20 @@ func (s *Screen3x3) SymNum(sym Sym) (n Pos) {
 	return
 }
 
+func (s *Screen3x3) SymPos(sym Sym) (c Hitx) {
+	var x, y, i Pos
+	for x = range 3 {
+		for y = range 3 {
+			if s.Scr[x][y] == sym {
+				c[i][0], c[i][1] = x+1, y+1
+				i++
+			}
+		}
+	}
+	c[i][0] = 0
+	return
+}
+
 func (s *Screen3x3) ScatNum(scat Sym) (n Pos) {
 	var x Pos
 	for x = range 3 {
@@ -288,6 +317,20 @@ func (s *Screen4x4) SymNum(sym Sym) (n Pos) {
 			}
 		}
 	}
+	return
+}
+
+func (s *Screen4x4) SymPos(sym Sym) (c Hitx) {
+	var x, y, i Pos
+	for x = range 4 {
+		for y = range 4 {
+			if s.Scr[x][y] == sym {
+				c[i][0], c[i][1] = x+1, y+1
+				i++
+			}
+		}
+	}
+	c[i][0] = 0
 	return
 }
 
@@ -396,6 +439,20 @@ func (s *Screen5x3) SymNum(sym Sym) (n Pos) {
 	return
 }
 
+func (s *Screen5x3) SymPos(sym Sym) (c Hitx) {
+	var x, y, i Pos
+	for x = range 5 {
+		for y = range 3 {
+			if s.Scr[x][y] == sym {
+				c[i][0], c[i][1] = x+1, y+1
+				i++
+			}
+		}
+	}
+	c[i][0] = 0
+	return
+}
+
 func (s *Screen5x3) ScatNum(scat Sym) (n Pos) {
 	for x := range 5 {
 		var r = s.Scr[x]
@@ -472,6 +529,20 @@ func (s *Screen5x4) SymNum(sym Sym) (n Pos) {
 			}
 		}
 	}
+	return
+}
+
+func (s *Screen5x4) SymPos(sym Sym) (c Hitx) {
+	var x, y, i Pos
+	for x = range 5 {
+		for y = range 4 {
+			if s.Scr[x][y] == sym {
+				c[i][0], c[i][1] = x+1, y+1
+				i++
+			}
+		}
+	}
+	c[i][0] = 0
 	return
 }
 
@@ -557,6 +628,20 @@ func (s *Screen6x3) SymNum(sym Sym) (n Pos) {
 	return
 }
 
+func (s *Screen6x3) SymPos(sym Sym) (c Hitx) {
+	var x, y, i Pos
+	for x = range 6 {
+		for y = range 3 {
+			if s.Scr[x][y] == sym {
+				c[i][0], c[i][1] = x+1, y+1
+				i++
+			}
+		}
+	}
+	c[i][0] = 0
+	return
+}
+
 func (s *Screen6x3) ScatNum(scat Sym) (n Pos) {
 	for x := range 6 {
 		var r = s.Scr[x]
@@ -633,6 +718,20 @@ func (s *Screen6x4) SymNum(sym Sym) (n Pos) {
 			}
 		}
 	}
+	return
+}
+
+func (s *Screen6x4) SymPos(sym Sym) (c Hitx) {
+	var x, y, i Pos
+	for x = range 6 {
+		for y = range 4 {
+			if s.Scr[x][y] == sym {
+				c[i][0], c[i][1] = x+1, y+1
+				i++
+			}
+		}
+	}
+	c[i][0] = 0
 	return
 }
 

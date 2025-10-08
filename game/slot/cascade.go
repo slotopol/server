@@ -19,7 +19,7 @@ type CascadeSlot interface {
 }
 
 type Cascade5x3 struct {
-	Sym [5][3]Sym `json:"sym" yaml:"sym" xml:"sym"` // game screen with symbols
+	Scr [5][3]Sym `json:"scr" yaml:"scr" xml:"scr"` // game screen with symbols
 	Hit [5][3]int `json:"hit" yaml:"hit" xml:"hit"` // hits to fall down
 	Pos [5]int    `json:"pos" yaml:"pos" xml:"pos"` // reels positions
 	// cascade fall number
@@ -34,20 +34,20 @@ func (s *Cascade5x3) Dim() (Pos, Pos) {
 }
 
 func (s *Cascade5x3) At(x, y Pos) Sym {
-	return s.Sym[x-1][y-1]
+	return s.Scr[x-1][y-1]
 }
 
 func (s *Cascade5x3) LY(x Pos, line Linex) Sym {
-	return s.Sym[x-1][line[x-1]-1]
+	return s.Scr[x-1][line[x-1]-1]
 }
 
 func (s *Cascade5x3) SetSym(x, y Pos, sym Sym) {
-	s.Sym[x-1][y-1] = sym
+	s.Scr[x-1][y-1] = sym
 }
 
 func (s *Cascade5x3) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range 3 {
-		s.Sym[x-1][y] = ReelAt(reel, pos+y)
+		s.Scr[x-1][y] = ReelAt(reel, pos+y)
 	}
 	s.Pos[x-1] = pos
 }
@@ -77,7 +77,7 @@ func (s *Cascade5x3) PushFall(reels Reels) {
 		for y := range 3 {
 			if s.Hit[x][y] > 0 {
 				for i := range y {
-					s.Sym[x][y-i] = s.Sym[x][y-i-1]
+					s.Scr[x][y-i] = s.Scr[x][y-i-1]
 				}
 				n++
 			}
@@ -85,7 +85,7 @@ func (s *Cascade5x3) PushFall(reels Reels) {
 		// fall new symbols
 		s.Pos[x] -= n
 		for y := range n {
-			s.Sym[x][y] = ReelAt(r5x[x], s.Pos[x]+y)
+			s.Scr[x][y] = ReelAt(r5x[x], s.Pos[x]+y)
 		}
 	}
 }
@@ -93,7 +93,7 @@ func (s *Cascade5x3) PushFall(reels Reels) {
 func (s *Cascade5x3) SymNum(sym Sym) (n Pos) {
 	for x := range 5 {
 		for y := range 3 {
-			if s.Sym[x][y] == sym {
+			if s.Scr[x][y] == sym {
 				n++
 			}
 		}
@@ -101,9 +101,23 @@ func (s *Cascade5x3) SymNum(sym Sym) (n Pos) {
 	return
 }
 
+func (s *Cascade5x3) SymPos(sym Sym) (c Hitx) {
+	var x, y, i Pos
+	for x = range 5 {
+		for y = range 3 {
+			if s.Scr[x][y] == sym {
+				c[i][0], c[i][1] = x+1, y+1
+				i++
+			}
+		}
+	}
+	c[i][0] = 0
+	return
+}
+
 func (s *Cascade5x3) ScatNum(scat Sym) (n Pos) {
 	for x := range 5 {
-		var r = s.Sym[x]
+		var r = s.Scr[x]
 		if r[0] == scat || r[1] == scat || r[2] == scat {
 			n++
 		}
@@ -114,7 +128,7 @@ func (s *Cascade5x3) ScatNum(scat Sym) (n Pos) {
 func (s *Cascade5x3) ScatPos(scat Sym) (c Hitx) {
 	var x, i Pos
 	for x = range 5 {
-		var r = s.Sym[x]
+		var r = s.Scr[x]
 		if r[0] == scat {
 			c[i][0], c[i][1] = x+1, 1
 			i++
@@ -158,7 +172,7 @@ func (s *Cascade5x3) Strike(wins Wins) {
 }
 
 type Cascade5x4 struct {
-	Sym [5][4]Sym `json:"sym" yaml:"sym" xml:"sym"` // game screen with symbols
+	Scr [5][4]Sym `json:"scr" yaml:"scr" xml:"scr"` // game screen with symbols
 	Hit [5][4]int `json:"hit" yaml:"hit" xml:"hit"` // hits to fall down
 	Pos [5]int    `json:"pos" yaml:"pos" xml:"pos"` // reels positions
 	CFN int       `json:"cfn" yaml:"cfn" xml:"cfn"` // cascade fall number
@@ -172,20 +186,20 @@ func (s *Cascade5x4) Dim() (Pos, Pos) {
 }
 
 func (s *Cascade5x4) At(x, y Pos) Sym {
-	return s.Sym[x-1][y-1]
+	return s.Scr[x-1][y-1]
 }
 
 func (s *Cascade5x4) LY(x Pos, line Linex) Sym {
-	return s.Sym[x-1][line[x-1]-1]
+	return s.Scr[x-1][line[x-1]-1]
 }
 
 func (s *Cascade5x4) SetSym(x, y Pos, sym Sym) {
-	s.Sym[x-1][y-1] = sym
+	s.Scr[x-1][y-1] = sym
 }
 
 func (s *Cascade5x4) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range 4 {
-		s.Sym[x-1][y] = ReelAt(reel, pos+y)
+		s.Scr[x-1][y] = ReelAt(reel, pos+y)
 	}
 	s.Pos[x-1] = pos
 }
@@ -215,7 +229,7 @@ func (s *Cascade5x4) PushFall(reels Reels) {
 		for y := range 4 {
 			if s.Hit[x][y] > 0 {
 				for i := range y {
-					s.Sym[x][y-i] = s.Sym[x][y-i-1]
+					s.Scr[x][y-i] = s.Scr[x][y-i-1]
 				}
 				n++
 			}
@@ -223,7 +237,7 @@ func (s *Cascade5x4) PushFall(reels Reels) {
 		// fall new symbols
 		s.Pos[x] -= n
 		for y := range n {
-			s.Sym[x][y] = ReelAt(r5x[x], s.Pos[x]+y)
+			s.Scr[x][y] = ReelAt(r5x[x], s.Pos[x]+y)
 		}
 	}
 }
@@ -231,7 +245,7 @@ func (s *Cascade5x4) PushFall(reels Reels) {
 func (s *Cascade5x4) SymNum(sym Sym) (n Pos) {
 	for x := range 5 {
 		for y := range 4 {
-			if s.Sym[x][y] == sym {
+			if s.Scr[x][y] == sym {
 				n++
 			}
 		}
@@ -239,9 +253,23 @@ func (s *Cascade5x4) SymNum(sym Sym) (n Pos) {
 	return
 }
 
+func (s *Cascade5x4) SymPos(sym Sym) (c Hitx) {
+	var x, y, i Pos
+	for x = range 5 {
+		for y = range 4 {
+			if s.Scr[x][y] == sym {
+				c[i][0], c[i][1] = x+1, y+1
+				i++
+			}
+		}
+	}
+	c[i][0] = 0
+	return
+}
+
 func (s *Cascade5x4) ScatNum(scat Sym) (n Pos) {
 	for x := range 5 {
-		var r = s.Sym[x]
+		var r = s.Scr[x]
 		if r[0] == scat || r[1] == scat || r[2] == scat || r[3] == scat {
 			n++
 		}
@@ -252,7 +280,7 @@ func (s *Cascade5x4) ScatNum(scat Sym) (n Pos) {
 func (s *Cascade5x4) ScatPos(scat Sym) (c Hitx) {
 	var x, i Pos
 	for x = range 5 {
-		var r = s.Sym[x]
+		var r = s.Scr[x]
 		if r[0] == scat {
 			c[i][0], c[i][1] = x+1, 1
 			i++
