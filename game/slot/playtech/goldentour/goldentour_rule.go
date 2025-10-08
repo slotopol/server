@@ -87,23 +87,23 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		if numl >= 2 && syml > 0 {
 			if pay := LinePay[syml-1][numl-1]; pay > 0 {
 				*wins = append(*wins, slot.WinItem{
-					Pay:  g.Bet * pay,
-					Mult: 1,
-					Sym:  syml,
-					Num:  numl,
-					Line: li + 1,
-					XY:   line.CopyL(numl),
+					Pay: g.Bet * pay,
+					MP:  1,
+					Sym: syml,
+					Num: numl,
+					LI:  li + 1,
+					XY:  line.CopyL(numl),
 				})
 			}
 		} else if numw >= 2 {
 			if pay := LinePay[wild-1][numw-1]; pay > 0 {
 				*wins = append(*wins, slot.WinItem{
-					Pay:  g.Bet * pay,
-					Mult: 1,
-					Sym:  wild,
-					Num:  numw,
-					Line: li + 1,
-					XY:   line.CopyL(numw),
+					Pay: g.Bet * pay,
+					MP:  1,
+					Sym: wild,
+					Num: numw,
+					LI:  li + 1,
+					XY:  line.CopyL(numw),
 				})
 			}
 		}
@@ -135,23 +135,23 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 			if numr >= 2 && symr > 0 {
 				if pay := LinePay[symr-1][numr-1]; pay > 0 {
 					*wins = append(*wins, slot.WinItem{
-						Pay:  g.Bet * pay,
-						Mult: 1,
-						Sym:  symr,
-						Num:  numr,
-						Line: li + 1,
-						XY:   line.CopyR5(numr),
+						Pay: g.Bet * pay,
+						MP:  1,
+						Sym: symr,
+						Num: numr,
+						LI:  li + 1,
+						XY:  line.CopyR5(numr),
 					})
 				}
 			} else if numw >= 2 {
 				if pay := LinePay[wild-1][numw-1]; pay > 0 {
 					*wins = append(*wins, slot.WinItem{
-						Pay:  g.Bet * pay,
-						Mult: 1,
-						Sym:  wild,
-						Num:  numw,
-						Line: li + 1,
-						XY:   line.CopyR5(numw),
+						Pay: g.Bet * pay,
+						MP:  1,
+						Sym: wild,
+						Num: numw,
+						LI:  li + 1,
+						XY:  line.CopyR5(numw),
 					})
 				}
 			}
@@ -163,27 +163,27 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 func (g *Game) ScanScatters(wins *slot.Wins) {
 	if count := g.ScatNum(scat1); count >= 3 {
 		*wins = append(*wins, slot.WinItem{
-			Mult: 1,
-			Sym:  scat1,
-			Num:  count,
-			XY:   g.ScatPos(scat1),
-			BID:  golfbon,
+			MP:  1,
+			Sym: scat1,
+			Num: count,
+			XY:  g.ScatPos(scat1),
+			BID: golfbon,
 		})
 	} else if count := g.ScatNum(scat2); count >= 3 {
 		*wins = append(*wins, slot.WinItem{
-			Mult: 1,
-			Sym:  scat2,
-			Num:  count,
-			XY:   g.ScatPos(scat2),
-			BID:  golfbon,
+			MP:  1,
+			Sym: scat2,
+			Num: count,
+			XY:  g.ScatPos(scat2),
+			BID: golfbon,
 		})
 	} else if count := g.ScatNum(scat3); count >= 3 {
 		*wins = append(*wins, slot.WinItem{
-			Mult: 1,
-			Sym:  scat3,
-			Num:  count,
-			XY:   g.ScatPos(scat3),
-			BID:  golfbon,
+			MP:  1,
+			Sym: scat3,
+			Num: count,
+			XY:  g.ScatPos(scat3),
+			BID: golfbon,
 		})
 	}
 }

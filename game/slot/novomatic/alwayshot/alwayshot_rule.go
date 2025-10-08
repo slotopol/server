@@ -51,12 +51,12 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 		var sym1, sym2, sym3 = g.LY(1, line), g.LY(2, line), g.LY(3, line)
 		if sym1 == sym2 && sym1 == sym3 {
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * LinePay[sym1-1],
-				Mult: 1,
-				Sym:  sym1,
-				Num:  3,
-				Line: li + 1,
-				XY:   line, // whole line is used
+				Pay: g.Bet * LinePay[sym1-1],
+				MP:  1,
+				Sym: sym1,
+				Num: 3,
+				LI:  li + 1,
+				XY:  line, // whole line is used
 			})
 		}
 	}

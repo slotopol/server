@@ -11,17 +11,17 @@ type (
 
 // WinItem describes win on each line or by scatters.
 type WinItem struct {
-	Pay  float64 `json:"pay,omitempty" yaml:"pay,omitempty" xml:"pay,omitempty,attr"`    // payment with selected bet
-	Mult float64 `json:"mult,omitempty" yaml:"mult,omitempty" xml:"mult,omitempty,attr"` // multiplier of payment for free spins and other special cases
-	Sym  Sym     `json:"sym,omitempty" yaml:"sym,omitempty" xml:"sym,omitempty,attr"`    // win symbol
-	Num  Pos     `json:"num,omitempty" yaml:"num,omitempty" xml:"num,omitempty,attr"`    // number of win symbols
-	Line int     `json:"line,omitempty" yaml:"line,omitempty" xml:"line,omitempty,attr"` // line index (0 for scatters and not lined combinations)
-	XY   Linex   `json:"xy" yaml:"xy" xml:"xy"`                                          // symbols positions on screen
-	Free int     `json:"free,omitempty" yaml:"free,omitempty" xml:"free,omitempty,attr"` // number of free spins
-	BID  int     `json:"bid,omitempty" yaml:"bid,omitempty" xml:"bid,omitempty,attr"`    // bonus identifier
-	Bon  any     `json:"bon,omitempty" yaml:"bon,omitempty" xml:"bon,omitempty"`         // bonus game data
-	JID  int     `json:"jid,omitempty" yaml:"jid,omitempty" xml:"jid,omitempty,attr"`    // jackpot identifier
-	Jack float64 `json:"jack,omitempty" yaml:"jack,omitempty" xml:"jack,omitempty,attr"` // jackpot win
+	Pay float64 `json:"pay,omitempty" yaml:"pay,omitempty" xml:"pay,omitempty,attr"` // payment with selected bet
+	MP  float64 `json:"mp,omitempty" yaml:"mp,omitempty" xml:"mp,omitempty,attr"`    // multiplier of payment for wilds, free spins and other special cases
+	Sym Sym     `json:"sym,omitempty" yaml:"sym,omitempty" xml:"sym,omitempty,attr"` // win symbol
+	Num Pos     `json:"num,omitempty" yaml:"num,omitempty" xml:"num,omitempty,attr"` // number of win symbols
+	LI  int     `json:"li,omitempty" yaml:"li,omitempty" xml:"li,omitempty,attr"`    // line index (0 for scatters and not lined combinations)
+	XY  Linex   `json:"xy,omitempty" yaml:"xy,omitempty" xml:"xy,omitempty"`         // symbols positions on screen
+	FS  int     `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty,attr"`    // number of free spins
+	BID int     `json:"bid,omitempty" yaml:"bid,omitempty" xml:"bid,omitempty,attr"` // bonus identifier
+	Bon any     `json:"bon,omitempty" yaml:"bon,omitempty" xml:"bon,omitempty"`      // bonus game data
+	JID int     `json:"jid,omitempty" yaml:"jid,omitempty" xml:"jid,omitempty,attr"` // jackpot identifier
+	JR  float64 `json:"jr,omitempty" yaml:"jr,omitempty" xml:"jr,omitempty,attr"`    // jackpot rate (share of the progressive jackpot for this algorithm)
 }
 
 // Progressive jackpot calculated as P * Bet / JackBasis * JackFund
@@ -41,7 +41,7 @@ func (wins *Wins) Reset() {
 func (wins Wins) Gain() float64 {
 	var sum float64
 	for _, wi := range wins {
-		sum += wi.Pay * wi.Mult
+		sum += wi.Pay * wi.MP
 	}
 	return sum
 }
@@ -50,7 +50,7 @@ func (wins Wins) Gain() float64 {
 func (wins Wins) Jackpot() float64 {
 	var sum float64
 	for _, wi := range wins {
-		sum += wi.Jack
+		sum += wi.JR
 	}
 	return sum
 }
@@ -134,8 +134,8 @@ func (g *Slotx) Apply(wins Wins) {
 		g.FSR--
 	}
 	for _, wi := range wins {
-		if wi.Free > 0 {
-			g.FSR += wi.Free
+		if wi.FS > 0 {
+			g.FSR += wi.FS
 		}
 	}
 }

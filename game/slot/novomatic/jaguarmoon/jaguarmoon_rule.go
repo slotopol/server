@@ -100,12 +100,12 @@ loop1:
 							}
 							// var li = (int(line[0])-1)*81 + (int(line[1])-1)*27 + (int(line[2])-1)*9 + (int(line[line[4]])-1)*3 + int(line[5])
 							*wins = append(*wins, slot.WinItem{
-								Pay:  g.Bet * LinePay[syml-1][numl-1],
-								Mult: mm,
-								Sym:  syml,
-								Num:  numl,
-								Line: 243,
-								XY:   line.CopyL(numl),
+								Pay: g.Bet * LinePay[syml-1][numl-1],
+								MP:  mm,
+								Sym: syml,
+								Num: numl,
+								LI:  243,
+								XY:  line.CopyL(numl),
 							})
 							switch numl {
 							case 3:
@@ -156,10 +156,10 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 	if n, count := g.BonNum(); n == 3 {
 		var fs = ScatFreespin[count-1]
 		*wins = append(*wins, slot.WinItem{
-			Sym:  scat,
-			Num:  count,
-			XY:   g.ScatPos(scat),
-			Free: fs,
+			Sym: scat,
+			Num: count,
+			XY:  g.ScatPos(scat),
+			FS:  fs,
 		})
 	}
 }
@@ -186,7 +186,7 @@ func (g *Game) Prepare() {
 func (g *Game) Apply(wins slot.Wins) {
 	g.Slotx.Apply(wins)
 	for _, wi := range wins {
-		if wi.Free > 0 {
+		if wi.FS > 0 {
 			g.M = FreeMult[wi.Num-1]
 		}
 	}

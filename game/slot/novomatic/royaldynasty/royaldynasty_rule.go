@@ -106,21 +106,21 @@ func (g *Game) ScanLinedReg(wins *slot.Wins) {
 		}
 		if payl*mw > payw {
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * payl,
-				Mult: mw,
-				Sym:  syml,
-				Num:  numl,
-				Line: li + 1,
-				XY:   line.CopyL(numl),
+				Pay: g.Bet * payl,
+				MP:  mw,
+				Sym: syml,
+				Num: numl,
+				LI:  li + 1,
+				XY:  line.CopyL(numl),
 			})
 		} else if payw > 0 {
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * payw,
-				Mult: 1,
-				Sym:  wild,
-				Num:  numw,
-				Line: li + 1,
-				XY:   line.CopyL(numw),
+				Pay: g.Bet * payw,
+				MP:  1,
+				Sym: wild,
+				Num: numw,
+				LI:  li + 1,
+				XY:  line.CopyL(numw),
 			})
 		}
 	}
@@ -163,21 +163,21 @@ func (g *Game) ScanLinedBon(wins *slot.Wins) {
 		}
 		if payl*mw > payw {
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * payl,
-				Mult: mw,
-				Sym:  syml,
-				Num:  numl,
-				Line: li + 1,
-				XY:   line.CopyL(numl),
+				Pay: g.Bet * payl,
+				MP:  mw,
+				Sym: syml,
+				Num: numl,
+				LI:  li + 1,
+				XY:  line.CopyL(numl),
 			})
 		} else if payw > 0 {
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * payw,
-				Mult: 1,
-				Sym:  wild,
-				Num:  numw,
-				Line: li + 1,
-				XY:   line.CopyL(numw),
+				Pay: g.Bet * payw,
+				MP:  1,
+				Sym: wild,
+				Num: numw,
+				LI:  li + 1,
+				XY:  line.CopyL(numw),
 			})
 		}
 	}
@@ -188,18 +188,18 @@ func (g *Game) ScanScattersReg(wins *slot.Wins) {
 	if count := g.ScatNum(scat1); count >= 3 {
 		var fs = Freegames[rand.N(len(Freegames))]
 		*wins = append(*wins, slot.WinItem{
-			Sym:  scat1,
-			Num:  count,
-			XY:   g.ScatPos(scat1),
-			Free: fs,
+			Sym: scat1,
+			Num: count,
+			XY:  g.ScatPos(scat1),
+			FS:  fs,
 		})
 	} else if count := g.ScatNum(scat2); count >= 3 {
 		var fs = Freegames[rand.N(len(Freegames))]
 		*wins = append(*wins, slot.WinItem{
-			Sym:  scat2,
-			Num:  count,
-			XY:   g.ScatPos(scat2),
-			Free: fs,
+			Sym: scat2,
+			Num: count,
+			XY:  g.ScatPos(scat2),
+			FS:  fs,
 		})
 	}
 }
@@ -210,12 +210,12 @@ func (g *Game) ScanScattersBon(wins *slot.Wins) {
 		var pay = ScatPay[count-1]
 		var fs = Freegames[rand.N(len(Freegames))]
 		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * float64(g.Sel) * pay,
-			Mult: 1,
-			Sym:  g.TS,
-			Num:  count,
-			XY:   g.ScatPos(g.TS),
-			Free: fs,
+			Pay: g.Bet * float64(g.Sel) * pay,
+			MP:  1,
+			Sym: g.TS,
+			Num: count,
+			XY:  g.ScatPos(g.TS),
+			FS:  fs,
 		})
 	}
 }
@@ -240,7 +240,7 @@ func (g *Game) Apply(wins slot.Wins) {
 
 	if g.FSR > 0 && g.FSN == 0 {
 		for _, wi := range wins {
-			if wi.Free > 0 {
+			if wi.FS > 0 {
 				g.TS = wi.Sym // set trigger scatter
 			}
 		}

@@ -107,27 +107,27 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 		if payl > payr {
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * payl,
-				Mult: 1,
-				Sym:  syml,
-				Num:  numl,
-				Line: li + 1,
-				XY:   line.CopyL(numl),
+				Pay: g.Bet * payl,
+				MP:  1,
+				Sym: syml,
+				Num: numl,
+				LI:  li + 1,
+				XY:  line.CopyL(numl),
 			})
 		} else if payr > 0 {
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * payr,
-				Mult: 1,
-				Sym:  symr,
-				Num:  numr,
-				Line: li + 1,
-				XY:   line.CopyL(numr),
+				Pay: g.Bet * payr,
+				MP:  1,
+				Sym: symr,
+				Num: numr,
+				LI:  li + 1,
+				XY:  line.CopyL(numr),
 			})
 		}
 		if fs {
 			*wins = append(*wins, slot.WinItem{
-				Sym:  wild,
-				Free: 1,
+				Sym: wild,
+				FS:  1,
 			})
 		}
 	}

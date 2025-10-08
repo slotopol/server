@@ -127,18 +127,18 @@ func (s *Stat) JackCount(jid int) float64 {
 func (s *Stat) Update(wins Wins, cfn int) {
 	for _, wi := range wins {
 		if wi.Pay != 0 {
-			if wi.Line != 0 {
+			if wi.LI != 0 { // line win
 				s.lpm.Lock()
-				s.linepay += wi.Pay * wi.Mult
+				s.linepay += wi.Pay * wi.MP
 				s.lpm.Unlock()
-			} else {
+			} else { // scatter win
 				s.spm.Lock()
-				s.scatpay += wi.Pay * wi.Mult
+				s.scatpay += wi.Pay * wi.MP
 				s.spm.Unlock()
 			}
 		}
-		if wi.Free != 0 {
-			atomic.AddUint64(&s.freecount, uint64(wi.Free))
+		if wi.FS != 0 {
+			atomic.AddUint64(&s.freecount, uint64(wi.FS))
 			atomic.AddUint64(&s.freehits, 1)
 		}
 		if wi.BID != 0 {

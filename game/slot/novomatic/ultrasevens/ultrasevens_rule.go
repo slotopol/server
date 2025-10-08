@@ -99,12 +99,12 @@ func (g *Game) Scanner(wins *slot.Wins) (err error) {
 
 		if pay := LinePay[syml-1][numl-1]; pay > 0 {
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * pay,
-				Mult: 1,
-				Sym:  syml,
-				Num:  numl,
-				Line: li + 1,
-				XY:   line.CopyL(numl),
+				Pay: g.Bet * pay,
+				MP:  1,
+				Sym: syml,
+				Num: numl,
+				LI:  li + 1,
+				XY:  line.CopyL(numl),
 			})
 		}
 	}
@@ -129,7 +129,7 @@ func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {
 			if jf > 1 {
 				jf = 1
 			}
-			wins[i].Jack = jf * fund
+			wins[i].JR = jf * fund
 		}
 	}
 }

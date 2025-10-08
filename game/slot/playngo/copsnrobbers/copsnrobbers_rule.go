@@ -121,12 +121,12 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				mm = g.M
 			}
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * payl,
-				Mult: mw * mm,
-				Sym:  syml,
-				Num:  numl,
-				Line: li + 1,
-				XY:   line.CopyL(numl),
+				Pay: g.Bet * payl,
+				MP:  mw * mm,
+				Sym: syml,
+				Num: numl,
+				LI:  li + 1,
+				XY:  line.CopyL(numl),
 			})
 		} else if payw > 0 {
 			var mm float64 = 1 // mult mode
@@ -134,12 +134,12 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				mm = g.M
 			}
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * payw,
-				Mult: mm,
-				Sym:  wild,
-				Num:  numw,
-				Line: li + 1,
-				XY:   line.CopyL(numw),
+				Pay: g.Bet * payw,
+				MP:  mm,
+				Sym: wild,
+				Num: numw,
+				LI:  li + 1,
+				XY:  line.CopyL(numw),
 			})
 		}
 	}
@@ -153,12 +153,12 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 			fs = ScatRand[rand.N(len(ScatRand))]
 		}
 		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * float64(g.Sel) * pay,
-			Mult: 1,
-			Sym:  scat,
-			Num:  count,
-			XY:   g.ScatPos(scat),
-			Free: fs,
+			Pay: g.Bet * float64(g.Sel) * pay,
+			MP:  1,
+			Sym: scat,
+			Num: count,
+			XY:  g.ScatPos(scat),
+			FS:  fs,
 		})
 	}
 }
@@ -191,8 +191,8 @@ func (g *Game) Apply(wins slot.Wins) {
 		g.FSR--
 	} else { // free spins can not be nested
 		for _, wi := range wins {
-			if wi.Free > 0 {
-				g.FSR = wi.Free
+			if wi.FS > 0 {
+				g.FSR = wi.FS
 				if rand.Float64() <= Pfs {
 					g.M = 2
 				} else {

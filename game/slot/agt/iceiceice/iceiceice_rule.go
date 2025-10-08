@@ -79,12 +79,12 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 					syml = wild
 				}
 				*wins = append(*wins, slot.WinItem{
-					Pay:  g.Bet * LinePay[syml-1],
-					Mult: 1,
-					Sym:  syml,
-					Num:  3,
-					Line: li + 1,
-					XY:   line, // whole line is used
+					Pay: g.Bet * LinePay[syml-1],
+					MP:  1,
+					Sym: syml,
+					Num: 3,
+					LI:  li + 1,
+					XY:  line, // whole line is used
 				})
 			}
 		} else { // g.FSR == 0
@@ -100,12 +100,12 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 			}
 			if numl == 3 && syml != scat {
 				*wins = append(*wins, slot.WinItem{
-					Pay:  g.Bet * LinePay[syml-1],
-					Mult: 1,
-					Sym:  syml,
-					Num:  3,
-					Line: li + 1,
-					XY:   line, // whole line is used
+					Pay: g.Bet * LinePay[syml-1],
+					MP:  1,
+					Sym: syml,
+					Num: 3,
+					LI:  li + 1,
+					XY:  line, // whole line is used
 				})
 			}
 		}
@@ -113,12 +113,12 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 
 	if count := g.ScatNum(scat); count == 3 {
 		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * 10,
-			Mult: 1,
-			Sym:  scat,
-			Num:  count,
-			XY:   g.ScatPos(scat),
-			Free: 20,
+			Pay: g.Bet * 10,
+			MP:  1,
+			Sym: scat,
+			Num: count,
+			XY:  g.ScatPos(scat),
+			FS:  20,
 		})
 	}
 	return nil

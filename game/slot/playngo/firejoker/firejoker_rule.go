@@ -78,12 +78,12 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 		if pay := LinePay[syml-1][numl-1]; pay > 0 {
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * pay,
-				Mult: 1,
-				Sym:  syml,
-				Num:  numl,
-				Line: li + 1,
-				XY:   line.CopyL(numl),
+				Pay: g.Bet * pay,
+				MP:  1,
+				Sym: syml,
+				Num: numl,
+				LI:  li + 1,
+				XY:  line.CopyL(numl),
 			})
 		}
 	}
@@ -94,21 +94,21 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 	if count := g.ScatNum(scat); count >= 2 {
 		var pay, fs = ScatPay[count-1], ScatFreespin[count-1]
 		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * float64(g.Sel) * pay,
-			Mult: 1,
-			Sym:  scat,
-			Num:  count,
-			XY:   g.ScatPos(scat),
-			Free: fs,
+			Pay: g.Bet * float64(g.Sel) * pay,
+			MP:  1,
+			Sym: scat,
+			Num: count,
+			XY:  g.ScatPos(scat),
+			FS:  fs,
 		})
 	}
 	if count := g.ScatNum(jack); count == 5 {
 		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * float64(g.Sel) * 100000,
-			Mult: 1,
-			Sym:  jack,
-			Num:  5,
-			XY:   g.ScatPos(scat),
+			Pay: g.Bet * float64(g.Sel) * 100000,
+			MP:  1,
+			Sym: jack,
+			Num: 5,
+			XY:  g.ScatPos(scat),
 		})
 	}
 }

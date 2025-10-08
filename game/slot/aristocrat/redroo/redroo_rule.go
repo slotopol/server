@@ -104,12 +104,12 @@ loop1:
 							if payl := LinePay[syml-1][numl-1]; payl > 0 {
 								// var li = (int(line[0])-1)*256 + (int(line[1])-1)*64 + (int(line[2])-1)*16 + (int(line[line[4]])-1)*4 + int(line[5])
 								*wins = append(*wins, slot.WinItem{
-									Pay:  g.Bet * payl,
-									Mult: mw,
-									Sym:  syml,
-									Num:  numl,
-									Line: 1024,
-									XY:   line.CopyL(numl),
+									Pay: g.Bet * payl,
+									MP:  mw,
+									Sym: syml,
+									Num: numl,
+									LI:  1024,
+									XY:  line.CopyL(numl),
 								})
 							}
 							switch numl {
@@ -154,12 +154,12 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 		}
 		if pay >= 0 || fs >= 0 {
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * pay,
-				Mult: 1,
-				Sym:  scat,
-				Num:  count,
-				XY:   g.ScatPos(scat),
-				Free: fs,
+				Pay: g.Bet * pay,
+				MP:  1,
+				Sym: scat,
+				Num: count,
+				XY:  g.ScatPos(scat),
+				FS:  fs,
 			})
 		}
 	}

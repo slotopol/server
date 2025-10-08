@@ -107,21 +107,21 @@ func (g *Game) ScanLinedReg(wins *slot.Wins) {
 		}
 		if payl*mw > payw {
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * payl,
-				Mult: mw,
-				Sym:  syml,
-				Num:  numl,
-				Line: li + 1,
-				XY:   line.CopyL(numl),
+				Pay: g.Bet * payl,
+				MP:  mw,
+				Sym: syml,
+				Num: numl,
+				LI:  li + 1,
+				XY:  line.CopyL(numl),
 			})
 		} else if payw > 0 {
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * payw,
-				Mult: 1,
-				Sym:  wild,
-				Num:  numw,
-				Line: li + 1,
-				XY:   line.CopyL(numw),
+				Pay: g.Bet * payw,
+				MP:  1,
+				Sym: wild,
+				Num: numw,
+				LI:  li + 1,
+				XY:  line.CopyL(numw),
 			})
 		}
 	}
@@ -158,21 +158,21 @@ func (g *Game) ScanLinedBon(wins *slot.Wins) {
 		}
 		if payl*mw > payw {
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * payl,
-				Mult: mw,
-				Sym:  syml,
-				Num:  numl,
-				Line: li + 1,
-				XY:   line.CopyL(numl),
+				Pay: g.Bet * payl,
+				MP:  mw,
+				Sym: syml,
+				Num: numl,
+				LI:  li + 1,
+				XY:  line.CopyL(numl),
 			})
 		} else if payw > 0 {
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * payw,
-				Mult: 1,
-				Sym:  wild,
-				Num:  numw,
-				Line: li + 1,
-				XY:   line.CopyL(numw),
+				Pay: g.Bet * payw,
+				MP:  1,
+				Sym: wild,
+				Num: numw,
+				LI:  li + 1,
+				XY:  line.CopyL(numw),
 			})
 		}
 	}
@@ -183,18 +183,18 @@ func (g *Game) ScanScattersReg(wins *slot.Wins) {
 	if count := g.ScatNum(scat1); count >= 3 {
 		var pay = ScatPay[count-1]
 		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * float64(g.Sel) * pay,
-			Mult: 1,
-			Sym:  scat1,
-			Num:  count,
-			XY:   g.ScatPos(scat1),
+			Pay: g.Bet * float64(g.Sel) * pay,
+			MP:  1,
+			Sym: scat1,
+			Num: count,
+			XY:  g.ScatPos(scat1),
 		})
 	} else if count := g.ScatNum(scat2); count >= 3 {
 		*wins = append(*wins, slot.WinItem{
-			Sym:  scat2,
-			Num:  count,
-			XY:   g.ScatPos(scat2),
-			Free: 3,
+			Sym: scat2,
+			Num: count,
+			XY:  g.ScatPos(scat2),
+			FS:  3,
 		})
 	}
 }
@@ -203,10 +203,10 @@ func (g *Game) ScanScattersReg(wins *slot.Wins) {
 func (g *Game) ScanScattersBon(wins *slot.Wins) {
 	if count := g.ScatNum(wild); count >= 1 {
 		*wins = append(*wins, slot.WinItem{
-			Sym:  wild,
-			Num:  count,
-			XY:   g.ScatPos(wild),
-			Free: 1,
+			Sym: wild,
+			Num: count,
+			XY:  g.ScatPos(wild),
+			FS:  1,
 		})
 	}
 }

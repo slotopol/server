@@ -46,7 +46,7 @@ type Seashells struct {
 	Sel1 int     `json:"sel1" yaml:"sel1" xml:"sel1"`
 	Sel2 int     `json:"sel2" yaml:"sel2" xml:"sel2"`
 	Mult float64 `json:"mult" yaml:"mult" xml:"mult"`
-	Free int     `json:"free" yaml:"free" xml:"free"`
+	FS   int     `json:"fs" yaml:"fs" xml:"fs"`
 }
 
 func (s *Seashells) SetupShell(shell int) {
@@ -56,11 +56,11 @@ func (s *Seashells) SetupShell(shell int) {
 	case shell_x8:
 		s.Mult += 8
 	case shell_fs7:
-		s.Free += 7
+		s.FS += 7
 	case shell_fs10:
-		s.Free += 10
+		s.FS += 10
 	case shell_fs15:
-		s.Free += 15
+		s.FS += 15
 	}
 }
 
@@ -132,12 +132,12 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				mm = g.M
 			}
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * payl,
-				Mult: mw * mm,
-				Sym:  syml,
-				Num:  numl,
-				Line: li + 1,
-				XY:   line.CopyL(numl),
+				Pay: g.Bet * payl,
+				MP:  mw * mm,
+				Sym: syml,
+				Num: numl,
+				LI:  li + 1,
+				XY:  line.CopyL(numl),
 			})
 		} else if payw > 0 {
 			var mm float64 = 1 // mult mode
@@ -145,12 +145,12 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				mm = g.M
 			}
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * payw,
-				Mult: mm,
-				Sym:  wild,
-				Num:  numw,
-				Line: li + 1,
-				XY:   line.CopyL(numw),
+				Pay: g.Bet * payw,
+				MP:  mm,
+				Sym: wild,
+				Num: numw,
+				LI:  li + 1,
+				XY:  line.CopyL(numw),
 			})
 		}
 	}
@@ -167,12 +167,12 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 			fs = 8
 		}
 		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * float64(g.Sel) * pay,
-			Mult: mm,
-			Sym:  scat,
-			Num:  count,
-			XY:   g.ScatPos(scat),
-			Free: fs,
+			Pay: g.Bet * float64(g.Sel) * pay,
+			MP:  mm,
+			Sym: scat,
+			Num: count,
+			XY:  g.ScatPos(scat),
+			FS:  fs,
 		})
 	}
 }
@@ -196,12 +196,12 @@ func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {
 				Sel1: idx[0],
 				Sel2: idx[1],
 				Mult: 2,
-				Free: 8,
+				FS:   8,
 			}
 			bon.SetupShell(idx[0])
 			bon.SetupShell(idx[1])
-			wi.Mult = 1
-			wi.Free = bon.Free
+			wi.MP = 1
+			wi.FS = bon.FS
 			wi.Bon = bon
 		}
 	}
@@ -228,10 +228,10 @@ func (g *Game) Apply(wins slot.Wins) {
 	for _, wi := range wins {
 		if wi.Sym == scat {
 			if g.M > 0 {
-				g.FSR += wi.Free
+				g.FSR += wi.FS
 			} else {
 				var bon = wi.Bon.(Seashells)
-				g.FSR = bon.Free
+				g.FSR = bon.FS
 				g.M = bon.Mult
 			}
 		}

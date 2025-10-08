@@ -151,6 +151,7 @@
 'King Of Cards' Novomatic 5x3 videoslot
 'King's Jester' Novomatic 5x3 videoslot
 'Live Fruits' AGT 5x3 videoslot
+'Lord of Fortune' CT Interactive 5x3 videoslot
 'Lord of Luck' CT Interactive 5x4 videoslot
 'Lord of the Ocean' Novomatic 5x3 videoslot
 'Lovely Mermaid' Novomatic 5x4 videoslot
@@ -247,11 +248,11 @@
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 244 games, 132 algorithms, 11 providers
+total: 245 games, 132 algorithms, 11 providers
 AGT: 63 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 46 games
+CT Interactive: 47 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

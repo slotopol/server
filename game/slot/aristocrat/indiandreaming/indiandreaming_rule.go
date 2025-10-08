@@ -95,12 +95,12 @@ loop1:
 						if numl >= 3 && syml > 0 {
 							// var li = (int(line[0])-1)*81 + (int(line[1])-1)*27 + (int(line[2])-1)*9 + (int(line[line[4]])-1)*3 + int(line[5])
 							*wins = append(*wins, slot.WinItem{
-								Pay:  g.Bet * LinePay[syml-1][numl-1],
-								Mult: mw,
-								Sym:  syml,
-								Num:  numl,
-								Line: 243,
-								XY:   line.CopyL(numl),
+								Pay: g.Bet * LinePay[syml-1][numl-1],
+								MP:  mw,
+								Sym: syml,
+								Num: numl,
+								LI:  243,
+								XY:  line.CopyL(numl),
 							})
 							switch numl {
 							case 3:
@@ -142,12 +142,12 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 		var line = g.ScatPos(scat)
 		line.Cover(g.ScatPos(wild))
 		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * pay,
-			Mult: mw,
-			Sym:  scat,
-			Num:  count,
-			XY:   line,
-			Free: 12,
+			Pay: g.Bet * pay,
+			MP:  mw,
+			Sym: scat,
+			Num: count,
+			XY:  line,
+			FS:  12,
 		})
 	}
 }

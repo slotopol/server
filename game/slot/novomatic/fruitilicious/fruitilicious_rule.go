@@ -60,12 +60,12 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 		if numl >= 3 {
 			var pay = LinePay[syml-1][numl-1]
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * pay,
-				Mult: 1,
-				Sym:  syml,
-				Num:  numl,
-				Line: li + 1,
-				XY:   line.CopyL(numl),
+				Pay: g.Bet * pay,
+				MP:  1,
+				Sym: syml,
+				Num: numl,
+				LI:  li + 1,
+				XY:  line.CopyL(numl),
 			})
 			continue
 		}
@@ -83,12 +83,12 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 		if numr >= 3 {
 			var pay = LinePay[symr-1][numr-1]
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * pay,
-				Mult: 1,
-				Sym:  symr,
-				Num:  numr,
-				Line: li + 1,
-				XY:   line.CopyR5(numr),
+				Pay: g.Bet * pay,
+				MP:  1,
+				Sym: symr,
+				Num: numr,
+				LI:  li + 1,
+				XY:  line.CopyR5(numr),
 			})
 			continue
 		}

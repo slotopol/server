@@ -105,12 +105,12 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 		if num >= 3 {
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * LinePay[sym3-1][num-1],
-				Mult: 1,
-				Sym:  sym3,
-				Num:  num,
-				Line: li + 1,
-				XY:   xy,
+				Pay: g.Bet * LinePay[sym3-1][num-1],
+				MP:  1,
+				Sym: sym3,
+				Num: num,
+				LI:  li + 1,
+				XY:  xy,
 			})
 		}
 	}

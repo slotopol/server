@@ -57,6 +57,10 @@ func (l Linex) MarshalJSON() ([]byte, error) {
 	return json.Marshal(l[:l.Len()])
 }
 
+func (l *Linex) IsZero() bool {
+	return l.Len() == 0
+}
+
 // (1 ,1) symbol is on left top corner
 
 // Ultra Hot 3x3 slot bet lines

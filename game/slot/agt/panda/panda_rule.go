@@ -70,32 +70,32 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 		if numw == 3 {
 			var pay = LinePay[wild-1]
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * pay,
-				Mult: 1,
-				Sym:  wild,
-				Num:  numw,
-				Line: li + 1,
-				XY:   line.CopyL(numw),
+				Pay: g.Bet * pay,
+				MP:  1,
+				Sym: wild,
+				Num: numw,
+				LI:  li + 1,
+				XY:  line.CopyL(numw),
 			})
 		} else if numl == 3 {
 			var pay = LinePay[syml-1]
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * pay,
-				Mult: 1,
-				Sym:  syml,
-				Num:  numl,
-				Line: li + 1,
-				XY:   line.CopyL(numl),
+				Pay: g.Bet * pay,
+				MP:  1,
+				Sym: syml,
+				Num: numl,
+				LI:  li + 1,
+				XY:  line.CopyL(numl),
 			})
 		}
 	}
 
 	if count := g.ScatNum(scat); count > 0 {
 		*wins = append(*wins, slot.WinItem{
-			Sym:  scat,
-			Num:  count,
-			XY:   g.ScatPos(scat),
-			Free: int(count),
+			Sym: scat,
+			Num: count,
+			XY:  g.ScatPos(scat),
+			FS:  int(count),
 		})
 	}
 	return nil

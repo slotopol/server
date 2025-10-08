@@ -105,13 +105,13 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				jid = mjj
 			}
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * pay,
-				Mult: 1,
-				Sym:  syml,
-				Num:  numl,
-				Line: li + 1,
-				XY:   line.CopyL(numl),
-				JID:  jid,
+				Pay: g.Bet * pay,
+				MP:  1,
+				Sym: syml,
+				Num: numl,
+				LI:  li + 1,
+				XY:  line.CopyL(numl),
+				JID: jid,
 			})
 		}
 	}
@@ -147,20 +147,20 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 	if count := g.AztecNum(); count >= 3 {
 		var pay = ScatPay[count-1]
 		*wins = append(*wins, slot.WinItem{
-			Pay:  g.Bet * float64(g.Sel) * pay,
-			Mult: 1,
-			Sym:  scat,
-			Num:  count,
-			XY:   g.AztecPos(),
+			Pay: g.Bet * float64(g.Sel) * pay,
+			MP:  1,
+			Sym: scat,
+			Num: count,
+			XY:  g.AztecPos(),
 		})
 	}
 	if count := g.ScatNum(bon); count >= 3 {
 		*wins = append(*wins, slot.WinItem{
-			Mult: 1,
-			Sym:  bon,
-			Num:  count,
-			XY:   g.ScatPos(bon),
-			BID:  mjap,
+			MP:  1,
+			Sym: bon,
+			Num: count,
+			XY:  g.ScatPos(bon),
+			BID: mjap,
 		})
 	}
 }
@@ -186,7 +186,7 @@ func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {
 			if jf > 1 {
 				jf = 1
 			}
-			wins[i].Jack = jf * fund
+			wins[i].JR = jf * fund
 		}
 	}
 }

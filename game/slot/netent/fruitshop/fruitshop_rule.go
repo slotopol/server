@@ -113,13 +113,13 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				fs = LineFreespinReg[syml-1][numl-1]
 			}
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * pay,
-				Mult: mw * mm,
-				Sym:  syml,
-				Num:  numl,
-				Line: li + 1,
-				XY:   line.CopyL(numl),
-				Free: fs,
+				Pay: g.Bet * pay,
+				MP:  mw * mm,
+				Sym: syml,
+				Num: numl,
+				LI:  li + 1,
+				XY:  line.CopyL(numl),
+				FS:  fs,
 			})
 		}
 	}

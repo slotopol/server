@@ -54,12 +54,12 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 		if len(m) == 1 && m[0] == 0 { // 3 symbols
 			for sym := range m {
 				*wins = append(*wins, slot.WinItem{
-					Pay:  g.Bet * LinePay[sym-1],
-					Mult: 1,
-					Sym:  sym,
-					Num:  3,
-					Line: li + 1,
-					XY:   line,
+					Pay: g.Bet * LinePay[sym-1],
+					MP:  1,
+					Sym: sym,
+					Num: 3,
+					LI:  li + 1,
+					XY:  line,
 				})
 			}
 		} else if len(m) == 2 && m[1] == 1 && m[0] == 0 { // 2 symbols and diamond
@@ -68,12 +68,12 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 					continue
 				}
 				*wins = append(*wins, slot.WinItem{
-					Pay:  g.Bet * LinePay[sym-1],
-					Mult: 2,
-					Sym:  sym,
-					Num:  3,
-					Line: li + 1,
-					XY:   line,
+					Pay: g.Bet * LinePay[sym-1],
+					MP:  2,
+					Sym: sym,
+					Num: 3,
+					LI:  li + 1,
+					XY:  line,
 				})
 			}
 		} else if len(m) == 2 && m[1] == 2 && m[0] == 0 { // 1 symbol and 2 diamonds
@@ -82,58 +82,58 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 					continue
 				}
 				*wins = append(*wins, slot.WinItem{
-					Pay:  g.Bet * LinePay[sym-1],
-					Mult: 4,
-					Sym:  sym,
-					Num:  3,
-					Line: li + 1,
-					XY:   line,
+					Pay: g.Bet * LinePay[sym-1],
+					MP:  4,
+					Sym: sym,
+					Num: 3,
+					LI:  li + 1,
+					XY:  line,
 				})
 			}
 		} else if m[1] == 1 && m[6] == 1 { // 1 cherry with diamond
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * 2,
-				Mult: 2,
-				Sym:  6,
-				Num:  1,
-				Line: li + 1,
-				XY:   line,
+				Pay: g.Bet * 2,
+				MP:  2,
+				Sym: 6,
+				Num: 1,
+				LI:  li + 1,
+				XY:  line,
 			})
 		} else if m[6] == 1 { // 1 cherry
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * 2,
-				Mult: 1,
-				Sym:  6,
-				Num:  1,
-				Line: li + 1,
-				XY:   line,
+				Pay: g.Bet * 2,
+				MP:  1,
+				Sym: 6,
+				Num: 1,
+				LI:  li + 1,
+				XY:  line,
 			})
 		} else if m[6] == 2 { // 2 cherry
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * 5,
-				Mult: 1,
-				Sym:  6,
-				Num:  2,
-				Line: li + 1,
-				XY:   line,
+				Pay: g.Bet * 5,
+				MP:  1,
+				Sym: 6,
+				Num: 2,
+				LI:  li + 1,
+				XY:  line,
 			})
 		} else if m[1] == 1 && m[0] == 0 && m[2] == 0 { // any bar with diamond
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * 5,
-				Mult: 2,
-				Sym:  0,
-				Num:  3,
-				Line: li + 1,
-				XY:   line,
+				Pay: g.Bet * 5,
+				MP:  2,
+				Sym: 0,
+				Num: 3,
+				LI:  li + 1,
+				XY:  line,
 			})
 		} else if m[1] == 0 && m[0] == 0 && m[2] == 0 { // any bar without diamond
 			*wins = append(*wins, slot.WinItem{
-				Pay:  g.Bet * 5,
-				Mult: 1,
-				Sym:  0,
-				Num:  3,
-				Line: li + 1,
-				XY:   line,
+				Pay: g.Bet * 5,
+				MP:  1,
+				Sym: 0,
+				Num: 3,
+				LI:  li + 1,
+				XY:  line,
 			})
 		}
 	}
