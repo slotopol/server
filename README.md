@@ -16,11 +16,11 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 243 games, 131 algorithms, 11 providers
+total: 244 games, 132 algorithms, 11 providers
 AGT: 63 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 45 games
+CT Interactive: 46 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,7 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Halloween Hot](https://www.slotsmate.com/software/ct-interactive/halloween-hot)' CT Interactive 5x3 videoslot
 * '[Mighty Rex](https://www.slotsmate.com/software/ct-interactive/mighty-rex)' CT Interactive 5x3 videoslot
 * '[Bavarian Forest](https://www.slotsmate.com/software/ct-interactive/bavarian-forest)' CT Interactive 5x3 videoslot
 * '[Ocean Legends](https://www.slotsmate.com/software/ct-interactive/ocean-legends)' CT Interactive 5x3 videoslot
@@ -44,46 +45,6 @@ Slotopol: 2 games
 * '[Colibri Wild](https://www.slotsmate.com/software/ct-interactive/colibri-wild)' CT Interactive 5x4 videoslot
 * '[Shining Treasures](https://www.slotsmate.com/software/ct-interactive/shining-treasures)' CT Interactive 5x3 videoslot
 * '[Full of Luck](https://www.slotsmate.com/software/ct-interactive/full-of-luck)' CT Interactive 5x3 videoslot
-* '[Extra Spin II](https://agtsoftware.com/games/agt/extraspin2)' AGT 5x4 videoslot
-* '[Live Fruits](https://agtsoftware.com/games/agt/livefruits)' AGT 5x3 videoslot
-* '[Aquaman](https://agtsoftware.com/games/agt/aquaman)' AGT 5x3 videoslot
-* '[The Temple of Astarta](https://www.slotsmate.com/software/ct-interactive/the-temple-of-astarta)' CT Interactive 5x3 videoslot
-* '[Treasure Kingdom](https://www.slotsmate.com/software/ct-interactive/treasure-kingdom)' CT Interactive 5x3 videoslot
-* '[Golden Amulet](https://www.slotsmate.com/software/ct-interactive/golden-amulet)' CT Interactive 5x3 videoslot
-* '[Clover Wheel](https://www.slotsmate.com/software/ct-interactive/clover-wheel)' CT Interactive 5x3 videoslot with 2 kinds of bonuses
-* '[Clover Joker](https://www.slotsmate.com/software/ct-interactive/clover-joker)' CT Interactive 5x3 videoslot
-* '[Mighty Moon](https://www.slotsmate.com/software/ct-interactive/mighty-moon)' CT Interactive 5x3 videoslot with 2 kinds of bonuses
-* '[Dark Woods](https://www.slotsmate.com/software/ct-interactive/dark-woods)' CT Interactive 5x3 cascade videoslot
-* '[The Mighty Aztecs](https://www.slotsmate.com/software/ct-interactive/the-mighty-aztecs)' CT Interactive 5x3 videoslot with 2 kinds of bonuses
-* '[Neon Bananas](https://www.slotsmate.com/software/ct-interactive/neon-bananas)' CT Interactive 5x3 videoslot with 2 kinds of bonuses
-* '[Smiley x Wild](https://www.slotsmate.com/software/ct-interactive/smiley-x-wild)' CT Interactive 5x3 videoslot
-* '[Chilli Bomb](https://www.slotsmate.com/software/ct-interactive/chilli-bomb)' CT Interactive 5x3 videoslot
-* '[Fortune Pyramid](https://www.slotsmate.com/software/ct-interactive/fortune-pyramid)' CT Interactive 5x3 videoslot
-* '[Britania](https://www.slotsmate.com/software/ct-interactive/britania)' CT Interactive 5x3 videoslot
-* '[Jade Heaven](https://www.slotsmate.com/software/ct-interactive/jade-heaven)' CT Interactive 5x3 videoslot
-* '[Forest Nymph](https://www.slotsmate.com/software/ct-interactive/forest-nymph)' CT Interactive 5x3 videoslot
-* '[Magician Dreaming](https://www.slotsmate.com/software/ct-interactive/magician-dreaming)' CT Interactive 5x3 videoslot
-* '[Jaguar Warrior](https://www.slotsmate.com/software/ct-interactive/jaguar-warrior)' CT Interactive 5x3 videoslot
-* '[Sapphire Lagoon](https://www.slotsmate.com/software/ct-interactive/sapphire-lagoon)' CT Interactive 5x3 videoslot
-* '[Wild Hills](https://www.slotsmate.com/software/ct-interactive/wild-hills)' CT Interactive 5x3 videoslot
-* '[Treasure Hill](https://www.slotsmate.com/software/ct-interactive/treasure-hill)' CT Interactive 5x4 videoslot
-* '[Vikings Fun](https://www.slotsmate.com/software/ct-interactive/vikings-fun)' CT Interactive 5x3 videoslot, some symbols become wilds on free games
-* '[Win Storm](https://www.slotsmate.com/software/ct-interactive/win-storm)' CT Interactive 5x3 cascade videoslot
-* '[Lord of Luck](https://www.slotsmate.com/software/ct-interactive/lord-of-luck)' CT Interactive 5x4 videoslot
-* '[Double Hot Habanero](https://www.slotsmate.com/software/ct-interactive/double-hot-habanero)' CT Interactive 5x3 videoslot
-* '[Groovy Automat](https://www.slotsmate.com/software/ct-interactive/groovy-automat)' CT Interactive 5x3 videoslot
-* '[Fusion Fruit Beat](https://www.slotsmate.com/software/ct-interactive/fusion-fruit-beat)' CT Interactive 5x3 videoslot
-* '[20 Mega Fresh](https://www.slotsmate.com/software/ct-interactive/20-mega-fresh)' CT Interactive 5x3 videoslot
-* '[Tropic Dancer](https://www.slotsmate.com/software/ct-interactive/tropic-dancer)' CT Interactive 5x3 videoslot
-* '[The Great Cabaret](https://www.slotsmate.com/software/ct-interactive/the-great-cabaret)' CT Interactive 5x3 videoslot
-* '[Clover Party](https://www.slotsmate.com/software/ct-interactive/clover-party)' CT Interactive 5x3 videoslot
-* '[Hit the Hot](https://www.slotsmate.com/software/ct-interactive/hit-the-hot)' CT Interactive 5x3 videoslot
-* '[Fruit Galaxy](https://www.slotsmate.com/software/ct-interactive/fruit-galaxy)' CT Interactive 5x4 videoslot
-* '[Dancing Bananas](https://www.slotsmate.com/software/ct-interactive/dancing-bananas)' CT Interactive 5x3 videoslot
-* '[Flowers](https://games.netent.com/video-slots/flowers/)' NetEnt 5x3 videoslot
-* '[Cash Farm](https://casino.ru/cash-farm-novomatic/)' Novomatic 5x3 cascade videoslot with bonus game
-* '[Fruit Sensation](https://casino.ru/fruit-sensation-novomatic/)' Novomatic 5x3 videoslot
-* '[Oliver's Bar](https://casino.ru/olivers-bar-novomatic/)' Novomatic 5x3 videoslot
 
 *Top-10 of games with most interesting algorithms released on server*:
 
