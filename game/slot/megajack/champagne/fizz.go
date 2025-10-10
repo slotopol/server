@@ -2,19 +2,11 @@ package champagne
 
 import (
 	"math/rand/v2"
-	"slices"
 )
 
-// len = 36, count = 630, avr bottle gain = 90.555556, M = 193.65079365079
-var Bottles = [36]float64{
-	10, 10, 10, 10, 10, 10, // 6
-	20, 20, 20, 20, 20, 20, // 6
-	30, 30, 30, 30, 30, 30, // 6
-	50, 50, 50, 50, 50, 50, // 6
-	100, 100, 100, 100, // 4
-	150, 150, 150, 150, // 4
-	300, 300, // 2
-	500, 500, // 2
+// len = 5, count = 10, avr boutle gain = 68, M = 168
+var Bottles = [...]float64{
+	10, 10, 20, 150, 150,
 }
 
 type WinBottle struct {
@@ -26,7 +18,7 @@ func ChampagneSpawn(bet float64) (any, float64) {
 	var res [5]WinBottle
 	var cash float64
 
-	var p = slices.Clone(Bottles[:])
+	var p = Bottles
 	rand.Shuffle(len(p), func(i, j int) {
 		p[i], p[j] = p[j], p[i]
 	})

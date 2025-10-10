@@ -14,6 +14,7 @@ var data []byte
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "Megajack", Name: "Champagne", Date: game.Year(1999)},
+		{Prov: "CT Interactive", Name: "Champagne and Fruits", Date: game.Date(2022, 2, 1)}, // see: https://www.slotsmate.com/software/ct-interactive/champagne-and-fruits
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

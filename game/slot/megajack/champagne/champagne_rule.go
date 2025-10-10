@@ -43,22 +43,6 @@ const (
 	mjap = 7 // AztecPyramid
 )
 
-// Lined bonus games
-var LineBonus = [12][5]int{
-	{0, 0, 0, 0, 0},   //  1
-	{0, 0, 0, 0, 0},   //  2
-	{0, 0, 0, 0, 0},   //  3
-	{0, 0, 0, 0, 0},   //  4
-	{0, 0, 0, 0, 0},   //  5
-	{0, 0, 0, 0, 0},   //  6
-	{0, 0, 0, 0, 0},   //  7
-	{0, 0, 0, 0, 0},   //  8
-	{0, 0, 0, 0, 0},   //  9
-	{0, 0, 0, 0, 0},   // 10
-	{0, 0, 0, 0, 0},   // 11
-	{0, 0, 0, 0, mjc}, // 12 Champagne
-}
-
 // Bet lines
 var BetLines = slot.BetLinesMgj[:21]
 
@@ -84,25 +68,9 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-// Not from lined paytable.
-var Special = [12]bool{
-	true,  //  1
-	false, //  2
-	false, //  3
-	false, //  4
-	false, //  5
-	false, //  6
-	false, //  7
-	false, //  8
-	false, //  9
-	false, // 10
-	false, // 11
-	true,  // 12
-}
-
 const (
-	mjj        = 1     // jackpot ID
-	wild, scat = 11, 1 // symbols
+	mjj             = 1         // jackpot ID
+	wild, scat, bon = 11, 1, 12 // symbols
 )
 
 func (g *Game) Scanner(wins *slot.Wins) error {
@@ -113,11 +81,6 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(wins *slot.Wins) {
-	var mm float64 = 1 // mult mode
-	if g.FSR > 0 {
-		mm = 2
-	}
-
 	for li, line := range BetLines[:g.Sel] {
 		var numw, numl slot.Pos = 0, 5
 		var syml slot.Sym
@@ -127,14 +90,15 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 			if sx == wild {
 				if syml == 0 {
 					numw = x
-				} else if Special[syml-1] {
+				} else if syml == bon {
 					numl = x - 1
 					break
 				}
-			} else if numw > 0 && Special[sx-1] {
-				numl = x - 1
-				break
-			} else if syml == 0 && sx != scat {
+			} else if syml == 0 {
+				if numw > 0 && sx == bon {
+					numl = x - 1
+					break
+				}
 				syml = sx
 			} else if sx != syml {
 				numl = x - 1
@@ -150,6 +114,10 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 			payl = LinePay[syml-1][numl-1]
 		}
 		if payl > payw {
+			var mm float64 = 1 // mult mode
+			if g.FSR > 0 {
+				mm = 2
+			}
 			*wins = append(*wins, slot.WinItem{
 				Pay: g.Bet * payl,
 				MP:  mm,
@@ -159,38 +127,31 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				XY:  line.HitxL(numl),
 			})
 		} else if payw > 0 {
-			if syml > 0 {
-				*wins = append(*wins, slot.WinItem{
-					Pay: g.Bet * payw,
-					MP:  mm,
-					Sym: wild,
-					Num: numw,
-					LI:  li + 1,
-					XY:  line.HitxL(numw),
-				})
-			} else {
-				var jid int
-				if numl == 5 {
-					jid = mjj
-				}
-				*wins = append(*wins, slot.WinItem{
-					Pay: g.Bet * payw,
-					MP:  1,
-					Sym: wild,
-					Num: numw,
-					LI:  li + 1,
-					XY:  line.HitxL(numw),
-					JID: jid,
-				})
+			var mm float64 = 1 // mult mode
+			if g.FSR > 0 && numw < 5 {
+				mm = 2
 			}
-		} else if syml > 0 && numl > 0 && LineBonus[syml-1][numl-1] > 0 {
+			var jid int
+			if numw == 5 {
+				jid = mjj
+			}
+			*wins = append(*wins, slot.WinItem{
+				Pay: g.Bet * payw,
+				MP:  mm,
+				Sym: wild,
+				Num: numw,
+				LI:  li + 1,
+				XY:  line.HitxL(numw),
+				JID: jid,
+			})
+		} else if numl == 5 && syml == bon {
 			*wins = append(*wins, slot.WinItem{
 				MP:  1,
 				Sym: syml,
 				Num: numl,
 				LI:  li + 1,
 				XY:  line.HitxL(numl),
-				BID: LineBonus[syml-1][numl-1],
+				BID: mjc,
 			})
 		}
 	}
