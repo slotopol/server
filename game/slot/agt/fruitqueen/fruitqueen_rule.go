@@ -52,14 +52,13 @@ type Game struct {
 var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame() *Game {
-	var g = &Game{
+	return &Game{
+		Screenx: slot.ScreenDim(5, 6),
 		Slotx: slot.Slotx{
 			Sel: len(BetLines),
 			Bet: 1,
 		},
 	}
-	g.SetDim(5, 6)
-	return g
 }
 
 func (g *Game) Clone() slot.SlotGame {

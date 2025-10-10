@@ -183,7 +183,7 @@ func ApiKenoSelGetSlice(c *gin.Context) {
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
-		Sel     []int    `json:"sel" yaml:"sel" xml:"sel"`
+		Sel     []int    `json:"sel" yaml:"sel,flow" xml:"sel"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -221,7 +221,7 @@ func ApiKenoSelSetSlice(c *gin.Context) {
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" binding:"required"`
-		Sel     []int    `json:"sel" yaml:"sel" xml:"sel" binding:"required"`
+		Sel     []int    `json:"sel" yaml:"sel,flow" xml:"sel" binding:"required"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -263,7 +263,7 @@ func ApiKenoSpin(c *gin.Context) {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		GID     uint64   `json:"gid" yaml:"gid" xml:"gid,attr" form:"gid" binding:"required"`
 		Bet     float64  `json:"bet,omitempty" yaml:"bet,omitempty" xml:"bet,omitempty"`
-		Sel     []int    `json:"sel,omitempty" yaml:"sel,omitempty" xml:"sel,omitempty"`
+		Sel     []int    `json:"sel,omitempty" yaml:"sel,omitempty,flow" xml:"sel,omitempty"`
 	}
 	var ret struct {
 		XMLName xml.Name      `json:"-" yaml:"-" xml:"ret"`

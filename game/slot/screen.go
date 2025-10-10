@@ -35,42 +35,14 @@ type Screenx struct {
 // Declare conformity with Screen interface.
 var _ Screen = (*Screenx)(nil)
 
+func ScreenDim(sx, sy Pos) Screenx {
+	return Screenx{
+		sx: sx, sy: sy,
+	}
+}
+
 func (s *Screenx) SetDim(sx, sy Pos) {
 	s.sx, s.sy = sx, sy
-}
-
-func (s *Screenx) Len() int {
-	for i, sym := range s.data {
-		if sym == 0 {
-			return i
-		}
-	}
-	return len(s.data)
-}
-
-func (s *Screenx) UpdateDim() (sx, sy Pos) {
-	switch s.Len() {
-	case 3 * 1: // 3
-		sx, sy = 3, 1
-	case 3 * 3: // 9
-		sx, sy = 3, 3
-	case 5 * 3: // 15
-		sx, sy = 5, 3
-	case 4 * 4: // 16
-		sx, sy = 4, 4
-	case 6 * 3: // 18
-		sx, sy = 6, 3
-	case 5 * 4: // 20
-		sx, sy = 5, 4
-	case 6 * 4: // 24
-		sx, sy = 6, 4
-	case 5 * 5: // 25
-		sx, sy = 5, 5
-	case 5 * 6: // 30
-		sx, sy = 5, 6
-	}
-	s.sx, s.sy = sx, sy
-	return
 }
 
 func (s *Screenx) Dim() (Pos, Pos) {
@@ -150,33 +122,33 @@ func (s *Screenx) ScatPos(scat Sym) (c Hitx) {
 }
 
 type scrx struct {
-	Scr []Sym `json:"scr" yaml:"scr" xml:"scr"`
+	Scr [][]Sym `json:"scr" yaml:"scr,flow" xml:"scr"`
 }
 
 func (s *Screenx) MarshalJSON() ([]byte, error) {
-	var tmp = scrx{
-		Scr: s.data[:s.sx*s.sy],
+	var tmp scrx
+	tmp.Scr = make([][]Sym, s.sx)
+	for x := range s.sx {
+		tmp.Scr[x] = s.data[x*s.sy : (x+1)*s.sy]
 	}
 	return json.Marshal(tmp)
 }
 
 func (s *Screenx) UnmarshalJSON(b []byte) (err error) {
-	var tmp = scrx{
-		Scr: s.data[:],
-	}
-	clear(s.data[:])
+	var tmp scrx
 	if err = json.Unmarshal(b, &tmp); err != nil {
 		return
 	}
-	if s.sx == 0 || s.sy == 0 {
-		s.UpdateDim()
+	s.sx, s.sy = Pos(len(tmp.Scr)), Pos(len(tmp.Scr[0]))
+	for x := range s.sx {
+		copy(s.data[x*s.sy:], tmp.Scr[x])
 	}
 	return
 }
 
 // Screen for 3x3 slots.
 type Screen3x3 struct {
-	Scr [3][3]Sym `json:"scr" yaml:"scr" xml:"scr"`
+	Scr [3][3]Sym `json:"scr" yaml:"scr,flow" xml:"scr"`
 }
 
 // Declare conformity with Screen interface.
@@ -268,7 +240,7 @@ func (s *Screen3x3) ScatPos(scat Sym) (c Hitx) {
 
 // Screen for 4x4 slots.
 type Screen4x4 struct {
-	Scr [4][4]Sym `json:"scr" yaml:"scr" xml:"scr"`
+	Scr [4][4]Sym `json:"scr" yaml:"scr,flow" xml:"scr"`
 }
 
 // Declare conformity with Screen interface.
@@ -362,7 +334,7 @@ func (s *Screen4x4) ScatPos(scat Sym) (c Hitx) {
 
 // Screen for 5x3 slots.
 type Screen5x3 struct {
-	Scr [5][3]Sym `json:"scr" yaml:"scr" xml:"scr"`
+	Scr [5][3]Sym `json:"scr" yaml:"scr,flow" xml:"scr"`
 }
 
 // Declare conformity with Screen & Bigger interface.
@@ -476,7 +448,7 @@ func (s *Screen5x3) ScatPos(scat Sym) (c Hitx) {
 
 // Screen for 5x4 slots.
 type Screen5x4 struct {
-	Scr [5][4]Sym `json:"scr" yaml:"scr" xml:"scr"`
+	Scr [5][4]Sym `json:"scr" yaml:"scr,flow" xml:"scr"`
 }
 
 // Declare conformity with Screen interface.
@@ -570,7 +542,7 @@ func (s *Screen5x4) ScatPos(scat Sym) (c Hitx) {
 
 // Screen for 6x3 slots.
 type Screen6x3 struct {
-	Scr [6][3]Sym `json:"scr" yaml:"scr" xml:"scr"`
+	Scr [6][3]Sym `json:"scr" yaml:"scr,flow" xml:"scr"`
 }
 
 // Declare conformity with Screen interface.
@@ -661,7 +633,7 @@ func (s *Screen6x3) ScatPos(scat Sym) (c Hitx) {
 
 // Screen for 6x4 slots.
 type Screen6x4 struct {
-	Scr [6][4]Sym `json:"scr" yaml:"scr" xml:"scr"`
+	Scr [6][4]Sym `json:"scr" yaml:"scr,flow" xml:"scr"`
 }
 
 // Declare conformity with Screen interface.

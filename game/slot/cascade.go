@@ -19,9 +19,9 @@ type CascadeSlot interface {
 }
 
 type Cascade5x3 struct {
-	Scr [5][3]Sym `json:"scr" yaml:"scr" xml:"scr"` // game screen with symbols
-	Hit [5][3]int `json:"hit" yaml:"hit" xml:"hit"` // hits to fall down
-	Pos [5]int    `json:"pos" yaml:"pos" xml:"pos"` // reels positions
+	Scr [5][3]Sym `json:"scr" yaml:"scr,flow" xml:"scr"` // game screen with symbols
+	Hit [5][3]int `json:"hit" yaml:"hit,flow" xml:"hit"` // hits to fall down
+	Pos [5]int    `json:"pos" yaml:"pos,flow" xml:"pos"` // reels positions
 	// cascade fall number
 	CFN int `json:"cfn,omitempty" yaml:"cfn,omitempty" xml:"cfn,omitempty"`
 }
@@ -170,10 +170,11 @@ func (s *Cascade5x3) Strike(wins Wins) {
 }
 
 type Cascade5x4 struct {
-	Scr [5][4]Sym `json:"scr" yaml:"scr" xml:"scr"` // game screen with symbols
-	Hit [5][4]int `json:"hit" yaml:"hit" xml:"hit"` // hits to fall down
-	Pos [5]int    `json:"pos" yaml:"pos" xml:"pos"` // reels positions
-	CFN int       `json:"cfn" yaml:"cfn" xml:"cfn"` // cascade fall number
+	Scr [5][4]Sym `json:"scr" yaml:"scr,flow" xml:"scr"` // game screen with symbols
+	Hit [5][4]int `json:"hit" yaml:"hit,flow" xml:"hit"` // hits to fall down
+	Pos [5]int    `json:"pos" yaml:"pos,flow" xml:"pos"` // reels positions
+	// cascade fall number
+	CFN int `json:"cfn,omitempty" yaml:"cfn,omitempty" xml:"cfn,omitempty"`
 }
 
 // Declare conformity with Cascade interface.

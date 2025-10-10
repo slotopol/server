@@ -32,7 +32,7 @@ Slotopol: 2 games
 
 *Last added games*:
 
-* '[Champagne and Fruits](https://www.slotsmate.com/software/ct-interactive/champagne-and-fruits)' CT Interactive 5x3 videoslot
+* '[Champagne and Fruits](https://www.slotsmate.com/software/ct-interactive/champagne-and-fruits)' CT Interactive 5x3 videoslot (remake "Champagne" game of Megajack)
 * '[Wild Horses](https://www.slotsmate.com/software/novomatic/wild-horses)' Novomatic 5x4 videoslot
 * '[Hot Chance](https://www.slotsmate.com/software/novomatic/hot-chance)' Novomatic 3x3 videoslot
 * '[Lord of Fortune](https://www.slotsmate.com/software/ct-interactive/lord-of-fortune)' CT Interactive 5x3 videoslot

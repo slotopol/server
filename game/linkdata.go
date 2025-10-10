@@ -80,7 +80,7 @@ type (
 		LN  int       `json:"ln,omitempty" yaml:"ln,omitempty" xml:"ln,omitempty"` // number of lines
 		WN  int       `json:"wn,omitempty" yaml:"wn,omitempty" xml:"wn,omitempty"` // number of ways
 		BN  int       `json:"bn,omitempty" yaml:"bn,omitempty" xml:"bn,omitempty"` // number of bonuses
-		RTP []float64 `json:"rtp" yaml:"rtp" xml:"rtp"`                            // 'Return to Player' percents list
+		RTP []float64 `json:"rtp" yaml:"rtp,flow" xml:"rtp"`                       // 'Return to Player' percents list
 	}
 
 	AlgInfo struct {
