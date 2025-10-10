@@ -124,7 +124,6 @@ func (s *Screenx) SymPos(sym Sym) (c Hitx) {
 			}
 		}
 	}
-	c[i][0] = 0
 	return
 }
 
@@ -147,7 +146,6 @@ func (s *Screenx) ScatPos(scat Sym) (c Hitx) {
 			}
 		}
 	}
-	c[i][0] = 0
 	return
 }
 
@@ -236,7 +234,6 @@ func (s *Screen3x3) SymPos(sym Sym) (c Hitx) {
 			}
 		}
 	}
-	c[i][0] = 0
 	return
 }
 
@@ -266,7 +263,6 @@ func (s *Screen3x3) ScatPos(scat Sym) (c Hitx) {
 			i++
 		}
 	}
-	c[i][0] = 0
 	return
 }
 
@@ -330,7 +326,6 @@ func (s *Screen4x4) SymPos(sym Sym) (c Hitx) {
 			}
 		}
 	}
-	c[i][0] = 0
 	return
 }
 
@@ -362,7 +357,6 @@ func (s *Screen4x4) ScatPos(scat Sym) (c Hitx) {
 			i++
 		}
 	}
-	c[i][0] = 0
 	return
 }
 
@@ -449,7 +443,6 @@ func (s *Screen5x3) SymPos(sym Sym) (c Hitx) {
 			}
 		}
 	}
-	c[i][0] = 0
 	return
 }
 
@@ -478,7 +471,6 @@ func (s *Screen5x3) ScatPos(scat Sym) (c Hitx) {
 			i++
 		}
 	}
-	c[i][0] = 0
 	return
 }
 
@@ -542,7 +534,6 @@ func (s *Screen5x4) SymPos(sym Sym) (c Hitx) {
 			}
 		}
 	}
-	c[i][0] = 0
 	return
 }
 
@@ -574,7 +565,6 @@ func (s *Screen5x4) ScatPos(scat Sym) (c Hitx) {
 			i++
 		}
 	}
-	c[i][0] = 0
 	return
 }
 
@@ -638,7 +628,6 @@ func (s *Screen6x3) SymPos(sym Sym) (c Hitx) {
 			}
 		}
 	}
-	c[i][0] = 0
 	return
 }
 
@@ -667,7 +656,6 @@ func (s *Screen6x3) ScatPos(scat Sym) (c Hitx) {
 			i++
 		}
 	}
-	c[i][0] = 0
 	return
 }
 
@@ -731,7 +719,6 @@ func (s *Screen6x4) SymPos(sym Sym) (c Hitx) {
 			}
 		}
 	}
-	c[i][0] = 0
 	return
 }
 
@@ -763,6 +750,5 @@ func (s *Screen6x4) ScatPos(scat Sym) (c Hitx) {
 			i++
 		}
 	}
-	c[i][0] = 0
 	return
 }

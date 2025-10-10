@@ -16,6 +16,7 @@ var Info = game.AlgInfo{
 		{Prov: "Novomatic", Name: "Ultra Hot", Date: game.Year(2002)},                // see: https://www.slotsmate.com/software/novomatic/ultra-hot
 		{Prov: "Novomatic", Name: "Ultra Hot Deluxe", Date: game.Date(2008, 11, 18)}, // see: https://www.slotsmate.com/software/novomatic/ultrahot-deluxe
 		{Prov: "Novomatic", Name: "Ultra Gems", Date: game.Date(2018, 1, 15)},        // see: https://www.slotsmate.com/software/novomatic/ultra-gems
+		{Prov: "Novomatic", Name: "Hot Chance", Date: game.Date(2015, 1, 11)},        // see: https://www.slotsmate.com/software/novomatic/hot-chance
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

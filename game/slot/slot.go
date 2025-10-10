@@ -63,8 +63,8 @@ type SlotGame interface {
 	Free() bool                   // returns true on spins without pay, constant function
 	Spin(float64)                 // fill the screen with random hits on reels closest to given RTP, constant function
 	Spawn(Wins, float64, float64) // setup bonus games to wins results, constant function
-	Prepare()                     // update game state before new spin
-	Apply(Wins)                   // update game state to spin results
+	Prepare()                     // update game state before new spin, screen is unknown yet
+	Apply(Wins)                   // update game state to spin results, screen is calculated
 	GetGain() float64             // returns gain for double up games, constant function
 	SetGain(float64) error        // set gain to given value on double up games
 	GetBet() float64              // returns current bet per line, constant function

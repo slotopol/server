@@ -111,7 +111,6 @@ func (s *Cascade5x3) SymPos(sym Sym) (c Hitx) {
 			}
 		}
 	}
-	c[i][0] = 0
 	return
 }
 
@@ -140,7 +139,6 @@ func (s *Cascade5x3) ScatPos(scat Sym) (c Hitx) {
 			i++
 		}
 	}
-	c[i][0] = 0
 	return
 }
 
@@ -263,7 +261,6 @@ func (s *Cascade5x4) SymPos(sym Sym) (c Hitx) {
 			}
 		}
 	}
-	c[i][0] = 0
 	return
 }
 
@@ -295,7 +292,6 @@ func (s *Cascade5x4) ScatPos(scat Sym) (c Hitx) {
 			i++
 		}
 	}
-	c[i][0] = 0
 	return
 }
 

@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 )
 
-const HitxSize = 24
+// Maximum number of hits on screenx.
+// This array has +1 element to make it zero-terminated without extra check up.
+const HitxSize = ScrxSize + 1
 
 // Hitx is array of 1-based coordinates (X, Y) on game screen with hit symbols.
 type Hitx [HitxSize][2]Pos
@@ -24,7 +26,7 @@ func (c *Hitx) Add(op Linex) {
 			i++
 		}
 	}
-	c[i][0] = 0
+	c[i][0] = 0 // on case if hitx is reused
 }
 
 func (c *Hitx) Len() int {
@@ -55,7 +57,6 @@ func L2H(op Linex) (c Hitx) {
 			i++
 		}
 	}
-	c[i][0] = 0
 	return
 }
 
@@ -323,6 +324,16 @@ var BetLinesNvm5x4 = [...]Linex{
 	{2, 3, 3, 3, 2}, // 38
 	{3, 2, 2, 2, 3}, // 39
 	{3, 4, 4, 4, 3}, // 40
+	{2, 1, 2, 1, 2}, // 41
+	{3, 2, 3, 2, 3}, // 42
+	{4, 3, 4, 3, 4}, // 43
+	{1, 2, 1, 2, 1}, // 44
+	{2, 3, 2, 3, 2}, // 45
+	{3, 4, 3, 4, 3}, // 46
+	{2, 1, 2, 3, 2}, // 47
+	{3, 2, 3, 4, 3}, // 48
+	{2, 3, 2, 1, 2}, // 49
+	{3, 4, 3, 2, 3}, // 50
 }
 
 // NetEnt/BetSoft 5x3 slots bet lines

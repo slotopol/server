@@ -16,7 +16,7 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 245 games, 132 algorithms, 11 providers
+total: 247 games, 133 algorithms, 11 providers
 AGT: 63 games
 Aristocrat: 6 games
 BetSoft: 3 games
@@ -24,7 +24,7 @@ CT Interactive: 47 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
-Novomatic: 83 games
+Novomatic: 85 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 2 games
@@ -32,6 +32,8 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Wild Horses](https://www.slotsmate.com/software/novomatic/wild-horses)' Novomatic 5x4 videoslot
+* '[Hot Chance](https://www.slotsmate.com/software/novomatic/hot-chance)' Novomatic 3x3 videoslot
 * '[Lord of Fortune](https://www.slotsmate.com/software/ct-interactive/lord-of-fortune)' CT Interactive 5x3 videoslot
 * '[Halloween Hot](https://www.slotsmate.com/software/ct-interactive/halloween-hot)' CT Interactive 5x3 videoslot
 * '[Mighty Rex](https://www.slotsmate.com/software/ct-interactive/mighty-rex)' CT Interactive 5x3 videoslot

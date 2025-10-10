@@ -122,6 +122,7 @@
 'Helena' Novomatic 5x3 videoslot
 'Hit the Hot' CT Interactive 5x3 videoslot
 'Holmes and Watson Deluxe' Novomatic 5x3 videoslot
+'Hot Chance' Novomatic 3x3 videoslot
 'Hot Clover' AGT 5x4 videoslot
 'Hot Cubes' Novomatic 5x3 videoslot
 'Hot Target' Novomatic 5x3 videoslot
@@ -242,13 +243,14 @@
 'Vikings Fun' CT Interactive 5x3 videoslot
 'Voodoo Vibes' NetEnt 5x3 videoslot
 'Wild Hills' CT Interactive 5x3 videoslot
+'Wild Horses' Novomatic 5x4 videoslot
 'Wild West' AGT 5x4 videoslot
 'Wild Witches' NetEnt 5x3 videoslot
 'Win Storm' CT Interactive 5x3 cascade videoslot
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 
-total: 245 games, 132 algorithms, 11 providers
+total: 247 games, 133 algorithms, 11 providers
 AGT: 63 games
 Aristocrat: 6 games
 BetSoft: 3 games
@@ -256,7 +258,7 @@ CT Interactive: 47 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
-Novomatic: 83 games
+Novomatic: 85 games
 Play'n GO: 3 games
 Playtech: 7 games
 Slotopol: 2 games

@@ -142,6 +142,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/novomatic/sizzlinghot"
 	_ "github.com/slotopol/server/game/slot/novomatic/ultrahot"
 	_ "github.com/slotopol/server/game/slot/novomatic/ultrasevens"
+	_ "github.com/slotopol/server/game/slot/novomatic/wildhorses"
 
 	// Play'n GO
 	_ "github.com/slotopol/server/game/slot/playngo/copsnrobbers"

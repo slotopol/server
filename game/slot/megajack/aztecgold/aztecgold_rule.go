@@ -143,7 +143,6 @@ func (s *Game) ScatWildPos() (c slot.Hitx) {
 			i++
 		}
 	}
-	c[i][0] = 0
 	return
 }
 

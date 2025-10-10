@@ -93,7 +93,6 @@ func (g *Game) ScatPosCont() (c slot.Hitx) {
 			break // scatters should be continuous
 		}
 	}
-	c[i][0] = 0
 	return
 }
 
