@@ -158,7 +158,7 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 		*wins = append(*wins, slot.WinItem{
 			Sym: scat,
 			Num: count,
-			XY:  g.ScatPos(scat),
+			XY:  g.SymPos(scat),
 			FS:  fs,
 		})
 	}

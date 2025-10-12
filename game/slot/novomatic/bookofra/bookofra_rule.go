@@ -116,7 +116,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 	if g.ES == 0 {
 		return
 	}
-	var nume = g.ScatNum(g.ES)
+	var nume = g.SymNum(g.ES)
 	if nume < 2 {
 		return
 	}
@@ -124,7 +124,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 	if paye == 0 {
 		return
 	}
-	var xye = g.ScatPos(g.ES)
+	var xye = g.SymPos(g.ES)
 	for li, line := range BetLines[:g.Sel] {
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * paye,
@@ -139,14 +139,14 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	if count := g.ScatNum(book); count >= 3 {
+	if count := g.SymNum(book); count >= 3 {
 		var pay, fs = ScatPay[count-1], ScatFreespin[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * float64(g.Sel) * pay,
 			MP:  1,
 			Sym: book,
 			Num: count,
-			XY:  g.ScatPos(book),
+			XY:  g.SymPos(book),
 			FS:  fs,
 		})
 	}

@@ -20,7 +20,7 @@ type CascadeSlot interface {
 
 type Cascade5x3 struct {
 	Scr [5][3]Sym `json:"scr" yaml:"scr,flow" xml:"scr"` // game screen with symbols
-	Hit [5][3]int `json:"hit" yaml:"hit,flow" xml:"hit"` // hits to fall down
+	Hit [5][3]Sym `json:"hit" yaml:"hit,flow" xml:"hit"` // hits to fall down
 	Pos [5]int    `json:"pos" yaml:"pos,flow" xml:"pos"` // reels positions
 	// cascade fall number
 	CFN int `json:"cfn,omitempty" yaml:"cfn,omitempty" xml:"cfn,omitempty"`
@@ -92,8 +92,9 @@ func (s *Cascade5x3) PushFall(reels Reels) {
 
 func (s *Cascade5x3) SymNum(sym Sym) (n Pos) {
 	for x := range 5 {
+		var r = s.Scr[x]
 		for y := range 3 {
-			if s.Scr[x][y] == sym {
+			if r[y] == sym {
 				n++
 			}
 		}
@@ -104,8 +105,9 @@ func (s *Cascade5x3) SymNum(sym Sym) (n Pos) {
 func (s *Cascade5x3) SymPos(sym Sym) (c Hitx) {
 	var x, y, i Pos
 	for x = range 5 {
+		var r = s.Scr[x]
 		for y = range 3 {
-			if s.Scr[x][y] == sym {
+			if r[y] == sym {
 				c[i][0], c[i][1] = x+1, y+1
 				i++
 			}
@@ -114,29 +116,29 @@ func (s *Cascade5x3) SymPos(sym Sym) (c Hitx) {
 	return
 }
 
-func (s *Cascade5x3) ScatNum(scat Sym) (n Pos) {
+func (s *Cascade5x3) SymNum2(sym1, sym2 Sym) (n1, n2 Pos) {
 	for x := range 5 {
 		var r = s.Scr[x]
-		if r[0] == scat || r[1] == scat || r[2] == scat {
-			n++
+		for y := range 3 {
+			if r[y] == sym1 {
+				n1++
+			} else if r[y] == sym2 {
+				n2++
+			}
 		}
 	}
 	return
 }
 
-func (s *Cascade5x3) ScatPos(scat Sym) (c Hitx) {
-	var x, i Pos
+func (s *Cascade5x3) SymPos2(sym1, sym2 Sym) (c Hitx) {
+	var x, y, i Pos
 	for x = range 5 {
 		var r = s.Scr[x]
-		if r[0] == scat {
-			c[i][0], c[i][1] = x+1, 1
-			i++
-		} else if r[1] == scat {
-			c[i][0], c[i][1] = x+1, 2
-			i++
-		} else if r[2] == scat {
-			c[i][0], c[i][1] = x+1, 3
-			i++
+		for y = range 3 {
+			if r[y] == sym1 || r[y] == sym2 {
+				c[i][0], c[i][1] = x+1, y+1
+				i++
+			}
 		}
 	}
 	return
@@ -171,7 +173,7 @@ func (s *Cascade5x3) Strike(wins Wins) {
 
 type Cascade5x4 struct {
 	Scr [5][4]Sym `json:"scr" yaml:"scr,flow" xml:"scr"` // game screen with symbols
-	Hit [5][4]int `json:"hit" yaml:"hit,flow" xml:"hit"` // hits to fall down
+	Hit [5][4]Sym `json:"hit" yaml:"hit,flow" xml:"hit"` // hits to fall down
 	Pos [5]int    `json:"pos" yaml:"pos,flow" xml:"pos"` // reels positions
 	// cascade fall number
 	CFN int `json:"cfn,omitempty" yaml:"cfn,omitempty" xml:"cfn,omitempty"`
@@ -243,8 +245,9 @@ func (s *Cascade5x4) PushFall(reels Reels) {
 
 func (s *Cascade5x4) SymNum(sym Sym) (n Pos) {
 	for x := range 5 {
+		var r = s.Scr[x]
 		for y := range 4 {
-			if s.Scr[x][y] == sym {
+			if r[y] == sym {
 				n++
 			}
 		}
@@ -255,8 +258,9 @@ func (s *Cascade5x4) SymNum(sym Sym) (n Pos) {
 func (s *Cascade5x4) SymPos(sym Sym) (c Hitx) {
 	var x, y, i Pos
 	for x = range 5 {
+		var r = s.Scr[x]
 		for y = range 4 {
-			if s.Scr[x][y] == sym {
+			if r[y] == sym {
 				c[i][0], c[i][1] = x+1, y+1
 				i++
 			}
@@ -265,32 +269,29 @@ func (s *Cascade5x4) SymPos(sym Sym) (c Hitx) {
 	return
 }
 
-func (s *Cascade5x4) ScatNum(scat Sym) (n Pos) {
+func (s *Cascade5x4) SymNum2(sym1, sym2 Sym) (n1, n2 Pos) {
 	for x := range 5 {
 		var r = s.Scr[x]
-		if r[0] == scat || r[1] == scat || r[2] == scat || r[3] == scat {
-			n++
+		for y := range 4 {
+			if r[y] == sym1 {
+				n1++
+			} else if r[y] == sym2 {
+				n2++
+			}
 		}
 	}
 	return
 }
 
-func (s *Cascade5x4) ScatPos(scat Sym) (c Hitx) {
-	var x, i Pos
+func (s *Cascade5x4) SymPos2(sym1, sym2 Sym) (c Hitx) {
+	var x, y, i Pos
 	for x = range 5 {
 		var r = s.Scr[x]
-		if r[0] == scat {
-			c[i][0], c[i][1] = x+1, 1
-			i++
-		} else if r[1] == scat {
-			c[i][0], c[i][1] = x+1, 2
-			i++
-		} else if r[2] == scat {
-			c[i][0], c[i][1] = x+1, 3
-			i++
-		} else if r[3] == scat {
-			c[i][0], c[i][1] = x+1, 4
-			i++
+		for y = range 4 {
+			if r[y] == sym1 || r[y] == sym2 {
+				c[i][0], c[i][1] = x+1, y+1
+				i++
+			}
 		}
 	}
 	return

@@ -178,14 +178,14 @@ loop1:
 
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	if count := g.ScatNum(book); count >= 3 {
+	if count := g.SymNum(book); count >= 3 {
 		var pay, fs = ScatPay[count-1], ScatFreespin[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * float64(g.Sel) * pay,
 			MP:  1,
 			Sym: book,
 			Num: count,
-			XY:  g.ScatPos(book),
+			XY:  g.SymPos(book),
 			FS:  fs,
 		})
 	}

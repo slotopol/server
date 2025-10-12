@@ -15,10 +15,8 @@ type Screen interface {
 	SetSym(x, y Pos, sym Sym)          // setup symbol at given position
 	SetCol(x Pos, reel []Sym, pos int) // setup column on screen with given reel at given position
 	ReelSpin(reels Reels)              // fill the screen with random hits on those reels
-	SymNum(sym Sym) (n Pos)            // returns number of symbols on the screen that can repeats on reel
-	SymPos(sym Sym) Hitx               // returns symbols positions on the screen that can repeats on reel
-	ScatNum(scat Sym) (n Pos)          // returns number of scatters on the screen
-	ScatPos(scat Sym) Hitx             // returns scatters positions on the screen
+	SymNum(sym Sym) (n Pos)            // returns number of symbols on the screen
+	SymPos(sym Sym) Hitx               // returns symbols positions on the screen
 }
 
 type Bigger interface {
@@ -99,28 +97,6 @@ func (s *Screenx) SymPos(sym Sym) (c Hitx) {
 	return
 }
 
-func (s *Screenx) ScatNum(scat Sym) (n Pos) {
-	for i := range s.sx * s.sy {
-		if s.data[i] == scat {
-			n++
-		}
-	}
-	return
-}
-
-func (s *Screenx) ScatPos(scat Sym) (c Hitx) {
-	var x, y, i Pos
-	for x = range s.sx {
-		for y = range s.sy {
-			if s.data[x*s.sy+y] == scat {
-				c[i][0], c[i][1] = x+1, y+1
-				i++
-			}
-		}
-	}
-	return
-}
-
 type scrx struct {
 	Scr [][]Sym `json:"scr" yaml:"scr,flow" xml:"scr"`
 }
@@ -187,8 +163,9 @@ func (s *Screen3x3) ReelSpin(reels Reels) {
 
 func (s *Screen3x3) SymNum(sym Sym) (n Pos) {
 	for x := range 3 {
+		var r = s.Scr[x]
 		for y := range 3 {
-			if s.Scr[x][y] == sym {
+			if r[y] == sym {
 				n++
 			}
 		}
@@ -199,40 +176,12 @@ func (s *Screen3x3) SymNum(sym Sym) (n Pos) {
 func (s *Screen3x3) SymPos(sym Sym) (c Hitx) {
 	var x, y, i Pos
 	for x = range 3 {
+		var r = s.Scr[x]
 		for y = range 3 {
-			if s.Scr[x][y] == sym {
+			if r[y] == sym {
 				c[i][0], c[i][1] = x+1, y+1
 				i++
 			}
-		}
-	}
-	return
-}
-
-func (s *Screen3x3) ScatNum(scat Sym) (n Pos) {
-	var x Pos
-	for x = range 3 {
-		var r = s.Scr[x]
-		if r[0] == scat || r[1] == scat || r[2] == scat {
-			n++
-		}
-	}
-	return
-}
-
-func (s *Screen3x3) ScatPos(scat Sym) (c Hitx) {
-	var x, i Pos
-	for x = range 3 {
-		var r = s.Scr[x]
-		if r[0] == scat {
-			c[i][0], c[i][1] = x+1, 1
-			i++
-		} else if r[1] == scat {
-			c[i][0], c[i][1] = x+1, 2
-			i++
-		} else if r[2] == scat {
-			c[i][0], c[i][1] = x+1, 3
-			i++
 		}
 	}
 	return
@@ -279,8 +228,9 @@ func (s *Screen4x4) ReelSpin(reels Reels) {
 
 func (s *Screen4x4) SymNum(sym Sym) (n Pos) {
 	for x := range 4 {
+		var r = s.Scr[x]
 		for y := range 4 {
-			if s.Scr[x][y] == sym {
+			if r[y] == sym {
 				n++
 			}
 		}
@@ -291,42 +241,12 @@ func (s *Screen4x4) SymNum(sym Sym) (n Pos) {
 func (s *Screen4x4) SymPos(sym Sym) (c Hitx) {
 	var x, y, i Pos
 	for x = range 4 {
+		var r = s.Scr[x]
 		for y = range 4 {
-			if s.Scr[x][y] == sym {
+			if r[y] == sym {
 				c[i][0], c[i][1] = x+1, y+1
 				i++
 			}
-		}
-	}
-	return
-}
-
-func (s *Screen4x4) ScatNum(scat Sym) (n Pos) {
-	for x := range 4 {
-		var r = s.Scr[x]
-		if r[0] == scat || r[1] == scat || r[2] == scat || r[3] == scat {
-			n++
-		}
-	}
-	return
-}
-
-func (s *Screen4x4) ScatPos(scat Sym) (c Hitx) {
-	var x, i Pos
-	for x = range 4 {
-		var r = s.Scr[x]
-		if r[0] == scat {
-			c[i][0], c[i][1] = x+1, 1
-			i++
-		} else if r[1] == scat {
-			c[i][0], c[i][1] = x+1, 2
-			i++
-		} else if r[2] == scat {
-			c[i][0], c[i][1] = x+1, 3
-			i++
-		} else if r[3] == scat {
-			c[i][0], c[i][1] = x+1, 4
-			i++
 		}
 	}
 	return
@@ -396,20 +316,25 @@ func (s *Screen5x3) SpinBig(r1, rb, r5 []Sym) {
 
 func (s *Screen5x3) SymNum(sym Sym) (n Pos) {
 	for x := range 5 {
+		var r = s.Scr[x]
 		for y := range 3 {
-			if s.Scr[x][y] == sym {
+			if r[y] == sym {
 				n++
 			}
 		}
 	}
 	return
+	// Other way:
+	// var b = unsafe.Slice((*byte)(unsafe.Pointer(&g.Scr[0][0])), 15)
+	// return Pos(bytes.Count(b, []byte{sym}))
 }
 
 func (s *Screen5x3) SymPos(sym Sym) (c Hitx) {
 	var x, y, i Pos
 	for x = range 5 {
+		var r = s.Scr[x]
 		for y = range 3 {
-			if s.Scr[x][y] == sym {
+			if r[y] == sym {
 				c[i][0], c[i][1] = x+1, y+1
 				i++
 			}
@@ -418,29 +343,29 @@ func (s *Screen5x3) SymPos(sym Sym) (c Hitx) {
 	return
 }
 
-func (s *Screen5x3) ScatNum(scat Sym) (n Pos) {
+func (s *Screen5x3) SymNum2(sym1, sym2 Sym) (n1, n2 Pos) {
 	for x := range 5 {
 		var r = s.Scr[x]
-		if r[0] == scat || r[1] == scat || r[2] == scat {
-			n++
+		for y := range 3 {
+			if r[y] == sym1 {
+				n1++
+			} else if r[y] == sym2 {
+				n2++
+			}
 		}
 	}
 	return
 }
 
-func (s *Screen5x3) ScatPos(scat Sym) (c Hitx) {
-	var x, i Pos
+func (s *Screen5x3) SymPos2(sym1, sym2 Sym) (c Hitx) {
+	var x, y, i Pos
 	for x = range 5 {
 		var r = s.Scr[x]
-		if r[0] == scat {
-			c[i][0], c[i][1] = x+1, 1
-			i++
-		} else if r[1] == scat {
-			c[i][0], c[i][1] = x+1, 2
-			i++
-		} else if r[2] == scat {
-			c[i][0], c[i][1] = x+1, 3
-			i++
+		for y = range 3 {
+			if r[y] == sym1 || r[y] == sym2 {
+				c[i][0], c[i][1] = x+1, y+1
+				i++
+			}
 		}
 	}
 	return
@@ -487,8 +412,9 @@ func (s *Screen5x4) ReelSpin(reels Reels) {
 
 func (s *Screen5x4) SymNum(sym Sym) (n Pos) {
 	for x := range 5 {
+		var r = s.Scr[x]
 		for y := range 4 {
-			if s.Scr[x][y] == sym {
+			if r[y] == sym {
 				n++
 			}
 		}
@@ -499,8 +425,9 @@ func (s *Screen5x4) SymNum(sym Sym) (n Pos) {
 func (s *Screen5x4) SymPos(sym Sym) (c Hitx) {
 	var x, y, i Pos
 	for x = range 5 {
+		var r = s.Scr[x]
 		for y = range 4 {
-			if s.Scr[x][y] == sym {
+			if r[y] == sym {
 				c[i][0], c[i][1] = x+1, y+1
 				i++
 			}
@@ -509,32 +436,29 @@ func (s *Screen5x4) SymPos(sym Sym) (c Hitx) {
 	return
 }
 
-func (s *Screen5x4) ScatNum(scat Sym) (n Pos) {
+func (s *Screen5x4) SymNum2(sym1, sym2 Sym) (n1, n2 Pos) {
 	for x := range 5 {
 		var r = s.Scr[x]
-		if r[0] == scat || r[1] == scat || r[2] == scat || r[3] == scat {
-			n++
+		for y := range 4 {
+			if r[y] == sym1 {
+				n1++
+			} else if r[y] == sym2 {
+				n2++
+			}
 		}
 	}
 	return
 }
 
-func (s *Screen5x4) ScatPos(scat Sym) (c Hitx) {
-	var x, i Pos
+func (s *Screen5x4) SymPos2(sym1, sym2 Sym) (c Hitx) {
+	var x, y, i Pos
 	for x = range 5 {
 		var r = s.Scr[x]
-		if r[0] == scat {
-			c[i][0], c[i][1] = x+1, 1
-			i++
-		} else if r[1] == scat {
-			c[i][0], c[i][1] = x+1, 2
-			i++
-		} else if r[2] == scat {
-			c[i][0], c[i][1] = x+1, 3
-			i++
-		} else if r[3] == scat {
-			c[i][0], c[i][1] = x+1, 4
-			i++
+		for y = range 4 {
+			if r[y] == sym1 || r[y] == sym2 {
+				c[i][0], c[i][1] = x+1, y+1
+				i++
+			}
 		}
 	}
 	return
@@ -581,8 +505,9 @@ func (s *Screen6x3) ReelSpin(reels Reels) {
 
 func (s *Screen6x3) SymNum(sym Sym) (n Pos) {
 	for x := range 6 {
+		var r = s.Scr[x]
 		for y := range 3 {
-			if s.Scr[x][y] == sym {
+			if r[y] == sym {
 				n++
 			}
 		}
@@ -593,39 +518,12 @@ func (s *Screen6x3) SymNum(sym Sym) (n Pos) {
 func (s *Screen6x3) SymPos(sym Sym) (c Hitx) {
 	var x, y, i Pos
 	for x = range 6 {
+		var r = s.Scr[x]
 		for y = range 3 {
-			if s.Scr[x][y] == sym {
+			if r[y] == sym {
 				c[i][0], c[i][1] = x+1, y+1
 				i++
 			}
-		}
-	}
-	return
-}
-
-func (s *Screen6x3) ScatNum(scat Sym) (n Pos) {
-	for x := range 6 {
-		var r = s.Scr[x]
-		if r[0] == scat || r[1] == scat || r[2] == scat {
-			n++
-		}
-	}
-	return
-}
-
-func (s *Screen6x3) ScatPos(scat Sym) (c Hitx) {
-	var x, i Pos
-	for x = range 6 {
-		var r = s.Scr[x]
-		if r[0] == scat {
-			c[i][0], c[i][1] = x+1, 1
-			i++
-		} else if r[1] == scat {
-			c[i][0], c[i][1] = x+1, 2
-			i++
-		} else if r[2] == scat {
-			c[i][0], c[i][1] = x+1, 3
-			i++
 		}
 	}
 	return
@@ -672,8 +570,9 @@ func (s *Screen6x4) ReelSpin(reels Reels) {
 
 func (s *Screen6x4) SymNum(sym Sym) (n Pos) {
 	for x := range 6 {
+		var r = s.Scr[x]
 		for y := range 4 {
-			if s.Scr[x][y] == sym {
+			if r[y] == sym {
 				n++
 			}
 		}
@@ -684,42 +583,12 @@ func (s *Screen6x4) SymNum(sym Sym) (n Pos) {
 func (s *Screen6x4) SymPos(sym Sym) (c Hitx) {
 	var x, y, i Pos
 	for x = range 6 {
+		var r = s.Scr[x]
 		for y = range 4 {
-			if s.Scr[x][y] == sym {
+			if r[y] == sym {
 				c[i][0], c[i][1] = x+1, y+1
 				i++
 			}
-		}
-	}
-	return
-}
-
-func (s *Screen6x4) ScatNum(scat Sym) (n Pos) {
-	for x := range 6 {
-		var r = s.Scr[x]
-		if r[0] == scat || r[1] == scat || r[2] == scat || r[3] == scat {
-			n++
-		}
-	}
-	return
-}
-
-func (s *Screen6x4) ScatPos(scat Sym) (c Hitx) {
-	var x, i Pos
-	for x = range 6 {
-		var r = s.Scr[x]
-		if r[0] == scat {
-			c[i][0], c[i][1] = x+1, 1
-			i++
-		} else if r[1] == scat {
-			c[i][0], c[i][1] = x+1, 2
-			i++
-		} else if r[2] == scat {
-			c[i][0], c[i][1] = x+1, 3
-			i++
-		} else if r[3] == scat {
-			c[i][0], c[i][1] = x+1, 4
-			i++
 		}
 	}
 	return

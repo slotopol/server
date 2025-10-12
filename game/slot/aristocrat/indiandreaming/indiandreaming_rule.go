@@ -52,7 +52,7 @@ func (g *Game) Clone() slot.SlotGame {
 const wild, scat = 1, 2
 
 func (g *Game) Scanner(wins *slot.Wins) error {
-	if g.ScatNum(wild) < 5 {
+	if g.SymNum(wild) < 5 {
 		g.ScanLined(wins)
 	}
 	g.ScanScatters(wins)
@@ -130,39 +130,20 @@ loop1:
 	}
 }
 
-func (s *Game) ScatWildPos() (c slot.Hitx) {
-	var x, i slot.Pos
-	for x = range 5 {
-		var r = s.Scr[x]
-		if r[0] == scat || r[0] == wild {
-			c[i][0], c[i][1] = x+1, 1
-			i++
-		} else if r[1] == scat || r[1] == wild {
-			c[i][0], c[i][1] = x+1, 2
-			i++
-		} else if r[2] == scat || r[2] == wild {
-			c[i][0], c[i][1] = x+1, 3
-			i++
-		}
-	}
-	return
-}
-
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	var sn, wn = g.ScatNum(scat), g.ScatNum(wild)
-	if count := sn + wn; count >= 3 {
+	if sn, wn := g.SymNum2(scat, wild); sn+wn >= 3 {
 		var mw float64 = 1 // mult wild
 		if g.FSR > 0 && wn > 0 {
 			mw = 5
 		}
-		var pay = ScatPay[count-1]
+		var pay = ScatPay[sn+wn-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * pay,
 			MP:  mw,
 			Sym: scat,
-			Num: count,
-			XY:  g.ScatWildPos(),
+			Num: sn + wn,
+			XY:  g.SymPos2(scat, wild),
 			FS:  12,
 		})
 	}

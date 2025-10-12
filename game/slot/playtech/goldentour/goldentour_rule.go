@@ -161,28 +161,28 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	if count := g.ScatNum(scat1); count >= 3 {
+	if count := g.SymNum(scat1); count >= 3 {
 		*wins = append(*wins, slot.WinItem{
 			MP:  1,
 			Sym: scat1,
 			Num: count,
-			XY:  g.ScatPos(scat1),
+			XY:  g.SymPos(scat1),
 			BID: golfbon,
 		})
-	} else if count := g.ScatNum(scat2); count >= 3 {
+	} else if count := g.SymNum(scat2); count >= 3 {
 		*wins = append(*wins, slot.WinItem{
 			MP:  1,
 			Sym: scat2,
 			Num: count,
-			XY:  g.ScatPos(scat2),
+			XY:  g.SymPos(scat2),
 			BID: golfbon,
 		})
-	} else if count := g.ScatNum(scat3); count >= 3 {
+	} else if count := g.SymNum(scat3); count >= 3 {
 		*wins = append(*wins, slot.WinItem{
 			MP:  1,
 			Sym: scat3,
 			Num: count,
-			XY:  g.ScatPos(scat3),
+			XY:  g.SymPos(scat3),
 			BID: golfbon,
 		})
 	}

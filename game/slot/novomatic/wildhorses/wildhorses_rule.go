@@ -118,12 +118,12 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
 	if g.FSR == 0 {
-		if count := g.ScatNum(scat); count >= 3 {
+		if count := g.SymNum(scat); count >= 3 {
 			const fs = 10
 			*wins = append(*wins, slot.WinItem{
 				Sym: scat,
 				Num: count,
-				XY:  g.ScatPos(scat),
+				XY:  g.SymPos(scat),
 				FS:  fs,
 			})
 		}

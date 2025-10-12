@@ -88,13 +88,13 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 		}
 	}
 
-	if count := g.ScatNum(scat); count >= 3 {
+	if count := g.SymNum(scat); count >= 3 {
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * float64(g.Sel) * 10,
 			MP:  1,
 			Sym: scat,
 			Num: count,
-			XY:  g.ScatPos(scat),
+			XY:  g.SymPos(scat),
 			FS:  20,
 		})
 	}

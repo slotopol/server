@@ -91,24 +91,24 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	if count := g.ScatNum(scat); count >= 2 {
+	if count := g.SymNum(scat); count >= 2 {
 		var pay, fs = ScatPay[count-1], ScatFreespin[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * float64(g.Sel) * pay,
 			MP:  1,
 			Sym: scat,
 			Num: count,
-			XY:  g.ScatPos(scat),
+			XY:  g.SymPos(scat),
 			FS:  fs,
 		})
 	}
-	if count := g.ScatNum(jack); count == 5 {
+	if count := g.SymNum(jack); count == 5 {
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * float64(g.Sel) * 100000,
 			MP:  1,
 			Sym: jack,
 			Num: 5,
-			XY:  g.ScatPos(scat),
+			XY:  g.SymPos(scat),
 		})
 	}
 }

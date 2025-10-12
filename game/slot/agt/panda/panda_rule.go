@@ -90,11 +90,11 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 		}
 	}
 
-	if count := g.ScatNum(scat); count > 0 {
+	if count := g.SymNum(scat); count > 0 {
 		*wins = append(*wins, slot.WinItem{
 			Sym: scat,
 			Num: count,
-			XY:  g.ScatPos(scat),
+			XY:  g.SymPos(scat),
 			FS:  int(count),
 		})
 	}
