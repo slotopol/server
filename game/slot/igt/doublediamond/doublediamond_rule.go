@@ -45,13 +45,23 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
+const (
+	space   slot.Sym = 0
+	diamond slot.Sym = 1
+	seven   slot.Sym = 2
+	bar3    slot.Sym = 3
+	bar2    slot.Sym = 4
+	bar1    slot.Sym = 5
+	cherry  slot.Sym = 6
+)
+
 func (g *Game) Scanner(wins *slot.Wins) error {
 	for li, line := range BetLines[:g.Sel] {
 		var m = map[slot.Sym]int{}
 		m[g.LY(1, line)]++
 		m[g.LY(2, line)]++
 		m[g.LY(3, line)]++
-		if len(m) == 1 && m[0] == 0 { // 3 symbols
+		if len(m) == 1 && m[space] == 0 { // 3 symbols
 			for sym := range m {
 				*wins = append(*wins, slot.WinItem{
 					Pay: g.Bet * LinePay[sym-1],
@@ -62,9 +72,9 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 					XY:  slot.L2H(line),
 				})
 			}
-		} else if len(m) == 2 && m[1] == 1 && m[0] == 0 { // 2 symbols and diamond
+		} else if len(m) == 2 && m[diamond] == 1 && m[space] == 0 { // 2 symbols and diamond
 			for sym := range m {
-				if sym == 1 {
+				if sym == diamond {
 					continue
 				}
 				*wins = append(*wins, slot.WinItem{
@@ -76,9 +86,9 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 					XY:  slot.L2H(line),
 				})
 			}
-		} else if len(m) == 2 && m[1] == 2 && m[0] == 0 { // 1 symbol and 2 diamonds
+		} else if len(m) == 2 && m[diamond] == 2 && m[space] == 0 { // 1 symbol and 2 diamonds
 			for sym := range m {
-				if sym == 1 {
+				if sym == diamond {
 					continue
 				}
 				*wins = append(*wins, slot.WinItem{
@@ -90,34 +100,34 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 					XY:  slot.L2H(line),
 				})
 			}
-		} else if m[1] == 1 && m[6] == 1 { // 1 cherry with diamond
+		} else if m[diamond] == 1 && m[cherry] == 1 { // 1 cherry with diamond
 			*wins = append(*wins, slot.WinItem{
 				Pay: g.Bet * 2,
 				MP:  2,
-				Sym: 6,
+				Sym: cherry,
 				Num: 1,
 				LI:  li + 1,
 				XY:  slot.L2H(line),
 			})
-		} else if m[6] == 1 { // 1 cherry
+		} else if m[cherry] == 1 { // 1 cherry
 			*wins = append(*wins, slot.WinItem{
 				Pay: g.Bet * 2,
 				MP:  1,
-				Sym: 6,
+				Sym: cherry,
 				Num: 1,
 				LI:  li + 1,
 				XY:  slot.L2H(line),
 			})
-		} else if m[6] == 2 { // 2 cherry
+		} else if m[cherry] == 2 { // 2 cherry
 			*wins = append(*wins, slot.WinItem{
 				Pay: g.Bet * 5,
 				MP:  1,
-				Sym: 6,
+				Sym: cherry,
 				Num: 2,
 				LI:  li + 1,
 				XY:  slot.L2H(line),
 			})
-		} else if m[1] == 1 && m[0] == 0 && m[2] == 0 { // any bar with diamond
+		} else if m[diamond] == 1 && m[space] == 0 && m[seven] == 0 { // any bar with diamond
 			*wins = append(*wins, slot.WinItem{
 				Pay: g.Bet * 5,
 				MP:  2,
@@ -126,7 +136,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				LI:  li + 1,
 				XY:  slot.L2H(line),
 			})
-		} else if m[1] == 0 && m[0] == 0 && m[2] == 0 { // any bar without diamond
+		} else if m[diamond] == 0 && m[space] == 0 && m[seven] == 0 { // any bar without diamond
 			*wins = append(*wins, slot.WinItem{
 				Pay: g.Bet * 5,
 				MP:  1,

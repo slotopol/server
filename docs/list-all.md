@@ -38,6 +38,7 @@
 'Big Five' AGT 5x3 videoslot
 'Bigfoot' AGT 5x3 videoslot
 'Bitcoin' AGT 5x3 videoslot
+'Bloody Princess' CT Interactive 5x3 videoslot
 'Book of Ra' Novomatic 5x3 videoslot
 'Book of Ra Deluxe' Novomatic 5x3 videoslot
 'Book of Set' AGT 5x3 videoslot
@@ -250,12 +251,13 @@
 'Win Storm' CT Interactive 5x3 cascade videoslot
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
+'Zeus' AGT 4x4 videoslot
 
-total: 248 games, 133 algorithms, 11 providers
-AGT: 63 games
+total: 250 games, 134 algorithms, 11 providers
+AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 48 games
+CT Interactive: 49 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
