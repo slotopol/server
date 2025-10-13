@@ -81,7 +81,7 @@ func LoadInternalYaml(ctx context.Context) {
 	}
 	var d = time.Since(t0)
 	if d > time.Millisecond*500 || cfg.Verbose {
-		log.Printf("loaded %d embedded yaml chunks in %s\n", len(game.LoadMap), d.String())
+		log.Printf("loaded %d embedded yaml files in %s\n", len(game.LoadMap), d.String())
 	}
 }
 

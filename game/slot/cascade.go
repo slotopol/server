@@ -324,30 +324,34 @@ func (s *Cascade5x4) Strike(wins Wins) {
 	}
 }
 
-// FullGain calculates total gain on avalanche chain for cascading slots.
-func FullGain(game SlotGame, wins Wins, fund, mrtp float64) (gain, jack float64) {
+// CascadeGain calculates total gain on avalanche chain for cascading slots.
+func CascadeGain(game SlotGame, wins Wins, fund, mrtp float64) (cascgain float64, err error) {
 	if len(wins) == 0 {
 		return
 	}
-	gain = wins.Gain()
-	jack = wins.Jackpot()
-	if _, ok := game.(CascadeSlot); ok {
-		var casc = game.Clone().(CascadeSlot)
-		casc.Strike(wins)
-		var cw Wins
-		for {
-			casc.UntoFall()
-			casc.Spin(mrtp)
-			casc.Scanner(&cw)
-			if len(cw) == 0 {
-				break
-			}
-			game.Spawn(cw, fund, mrtp)
-			gain += cw.Gain()
-			jack += cw.Jackpot()
-			casc.Strike(cw)
-			cw.Reset()
-		}
+	if _, ok := game.(CascadeSlot); !ok {
+		return
 	}
-	return
+	var casc = game.Clone().(CascadeSlot)
+	casc.Strike(wins)
+	var cfn = 1
+	var cw Wins
+	for {
+		casc.UntoFall()
+		if cfn++; cfn > FallLimit {
+			err = ErrAvalanche
+			return
+		}
+		casc.Spin(mrtp)
+		if err = casc.Scanner(&cw); err != nil {
+			return
+		}
+		if len(cw) == 0 {
+			return
+		}
+		game.Spawn(cw, fund, mrtp)
+		cascgain += cw.Gain()
+		casc.Strike(cw)
+		cw.Reset()
+	}
 }

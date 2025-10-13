@@ -67,7 +67,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 // Lined symbols calculation on regular games.
 func (g *Game) ScanLinedReg(wins *slot.Wins) {
 	var reelwild [5]bool
-	for x := 1; x < 4; x += 2 { // 2, 4 reel only
+	for x := 1; x < 4; x += 2 { // 2, 4 reels only
 		for y := range 3 {
 			if g.Scr[x][y] == wild {
 				reelwild[x] = true
@@ -107,7 +107,7 @@ func (g *Game) ScanLinedReg(wins *slot.Wins) {
 // Lined symbols calculation on bonus games.
 func (g *Game) ScanLinedBon(wins *slot.Wins) {
 	var reelwild [5]bool
-	for x := 1; x < 4; x += 2 { // 2, 4 reel only
+	for x := 1; x < 4; x += 2 { // 2, 4 reels only
 		for y := range 3 {
 			if g.Scr[x][y] == wild {
 				reelwild[x] = true

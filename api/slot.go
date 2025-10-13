@@ -306,7 +306,7 @@ func ApiSlotSpin(c *gin.Context) {
 
 	// spin until gain less than bank value
 	var wins slot.Wins
-	var gain, debit, jack float64
+	var gain, cascgain, debit, jack float64
 	defer wins.Reset()
 	var n = 0
 	game.Prepare()
@@ -323,9 +323,14 @@ func ApiSlotSpin(c *gin.Context) {
 			}
 		}
 		game.Spawn(wins, fund, mrtp-jprate)
-		gain, jack = slot.FullGain(game, wins, fund, mrtp-jprate)
+		gain = wins.Gain()
+		jack = wins.Jackpot()
+		if cascgain, err = slot.CascadeGain(game, wins, fund, mrtp-jprate); err != nil {
+			wins.Reset()
+			continue
+		}
 		debit = cost*(1-jprate/100) - gain
-		if (bank+debit >= 0 || debit > 0) && (jack == 0 || jack > Cfg.MinJackpot) {
+		if (bank+debit-cascgain >= 0 || debit-cascgain > 0) && (jack == 0 || jack > Cfg.MinJackpot) {
 			break
 		}
 		wins.Reset()

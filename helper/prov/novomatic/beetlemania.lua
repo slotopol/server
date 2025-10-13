@@ -12,7 +12,7 @@ local symset = {
 	5, --  8 jack
 	5, --  9 ten
 	1, -- 10 note
-	0, -- 11 jazzbee -- only on 3 reel
+	0, -- 11 jazzbee (3 reel only)
 }
 
 local neighbours = {

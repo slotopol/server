@@ -3,7 +3,7 @@ dofile(path.."../../lib/reelgen.lua")
 
 local symset1 = {
 	 3, --  1 wild       1000
-	 0, --  2 chilli     (on 3 reel only)
+	 0, --  2 chilli     (3 reel only)
 	 2, --  3 scatter
 	 5, --  4 seven      500
 	 5, --  5 avocado    200
@@ -18,7 +18,7 @@ local symset1 = {
 
 local symset2 = {
 	 3, --  1 wild       1000
-	 0, --  2 chilli     (on 3 reel only)
+	 0, --  2 chilli     (3 reel only)
 	 2, --  3 scatter
 	 7, --  4 seven      500
 	14, --  5 avocado    200
@@ -33,7 +33,7 @@ local symset2 = {
 
 local symset3 = {
 	3*3, --  1 wild       1000
-	  1, --  2 chilli     (on 3 reel only)
+	  1, --  2 chilli     (3 reel only)
 	7*2, --  3 scatter
 	6*4, --  4 seven      500
 	6*6, --  5 avocado    200

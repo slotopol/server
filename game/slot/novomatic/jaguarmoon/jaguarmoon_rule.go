@@ -136,7 +136,7 @@ loop1:
 }
 
 func (g *Game) BonNum() (n, count slot.Pos) {
-	for x := range 3 { // only on reels 1, 2, 3
+	for x := range 3 { // 1, 2, 3 reels only
 		for y := range 3 {
 			if g.Scr[x][y] == scat {
 				n++

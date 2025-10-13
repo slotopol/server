@@ -12,7 +12,7 @@ import (
 
 type Stat struct {
 	planned    uint64
-	reshuffles [10]uint64
+	reshuffles [slot.FallLimit]uint64
 	errcount   uint64
 	linepay    float64
 	scatpay    float64
@@ -35,11 +35,23 @@ func (s *Stat) Planned() float64 {
 }
 
 func (s *Stat) Count() float64 {
-	return float64(atomic.LoadUint64(&s.reshuffles[0]) - atomic.LoadUint64(&s.errcount))
+	var n uint64
+	for i := range slot.FallLimit {
+		n += atomic.LoadUint64(&s.reshuffles[i])
+	}
+	return float64(n)
 }
 
 func (s *Stat) Reshuf(cfn int) float64 {
-	return float64(atomic.LoadUint64(&s.reshuffles[cfn-1]))
+	var n uint64
+	for i := cfn - 1; i < slot.FallLimit; i++ {
+		n += atomic.LoadUint64(&s.reshuffles[i])
+	}
+	return float64(n)
+}
+
+func (s *Stat) Errors() float64 {
+	return float64(atomic.LoadUint64(&s.errcount))
 }
 
 func (s *Stat) IncErr() {
@@ -135,7 +147,7 @@ func (s *Stat) Update(wins slot.Wins, cfn int) {
 			atomic.AddUint64(&s.jackcount[wi.JID], 1)
 		}
 	}
-	if cfn < len(s.reshuffles) {
+	if cfn <= slot.FallLimit {
 		atomic.AddUint64(&s.reshuffles[cfn-1], 1)
 	}
 }

@@ -31,7 +31,7 @@ Get the list of 'AGT' games with screen 3x3 only:
 Get the list of 'AGT' games with big symbols and free games:
   %[1]s list -i agt+big+fg
 Get the list of Megajack games with properties and RTP list for each:
-  %[1]s list -i megajack -prop --rtp`
+  %[1]s list -i megajack --prop --rtp`
 
 var listflags *pflag.FlagSet
 

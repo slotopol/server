@@ -18,6 +18,7 @@ type Stater interface {
 	SetPlan(n uint64)
 	Planned() float64
 	Reshuf(cfn int) float64
+	Errors() float64
 	IncErr()
 	Update(wins Wins, cfn int)
 }
@@ -25,7 +26,7 @@ type Stater interface {
 // Stat is statistics calculation for slot reels.
 type Stat struct {
 	planned    uint64
-	reshuffles [10]uint64
+	reshuffles [FallLimit]uint64
 	errcount   uint64
 	linepay    float64
 	scatpay    float64
@@ -48,11 +49,23 @@ func (s *Stat) Planned() float64 {
 }
 
 func (s *Stat) Count() float64 {
-	return float64(atomic.LoadUint64(&s.reshuffles[0]) - atomic.LoadUint64(&s.errcount))
+	var n uint64
+	for i := range FallLimit {
+		n += atomic.LoadUint64(&s.reshuffles[i])
+	}
+	return float64(n)
 }
 
 func (s *Stat) Reshuf(cfn int) float64 {
-	return float64(atomic.LoadUint64(&s.reshuffles[cfn-1]))
+	var n uint64
+	for i := cfn - 1; i < FallLimit; i++ {
+		n += atomic.LoadUint64(&s.reshuffles[i])
+	}
+	return float64(n)
+}
+
+func (s *Stat) Errors() float64 {
+	return float64(atomic.LoadUint64(&s.errcount))
 }
 
 func (s *Stat) IncErr() {
@@ -148,7 +161,7 @@ func (s *Stat) Update(wins Wins, cfn int) {
 			atomic.AddUint64(&s.jackcount[wi.JID], 1)
 		}
 	}
-	if cfn < len(s.reshuffles) {
+	if cfn <= FallLimit {
 		atomic.AddUint64(&s.reshuffles[cfn-1], 1)
 	}
 }
@@ -185,12 +198,11 @@ type CalcAlg = func(ctx context.Context, s Stater, g SlotGame, reels Reels)
 
 const (
 	CtxGranulation = 100
-	CascadeLimit   = 15
+	FallLimit      = 15
 )
 
 var (
-	ErrAvalanche = errors.New("too many cascades")
-	ErrScanCasc  = errors.New("error occurs on cascade scanner")
+	ErrAvalanche = errors.New("too many cascading falls")
 )
 
 func CorrectThrNum() int {
@@ -237,24 +249,30 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 						}
 						sg.SetCol(3, r3, i3)
 						if iscascade {
+							var err error
 							var cfn int
 							for {
 								cs.UntoFall()
-								cfn++
-								if cfn > CascadeLimit {
-									panic(ErrAvalanche)
+								if cfn++; cfn > FallLimit {
+									err = ErrAvalanche
+									break
 								}
-								if cs.Scanner(&wins) != nil {
-									panic(ErrScanCasc)
+								var wp = len(wins)
+								if err = cs.Scanner(&wins); err != nil {
+									break
 								}
-								s.Update(wins, cfn)
-								cs.Strike(wins)
-								if len(wins) == 0 {
+								cs.Strike(wins[wp:])
+								if len(wins) == wp {
 									break
 								}
 								cs.PushFall(reels)
-								wins.Reset()
 							}
+							if err == nil {
+								s.Update(wins, cfn)
+							} else {
+								s.IncErr()
+							}
+							wins.Reset()
 							if cfn > 1 {
 								cs.SetCol(1, r1, i1)
 								cs.SetCol(2, r2, i2)
@@ -313,24 +331,30 @@ func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 							}
 							sg.SetCol(4, r4, i4)
 							if iscascade {
+								var err error
 								var cfn int
 								for {
 									cs.UntoFall()
-									cfn++
-									if cfn > CascadeLimit {
-										panic(ErrAvalanche)
+									if cfn++; cfn > FallLimit {
+										err = ErrAvalanche
+										break
 									}
-									if cs.Scanner(&wins) != nil {
-										panic(ErrScanCasc)
+									var wp = len(wins)
+									if err = cs.Scanner(&wins); err != nil {
+										break
 									}
-									s.Update(wins, cfn)
-									cs.Strike(wins)
-									if len(wins) == 0 {
+									cs.Strike(wins[wp:])
+									if len(wins) == wp {
 										break
 									}
 									cs.PushFall(reels)
-									wins.Reset()
 								}
+								if err == nil {
+									s.Update(wins, cfn)
+								} else {
+									s.IncErr()
+								}
+								wins.Reset()
 								if cfn > 1 {
 									cs.SetCol(1, r1, i1)
 									cs.SetCol(2, r2, i2)
@@ -394,24 +418,30 @@ func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 								}
 								sg.SetCol(5, r5, i5)
 								if iscascade {
+									var err error
 									var cfn int
 									for {
 										cs.UntoFall()
-										cfn++
-										if cfn > CascadeLimit {
-											panic(ErrAvalanche)
+										if cfn++; cfn > FallLimit {
+											err = ErrAvalanche
+											break
 										}
-										if cs.Scanner(&wins) != nil {
-											panic(ErrScanCasc)
+										var wp = len(wins)
+										if err = cs.Scanner(&wins); err != nil {
+											break
 										}
-										s.Update(wins, cfn)
-										cs.Strike(wins)
-										if len(wins) == 0 {
+										cs.Strike(wins[wp:])
+										if len(wins) == wp {
 											break
 										}
 										cs.PushFall(reels)
-										wins.Reset()
 									}
+									if err == nil {
+										s.Update(wins, cfn)
+									} else {
+										s.IncErr()
+									}
+									wins.Reset()
 									if cfn > 1 {
 										cs.SetCol(1, r1, i1)
 										cs.SetCol(2, r2, i2)
@@ -525,24 +555,30 @@ func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 									}
 									sg.SetCol(6, r6, i6)
 									if iscascade {
+										var err error
 										var cfn int
 										for {
 											cs.UntoFall()
-											cfn++
-											if cfn > CascadeLimit {
-												panic(ErrAvalanche)
+											if cfn++; cfn > FallLimit {
+												err = ErrAvalanche
+												break
 											}
-											if cs.Scanner(&wins) != nil {
-												panic(ErrScanCasc)
+											var wp = len(wins)
+											if err = cs.Scanner(&wins); err != nil {
+												break
 											}
-											s.Update(wins, cfn)
-											cs.Strike(wins)
-											if len(wins) == 0 {
+											cs.Strike(wins[wp:])
+											if len(wins) == wp {
 												break
 											}
 											cs.PushFall(reels)
-											wins.Reset()
 										}
+										if err == nil {
+											s.Update(wins, cfn)
+										} else {
+											s.IncErr()
+										}
+										wins.Reset()
 										if cfn > 1 {
 											cs.SetCol(1, r1, i1)
 											cs.SetCol(2, r2, i2)
@@ -594,24 +630,30 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 					}
 				}
 				if iscascade {
+					var err error
 					var cfn int
 					for {
 						cs.UntoFall()
-						cfn++
-						if cfn > CascadeLimit {
-							panic(ErrAvalanche)
-						}
-						cs.ReelSpin(reels)
-						if cs.Scanner(&wins) != nil {
-							panic(ErrScanCasc)
-						}
-						s.Update(wins, cfn)
-						cs.Strike(wins)
-						if len(wins) == 0 {
+						if cfn++; cfn > FallLimit {
+							err = ErrAvalanche
 							break
 						}
-						wins.Reset()
+						cs.ReelSpin(reels)
+						var wp = len(wins)
+						if err = cs.Scanner(&wins); err != nil {
+							break
+						}
+						cs.Strike(wins[wp:])
+						if len(wins) == wp {
+							break
+						}
 					}
+					if err == nil {
+						s.Update(wins, cfn)
+					} else {
+						s.IncErr()
+					}
+					wins.Reset()
 				} else {
 					sg.ReelSpin(reels)
 					if sg.Scanner(&wins) == nil {
@@ -666,24 +708,30 @@ func MonteCarloPrec(ctx context.Context, s Stater, g SlotGame, reels Reels, calc
 					rtpmux.Unlock()
 				}
 				if iscascade {
+					var err error
 					var cfn int
 					for {
 						cs.UntoFall()
-						cfn++
-						if cfn > CascadeLimit {
-							panic(ErrAvalanche)
-						}
-						cs.ReelSpin(reels)
-						if cs.Scanner(&wins) != nil {
-							panic(ErrScanCasc)
-						}
-						s.Update(wins, cfn)
-						cs.Strike(wins)
-						if len(wins) == 0 {
+						if cfn++; cfn > FallLimit {
+							err = ErrAvalanche
 							break
 						}
-						wins.Reset()
+						cs.ReelSpin(reels)
+						var wp = len(wins)
+						if err = cs.Scanner(&wins); err != nil {
+							break
+						}
+						cs.Strike(wins[wp:])
+						if len(wins) == wp {
+							break
+						}
 					}
+					if err == nil {
+						s.Update(wins, cfn)
+					} else {
+						s.IncErr()
+					}
+					wins.Reset()
 				} else {
 					sg.ReelSpin(reels)
 					if sg.Scanner(&wins) == nil {
@@ -726,7 +774,11 @@ func ScanReels(ctx context.Context, s Stater, g SlotGame, reels Reels,
 	} else {
 		fmt.Printf("produced %.1fm, selected %d lines, time spent %v            \n", s.Reshuf(1)/1e6, g.GetSel(), dur)
 	}
-	fmt.Printf("reels lengths %s, total reshuffles %d\n", reels.String(), reels.Reshuffles())
+	if s.Errors() > 0 {
+		fmt.Printf("reels lengths %s, total reshuffles %d, errors %g\n", reels.String(), reels.Reshuffles(), s.Errors())
+	} else {
+		fmt.Printf("reels lengths %s, total reshuffles %d\n", reels.String(), reels.Reshuffles())
+	}
 	return calc(os.Stdout)
 }
 

@@ -53,12 +53,12 @@ func (g *Game) Clone() slot.SlotGame {
 }
 
 const (
-	space   slot.Sym = 0
-	diamond slot.Sym = 1
-	seven   slot.Sym = 2
-	bar3    slot.Sym = 3
-	bar2    slot.Sym = 4
-	bar1    slot.Sym = 5
+	space   = 0
+	diamond = 1
+	seven   = 2
+	bar3    = 3
+	bar2    = 4
+	bar1    = 5
 )
 
 func (g *Game) Scanner(wins *slot.Wins) error {

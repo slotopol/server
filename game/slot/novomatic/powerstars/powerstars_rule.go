@@ -63,7 +63,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 func (g *Game) ScanLined(wins *slot.Wins) {
 	var reelwild [5]bool
 	var fs bool
-	for x := 1; x < 4; x++ { // 2, 3, 4 reel only
+	for x := 1; x < 4; x++ { // 2, 3, 4 reels only
 		if g.PRW[x] > 0 {
 			reelwild[x] = true
 		} else {
