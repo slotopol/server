@@ -341,17 +341,15 @@ func ApiKenoSpin(c *gin.Context) {
 	var wins keno.Wins
 	var debit float64
 	var n = 0
-	for { // repeat until spin will fit into bank
-		for { // repeat until get valid screen
-			game.Spin(mrtp)
-			if game.Scanner(&wins) == nil {
-				break
-			}
-			n++
-			if n > cfg.Cfg.MaxSpinAttempts {
-				Ret500(c, AEC_keno_spin_badbank, ErrBadBank)
-				return
-			}
+	for { // repeat until get valid screen and spin will fit into bank
+		n++
+		if n > cfg.Cfg.MaxSpinAttempts {
+			Ret500(c, AEC_keno_spin_badbank, ErrBadBank)
+			return
+		}
+		game.Spin(mrtp)
+		if game.Scanner(&wins) != nil {
+			continue
 		}
 		debit = cost - wins.Pay
 		if bank+debit >= 0 || (bank < 0 && debit > 0) {

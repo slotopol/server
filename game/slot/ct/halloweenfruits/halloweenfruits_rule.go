@@ -1,34 +1,39 @@
-package treasurehill
+package halloweenfruits
 
-// See: https://www.slotsmate.com/software/ct-interactive/treasure-hill
+// See: https://www.slotsmate.com/software/ct-interactive/ct-gaming-halloween-fruits
 
 import (
 	"github.com/slotopol/server/game/slot"
 )
 
+var ReelsBon *slot.Reels5x
+
 var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
 // Lined payment.
 var LinePay = [12][5]float64{
-	{0, 0, 65, 300, 1000}, //  1 wild
-	{},                    //  2 scatter (2, 3, 4 reels only)
-	{0, 0, 15, 200, 400},  //  3 clover
-	{0, 0, 15, 200, 400},  //  4 horseshoe
-	{0, 0, 15, 80, 400},   //  5 treasure
-	{0, 0, 15, 80, 400},   //  6 rainbow
-	{0, 0, 5, 50, 200},    //  7 beer
-	{0, 0, 5, 50, 200},    //  8 smoke
-	{0, 0, 5, 10, 100},    //  9 ace
-	{0, 0, 5, 10, 100},    // 10 king
-	{0, 0, 5, 10, 100},    // 11 queen
-	{0, 0, 5, 10, 100},    // 12 jack
+	{},                  //  1 wild
+	{},                  //  2 scatter
+	{0, 0, 20, 50, 300}, //  3 witch
+	{0, 0, 15, 30, 100}, //  4 cat
+	{0, 0, 15, 30, 100}, //  5 banana
+	{0, 0, 15, 30, 100}, //  6 grape
+	{0, 0, 10, 15, 50},  //  7 apple
+	{0, 0, 10, 15, 50},  //  8 melon
+	{0, 0, 10, 15, 30},  //  9 orange
+	{0, 0, 10, 15, 30},  // 10 lemon
+	{0, 0, 10, 15, 30},  // 11 plum
+	{0, 0, 10, 15, 30},  // 12 cherry
 }
 
+// Scatters payment.
+var ScatPay = [5]float64{0, 0, 0, 3, 5} // 2 scatter
+
 // Bet lines
-var BetLines = slot.BetLineCT5x4[:50]
+var BetLines = slot.BetLinesMgj[:30]
 
 type Game struct {
-	slot.Screen5x4 `yaml:",inline"`
+	slot.Screen5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -60,47 +65,27 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 // Lined symbols calculation.
 func (g *Game) ScanLined(wins *slot.Wins) {
 	for li, line := range BetLines[:g.Sel] {
-		var numw, numl slot.Pos = 0, 5
-		var syml slot.Sym
+		var numl slot.Pos = 5
+		var syml = g.LY(1, line)
 		var x slot.Pos
-		for x = 1; x <= 5; x++ {
+		for x = 2; x <= 5; x++ {
 			var sx = g.LY(x, line)
 			if sx == wild {
-				if syml == 0 {
-					numw = x
-				}
-			} else if syml == 0 {
-				syml = sx
+				continue
 			} else if sx != syml {
 				numl = x - 1
 				break
 			}
 		}
 
-		var payw, payl float64
-		if numw >= 3 {
-			payw = LinePay[wild-1][numw-1]
-		}
-		if numl >= 3 && syml > 0 {
-			payl = LinePay[syml-1][numl-1]
-		}
-		if payl > payw {
+		if pay := LinePay[syml-1][numl-1]; pay > 0 {
 			*wins = append(*wins, slot.WinItem{
-				Pay: g.Bet * payl,
+				Pay: g.Bet * pay,
 				MP:  1,
 				Sym: syml,
 				Num: numl,
 				LI:  li + 1,
 				XY:  line.HitxL(numl),
-			})
-		} else if payw > 0 {
-			*wins = append(*wins, slot.WinItem{
-				Pay: g.Bet * payw,
-				MP:  1,
-				Sym: wild,
-				Num: numw,
-				LI:  li + 1,
-				XY:  line.HitxL(numw),
 			})
 		}
 	}
@@ -108,22 +93,26 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	if count := g.SymNum(scat); count >= 3 {
-		const pay, fs = 5, 10
+	if count := g.SymNum(scat); count >= 4 {
+		var pay = ScatPay[min(count-1, 4)]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * float64(g.Sel) * pay,
 			MP:  1,
 			Sym: scat,
 			Num: count,
 			XY:  g.SymPos(scat),
-			FS:  fs,
+			FS:  15,
 		})
 	}
 }
 
 func (g *Game) Spin(mrtp float64) {
-	var reels, _ = ReelsMap.FindClosest(mrtp)
-	g.ReelSpin(reels)
+	if g.FSR == 0 {
+		var reels, _ = ReelsMap.FindClosest(mrtp)
+		g.ReelSpin(reels)
+	} else {
+		g.ReelSpin(ReelsBon)
+	}
 }
 
 func (g *Game) SetSel(sel int) error {

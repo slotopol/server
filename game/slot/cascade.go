@@ -19,31 +19,15 @@ type CascadeSlot interface {
 }
 
 type Cascade5x3 struct {
-	Scr [5][3]Sym `json:"scr" yaml:"scr,flow" xml:"scr"` // game screen with symbols
-	Hit [5][3]Sym `json:"hit" yaml:"hit,flow" xml:"hit"` // hits to fall down
-	Pos [5]int    `json:"pos" yaml:"pos,flow" xml:"pos"` // reels positions
+	Screen5x3 `yaml:",inline"`
+	Hit       [5][3]Pos `json:"hit" yaml:"hit,flow" xml:"hit"` // hits to fall down
+	Pos       [5]int    `json:"pos" yaml:"pos,flow" xml:"pos"` // reels positions
 	// cascade fall number
 	CFN int `json:"cfn,omitempty" yaml:"cfn,omitempty" xml:"cfn,omitempty"`
 }
 
 // Declare conformity with Cascade interface.
 var _ Cascade = (*Cascade5x3)(nil)
-
-func (s *Cascade5x3) Dim() (Pos, Pos) {
-	return 5, 3
-}
-
-func (s *Cascade5x3) At(x, y Pos) Sym {
-	return s.Scr[x-1][y-1]
-}
-
-func (s *Cascade5x3) LY(x Pos, line Linex) Sym {
-	return s.Scr[x-1][line[x-1]-1]
-}
-
-func (s *Cascade5x3) SetSym(x, y Pos, sym Sym) {
-	s.Scr[x-1][y-1] = sym
-}
 
 func (s *Cascade5x3) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range 3 {
@@ -90,60 +74,6 @@ func (s *Cascade5x3) PushFall(reels Reels) {
 	}
 }
 
-func (s *Cascade5x3) SymNum(sym Sym) (n Pos) {
-	for x := range 5 {
-		var r = s.Scr[x]
-		for y := range 3 {
-			if r[y] == sym {
-				n++
-			}
-		}
-	}
-	return
-}
-
-func (s *Cascade5x3) SymPos(sym Sym) (c Hitx) {
-	var x, y, i Pos
-	for x = range 5 {
-		var r = s.Scr[x]
-		for y = range 3 {
-			if r[y] == sym {
-				c[i][0], c[i][1] = x+1, y+1
-				i++
-			}
-		}
-	}
-	return
-}
-
-func (s *Cascade5x3) SymNum2(sym1, sym2 Sym) (n1, n2 Pos) {
-	for x := range 5 {
-		var r = s.Scr[x]
-		for y := range 3 {
-			if r[y] == sym1 {
-				n1++
-			} else if r[y] == sym2 {
-				n2++
-			}
-		}
-	}
-	return
-}
-
-func (s *Cascade5x3) SymPos2(sym1, sym2 Sym) (c Hitx) {
-	var x, y, i Pos
-	for x = range 5 {
-		var r = s.Scr[x]
-		for y = range 3 {
-			if r[y] == sym1 || r[y] == sym2 {
-				c[i][0], c[i][1] = x+1, y+1
-				i++
-			}
-		}
-	}
-	return
-}
-
 // Returns true on avalanche continue.
 func (s *Cascade5x3) Cascade() bool {
 	for _, r := range s.Hit {
@@ -166,37 +96,21 @@ func (s *Cascade5x3) Strike(wins Wins) {
 	clear(s.Hit[:])
 	for _, wi := range wins {
 		for i := 0; wi.XY[i][0] > 0; i++ {
-			s.Hit[wi.XY[i][0]-1][wi.XY[i][1]-1] = 1
+			s.Hit[wi.XY[i][0]-1][wi.XY[i][1]-1]++
 		}
 	}
 }
 
 type Cascade5x4 struct {
-	Scr [5][4]Sym `json:"scr" yaml:"scr,flow" xml:"scr"` // game screen with symbols
-	Hit [5][4]Sym `json:"hit" yaml:"hit,flow" xml:"hit"` // hits to fall down
-	Pos [5]int    `json:"pos" yaml:"pos,flow" xml:"pos"` // reels positions
+	Screen5x4 `yaml:",inline"`
+	Hit       [5][4]Pos `json:"hit" yaml:"hit,flow" xml:"hit"` // hits to fall down
+	Pos       [5]int    `json:"pos" yaml:"pos,flow" xml:"pos"` // reels positions
 	// cascade fall number
 	CFN int `json:"cfn,omitempty" yaml:"cfn,omitempty" xml:"cfn,omitempty"`
 }
 
 // Declare conformity with Cascade interface.
 var _ Cascade = (*Cascade5x4)(nil)
-
-func (s *Cascade5x4) Dim() (Pos, Pos) {
-	return 5, 4
-}
-
-func (s *Cascade5x4) At(x, y Pos) Sym {
-	return s.Scr[x-1][y-1]
-}
-
-func (s *Cascade5x4) LY(x Pos, line Linex) Sym {
-	return s.Scr[x-1][line[x-1]-1]
-}
-
-func (s *Cascade5x4) SetSym(x, y Pos, sym Sym) {
-	s.Scr[x-1][y-1] = sym
-}
 
 func (s *Cascade5x4) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range 4 {
@@ -243,60 +157,6 @@ func (s *Cascade5x4) PushFall(reels Reels) {
 	}
 }
 
-func (s *Cascade5x4) SymNum(sym Sym) (n Pos) {
-	for x := range 5 {
-		var r = s.Scr[x]
-		for y := range 4 {
-			if r[y] == sym {
-				n++
-			}
-		}
-	}
-	return
-}
-
-func (s *Cascade5x4) SymPos(sym Sym) (c Hitx) {
-	var x, y, i Pos
-	for x = range 5 {
-		var r = s.Scr[x]
-		for y = range 4 {
-			if r[y] == sym {
-				c[i][0], c[i][1] = x+1, y+1
-				i++
-			}
-		}
-	}
-	return
-}
-
-func (s *Cascade5x4) SymNum2(sym1, sym2 Sym) (n1, n2 Pos) {
-	for x := range 5 {
-		var r = s.Scr[x]
-		for y := range 4 {
-			if r[y] == sym1 {
-				n1++
-			} else if r[y] == sym2 {
-				n2++
-			}
-		}
-	}
-	return
-}
-
-func (s *Cascade5x4) SymPos2(sym1, sym2 Sym) (c Hitx) {
-	var x, y, i Pos
-	for x = range 5 {
-		var r = s.Scr[x]
-		for y = range 4 {
-			if r[y] == sym1 || r[y] == sym2 {
-				c[i][0], c[i][1] = x+1, y+1
-				i++
-			}
-		}
-	}
-	return
-}
-
 // Returns true on avalanche continue.
 func (s *Cascade5x4) Cascade() bool {
 	for _, r := range s.Hit {
@@ -319,13 +179,13 @@ func (s *Cascade5x4) Strike(wins Wins) {
 	clear(s.Hit[:])
 	for _, wi := range wins {
 		for i := 0; wi.XY[i][0] > 0; i++ {
-			s.Hit[wi.XY[i][0]-1][wi.XY[i][1]-1] = 1
+			s.Hit[wi.XY[i][0]-1][wi.XY[i][1]-1]++
 		}
 	}
 }
 
 // CascadeGain calculates total gain on avalanche chain for cascading slots.
-func CascadeGain(game SlotGame, wins Wins, fund, mrtp float64) (cascgain float64, err error) {
+func CascadeGain(game SlotGame, wins Wins, fund, mrtp float64) (sumgain float64, err error) {
 	if len(wins) == 0 {
 		return
 	}
@@ -350,7 +210,7 @@ func CascadeGain(game SlotGame, wins Wins, fund, mrtp float64) (cascgain float64
 			return
 		}
 		game.Spawn(cw, fund, mrtp)
-		cascgain += cw.Gain()
+		sumgain += cw.Gain()
 		casc.Strike(cw)
 		cw.Reset()
 	}

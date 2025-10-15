@@ -63,6 +63,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/fusionfruitbeat"
 	_ "github.com/slotopol/server/game/slot/ct/groovyautomat"
 	_ "github.com/slotopol/server/game/slot/ct/guardianofasgard"
+	_ "github.com/slotopol/server/game/slot/ct/halloweenfruits"
 	_ "github.com/slotopol/server/game/slot/ct/halloweenhot"
 	_ "github.com/slotopol/server/game/slot/ct/hitthehot"
 	_ "github.com/slotopol/server/game/slot/ct/mightyrex"

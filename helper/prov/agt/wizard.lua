@@ -3,7 +3,7 @@ dofile(path.."../../lib/reelgen.lua")
 
 local symset = {
 	6, --  1 wild
-	0, --  2 scatter (on 2, 3, 4 reels)
+	0, --  2 scatter (2, 3, 4 reels only)
 	5, --  3 owl
 	5, --  4 cat
 	5, --  5 cauldron

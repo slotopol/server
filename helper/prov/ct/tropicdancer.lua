@@ -2,7 +2,7 @@ local path = arg[0]:match("(.*[/\\])")
 dofile(path.."../../lib/reelgen.lua")
 
 local symset1 = {
-	3, --  1 wild          (on 2, 3, 4, 5 reels)
+	3, --  1 wild          (2, 3, 4, 5 reels only)
 	2, --  2 scatter
 	3, --  3 singer
 	3, --  4 dancer man
@@ -29,7 +29,7 @@ local neighbours = {
 }
 
 local symset2 = {
-	3, --  1 wild          (on 2, 3, 4, 5 reels)
+	3, --  1 wild          (2, 3, 4, 5 reels only)
 	3, --  2 scatter
 	3, --  3 singer
 	3, --  4 dancer man

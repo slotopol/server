@@ -120,6 +120,7 @@
 'Gryphons Gold Deluxe' Novomatic 5x3 videoslot
 'Guardian of Asgard' CT Interactive 5x3 cascade videoslot
 'Halloween' AGT 3x3 videoslot
+'Halloween Fruits' CT Interactive 5x3 videoslot
 'Halloween Hot' CT Interactive 5x3 videoslot
 'Happy Santa' AGT 5x3 videoslot
 'Helena' Novomatic 5x3 videoslot
@@ -254,11 +255,11 @@
 'Wolf Run' IGT 5x4 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 251 games, 135 algorithms, 11 providers
+total: 252 games, 136 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 50 games
+CT Interactive: 51 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

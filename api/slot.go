@@ -306,31 +306,27 @@ func ApiSlotSpin(c *gin.Context) {
 
 	// spin until gain less than bank value
 	var wins slot.Wins
-	var gain, cascgain, debit, jack float64
+	var gain, debit, jack float64
 	defer wins.Reset()
 	var n = 0
 	game.Prepare()
-	for { // repeat until spin will fit into bank
-		for { // repeat until get valid screen
-			game.Spin(mrtp - jprate)
-			if game.Scanner(&wins) == nil {
-				break
-			}
-			n++
-			if n > cfg.Cfg.MaxSpinAttempts {
-				Ret500(c, AEC_slot_spin_badbank, ErrBadBank)
-				return
-			}
+	for { // repeat until get valid screen and spin will fit into bank
+		if n++; n > cfg.Cfg.MaxSpinAttempts {
+			Ret500(c, AEC_slot_spin_badbank, ErrBadBank)
+			return
+		}
+		game.Spin(mrtp - jprate)
+		if game.Scanner(&wins) != nil {
+			continue
+		}
+		if _, err = slot.CascadeGain(game, wins, fund, mrtp-jprate); err != nil {
+			continue
 		}
 		game.Spawn(wins, fund, mrtp-jprate)
 		gain = wins.Gain()
 		jack = wins.Jackpot()
-		if cascgain, err = slot.CascadeGain(game, wins, fund, mrtp-jprate); err != nil {
-			wins.Reset()
-			continue
-		}
 		debit = cost*(1-jprate/100) - gain
-		if (bank+debit-cascgain >= 0 || debit-cascgain > 0) && (jack == 0 || jack > Cfg.MinJackpot) {
+		if (bank+debit >= 0 || debit > 0) && (jack == 0 || jack > Cfg.MinJackpot) {
 			break
 		}
 		wins.Reset()
