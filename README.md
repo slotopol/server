@@ -16,11 +16,11 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 252 games, 136 algorithms, 11 providers
+total: 253 games, 137 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 51 games
+CT Interactive: 52 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,7 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Lucky Dollar](https://www.slotsmate.com/software/ct-interactive/lucky-dollar)' CT Interactive 5x3 videoslot
 * '[Halloween Fruits](https://www.slotsmate.com/software/ct-interactive/ct-gaming-halloween-fruits)' CT Interactive 5x3 videoslot
 * '[Guardian of Asgard](https://www.slotsmate.com/software/ct-interactive/guardian-of-asgard)' CT Interactive 5x3 cluster cascade videoslot
 * '[Zeus](https://agtsoftware.org/games/agt/zeus)' AGT 4x4 videoslot
@@ -48,8 +49,6 @@ Slotopol: 2 games
 * '[Cherry Crown](https://www.slotsmate.com/software/ct-interactive/cherry-crown)' CT Interactive 5x3 videoslot
 * '[Satyr and Nymph](https://www.slotsmate.com/software/ct-interactive/satyr-and-nymph)' CT Interactive 5x3 videoslot
 * '[Money Pipe](https://www.slotsmate.com/software/ct-interactive/money-pipe)' CT Interactive 5x4 videoslot
-* '[Ice Rubies](https://www.slotsmate.com/software/ct-interactive/ice-rubies)' CT Interactive 5x4 videoslot
-* '[More Dragons](https://www.slotsmate.com/software/ct-interactive/more-dragons)' CT Interactive 5x4 videoslot
 
 *Top-10 of games with most interesting algorithms released on server*:
 
@@ -112,6 +111,12 @@ slot_win_x64 list -i megajack --rtp
 ```
 
 See `slot_win_x64 list -h` with full list of available command line parameters for list-command with filters.
+
+To calculate nearest precise RTP to given value for any game on embedded reels, you can use the command like
+
+```cmd
+slot_win_x64 scan -g=ctinteractive/luckydollar -r=95.0
+```
 
 ## How to test workflow
 
