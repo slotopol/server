@@ -73,15 +73,17 @@ func Startup() (exitctx context.Context) {
 // Load data from embed yaml chunks.
 func LoadInternalYaml(ctx context.Context) {
 	var t0 = time.Now()
+	var size int
 	for _, b := range game.LoadMap {
 		if ctx.Err() != nil {
 			return
 		}
 		game.MustReadChain(bytes.NewReader(b))
+		size += len(b)
 	}
 	var d = time.Since(t0)
 	if d > time.Millisecond*500 || cfg.Verbose {
-		log.Printf("loaded %d embedded yaml files in %s\n", len(game.LoadMap), d.String())
+		log.Printf("loaded %d embedded yaml files in %s on %d bytes\n", len(game.LoadMap), d.String(), size)
 	}
 }
 

@@ -61,6 +61,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/fruitgalaxy"
 	_ "github.com/slotopol/server/game/slot/ct/fullofluck"
 	_ "github.com/slotopol/server/game/slot/ct/fusionfruitbeat"
+	_ "github.com/slotopol/server/game/slot/ct/goldenfloweroflife"
 	_ "github.com/slotopol/server/game/slot/ct/groovyautomat"
 	_ "github.com/slotopol/server/game/slot/ct/guardianofasgard"
 	_ "github.com/slotopol/server/game/slot/ct/halloweenfruits"

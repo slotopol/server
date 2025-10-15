@@ -108,6 +108,7 @@
 'Gems' AGT 5x3 videoslot
 'God of Sun' Novomatic 5x3 videoslot
 'Golden Amulet' CT Interactive 5x3 videoslot
+'Golden Flower Of Life' CT Interactive 5x3 videoslot
 'Golden Prophecies' Novomatic 5x3 videoslot
 'Golden Tour' Playtech 5x3 videoslot
 'Gonzo's Quest' NetEnt 5x3 cascade videoslot
@@ -256,11 +257,11 @@
 'Wolf Run' IGT 5x4 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 253 games, 137 algorithms, 11 providers
+total: 254 games, 138 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 52 games
+CT Interactive: 53 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
