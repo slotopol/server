@@ -9,6 +9,7 @@ import (
 const HitxSize = ScrxSize + 1
 
 // Hitx is array of 1-based coordinates (X, Y) on game screen with hit symbols.
+// Hitx has fixed size to avoid extra memory allocations.
 type Hitx [HitxSize][2]Pos
 
 func (c *Hitx) Push(x, y Pos) {

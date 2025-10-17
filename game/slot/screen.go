@@ -25,6 +25,8 @@ type Bigger interface {
 
 const ScrxSize = 40
 
+// Screenx is a screen with dimensions defined during construction.
+// Screenx has fixed size to avoid extra memory allocations.
 type Screenx struct {
 	sx, sy Pos
 	data   [ScrxSize]Sym
