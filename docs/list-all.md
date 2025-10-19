@@ -85,6 +85,7 @@
 'Extra Spin III' AGT 5x3 videoslot
 'Fairy Queen' Novomatic 5x3 videoslot
 'Faust' Novomatic 5x3 videoslot
+'Fire Dozen' CT Interactive 5x4 videoslot
 'Fire Joker' Play'n GO 5x3 videoslot
 'Fire Keno' Slotopol 80 spots lottery
 'Firefighters' AGT 5x3 videoslot
@@ -259,11 +260,11 @@
 'Wolf Run' IGT 5x4 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 256 games, 139 algorithms, 11 providers
+total: 257 games, 139 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 55 games
+CT Interactive: 56 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

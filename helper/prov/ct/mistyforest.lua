@@ -4,14 +4,14 @@ dofile(path.."../../lib/reelgen.lua")
 local symset1 = {
 	1, --  1 wild    (2, 3, 4 reels only)
 	1, --  2 scatter
-	1, --  3 woman   1000
-	2, --  4 man     100
-	2, --  5 axe     100
-	2, --  6 hummer  100
+	3, --  3 woman   1000
+	3, --  4 man     100
+	3, --  5 axe     100
+	3, --  6 hummer  100
 	4, --  7 bear    75
 	4, --  8 wolf    75
 	4, --  9 boar    75
-	4, -- 10 fox     75
+	5, -- 10 fox     75
 }
 
 local neighbours = {
@@ -30,7 +30,7 @@ local neighbours = {
 
 local symset2 = {
 	1, --  1 wild
-	0, --  2 scatter
+	1, --  2 scatter
 	3, --  3 woman
 	4, --  4 man
 	4, --  5 axe
