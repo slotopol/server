@@ -72,6 +72,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/mistyforest"
 	_ "github.com/slotopol/server/game/slot/ct/moneypipe"
 	_ "github.com/slotopol/server/game/slot/ct/neonbananas"
+	_ "github.com/slotopol/server/game/slot/ct/nordicsong"
 	_ "github.com/slotopol/server/game/slot/ct/oceanlegends"
 	_ "github.com/slotopol/server/game/slot/ct/sapphirelagoon"
 	_ "github.com/slotopol/server/game/slot/ct/shiningtreasures"

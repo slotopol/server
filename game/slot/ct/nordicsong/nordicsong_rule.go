@@ -1,36 +1,34 @@
-package halloweenfruits
+package nordicsong
 
-// See: https://www.slotsmate.com/software/ct-interactive/ct-gaming-halloween-fruits
+// See: https://www.slotsmate.com/software/ct-interactive/nordic-song
 
 import (
 	"github.com/slotopol/server/game/slot"
 )
 
+// Remark: bonus reels are not specified in the game rules,
+// but are presented as is.
 var ReelsBon *slot.Reels5x
 
 var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
 // Lined payment.
-var LinePay = [12][5]float64{
-	{},                  //  1 wild
-	{},                  //  2 scatter
-	{0, 0, 20, 50, 300}, //  3 witch
-	{0, 0, 15, 30, 100}, //  4 cat
-	{0, 0, 15, 30, 100}, //  5 banana
-	{0, 0, 15, 30, 100}, //  6 grape
-	{0, 0, 10, 15, 50},  //  7 apple
-	{0, 0, 10, 15, 50},  //  8 melon
-	{0, 0, 10, 15, 30},  //  9 orange
-	{0, 0, 10, 15, 30},  // 10 lemon
-	{0, 0, 10, 15, 30},  // 11 plum
-	{0, 0, 10, 15, 30},  // 12 cherry
+var LinePay = [11][5]float64{
+	{},                     //  1 wild    (2, 3, 4, 5 reels only)
+	{},                     //  2 scatter (1, 3, 5 reels only)
+	{0, 10, 50, 200, 1000}, //  3 man
+	{0, 0, 50, 150, 500},   //  4 woman
+	{0, 0, 20, 100, 400},   //  5 owl
+	{0, 0, 20, 100, 400},   //  6 dog
+	{0, 0, 10, 50, 200},    //  7 ace
+	{0, 0, 10, 50, 200},    //  8 king
+	{0, 0, 5, 20, 100},     //  9 queen
+	{0, 0, 5, 20, 100},     // 10 jack
+	{0, 0, 5, 20, 100},     // 11 ten
 }
 
-// Scatters payment.
-var ScatPay = [5]float64{0, 0, 0, 3, 5} // 2 scatter
-
 // Bet lines
-var BetLines = slot.BetLinesMgj[:30]
+var BetLines = slot.BetLinesMgj[:25]
 
 type Game struct {
 	slot.Screen5x3 `yaml:",inline"`
@@ -91,15 +89,15 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	if count := g.SymNum(scat); count >= 4 {
-		var pay = ScatPay[min(count-1, 4)]
+	if count := g.SymNum(scat); count >= 3 {
+		const pay, fs = 5, 12
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * float64(g.Sel) * pay,
 			MP:  1,
 			Sym: scat,
 			Num: count,
 			XY:  g.SymPos(scat),
-			FS:  15,
+			FS:  fs,
 		})
 	}
 }
