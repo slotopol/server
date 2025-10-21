@@ -102,6 +102,7 @@
 'Fruitilicious' Novomatic 5x3 videoslot
 'Fruits 'n Royals' Novomatic 5x3 videoslot
 'Full of Luck' CT Interactive 5x3 videoslot
+'Full of Treasures' CT Interactive 5x3 videoslot
 'Funky Seventies' NetEnt 5x4 videoslot
 'Fusion Fruit Beat' CT Interactive 5x3 videoslot
 'Gate of Ra Deluxe' Novomatic 5x3 videoslot
@@ -195,6 +196,7 @@
 'Plenty on Twenty' Novomatic 5x3 videoslot
 'Polar Fox' Novomatic 5x3 videoslot
 'Power Stars' Novomatic 5x3 videoslot
+'Queen of Flames' CT Interactive 5x4 videoslot
 'Ramses II' Novomatic 5x3 videoslot
 'Red Crown' AGT 5x4 videoslot
 'Redroo' Aristocrat 5x4 videoslot
@@ -231,6 +233,7 @@
 'The Mighty Aztecs' CT Interactive 5x3 videoslot
 'The Money Game' Novomatic 5x3 videoslot
 'The Money Game Deluxe' Novomatic 5x3 videoslot
+'The Power of Ramesses' CT Interactive 5x3 videoslot
 'The Real King Gold Records' Novomatic 5x3 videoslot
 'The Temple of Astarta' CT Interactive 5x3 videoslot
 'Thrill Spin' NetEnt 5x3 videoslot
@@ -261,11 +264,11 @@
 'Wolf Run' IGT 5x4 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 258 games, 140 algorithms, 11 providers
+total: 261 games, 140 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 57 games
+CT Interactive: 60 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

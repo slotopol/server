@@ -31,8 +31,8 @@ var BetLines = slot.BetLinesMgj[:20]
 type Game struct {
 	slot.Screen5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
-	W2             float64 `json:"w2" yaml:"w2" xml:"w2"` // wild multiplier on 2 reel
-	W4             float64 `json:"w4" yaml:"w4" xml:"w4"` // wild multiplier on 4 reel
+	M2             float64 `json:"m2" yaml:"m2" xml:"m2"` // wild multiplier on 2 reel
+	M4             float64 `json:"m4" yaml:"m4" xml:"m4"` // wild multiplier on 4 reel
 }
 
 // Declare conformity with SlotGame interface.
@@ -71,9 +71,9 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 			var sx = g.LY(x, line)
 			if sx == wild {
 				if x == 2 {
-					mw = g.W2
+					mw = g.M2
 				} else {
-					mw *= g.W4
+					mw *= g.M4
 				}
 				continue
 			} else if sx != syml {
@@ -115,8 +115,8 @@ func (g *Game) Spin(mrtp float64) {
 }
 
 func (g *Game) Prepare() {
-	g.W2 = float64(rand.N(4) + 1)
-	g.W4 = float64(rand.N(4) + 1)
+	g.M2 = float64(rand.N(4) + 1)
+	g.M4 = float64(rand.N(4) + 1)
 }
 
 func (g *Game) SetSel(sel int) error {
