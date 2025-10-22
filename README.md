@@ -16,11 +16,11 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 261 games, 140 algorithms, 11 providers
+total: 263 games, 141 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 60 games
+CT Interactive: 62 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,8 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Space Fruits](https://www.slotsmate.com/software/ct-interactive/space-fruits)' CT Interactive 5x3 videoslot
+* '[Groovy Powers](https://www.slotsmate.com/software/ct-interactive/groovy-powers)' CT Interactive 5x3 videoslot
 * '[Queen of Flames](https://www.slotsmate.com/software/ct-interactive/queen-of-flames)' CT Interactive 5x4 videoslot
 * '[The Power of Ramesses](https://www.slotsmate.com/software/ct-interactive/the-power-of-ramesses)' CT Interactive 5x3 videoslot
 * '[Full of Treasures](https://www.slotsmate.com/software/ct-interactive/full-of-treasures)' CT Interactive 5x3 videoslot
@@ -50,13 +52,6 @@ Slotopol: 2 games
 * '[Hot Chance](https://www.slotsmate.com/software/novomatic/hot-chance)' Novomatic 3x3 videoslot
 * '[Lord of Fortune](https://www.slotsmate.com/software/ct-interactive/lord-of-fortune)' CT Interactive 5x3 videoslot
 * '[Halloween Hot](https://www.slotsmate.com/software/ct-interactive/halloween-hot)' CT Interactive 5x3 videoslot
-* '[Mighty Rex](https://www.slotsmate.com/software/ct-interactive/mighty-rex)' CT Interactive 5x3 videoslot
-* '[Bavarian Forest](https://www.slotsmate.com/software/ct-interactive/bavarian-forest)' CT Interactive 5x3 videoslot
-* '[Ocean Legends](https://www.slotsmate.com/software/ct-interactive/ocean-legends)' CT Interactive 5x3 videoslot
-* '[Fortune Fish](https://www.slotsmate.com/software/ct-interactive/fortune-fish)' CT Interactive 5x3 videoslot
-* '[Cherry Crown](https://www.slotsmate.com/software/ct-interactive/cherry-crown)' CT Interactive 5x3 videoslot
-* '[Satyr and Nymph](https://www.slotsmate.com/software/ct-interactive/satyr-and-nymph)' CT Interactive 5x3 videoslot
-* '[Money Pipe](https://www.slotsmate.com/software/ct-interactive/money-pipe)' CT Interactive 5x4 videoslot
 
 *Top-10 of games with most interesting algorithms released on server*:
 
