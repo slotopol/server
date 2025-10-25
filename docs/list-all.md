@@ -79,6 +79,7 @@
 'Dynasty Of Ming' Novomatic 5x3 videoslot
 'Dynasty of Ra' Novomatic 5x3 videoslot
 'Egypt' AGT 5x3 videoslot
+'English Rose' CT Interactive 5x3 videoslot
 'Excalibur' NetEnt 5x3 videoslot
 'Extra Spin' AGT 5x3 videoslot
 'Extra Spin II' AGT 5x4 videoslot
@@ -149,6 +150,7 @@
 'Jewels 4 All' Novomatic 5x3 videoslot
 'Joker Dolphin' Novomatic 5x3 videoslot
 'Jokers' AGT 5x3 videoslot
+'Jolly Beluga Whales' CT Interactive 5x3 videoslot
 'Just Fruits' Novomatic 5x3 videoslot
 'Just Jewels' Novomatic 5x3 videoslot
 'Just Jewels Deluxe' Novomatic 5x3 videoslot
@@ -159,6 +161,7 @@
 'Keno Sports' Aristocrat 80 spots lottery
 'King Of Cards' Novomatic 5x3 videoslot
 'King's Jester' Novomatic 5x3 videoslot
+'Lady Emerald' CT Interactive 5x3 videoslot
 'Live Fruits' AGT 5x3 videoslot
 'Lord of Fortune' CT Interactive 5x3 videoslot
 'Lord of Luck' CT Interactive 5x4 videoslot
@@ -178,6 +181,7 @@
 'Mighty Rex' CT Interactive 5x3 videoslot
 'Misty Forest' CT Interactive 5x3 videoslot
 'Money Pipe' CT Interactive 5x4 videoslot
+'Monkey Kingdom' CT Interactive 5x3 videoslot
 'More Dragons' CT Interactive 5x4 videoslot
 'Navy Girl' CT Interactive 5x3 videoslot
 'Neon Bananas' CT Interactive 5x3 videoslot
@@ -266,11 +270,11 @@
 'Wolf Run' IGT 5x4 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 263 games, 141 algorithms, 11 providers
+total: 267 games, 143 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 62 games
+CT Interactive: 66 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

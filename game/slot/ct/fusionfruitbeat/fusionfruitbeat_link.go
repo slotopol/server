@@ -14,6 +14,7 @@ var data []byte
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "CT Interactive", Name: "Fusion Fruit Beat", Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/fusion-fruit-beat
+		{Prov: "CT Interactive", Name: "Lady Emerald", Date: game.Date(2021, 3, 1)},        // see: https://www.slotsmate.com/software/ct-interactive/lady-emerald
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

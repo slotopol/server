@@ -16,11 +16,11 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 263 games, 141 algorithms, 11 providers
+total: 267 games, 143 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 62 games
+CT Interactive: 66 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,10 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[English Rose](https://www.slotsmate.com/software/ct-interactive/english-rose)' CT Interactive 5x3 videoslot
+* '[Monkey Kingdom](https://www.slotsmate.com/software/ct-interactive/monkey-kingdom)' CT Interactive 5x3 videoslot (alias to "Champagne" game of Megajack)
+* '[Lady Emerald](https://www.slotsmate.com/software/ct-interactive/lady-emerald)' CT Interactive 5x3 videoslot
+* '[Jolly Beluga Whales](https://www.slotsmate.com/software/ct-interactive/jolly-beluga-whales)' CT Interactive 5x3 videoslot
 * '[Space Fruits](https://www.slotsmate.com/software/ct-interactive/space-fruits)' CT Interactive 5x3 videoslot
 * '[Groovy Powers](https://www.slotsmate.com/software/ct-interactive/groovy-powers)' CT Interactive 5x3 videoslot
 * '[Queen of Flames](https://www.slotsmate.com/software/ct-interactive/queen-of-flames)' CT Interactive 5x4 videoslot

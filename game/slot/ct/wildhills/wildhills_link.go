@@ -16,7 +16,6 @@ var Info = game.AlgInfo{
 		{Prov: "CT Interactive", Name: "Wild Hills", Date: game.Date(2020, 11, 26)},        // see: https://www.slotsmate.com/software/ct-interactive/wild-hills
 		{Prov: "CT Interactive", Name: "The Great Cabaret", Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/the-great-cabaret
 		{Prov: "CT Interactive", Name: "Magician Dreaming", Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/magician-dreaming
-		{Prov: "CT Interactive", Name: "Forest Nymph", Date: game.Date(2020, 11, 26)},      // see: https://www.slotsmate.com/software/ct-interactive/forest-nymph
 		{Prov: "CT Interactive", Name: "Jade Heaven", Date: game.Date(2020, 11, 26)},       // see: https://www.slotsmate.com/software/ct-interactive/jade-heaven
 		{Prov: "CT Interactive", Name: "Navy Girl", Date: game.Date(2020, 11, 26)},         // see: https://www.slotsmate.com/software/ct-interactive/navy-girl
 	},
