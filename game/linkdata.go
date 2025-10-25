@@ -26,17 +26,17 @@ type GP uint // Game properties
 const (
 	GPlpay GP = 1 << iota // pays left to right
 	GPrpay                // pays left to right and right to left
-	GPcpay                // pays for combination at any position
-	FPspay                // pays by clusters
+	GPapay                // pays for combination at any position
+	GPcpay                // pays by clusters
 
 	GPlsel // user can select bet lines
 	GPwsel // user can change ways set
 	GPjack // cumulative jackpot is present
 	GPfill // has multiplier on filled screen
 
-	_
-	GPcrise // cascade rises present
-	GPcfall // cascade falls present
+	GPcumul // has cumulative pays (in this case spin can fails if bank have not enough money)
+	GPbmode // has non-reels bonus mode
+	GPcasc  // cascade falls present
 	GPcmult // multipliers on cascade avalanche
 
 	GPfghas  // non-retriggered free games are present
@@ -54,8 +54,7 @@ const (
 	GPwmult // has multiplier on wilds
 	GPbsym  // has big symbol (usually 3x3 in the center on free games)
 
-	GPfgno GP = 0                 // free games are absent
-	GPcasc GP = GPcrise | GPcfall // any cascade game
+	GPfgno GP = 0 // free games are absent
 )
 
 type (

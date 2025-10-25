@@ -19,6 +19,7 @@ var Info = game.AlgInfo{
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,
 		GP: game.GPlpay |
+			game.GPbmode |
 			game.GPscat |
 			game.GPwild |
 			game.GPrwild,

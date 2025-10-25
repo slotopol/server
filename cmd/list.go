@@ -76,6 +76,12 @@ func FormatGameInfo(gi *game.GameInfo) string {
 		if gi.GP&game.GPfill > 0 {
 			b.WriteString(", has multiplier on filled screen")
 		}
+		if gi.GP&game.GPcumul > 0 {
+			b.WriteString(", has cumulative pays")
+		}
+		if gi.GP&game.GPbmode > 0 {
+			b.WriteString(", has non-reels bonus mode")
+		}
 		if gi.GP&(game.GPfghas+game.GPretrig) > 0 {
 			b.WriteString(", ")
 			if gi.GP&game.GPretrig > 0 {

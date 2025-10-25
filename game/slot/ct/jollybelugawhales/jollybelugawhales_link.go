@@ -1,6 +1,6 @@
 //go:build !prod || full || ct
 
-package guardianofasgard
+package jollybelugawhales
 
 import (
 	_ "embed"
@@ -8,23 +8,23 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed guardianofasgard_data.yaml
+//go:embed jollybelugawhales_data.yaml
 var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Guardian of Asgard", Date: game.Date(2024, 6, 15)}, // see: https://www.slotsmate.com/software/ct-interactive/guardian-of-asgard
+		{Prov: "CT Interactive", Name: "Jolly Beluga Whales", Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/jolly-beluga-whales
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,
-		GP: game.GPcpay |
-			game.GPcasc |
+		GP: game.GPlpay |
+			game.GPretrig |
 			game.GPscat |
-			game.GPwild,
+			game.GPrwild,
 		SX: 5,
 		SY: 3,
 		SN: len(LinePay),
-		LN: 0,
+		LN: len(BetLines),
 		BN: 0,
 	},
 	Update: func(ai *game.AlgInfo) { ai.RTP = game.MakeRtpList(ReelsMap) },
@@ -32,6 +32,6 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
-	game.DataRouter["ctinteractive/guardianofasgard/reel"] = &ReelsMap
+	game.DataRouter["ctinteractive/jollybelugawhales/reel"] = &ReelsMap
 	game.LoadMap = append(game.LoadMap, data)
 }
