@@ -191,6 +191,7 @@
 'Panda' AGT 3x3 videoslot
 'Pandora's Box' NetEnt 5x3 videoslot
 'Panther Moon' Playtech 5x3 videoslot
+'Penguin Party' CT Interactive 5x3 videoslot
 'Pharaoh II' AGT 5x3 videoslot
 'Pharaoh's Gold II' Novomatic 5x3 videoslot
 'Pharaoh's Gold III' Novomatic 5x3 videoslot
@@ -270,11 +271,11 @@
 'Wolf Run' IGT 5x4 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 267 games, 143 algorithms, 11 providers
+total: 268 games, 144 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 66 games
+CT Interactive: 67 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
