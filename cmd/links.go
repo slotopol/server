@@ -69,6 +69,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/halloweenfruits"
 	_ "github.com/slotopol/server/game/slot/ct/halloweenhot"
 	_ "github.com/slotopol/server/game/slot/ct/hitthehot"
+	_ "github.com/slotopol/server/game/slot/ct/islandvacation"
 	_ "github.com/slotopol/server/game/slot/ct/jollybelugawhales"
 	_ "github.com/slotopol/server/game/slot/ct/lucky3penguins"
 	_ "github.com/slotopol/server/game/slot/ct/luckydollar"

@@ -143,6 +143,7 @@
 'Inferno' Novomatic 5x3 videoslot
 'Infinity Gems' AGT 5x3 videoslot
 'Irish Luck' Playtech 5x3 videoslot
+'Island Vacation' CT Interactive 5x3 videoslot
 'Jade Heaven' CT Interactive 5x3 videoslot
 'Jaguar Moon' Novomatic 5x3 videoslot
 'Jaguar Warrior' CT Interactive 5x3 videoslot
@@ -273,11 +274,11 @@
 'Wolf Run' IGT 5x4 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 270 games, 145 algorithms, 11 providers
+total: 271 games, 146 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 69 games
+CT Interactive: 70 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
