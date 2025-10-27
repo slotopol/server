@@ -1,6 +1,6 @@
-package themightyaztecs
+package wildclover
 
-// See: https://www.slotsmate.com/software/ct-interactive/the-mighty-aztecs
+// See: https://www.slotsmate.com/software/ct-interactive/wild-clover
 
 import (
 	"github.com/slotopol/server/game/slot"
@@ -12,14 +12,14 @@ var ReelsMap slot.ReelsMap[*slot.Reels5x]
 var LinePay = [10][5]float64{
 	{},                    //  1 wild
 	{},                    //  2 scatter
-	{0, 4, 40, 100, 1000}, //  3 dragon
-	{0, 0, 30, 100, 300},  //  4 jaguar
-	{0, 0, 10, 60, 200},   //  5 green mask
-	{0, 0, 10, 60, 200},   //  6 blue mask
-	{0, 0, 8, 35, 100},    //  7 ace
-	{0, 0, 8, 35, 100},    //  8 king
-	{0, 0, 8, 35, 100},    //  9 queen
-	{0, 0, 8, 35, 100},    // 10 jack
+	{0, 4, 40, 100, 1000}, //  3 seven
+	{0, 0, 30, 100, 300},  //  4 bell
+	{0, 0, 10, 60, 200},   //  5 shoe
+	{0, 0, 10, 60, 200},   //  6 coin
+	{0, 0, 8, 35, 100},    //  7 peach
+	{0, 0, 8, 35, 100},    //  8 apple
+	{0, 0, 8, 35, 100},    //  9 plum
+	{0, 0, 8, 35, 100},    // 10 cherry
 }
 
 // Scatters payment.

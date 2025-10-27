@@ -1,6 +1,6 @@
 //go:build !prod || full || ct
 
-package themightyaztecs
+package wildclover
 
 import (
 	_ "embed"
@@ -8,11 +8,12 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed themightyaztecs_data.yaml
+//go:embed wildclover_data.yaml
 var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
+		{Prov: "CT Interactive", Name: "Wild Clover", Date: game.Date(2020, 12, 25)},     // see: https://www.slotsmate.com/software/ct-interactive/wild-clover
 		{Prov: "CT Interactive", Name: "The Mighty Aztecs", Date: game.Date(2020, 1, 7)}, // see: https://www.slotsmate.com/software/ct-interactive/the-mighty-aztecs
 	},
 	AlgDescr: game.AlgDescr{
@@ -32,6 +33,6 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
-	game.DataRouter["ctinteractive/themightyaztecs/reel"] = &ReelsMap
+	game.DataRouter["ctinteractive/wildclover/reel"] = &ReelsMap
 	game.LoadMap = append(game.LoadMap, data)
 }

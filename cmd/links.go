@@ -82,11 +82,11 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/sapphirelagoon"
 	_ "github.com/slotopol/server/game/slot/ct/shiningtreasures"
 	_ "github.com/slotopol/server/game/slot/ct/smileyxwild"
-	_ "github.com/slotopol/server/game/slot/ct/themightyaztecs"
 	_ "github.com/slotopol/server/game/slot/ct/treasurehill"
 	_ "github.com/slotopol/server/game/slot/ct/treasurekingdom"
 	_ "github.com/slotopol/server/game/slot/ct/tropicdancer"
 	_ "github.com/slotopol/server/game/slot/ct/vikingsfun"
+	_ "github.com/slotopol/server/game/slot/ct/wildclover"
 	_ "github.com/slotopol/server/game/slot/ct/wildhills"
 	_ "github.com/slotopol/server/game/slot/ct/winstorm"
 

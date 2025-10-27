@@ -1,4 +1,4 @@
-package themightyaztecs
+package wildclover
 
 import (
 	"context"
