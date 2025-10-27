@@ -1,7 +1,7 @@
-package jollybelugawhales
+package lucky3penguins
 
-// See: https://www.slotsmate.com/software/ct-interactive/jolly-beluga-whales
-// similar: ct/lucky3penguins, ct/penguinparty
+// See: https://www.slotsmate.com/software/ct-interactive/lucky-3-penguins
+// similar: ct/jollybelugawhales, ct/penguinparty
 
 import (
 	"github.com/slotopol/server/game/slot"
@@ -11,16 +11,16 @@ var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
 // Lined payment.
 var LinePay = [10][5]float64{
-	{},                     //  1 wild
-	{0, 0, 40, 500, 10000}, //  2 bear
-	{0, 0, 20, 80, 200},    //  3 wolf
-	{0, 0, 20, 80, 200},    //  4 owl
-	{0, 0, 15, 40, 100},    //  5 walrus
-	{0, 0, 15, 40, 100},    //  6 puffin
-	{0, 0, 10, 20, 100},    //  7 ace
-	{0, 0, 10, 20, 100},    //  8 king
-	{0, 0, 10, 20, 100},    //  9 queen
-	{0, 0, 10, 20, 100},    // 10 jack
+	{},                    //  1 wild
+	{0, 0, 40, 300, 1000}, //  2 seal
+	{0, 0, 20, 80, 200},   //  3 crab
+	{0, 0, 20, 80, 200},   //  4 fish
+	{0, 0, 15, 40, 200},   //  5 squid
+	{0, 0, 15, 40, 200},   //  6 shrimp
+	{0, 0, 10, 20, 100},   //  7 ace
+	{0, 0, 10, 20, 100},   //  8 king
+	{0, 0, 10, 20, 100},   //  9 queen
+	{0, 0, 10, 20, 100},   // 10 jack
 }
 
 // Bet lines

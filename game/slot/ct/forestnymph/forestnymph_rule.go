@@ -1,6 +1,7 @@
 package forestnymph
 
 // See: https://www.slotsmate.com/software/ct-interactive/forest-nymph
+// similar: ct/wildhills
 
 import (
 	"github.com/slotopol/server/game/slot"

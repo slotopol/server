@@ -167,6 +167,7 @@
 'Lord of Luck' CT Interactive 5x4 videoslot
 'Lord of the Ocean' Novomatic 5x3 videoslot
 'Lovely Mermaid' Novomatic 5x4 videoslot
+'Lucky 3 Penguins' CT Interactive 5x3 videoslot
 'Lucky Dollar' CT Interactive 5x3 videoslot
 'Lucky Lady's Charm' Novomatic 5x3 videoslot
 'Lucky Lady's Charm Deluxe' Novomatic 5x3 videoslot
@@ -271,11 +272,11 @@
 'Wolf Run' IGT 5x4 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 268 games, 144 algorithms, 11 providers
+total: 269 games, 145 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 67 games
+CT Interactive: 68 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

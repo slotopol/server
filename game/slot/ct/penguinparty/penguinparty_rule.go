@@ -1,6 +1,7 @@
 package penguinparty
 
 // See: https://www.slotsmate.com/software/ct-interactive/penguin-party
+// similar: ct/jollybelugawhales, ct/lucky3penguins
 
 import (
 	"github.com/slotopol/server/game/slot"
