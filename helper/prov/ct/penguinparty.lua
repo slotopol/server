@@ -11,7 +11,7 @@ local symset = {
 	4, --  7 ace     10/20/100
 	4, --  8 king    10/20/100
 	4, --  9 queen   10/20/100
-	4, -- 10 jack    10/20/100
+	5, -- 10 jack    10/20/100
 }
 
 local chunklen = {

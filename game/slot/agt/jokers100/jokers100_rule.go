@@ -4,16 +4,26 @@ package jokers100
 
 import (
 	"github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/game/slot/agt/jokers"
 )
 
 var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
 // Lined payment.
-var LinePay = jokers.LinePay
+var LinePay = [10][5]float64{
+	{},                    //  1 wild
+	{},                    //  2 scatter
+	{0, 4, 40, 100, 1000}, //  3 strawberry
+	{0, 0, 30, 100, 300},  //  4 pear
+	{0, 0, 12, 60, 200},   //  5 greenstar
+	{0, 0, 12, 60, 160},   //  6 redstar
+	{0, 0, 10, 40, 120},   //  7 plum
+	{0, 0, 10, 40, 120},   //  8 peach
+	{0, 0, 6, 30, 80},     //  9 papaya
+	{0, 0, 6, 30, 80},     // 10 cherry
+}
 
 // Scatters payment.
-var ScatPay = jokers.ScatPay
+var ScatPay = [5]float64{0, 0, 3, 20, 500} // 2 scatter
 
 // Bet lines
 var BetLines = slot.BetLinesAgt5x4[:100]

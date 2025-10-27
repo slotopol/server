@@ -5,23 +5,14 @@ package lucky3penguins
 
 import (
 	"github.com/slotopol/server/game/slot"
+	"github.com/slotopol/server/game/slot/ct/penguinparty"
 )
 
-var ReelsMap slot.ReelsMap[*slot.Reels5x]
-
-// Lined payment.
-var LinePay = [10][5]float64{
-	{},                    //  1 wild
-	{0, 0, 40, 300, 1000}, //  2 seal
-	{0, 0, 20, 80, 200},   //  3 crab
-	{0, 0, 20, 80, 200},   //  4 fish
-	{0, 0, 15, 40, 200},   //  5 squid
-	{0, 0, 15, 40, 200},   //  6 shrimp
-	{0, 0, 10, 20, 100},   //  7 ace
-	{0, 0, 10, 20, 100},   //  8 king
-	{0, 0, 10, 20, 100},   //  9 queen
-	{0, 0, 10, 20, 100},   // 10 jack
-}
+// Copy data from ct/penguinparty.
+var (
+	ReelsMap = &penguinparty.ReelsMap
+	LinePay  = penguinparty.LinePay
+)
 
 // Bet lines
 var BetLines = slot.BetLinesMgj[:20]

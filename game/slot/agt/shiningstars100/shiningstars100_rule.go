@@ -4,17 +4,28 @@ package shiningstars100
 
 import (
 	"github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/game/slot/agt/shiningstars"
 )
 
 var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
 // Lined payment.
-var LinePay = shiningstars.LinePay
+var LinePay = [11][5]float64{
+	{},                     //  1 wild (on 2, 3, 4 reels)
+	{},                     //  2 scatter1 (on all reels)
+	{},                     //  3 scatter2 (on 1, 3, 5 reels)
+	{0, 10, 50, 250, 5000}, //  4 seven
+	{0, 0, 40, 120, 700},   //  5 grape
+	{0, 0, 40, 120, 700},   //  6 watermelon
+	{0, 0, 20, 40, 200},    //  7 avocado
+	{0, 0, 10, 30, 150},    //  8 pomegranate
+	{0, 0, 10, 30, 150},    //  9 carambola
+	{0, 0, 10, 30, 150},    // 10 maracuya
+	{0, 0, 10, 30, 150},    // 11 orange
+}
 
 // Scatters payment.
-var ScatPay1 = shiningstars.ScatPay1
-var ScatPay2 = shiningstars.ScatPay2
+var ScatPay1 = [5]float64{0, 0, 5, 20, 100} // 2 scatter1
+var ScatPay2 = [5]float64{0, 0, 20}         // 3 scatter2
 
 // Bet lines
 var BetLines = slot.BetLinesAgt5x4[:100]

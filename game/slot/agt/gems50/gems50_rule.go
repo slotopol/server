@@ -4,16 +4,24 @@ package gems50
 
 import (
 	"github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/game/slot/agt/gems"
 )
 
 var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
 // Lined payment.
-var LinePay = gems.LinePay
+var LinePay = [8][5]float64{
+	{0, 0, 50, 500, 1000}, // 1 wild
+	{},                    // 2 scatter
+	{0, 0, 20, 80, 400},   // 3 diamond
+	{0, 0, 20, 40, 200},   // 4 heliodor
+	{0, 0, 20, 40, 200},   // 5 aquamarine
+	{0, 0, 12, 20, 100},   // 6 sapphire
+	{0, 0, 12, 20, 100},   // 7 emerald
+	{0, 0, 8, 16, 80},     // 8 topaz
+}
 
 // Scatters payment.
-var ScatPay = gems.ScatPay
+var ScatPay = [5]float64{0, 0, 5, 25, 500} // 2 scatter
 
 // Bet lines
 var BetLines = slot.BetLinesAgt5x4[:50]

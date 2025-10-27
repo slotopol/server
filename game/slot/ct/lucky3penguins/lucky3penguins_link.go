@@ -8,9 +8,6 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed lucky3penguins_data.yaml
-var data []byte
-
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "CT Interactive", Name: "Lucky 3 Penguins", Date: game.Date(2020, 12, 11)}, // see: https://www.slotsmate.com/software/ct-interactive/lucky-3-penguins
@@ -26,11 +23,9 @@ var Info = game.AlgInfo{
 		LN: len(BetLines),
 		BN: 0,
 	},
-	Update: func(ai *game.AlgInfo) { ai.RTP = game.MakeRtpList(ReelsMap) },
+	Update: func(ai *game.AlgInfo) { ai.RTP = game.MakeRtpList(*ReelsMap) },
 }
 
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
-	game.DataRouter["ctinteractive/lucky3penguins/reel"] = &ReelsMap
-	game.LoadMap = append(game.LoadMap, data)
 }

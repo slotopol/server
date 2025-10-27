@@ -1,5 +1,8 @@
 package icequeen
 
+// See: https://agtsoftware.com/games/agt/iceqween
+// similar: novomatic/dolphinspearl
+
 import (
 	"github.com/slotopol/server/game/slot"
 	"github.com/slotopol/server/game/slot/novomatic/dolphinspearl"
@@ -7,6 +10,8 @@ import (
 
 // Copy data from novomatic/dolphinspearl.
 var (
+	ReelsBon     = &dolphinspearl.ReelsBon
+	ReelsMap     = &dolphinspearl.ReelsMap
 	LinePay      = dolphinspearl.LinePay
 	ScatPay      = dolphinspearl.ScatPay
 	ScatFreespin = dolphinspearl.ScatFreespin
@@ -125,10 +130,10 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 
 func (g *Game) Spin(mrtp float64) {
 	if g.FSR == 0 {
-		var reels, _ = dolphinspearl.ReelsMap.FindClosest(mrtp)
+		var reels, _ = ReelsMap.FindClosest(mrtp)
 		g.ReelSpin(reels)
 	} else {
-		g.ReelSpin(dolphinspearl.ReelsBon)
+		g.ReelSpin(*ReelsBon)
 	}
 }
 
