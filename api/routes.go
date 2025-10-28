@@ -133,6 +133,7 @@ func SetupRouter(r *gin.Engine) {
 	r.Any("/ping", ApiPing)
 	r.GET("/servinfo", ApiServInfo)
 	r.GET("/memusage", ApiMemUsage)
+	r.GET("/diskusage", ApiDiskUsage)
 
 	// authorization
 	r.Any("/signis", ApiSignis)

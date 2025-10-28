@@ -32,6 +32,10 @@ const (
 
 	AEC_nomethod
 
+	// GET /diskusage
+
+	AEC_diskusage_nil
+
 	// GET /signis
 
 	AEC_signis_nobind

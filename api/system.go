@@ -1,6 +1,7 @@
 package api
 
 import (
+	"errors"
 	"os"
 	"runtime"
 	"strings"
@@ -11,6 +12,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/klauspost/cpuid/v2"
+	"github.com/schwarzlichtbezirk/go-disk-usage/du"
+)
+
+var (
+	ErrDiskInfo = errors.New("can not obtain disk info")
 )
 
 func isRunningInContainer() bool {
@@ -75,6 +81,22 @@ func ApiMemUsage(c *gin.Context) {
 		"numgc":         mem.NumGC,
 		"pausetotalns":  mem.PauseTotalNs,
 		"gccpufraction": mem.GCCPUFraction,
+	}
+	RetOk(c, ret)
+}
+
+func ApiDiskUsage(c *gin.Context) {
+	var ds = du.NewDiskUsage(cfg.SqlPath)
+	if ds == nil {
+		Ret500(c, AEC_diskusage_nil, ErrDiskInfo)
+		return
+	}
+	var ret = gin.H{
+		"size":      ds.Size(),
+		"used":      ds.Used(),
+		"free":      ds.Free(),
+		"available": ds.Available(),
+		"usage":     ds.Usage(),
 	}
 	RetOk(c, ret)
 }
