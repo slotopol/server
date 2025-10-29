@@ -78,6 +78,7 @@
 'Dragon's Deep' Novomatic 5x3 videoslot
 'Dynasty Of Ming' Novomatic 5x3 videoslot
 'Dynasty of Ra' Novomatic 5x3 videoslot
+'Egg and Rooster' CT Interactive 5x3 videoslot
 'Egypt' AGT 5x3 videoslot
 'English Rose' CT Interactive 5x3 videoslot
 'Excalibur' NetEnt 5x3 videoslot
@@ -204,6 +205,7 @@
 'Plenty on Twenty' Novomatic 5x3 videoslot
 'Polar Fox' Novomatic 5x3 videoslot
 'Power Stars' Novomatic 5x3 videoslot
+'Purple Hot 2' CT Interactive 5x3 videoslot
 'Queen of Flames' CT Interactive 5x4 videoslot
 'Ramses II' Novomatic 5x3 videoslot
 'Red Crown' AGT 5x4 videoslot
@@ -274,11 +276,11 @@
 'Wolf Run' IGT 5x4 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 271 games, 146 algorithms, 11 providers
+total: 273 games, 147 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 70 games
+CT Interactive: 72 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

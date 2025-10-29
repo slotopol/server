@@ -80,6 +80,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/nordicsong"
 	_ "github.com/slotopol/server/game/slot/ct/oceanlegends"
 	_ "github.com/slotopol/server/game/slot/ct/penguinparty"
+	_ "github.com/slotopol/server/game/slot/ct/purplehot2"
 	_ "github.com/slotopol/server/game/slot/ct/sapphirelagoon"
 	_ "github.com/slotopol/server/game/slot/ct/shiningtreasures"
 	_ "github.com/slotopol/server/game/slot/ct/smileyxwild"
