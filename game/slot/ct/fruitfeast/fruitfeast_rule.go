@@ -1,6 +1,6 @@
-package tropicdancer
+package fruitfeast
 
-// See: https://www.slotsmate.com/software/ct-interactive/tropic-dancer
+// See: https://www.slotsmate.com/software/ct-interactive/fruit-feast
 
 import (
 	"github.com/slotopol/server/game/slot"
@@ -12,27 +12,24 @@ var ReelsMap slot.ReelsMap[*slot.Reels5x]
 var LinePay = [10][5]float64{
 	{},                    //  1 wild
 	{},                    //  2 scatter
-	{0, 0, 20, 200, 1000}, //  3 singer
-	{0, 0, 15, 75, 150},   //  4 dancer man
-	{0, 0, 5, 50, 150},    //  5 dancer girl 1
-	{0, 0, 5, 50, 150},    //  6 dancer girl 2
-	{0, 0, 5, 15, 100},    //  7 ace
-	{0, 0, 5, 15, 100},    //  8 king
-	{0, 0, 5, 15, 100},    //  9 queen
-	{0, 0, 5, 15, 100},    // 10 jack
+	{0, 4, 60, 200, 1000}, //  3 banana
+	{0, 0, 40, 100, 300},  //  4 grape
+	{0, 0, 20, 80, 200},   //  5 melon
+	{0, 0, 20, 80, 200},   //  6 apple
+	{0, 0, 8, 40, 100},    //  7 orange
+	{0, 0, 8, 40, 100},    //  8 lemon
+	{0, 0, 8, 40, 100},    //  9 plum
+	{0, 0, 8, 40, 100},    // 10 cherry
 }
 
 // Scatters payment.
-var ScatPay = [15]float64{0, 0, 0, 0, 0, 5, 10, 20, 22, 40, 50, 52, 56, 80, 100} // 2 scatter
-
-// Scatter freespins table
-var ScatFreespin = [15]int{0, 0, 0, 0, 0, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33} // 2 scatter
+var ScatPay = [5]float64{0, 0, 2, 20, 500} // 2 scatter
 
 // Bet lines
-var BetLines = slot.BetLinesMgj[:25]
+var BetLines = slot.BetLinesNetEnt5x4[:40]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Screen5x4 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -76,13 +73,9 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		}
 
 		if pay := LinePay[syml-1][numl-1]; pay > 0 {
-			var mm float64 = 1 // mult mode
-			if g.FSR > 0 {
-				mm = 2
-			}
 			*wins = append(*wins, slot.WinItem{
 				Pay: g.Bet * pay,
-				MP:  mm,
+				MP:  1,
 				Sym: syml,
 				Num: numl,
 				LI:  li + 1,
@@ -94,19 +87,14 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	if count := g.SymNum(scat); count >= 6 {
-		var mm float64 = 1 // mult mode
-		if g.FSR > 0 {
-			mm = 2
-		}
-		var pay, fs = ScatPay[count-1], ScatFreespin[count-1]
+	if count := g.SymNum(scat); count >= 3 {
+		var pay = ScatPay[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * float64(g.Sel) * pay,
-			MP:  mm,
+			MP:  1,
 			Sym: scat,
 			Num: count,
 			XY:  g.SymPos(scat),
-			FS:  fs,
 		})
 	}
 }

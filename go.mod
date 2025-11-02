@@ -9,7 +9,7 @@ require (
 	github.com/klauspost/cpuid/v2 v2.3.0
 	github.com/lib/pq v1.10.9
 	github.com/mattn/go-sqlite3 v1.14.32
-	github.com/schwarzlichtbezirk/go-disk-usage v1.2.0
+	github.com/schwarzlichtbezirk/go-disk-usage v1.3.0
 	github.com/spf13/cobra v1.10.1
 	github.com/spf13/pflag v1.0.10
 	github.com/spf13/viper v1.21.0

@@ -97,6 +97,7 @@
 'Fortune Fish' CT Interactive 5x3 videoslot
 'Fortune Pyramid' CT Interactive 5x3 videoslot
 'Fortune Teller' Play'n GO 5x3 videoslot
+'Fruit Feast' CT Interactive 5x4 videoslot
 'Fruit Galaxy' CT Interactive 5x4 videoslot
 'Fruit Queen' AGT 5x6 videoslot
 'Fruit Sensation' Novomatic 5x3 videoslot
@@ -276,11 +277,11 @@
 'Wolf Run' IGT 5x4 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 273 games, 147 algorithms, 11 providers
+total: 274 games, 148 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 72 games
+CT Interactive: 73 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

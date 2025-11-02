@@ -100,8 +100,8 @@ github.com/rogpeppe/go-internal v1.9.0/go.mod h1:WtVeX8xhTBvf0smdhujwtBcq4Qrzq/f
 github.com/russross/blackfriday/v2 v2.1.0/go.mod h1:+Rmxgy9KzJVeS9/2gXHxylqXiyQDYRxCVz55jmeOWTM=
 github.com/sagikazarmark/locafero v0.12.0 h1:/NQhBAkUb4+fH1jivKHWusDYFjMOOKU88eegjfxfHb4=
 github.com/sagikazarmark/locafero v0.12.0/go.mod h1:sZh36u/YSZ918v0Io+U9ogLYQJ9tLLBmM4eneO6WwsI=
-github.com/schwarzlichtbezirk/go-disk-usage v1.2.0 h1:+sSLLaHcv/bcJrpA6QshmYuyyNIQsSQWB4pXk3rsRiA=
-github.com/schwarzlichtbezirk/go-disk-usage v1.2.0/go.mod h1:+OaDrCUsOKicWjAko7nwLGwKgVHHj5TtF6c3iEWOBTQ=
+github.com/schwarzlichtbezirk/go-disk-usage v1.3.0 h1:yTiNr+q5O35ob269TFvzkQR3uK8uxDtFlR0XvTkTq44=
+github.com/schwarzlichtbezirk/go-disk-usage v1.3.0/go.mod h1:6LlR7/z0dbYyCKgPoMQQi6Lr1z4UADPH25Zg3kHw9Rw=
 github.com/spf13/afero v1.15.0 h1:b/YBCLWAJdFWJTN9cLhiXXcD7mzKn9Dm86dNnfyQw1I=
 github.com/spf13/afero v1.15.0/go.mod h1:NC2ByUVxtQs4b3sIUphxK0NioZnmxgyCrfzeuq8lxMg=
 github.com/spf13/cast v1.10.0 h1:h2x0u2shc1QuLHfxi+cTJvs30+ZAHOGRic8uyGTDWxY=

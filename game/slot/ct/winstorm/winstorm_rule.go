@@ -70,9 +70,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var x slot.Pos
 		for x = 2; x <= 5; x++ {
 			var sx = g.LY(x, line)
-			if sx == wild {
-				continue
-			} else if sx != syml {
+			if sx != syml && sx != wild {
 				numl = x - 1
 				break
 			}
