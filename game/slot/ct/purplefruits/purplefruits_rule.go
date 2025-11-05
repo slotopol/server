@@ -1,7 +1,7 @@
-package purplehot2
+package purplefruits
 
-// See: https://www.slotsmate.com/software/ct-interactive/purple-hot-2
-// similar: ct/purplefruits
+// See: https://www.slotsmate.com/software/ct-interactive/purple-fruits
+// similar: ct/purplehot2
 
 import (
 	"github.com/slotopol/server/game/slot"
@@ -22,10 +22,10 @@ var LinePay = [8][5]float64{
 }
 
 // Scatters payment.
-var ScatPay = [5]float64{0, 0, 2, 10, 50} // 1 scatter
+var ScatPay = [5]float64{0, 0, 2, 10, 100} // 1 scatter
 
 // Bet lines
-var BetLines = slot.BetLinesMgj[:25]
+var BetLines = slot.BetLinesMgj[:5]
 
 type Game struct {
 	slot.Screen5x3 `yaml:",inline"`

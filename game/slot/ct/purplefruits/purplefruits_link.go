@@ -1,6 +1,6 @@
 //go:build !prod || full || ct
 
-package purplehot2
+package purplefruits
 
 import (
 	_ "embed"
@@ -8,12 +8,12 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed purplehot2_data.yaml
+//go:embed purplefruits_data.yaml
 var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Purple Hot 2", Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/purple-hot-2
+		{Prov: "CT Interactive", Name: "Purple Fruits", Date: game.Date(2020, 12, 21)}, // see: https://www.slotsmate.com/software/ct-interactive/purple-fruits
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,
@@ -31,6 +31,6 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
-	game.DataRouter["ctinteractive/purplehot2/reel"] = &ReelsMap
+	game.DataRouter["ctinteractive/purplefruits/reel"] = &ReelsMap
 	game.LoadMap = append(game.LoadMap, data)
 }

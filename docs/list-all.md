@@ -206,6 +206,7 @@
 'Plenty on Twenty' Novomatic 5x3 videoslot
 'Polar Fox' Novomatic 5x3 videoslot
 'Power Stars' Novomatic 5x3 videoslot
+'Purple Fruits' CT Interactive 5x3 videoslot
 'Purple Hot 2' CT Interactive 5x3 videoslot
 'Queen of Flames' CT Interactive 5x4 videoslot
 'Ramses II' Novomatic 5x3 videoslot
@@ -277,11 +278,11 @@
 'Wolf Run' IGT 5x4 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 274 games, 148 algorithms, 11 providers
+total: 275 games, 149 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 73 games
+CT Interactive: 74 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
