@@ -12,8 +12,8 @@ type Filter func(*GameInfo) bool
 var FiltMap = map[string]Filter{
 	"all":  func(gi *GameInfo) bool { return true },
 	"slot": func(gi *GameInfo) bool { return gi.GT == GTslot },
+	"keno": func(gi *GameInfo) bool { return gi.GT == GTkeno },
 
-	"keno":       func(gi *GameInfo) bool { return gi.GT == GTkeno },
 	"agt":        func(gi *GameInfo) bool { return util.ToID(gi.Prov) == "agt" },
 	"aristocrat": func(gi *GameInfo) bool { return util.ToID(gi.Prov) == "aristocrat" },
 	"ct":         func(gi *GameInfo) bool { return util.ToID(gi.Prov) == "ct" || util.ToID(gi.Prov) == "ctinteractive" },
@@ -29,11 +29,24 @@ var FiltMap = map[string]Filter{
 	"lines":  func(gi *GameInfo) bool { return gi.LN > 0 },
 	"ways":   func(gi *GameInfo) bool { return gi.WN > 0 },
 	"bon":    func(gi *GameInfo) bool { return gi.BN > 0 },
-	"jack":   func(gi *GameInfo) bool { return gi.GP&GPjack > 0 },
+	"lpay":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPlpay == GPlpay },
+	"rpay":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPrpay == GPrpay },
+	"apay":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPapay == GPapay },
+	"cpay":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPcpay == GPcpay },
+	"jack":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPjack > 0 },
+	"fill":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPfill > 0 },
+	"bm":     func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPbmode > 0 },
 	"casc":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPcasc > 0 },
-	"fg":     func(gi *GameInfo) bool { return gi.GP&(GPfghas+GPretrig) > 0 },
+	"cm":     func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPcmult > 0 },
+	"fg":     func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&(GPfghas+GPretrig) > 0 },
+	"fgr":    func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPfgreel > 0 },
+	"fgm":    func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPfgmult > 0 },
+	"scat":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPscat > 0 },
+	"wild":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPwild > 0 },
 	"rw":     func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPrwild > 0 },
 	"bw":     func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPbwild > 0 },
+	"wt":     func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPwturn > 0 },
+	"wm":     func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPwmult > 0 },
 	"big":    func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPbsym > 0 },
 	"nodate": func(gi *GameInfo) bool { return gi.Date == 0 },
 }
@@ -52,6 +65,15 @@ var (
 )
 
 func GetFilter(key string) Filter {
+	if len(key) > 0 && key[0] == '~' {
+		if f := GetFilter(key[1:]); f != nil {
+			return func(gi *GameInfo) bool {
+				return !f(gi)
+			}
+		}
+		return nil
+	}
+
 	key = util.ToLower(key)
 	if f, ok := FiltMap[key]; ok {
 		return f

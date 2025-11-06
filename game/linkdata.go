@@ -24,10 +24,10 @@ const (
 type GP uint // Game properties
 
 const (
-	GPlpay GP = 1 << iota // pays left to right
-	GPrpay                // pays left to right and right to left
-	GPapay                // pays for combination at any position
-	GPcpay                // pays by clusters
+	GPlpay GP = 1<<(iota+1) - 1 // pays left to right
+	GPrpay                      // pays left to right and right to left
+	GPapay                      // pays for combination at any position
+	GPcpay GP = 1 << iota       // pays by clusters
 
 	GPlsel // user can select bet lines
 	GPwsel // user can change ways set

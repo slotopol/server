@@ -24,12 +24,13 @@ Get the list of 'NetExt' and 'BetSoft' games:
   %[1]s list -i netent -i betsoft
 Get the list of Megajack games and any games with 3 reels:
   %[1]s list -i megajack -i 3x
-Get the list of games with screen 3x3 without 'AGT' games:
-  %[1]s list -i 3x3 -e agt
 Get the list of 'AGT' games with screen 3x3 only:
   %[1]s list -i agt+3x3
 Get the list of 'AGT' games with big symbols and free games:
   %[1]s list -i agt+big+fg
+Get the list of slots without scatters with more than 3 reels:
+  %[1]s list -e scat -e keno -e 3x
+  %[1]s list -i slot+~scat+~3x
 Get the list of Megajack games with properties and RTP list for each:
   %[1]s list -i megajack --prop --rtp`
 
@@ -244,6 +245,56 @@ var listCmd = &cobra.Command{
 	},
 }
 
+const filtdescr = `filter(s) to include games, filters could be conjuncted with '+' sign, for logical negation used '~' before filter, syntax can be as follows:
+slot - all slot games
+keno - all keno games
+agt - games of 'AGT' provider
+aristocrat - games of 'Aristocrat' provider
+betsoft - games of 'BetSoft' provider
+ct - games of 'CT Interactive' provider
+igt - games of 'IGT' provider
+megajack - games of 'Megajack' provider
+netent - games of 'NetExt' provider
+novomatic - games of 'Novomatic' provider
+playngo - games of 'Play'n GO' provider
+playtech - games of 'Playtech' provider
+slotopol - games of this 'Slotopol' provider
+3x, 4x, 5x, ... - games with 3, 4, 5, ... reels
+3x3, 4x4, 5x3, ... - games with 3x3, 4x4, 5x3, ... screen dimension
+lines - games with wins counted by lines
+ln=10, lneq10 - games with 10 bet lines (or some other pointed)
+ln<10, lnlt10 - games with less than 10 bet lines (or some other pointed)
+ln>10, lngt10 - games with greater than 10 bet lines (or some other pointed)
+ways - games with wins counted by multiways, i.e. with 243, 1024 ways
+wn=243, wneq243 - games with 243 ways (or some other pointed)
+wn<243, wnlt243 - games with less than 243 ways (or some other pointed)
+wn>243, wngt243 - games with greater than 243 ways (or some other pointed)
+bon - games with bonus games
+lpay - pays left to right
+rpay - pays left to right and right to left
+apay - pays for combination at any position
+cpay - pays by clusters
+jack - slots with jackpots
+fill - has multiplier on filled slot screen
+bm - slots with non-reels bonus mode
+casc - slots with cascade falls
+cm - multipliers on cascade avalanche
+fg - slots with any free games
+fgr - slots with separate reels on free games
+fgm - slots with any multipliers on free games
+scat - slots with scatters
+wild - slots with wild symbols
+rw - slots with reel wild symbols
+bw - slots with big wilds (3x3)
+wt - symbols turns to wilds
+wm - slots with multiplier on wilds
+big - slots with big symbol (usually 3x3 in the center on free games)
+y=15, y=2015, yeq15 - games released in 2015 year (or some other pointed year)
+y<15, y<2015, ylt15 - games released before 2015 year (or some other pointed year)
+y>15, y>2015, ygt15 - games released after 2015 year (or some other pointed year)
+nodate - games with unknown release date
+all - all games`
+
 func init() {
 	rootCmd.AddCommand(listCmd)
 
@@ -257,42 +308,7 @@ func init() {
 	listflags.Float64Var(&fDiff, "diff", 0, "difference between master RTP and closest to it real reels RTP")
 	listflags.BoolVarP(&fRTP, "rtp", "r", false, "RTP (Return to Player) percents list of available reels for each game")
 
-	listflags.StringSliceVarP(&inclist, "include", "i", []string{"all"}, "filter(s) to include games, filters can be as follows and could be conjuncted with '+' sign:\n"+
-		"slot - all slot games\n"+
-		"keno - all keno games\n"+
-		"agt - games of 'AGT' provider\n"+
-		"aristocrat - games of 'Aristocrat' provider\n"+
-		"betsoft - games of 'BetSoft' provider\n"+
-		"ct - games of 'CT Interactive' provider\n"+
-		"igt - games of 'IGT' provider\n"+
-		"megajack - games of 'Megajack' provider\n"+
-		"netent - games of 'NetExt' provider\n"+
-		"novomatic - games of 'Novomatic' provider\n"+
-		"playngo - games of 'Play'n GO' provider\n"+
-		"playtech - games of 'Playtech' provider\n"+
-		"slotopol - games of this 'Slotopol' provider\n"+
-		"3x, 4x, 5x, ... - games with 3, 4, 5, ... reels\n"+
-		"3x3, 4x4, 5x3, ... - games with 3x3, 4x4, 5x3, ... screen dimension\n"+
-		"lines - games with wins counted by lines\n"+
-		"ln=10, lneq10 - games with 10 bet lines (or some other pointed)\n"+
-		"ln<10, lnlt10 - games with less than 10 bet lines (or some other pointed)\n"+
-		"ln>10, lngt10 - games with greater than 10 bet lines (or some other pointed)\n"+
-		"ways - games with wins counted by multiways, i.e. with 243, 1024 ways\n"+
-		"wn=243, wneq243 - games with 243 ways (or some other pointed)\n"+
-		"wn<243, wnlt243 - games with less than 243 ways (or some other pointed)\n"+
-		"wn>243, wngt243 - games with greater than 243 ways (or some other pointed)\n"+
-		"bon - games with bonus games\n"+
-		"jack - games with jackpots\n"+
-		"casc - slots with cascade falls\n"+
-		"fg - games with any free games\n"+
-		"rw - slots with reel wild symbols\n"+
-		"bw - slots with big wilds (3x3)\n"+
-		"big - slots with big symbol (usually 3x3 in the center on free games)\n"+
-		"y=15, y=2015, yeq15 - games released in 2015 year (or some other pointed year)\n"+
-		"y<15, y<2015, ylt15 - games released before 2015 year (or some other pointed year)\n"+
-		"y>15, y>2015, ygt15 - games released after 2015 year (or some other pointed year)\n"+
-		"nodate - games with unknown release date\n"+
-		"all - all games")
+	listflags.StringSliceVarP(&inclist, "include", "i", []string{"all"}, filtdescr)
 	listflags.StringSliceVarP(&exclist, "exclude", "e", nil, "filter(s) to exclude games, filters are same as for include option")
 
 	listflags.SortFlags = false
