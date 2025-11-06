@@ -13,10 +13,12 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Dancing Bananas", Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/dancing-bananas
-		{Prov: "CT Interactive", Name: "Jaguar Warrior", Date: game.Date(2020, 11, 26)},  // see: https://www.slotsmate.com/software/ct-interactive/jaguar-warrior
-		{Prov: "CT Interactive", Name: "Clover Joker", Date: game.Date(2021, 8, 8)},      // see: https://www.slotsmate.com/software/ct-interactive/clover-joker
-		{Prov: "CT Interactive", Name: "Lord of Fortune", Date: game.Date(2022, 1, 26)},  // see: https://www.slotsmate.com/software/ct-interactive/lord-of-fortune
+		{Prov: "CT Interactive", Name: "Dancing Bananas", Date: game.Date(2020, 11, 26)},  // see: https://www.slotsmate.com/software/ct-interactive/dancing-bananas
+		{Prov: "CT Interactive", Name: "Dancing Dragons", Date: game.Date(2020, 12, 11)},  // see: https://www.slotsmate.com/software/ct-interactive/dancing-dragons
+		{Prov: "CT Interactive", Name: "Jaguar Warrior", Date: game.Date(2020, 11, 26)},   // see: https://www.slotsmate.com/software/ct-interactive/jaguar-warrior
+		{Prov: "CT Interactive", Name: "Clover Joker", Date: game.Date(2021, 8, 8)},       // see: https://www.slotsmate.com/software/ct-interactive/clover-joker
+		{Prov: "CT Interactive", Name: "Lord of Fortune", Date: game.Date(2022, 1, 26)},   // see: https://www.slotsmate.com/software/ct-interactive/lord-of-fortune
+		{Prov: "CT Interactive", Name: "Fruits of Desire", Date: game.Date(2020, 11, 25)}, // see: https://www.slotsmate.com/software/ct-interactive/fruits-of-desire
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,
