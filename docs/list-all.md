@@ -39,6 +39,7 @@
 'Beetle Mania' Novomatic 5x3 videoslot
 'Beetle Mania Deluxe' Novomatic 5x3 videoslot
 'Big Five' AGT 5x3 videoslot
+'Big Joker' CT Interactive 5x3 videoslot
 'Bigfoot' AGT 5x3 videoslot
 'Bitcoin' AGT 5x3 videoslot
 'Bloody Princess' CT Interactive 5x3 videoslot
@@ -283,11 +284,11 @@
 'Wolf Run' IGT 5x4 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 280 games, 149 algorithms, 11 providers
+total: 281 games, 150 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 79 games
+CT Interactive: 80 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

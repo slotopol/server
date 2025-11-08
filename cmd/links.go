@@ -50,6 +50,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/betsoft/atthemovies"
 
 	// CT Interactive
+	_ "github.com/slotopol/server/game/slot/ct/bigjoker"
 	_ "github.com/slotopol/server/game/slot/ct/britania"
 	_ "github.com/slotopol/server/game/slot/ct/cherrycrown"
 	_ "github.com/slotopol/server/game/slot/ct/chillibomb"
