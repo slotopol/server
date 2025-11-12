@@ -75,6 +75,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/jollybelugawhales"
 	_ "github.com/slotopol/server/game/slot/ct/lucky3penguins"
 	_ "github.com/slotopol/server/game/slot/ct/luckydollar"
+	_ "github.com/slotopol/server/game/slot/ct/mightykraken"
 	_ "github.com/slotopol/server/game/slot/ct/mightyrex"
 	_ "github.com/slotopol/server/game/slot/ct/mistyforest"
 	_ "github.com/slotopol/server/game/slot/ct/moneypipe"

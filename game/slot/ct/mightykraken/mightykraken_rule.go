@@ -1,7 +1,7 @@
-package dancingbananas
+package mightykraken
 
-// See: https://www.slotsmate.com/software/ct-interactive/dancing-bananas
-// similar: ct/mightykraken
+// See: https://www.slotsmate.com/software/ct-interactive/mighty-kraken
+// similar: ct/dancingbananas
 // (difference on rells set)
 
 import (
@@ -15,14 +15,14 @@ var LinePay = [11][5]float64{
 	{},                     //  1 wild (on 2, 3, 4 reels)
 	{},                     //  2 star (on all reels)
 	{},                     //  3 dollar (on 1, 3, 5 reels)
-	{0, 10, 50, 200, 3000}, //  4 seven
-	{0, 0, 40, 100, 500},   //  5 apple
-	{0, 0, 40, 100, 500},   //  6 orange
+	{0, 10, 50, 200, 3000}, //  4 captain
+	{0, 0, 40, 100, 500},   //  5 compass
+	{0, 0, 40, 100, 500},   //  6 anchor
 	{0, 0, 20, 50, 200},    //  7 bell
-	{0, 0, 10, 30, 100},    //  8 melon
-	{0, 0, 10, 30, 100},    //  9 lemon
-	{0, 0, 10, 30, 100},    // 10 plum
-	{0, 0, 10, 30, 100},    // 11 cherry
+	{0, 0, 10, 30, 100},    //  8 spades
+	{0, 0, 10, 30, 100},    //  9 hearts
+	{0, 0, 10, 30, 100},    // 10 diamonds
+	{0, 0, 10, 30, 100},    // 11 clubs
 }
 
 // Scatters payment.
