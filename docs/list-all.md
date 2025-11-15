@@ -253,6 +253,7 @@
 'The Mighty Aztecs' CT Interactive 5x3 videoslot
 'The Money Game' Novomatic 5x3 videoslot
 'The Money Game Deluxe' Novomatic 5x3 videoslot
+'The Power of Ankh' CT Interactive 5x3 videoslot
 'The Power of Ramesses' CT Interactive 5x3 videoslot
 'The Real King Gold Records' Novomatic 5x3 videoslot
 'The Temple of Astarta' CT Interactive 5x3 videoslot
@@ -285,11 +286,11 @@
 'Wolf Run' IGT 5x4 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 282 games, 150 algorithms, 11 providers
+total: 283 games, 152 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 81 games
+CT Interactive: 82 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

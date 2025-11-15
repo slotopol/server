@@ -88,6 +88,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/sapphirelagoon"
 	_ "github.com/slotopol/server/game/slot/ct/shiningtreasures"
 	_ "github.com/slotopol/server/game/slot/ct/smileyxwild"
+	_ "github.com/slotopol/server/game/slot/ct/thepowerofankh"
 	_ "github.com/slotopol/server/game/slot/ct/treasurehill"
 	_ "github.com/slotopol/server/game/slot/ct/treasurekingdom"
 	_ "github.com/slotopol/server/game/slot/ct/tropicdancer"

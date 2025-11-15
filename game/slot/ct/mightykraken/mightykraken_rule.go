@@ -2,7 +2,7 @@ package mightykraken
 
 // See: https://www.slotsmate.com/software/ct-interactive/mighty-kraken
 // similar: ct/dancingbananas
-// (difference on rells set)
+// (difference on reels sets)
 
 import (
 	"github.com/slotopol/server/game/slot"
