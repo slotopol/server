@@ -22,7 +22,7 @@ var LinePay = [9]float64{
 }
 
 // Bet lines
-var BetLines = slot.BetLinesHot3
+var BetLines = slot.BetLinesHot3x3[:5]
 
 type Game struct {
 	slot.Screen3x3 `yaml:",inline"`

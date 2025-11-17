@@ -34,17 +34,7 @@ var ScatPay = [5]float64{0, 2, 3, 25, 250} // 2 scatter
 var ScatRand = []int{10, 15, 15, 20, 25}
 
 // Bet lines
-var BetLines = []slot.Linex{
-	{2, 2, 2, 2, 2}, // 1
-	{1, 1, 1, 1, 1}, // 2
-	{3, 3, 3, 3, 3}, // 3
-	{1, 2, 3, 2, 1}, // 4
-	{3, 2, 1, 2, 3}, // 5
-	{2, 1, 1, 1, 2}, // 6
-	{2, 3, 3, 3, 2}, // 7
-	{1, 1, 2, 3, 3}, // 8
-	{3, 3, 2, 1, 1}, // 9
-}
+var BetLines = slot.BetLinesPlt5x3[:9]
 
 const (
 	Efs = 17  // average free spins for ScatRand set
