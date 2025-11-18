@@ -15,6 +15,7 @@ var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "CT Interactive", Name: "Mighty Kraken", Date: game.Date(2020, 11, 25)},    // see: https://www.slotsmate.com/software/ct-interactive/mighty-kraken
 		{Prov: "CT Interactive", Name: "Fruits of Desire", Date: game.Date(2020, 11, 25)}, // see: https://www.slotsmate.com/software/ct-interactive/fruits-of-desire
+		{Prov: "CT Interactive", Name: "Lucky Clover", Date: game.Date(2016, 6, 30)},      // see: https://www.slotsmate.com/software/ct-interactive/casino-technology-lucky-clover
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

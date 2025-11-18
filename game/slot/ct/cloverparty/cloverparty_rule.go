@@ -1,6 +1,8 @@
 package cloverparty
 
 // See: https://www.slotsmate.com/software/ct-interactive/clover-party
+// similar: novomatic/plentyontwenty
+// (difference on bet lines)
 
 import (
 	"github.com/slotopol/server/game/slot"

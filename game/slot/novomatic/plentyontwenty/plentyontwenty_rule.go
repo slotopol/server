@@ -1,5 +1,8 @@
 package plentyontwenty
 
+// similar: ct/cloverparty
+// (difference on bet lines)
+
 import (
 	"github.com/slotopol/server/game/slot"
 )
@@ -8,18 +11,18 @@ var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
 // Lined payment.
 var LinePay = [8][5]float64{
-	{0, 0, 40, 400, 1000}, // seven
-	{0, 0, 20, 80, 400},   // bell
-	{0, 0, 20, 40, 200},   // melon
-	{0, 0, 20, 40, 200},   // plum
-	{0, 0, 10, 20, 100},   // orange
-	{0, 0, 10, 20, 100},   // lemon
-	{0, 0, 10, 20, 100},   // cherry
-	{},                    // star
+	{0, 0, 40, 400, 1000}, // 1 wild
+	{},                    // 2 scatter
+	{0, 0, 20, 80, 400},   // 3 bell
+	{0, 0, 20, 40, 200},   // 4 melon
+	{0, 0, 20, 40, 200},   // 5 plum
+	{0, 0, 10, 20, 100},   // 6 orange
+	{0, 0, 10, 20, 100},   // 7 lemon
+	{0, 0, 10, 20, 100},   // 8 cherry
 }
 
 // Scatters payment.
-var ScatPay = [5]float64{0, 0, 5, 20, 500} // star
+var ScatPay = [5]float64{0, 0, 5, 20, 500} // scatter
 
 // Bet lines
 var BetLines = slot.BetLinesNvm5x3v2[:20]
@@ -46,7 +49,7 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-const wild, scat = 1, 8
+const wild, scat = 1, 2
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	g.ScanLined(wins)

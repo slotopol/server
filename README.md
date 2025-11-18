@@ -16,11 +16,11 @@ Slots games server. Releases functionality for AGT, Novomatic, NetEnt, BetSoft, 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 283 games, 152 algorithms, 11 providers
+total: 288 games, 152 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 82 games
+CT Interactive: 87 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,11 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Mountain Heroes](https://www.slotsmate.com/software/ct-interactive/mountain-heroes)' CT Interactive 5x4 videoslot
+* '[40 Brilliants](https://www.slotsmate.com/software/ct-interactive/40-brilliants)' CT Interactive 5x4 videoslot
+* '[Lucky Clover 20](https://www.slotsmate.com/software/ct-interactive/lucky-clover-20)' CT Interactive 5x3 videoslot
+* '[Lucky Clover](https://www.slotsmate.com/software/ct-interactive/casino-technology-lucky-clover)' CT Interactive 5x3 videoslot
+* '[20 Clovers Hot](https://www.slotsmate.com/software/ct-interactive/20-clovers-hot)' CT Interactive 5x3 videoslot
 * '[The Power of Ankh](https://www.slotsmate.com/software/ct-interactive/the-power-of-ankh)' CT Interactive 5x3 videoslot
 * '[Mighty Kraken](https://www.slotsmate.com/software/ct-interactive/mighty-kraken)' CT Interactive 5x3 videoslot
 * '[Big Joker](https://www.slotsmate.com/software/ct-interactive/big-joker)' CT Interactive 5x3 videoslot

@@ -5,11 +5,13 @@
 '100 Jokers' AGT 5x4 videoslot
 '100 Shining Stars' AGT 5x4 videoslot
 '2 Million B.C.' BetSoft 5x3 videoslot
+'20 Clovers Hot' CT Interactive 5x3 videoslot
 '20 Mega Fresh' CT Interactive 5x3 videoslot
 '20 Mega Slot' CT Interactive 5x3 videoslot
 '20 Roosters' CT Interactive 5x3 videoslot
 '20 Shining Coins' CT Interactive 5x3 videoslot
 '40 Bigfoot' AGT 5x4 videoslot
+'40 Brilliants' CT Interactive 5x4 videoslot
 '5 Hot Hot Hot' AGT 3x3 videoslot
 '50 Apples' Shine' AGT 5x4 videoslot
 '50 Gems' AGT 5x4 videoslot
@@ -177,6 +179,8 @@
 'Lord of the Ocean' Novomatic 5x3 videoslot
 'Lovely Mermaid' Novomatic 5x4 videoslot
 'Lucky 3 Penguins' CT Interactive 5x3 videoslot
+'Lucky Clover' CT Interactive 5x3 videoslot
+'Lucky Clover 20' CT Interactive 5x3 videoslot
 'Lucky Dollar' CT Interactive 5x3 videoslot
 'Lucky Lady's Charm' Novomatic 5x3 videoslot
 'Lucky Lady's Charm Deluxe' Novomatic 5x3 videoslot
@@ -194,6 +198,7 @@
 'Money Pipe' CT Interactive 5x4 videoslot
 'Monkey Kingdom' CT Interactive 5x3 videoslot
 'More Dragons' CT Interactive 5x4 videoslot
+'Mountain Heroes' CT Interactive 5x4 videoslot
 'Navy Girl' CT Interactive 5x3 videoslot
 'Neon Bananas' CT Interactive 5x3 videoslot
 'Nordic Song' CT Interactive 5x3 videoslot
@@ -286,11 +291,11 @@
 'Wolf Run' IGT 5x4 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 283 games, 152 algorithms, 11 providers
+total: 288 games, 152 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 82 games
+CT Interactive: 87 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

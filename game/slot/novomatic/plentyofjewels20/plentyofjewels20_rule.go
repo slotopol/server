@@ -11,17 +11,17 @@ var ReelsMap slot.ReelsMap[*slot.Reels5x]
 // Lined payment.
 var LinePay = [8][5]float64{
 	{0, 0, 100, 1000, 5000}, // 1 diamond
-	{0, 0, 50, 200, 500},    // 2 topaz
-	{0, 0, 20, 50, 200},     // 3 sapphire
-	{0, 0, 20, 50, 200},     // 4 heliodor
-	{0, 0, 20, 50, 200},     // 5 ruby
-	{0, 0, 20, 50, 200},     // 6 tanzanite
-	{0, 0, 20, 50, 200},     // 7 emerald
-	{},                      // 8 star
+	{},                      // 2 star
+	{0, 0, 50, 200, 500},    // 3 topaz
+	{0, 0, 20, 50, 200},     // 4 sapphire
+	{0, 0, 20, 50, 200},     // 5 heliodor
+	{0, 0, 20, 50, 200},     // 6 ruby
+	{0, 0, 20, 50, 200},     // 7 tanzanite
+	{0, 0, 20, 50, 200},     // 8 emerald
 }
 
 // Scatters payment.
-var ScatPay = [5]float64{0, 0, 10, 50, 250} // 8 star
+var ScatPay = [5]float64{0, 0, 10, 50, 250} // star
 
 // Bet lines
 var BetLines = slot.BetLinesNvm5x3v1[:20]
@@ -48,7 +48,7 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-const wild, scat = 1, 8
+const wild, scat = 1, 2
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	g.ScanLined(wins)
