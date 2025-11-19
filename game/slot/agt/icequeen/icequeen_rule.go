@@ -1,21 +1,39 @@
 package icequeen
 
 // See: https://agtsoftware.com/games/agt/iceqween
-// similar: novomatic/dolphinspearl
+// similar: novomatic/dolphinspearl, ct/goddessofbells
+// (difference on bet lines)
 
 import (
 	"github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/game/slot/novomatic/dolphinspearl"
 )
 
-// Copy data from novomatic/dolphinspearl.
-var (
-	ReelsBon     = &dolphinspearl.ReelsBon
-	ReelsMap     = &dolphinspearl.ReelsMap
-	LinePay      = dolphinspearl.LinePay
-	ScatPay      = dolphinspearl.ScatPay
-	ScatFreespin = dolphinspearl.ScatFreespin
-)
+var ReelsBon *slot.Reels5x
+
+var ReelsMap slot.ReelsMap[*slot.Reels5x]
+
+// Lined payment.
+var LinePay = [13][5]float64{
+	{0, 10, 250, 2500, 9000}, //  1
+	{0, 2, 25, 125, 750},     //  2
+	{0, 2, 25, 125, 750},     //  3
+	{0, 0, 20, 100, 400},     //  4
+	{0, 0, 15, 75, 250},      //  5
+	{0, 0, 15, 75, 250},      //  6
+	{0, 0, 10, 50, 125},      //  7
+	{0, 0, 10, 50, 125},      //  8
+	{0, 0, 5, 25, 100},       //  9
+	{0, 0, 5, 25, 100},       // 10
+	{0, 0, 5, 25, 100},       // 11
+	{0, 2, 5, 25, 100},       // 12
+	{},                       // 13
+}
+
+// Scatters payment.
+var ScatPay = [5]float64{0, 2, 5, 20, 500} // 13
+
+// Scatter freespins table
+var ScatFreespin = [5]int{0, 0, 15, 15, 15} // 13
 
 // Bet lines
 var BetLines = slot.BetLinesAgt5x3[:30]
@@ -133,7 +151,7 @@ func (g *Game) Spin(mrtp float64) {
 		var reels, _ = ReelsMap.FindClosest(mrtp)
 		g.ReelSpin(reels)
 	} else {
-		g.ReelSpin(*ReelsBon)
+		g.ReelSpin(ReelsBon)
 	}
 }
 

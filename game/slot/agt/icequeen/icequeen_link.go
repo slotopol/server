@@ -3,8 +3,13 @@
 package icequeen
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game"
 )
+
+//go:embed icequeen_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -36,9 +41,12 @@ var Info = game.AlgInfo{
 		LN: len(BetLines),
 		BN: 0,
 	},
-	Update: func(ai *game.AlgInfo) { ai.RTP = game.MakeRtpList(*ReelsMap) },
+	Update: func(ai *game.AlgInfo) { ai.RTP = game.MakeRtpList(ReelsMap) },
 }
 
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStatReg)
+	game.DataRouter["agt/icequeen/bon"] = &ReelsBon
+	game.DataRouter["agt/icequeen/reel"] = &ReelsMap
+	game.LoadMap = append(game.LoadMap, data)
 }

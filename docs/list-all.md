@@ -120,6 +120,7 @@
 'Geisha Wonders' NetEnt 5x3 videoslot
 'Gems' AGT 5x3 videoslot
 'God of Sun' Novomatic 5x3 videoslot
+'Goddess of Bells' CT Interactive 5x3 videoslot
 'Golden Amulet' CT Interactive 5x3 videoslot
 'Golden Flower Of Life' CT Interactive 5x3 videoslot
 'Golden Prophecies' Novomatic 5x3 videoslot
@@ -291,13 +292,14 @@
 'Win Storm' CT Interactive 5x3 cascade videoslot
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
+'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 290 games, 153 algorithms, 11 providers
+total: 292 games, 154 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 89 games
+CT Interactive: 91 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

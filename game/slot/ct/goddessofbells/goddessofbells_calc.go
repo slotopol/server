@@ -1,4 +1,4 @@
-package icequeen
+package goddessofbells
 
 import (
 	"context"

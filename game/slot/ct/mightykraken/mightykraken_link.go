@@ -16,6 +16,7 @@ var Info = game.AlgInfo{
 		{Prov: "CT Interactive", Name: "Mighty Kraken", Date: game.Date(2020, 11, 25)},    // see: https://www.slotsmate.com/software/ct-interactive/mighty-kraken
 		{Prov: "CT Interactive", Name: "Fruits of Desire", Date: game.Date(2020, 11, 25)}, // see: https://www.slotsmate.com/software/ct-interactive/fruits-of-desire
 		{Prov: "CT Interactive", Name: "Lucky Clover", Date: game.Date(2016, 6, 30)},      // see: https://www.slotsmate.com/software/ct-interactive/casino-technology-lucky-clover
+		{Prov: "CT Interactive", Name: "Wonder 7's", Date: game.Date(2025, 7, 31)},        // see: https://www.slotsmate.com/software/ct-interactive/wonder-7s
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

@@ -1,4 +1,4 @@
-//go:build !prod || full || agt || novomatic
+//go:build !prod || full || novomatic
 
 package dolphinspearl
 

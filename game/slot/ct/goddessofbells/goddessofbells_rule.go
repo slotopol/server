@@ -1,7 +1,7 @@
-package dolphinspearl
+package goddessofbells
 
-// See: https://www.slotsmate.com/software/novomatic/dolphins-pearl-deluxe
-// similar: ct/goddessofbells, agt/icequeen
+// See: https://www.slotsmate.com/software/ct-interactive/goddess-of-bells
+// similar: novomatic/dolphinspearl, agt/icequeen
 // (difference on bet lines)
 
 import (
@@ -14,29 +14,29 @@ var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
 // Lined payment.
 var LinePay = [13][5]float64{
-	{0, 10, 250, 2500, 9000}, //  1 dolphin
-	{0, 2, 25, 125, 750},     //  2 stingray
-	{0, 2, 25, 125, 750},     //  3 crab
-	{0, 0, 20, 100, 400},     //  4 seahorse
-	{0, 0, 15, 75, 250},      //  5 pterois
-	{0, 0, 15, 75, 250},      //  6 angelfish
-	{0, 0, 10, 50, 125},      //  7 ace
-	{0, 0, 10, 50, 125},      //  8 king
-	{0, 0, 5, 25, 100},       //  9 queen
-	{0, 0, 5, 25, 100},       // 10 jack
-	{0, 0, 5, 25, 100},       // 11 ten
-	{0, 2, 5, 25, 100},       // 12 nine
-	{},                       // 13 pearl
+	{0, 10, 250, 2500, 9000}, //  1 lady
+	{0, 2, 25, 125, 750},     //  2 clever
+	{0, 2, 25, 125, 750},     //  3 coin
+	{0, 0, 20, 100, 400},     //  4 grape
+	{0, 0, 15, 75, 250},      //  5 shore
+	{0, 0, 15, 75, 250},      //  6 ladybug
+	{0, 0, 10, 50, 125},      //  7 orange
+	{0, 0, 10, 50, 125},      //  8 cherry
+	{0, 0, 5, 25, 100},       //  9 ace
+	{0, 0, 5, 25, 100},       // 10 king
+	{0, 0, 5, 25, 100},       // 11 queen
+	{0, 2, 5, 25, 100},       // 12 jack
+	{},                       // 13 bell
 }
 
 // Scatters payment.
-var ScatPay = [5]float64{0, 2, 5, 20, 500} // 13 pearl
+var ScatPay = [5]float64{0, 2, 5, 20, 500} // 13 bell
 
 // Scatter freespins table
-var ScatFreespin = [5]int{0, 0, 15, 15, 15} // 13 pearl
+var ScatFreespin = [5]int{0, 0, 15, 15, 15} // 13 bell
 
 // Bet lines
-var BetLines = slot.BetLinesNvm10[:10]
+var BetLines = slot.BetLinesCT5x3[:9]
 
 type Game struct {
 	slot.Screen5x3 `yaml:",inline"`
@@ -156,5 +156,5 @@ func (g *Game) Spin(mrtp float64) {
 }
 
 func (g *Game) SetSel(sel int) error {
-	return g.SetSelNum(sel, len(BetLines))
+	return slot.ErrNoFeature
 }
