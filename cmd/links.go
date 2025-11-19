@@ -70,6 +70,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/guardianofasgard"
 	_ "github.com/slotopol/server/game/slot/ct/halloweenfruits"
 	_ "github.com/slotopol/server/game/slot/ct/halloweenhot"
+	_ "github.com/slotopol/server/game/slot/ct/hellshot7s"
 	_ "github.com/slotopol/server/game/slot/ct/hitthehot"
 	_ "github.com/slotopol/server/game/slot/ct/islandvacation"
 	_ "github.com/slotopol/server/game/slot/ct/jollybelugawhales"
