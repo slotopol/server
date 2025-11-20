@@ -164,8 +164,8 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 	}
 }
 
-func (g *Game) Cost() (float64, bool) {
-	return g.Bet * 10, false
+func (g *Game) Cost() float64 {
+	return g.Bet * 10
 }
 
 func (g *Game) Spin(mrtp float64) {

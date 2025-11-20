@@ -20,8 +20,7 @@ func CalcStatBon(ctx context.Context) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var reshuf = s.Count()
-		var cost, _ = g.Cost()
-		var lrtp = s.LineRTP(cost)
+		var lrtp = s.LineRTP(g.Cost())
 		var qjazz = s.BonusCount(jbonus) / reshuf
 		var jpow = math.Pow(2, 10*qjazz) // jazz power
 		var rtpjazz = lrtp*jpow - lrtp
@@ -48,8 +47,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var cost, _ = g.Cost()
-		var lrtp, srtp = s.SymRTP(cost)
+		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
 		var q, _ = s.FSQ()
 		var rtp = rtpsym + q*rtpfs

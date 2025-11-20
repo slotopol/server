@@ -25,7 +25,7 @@ type WinItem struct {
 }
 
 // Progressive jackpot calculated as P * Bet / JackBasis * JackFund
-// where P - is the reciprocal of the probability of occurrence.
+// where P - is the reciprocal value of the occurrence probability.
 // Maximum P=25000000 with maximum Bet=10.
 const JackBasis = 250_000_000
 
@@ -59,7 +59,8 @@ func (wins Wins) Jackpot() float64 {
 type SlotGame interface {
 	Clone() SlotGame              // returns full cloned copy of itself
 	Scanner(*Wins) error          // scan given screen and append result to wins, constant function
-	Cost() (float64, bool)        // cost of spin on current bet and lines, and has it jackpot rate, constant function
+	Cost() float64                // cost of spin on current bet and lines, constant function
+	JackFreq(float64) []float64   // returns occurrence frequency set of progressive jackpots if it has, constant function
 	Free() bool                   // returns true on spins without pay, constant function
 	Spin(float64)                 // fill the screen with random hits on reels closest to given RTP, constant function
 	Spawn(Wins, float64, float64) // setup bonus games to wins results, constant function
@@ -107,8 +108,12 @@ type Slotx struct {
 	FSR int `json:"fsr,omitempty" yaml:"fsr,omitempty" xml:"fsr,omitempty"`
 }
 
-func (g *Slotx) Cost() (float64, bool) {
-	return g.Bet * float64(g.Sel), false
+func (g *Slotx) Cost() float64 {
+	return g.Bet * float64(g.Sel)
+}
+
+func (g *Slotx) JackFreq(mrtp float64) []float64 {
+	return nil
 }
 
 func (g *Slotx) Free() bool {

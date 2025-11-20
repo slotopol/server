@@ -95,8 +95,8 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 	return nil
 }
 
-func (g *Game) Cost() (float64, bool) {
-	return g.Bet * 4, false
+func (g *Game) Cost() float64 {
+	return g.Bet * 4
 }
 
 func (g *Game) Spin(mrtp float64) {

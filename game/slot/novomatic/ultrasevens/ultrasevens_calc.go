@@ -16,8 +16,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var reshuf = s.Count()
-		var cost, _ = g.Cost()
-		var lrtp, srtp = s.SymRTP(cost)
+		var lrtp, srtp = s.SymRTP(g.Cost())
 		if srtp > 0 {
 			panic("scatters have no pays")
 		}

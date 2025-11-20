@@ -193,8 +193,9 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 	}
 }
 
-func (g *Game) Cost() (float64, bool) {
-	return g.Bet * float64(g.Sel), true
+func (g *Game) JackFreq(mrtp float64) []float64 {
+	var bulk, _ = JackMap.FindClosest(mrtp)
+	return []float64{bulk}
 }
 
 func (g *Game) Spin(mrtp float64) {
@@ -218,10 +219,7 @@ func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {
 		}
 		if wi.JID != 0 {
 			var bulk, _ = JackMap.FindClosest(mrtp)
-			var jf = bulk * g.Bet / slot.JackBasis
-			if jf > 1 {
-				jf = 1
-			}
+			var jf = min(bulk*g.Bet/slot.JackBasis, 1)
 			wins[i].JR = jf * fund
 		}
 	}

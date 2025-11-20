@@ -18,8 +18,7 @@ func CalcStatBon(ctx context.Context) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var reshuf = s.Count()
-		var cost, _ = g.Cost()
-		var lrtp, srtp = s.SymRTP(cost)
+		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
 		var q = float64(s.FreeHits()*35) / reshuf
 		var sq = 1 / (1 - q)
@@ -48,8 +47,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var reshuf = s.Count()
-		var cost, _ = g.Cost()
-		var lrtp, srtp = s.SymRTP(cost)
+		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
 		var q = float64(s.FreeHits()*35) / reshuf
 		var sq = 1 / (1 - q)

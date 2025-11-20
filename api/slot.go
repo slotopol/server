@@ -287,22 +287,20 @@ func ApiSlotSpin(c *gin.Context) {
 	}
 
 	var cost float64
-	var isjp bool
 	if !game.Free() {
-		cost, isjp = game.Cost()
+		cost = game.Cost()
+		if props.Wallet < cost {
+			Ret403(c, AEC_slot_spin_nomoney, ErrNoMoney)
+			return
+		}
 	}
-
-	if props.Wallet < cost {
-		Ret403(c, AEC_slot_spin_nomoney, ErrNoMoney)
-		return
-	}
-
-	var bank, fund, _ = club.GetCash()
 	var mrtp = GetRTP(user, club)
+	var isjp = len(game.JackFreq(mrtp)) > 0
 	var jprate float64
 	if isjp {
 		jprate = club.Rate()
 	}
+	var bank, fund, _ = club.GetCash()
 
 	// spin until gain less than bank value
 	var wins slot.Wins

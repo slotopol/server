@@ -16,8 +16,7 @@ func CalcStatBon(ctx context.Context) float64 {
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var cost, _ = g.Cost()
-		var lrtp, srtp = s.SymRTP(cost)
+		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
 		var q = 0.5 // probability of getting or not getting free spins is equal
 		var sq = 1 / (1 - q)
@@ -44,8 +43,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
-		var cost, _ = g.Cost()
-		var lrtp, srtp = s.SymRTP(cost)
+		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
 		var q, sq = s.FSQ()
 		var rtp = rtpsym + q*rtpfs
