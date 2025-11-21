@@ -134,7 +134,7 @@
 'Groovy Sixties' NetEnt 5x4 videoslot
 'Gryphons Gold' Novomatic 5x3 videoslot
 'Gryphons Gold Deluxe' Novomatic 5x3 videoslot
-'Guardian of Asgard' CT Interactive 5x3 cascade videoslot
+'Guardian of Asgard' CT Interactive 5x3 cluster cascade videoslot
 'Halloween' AGT 3x3 videoslot
 'Halloween Fruits' CT Interactive 5x3 videoslot
 'Halloween Hot' CT Interactive 5x3 videoslot
@@ -251,6 +251,7 @@
 'Smiley x Wild' CT Interactive 5x3 videoslot
 'Space Fruits' CT Interactive 5x3 videoslot
 'Spellcast' NetEnt 5x3 videoslot
+'Sugar Town' CT Interactive 5x3 cluster cascade videoslot
 'Sun City' AGT 5x3 videoslot
 'Super Eighties' NetEnt 5x4 videoslot
 'Sushi Bar' BetSoft 5x3 videoslot
@@ -295,11 +296,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 292 games, 154 algorithms, 11 providers
+total: 293 games, 154 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 91 games
+CT Interactive: 92 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

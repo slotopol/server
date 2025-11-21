@@ -18,7 +18,7 @@ go env -w GOOS=linux GOARCH=amd64 CGO_ENABLED=1
 go build -o /go/bin/app -v\
  -tags="jsoniter prod full"\
  -buildvcs=false\
- -ldflags="-linkmode external -extldflags -static\
+ -ldflags="-w -s -linkmode external -extldflags -static\
  -X 'github.com/slotopol/server/config.BuildVers=$buildvers'\
  -X 'github.com/slotopol/server/config.BuildTime=$buildtime'"\
  ./

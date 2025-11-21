@@ -1,6 +1,6 @@
-package guardianofasgard
+package sugartown
 
-// See: https://www.slotsmate.com/software/ct-interactive/guardian-of-asgard
+// See: https://www.slotsmate.com/software/ct-interactive/sugar-town
 
 import (
 	"github.com/slotopol/server/game/slot"
@@ -10,16 +10,16 @@ var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
 // Lined payment.
 var LinePay = [10][7]float64{
-	{0, 0, 80, 200, 2000},        //  1 scatter
-	{0, 0, 0, 0, 200, 400, 1500}, //  2 wild
-	{0, 0, 0, 0, 14, 20, 150},    //  3 bowl
-	{0, 0, 0, 0, 2, 5, 40},       //  4 wolf
-	{0, 0, 0, 0, 2, 5, 40},       //  5 helm
-	{0, 0, 0, 0, 2, 5, 40},       //  6 axe
-	{0, 0, 0, 0, 1, 2, 10},       //  7 ace
-	{0, 0, 0, 0, 1, 2, 10},       //  8 king
-	{0, 0, 0, 0, 1, 2, 10},       //  9 queen
-	{0, 0, 0, 0, 1, 2, 10},       // 10 jack
+	{0, 0, 800, 2000, 20000},        //  1 scatter
+	{0, 0, 0, 0, 2000, 4000, 15000}, //  2 wild
+	{0, 0, 0, 0, 140, 200, 1500},    //  3 bowl
+	{0, 0, 0, 0, 20, 50, 400},       //  4 wolf
+	{0, 0, 0, 0, 20, 50, 400},       //  5 helm
+	{0, 0, 0, 0, 20, 50, 400},       //  6 axe
+	{0, 0, 0, 0, 10, 20, 100},       //  7 ace
+	{0, 0, 0, 0, 10, 20, 100},       //  8 king
+	{0, 0, 0, 0, 10, 20, 100},       //  9 queen
+	{0, 0, 0, 0, 10, 20, 100},       // 10 jack
 }
 
 type Game struct {
@@ -96,7 +96,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 }
 
 func (g *Game) Cost() float64 {
-	return g.Bet * 4
+	return g.Bet * 40
 }
 
 func (g *Game) Spin(mrtp float64) {

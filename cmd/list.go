@@ -46,7 +46,11 @@ var (
 func FormatGameInfo(gi *game.GameInfo) string {
 	var b strings.Builder
 	if gi.SN > 0 {
-		if gi.GP&game.GPcasc > 0 {
+		if gi.GP&(game.GPcpay+gi.GP&game.GPcasc) == game.GPcpay+gi.GP&game.GPcasc {
+			fmt.Fprintf(&b, "'%s' %s %dx%d cluster cascade videoslot", gi.Name, gi.Prov, gi.SX, gi.SY)
+		} else if gi.GP&game.GPcpay > 0 {
+			fmt.Fprintf(&b, "'%s' %s %dx%d cluster videoslot", gi.Name, gi.Prov, gi.SX, gi.SY)
+		} else if gi.GP&game.GPcasc > 0 {
 			fmt.Fprintf(&b, "'%s' %s %dx%d cascade videoslot", gi.Name, gi.Prov, gi.SX, gi.SY)
 		} else {
 			fmt.Fprintf(&b, "'%s' %s %dx%d videoslot", gi.Name, gi.Prov, gi.SX, gi.SY)

@@ -1,6 +1,6 @@
 //go:build !prod || full || ct
 
-package guardianofasgard
+package sugartown
 
 import (
 	_ "embed"
@@ -8,11 +8,12 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed guardianofasgard_data.yaml
+//go:embed sugartown_data.yaml
 var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
+		{Prov: "CT Interactive", Name: "Sugar Town", Date: game.Date(2024, 11, 30)},        // see: https://www.slotsmate.com/software/ct-interactive/sugar-town
 		{Prov: "CT Interactive", Name: "Guardian of Asgard", Date: game.Date(2024, 6, 15)}, // see: https://www.slotsmate.com/software/ct-interactive/guardian-of-asgard
 	},
 	AlgDescr: game.AlgDescr{
@@ -32,6 +33,6 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func() game.Gamble { return NewGame() }, CalcStat)
-	game.DataRouter["ctinteractive/guardianofasgard/reel"] = &ReelsMap
+	game.DataRouter["ctinteractive/sugartown/reel"] = &ReelsMap
 	game.LoadMap = append(game.LoadMap, data)
 }
