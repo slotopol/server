@@ -173,6 +173,7 @@
 'Keno Luxury' Aristocrat 80 spots lottery
 'Keno Sports' Aristocrat 80 spots lottery
 'King Of Cards' Novomatic 5x3 videoslot
+'King of Clovers' CT Interactive 5x3 cascade videoslot
 'King's Jester' Novomatic 5x3 videoslot
 'Lady Emerald' CT Interactive 5x3 videoslot
 'Live Fruits' AGT 5x3 videoslot
@@ -296,11 +297,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 293 games, 154 algorithms, 11 providers
+total: 294 games, 155 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 92 games
+CT Interactive: 93 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
