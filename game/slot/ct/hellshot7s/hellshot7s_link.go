@@ -14,6 +14,7 @@ var data []byte
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "CT Interactive", Name: "Hell's Hot 7's", Date: game.Date(2025, 6, 30)}, // see: https://www.slotsmate.com/software/ct-interactive/hells-hot-7s
+		{Prov: "CT Interactive", Name: "Hot 7's x2", Date: game.Date(2020, 12, 25)},    // see: https://www.slotsmate.com/software/ct-interactive/hot-7s-x2
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

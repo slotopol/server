@@ -12,6 +12,7 @@
 '20 Shining Coins' CT Interactive 5x3 videoslot
 '40 Bigfoot' AGT 5x4 videoslot
 '40 Brilliants' CT Interactive 5x4 videoslot
+'40 Fruitata Wins' CT Interactive 5x4 videoslot
 '5 Hot Hot Hot' AGT 3x3 videoslot
 '50 Apples' Shine' AGT 5x4 videoslot
 '50 Gems' AGT 5x4 videoslot
@@ -143,6 +144,7 @@
 'Hell's Hot 7's' CT Interactive 5x3 videoslot
 'Hit the Hot' CT Interactive 5x3 videoslot
 'Holmes and Watson Deluxe' Novomatic 5x3 videoslot
+'Hot 7's x2' CT Interactive 5x3 videoslot
 'Hot Chance' Novomatic 3x3 videoslot
 'Hot Clover' AGT 5x4 videoslot
 'Hot Cubes' Novomatic 5x3 videoslot
@@ -297,11 +299,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 294 games, 155 algorithms, 11 providers
+total: 296 games, 155 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 93 games
+CT Interactive: 95 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

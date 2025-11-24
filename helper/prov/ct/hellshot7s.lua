@@ -10,8 +10,8 @@ local symset = {
 	4, --  6 pear   150
 	4, --  7 plum   50
 	4, --  8 orange 50
-	5, --  9 lemon  50
-	5, -- 10 cherry 50
+	4, --  9 lemon  50
+	4, -- 10 cherry 50
 }
 
 local chunklen = {
