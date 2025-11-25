@@ -153,7 +153,7 @@ See `slot_win_x64 list -h` with full list of available command line parameters f
 To calculate nearest precise RTP to given value for any game on embedded reels, you can use the command like
 
 ```cmd
-slot_win_x64 scan -g=ctinteractive/luckydollar -r=95.0
+slot_win_x64 scan -g=ctinteractive/luckydollar@95.0
 ```
 
 You can provide your own reels sets for any game at external yaml-file with same data structure as it in the sources by command

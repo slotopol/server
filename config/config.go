@@ -15,7 +15,7 @@ var (
 )
 
 // Default master RTP if no others found.
-const DefMRTP = 92.5
+const DefMRTP = 95.0
 
 type CfgJwtAuth struct {
 	AccessTTL    time.Duration `json:"access-ttl" yaml:"access-ttl" mapstructure:"access-ttl"`

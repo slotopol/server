@@ -1,19 +1,22 @@
 
+-- This script is for reels sets composition by reshuffles reels content.
+-- Useful for games with reel wilds or some others cases where reel
+-- reshuffle gets new RTP. Implemented by sequential scanner run
+-- for each reels set.
+
 --- input data begin ---
 
 local slotpath = "slot_win_x64.exe" -- path to slotopol executable file
 local gamename = "ctinteractive/hellshot7s" -- provider / gamename
 local gamescript = "ct/hellshot7s.lua" -- path to reels generator script
 local reelnum = 5 -- number of reels at videoslot
-local N = 500 -- number of generator iterations
+local N = 100 -- number of generator iterations
 local gran = 0.5 -- RTP granulation, can be 0.5, 1.0, 2.0
 
 -- temporary yaml file to check up by scanner
 local genfile = (os.getenv("TEMP") or os.getenv("TMP") or os.getenv("TMPDIR")).."/reelgen.yaml"
 -- final yaml file name and path
 local devfile = os.getenv("GOPATH").."/bin/reeldev.yaml"
--- command line template
-local cltpl = "%s -f=\"%s\" scan --noembed -g=\"%s\" -r=50"
 
 --- input data end ---
 
@@ -22,7 +25,7 @@ local scripts = arg[0]:match("^(.*[/%\\]helper[/%\\])")
 dofile(scripts.."prov/"..gamescript)
 assert(type(reelgen) == "function", "reels generator function 'reelgen' does not defined")
 
-local devpool = {}
+local keypool = {}
 
 local function generate()
 	-- make reels set
@@ -40,7 +43,8 @@ local function generate()
 	f:close()
 
 	-- run scanner
-	local cl = string.format(cltpl, slotpath, genfile, gamename) -- command line
+	local cltpl = "%s -f=\"%s\" scan --noembed -g=\"%s\" -r=50" -- command line template
+	local cl = string.format(cltpl, slotpath, genfile, gamename) -- command line parameters
 	local h = io.popen(cl)
 	local output = h:read("*a")
 	h:close()
@@ -52,19 +56,19 @@ local function generate()
 end
 
 -- run scanner N times
-for i = 1, N do
+for stage = 1, N do
 	local reels = generate()
 	reels.diff = reels.rtp % gran
 	local key = string.format("%.1f", reels.rtp - reels.diff)
-	if not devpool[key] or devpool[key].diff > reels.diff then
-		devpool[key] = reels
+	if not keypool[key] or keypool[key].diff > reels.diff then
+		keypool[key] = reels
 	end
-	print(string.format("%d/%d RTP = %g%%", i, N, reels.rtp))
+	print(string.format("%d/%d RTP = %g%%", stage, N, reels.rtp))
 end
 
 -- make sorted table with granulated reels sets
 local t, i = {}, 1
-for _, reels in pairs(devpool) do
+for _, reels in pairs(keypool) do
 	t[i], i = reels, i + 1
 end
 table.sort(t, function(a, b) return a.rtp < b.rtp end)
