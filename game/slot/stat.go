@@ -206,9 +206,7 @@ var (
 )
 
 func CorrectThrNum() int {
-	if cfg.DevMode {
-		return 1
-	} else if cfg.MTCount < 1 {
+	if cfg.MTCount < 1 {
 		return runtime.GOMAXPROCS(0)
 	}
 	return cfg.MTCount

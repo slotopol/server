@@ -160,12 +160,15 @@ var listCmd = &cobra.Command{
 		var exitctx = context.Background()
 
 		// Load yaml-files
-		LoadInternalYaml(exitctx)
-		if err = LoadExternalYaml(exitctx); err != nil {
-			log.Fatalf("can not load yaml files: %s", err.Error())
-			return
+		if fRTP || fMrtp > 0 || fDiff > 0 {
+			LoadInternalYaml(exitctx)
+			if err = LoadExternalYaml(exitctx); err != nil {
+				log.Fatalf("can not load yaml files: %s", err.Error())
+				return
+			}
+			UpdateAlgList()
+			CheckAlgList()
 		}
-		UpdateAlgList()
 
 		var finclist, fexclist [][]game.Filter
 		var f game.Filter

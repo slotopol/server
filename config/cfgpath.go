@@ -13,8 +13,6 @@ import (
 )
 
 var (
-	// Developer mode, running at debugger.
-	DevMode bool
 	// Prints more verbose information to log.
 	Verbose bool
 	// AppName is name of this application without extension.
@@ -49,9 +47,6 @@ var (
 func InitConfig() {
 	var err error
 
-	if DevMode {
-		log.Println("*running in developer mode*")
-	}
 	if Verbose {
 		log.Printf("version: %s, builton: %s\n", BuildVers, BuildTime)
 	}

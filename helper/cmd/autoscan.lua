@@ -5,7 +5,7 @@ local slotpath = "slot_win_x64.exe" -- path to slotopol executable file
 local gamename = "ctinteractive/hellshot7s" -- provider / gamename
 local gamescript = "ct/hellshot7s.lua" -- path to reels generator script
 local reelnum = 5 -- number of reels at videoslot
-local N = 8 -- number of generator iterations
+local N = 500 -- number of generator iterations
 local gran = 0.5 -- RTP granulation, can be 0.5, 1.0, 2.0
 
 -- temporary yaml file to check up by scanner
@@ -13,7 +13,7 @@ local genfile = (os.getenv("TEMP") or os.getenv("TMP") or os.getenv("TMPDIR"))..
 -- final yaml file name and path
 local devfile = os.getenv("GOPATH").."/bin/reeldev.yaml"
 -- command line template
-local cltpl = "%s -f=\"%s\" scan -g=\"%s\" -r=50"
+local cltpl = "%s -f=\"%s\" scan --noembed -g=\"%s\" -r=50"
 
 --- input data end ---
 

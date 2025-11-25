@@ -1,6 +1,10 @@
 -- This script helps to count symbols on the reels by their kind.
 
+--- input data begin ---
+
 local reel = {} -- place here some reel
+
+--- input data end ---
 
 local sn = 0
 for _, sym in pairs(reel) do

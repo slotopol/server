@@ -99,6 +99,7 @@ func TestPlay(t *testing.T) {
 	// Load yaml-files
 	cmd.LoadInternalYaml(exitctx)
 	cmd.UpdateAlgList()
+	cmd.CheckAlgList()
 
 	// Prepare in-memory database
 	cfg.CfgPath = "../appdata"

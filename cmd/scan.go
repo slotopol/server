@@ -33,7 +33,14 @@ var scanCmd = &cobra.Command{
 		var exitctx = Startup()
 
 		// Load yaml-files
-		LoadInternalYaml(exitctx)
+		var noembed bool
+		if noembed, err = scanflags.GetBool("noembed"); err != nil {
+			log.Fatalln(err.Error())
+			return
+		}
+		if !noembed {
+			LoadInternalYaml(exitctx)
+		}
 		if err = LoadExternalYaml(exitctx); err != nil {
 			log.Fatalf("can not load yaml files: %s", err.Error())
 			return
@@ -50,22 +57,35 @@ var scanCmd = &cobra.Command{
 			log.Fatalln(err.Error())
 			return
 		}
+		var gi *game.GameInfo
 		var scan game.Scanner
 		var ok bool
-		for _, alias := range list {
-			if scan, ok = game.ScanFactory[util.ToID(alias)]; !ok {
+		for i, alias := range list {
+			var id = util.ToID(alias)
+			if gi, ok = game.InfoMap[id]; !ok {
+				log.Fatalf("game name \"%s\" does not recognized", alias)
+				return
+			}
+			if len(gi.RTP) == 0 {
+				log.Fatalf("RTP list does not complete for %s", alias)
+				return
+			}
+			if scan, ok = game.ScanFactory[id]; !ok {
 				log.Fatalf("game name \"%s\" does not recognized", alias)
 				return
 			}
 			if scan == nil {
 				fmt.Println()
-				fmt.Printf("***Scanner for '%s' game is absent***\n", alias)
+				fmt.Printf("*** scanner for '%s' game is absent ***\n", alias)
 			}
 			if len(list) > 1 {
 				fmt.Println()
-				fmt.Printf("***Scan '%s' game with master RTP %g***\n", alias, mrtp)
+				fmt.Printf("*** (%d/%d) scan '%s' game with master RTP %g ***\n", i, len(list), alias, mrtp)
 			}
 			scan(exitctx, mrtp)
+			if exitctx.Err() != nil {
+				break
+			}
 		}
 	},
 }
@@ -76,6 +96,7 @@ func init() {
 	scanflags = scanCmd.Flags()
 	scanflags.StringArrayP("game", "g", nil, "identifier of game to scan")
 	scanflags.Float64P("mrtp", "r", cfg.DefMRTP, "master RTP to calculate nearest reels")
+	scanflags.Bool("noembed", false, "do not load embedded yaml files, useful for development")
 	scanflags.Uint64Var(&cfg.MCCount, "mc", 0, "Monte Carlo method samples number, in millions")
 	scanflags.Float64Var(&cfg.MCPrec, "mcp", 0, "Precision of result for Monte Carlo method, in percents")
 	scanflags.IntVar(&cfg.MTCount, "mt", 0, "multithreaded scanning threads number")

@@ -129,6 +129,11 @@ func UpdateAlgList() {
 		if ai.Update != nil {
 			ai.Update(ai)
 		}
+	}
+}
+
+func CheckAlgList() {
+	for _, ai := range game.AlgList {
 		if len(ai.RTP) == 0 {
 			var id string
 			if len(ai.Aliases) > 0 {

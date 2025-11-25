@@ -12,12 +12,15 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
+	"github.com/spf13/pflag"
 )
 
 const webShort = "Starts web-server"
 const webLong = ``
 const webExmp = `
   %[1]s web`
+
+var webflags *pflag.FlagSet
 
 // webCmd represents the web command
 var webCmd = &cobra.Command{
@@ -26,13 +29,18 @@ var webCmd = &cobra.Command{
 	Long:    webLong,
 	Example: fmt.Sprintf(webExmp, cfg.AppName),
 	Run: func(cmd *cobra.Command, args []string) {
-		if cfg.DevMode {
+		var debug bool
+		var err error
+		if debug, err = webflags.GetBool("debug"); err != nil {
+			log.Fatalln(err.Error())
+			return
+		}
+		if debug {
 			gin.SetMode(gin.DebugMode)
 		} else {
 			gin.SetMode(gin.ReleaseMode)
 		}
 
-		var err error
 		var exitctx = Startup()
 
 		// Load yaml-files
@@ -42,6 +50,7 @@ var webCmd = &cobra.Command{
 			return
 		}
 		UpdateAlgList()
+		CheckAlgList()
 
 		// Working with SQL
 		if err = InitSQL(); err != nil {
@@ -115,4 +124,7 @@ var webCmd = &cobra.Command{
 
 func init() {
 	rootCmd.AddCommand(webCmd)
+
+	webflags = webCmd.Flags()
+	webflags.Bool("debug", false, "run gin-gonic in debug mode")
 }
