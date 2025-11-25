@@ -1,5 +1,5 @@
-local path = arg[0]:match("(.*[/\\])")
-dofile(path.."../../lib/reelgen.lua")
+local scripts = arg[0]:match("^(.*[/%\\]helper[/%\\])")
+dofile(scripts.."lib/reelgen.lua")
 
 local symset = {
 	2, --  1 chicago

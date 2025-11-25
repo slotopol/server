@@ -1,5 +1,5 @@
-local path = arg[0]:match("(.*[/\\])")
-dofile(path.."../../lib/reelgen.lua")
+local scripts = arg[0]:match("^(.*[/%\\]helper[/%\\])")
+dofile(scripts.."lib/reelgen.lua")
 
 -- 0 wilds on 1, 5 reel
 -- 2 wilds on 2, 3 reel

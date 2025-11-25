@@ -82,7 +82,7 @@ func LoadInternalYaml(ctx context.Context) {
 		size += len(b)
 	}
 	var d = time.Since(t0)
-	if d > time.Millisecond*500 || cfg.Verbose {
+	if cfg.Verbose {
 		log.Printf("loaded %d embedded yaml files in %s on %d bytes\n", len(game.LoadMap), d.String(), size)
 	}
 }
@@ -112,7 +112,9 @@ func LoadExternalYaml(ctx context.Context) (err error) {
 			if err = game.ReadChain(r); err != nil {
 				return fmt.Errorf("can not read data from %s: %w", fullpath, err)
 			}
-			log.Printf("loaded data from: %s\n", fullpath)
+			if cfg.Verbose {
+				log.Printf("loaded data from: %s\n", fullpath)
+			}
 			return nil
 		})
 		if err != nil {

@@ -7,6 +7,7 @@ globals = {
 	"shuffle", "tcopy", "tableglue",
 	"correctreel", "makereel", "makereelhot", "printreel",
 	"combin", "kenoprob", "kenoprobtable", "kenortp",
+	"autoscan", "reelgen",
 }
 
 read_globals = {

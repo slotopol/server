@@ -1,5 +1,5 @@
-local path = arg[0]:match("(.*[/\\])")
-dofile(path.."../../lib/reelgen.lua")
+local scripts = arg[0]:match("^(.*[/%\\]helper[/%\\])")
+dofile(scripts.."lib/reelgen.lua")
 
 local symset = {
 	2, --  1 wild         15000
@@ -34,15 +34,21 @@ local neighbours = {
 
 math.randomseed(os.time())
 
-do
-	print "reel 1, 2"
-	local n2 = symset[2]
-	symset[2] = 0
-	printreel(makereel(symset, neighbours))
-	symset[2] = n2
+function reelgen(n)
+	if n == 1 or n == 2 then
+		local n2 = symset[2]
+		symset[2] = 0
+		local reel, iter = makereel(symset, neighbours)
+		symset[2] = n2
+		return reel, iter
+	else
+		return makereel(symset, neighbours)
+	end
 end
 
-do
+if not autoscan then
+	print "reel 1, 2"
+	printreel(reelgen(1))
 	print "reel 3, 4, 5"
-	printreel(makereel(symset, neighbours))
+	printreel(reelgen(3))
 end

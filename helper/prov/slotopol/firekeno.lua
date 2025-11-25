@@ -1,4 +1,4 @@
-local path = arg[0]:match("(.*[/\\])")
+local scripts = arg[0]:match("^(.*[/%\\]helper[/%\\])")
 dofile(path.."../../lib/keno.lua")
 
 -- Fire Keno

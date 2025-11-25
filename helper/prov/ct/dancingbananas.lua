@@ -1,5 +1,5 @@
-local path = arg[0]:match("(.*[/\\])")
-dofile(path.."../../lib/reelgen.lua")
+local scripts = arg[0]:match("^(.*[/%\\]helper[/%\\])")
+dofile(scripts.."lib/reelgen.lua")
 
 local symset = {
 	1, --  1 wild   (on 2, 3, 4 reels)
