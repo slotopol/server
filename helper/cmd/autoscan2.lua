@@ -22,7 +22,7 @@ local devfile = os.getenv("GOPATH").."/bin/reeldev.yaml"
 
 autoscan = true
 local scripts = arg[0]:match("^(.*[/%\\]helper[/%\\])")
-dofile(scripts.."prov/"..gamescript)
+local reelgen = dofile(scripts.."prov/"..gamescript)
 assert(type(reelgen) == "function", "reels generator function 'reelgen' does not defined")
 
 local devpool = {}
@@ -44,7 +44,7 @@ do
 		-- append reels to file
 		f:write("\n", stage, ":\n")
 		for _, reel in ipairs(reels) do
-			f:write("  - [" .. table.concat(reel, ", ") .. "] # "..#reel.."\n")
+			f:write("  - [" .. table.concat(reel, ", ") .. "] # "..rawlen(reel).."\n")
 		end
 	end
 	f:close()
@@ -87,7 +87,7 @@ do
 	for _, reels in pairs(t) do
 		f:write("\n", reels.comment:gsub("(.-)\n", "# %1\n")..reels.rtp..":\n")
 		for _, reel in ipairs(reels) do
-			f:write("  - [" .. table.concat(reel, ", ") .. "] # "..#reel.."\n")
+			f:write("  - [" .. table.concat(reel, ", ") .. "] # "..rawlen(reel).."\n")
 		end
 	end
 	f:close()

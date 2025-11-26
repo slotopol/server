@@ -55,7 +55,29 @@ local chunklen = {
 }
 
 math.randomseed(os.time())
-local reel1, iter1 = makereel(symset1, neighbours)
-local reel2, iter2 = makereelhot(symset2, 3, {[2]=true}, chunklen, true)
-print(string.format("iterations: %d, %d", iter1, iter2))
-printreel(tableglue(reel1, reel2))
+
+local function reelgen(n)
+	local function make()
+		local reel1, iter1 = makereel(symset1, neighbours)
+		local reel2, iter2 = makereelhot(symset2, 3, {[2]=true}, chunklen, true)
+		return reelglue(reel1, reel2), iter1, iter2
+	end
+	if n == 1 or n == 5 then
+		local n11, n21 = symset1[1], symset2[1]
+		symset1[1], symset2[1] = 0, 0
+		local reel, iter1, iter2 = make()
+		symset1[1], symset2[1] = n11, n21
+		return reel, iter1, iter2
+	else
+		return make()
+	end
+end
+
+if autoscan then
+	return reelgen
+end
+
+print "reel 1, 5"
+printreel(reelgen(1))
+print "reel 2, 3, 4"
+printreel(reelgen(2))

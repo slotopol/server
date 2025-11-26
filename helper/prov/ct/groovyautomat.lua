@@ -24,4 +24,13 @@ local chunklen = {
 }
 
 math.randomseed(os.time())
-printreel(makereelhot(symset, 3, {[1]=true}, chunklen, true))
+
+local function reelgen()
+	return makereelhot(symset, 3, {[1]=true}, chunklen, true)
+end
+
+if autoscan then
+	return reelgen
+end
+
+printreel(reelgen(1))

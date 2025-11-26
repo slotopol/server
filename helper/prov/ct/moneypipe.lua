@@ -38,8 +38,23 @@ local chunklen = {
 }
 
 math.randomseed(os.time())
-printreel(makereelhot(symset13, 4, {[2]=true}, chunklen, true))
-printreel(makereelhot(symset24, 4, {[2]=true}, chunklen, true))
-printreel(makereelhot(symset13, 4, {[2]=true}, chunklen, true))
-printreel(makereelhot(symset24, 4, {[2]=true}, chunklen, true))
-printreel(makereelhot(symset5, 4, {[2]=true}, chunklen, true))
+
+local function reelgen(n)
+	if n == 1 or n == 3 then
+		return makereelhot(symset13, 4, {[2]=true}, chunklen, true)
+	elseif n == 2 or n == 4 then
+		return makereelhot(symset24, 4, {[2]=true}, chunklen, true)
+	else -- n == 5
+		return makereelhot(symset5, 4, {[2]=true}, chunklen, true)
+	end
+end
+
+if autoscan then
+	return reelgen
+end
+
+printreel(reelgen(1))
+printreel(reelgen(2))
+printreel(reelgen(3))
+printreel(reelgen(4))
+printreel(reelgen(5))

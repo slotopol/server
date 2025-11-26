@@ -70,8 +70,23 @@ local neighbours = {
 }
 
 math.randomseed(os.time())
-printreel(makereel(symset1, neighbours1))
-printreel(makereel(symset, neighbours))
+
+local function reelgen(n)
+	if n == 1 then
+		return makereel(symset1, neighbours1)
+	else
+		return makereel(symset, neighbours)
+	end
+end
+
+if autoscan then
+	return reelgen
+end
+
+print "reel 1"
+printreel(reelgen(1))
+print "reel 2, 3, 4, 5"
+printreel(reelgen(2))
 
 local lsm = {
 	10, 10, 10, 10, 10, 25, 25, 25, 50, 50, 50, 100, 200, 300, 1000,

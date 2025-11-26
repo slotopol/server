@@ -34,15 +34,26 @@ local neighbours = {
 
 math.randomseed(os.time())
 
-do
-	print "reel 1, 2"
-	local n2 = symset[2]
-	symset[2] = 0
-	printreel(makereel(symset, neighbours))
-	symset[2] = n2
+local function reelgen(n)
+	local function make()
+		return makereel(symset, neighbours)
+	end
+	if n == 1 or n == 2 then
+		local n2 = symset[2]
+		symset[2] = 0
+		local reel, iter = make()
+		symset[2] = n2
+		return reel, iter
+	else
+		return make()
+	end
 end
 
-do
-	print "reel 3, 4, 5"
-	printreel(makereel(symset, neighbours))
+if autoscan then
+	return reelgen
 end
+
+print "reel 1, 2"
+printreel(reelgen(1))
+print "reel 3, 4, 5"
+printreel(reelgen(3))

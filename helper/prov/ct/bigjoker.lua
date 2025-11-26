@@ -56,23 +56,28 @@ local chunklen = {
 
 math.randomseed(os.time())
 
-local function batchreel(comment)
-	local reel1, iter1 = makereel(symset1, neighbours)
-	local reel2, iter2 = makereelhot(symset2, 3, {[2]=true}, chunklen, true)
-	print(comment)
-	if iter1 >= 1000 then
-		print(string.format("iterations: %d, %d", iter1, iter2))
+local function reelgen(n)
+	local function make()
+		local reel1, iter1 = makereel(symset1, neighbours)
+		local reel2, iter2 = makereelhot(symset2, 3, {[2]=true}, chunklen, true)
+		return reelglue(reel1, reel2), iter1, iter2
 	end
-	printreel(tableglue(reel1, reel2))
+	if n == 1 or n == 5 then
+		local n11, n21, n12 = symset1[1], symset2[1], symset1[2]
+		symset1[1], symset2[1], symset1[2] = 0, 0, 0
+		local reel, iter = make()
+		symset1[1], symset2[1], symset1[2] = n11, n21, n12
+		return reel, iter
+	else
+		return make()
+	end
 end
 
-do
-	local n11, n21, n12 = symset1[1], symset2[1], symset1[2]
-	symset1[1], symset2[1], symset1[2] = 0, 0, 0
-	batchreel "reel 1, 5"
-	symset1[1], symset2[1], symset1[2] = n11, n21, n12
+if autoscan then
+	return reelgen
 end
 
-do
-	batchreel "reel 2, 3, 4"
-end
+print "reel 1, 5"
+printreel(reelgen(1))
+print "reel 2, 3, 4"
+printreel(reelgen(2))

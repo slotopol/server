@@ -18,10 +18,10 @@ local neighbours = {
 	--1, 2, 3, 4, 5, 6, 7, 8, 9,10,
 	{ 2, 2, 1, 1, 1, 1, 0, 0, 0, 0,}, --  1 wild
 	{ 2, 2, 1, 1, 1, 1, 0, 0, 0, 0,}, --  2 scatter
-	{ 1, 1, 2, 1, 1, 1, 0, 0, 0, 0,}, --  3 man
-	{ 1, 1, 1, 2, 1, 1, 0, 0, 0, 0,}, --  4 woman
-	{ 1, 1, 1, 1, 2, 1, 0, 0, 0, 0,}, --  5 flask
-	{ 1, 1, 1, 1, 1, 2, 0, 0, 0, 0,}, --  6 hook
+	{ 1, 1, 2, 1, 0, 0, 0, 0, 0, 0,}, --  3 man
+	{ 1, 1, 1, 2, 0, 0, 0, 0, 0, 0,}, --  4 woman
+	{ 1, 1, 0, 0, 2, 1, 0, 0, 0, 0,}, --  5 flask
+	{ 1, 1, 0, 0, 1, 2, 0, 0, 0, 0,}, --  6 hook
 	{ 0, 0, 0, 0, 0, 0, 2, 0, 0, 0,}, --  7 ace
 	{ 0, 0, 0, 0, 0, 0, 0, 2, 0, 0,}, --  8 king
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,}, --  9 queen
@@ -55,7 +55,29 @@ local chunklen = {
 }
 
 math.randomseed(os.time())
-local reel1, iter1 = makereel(symset1, neighbours)
-local reel2, iter2 = makereelhot(symset2, 3, {[2]=true}, chunklen, true)
-print(string.format("iterations: %d, %d", iter1, iter2))
-printreel(tableglue(reel1, reel2))
+
+local function reelgen(n)
+	local function make()
+		local reel1, iter1 = makereel(symset1, neighbours)
+		local reel2, iter2 = makereelhot(symset2, 3, {[2]=true}, chunklen, true)
+		return reelglue(reel1, reel2), iter1, iter2
+	end
+	if n == 1 then
+		local n11, n21 = symset1[1], symset2[1]
+		symset1[1], symset2[1] = 0, 0
+		local reel, iter = make()
+		symset1[1], symset2[1] = n11, n21
+		return reel, iter
+	else
+		return make()
+	end
+end
+
+if autoscan then
+	return reelgen
+end
+
+print "reel 1"
+printreel(reelgen(1))
+print "reel 2, 3, 4, 5"
+printreel(reelgen(2))

@@ -9,7 +9,7 @@ Scripts in this section helps to build sets of reels. Typical workflow of reels 
 
 * Complete set of reels as it written at previous step, and place this set into external `/some/path/reeldev.yaml` file with some key percentage, 50 for example.
 
-* Run the scanner for this reels by command same as `slot_win_x64.exe -f=/some/path/reeldev.yaml scan -g=provider/gamename -r=50`. If reels in the set have a long length (60 symbols or more), you can quickly evaluate RTP of reels by Monte Carlo method. Run scanner with `--mc=20` parameter for example. If RTP is approximately suitable you can perform precise calculation.
+* Run the scanner for this reels by command same as `slot_win_x64.exe -f=/some/path/reeldev.yaml scan --noembed -g=provider/gamename@50`. If reels in the set have a long length (60 symbols or more), you can quickly evaluate RTP of reels by Monte Carlo method. Run scanner with `--mc=20` parameter for example. If RTP is approximately suitable you can perform precise calculation.
 
 * Insert onto final yaml-file calculated reels with calculated percentage.
 
@@ -29,3 +29,7 @@ megajack/slotopol/reel
   - [13, 11, 13, 12, 6, 4, 12, 3, 2, 5, 12, 10, 7, 12, 8, 1, 9, 12, 8, 9, 12, 4, 3, 12, 2, 5, 12, 10, 7, 13, 12, 6]
 
 ```
+
+## Automation
+
+In some cases, it's possible to automate the generation of reel sets. To do this, the Lua script must contain the `reelgen` function, which returns the reel for the specified number. Then, you can use one of the scripts in `helper/cmd`.

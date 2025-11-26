@@ -22,7 +22,7 @@ local devfile = os.getenv("GOPATH").."/bin/reeldev.yaml"
 
 autoscan = true
 local scripts = arg[0]:match("^(.*[/%\\]helper[/%\\])")
-dofile(scripts.."prov/"..gamescript)
+local reelgen = dofile(scripts.."prov/"..gamescript)
 assert(type(reelgen) == "function", "reels generator function 'reelgen' does not defined")
 
 local keypool = {}
@@ -38,12 +38,12 @@ local function generate()
 	local f = io.open(genfile, "w")
 	f:write("\n", gamename.."/reel\n\n---\n\n50:\n")
 	for _, reel in ipairs(reels) do
-		f:write("  - [" .. table.concat(reel, ", ") .. "] # "..#reel.."\n")
+		f:write("  - [" .. table.concat(reel, ", ") .. "] # "..rawlen(reel).."\n")
 	end
 	f:close()
 
 	-- run scanner
-	local cltpl = "%s -f=\"%s\" scan --noembed -g=\"%s\" -r=50" -- command line template
+	local cltpl = "%s -f=\"%s\" scan --noembed -g=\"%s@50\"" -- command line template
 	local cl = string.format(cltpl, slotpath, genfile, gamename) -- command line parameters
 	local h = io.popen(cl)
 	local output = h:read("*a")
@@ -63,7 +63,7 @@ for stage = 1, N do
 	if not keypool[key] or keypool[key].diff > reels.diff then
 		keypool[key] = reels
 	end
-	print(string.format("%d/%d RTP = %g%%", stage, N, reels.rtp))
+	print(string.format("(%d/%d) RTP = %g%%", stage, N, reels.rtp))
 end
 
 -- make sorted table with granulated reels sets
@@ -79,7 +79,7 @@ f:write("\n", gamename.."/reel\n\n---\n")
 for _, reels in pairs(t) do
 	f:write("\n", reels.comment:gsub("(.-)\n", "# %1\n")..reels.rtp..":\n")
 	for _, reel in ipairs(reels) do
-		f:write("  - [" .. table.concat(reel, ", ") .. "] # "..#reel.."\n")
+		f:write("  - [" .. table.concat(reel, ", ") .. "] # "..rawlen(reel).."\n")
 	end
 end
 f:close()

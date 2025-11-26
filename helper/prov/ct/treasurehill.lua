@@ -33,8 +33,31 @@ local neighbours = {
 }
 
 math.randomseed(os.time())
-local reel, iter = makereel(symset, neighbours)
-for i = 1, 4 do
-	table.insert(reel, i, 1)
+
+local function reelgen(n)
+	local function make()
+		local reel, iter = makereel(symset, neighbours)
+		for i = 1, 4 do
+			table.insert(reel, i, 1)
+		end
+		return reel, iter
+	end
+	if n == 1 or n == 5 then
+		local n2 = symset[2]
+		symset[2] = 0
+		local reel, iter = make()
+		symset[2] = n2
+		return reel, iter
+	else
+		return make()
+	end
 end
-printreel(reel, iter)
+
+if autoscan then
+	return reelgen
+end
+
+print "reel 1, 5"
+printreel(reelgen(1))
+print "reel 2, 3, 4"
+printreel(reelgen(2))

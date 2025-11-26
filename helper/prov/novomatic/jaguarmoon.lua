@@ -53,7 +53,7 @@ local function ins1(reel)
 	table.insert(reel, 1, scat)
 end
 local function ins2(reel)
-	for i = 5, #reel do
+	for i = 5, rawlen(reel) do
 		if neighbours[scat][reel[i - 2]] < 2 and
 			neighbours[scat][reel[i - 1]] < 1 and
 			neighbours[scat][reel[i + 1]] < 1 and

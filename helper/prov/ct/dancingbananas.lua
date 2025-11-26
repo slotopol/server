@@ -33,23 +33,34 @@ local scat = {[1]=true, [2]=true, [3]=true}
 
 math.randomseed(os.time())
 
-do
-	print "reel 1, 5"
-	local n1 = symset[1]
-	symset[1] = 0
-	printreel(makereelhot(symset, 3, scat, chunklen))
-	symset[1] = n1
+local function reelgen(n)
+	local function make()
+		return makereelhot(symset, 3, scat, chunklen)
+	end
+	if n == 1 or n == 5 then
+		local n1 = symset[1]
+		symset[1] = 0
+		local reel, iter = make()
+		symset[1] = n1
+		return reel, iter
+	elseif n == 2 or n == 4 then
+		local n3 = symset[3]
+		symset[3] = 0
+		local reel, iter = make()
+		symset[3] = n3
+		return reel, iter
+	else -- n == 3
+		return make()
+	end
 end
 
-do
-	print "reel 2, 4"
-	local n3 = symset[3]
-	symset[3] = 0
-	printreel(makereelhot(symset, 3, scat, chunklen))
-	symset[3] = n3
+if autoscan then
+	return reelgen
 end
 
-do
-	print "reel 3"
-	printreel(makereelhot(symset, 3, scat, chunklen))
-end
+print "reel 1, 5"
+printreel(reelgen(1))
+print "reel 2, 4"
+printreel(reelgen(2))
+print "reel 3"
+printreel(reelgen(3))

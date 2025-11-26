@@ -9,7 +9,7 @@ end
 local maxiter = 10000
 
 function shuffle(t)
-	for i = #t, 1, -1 do
+	for i = rawlen(t), 1, -1 do
 		local j = math.random(i)
 		t[i], t[j] = t[j], t[i]
 	end
@@ -23,71 +23,78 @@ function tcopy(t)
 	return t2
 end
 
-function tableglue(...)
+function tglue(...)
 	local args = { ... }
 	if #args == 1 then
 		args = args[1]
 		if type(args) ~= "table" then
-			error("tableglue: argument is not a table list")
+			error("tglue: argument is not a table list")
 		end
 	end
-	local t = {}
-	for _, ti in ipairs(args) do
-		if type(ti) ~= "table" then
-			error("tableglue: argument is not a table")
+
+	local tsum = {}
+	for ti, arg in ipairs(args) do
+		if type(arg) ~= "table" then
+			error("tglue: argument #"..ti.." is not a table")
 		end
-		for _, v in ipairs(ti) do
-			t[#t+1] = v
+		for i = 1, rawlen(arg) do
+			tsum[#tsum+1] = rawget(arg, i)
 		end
 	end
-	return t
+	return tsum
+end
+
+function reelglue(...)
+	local reel = tglue(...)
+	setmetatable(reel, reelmt)
+	return reel
 end
 
 function correctreel(reel, neighbours)
 	local iter = 0
 	while true do
 		local n = 0
-		for i = 1, #reel do
+		for i = 1, rawlen(reel) do
 			local symi = reel[i]
 			local b
 			b = neighbours[symi][reel[i - 3]]
 			if b >= 3 then
-				local j = math.random(#reel - b * 2 - 1)
+				local j = math.random(rawlen(reel) - b * 2 - 1)
 				if j >= i-3 then j = j+7 end
 				reel[i - 3], reel[j] = reel[j], reel[i - 3]
 				n = n + 1
 			end
 			b = neighbours[symi][reel[i - 2]]
 			if b >= 2 then
-				local j = math.random(#reel - b * 2 - 1)
+				local j = math.random(rawlen(reel) - b * 2 - 1)
 				if j >= i-2 then j = j+5 end
 				reel[i - 2], reel[j] = reel[j], reel[i - 2]
 				n = n + 1
 			end
 			b = neighbours[symi][reel[i - 1]]
 			if b >= 1 then
-				local j = math.random(#reel - b * 2 - 1)
+				local j = math.random(rawlen(reel) - b * 2 - 1)
 				if j >= i-1 then j = j+3 end
 				reel[i - 1], reel[j] = reel[j], reel[i - 1]
 				n = n + 1
 			end
 			b = neighbours[symi][reel[i + 1]]
 			if b >= 1 then
-				local j = math.random(#reel - b * 2 - 1)
+				local j = math.random(rawlen(reel) - b * 2 - 1)
 				if j >= i-1 then j = j+3 end
 				reel[i + 1], reel[j] = reel[j], reel[i + 1]
 				n = n + 1
 			end
 			b = neighbours[symi][reel[i + 2]]
 			if b >= 2 then
-				local j = math.random(#reel - b * 2 - 1)
+				local j = math.random(rawlen(reel) - b * 2 - 1)
 				if j >= i-2 then j = j+5 end
 				reel[i + 2], reel[j] = reel[j], reel[i + 2]
 				n = n + 1
 			end
 			b = neighbours[symi][reel[i + 3]]
 			if b >= 3 then
-				local j = math.random(#reel - b * 2 - 1)
+				local j = math.random(rawlen(reel) - b * 2 - 1)
 				if j >= i-3 then j = j+7 end
 				reel[i + 3], reel[j] = reel[j], reel[i + 3]
 				n = n + 1
@@ -180,20 +187,23 @@ function makereelhot(symset, sy, scat, chunklen, strict)
 	local reel = {}
 	for _, c in pairs(chunks) do
 		for _ = 1, c.n do
-			reel[#reel+1] = c.sym
+			reel[rawlen(reel)+1] = c.sym
 		end
 	end
+
+	setmetatable(reel, reelmt)
 	return reel, iter
 end
 
-function printreel(reel, iter)
-	if iter and iter > 1 then
-		if iter >= maxiter then
+function printreel(reel, ...)
+	local iter = { ... }
+	if #iter > 0 and iter[1] > 1 then
+		if iter[1] >= maxiter then
 			print"too many neighbours shuffle iterations"
 			return
 		else
-			print(iter.." iterations")
+			print(table.concat(iter, ", ").." iterations")
 		end
 	end
-	print("- [" .. table.concat(reel, ", ") .. "] # "..#reel) -- for yaml-file
+	print("- [" .. table.concat(reel, ", ") .. "] # "..rawlen(reel)) -- for yaml-file
 end

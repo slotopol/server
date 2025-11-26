@@ -29,24 +29,35 @@ local chunklen = {
 
 math.randomseed(os.time())
 
-do
-	print "reel 1, 5"
-	local n1 = symset[1]
-	symset[1] = 0
-	symset[2] = symset[2] + 1
-	printreel(makereelhot(symset, 4, {[2]=true}, chunklen, true))
-	symset[1] = n1
-	symset[2] = symset[2] - 1
+local function reelgen(n)
+	local function make()
+		return makereelhot(symset, 4, {[2]=true}, chunklen, true)
+	end
+	if n == 1 or n == 5 then
+		local n1 = symset[1]
+		symset[1] = 0
+		symset[2] = symset[2] + 1
+		local reel, iter = make()
+		symset[1] = n1
+		symset[2] = symset[2] - 1
+		return reel, iter
+	elseif n == 2 or n == 4 then
+		return make()
+	else -- n == 3
+		symset[2] = symset[2] + 1
+		local reel, iter = make()
+		symset[2] = symset[2] - 1
+		return reel, iter
+	end
 end
 
-do
-	print "reel 2, 4"
-	printreel(makereelhot(symset, 4, {[2]=true}, chunklen, true))
+if autoscan then
+	return reelgen
 end
 
-do
-	print "reel 3"
-	symset[2] = symset[2] + 1
-	printreel(makereelhot(symset, 4, {[2]=true}, chunklen, true))
-	symset[2] = symset[2] - 1
-end
+print "reel 1, 5"
+printreel(reelgen(1))
+print "reel 2, 4"
+printreel(reelgen(2))
+print "reel 3"
+printreel(reelgen(3))
