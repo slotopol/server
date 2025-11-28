@@ -20,6 +20,8 @@ local neighbours = {
 	{ 1, 0, 0, 0, 0, 1,}, -- 6 cherry
 }
 
+math.randomseed(os.time())
+
 local function insertspace(reel)
 	local reelsp = {}
 	local prev
@@ -41,7 +43,14 @@ local function insertspace(reel)
 	return reelsp
 end
 
-math.randomseed(os.time())
-local reel, iter = makereel(symset, neighbours)
-reel = insertspace(reel)
-printreel(reel, iter)
+local function reelgen()
+	local reel, iter = makereel(symset, neighbours)
+	reel = insertspace(reel)
+	return reel, iter
+end
+
+if autoscan then
+	return reelgen
+end
+
+printreel(reelgen(1))

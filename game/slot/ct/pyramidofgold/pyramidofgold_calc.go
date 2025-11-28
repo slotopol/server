@@ -1,4 +1,4 @@
-package wolfrun
+package pyramidofgold
 
 import (
 	"context"

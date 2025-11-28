@@ -228,6 +228,7 @@
 'Power Stars' Novomatic 5x3 videoslot
 'Purple Fruits' CT Interactive 5x3 videoslot
 'Purple Hot 2' CT Interactive 5x3 videoslot
+'Pyramid of Gold' CT Interactive 5x4 videoslot
 'Queen of Flames' CT Interactive 5x4 videoslot
 'Ramses II' Novomatic 5x3 videoslot
 'Red Crown' AGT 5x4 videoslot
@@ -303,11 +304,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 300 games, 155 algorithms, 11 providers
+total: 301 games, 156 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 99 games
+CT Interactive: 100 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

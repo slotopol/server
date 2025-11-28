@@ -1,7 +1,7 @@
-package wolfrun
+package pyramidofgold
 
-// See: https://www.slotsmate.com/software/igt/wolf-run
-// similar: ct/pyramidofgold
+// See: https://www.slotsmate.com/software/ct-interactive/pyramid-of-gold
+// similar: igt/wolfrun
 // (difference on bet lines)
 
 import (
@@ -15,21 +15,21 @@ var ReelsMap slot.ReelsMap[*slot.Reels5x]
 // Lined payment.
 var LinePay = [12][5]float64{
 	{0, 0, 50, 200, 1000}, //  1 moon wolf
-	{0, 0, 25, 100, 400},  //  2 grey wolf
-	{0, 0, 25, 100, 400},  //  3 white wolf
-	{0, 0, 20, 75, 250},   //  4 idol1
-	{0, 0, 20, 75, 250},   //  5 idol2
-	{0, 0, 5, 50, 150},    //  6 ace
-	{0, 0, 5, 50, 150},    //  7 king
-	{0, 0, 5, 20, 100},    //  8 queen
-	{0, 0, 5, 20, 100},    //  9 jack
-	{0, 0, 5, 20, 100},    // 10 ten
-	{0, 0, 5, 20, 100},    // 11 nine
-	{},                    // 12 bonus (2, 3, 4 reels only)
+	{0, 0, 25, 100, 400},  //  2 woman
+	{0, 0, 25, 100, 400},  //  3 man
+	{0, 0, 20, 75, 250},   //  4 eagle
+	{0, 0, 20, 75, 250},   //  5 leopard
+	{0, 0, 5, 50, 150},    //  6 mask1
+	{0, 0, 5, 50, 150},    //  7 mask2
+	{0, 0, 5, 20, 100},    //  8 ace
+	{0, 0, 5, 20, 100},    //  9 king
+	{0, 0, 5, 20, 100},    // 10 queen
+	{0, 0, 5, 20, 100},    // 11 jack
+	{},                    // 12 scatter (2, 3, 4 reels only)
 }
 
 // Bet lines
-var BetLines = slot.BetLinesNetEnt5x4[:40]
+var BetLines = slot.BetLinesCT5x4[:50]
 
 type Game struct {
 	slot.Screen5x4 `yaml:",inline"`
@@ -134,5 +134,5 @@ func (g *Game) Spin(mrtp float64) {
 }
 
 func (g *Game) SetSel(sel int) error {
-	return g.SetSelNum(sel, len(BetLines))
+	return slot.ErrNoFeature
 }

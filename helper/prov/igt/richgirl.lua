@@ -50,5 +50,18 @@ local neighboursbon = {
 }
 
 math.randomseed(os.time())
-printreel(makereel(symsetreg, neighboursreg))
-printreel(makereel(symsetbon, neighboursbon))
+
+local function reelgen(_, isbon)
+	if isbon then
+		return makereel(symsetbon, neighboursbon)
+	else
+		return makereel(symsetreg, neighboursreg)
+	end
+end
+
+if autoscan then
+	return reelgen
+end
+
+printreel(reelgen(1, false))
+printreel(reelgen(1, true))
