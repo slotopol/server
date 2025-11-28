@@ -50,6 +50,7 @@
 'Book of Ra Deluxe' Novomatic 5x3 videoslot
 'Book of Set' AGT 5x3 videoslot
 'Britania' CT Interactive 5x3 videoslot
+'Burning Flower' CT Interactive 5x3 videoslot
 'Captain's Treasure' Playtech 5x3 videoslot
 'Cash Farm' Novomatic 5x3 cascade videoslot
 'Casino' AGT 5x4 videoslot
@@ -93,6 +94,7 @@
 'Extra Spin' AGT 5x3 videoslot
 'Extra Spin II' AGT 5x4 videoslot
 'Extra Spin III' AGT 5x3 videoslot
+'FC Magic' CT Interactive 5x3 videoslot
 'Fairy Queen' Novomatic 5x3 videoslot
 'Faust' Novomatic 5x3 videoslot
 'Fire Dozen' CT Interactive 5x4 videoslot
@@ -185,6 +187,7 @@
 'Lovely Mermaid' Novomatic 5x4 videoslot
 'Lucky 3 Penguins' CT Interactive 5x3 videoslot
 'Lucky Clover' CT Interactive 5x3 videoslot
+'Lucky Clover 10' CT Interactive 5x3 videoslot
 'Lucky Clover 20' CT Interactive 5x3 videoslot
 'Lucky Dollar' CT Interactive 5x3 videoslot
 'Lucky Lady's Charm' Novomatic 5x3 videoslot
@@ -264,6 +267,7 @@
 'The Mighty Aztecs' CT Interactive 5x3 videoslot
 'The Money Game' Novomatic 5x3 videoslot
 'The Money Game Deluxe' Novomatic 5x3 videoslot
+'The New Queen of Fruits' CT Interactive 5x3 cluster cascade videoslot
 'The Power of Ankh' CT Interactive 5x3 videoslot
 'The Power of Ramesses' CT Interactive 5x3 videoslot
 'The Real King Gold Records' Novomatic 5x3 videoslot
@@ -299,11 +303,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 296 games, 155 algorithms, 11 providers
+total: 300 games, 155 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 95 games
+CT Interactive: 99 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

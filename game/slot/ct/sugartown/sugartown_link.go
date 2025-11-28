@@ -13,8 +13,9 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Sugar Town", Date: game.Date(2024, 11, 30)},        // see: https://www.slotsmate.com/software/ct-interactive/sugar-town
-		{Prov: "CT Interactive", Name: "Guardian of Asgard", Date: game.Date(2024, 6, 15)}, // see: https://www.slotsmate.com/software/ct-interactive/guardian-of-asgard
+		{Prov: "CT Interactive", Name: "Sugar Town", Date: game.Date(2024, 11, 30)},             // see: https://www.slotsmate.com/software/ct-interactive/sugar-town
+		{Prov: "CT Interactive", Name: "Guardian of Asgard", Date: game.Date(2024, 6, 15)},      // see: https://www.slotsmate.com/software/ct-interactive/guardian-of-asgard
+		{Prov: "CT Interactive", Name: "The New Queen of Fruits", Date: game.Date(2024, 5, 14)}, // see: https://www.slotsmate.com/software/ct-interactive/the-new-queen-of-fruits
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,
