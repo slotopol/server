@@ -1,0 +1,8 @@
+
+# Force LF line endings
+go.mod   text eol=lf
+go.sum   text eol=lf
+*.sh     text eol=lf
+
+# Binary files
+*.webp   binary

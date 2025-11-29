@@ -15,7 +15,7 @@ go env -w GOOS=linux GOARCH=amd64 CGO_ENABLED=1
 go build -o "$GOPATH/bin/slot_linux_x64" -v\
  -tags="jsoniter prod full"\
  -buildvcs=false\
- -ldflags="-linkmode external -extldflags -static\
+ -trimpath -ldflags="-w -s -linkmode external -extldflags -static\
  -X 'github.com/slotopol/server/config.BuildVers=$buildvers'\
  -X 'github.com/slotopol/server/config.BuildTime=$buildtime'"\
  $wd

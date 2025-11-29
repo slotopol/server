@@ -1,8 +1,8 @@
 
 -- This script is for reels sets composition by reshuffles reels content.
--- Useful for games with reel wilds or some others cases where reel
--- reshuffle gets new RTP. Implemented by single scanner call for all
--- reels sets, working in multistage mode.
+-- Useful for games with reel wilds or some others cases where symbols
+-- reshuffle at the reel gets new RTP. Implemented by single scanner call
+-- for all reels sets, working in multistage mode.
 
 --- input data begin ---
 

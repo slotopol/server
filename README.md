@@ -44,52 +44,6 @@ Slotopol: 2 games
 * '[Goddess of Bells](https://www.slotsmate.com/software/ct-interactive/goddess-of-bells)' CT Interactive 5x3 videoslot
 * '[Wonder 7's](https://www.slotsmate.com/software/ct-interactive/wonder-7s)' CT Interactive 5x3 videoslot
 * '[Hell's Hot 7's](https://www.slotsmate.com/software/ct-interactive/hells-hot-7s)' CT Interactive 5x3 videoslot
-* '[Wet and Juicy](https://www.slotsmate.com/software/ct-interactive/wet-and-juicy)' CT Interactive 5x4 videoslot
-* '[Mountain Heroes](https://www.slotsmate.com/software/ct-interactive/mountain-heroes)' CT Interactive 5x4 videoslot
-* '[40 Brilliants](https://www.slotsmate.com/software/ct-interactive/40-brilliants)' CT Interactive 5x4 videoslot
-* '[Lucky Clover 20](https://www.slotsmate.com/software/ct-interactive/lucky-clover-20)' CT Interactive 5x3 videoslot
-* '[Lucky Clover](https://www.slotsmate.com/software/ct-interactive/casino-technology-lucky-clover)' CT Interactive 5x3 videoslot
-* '[20 Clovers Hot](https://www.slotsmate.com/software/ct-interactive/20-clovers-hot)' CT Interactive 5x3 videoslot
-* '[The Power of Ankh](https://www.slotsmate.com/software/ct-interactive/the-power-of-ankh)' CT Interactive 5x3 videoslot
-* '[Mighty Kraken](https://www.slotsmate.com/software/ct-interactive/mighty-kraken)' CT Interactive 5x3 videoslot
-* '[Big Joker](https://www.slotsmate.com/software/ct-interactive/big-joker)' CT Interactive 5x3 videoslot
-* '[20 Shining Coins](https://www.slotsmate.com/software/ct-interactive/20-shining-coins)' CT Interactive 5x3 videoslot
-* '[20 Roosters](https://www.slotsmate.com/software/ct-interactive/20-roosters)' CT Interactive 5x3 videoslot
-* '[20 Mega Slot](https://www.slotsmate.com/software/ct-interactive/20-mega-slot)' CT Interactive 5x3 videoslot
-* '[Dancing Dragons](https://www.slotsmate.com/software/ct-interactive/dancing-dragons)' CT Interactive 5x3 videoslot
-* '[Fruits of Desire](https://www.slotsmate.com/software/ct-interactive/fruits-of-desire)' CT Interactive 5x3 videoslot
-* '[Purple Fruits](https://www.slotsmate.com/software/ct-interactive/purple-fruits)' CT Interactive 5x3 videoslot
-* '[Fruit Feast](https://www.slotsmate.com/software/ct-interactive/fruit-feast)' CT Interactive 5x4 videoslot
-* '[Purple Hot 2](https://www.slotsmate.com/software/ct-interactive/purple-hot-2)' CT Interactive 5x3 videoslot
-* '[Egg and Rooster](https://www.slotsmate.com/software/ct-interactive/egg-and-rooster)' CT Interactive 5x3 videoslot
-* '[Island Vacation](https://www.slotsmate.com/software/ct-interactive/island-vacation)' CT Interactive 5x3 videoslot
-* '[Wild Clover](https://www.slotsmate.com/software/ct-interactive/wild-clover)' CT Interactive 5x3 videoslot
-* '[Lucky 3 Penguins](https://www.slotsmate.com/software/ct-interactive/lucky-3-penguins)' CT Interactive 5x3 videoslot
-* '[Penguin Party](https://www.slotsmate.com/software/ct-interactive/penguin-party)' CT Interactive 5x3 videoslot
-* '[English Rose](https://www.slotsmate.com/software/ct-interactive/english-rose)' CT Interactive 5x3 videoslot
-* '[Monkey Kingdom](https://www.slotsmate.com/software/ct-interactive/monkey-kingdom)' CT Interactive 5x3 videoslot (alias to "Champagne" game of Megajack)
-* '[Lady Emerald](https://www.slotsmate.com/software/ct-interactive/lady-emerald)' CT Interactive 5x3 videoslot
-* '[Jolly Beluga Whales](https://www.slotsmate.com/software/ct-interactive/jolly-beluga-whales)' CT Interactive 5x3 videoslot
-* '[Space Fruits](https://www.slotsmate.com/software/ct-interactive/space-fruits)' CT Interactive 5x3 videoslot
-* '[Groovy Powers](https://www.slotsmate.com/software/ct-interactive/groovy-powers)' CT Interactive 5x3 videoslot
-* '[Queen of Flames](https://www.slotsmate.com/software/ct-interactive/queen-of-flames)' CT Interactive 5x4 videoslot
-* '[The Power of Ramesses](https://www.slotsmate.com/software/ct-interactive/the-power-of-ramesses)' CT Interactive 5x3 videoslot
-* '[Full of Treasures](https://www.slotsmate.com/software/ct-interactive/full-of-treasures)' CT Interactive 5x3 videoslot
-* '[Nordic Song](https://www.slotsmate.com/software/ct-interactive/nordic-song)' CT Interactive 5x3 videoslot
-* '[Fire Dozen](https://www.slotsmate.com/software/ct-interactive/fire-dozen)' CT Interactive 5x4 videoslot
-* '[Misty Forest](https://www.slotsmate.com/software/ct-interactive/misty-forest)' CT Interactive 5x3 videoslot
-* '[Navy Girl](https://www.slotsmate.com/software/ct-interactive/navy-girl)' CT Interactive 5x3 videoslot
-* '[Golden Flower Of Life](https://www.slotsmate.com/software/ct-interactive/golden-flower-of-life)' CT Interactive 5x3 videoslot
-* '[Lucky Dollar](https://www.slotsmate.com/software/ct-interactive/lucky-dollar)' CT Interactive 5x3 videoslot
-* '[Halloween Fruits](https://www.slotsmate.com/software/ct-interactive/ct-gaming-halloween-fruits)' CT Interactive 5x3 videoslot
-* '[Guardian of Asgard](https://www.slotsmate.com/software/ct-interactive/guardian-of-asgard)' CT Interactive 5x3 cluster cascade videoslot
-* '[Zeus](https://agtsoftware.org/games/agt/zeus)' AGT 4x4 videoslot
-* '[Bloody Princess](https://www.slotsmate.com/software/ct-interactive/bloody-princess)' CT Interactive 5x3 videoslot (alias to "Champagne" game of Megajack)
-* '[Champagne and Fruits](https://www.slotsmate.com/software/ct-interactive/champagne-and-fruits)' CT Interactive 5x3 videoslot (remake "Champagne" game of Megajack)
-* '[Wild Horses](https://www.slotsmate.com/software/novomatic/wild-horses)' Novomatic 5x4 videoslot
-* '[Hot Chance](https://www.slotsmate.com/software/novomatic/hot-chance)' Novomatic 3x3 videoslot
-* '[Lord of Fortune](https://www.slotsmate.com/software/ct-interactive/lord-of-fortune)' CT Interactive 5x3 videoslot
-* '[Halloween Hot](https://www.slotsmate.com/software/ct-interactive/halloween-hot)' CT Interactive 5x3 videoslot
 
 *Top-10 of games with most interesting algorithms released on server*:
 
