@@ -36,22 +36,10 @@ local neighbours = {
 
 math.randomseed(os.time())
 local reel, iter = makereel(symset, neighbours)
-for i = 1, 4 do
-	table.insert(reel, i, 1)
-end
-for i = 1, 5 do
-	table.insert(reel, i, 2)
-end
-for i = 1, 5 do
-	table.insert(reel, i, 3)
-end
-for i = 1, 4 do
-	table.insert(reel, i, 4)
-end
-for i = 1, 4 do
-	table.insert(reel, i, 5)
-end
-for i = 1, 4 do
-	table.insert(reel, i, 6)
-end
+addsym(reel, 6, 4)
+addsym(reel, 5, 4)
+addsym(reel, 4, 4)
+addsym(reel, 3, 5)
+addsym(reel, 2, 5)
+addsym(reel, 1, 4)
 printreel(reel, iter)

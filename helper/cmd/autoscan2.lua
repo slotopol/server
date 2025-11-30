@@ -6,7 +6,7 @@
 
 --- input data begin ---
 
-local slotpath = "slot_win_x64.exe" -- path to slotopol executable file
+local slotpath = "slot_debug.exe" -- path to slotopol executable file
 local gamename = "ctinteractive/hellshot7s" -- provider / gamename
 local gamescript = "ct/hellshot7s.lua" -- path to reels generator script
 local reelnum = 5 -- number of reels at videoslot
@@ -31,7 +31,10 @@ local ridt = {} -- reels sets IDs table
 
 -- write temporary yaml-file
 do
-	local f = io.open(genfile, "w")
+	local f, err = io.open(genfile, "w")
+	if not f then
+		error("cannot create generator file: "..err)
+	end
 	f:write("\n", gamename.."/reel\n\n---\n")
 	for stage = 1, N do
 		ridt[stage] = string.format("-g=\"%s@%d\"", gamename, stage)
@@ -54,6 +57,9 @@ end
 local cltpl = "%s -f=\"%s\" scan --noembed --lstage --vstage %s" -- command line template
 local cl = string.format(cltpl, slotpath, genfile, table.concat(ridt, " ")) -- command line parameters
 local h = io.popen(cl)
+if not h then
+	error("cannot run command: "..cl:sub(1, 100))
+end
 local output = h:read("*a")
 h:close()
 
@@ -82,7 +88,10 @@ table.sort(t, function(a, b) return a.rtp < b.rtp end)
 
 -- write final yaml-file
 do
-	local f = io.open(devfile, "w")
+	local f, err = io.open(devfile, "w")
+	if not f then
+		error("cannot create results file: "..err)
+	end
 	f:write("\n", gamename.."/reel\n\n---\n")
 	for _, reels in pairs(t) do
 		f:write("\n", reels.comment:gsub("(.-)\n", "# %1\n")..reels.rtp..":\n")

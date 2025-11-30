@@ -95,6 +95,6 @@ for i, p in pairs(app) do
 end
 printf("pyramid expectation Epyr = %.12g", Epyr)
 
-local Eroom = dofile(path.."aztecroom.lua")
+local Eroom = dofile(scripts.."prov/megajack/aztecroom.lua")
 local Ebon = Epyr + Eroom*app[6]
 printf("Ebon = Epyr + Eroom*app[6] = %g + %g * %g = %.12g", Epyr, Eroom, app[6], Ebon)

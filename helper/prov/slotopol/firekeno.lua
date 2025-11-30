@@ -1,5 +1,5 @@
 local scripts = arg[0]:match("^(.*[/%\\]helper[/%\\])")
-dofile(path.."../../lib/keno.lua")
+dofile(scripts.."lib/keno.lua")
 
 -- Fire Keno
 local paytable = {

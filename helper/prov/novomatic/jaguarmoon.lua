@@ -49,10 +49,15 @@ local neighbours = {
 
 local scat = 2
 local function ins1(reel)
+	local mt = getmetatable(reel)
+	setmetatable(reel, nil)
 	table.insert(reel, 1, scat)
 	table.insert(reel, 1, scat)
+	setmetatable(reel, mt)
 end
 local function ins2(reel)
+	local mt = getmetatable(reel)
+	setmetatable(reel, nil)
 	for i = 5, rawlen(reel) do
 		if neighbours[scat][reel[i - 2]] < 2 and
 			neighbours[scat][reel[i - 1]] < 1 and
@@ -63,6 +68,7 @@ local function ins2(reel)
 			break
 		end
 	end
+	setmetatable(reel, mt)
 end
 
 math.randomseed(os.time())

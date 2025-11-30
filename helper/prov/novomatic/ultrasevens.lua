@@ -24,25 +24,11 @@ local neighbours = {
 
 math.randomseed(os.time())
 local reel, iter = makereel(symset, neighbours)
-for i = 1, 5 do
-	table.insert(reel, i, 1)
-end
-for i = 1, 5 do
-	table.insert(reel, i, 2)
-end
-for i = 1, 5 do
-	table.insert(reel, i, 3)
-end
-for i = 1, 5 do
-	table.insert(reel, i, 4)
-end
-for i = 1, 5 do
-	table.insert(reel, i, 5)
-end
-for i = 1, 5 do
-	table.insert(reel, i, 6)
-end
-for i = 1, 5 do
-	table.insert(reel, i, 7)
-end
+addsym(reel, 7, 5)
+addsym(reel, 6, 5)
+addsym(reel, 5, 5)
+addsym(reel, 4, 5)
+addsym(reel, 3, 5)
+addsym(reel, 2, 5)
+addsym(reel, 1, 5)
 printreel(reel, iter)

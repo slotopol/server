@@ -23,6 +23,8 @@ type Bigger interface {
 	SetBig(big Sym)
 }
 
+// Maximum size of Screenx data array.
+// Maximum possible value of this constant is 255 (for Pos type uint8).
 const ScrxSize = 40
 
 // Screenx is a screen with dimensions defined during construction.
@@ -35,6 +37,7 @@ type Screenx struct {
 // Declare conformity with Screen interface.
 var _ Screen = (*Screenx)(nil)
 
+// Construct screen with given dimensions. Maximum possible size is 8x5.
 func ScreenDim(sx, sy Pos) Screenx {
 	return Screenx{
 		sx: sx, sy: sy,
@@ -62,9 +65,9 @@ func (s *Screenx) SetSym(x, y Pos, sym Sym) {
 }
 
 func (s *Screenx) SetCol(x Pos, reel []Sym, pos int) {
-	var i = (x - 1) * s.sy
-	for y := range s.sy {
-		s.data[i+y] = ReelAt(reel, pos+int(y))
+	var d = s.data[(x-1)*s.sy:]
+	for y := range int(s.sy) {
+		d[y] = ReelAt(reel, pos+y)
 	}
 }
 
@@ -87,13 +90,11 @@ func (s *Screenx) SymNum(sym Sym) (n Pos) {
 }
 
 func (s *Screenx) SymPos(sym Sym) (c Hitx) {
-	var x, y, i Pos
-	for x = range s.sx {
-		for y = range s.sy {
-			if s.data[x*s.sy+y] == sym {
-				c[i][0], c[i][1] = x+1, y+1
-				i++
-			}
+	var i, n Pos
+	for i = range s.sx * s.sy {
+		if s.data[i] == sym {
+			c[n][0], c[n][1] = i/s.sy+1, i%s.sy+1
+			n++
 		}
 	}
 	return

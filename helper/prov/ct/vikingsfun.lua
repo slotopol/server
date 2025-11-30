@@ -40,4 +40,4 @@ if autoscan then
 	return reelgen
 end
 
-printreel(reelgen(1))
+printreel(reelgen())

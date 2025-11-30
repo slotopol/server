@@ -37,7 +37,5 @@ local neighbours = {
 math.randomseed(os.time())
 local reel, iter = makereel(symset, neighbours)
 printreel(reel, iter)
-for i = 1, 3 do
-	table.insert(reel, i, 1)
-end
+addsym(reel, 1, 3)
 printreel(reel, iter)

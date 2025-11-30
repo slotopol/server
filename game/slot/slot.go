@@ -5,8 +5,8 @@ import (
 )
 
 type (
-	Sym int8 // symbol type (screen content type)
-	Pos int8 // screen or line position with 1-based index or offset
+	Sym uint8 // symbol type (screen content type)
+	Pos uint8 // screen or line position with 1-based index or offset
 )
 
 // WinItem describes win on each line or by scatters.

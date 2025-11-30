@@ -63,8 +63,10 @@ require (
 // {
 //     "gopls": {
 //         "buildFlags": ["-tags", "full keno agt aristocrat betsoft ct igt megajack netent novomatic playngo playtech"],
-//     }
+//     },
+//     "Lua.diagnostics.disable": ["lowercase-global"]
 // }
+
 // Advice: upgrade this file by command line
 //   go get -u ./...
 //   go mod tidy

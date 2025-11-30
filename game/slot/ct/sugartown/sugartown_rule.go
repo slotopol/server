@@ -8,8 +8,8 @@ import (
 
 var ReelsMap slot.ReelsMap[*slot.Reels5x]
 
-// Lined payment.
-var LinePay = [10][7]float64{
+// Symbols payment.
+var SymPay = [10][7]float64{
 	{0, 0, 800, 2000, 20000},        //  1 scatter
 	{0, 0, 0, 0, 2000, 4000, 15000}, //  2 wild
 	{0, 0, 0, 0, 140, 200, 1500},    //  3 heart
@@ -23,7 +23,7 @@ var LinePay = [10][7]float64{
 }
 
 type Game struct {
-	slot.Cascade5x4 `yaml:",inline"`
+	slot.Cascade5x3 `yaml:",inline"`
 	slot.Slotx      `yaml:",inline"`
 }
 
@@ -59,7 +59,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 	}
 
 	if count := sn[scat-1]; count >= 3 {
-		var pay = LinePay[scat-1][count-1]
+		var pay = SymPay[scat-1][count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * pay,
 			MP:  1,
@@ -69,7 +69,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 		})
 	}
 	if count := sn[wild-1]; count >= 5 {
-		var pay = LinePay[wild-1][min(count-1, 6)]
+		var pay = SymPay[wild-1][min(count-1, 6)]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * pay,
 			MP:  1,
@@ -82,7 +82,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 	var sym slot.Sym
 	for sym = 3; sym <= 10; sym++ {
 		if count := sn[sym-1] + sn[wild-1]; count >= 5 {
-			var pay = LinePay[sym-1][min(count-1, 6)]
+			var pay = SymPay[sym-1][min(count-1, 6)]
 			*wins = append(*wins, slot.WinItem{
 				Pay: g.Bet * pay,
 				MP:  1,

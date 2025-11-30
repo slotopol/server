@@ -50,6 +50,15 @@ function reelglue(...)
 	return reel
 end
 
+function addsym(reel, sym, n)
+	local mt = getmetatable(reel)
+	setmetatable(reel, nil)
+	for i = 1, n do
+		table.insert(reel, i, sym)
+	end
+	setmetatable(reel, mt)
+end
+
 function correctreel(reel, neighbours)
 	local iter = 0
 	while true do
