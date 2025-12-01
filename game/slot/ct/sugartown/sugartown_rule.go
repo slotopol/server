@@ -51,11 +51,12 @@ const wild, scat = 2, 1
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	var sn [10]slot.Pos
-	var x, y slot.Pos
+	var x slot.Pos
 	for x = range 5 {
-		for y = range 3 {
-			sn[g.Scr[x][y]-1]++
-		}
+		var r = g.Scr[x]
+		sn[r[0]-1]++
+		sn[r[1]-1]++
+		sn[r[2]-1]++
 	}
 
 	if count := sn[scat-1]; count >= 3 {
@@ -69,7 +70,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 		})
 	}
 	if count := sn[wild-1]; count >= 5 {
-		var pay = SymPay[wild-1][min(count-1, 6)]
+		var pay = SymPay[wild-1][min(count, 7)-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * pay,
 			MP:  1,

@@ -1,0 +1,25 @@
+package rainbowcharm
+
+import (
+	"context"
+	"fmt"
+	"io"
+
+	"github.com/slotopol/server/game/slot"
+)
+
+func CalcStat(ctx context.Context, mrtp float64) float64 {
+	var reels, _ = ReelsMap.FindClosest(mrtp)
+	var g = NewGame()
+	g.M = [5]float64{4, 4, 4, 4, 4} // set multipliers to average value for RTP calculation
+	var s slot.Stat
+
+	var calc = func(w io.Writer) float64 {
+		var lrtp, srtp = s.SymRTP(g.Cost())
+		var rtpsym = lrtp + srtp
+		fmt.Fprintf(w, "RTP = %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
+		return rtpsym
+	}
+
+	return slot.ScanReels5x(ctx, &s, g, reels, calc)
+}

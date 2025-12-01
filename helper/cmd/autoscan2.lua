@@ -66,7 +66,7 @@ h:close()
 print(output)
 
 -- extract comments and RTP from output for each reels sets
-local pattern = "%((%d+)/"..N.."%) scan .-(reels lengths.-RTP = [^\n]-(%d+%.%d+)%%%s)"
+local pattern = "%((%d+)/"..N.."%) scan .-(reels lengths.-RTP = [^\n]-(%d+%.?%d-)%%%s)"
 for stage, comment, rtp in output:gmatch(pattern) do
 	stage, rtp = tonumber(stage), tonumber(rtp)
 	local reels = assert(devpool[stage], "reels of stage "..stage.." does not found")

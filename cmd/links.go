@@ -88,6 +88,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/purplefruits"
 	_ "github.com/slotopol/server/game/slot/ct/purplehot2"
 	_ "github.com/slotopol/server/game/slot/ct/pyramidofgold"
+	_ "github.com/slotopol/server/game/slot/ct/rainbowcharm"
 	_ "github.com/slotopol/server/game/slot/ct/sapphirelagoon"
 	_ "github.com/slotopol/server/game/slot/ct/shiningtreasures"
 	_ "github.com/slotopol/server/game/slot/ct/smileyxwild"

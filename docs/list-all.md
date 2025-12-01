@@ -230,6 +230,7 @@
 'Purple Hot 2' CT Interactive 5x3 videoslot
 'Pyramid of Gold' CT Interactive 5x4 videoslot
 'Queen of Flames' CT Interactive 5x4 videoslot
+'Rainbow Charm' CT Interactive 5x3 cluster videoslot
 'Ramses II' Novomatic 5x3 videoslot
 'Red Crown' AGT 5x4 videoslot
 'Redroo' Aristocrat 5x4 videoslot
@@ -265,6 +266,7 @@
 'Tesla' AGT 5x3 videoslot
 'The Great Cabaret' CT Interactive 5x3 videoslot
 'The Leprechaun' AGT 5x3 videoslot
+'The Magic Goblet' CT Interactive 5x3 cluster videoslot
 'The Mighty Aztecs' CT Interactive 5x3 videoslot
 'The Money Game' Novomatic 5x3 videoslot
 'The Money Game Deluxe' Novomatic 5x3 videoslot
@@ -304,11 +306,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 301 games, 156 algorithms, 11 providers
+total: 303 games, 157 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 100 games
+CT Interactive: 102 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

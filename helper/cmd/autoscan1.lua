@@ -56,7 +56,9 @@ local function generate()
 	h:close()
 
 	reels.comment = assert(output:match("(reels lengths.*)$"), "calculation output does not received")
-	reels.rtp = assert(tonumber(string.match(output, " = (%d+%.%d+)%%%s$")), "result RTP does not found")
+	reels.rtp = assert(
+		tonumber(string.match(output, " = (%d+%.?%d-)%%%s$")),
+		"result RTP does not found, comment is:\n"..reels.comment)
 
 	return reels
 end
