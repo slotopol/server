@@ -56,13 +56,13 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-const book = 11
+const wsc = 11
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	if g.FSR == 0 {
 		g.ScanLinedReg(wins)
 	} else {
-		g.ScanLinedBon(wins)
+		g.ScanWaysBon(wins)
 	}
 	g.ScanScatters(wins)
 	return nil
@@ -76,7 +76,7 @@ func (g *Game) ScanLinedReg(wins *slot.Wins) {
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
 			var sx = g.LY(x, line)
-			if sx == book {
+			if sx == wsc {
 				continue
 			} else if syml == 0 {
 				syml = sx
@@ -102,7 +102,7 @@ func (g *Game) ScanLinedReg(wins *slot.Wins) {
 }
 
 // Lined symbols calculation on bonus games.
-func (g *Game) ScanLinedBon(wins *slot.Wins) {
+func (g *Game) ScanWaysBon(wins *slot.Wins) {
 	var line slot.Linex
 	var pays float64
 	var wi slot.WinItem
@@ -178,14 +178,14 @@ loop1:
 
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	if count := g.SymNum(book); count >= 3 {
+	if count := g.SymNum(wsc); count >= 3 {
 		var pay, fs = ScatPay[count-1], ScatFreespin[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * float64(g.Sel) * pay,
 			MP:  1,
-			Sym: book,
+			Sym: wsc,
 			Num: count,
-			XY:  g.SymPos(book),
+			XY:  g.SymPos(wsc),
 			FS:  fs,
 		})
 	}

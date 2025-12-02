@@ -6,12 +6,18 @@
 
 --- input data begin ---
 
-local slotpath = "slot_debug.exe" -- path to slotopol executable file
-local gamename = "ctinteractive/hellshot7s" -- provider / gamename
-local gamescript = "ct/hellshot7s.lua" -- path to reels generator script
-local reelnum = 5 -- number of reels at videoslot
-local N = 100 -- number of generator iterations
-local gran = 0.5 -- RTP granulation, can be 0.5, 1.0, 2.0
+-- path to slotopol executable file, place here others necessary flags
+local slotpath = "slot_debug.exe -f=d:/srv/config/reeldev.yaml"
+-- provider / gamename
+local gamename = "ctinteractive/rodeopower"
+-- path to reels generator script
+local gamescript = "ct/rodeopower.lua"
+-- number of reels at videoslot
+local reelnum = 5
+-- number of generator iterations
+local N = 250
+-- RTP granulation, can be 0.5, 1.0, 2.0
+local gran = 0.5
 
 -- temporary yaml file to check up by scanner
 local genfile = (os.getenv("TEMP") or os.getenv("TMP") or os.getenv("TMPDIR")).."/reelgen.yaml"
@@ -21,7 +27,7 @@ local devfile = os.getenv("GOPATH").."/bin/reeldev.yaml"
 --- input data end ---
 
 autoscan = true
-local scripts = arg[0]:match("^(.*[/%\\]helper[/%\\])")
+local scripts = arg[0]:match("^(.*helper[/%\\])")
 local reelgen = dofile(scripts.."prov/"..gamescript)
 assert(type(reelgen) == "function", "reels generator function 'reelgen' does not defined")
 

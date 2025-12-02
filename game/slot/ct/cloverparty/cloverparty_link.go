@@ -18,6 +18,7 @@ var Info = game.AlgInfo{
 		{Prov: "CT Interactive", Name: "20 Shining Coins", Date: game.Date(2020, 1, 31)}, // see: https://www.slotsmate.com/software/ct-interactive/20-shining-coins
 		{Prov: "CT Interactive", Name: "20 Mega Slot", Date: game.Date(2020, 12, 14)},    // see: https://www.slotsmate.com/software/ct-interactive/20-mega-slot
 		{Prov: "CT Interactive", Name: "20 Mega Fresh", Date: game.Date(2021, 7, 7)},     // see: https://www.slotsmate.com/software/ct-interactive/20-mega-fresh
+		{Prov: "CT Interactive", Name: "20 Mega Star", Date: game.Date(2024, 12, 31)},    // see: https://www.slotsmate.com/software/ct-interactive/20-mega-star
 		{Prov: "CT Interactive", Name: "20 Roosters", Date: game.Date(2019, 12, 31)},     // see: https://www.slotsmate.com/software/ct-interactive/20-roosters
 		{Prov: "CT Interactive", Name: "Egg and Rooster", Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/egg-and-rooster
 	},

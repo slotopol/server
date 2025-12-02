@@ -50,7 +50,7 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-const wild, scat = 1, 1
+const wcs = 1
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	g.ScanLined(wins)
@@ -66,7 +66,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
 			var sx = g.LY(x, line)
-			if sx == wild {
+			if sx == wcs {
 				continue
 			} else if syml == 0 {
 				syml = sx
@@ -93,14 +93,14 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	if count := g.SymNum(scat); count >= 3 {
+	if count := g.SymNum(wcs); count >= 3 {
 		var pay = ScatPay[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * float64(g.Sel) * pay,
 			MP:  1,
-			Sym: scat,
+			Sym: wcs,
 			Num: count,
-			XY:  g.SymPos(scat),
+			XY:  g.SymPos(wcs),
 			FS:  12,
 		})
 	}

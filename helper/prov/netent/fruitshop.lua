@@ -1,4 +1,4 @@
-local scripts = arg[0]:match("^(.*[/%\\]helper[/%\\])")
+local scripts = arg[0]:match("^(.*helper[/%\\])")
 dofile(scripts.."lib/reelgen.lua")
 
 -- 0 wilds on 1, 5 reel

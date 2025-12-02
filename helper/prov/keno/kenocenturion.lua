@@ -1,4 +1,4 @@
-local scripts = arg[0]:match("^(.*[/%\\]helper[/%\\])")
+local scripts = arg[0]:match("^(.*helper[/%\\])")
 dofile(scripts.."lib/keno.lua")
 
 -- Keno Centurion

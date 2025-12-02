@@ -53,14 +53,14 @@ const wild, scat = 1, 2
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	if g.SymNum(wild) < 5 {
-		g.ScanLined(wins)
+		g.ScanWays(wins)
 	}
 	g.ScanScatters(wins)
 	return nil
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(wins *slot.Wins) {
+func (g *Game) ScanWays(wins *slot.Wins) {
 	var mwm float64 = 1 // mult wild mode
 	if g.FSR > 0 {
 		mwm = 5

@@ -66,13 +66,13 @@ const wild, scat = 1, 2
 const prob2x = 0.5 // probability of 2x multiplier for wild at free games
 
 func (g *Game) Scanner(wins *slot.Wins) error {
-	g.ScanLined(wins)
+	g.ScanWays(wins)
 	g.ScanScatters(wins)
 	return nil
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(wins *slot.Wins) {
+func (g *Game) ScanWays(wins *slot.Wins) {
 	var line slot.Linex
 loop1:
 	for line[0] = 1; line[0] <= 4; line[0]++ {

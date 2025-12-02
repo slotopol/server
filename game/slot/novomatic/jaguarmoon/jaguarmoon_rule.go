@@ -60,13 +60,13 @@ func (g *Game) Clone() slot.SlotGame {
 const wild, scat = 1, 2
 
 func (g *Game) Scanner(wins *slot.Wins) error {
-	g.ScanLined(wins)
+	g.ScanWays(wins)
 	g.ScanScatters(wins)
 	return nil
 }
 
 // Lined symbols calculation.
-func (g *Game) ScanLined(wins *slot.Wins) {
+func (g *Game) ScanWays(wins *slot.Wins) {
 	var line slot.Linex
 loop1:
 	for line[0] = 1; line[0] <= 3; line[0]++ {
@@ -83,11 +83,7 @@ loop1:
 						var x slot.Pos
 						for x = 2; x <= 5; x++ {
 							var sx = g.LY(x, line)
-							if sx == wild {
-								continue
-							} else if syml == 0 {
-								syml = sx
-							} else if sx != syml {
+							if sx != syml && sx != wild {
 								numl = x - 1
 								break
 							}
