@@ -7,15 +7,15 @@
 --- input data begin ---
 
 -- path to slotopol executable file, place here others necessary flags
-local slotpath = "slot_debug.exe -f=d:/srv/config/reeldev.yaml"
+local slotpath = "slot_debug.exe"
 -- provider / gamename
-local gamename = "ctinteractive/rodeopower"
+local gamename = "ctinteractive/hellshot7s"
 -- path to reels generator script
-local gamescript = "ct/rodeopower.lua"
+local gamescript = "ct/hellshot7s.lua"
 -- number of reels at videoslot
 local reelnum = 5
 -- number of generator iterations
-local N = 250
+local N = 100
 -- RTP granulation, can be 0.5, 1.0, 2.0
 local gran = 0.5
 
@@ -101,6 +101,6 @@ for _, reels in pairs(t) do
 end
 f:close()
 
-print(#t.." entries in complete file")
+print(string.format("%d entries in complete file, spent %g seconds", #t, os.clock()))
 
 os.remove(genfile)

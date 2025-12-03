@@ -108,6 +108,6 @@ do
 	f:close()
 end
 
-print(#t.." entries in complete file")
+print(string.format("%d entries in complete file, spent %g seconds", #t, os.clock()))
 
 os.remove(genfile)

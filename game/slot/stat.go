@@ -755,17 +755,27 @@ func ScanReels(ctx context.Context, s Stater, g SlotGame, reels Reels,
 	bruteforce, montecarlo, montecarloprec CalcAlg,
 	calc func(io.Writer) float64) float64 {
 	var t0 = time.Now()
+	var wg sync.WaitGroup
+	wg.Add(2)
 	var ctx2, cancel2 = context.WithCancel(ctx)
-	defer cancel2()
-	go Progress(ctx2, s, calc)
-	if cfg.MCPrec > 0 {
-		montecarloprec(ctx2, s, g, reels)
-	} else if cfg.MCCount > 0 {
-		montecarlo(ctx2, s, g, reels)
-	} else {
-		bruteforce(ctx2, s, g, reels)
-	}
+	go func() {
+		defer wg.Done()
+		Progress(ctx2, s, calc)
+	}()
+	go func() {
+		defer wg.Done()
+		defer cancel2()
+		if cfg.MCPrec > 0 {
+			montecarloprec(ctx2, s, g, reels)
+		} else if cfg.MCCount > 0 {
+			montecarlo(ctx2, s, g, reels)
+		} else {
+			bruteforce(ctx2, s, g, reels)
+		}
+	}()
+	wg.Wait()
 	var dur = time.Since(t0)
+
 	if s.Planned() > 0 {
 		var comp = s.Reshuf(1) / s.Planned() * 100
 		fmt.Printf("completed %.5g%%, selected %d lines, time spent %v            \n", comp, g.GetSel(), dur)
