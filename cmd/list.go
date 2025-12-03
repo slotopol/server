@@ -87,10 +87,12 @@ func FormatGameInfo(gi *game.GameInfo) string {
 		if gi.GP&game.GPbmode > 0 {
 			b.WriteString(", has non-reels bonus mode")
 		}
-		if gi.GP&(game.GPfghas+game.GPretrig) > 0 {
+		if gi.GP&(game.GPfgany) > 0 {
 			b.WriteString(", ")
-			if gi.GP&game.GPretrig > 0 {
+			if gi.GP&game.GPfgseq > 0 {
 				b.WriteString("retriggerable ")
+			} else if gi.GP&game.GPfgtwic > 0 {
+				b.WriteString("once retriggerable ")
 			}
 			b.WriteString("free games")
 			if gi.GP&game.GPfgmult > 0 {
@@ -103,22 +105,25 @@ func FormatGameInfo(gi *game.GameInfo) string {
 		if gi.GP&game.GPscat > 0 {
 			b.WriteString(", has scatters")
 		}
-		if gi.GP&game.GPwild > 0 {
-			if gi.GP&game.GPwmult > 0 {
-				b.WriteString(", has wilds with multiplier")
-			} else {
+		if gi.GP&game.GPwany > 0 {
+			if gi.GP&game.GPwild > 0 {
 				b.WriteString(", has wilds")
 			}
-		}
-		if gi.GP&game.GPrwild > 0 {
-			if gi.GP&game.GPwmult > 0 {
-				b.WriteString(", has reel wilds with multiplier")
-			} else {
+			if gi.GP&game.GPwsc > 0 {
+				b.WriteString(", has wild/scatters")
+			}
+			if gi.GP&game.GPrwild > 0 {
 				b.WriteString(", has reel wilds")
 			}
-		}
-		if gi.GP&game.GPbwild > 0 {
-			b.WriteString(", has big wilds")
+			if gi.GP&game.GPbwild > 0 {
+				b.WriteString(", has big wilds")
+			}
+			if gi.GP&game.GPewild > 0 {
+				b.WriteString(", has expanding wilds")
+			}
+			if gi.GP&game.GPwmult > 0 {
+				b.WriteString(" with multiplier")
+			}
 		}
 		if gi.GP&game.GPwturn > 0 {
 			b.WriteString(", symbols turns to wilds")
@@ -287,12 +292,18 @@ bm - slots with non-reels bonus mode
 casc - slots with cascade falls
 cm - multipliers on cascade avalanche
 fg - slots with any free games
+fgo - slots with non-retriggered free games
+fgt - slots with free games that can be retriggered only once
+fgs - slots with free games that can be retriggered in a sequence
 fgr - slots with separate reels on free games
 fgm - slots with any multipliers on free games
 scat - slots with scatters
-wild - slots with wild symbols
-rw - slots with reel wild symbols
+wany - slots with any wild symbols
+wild - slots with regular wild symbols
+wsc - slots with wild/scatters symbols
+rw - slots with reel wilds
 bw - slots with big wilds (3x3)
+ew - slots with expanding wilds
 wt - symbols turns to wilds
 wm - slots with multiplier on wilds
 big - slots with big symbol (usually 3x3 in the center on free games)

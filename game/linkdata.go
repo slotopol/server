@@ -39,22 +39,31 @@ const (
 	GPcasc  // cascade falls present
 	GPcmult // multipliers on cascade avalanche
 
-	GPfghas  // non-retriggered free games are present
-	GPretrig // free games are present and can be retriggered
+	GPfgonce // non-retriggered free games are present
+	GPfgtwic // free games that can be retriggered only once
+	GPfgseq  // free games that can be retriggered in a sequence
 	GPfgreel // separate reels on free games
+
+	GPrgmult // any multipliers on regular games
 	GPfgmult // any multipliers on free games
+	GPwild   // has wild symbols
+	GPscat   // has scatters
 
-	GPrmult // any multipliers on regular games
-	GPscat  // has scatters
-	GPwild  // has wild symbols
+	GPwsc   // has wild/scatters symbols
 	GPrwild // has reel wild symbols
+	GPbwild // has big (3x3) wild symbols
+	GPewild // has expanding wilds
 
-	GPbwild // has big (3x3) or expanding wild
 	GPwturn // symbols turns to wilds
 	GPwmult // has multiplier on wilds
-	GPbsym  // has big symbol (usually 3x3 in the center on free games)
+	GPbsym  // has big symbol reel (usually with 3x3 in the center on free games)
 
-	GPfgno GP = 0 // free games are absent
+	// free games are absent
+	GPfgno GP = 0
+	// any free games
+	GPfgany GP = GPfgonce | GPfgtwic | GPfgseq
+	// any wild symbols
+	GPwany GP = GPwild | GPwsc | GPrwild | GPbwild | GPewild
 )
 
 type (

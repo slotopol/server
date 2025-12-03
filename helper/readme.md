@@ -32,4 +32,4 @@ megajack/slotopol/reel
 
 ## Automation
 
-In some cases, it's possible to automate the generation of reel sets. To do this, the Lua script must contain the `reelgen` function, which returns the reel for the specified number. Then, you can use one of the scripts in `helper/cmd`.
+In some cases, it's possible to automate the generation of reel sets. To do this, the Lua script must contain the `reelgen` function, which returns the reel for the specified number. Then, you can use one of the scripts in `helper/auto`.

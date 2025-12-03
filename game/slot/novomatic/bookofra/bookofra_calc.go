@@ -35,7 +35,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*bonus reels calculations*\n")
 	var rtpe [9]float64
 	var es slot.Sym
-	for es = 1; es < wcs; es++ {
+	for es = 1; es < wsc; es++ {
 		fmt.Printf("*calculations for expanding symbol [%d]*\n", es)
 		rtpe[es-1] = CalcStatBon(ctx, es)
 		if ctx.Err() != nil {
