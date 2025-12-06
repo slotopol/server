@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "BetSoft", Name: "2 Million B.C.", Date: game.Year(2011)}, // see: https://www.slotsmate.com/software/betsoft/2-million-bc
+		{Prov: "BetSoft", Name: "2 Million B.C.", LNum: 30, Date: game.Year(2011)}, // see: https://www.slotsmate.com/software/betsoft/2-million-bc
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

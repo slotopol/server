@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Goddess of Bells", Date: game.Date(2025, 2, 15)}, // see: https://www.slotsmate.com/software/ct-interactive/goddess-of-bells
+		{Prov: "CT Interactive", Name: "Goddess of Bells", LNum: 9, Date: game.Date(2025, 2, 15)}, // see: https://www.slotsmate.com/software/ct-interactive/goddess-of-bells
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

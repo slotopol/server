@@ -13,8 +13,8 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Wild Clover", Date: game.Date(2020, 12, 25)},     // see: https://www.slotsmate.com/software/ct-interactive/wild-clover
-		{Prov: "CT Interactive", Name: "The Mighty Aztecs", Date: game.Date(2020, 1, 7)}, // see: https://www.slotsmate.com/software/ct-interactive/the-mighty-aztecs
+		{Prov: "CT Interactive", Name: "Wild Clover", LNum: 20, Date: game.Date(2020, 12, 25)},     // see: https://www.slotsmate.com/software/ct-interactive/wild-clover
+		{Prov: "CT Interactive", Name: "The Mighty Aztecs", LNum: 20, Date: game.Date(2020, 1, 7)}, // see: https://www.slotsmate.com/software/ct-interactive/the-mighty-aztecs
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

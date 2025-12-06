@@ -13,9 +13,9 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "AGT", Name: "100 Shining Stars"},
-		{Prov: "AGT", Name: "50 Apples' Shine"},                 // see: https://agtsoftware.com/games/agt/applesshine50
-		{Prov: "AGT", Name: "Red Crown", Date: game.Year(2025)}, // see: https://agtsoftware.com/games/agt/redcrown
+		{Prov: "AGT", Name: "100 Shining Stars", LNum: 100},                // see: https://agtsoftware.com/games/agt/shiningstars100
+		{Prov: "AGT", Name: "50 Apples' Shine", LNum: 50},                  // see: https://agtsoftware.com/games/agt/applesshine50
+		{Prov: "AGT", Name: "Red Crown", LNum: 100, Date: game.Year(2025)}, // see: https://agtsoftware.com/games/agt/redcrown
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

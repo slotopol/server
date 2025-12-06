@@ -37,7 +37,7 @@ var ScatFreespinReg = [5]int{0, 0, 14, 14, 14} // 2 scatter
 var ScatFreespinBon = [5]int{0, 5, 14, 14, 14} // 2 scatter
 
 // Bet lines
-var BetLines = slot.BetLinesCT5x3[:30]
+var BetLines = slot.BetLinesCT5x3[:]
 
 type Game struct {
 	slot.Cascade5x3 `yaml:",inline"`

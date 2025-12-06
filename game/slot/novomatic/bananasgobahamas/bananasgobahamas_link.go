@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Bananas Go Bahamas", Date: game.Year(2004)}, // see: https://www.slotsmate.com/software/novomatic/bananas-go-bahamas
+		{Prov: "Novomatic", Name: "Bananas Go Bahamas", LNum: 9, Date: game.Year(2004)}, // see: https://www.slotsmate.com/software/novomatic/bananas-go-bahamas
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

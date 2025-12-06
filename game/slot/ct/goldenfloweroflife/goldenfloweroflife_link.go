@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Golden Flower Of Life", Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/golden-flower-of-life
+		{Prov: "CT Interactive", Name: "Golden Flower Of Life", LNum: 20, Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/golden-flower-of-life
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

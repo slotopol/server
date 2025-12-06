@@ -13,8 +13,8 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Playtech", Name: "Panther Moon", Date: game.Date(2009, 2, 28)}, // see: https://www.slotsmate.com/software/playtech/panther-moon
-		{Prov: "Playtech", Name: "Safari Heat", Date: game.Date(2009, 3, 1)},   // see: https://www.slotsmate.com/software/playtech/safari-heat
+		{Prov: "Playtech", Name: "Panther Moon", LNum: 15, Date: game.Date(2009, 2, 28)}, // see: https://www.slotsmate.com/software/playtech/panther-moon
+		{Prov: "Playtech", Name: "Safari Heat", LNum: 15, Date: game.Date(2009, 3, 1)},   // see: https://www.slotsmate.com/software/playtech/safari-heat
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "AGT", Name: "Hot Clover", Date: game.Year(2024)},
+		{Prov: "AGT", Name: "Hot Clover", LNum: 100, Date: game.Year(2024)},
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

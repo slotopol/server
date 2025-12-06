@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Fruit Sensation", Date: game.Date(2012, 6, 15)}, // see: https://casino.ru/fruit-sensation-novomatic/
+		{Prov: "Novomatic", Name: "Fruit Sensation", LNum: 10, Date: game.Date(2012, 6, 15)}, // see: https://casino.ru/fruit-sensation-novomatic/
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

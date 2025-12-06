@@ -13,10 +13,10 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Just Jewels", Date: game.Year(2005)},              // see: https://www.slotsmate.com/software/novomatic/just-jewels
-		{Prov: "Novomatic", Name: "Just Jewels Deluxe", Date: game.Date(2008, 7, 1)}, // see: https://www.slotsmate.com/software/novomatic/just-jewels-deluxe
-		{Prov: "Novomatic", Name: "Just Fruits", Date: game.Year(2001)},              // see: https://www.slotsmate.com/software/novomatic/just-fruits
-		{Prov: "Novomatic", Name: "Royal Jewels"},                                    // see: https://casino.ru/garden-of-riches-novomatic/
+		{Prov: "Novomatic", Name: "Just Jewels", LNum: 9, Date: game.Year(2005)},               // see: https://www.slotsmate.com/software/novomatic/just-jewels
+		{Prov: "Novomatic", Name: "Just Jewels Deluxe", LNum: 10, Date: game.Date(2008, 7, 1)}, // see: https://www.slotsmate.com/software/novomatic/just-jewels-deluxe
+		{Prov: "Novomatic", Name: "Just Fruits", LNum: 9, Date: game.Year(2001)},               // see: https://www.slotsmate.com/software/novomatic/just-fruits
+		{Prov: "Novomatic", Name: "Royal Jewels", LNum: 10},                                    // see: https://casino.ru/garden-of-riches-novomatic/
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

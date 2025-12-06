@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "NetEnt", Name: "Reel Steal", Date: game.Date(2008, 10, 3)}, // see: https://www.slotsmate.com/software/netent/reel-steal
+		{Prov: "NetEnt", Name: "Reel Steal", LNum: 9, Date: game.Date(2008, 10, 3)}, // see: https://www.slotsmate.com/software/netent/reel-steal
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

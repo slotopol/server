@@ -13,8 +13,8 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Playtech", Name: "Great Blue", Date: game.Date(2013, 1, 1)}, // see: https://www.slotsmate.com/software/playtech/great-blue
-		{Prov: "Playtech", Name: "Irish Luck", Date: game.Date(2009, 1, 1)}, // see: https://www.slotsmate.com/software/playtech/irish-luck
+		{Prov: "Playtech", Name: "Great Blue", LNum: 25, Date: game.Date(2013, 1, 1)}, // see: https://www.slotsmate.com/software/playtech/great-blue
+		{Prov: "Playtech", Name: "Irish Luck", LNum: 30, Date: game.Date(2009, 1, 1)}, // see: https://www.slotsmate.com/software/playtech/irish-luck
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

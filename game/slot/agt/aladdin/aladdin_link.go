@@ -13,11 +13,11 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "AGT", Name: "Aladdin"},          // see: https://agtsoftware.com/games/agt/aladdin
-		{Prov: "AGT", Name: "Wild West"},        // see: https://agtsoftware.com/games/agt/wildwest
-		{Prov: "AGT", Name: "Crown"},            // see: https://agtsoftware.com/games/agt/crown
-		{Prov: "AGT", Name: "Arabian Nights 2"}, // see: https://agtsoftware.com/games/agt/arabiannights2
-		{Prov: "AGT", Name: "Casino"},           // see: https://agtsoftware.com/games/agt/casino
+		{Prov: "AGT", Name: "Aladdin", LNum: 100},          // see: https://agtsoftware.com/games/agt/aladdin
+		{Prov: "AGT", Name: "Wild West", LNum: 100},        // see: https://agtsoftware.com/games/agt/wildwest
+		{Prov: "AGT", Name: "Crown", LNum: 100},            // see: https://agtsoftware.com/games/agt/crown
+		{Prov: "AGT", Name: "Arabian Nights 2", LNum: 100}, // see: https://agtsoftware.com/games/agt/arabiannights2
+		{Prov: "AGT", Name: "Casino", LNum: 100},           // see: https://agtsoftware.com/games/agt/casino
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

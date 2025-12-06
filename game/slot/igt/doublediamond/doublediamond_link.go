@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "IGT", Name: "Double Diamond", Date: game.Year(2005)}, // see: https://www.slotsmate.com/software/igt/double-diamond
+		{Prov: "IGT", Name: "Double Diamond", LNum: 1, Date: game.Year(2005)}, // see: https://www.slotsmate.com/software/igt/double-diamond
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

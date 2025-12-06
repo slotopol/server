@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Secret Elixir", Date: game.Date(2010, 1, 15)}, // see: https://www.slotsmate.com/software/novomatic/secret-elixir
+		{Prov: "Novomatic", Name: "Secret Elixir", LNum: 10, Date: game.Date(2010, 1, 15)}, // see: https://www.slotsmate.com/software/novomatic/secret-elixir
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "NetEnt", Name: "Arabian Nights", Date: game.Date(2005, 5, 15)}, // see: https://www.slotsmate.com/software/netent/arabian-nights
+		{Prov: "NetEnt", Name: "Arabian Nights", LNum: 10, Date: game.Date(2005, 5, 15)}, // see: https://www.slotsmate.com/software/netent/arabian-nights
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

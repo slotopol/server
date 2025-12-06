@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Full of Luck", Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/full-of-luck
+		{Prov: "CT Interactive", Name: "Full of Luck", LNum: 15, Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/full-of-luck
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

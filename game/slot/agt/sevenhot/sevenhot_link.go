@@ -13,8 +13,8 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "AGT", Name: "Seven Hot"},
-		{Prov: "AGT", Name: "Live Fruits", Date: game.Year(2025)}, // see: https://agtsoftware.com/games/agt/livefruits
+		{Prov: "AGT", Name: "Seven Hot", LNum: 20},                          // see: https://agtsoftware.com/games/agt/sevenhot20
+		{Prov: "AGT", Name: "Live Fruits", LNum: 20, Date: game.Year(2025)}, // see: https://agtsoftware.com/games/agt/livefruits
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

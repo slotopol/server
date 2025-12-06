@@ -13,8 +13,9 @@ var DataRouter = map[string]any{} // object router for data loading
 var LoadMap = [][]byte{} // storage for loaded data
 
 var (
-	ErrNoObj  = errors.New("unknown object id")
-	ErrAidHas = errors.New("algorithm ID already declared")
+	ErrNoObj   = errors.New("unknown object id")
+	ErrAidHas  = errors.New("algorithm ID already declared")
+	ErrLNumOut = errors.New("declared LNum is out of algorithm bel lines set")
 )
 
 // ReadChain reads and decodes a sequence of objects from a stream.

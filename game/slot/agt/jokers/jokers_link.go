@@ -13,9 +13,9 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "AGT", Name: "Jokers"},
-		{Prov: "AGT", Name: "Happy Santa"}, // see: https://agtsoftware.com/games/agt/happysanta
-		{Prov: "AGT", Name: "Bigfoot"},     // see: https://agtsoftware.com/games/agt/bigfoot
+		{Prov: "AGT", Name: "Jokers", LNum: 20},      // see: https://agtsoftware.com/games/agt/jokers20
+		{Prov: "AGT", Name: "Happy Santa", LNum: 20}, // see: https://agtsoftware.com/games/agt/happysanta
+		{Prov: "AGT", Name: "Bigfoot", LNum: 20},     // see: https://agtsoftware.com/games/agt/bigfoot
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

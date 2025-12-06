@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Playtech", Name: "Captain's Treasure", Date: game.Date(2009, 1, 1)}, // see: https://www.slotsmate.com/software/playtech/captain-treasure
+		{Prov: "Playtech", Name: "Captain's Treasure", LNum: 9, Date: game.Date(2009, 1, 1)}, // see: https://www.slotsmate.com/software/playtech/captain-treasure
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

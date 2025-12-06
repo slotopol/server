@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "The Power of Ankh", Date: game.Date(2020, 11, 25)}, // see: https://www.slotsmate.com/software/ct-interactive/the-power-of-ankh
+		{Prov: "CT Interactive", Name: "The Power of Ankh", LNum: 25, Date: game.Date(2020, 11, 25)}, // see: https://www.slotsmate.com/software/ct-interactive/the-power-of-ankh
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

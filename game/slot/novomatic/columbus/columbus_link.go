@@ -13,10 +13,10 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Columbus", Date: game.Year(2005)},                        // see: https://casino.ru/columbus-novomatic/
-		{Prov: "Novomatic", Name: "Columbus Deluxe", Date: game.Date(2008, 3, 19)},          // see: https://www.slotsmate.com/software/novomatic/columbus-deluxe
-		{Prov: "Novomatic", Name: "Marco Polo", Date: game.Year(2008)},                      // see: https://casino.ru/marco-polo-novomatic/
-		{Prov: "Novomatic", Name: "Holmes and Watson Deluxe", Date: game.Date(2018, 3, 15)}, // see: https://www.slotsmate.com/software/novomatic/holmes-and-watson-deluxe
+		{Prov: "Novomatic", Name: "Columbus", LNum: 9, Date: game.Year(2005)},                         // see: https://casino.ru/columbus-novomatic/
+		{Prov: "Novomatic", Name: "Columbus Deluxe", LNum: 10, Date: game.Date(2008, 3, 19)},          // see: https://www.slotsmate.com/software/novomatic/columbus-deluxe
+		{Prov: "Novomatic", Name: "Marco Polo", LNum: 9, Date: game.Year(2008)},                       // see: https://casino.ru/marco-polo-novomatic/
+		{Prov: "Novomatic", Name: "Holmes and Watson Deluxe", LNum: 10, Date: game.Date(2018, 3, 15)}, // see: https://www.slotsmate.com/software/novomatic/holmes-and-watson-deluxe
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

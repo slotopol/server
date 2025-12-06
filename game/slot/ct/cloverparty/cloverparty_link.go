@@ -13,14 +13,14 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Clover Party", Date: game.Date(2020, 11, 26)},    // see: https://www.slotsmate.com/software/ct-interactive/clover-party
-		{Prov: "CT Interactive", Name: "20 Clovers Hot", Date: game.Date(2020, 11, 30)},  // see: https://www.slotsmate.com/software/ct-interactive/20-clovers-hot
-		{Prov: "CT Interactive", Name: "20 Shining Coins", Date: game.Date(2020, 1, 31)}, // see: https://www.slotsmate.com/software/ct-interactive/20-shining-coins
-		{Prov: "CT Interactive", Name: "20 Mega Slot", Date: game.Date(2020, 12, 14)},    // see: https://www.slotsmate.com/software/ct-interactive/20-mega-slot
-		{Prov: "CT Interactive", Name: "20 Mega Fresh", Date: game.Date(2021, 7, 7)},     // see: https://www.slotsmate.com/software/ct-interactive/20-mega-fresh
-		{Prov: "CT Interactive", Name: "20 Mega Star", Date: game.Date(2024, 12, 31)},    // see: https://www.slotsmate.com/software/ct-interactive/20-mega-star
-		{Prov: "CT Interactive", Name: "20 Roosters", Date: game.Date(2019, 12, 31)},     // see: https://www.slotsmate.com/software/ct-interactive/20-roosters
-		{Prov: "CT Interactive", Name: "Egg and Rooster", Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/egg-and-rooster
+		{Prov: "CT Interactive", Name: "Clover Party", LNum: 20, Date: game.Date(2020, 11, 26)},    // see: https://www.slotsmate.com/software/ct-interactive/clover-party
+		{Prov: "CT Interactive", Name: "20 Clovers Hot", LNum: 20, Date: game.Date(2020, 11, 30)},  // see: https://www.slotsmate.com/software/ct-interactive/20-clovers-hot
+		{Prov: "CT Interactive", Name: "20 Shining Coins", LNum: 20, Date: game.Date(2020, 1, 31)}, // see: https://www.slotsmate.com/software/ct-interactive/20-shining-coins
+		{Prov: "CT Interactive", Name: "20 Mega Slot", LNum: 20, Date: game.Date(2020, 12, 14)},    // see: https://www.slotsmate.com/software/ct-interactive/20-mega-slot
+		{Prov: "CT Interactive", Name: "20 Mega Fresh", LNum: 20, Date: game.Date(2021, 7, 7)},     // see: https://www.slotsmate.com/software/ct-interactive/20-mega-fresh
+		{Prov: "CT Interactive", Name: "20 Mega Star", LNum: 20, Date: game.Date(2024, 12, 31)},    // see: https://www.slotsmate.com/software/ct-interactive/20-mega-star
+		{Prov: "CT Interactive", Name: "20 Roosters", LNum: 20, Date: game.Date(2019, 12, 31)},     // see: https://www.slotsmate.com/software/ct-interactive/20-roosters
+		{Prov: "CT Interactive", Name: "Egg and Rooster", LNum: 20, Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/egg-and-rooster
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

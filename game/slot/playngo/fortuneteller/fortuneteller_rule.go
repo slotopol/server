@@ -33,7 +33,7 @@ var ScatPay = [5]float64{0, 2, 3, 30, 300} // 2 cat
 var ScatFreespin = [5]int{0, 0, 15, 20, 25} // 2 cat
 
 // Bet lines
-var BetLines = slot.BetLinesPlt5x3[:20]
+var BetLines = slot.BetLinesPlt5x3[:]
 
 const (
 	cbn = 1 // cards bonus

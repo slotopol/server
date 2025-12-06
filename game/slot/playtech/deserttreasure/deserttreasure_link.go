@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Playtech", Name: "Desert Treasure", Date: game.Date(2005, 11, 1)}, // see: https://www.slotsmate.com/software/playtech/playtech-desert-treasure
+		{Prov: "Playtech", Name: "Desert Treasure", LNum: 9, Date: game.Date(2005, 11, 1)}, // see: https://www.slotsmate.com/software/playtech/playtech-desert-treasure
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

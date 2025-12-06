@@ -24,7 +24,7 @@ var LinePay = [8][5]float64{
 var ScatPay = [5]float64{0, 0, 2, 10, 50} // crown
 
 // Bet lines
-var BetLines = slot.BetLinesNvm10[:5]
+var BetLines = slot.BetLinesNvm10[:]
 
 type Game struct {
 	slot.Screen5x3 `yaml:",inline"`

@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "IGT", Name: "Cleopatra", Date: game.Date(2012, 4, 1)}, // see: https://www.slotsmate.com/software/igt/igt-cleopatra
+		{Prov: "IGT", Name: "Cleopatra", LNum: 20, Date: game.Date(2012, 4, 1)}, // see: https://www.slotsmate.com/software/igt/igt-cleopatra
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

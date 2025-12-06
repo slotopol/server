@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Flame Dancer", Date: game.Date(2012, 11, 15)}, // see: https://casino.ru/flame-dancer-novomatic/
+		{Prov: "Novomatic", Name: "Flame Dancer", LNum: 20, Date: game.Date(2012, 11, 15)}, // see: https://casino.ru/flame-dancer-novomatic/
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

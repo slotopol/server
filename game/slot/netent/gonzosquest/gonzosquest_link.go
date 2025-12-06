@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "NetEnt", Name: "Gonzo's Quest", Date: game.Date(2011, 5, 15)}, // see: https://www.slotsmate.com/software/netent/gonzos-quest
+		{Prov: "NetEnt", Name: "Gonzo's Quest", LNum: 20, Date: game.Date(2011, 5, 15)}, // see: https://www.slotsmate.com/software/netent/gonzos-quest
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

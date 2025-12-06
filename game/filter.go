@@ -115,16 +115,16 @@ func GetFilter(key string) Filter {
 		return func(gi *GameInfo) bool { return gi.Date != 0 && gi.Date.Year() > year }
 	}
 	if s := reLNEQ.FindStringSubmatch(key); len(s) > 0 {
-		var ln, _ = strconv.Atoi(s[2])
-		return func(gi *GameInfo) bool { return gi.LN == ln }
+		var lnum, _ = strconv.Atoi(s[2])
+		return func(gi *GameInfo) bool { return gi.LNum == lnum }
 	}
 	if s := reLNLT.FindStringSubmatch(key); len(s) > 0 {
-		var ln, _ = strconv.Atoi(s[2])
-		return func(gi *GameInfo) bool { return gi.LN != 0 && gi.LN < ln }
+		var lnum, _ = strconv.Atoi(s[2])
+		return func(gi *GameInfo) bool { return gi.LNum != 0 && gi.LNum < lnum }
 	}
 	if s := reLNGT.FindStringSubmatch(key); len(s) > 0 {
-		var ln, _ = strconv.Atoi(s[2])
-		return func(gi *GameInfo) bool { return gi.LN != 0 && gi.LN > ln }
+		var lnum, _ = strconv.Atoi(s[2])
+		return func(gi *GameInfo) bool { return gi.LNum != 0 && gi.LNum > lnum }
 	}
 	if s := reWNEQ.FindStringSubmatch(key); len(s) > 0 {
 		var wn, _ = strconv.Atoi(s[2])

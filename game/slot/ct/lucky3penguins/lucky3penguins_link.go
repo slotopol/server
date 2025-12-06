@@ -10,7 +10,7 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Lucky 3 Penguins", Date: game.Date(2020, 12, 11)}, // see: https://www.slotsmate.com/software/ct-interactive/lucky-3-penguins
+		{Prov: "CT Interactive", Name: "Lucky 3 Penguins", LNum: 20, Date: game.Date(2020, 12, 11)}, // see: https://www.slotsmate.com/software/ct-interactive/lucky-3-penguins
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

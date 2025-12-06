@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Helena", Date: game.Date(2016, 8, 15)}, // see: https://www.slotsmate.com/software/novomatic/helena
+		{Prov: "Novomatic", Name: "Helena", LNum: 10, Date: game.Date(2016, 8, 15)}, // see: https://www.slotsmate.com/software/novomatic/helena
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

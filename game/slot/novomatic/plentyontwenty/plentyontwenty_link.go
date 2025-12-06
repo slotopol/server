@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Plenty on Twenty", Date: game.Year(2006)}, // see: https://casino.ru/plenty-on-twenty-novomatic/
+		{Prov: "Novomatic", Name: "Plenty on Twenty", LNum: 20, Date: game.Year(2006)}, // see: https://casino.ru/plenty-on-twenty-novomatic/
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

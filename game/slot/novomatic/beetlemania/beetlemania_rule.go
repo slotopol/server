@@ -31,7 +31,7 @@ const (
 )
 
 // Bet lines
-var BetLines = slot.BetLinesNvm10[:10]
+var BetLines = slot.BetLinesNvm10[:]
 
 type Game struct {
 	slot.Screen5x3 `yaml:",inline"`

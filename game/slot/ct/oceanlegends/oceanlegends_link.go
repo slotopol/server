@@ -13,8 +13,8 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Ocean Legends", Date: game.Date(2020, 11, 26)},         // see: https://www.slotsmate.com/software/ct-interactive/ocean-legends
-		{Prov: "CT Interactive", Name: "The Temple of Astarta", Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/the-temple-of-astarta
+		{Prov: "CT Interactive", Name: "Ocean Legends", LNum: 25, Date: game.Date(2020, 11, 26)},         // see: https://www.slotsmate.com/software/ct-interactive/ocean-legends
+		{Prov: "CT Interactive", Name: "The Temple of Astarta", LNum: 25, Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/the-temple-of-astarta
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

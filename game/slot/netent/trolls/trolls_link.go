@@ -13,10 +13,10 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "NetEnt", Name: "Trolls", Date: game.Year(2009)},            // see: https://casino.ru/trolls-netent/
-		{Prov: "NetEnt", Name: "Excalibur", Date: game.Date(2013, 11, 11)}, // see: https://www.slotsmate.com/software/netent/excalibur
-		{Prov: "NetEnt", Name: "Pandora's Box", Date: game.Year(2009)},
-		{Prov: "NetEnt", Name: "Wild Witches", Date: game.Year(2010)},
+		{Prov: "NetEnt", Name: "Trolls", Date: game.Year(2009), LNum: 20},            // see: https://casino.ru/trolls-netent/
+		{Prov: "NetEnt", Name: "Excalibur", Date: game.Date(2013, 11, 11), LNum: 20}, // see: https://www.slotsmate.com/software/netent/excalibur
+		{Prov: "NetEnt", Name: "Pandora's Box", Date: game.Year(2009), LNum: 20},
+		{Prov: "NetEnt", Name: "Wild Witches", Date: game.Year(2010), LNum: 20},
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

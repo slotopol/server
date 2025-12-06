@@ -13,8 +13,8 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "BetSoft", Name: "At the Movies", Date: game.Year(2012)}, // see: https://www.slotsmate.com/software/betsoft/at-the-movies
-		{Prov: "BetSoft", Name: "Sushi Bar", Date: game.Year(2014)},     // see: https://www.slotsmate.com/software/betsoft/sushi-bar
+		{Prov: "BetSoft", Name: "At the Movies", LNum: 25, Date: game.Year(2012)}, // see: https://www.slotsmate.com/software/betsoft/at-the-movies
+		{Prov: "BetSoft", Name: "Sushi Bar", LNum: 25, Date: game.Year(2014)},     // see: https://www.slotsmate.com/software/betsoft/sushi-bar
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

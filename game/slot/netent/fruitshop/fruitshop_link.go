@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "NetEnt", Name: "Fruit Shop", Date: game.Date(2011, 9, 15)}, // see: https://games.netent.com/video-slots/fruit-shop/
+		{Prov: "NetEnt", Name: "Fruit Shop", LNum: 15, Date: game.Date(2011, 9, 15)}, // see: https://games.netent.com/video-slots/fruit-shop/
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

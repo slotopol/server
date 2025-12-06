@@ -9,7 +9,7 @@ import (
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "AGT", Name: "Extra Spin III"},
+		{Prov: "AGT", Name: "Extra Spin III", LNum: 10}, // see: https://agtsoftware.com/games/agt/extraspin3
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

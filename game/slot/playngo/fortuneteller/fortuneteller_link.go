@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Play'n GO", Name: "Fortune Teller", Date: game.Date(2012, 5, 30)}, // see: https://www.slotsmate.com/software/play-n-go/play-n-go-fortune-teller
+		{Prov: "Play'n GO", Name: "Fortune Teller", LNum: 20, Date: game.Date(2012, 5, 30)}, // see: https://www.slotsmate.com/software/play-n-go/play-n-go-fortune-teller
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

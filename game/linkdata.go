@@ -2,6 +2,8 @@ package game
 
 import (
 	"context"
+	"fmt"
+	"log"
 	"math"
 	"sort"
 
@@ -74,9 +76,10 @@ type (
 	// except maximum number of selected lines can differ. If maximum number
 	// of lines differ, algorithm receives largest number.
 	GameAlias struct {
-		Prov string    `json:"prov" yaml:"prov" xml:"prov"`
-		Name string    `json:"name" yaml:"name" xml:"name"`
-		Date util.Unix `json:"date,omitempty" yaml:"date,omitempty" xml:"date,omitempty"`
+		Prov string    `json:"prov" yaml:"prov" xml:"prov"`                               // game provider
+		Name string    `json:"name" yaml:"name" xml:"name"`                               // game name
+		LNum int       `json:"lnum,omitempty" yaml:"lnum,omitempty" xml:"lnum,omitempty"` // maximum number of selectable lines
+		Date util.Unix `json:"date,omitempty" yaml:"date,omitempty" xml:"date,omitempty"` // game release date
 	}
 
 	AlgDescr struct {
@@ -85,7 +88,7 @@ type (
 		SX  int       `json:"sx,omitempty" yaml:"sx,omitempty" xml:"sx,omitempty"` // screen width
 		SY  int       `json:"sy,omitempty" yaml:"sy,omitempty" xml:"sy,omitempty"` // screen height
 		SN  int       `json:"sn,omitempty" yaml:"sn,omitempty" xml:"sn,omitempty"` // number of symbols
-		LN  int       `json:"ln,omitempty" yaml:"ln,omitempty" xml:"ln,omitempty"` // number of lines
+		LN  int       `json:"ln,omitempty" yaml:"ln,omitempty" xml:"ln,omitempty"` // number of lines in bet lines set
 		WN  int       `json:"wn,omitempty" yaml:"wn,omitempty" xml:"wn,omitempty"` // number of ways
 		BN  int       `json:"bn,omitempty" yaml:"bn,omitempty" xml:"bn,omitempty"` // number of bonuses
 		RTP []float64 `json:"rtp" yaml:"rtp,flow" xml:"rtp"`                       // 'Return to Player' percents list
@@ -131,7 +134,18 @@ func (ai *AlgInfo) SetupFactory(game func() Gamble, scan Scanner) {
 	for _, ga := range ai.Aliases {
 		var aid = util.ToID(ga.Prov + "/" + ga.Name)
 		if _, ok := InfoMap[aid]; ok {
-			panic(ErrAidHas)
+			panic(fmt.Errorf("%s: %w", aid, ErrAidHas))
+		}
+		if ai.GT == GTslot {
+			if ga.LNum > ai.LN {
+				panic(fmt.Errorf("%s: %w", aid, ErrLNumOut))
+			}
+			if ai.LN > 0 && ga.LNum == 0 {
+				log.Printf("%s: LNum is not set for game with lines set of %d lines", aid, ai.LN)
+			}
+			if ai.LN == 0 && ai.WN == 0 && ai.GP&GPcpay == 0 {
+				log.Printf("%s: both LN and WN are zero", aid)
+			}
 		}
 		InfoMap[aid] = &GameInfo{
 			GameAlias: ga,

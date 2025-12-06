@@ -25,7 +25,7 @@ var LinePay = [12][5]float64{
 }
 
 // Bet lines
-var BetLines = slot.BetLinesNetEnt5x4[:40]
+var BetLines = slot.BetLinesNetEnt5x4[:]
 
 type Game struct {
 	slot.Screen5x4 `yaml:",inline"`

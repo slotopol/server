@@ -13,9 +13,9 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Fruit Galaxy", Date: game.Date(2021, 5, 5)},     // see: https://www.slotsmate.com/software/ct-interactive/fruit-galaxy
-		{Prov: "CT Interactive", Name: "Lord of Luck", Date: game.Date(2020, 12, 18)},   // see: https://www.slotsmate.com/software/ct-interactive/lord-of-luck
-		{Prov: "CT Interactive", Name: "Queen of Flames", Date: game.Date(2020, 11, 1)}, // see: https://www.slotsmate.com/software/ct-interactive/queen-of-flames
+		{Prov: "CT Interactive", Name: "Fruit Galaxy", LNum: 40, Date: game.Date(2021, 5, 5)},     // see: https://www.slotsmate.com/software/ct-interactive/fruit-galaxy
+		{Prov: "CT Interactive", Name: "Lord of Luck", LNum: 40, Date: game.Date(2020, 12, 18)},   // see: https://www.slotsmate.com/software/ct-interactive/lord-of-luck
+		{Prov: "CT Interactive", Name: "Queen of Flames", LNum: 40, Date: game.Date(2020, 11, 1)}, // see: https://www.slotsmate.com/software/ct-interactive/queen-of-flames
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

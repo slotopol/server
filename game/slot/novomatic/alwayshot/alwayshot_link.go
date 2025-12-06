@@ -13,10 +13,10 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Always Hot", Date: game.Date(2008, 11, 17)},
-		{Prov: "Novomatic", Name: "Always Hot Deluxe", Date: game.Date(2008, 11, 18)}, // see: https://www.slotsmate.com/software/novomatic/always-hot-deluxe
-		{Prov: "Novomatic", Name: "Always American", Date: game.Date(2016, 4, 15)},    // see: https://www.slotsmate.com/software/novomatic/always-american
-		{Prov: "AGT", Name: "Tropic Hot"},                                             // see: https://agtsoftware.com/games/agt/tropichot
+		{Prov: "Novomatic", Name: "Always Hot", LNum: 5, Date: game.Date(2008, 11, 17)},
+		{Prov: "Novomatic", Name: "Always Hot Deluxe", LNum: 5, Date: game.Date(2008, 11, 18)}, // see: https://www.slotsmate.com/software/novomatic/always-hot-deluxe
+		{Prov: "Novomatic", Name: "Always American", LNum: 5, Date: game.Date(2016, 4, 15)},    // see: https://www.slotsmate.com/software/novomatic/always-american
+		{Prov: "AGT", Name: "Tropic Hot", LNum: 5},                                             // see: https://agtsoftware.com/games/agt/tropichot
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

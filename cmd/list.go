@@ -62,11 +62,11 @@ func FormatGameInfo(gi *game.GameInfo) string {
 		if gi.SN > 0 {
 			fmt.Fprintf(&b, ", %d symbols", gi.SN)
 		}
-		if gi.LN > 0 {
+		if gi.LNum > 0 {
 			if gi.GP&game.GPlsel == 0 {
-				fmt.Fprintf(&b, ", constant %d lines", gi.LN)
+				fmt.Fprintf(&b, ", constant %d lines", gi.LNum)
 			} else {
-				fmt.Fprintf(&b, ", %d lines", gi.LN)
+				fmt.Fprintf(&b, ", %d lines", gi.LNum)
 			}
 		}
 		if gi.WN > 0 {

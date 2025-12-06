@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Pyramid of Gold", Date: game.Date(2020, 11, 25)}, // see: https://www.slotsmate.com/software/ct-interactive/pyramid-of-gold
+		{Prov: "CT Interactive", Name: "Pyramid of Gold", LNum: 50, Date: game.Date(2020, 11, 25)}, // see: https://www.slotsmate.com/software/ct-interactive/pyramid-of-gold
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

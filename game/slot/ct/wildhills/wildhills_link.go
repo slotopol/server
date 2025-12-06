@@ -13,11 +13,11 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Wild Hills", Date: game.Date(2020, 11, 26)},        // see: https://www.slotsmate.com/software/ct-interactive/wild-hills
-		{Prov: "CT Interactive", Name: "The Great Cabaret", Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/the-great-cabaret
-		{Prov: "CT Interactive", Name: "Magician Dreaming", Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/magician-dreaming
-		{Prov: "CT Interactive", Name: "Jade Heaven", Date: game.Date(2020, 11, 26)},       // see: https://www.slotsmate.com/software/ct-interactive/jade-heaven
-		{Prov: "CT Interactive", Name: "Navy Girl", Date: game.Date(2020, 11, 26)},         // see: https://www.slotsmate.com/software/ct-interactive/navy-girl
+		{Prov: "CT Interactive", Name: "Wild Hills", LNum: 10, Date: game.Date(2020, 11, 26)},        // see: https://www.slotsmate.com/software/ct-interactive/wild-hills
+		{Prov: "CT Interactive", Name: "The Great Cabaret", LNum: 10, Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/the-great-cabaret
+		{Prov: "CT Interactive", Name: "Magician Dreaming", LNum: 10, Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/magician-dreaming
+		{Prov: "CT Interactive", Name: "Jade Heaven", LNum: 15, Date: game.Date(2020, 11, 26)},       // see: https://www.slotsmate.com/software/ct-interactive/jade-heaven
+		{Prov: "CT Interactive", Name: "Navy Girl", LNum: 10, Date: game.Date(2020, 11, 26)},         // see: https://www.slotsmate.com/software/ct-interactive/navy-girl
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

@@ -13,8 +13,8 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Plenty of Jewels 20 hot", Date: game.Date(2015, 11, 1)}, // see: https://www.slotsmate.com/software/novomatic/plenty-of-jewels-20-hot
-		{Prov: "Novomatic", Name: "Plenty of Fruit 20 hot", Date: game.Date(2015, 11, 4)},  // see: https://www.slotsmate.com/software/novomatic/plenty-of-fruit-20-hot
+		{Prov: "Novomatic", Name: "Plenty of Jewels 20 hot", LNum: 20, Date: game.Date(2015, 11, 1)}, // see: https://www.slotsmate.com/software/novomatic/plenty-of-jewels-20-hot
+		{Prov: "Novomatic", Name: "Plenty of Fruit 20 hot", LNum: 20, Date: game.Date(2015, 11, 4)},  // see: https://www.slotsmate.com/software/novomatic/plenty-of-fruit-20-hot
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,
