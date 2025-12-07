@@ -5,7 +5,7 @@ import "math/rand/v2"
 type Cascade interface {
 	Screen
 	UntoFall()            // set fall number before scanner call
-	PushFall(reels Reels) // fill screen on fall in avalanche chain
+	PushFall(reels Reelx) // fill screen on fall in avalanche chain
 	Strike(wins Wins)     // strike win symbols on the screen
 }
 
@@ -36,7 +36,7 @@ func (s *Cascade5x3) SetCol(x Pos, reel []Sym, pos int) {
 	s.Pos[x-1] = pos
 }
 
-func (s *Cascade5x3) ReelSpin(reels Reels) {
+func (s *Cascade5x3) ReelSpin(reels Reelx) {
 	if s.CFN > 1 {
 		s.PushFall(reels)
 	} else {
@@ -44,17 +44,15 @@ func (s *Cascade5x3) ReelSpin(reels Reels) {
 	}
 }
 
-func (s *Cascade5x3) TopFall(reels Reels) {
-	var r5x = reels.(*Reels5x)
+func (s *Cascade5x3) TopFall(reels Reelx) {
 	for x := range Pos(5) {
-		var reel = r5x[x]
+		var reel = reels[x]
 		var pos = rand.N(len(reel))
 		s.SetCol(x+1, reel, pos)
 	}
 }
 
-func (s *Cascade5x3) PushFall(reels Reels) {
-	var r5x = reels.(*Reels5x)
+func (s *Cascade5x3) PushFall(reels Reelx) {
 	for x := range 5 {
 		// fall old symbols
 		var n = 0
@@ -69,7 +67,7 @@ func (s *Cascade5x3) PushFall(reels Reels) {
 		// fall new symbols
 		s.Pos[x] -= n
 		for y := range n {
-			s.Scr[x][y] = ReelAt(r5x[x], s.Pos[x]+y)
+			s.Scr[x][y] = ReelAt(reels[x], s.Pos[x]+y)
 		}
 	}
 }
@@ -119,7 +117,7 @@ func (s *Cascade5x4) SetCol(x Pos, reel []Sym, pos int) {
 	s.Pos[x-1] = pos
 }
 
-func (s *Cascade5x4) ReelSpin(reels Reels) {
+func (s *Cascade5x4) ReelSpin(reels Reelx) {
 	if s.CFN > 1 {
 		s.PushFall(reels)
 	} else {
@@ -127,17 +125,15 @@ func (s *Cascade5x4) ReelSpin(reels Reels) {
 	}
 }
 
-func (s *Cascade5x4) TopFall(reels Reels) {
-	var r5x = reels.(*Reels5x)
+func (s *Cascade5x4) TopFall(reels Reelx) {
 	for x := range Pos(5) {
-		var reel = r5x[x]
+		var reel = reels[x]
 		var pos = rand.N(len(reel))
 		s.SetCol(x+1, reel, pos)
 	}
 }
 
-func (s *Cascade5x4) PushFall(reels Reels) {
-	var r5x = reels.(*Reels5x)
+func (s *Cascade5x4) PushFall(reels Reelx) {
 	for x := range 5 {
 		// fall old symbols
 		var n = 0
@@ -152,7 +148,7 @@ func (s *Cascade5x4) PushFall(reels Reels) {
 		// fall new symbols
 		s.Pos[x] -= n
 		for y := range n {
-			s.Scr[x][y] = ReelAt(r5x[x], s.Pos[x]+y)
+			s.Scr[x][y] = ReelAt(reels[x], s.Pos[x]+y)
 		}
 	}
 }

@@ -14,7 +14,7 @@ type Screen interface {
 	LY(x Pos, line Linex) Sym          // returns symbol at position (x, line(x)), starts from (1, 1)
 	SetSym(x, y Pos, sym Sym)          // setup symbol at given position
 	SetCol(x Pos, reel []Sym, pos int) // setup column on screen with given reel at given position
-	ReelSpin(reels Reels)              // fill the screen with random hits on those reels
+	ReelSpin(reels Reelx)              // fill the screen with random hits on those reels
 	SymNum(sym Sym) (n Pos)            // returns number of symbols on the screen
 	SymPos(sym Sym) Hitx               // returns symbols positions on the screen
 }
@@ -71,7 +71,7 @@ func (s *Screenx) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screenx) ReelSpin(reels Reels) {
+func (s *Screenx) ReelSpin(reels Reelx) {
 	var x Pos
 	for x = 1; x <= s.sx; x++ {
 		var reel = reels.Reel(x)
@@ -155,7 +155,7 @@ func (s *Screen3x3) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screen3x3) ReelSpin(reels Reels) {
+func (s *Screen3x3) ReelSpin(reels Reelx) {
 	var x Pos
 	for x = 1; x <= 3; x++ {
 		var reel = reels.Reel(x)
@@ -220,7 +220,7 @@ func (s *Screen4x4) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screen4x4) ReelSpin(reels Reels) {
+func (s *Screen4x4) ReelSpin(reels Reelx) {
 	var x Pos
 	for x = 1; x <= 4; x++ {
 		var reel = reels.Reel(x)
@@ -295,7 +295,7 @@ func (s *Screen5x3) SetBig(big Sym) {
 	}
 }
 
-func (s *Screen5x3) ReelSpin(reels Reels) {
+func (s *Screen5x3) ReelSpin(reels Reelx) {
 	var x Pos
 	for x = 1; x <= 5; x++ {
 		var reel = reels.Reel(x)
@@ -404,7 +404,7 @@ func (s *Screen5x4) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screen5x4) ReelSpin(reels Reels) {
+func (s *Screen5x4) ReelSpin(reels Reelx) {
 	var x Pos
 	for x = 1; x <= 5; x++ {
 		var reel = reels.Reel(x)
@@ -497,7 +497,7 @@ func (s *Screen6x3) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screen6x3) ReelSpin(reels Reels) {
+func (s *Screen6x3) ReelSpin(reels Reelx) {
 	var x Pos
 	for x = 1; x <= 6; x++ {
 		var reel = reels.Reel(x)
@@ -562,7 +562,7 @@ func (s *Screen6x4) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screen6x4) ReelSpin(reels Reels) {
+func (s *Screen6x4) ReelSpin(reels Reelx) {
 	var x Pos
 	for x = 1; x <= 6; x++ {
 		var reel = reels.Reel(x)

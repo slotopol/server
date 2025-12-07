@@ -10,7 +10,7 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-func BruteForce5x3es2(ctx context.Context, s slot.Stater, g *Game, reels *slot.Reels5x, es slot.Sym) {
+func BruteForce5x3es2(ctx context.Context, s slot.Stater, g *Game, reels slot.Reelx, es slot.Sym) {
 	var tn = slot.CorrectThrNum()
 	var tn64 = uint64(tn)
 	var r3 = reels.Reel(3)
@@ -66,7 +66,7 @@ func BruteForce5x3es2(ctx context.Context, s slot.Stater, g *Game, reels *slot.R
 	wg.Wait()
 }
 
-func BruteForce5x3es3(ctx context.Context, s slot.Stater, g *Game, reels *slot.Reels5x, es slot.Sym) {
+func BruteForce5x3es3(ctx context.Context, s slot.Stater, g *Game, reels slot.Reelx, es slot.Sym) {
 	var tn = slot.CorrectThrNum()
 	var tn64 = uint64(tn)
 	var r4 = reels.Reel(4)

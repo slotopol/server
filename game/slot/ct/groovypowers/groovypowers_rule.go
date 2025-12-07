@@ -12,7 +12,7 @@ import (
 // Determines how often spins are played in the bonus mode.
 const Pbm = 1.0 / 15.0
 
-var ReelsMap slot.ReelsMap[*slot.Reels5x]
+var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
 var LinePay = [10][5]float64{

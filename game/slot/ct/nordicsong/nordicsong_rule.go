@@ -8,9 +8,9 @@ import (
 
 // Remark: bonus reels are not specified in the game rules,
 // but are presented as is.
-var ReelsBon *slot.Reels5x
+var ReelsBon slot.Reelx
 
-var ReelsMap slot.ReelsMap[*slot.Reels5x]
+var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
 var LinePay = [11][5]float64{

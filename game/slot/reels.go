@@ -1,16 +1,10 @@
 package slot
 
 import (
-	"fmt"
 	"math"
+	"strconv"
+	"strings"
 )
-
-type Reels interface {
-	Cols() int          // returns number of columns
-	Reel(col Pos) []Sym // returns reel at given column, index from
-	Reshuffles() uint64 // returns total number of reshuffles
-	fmt.Stringer
-}
 
 // ReelAt returns symbol on the reel at true cyclic position.
 // Incoming "pos" can be greater than reel length, or can be negative.
@@ -19,108 +13,37 @@ func ReelAt(reel []Sym, pos int) Sym {
 	return reel[(n+pos%n)%n]
 }
 
-// Reels for 3-reels slots.
-type Reels3x [3][]Sym
+type Reelx [][]Sym
 
-// Declare conformity with Reels interface.
-var _ Reels = (*Reels3x)(nil)
-
-func (r *Reels3x) Cols() int {
-	return 3
-}
-
-func (r *Reels3x) Reel(col Pos) []Sym {
+// Returns reel at given column, index is 1-based.
+func (r Reelx) Reel(col Pos) []Sym {
 	return r[col-1]
 }
 
-func (r *Reels3x) Reshuffles() uint64 {
-	return uint64(len(r[0])) * uint64(len(r[1])) * uint64(len(r[2]))
+// Returns total number of reshuffles.
+func (r Reelx) Reshuffles() uint64 {
+	var res uint64 = 1
+	for _, reel := range r {
+		res *= uint64(len(reel))
+	}
+	return res
 }
 
-func (r *Reels3x) String() string {
-	return fmt.Sprintf("[%d, %d, %d]", len(r[0]), len(r[1]), len(r[2]))
+func (r Reelx) String() string {
+	var b strings.Builder
+	b.WriteString("[")
+	for i, reel := range r {
+		if i > 0 {
+			b.WriteString(", ")
+		}
+		b.WriteString(strconv.Itoa(len(reel)))
+	}
+	b.WriteString("]")
+	return b.String()
 }
 
-func (r *Reels3x) Clear() {
-	clear(r[:])
-}
-
-// Reels for 4-reels slots.
-type Reels4x [4][]Sym
-
-// Declare conformity with Reels interface.
-var _ Reels = (*Reels4x)(nil)
-
-func (r *Reels4x) Cols() int {
-	return 4
-}
-
-func (r *Reels4x) Reel(col Pos) []Sym {
-	return r[col-1]
-}
-
-func (r *Reels4x) Reshuffles() uint64 {
-	return uint64(len(r[0])) * uint64(len(r[1])) * uint64(len(r[2])) * uint64(len(r[3]))
-}
-
-func (r *Reels4x) String() string {
-	return fmt.Sprintf("[%d, %d, %d, %d]", len(r[0]), len(r[1]), len(r[2]), len(r[3]))
-}
-
-func (r *Reels4x) Clear() {
-	clear(r[:])
-}
-
-// Reels for 5-reels slots.
-type Reels5x [5][]Sym
-
-// Declare conformity with Reels interface.
-var _ Reels = (*Reels5x)(nil)
-
-func (r *Reels5x) Cols() int {
-	return 5
-}
-
-func (r *Reels5x) Reel(col Pos) []Sym {
-	return r[col-1]
-}
-
-func (r *Reels5x) Reshuffles() uint64 {
-	return uint64(len(r[0])) * uint64(len(r[1])) * uint64(len(r[2])) * uint64(len(r[3])) * uint64(len(r[4]))
-}
-
-func (r *Reels5x) String() string {
-	return fmt.Sprintf("[%d, %d, %d, %d, %d]", len(r[0]), len(r[1]), len(r[2]), len(r[3]), len(r[4]))
-}
-
-func (r *Reels5x) Clear() {
-	clear(r[:])
-}
-
-// Reels for 6-reels slots.
-type Reels6x [6][]Sym
-
-// Declare conformity with Reels interface.
-var _ Reels = (*Reels6x)(nil)
-
-func (r *Reels6x) Cols() int {
-	return 6
-}
-
-func (r *Reels6x) Reel(col Pos) []Sym {
-	return r[col-1]
-}
-
-func (r *Reels6x) Reshuffles() uint64 {
-	return uint64(len(r[0])) * uint64(len(r[1])) * uint64(len(r[2])) * uint64(len(r[3])) * uint64(len(r[4])) * uint64(len(r[5]))
-}
-
-func (r *Reels6x) String() string {
-	return fmt.Sprintf("[%d, %d, %d, %d, %d, %d]", len(r[0]), len(r[1]), len(r[2]), len(r[3]), len(r[4]), len(r[5]))
-}
-
-func (r *Reels6x) Clear() {
-	clear(r[:])
+func (r Reelx) Clear() {
+	clear(r)
 }
 
 type ReelsMap[T any] map[float64]T

@@ -6,7 +6,7 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-var ReelsMap slot.ReelsMap[*slot.Reels5x]
+var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Symbols payment.
 var SymPay = [10][7]float64{

@@ -5,7 +5,7 @@ import (
 	"github.com/slotopol/server/game/slot/megajack/slotopol"
 )
 
-var ReelsMap slot.ReelsMap[*slot.Reels5x]
+var ReelsMap slot.ReelsMap[slot.Reelx]
 
 var JackMap = slot.ReelsMap[float64]{}
 

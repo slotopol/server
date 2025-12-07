@@ -194,7 +194,7 @@ func Progress(ctx context.Context, s Stater, calc func(io.Writer) float64) {
 	}
 }
 
-type CalcAlg = func(ctx context.Context, s Stater, g SlotGame, reels Reels)
+type CalcAlg = func(ctx context.Context, s Stater, g SlotGame, reels Reelx)
 
 const (
 	CtxGranulation = 100
@@ -212,7 +212,7 @@ func CorrectThrNum() int {
 	return cfg.MTCount
 }
 
-func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
+func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels Reelx) {
 	s.SetPlan(reels.Reshuffles())
 	var tn = CorrectThrNum()
 	var tn64 = uint64(tn)
@@ -291,7 +291,7 @@ func BruteForce3x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	wg.Wait()
 }
 
-func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
+func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels Reelx) {
 	s.SetPlan(reels.Reshuffles())
 	var tn = CorrectThrNum()
 	var tn64 = uint64(tn)
@@ -375,7 +375,7 @@ func BruteForce4x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	wg.Wait()
 }
 
-func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
+func BruteForce5x(ctx context.Context, s Stater, g SlotGame, reels Reelx) {
 	s.SetPlan(reels.Reshuffles())
 	var tn = CorrectThrNum()
 	var tn64 = uint64(tn)
@@ -509,7 +509,7 @@ func BruteForce5x3Big(ctx context.Context, s Stater, g SlotGame, r1, rb, r5 []Sy
 	wg.Wait()
 }
 
-func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
+func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels Reelx) {
 	s.SetPlan(reels.Reshuffles())
 	var tn = CorrectThrNum()
 	var tn64 = uint64(tn)
@@ -603,7 +603,7 @@ func BruteForce6x(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	wg.Wait()
 }
 
-func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
+func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reelx) {
 	s.SetPlan(cfg.MCCount * 1e6)
 	var tn = CorrectThrNum()
 	var tn64 = uint64(tn)
@@ -667,7 +667,7 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reels) {
 	wg.Wait()
 }
 
-func MonteCarloPrec(ctx context.Context, s Stater, g SlotGame, reels Reels, calc func(io.Writer) float64) {
+func MonteCarloPrec(ctx context.Context, s Stater, g SlotGame, reels Reelx, calc func(io.Writer) float64) {
 	s.SetPlan(0)
 	var tn = CorrectThrNum()
 	var rtpcmp float64
@@ -746,12 +746,12 @@ func MonteCarloPrec(ctx context.Context, s Stater, g SlotGame, reels Reels, calc
 }
 
 func MCCalcAlg(calc func(io.Writer) float64) CalcAlg {
-	return func(ctx context.Context, s Stater, g SlotGame, reels Reels) {
+	return func(ctx context.Context, s Stater, g SlotGame, reels Reelx) {
 		MonteCarloPrec(ctx, s, g, reels, calc)
 	}
 }
 
-func ScanReels(ctx context.Context, s Stater, g SlotGame, reels Reels,
+func ScanReels(ctx context.Context, s Stater, g SlotGame, reels Reelx,
 	bruteforce, montecarlo, montecarloprec CalcAlg,
 	calc func(io.Writer) float64) float64 {
 	var t0 = time.Now()
@@ -790,22 +790,34 @@ func ScanReels(ctx context.Context, s Stater, g SlotGame, reels Reels,
 	return calc(os.Stdout)
 }
 
-func ScanReels3x(ctx context.Context, s Stater, g SlotGame, reels *Reels3x,
+func ScanReels3x(ctx context.Context, s Stater, g SlotGame, reels Reelx,
 	calc func(io.Writer) float64) float64 {
+	if len(reels) != 3 {
+		panic("invalid reels count")
+	}
 	return ScanReels(ctx, s, g, reels, BruteForce3x, MonteCarlo, MCCalcAlg(calc), calc)
 }
 
-func ScanReels4x(ctx context.Context, s Stater, g SlotGame, reels *Reels4x,
+func ScanReels4x(ctx context.Context, s Stater, g SlotGame, reels Reelx,
 	calc func(io.Writer) float64) float64 {
+	if len(reels) != 4 {
+		panic("invalid reels count")
+	}
 	return ScanReels(ctx, s, g, reels, BruteForce4x, MonteCarlo, MCCalcAlg(calc), calc)
 }
 
-func ScanReels5x(ctx context.Context, s Stater, g SlotGame, reels *Reels5x,
+func ScanReels5x(ctx context.Context, s Stater, g SlotGame, reels Reelx,
 	calc func(io.Writer) float64) float64 {
+	if len(reels) != 5 {
+		panic("invalid reels count")
+	}
 	return ScanReels(ctx, s, g, reels, BruteForce5x, MonteCarlo, MCCalcAlg(calc), calc)
 }
 
-func ScanReels6x(ctx context.Context, s Stater, g SlotGame, reels *Reels6x,
+func ScanReels6x(ctx context.Context, s Stater, g SlotGame, reels Reelx,
 	calc func(io.Writer) float64) float64 {
+	if len(reels) != 6 {
+		panic("invalid reels count")
+	}
 	return ScanReels(ctx, s, g, reels, BruteForce6x, MonteCarlo, MCCalcAlg(calc), calc)
 }

@@ -6,7 +6,7 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-var ReelsMap slot.ReelsMap[*slot.Reels3x]
+var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
 var LinePay = [8]float64{

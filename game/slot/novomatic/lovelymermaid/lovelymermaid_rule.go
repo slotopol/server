@@ -6,7 +6,7 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-var ReelsMap slot.ReelsMap[*slot.Reels5x]
+var ReelsMap slot.ReelsMap[slot.Reelx]
 
 var JackMap slot.ReelsMap[float64]
 

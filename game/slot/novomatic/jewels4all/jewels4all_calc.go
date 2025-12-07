@@ -10,7 +10,7 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-func BruteForceEuro(ctx context.Context, s slot.Stater, g *Game, reels slot.Reels, x, y slot.Pos) {
+func BruteForceEuro(ctx context.Context, s slot.Stater, g *Game, reels slot.Reelx, x, y slot.Pos) {
 	var wins slot.Wins
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)
