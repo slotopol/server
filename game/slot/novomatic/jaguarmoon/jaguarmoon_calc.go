@@ -155,7 +155,6 @@ func (s *Stat) Update(wins slot.Wins, cfn int) {
 func CalcStatBon(ctx context.Context) float64 {
 	var reels = ReelsBon
 	var g = NewGame()
-	g.Sel = 10 // bet on 243 ways
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
@@ -177,7 +176,6 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*regular reels calculations*\n")
 	var reels, _ = ReelsMap.FindClosest(mrtp)
 	var g = NewGame()
-	g.Sel = 10 // bet on 243 ways
 	var s Stat
 
 	var calc = func(w io.Writer) float64 {

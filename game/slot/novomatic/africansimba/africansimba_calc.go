@@ -11,7 +11,6 @@ import (
 func CalcStat(ctx context.Context, mrtp float64) float64 {
 	var reels, _ = ReelsMap.FindClosest(mrtp)
 	var g = NewGame()
-	g.Sel = 25 // bet on 243 ways
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {

@@ -34,10 +34,10 @@ type Game struct {
 // Declare conformity with SlotGame interface.
 var _ slot.SlotGame = (*Game)(nil)
 
-func NewGame() *Game {
+func NewGame(sel int) *Game {
 	return &Game{
 		Slotx: slot.Slotx{
-			Sel: 5,
+			Sel: sel,
 			Bet: 1,
 		},
 	}

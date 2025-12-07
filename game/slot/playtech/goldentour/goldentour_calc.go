@@ -24,8 +24,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("len = %d, E = %g\n", len(Golf), Egolfbn)
 	fmt.Printf("*reels calculations*\n")
 	var reels, _ = ReelsMap.FindClosest(mrtp)
-	var g = NewGame()
-	g.Sel = 1
+	var g = NewGame(1)
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {

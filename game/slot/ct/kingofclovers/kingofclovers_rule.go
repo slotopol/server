@@ -50,7 +50,7 @@ var _ slot.CascadeSlot = (*Game)(nil)
 func NewGame() *Game {
 	return &Game{
 		Slotx: slot.Slotx{
-			Sel: len(BetLines),
+			Sel: 30,
 			Bet: 1,
 		},
 	}

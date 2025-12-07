@@ -129,7 +129,7 @@ func MakeRtpList[T any](reelsmap map[float64]T) []float64 {
 	return list
 }
 
-func (ai *AlgInfo) SetupFactory(game func() Gamble, scan Scanner) {
+func (ai *AlgInfo) SetupFactory(game func(int) Gamble, scan Scanner) {
 	AlgList = append(AlgList, ai)
 	for _, ga := range ai.Aliases {
 		var aid = util.ToID(ga.Prov + "/" + ga.Name)
@@ -151,7 +151,7 @@ func (ai *AlgInfo) SetupFactory(game func() Gamble, scan Scanner) {
 			GameAlias: ga,
 			AlgDescr:  &ai.AlgDescr,
 		}
-		GameFactory[aid] = game
+		GameFactory[aid] = func() Gamble { return game(ga.LNum) }
 		ScanFactory[aid] = scan // can be nil
 	}
 }

@@ -10,8 +10,7 @@ import (
 
 func CalcStat(ctx context.Context, mrtp float64) float64 {
 	var reels, _ = ReelsMap.FindClosest(mrtp)
-	var g = NewGame()
-	g.Sel = 1
+	var g = NewGame(1)
 	g.M2 = 3 // average wild multiplier on 2 reel
 	g.M4 = 3 // average wild multiplier on 4 reel
 	var s slot.Stat

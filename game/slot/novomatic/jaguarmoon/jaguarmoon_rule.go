@@ -45,7 +45,6 @@ var _ slot.SlotGame = (*Game)(nil)
 func NewGame() *Game {
 	return &Game{
 		Slotx: slot.Slotx{
-			Sel: 10,
 			Bet: 1,
 		},
 		M: 0,
