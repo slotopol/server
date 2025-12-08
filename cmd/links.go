@@ -177,6 +177,7 @@ import (
 	// Playtech
 	_ "github.com/slotopol/server/game/slot/playtech/captainstreasure"
 	_ "github.com/slotopol/server/game/slot/playtech/deserttreasure"
+	_ "github.com/slotopol/server/game/slot/playtech/dolphinreef"
 	_ "github.com/slotopol/server/game/slot/playtech/goldentour"
 	_ "github.com/slotopol/server/game/slot/playtech/greatblue"
 	_ "github.com/slotopol/server/game/slot/playtech/panthermoon"

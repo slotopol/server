@@ -6,6 +6,8 @@ import (
 
 // Maximum number of hits on screenx.
 // This array has +1 element to make it zero-terminated without extra check up.
+// Zero at x-coordinate means the end of hits,
+// zero at y-coordinate means whole reel.
 const HitxSize = ScrxSize + 1
 
 // Hitx is array of 1-based coordinates (X, Y) on game screen with hit symbols.
@@ -40,7 +42,7 @@ func (c *Hitx) Len() int {
 }
 
 func (c *Hitx) IsZero() bool {
-	return c.Len() == 0
+	return c[0][0] == 0
 }
 
 func (c *Hitx) MarshalJSON() ([]byte, error) {

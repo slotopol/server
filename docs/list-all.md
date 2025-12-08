@@ -77,6 +77,7 @@
 'Desert Treasure' Playtech 5x3 videoslot
 'Diamond 7' Novomatic 5x3 videoslot
 'Diamond Dogs' NetEnt 5x3 videoslot
+'Dolphin Reef' Playtech 5x3 videoslot
 'Dolphin Treasure' Aristocrat 5x3 videoslot
 'Dolphins Pearl' Novomatic 5x3 videoslot
 'Dolphins Pearl Deluxe' Novomatic 5x3 videoslot
@@ -308,7 +309,7 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 305 games, 158 algorithms, 11 providers
+total: 306 games, 159 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
@@ -318,6 +319,6 @@ Megajack: 4 games
 NetEnt: 22 games
 Novomatic: 85 games
 Play'n GO: 3 games
-Playtech: 7 games
+Playtech: 8 games
 Slotopol: 2 games
 ```
