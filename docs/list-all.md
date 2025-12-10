@@ -239,6 +239,7 @@
 'Reel Steal' NetEnt 5x3 videoslot
 'Rich Girl' IGT 5x3 videoslot
 'Roaring Forties' Novomatic 5x4 videoslot
+'Roaring Wilds' Novomatic 5x4 videoslot
 'Rodeo Power' CT Interactive 5x3 videoslot
 'Royal Dynasty' Novomatic 5x3 videoslot
 'Royal Jewels' Novomatic 5x3 videoslot
@@ -309,7 +310,7 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 306 games, 159 algorithms, 11 providers
+total: 307 games, 159 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
@@ -317,7 +318,7 @@ CT Interactive: 104 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
-Novomatic: 85 games
+Novomatic: 86 games
 Play'n GO: 3 games
 Playtech: 8 games
 Slotopol: 2 games

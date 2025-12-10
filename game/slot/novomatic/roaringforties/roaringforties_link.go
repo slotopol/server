@@ -13,7 +13,8 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "Novomatic", Name: "Roaring Forties", LNum: 40, Date: game.Date(2013, 4, 29)},
+		{Prov: "Novomatic", Name: "Roaring Forties", LNum: 40, Date: game.Date(2013, 4, 28)}, // see: https://freeslotshub.com/novomatic/roaring-forties/
+		{Prov: "Novomatic", Name: "Roaring Wilds", LNum: 40, Date: game.Date(2017, 5, 31)},   // see: https://www.slotsmate.com/software/novomatic/roaring-wilds
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

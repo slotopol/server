@@ -28,4 +28,4 @@ local chunklen = {
 }
 
 math.randomseed(os.time())
-printreel(makereelhot(symset, 4, {[2]=true}, chunklen, true))
+printreel(makereelhot(symset, 4, {[2]=true}, chunklen))

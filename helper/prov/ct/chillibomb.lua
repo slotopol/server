@@ -65,11 +65,11 @@ math.randomseed(os.time())
 
 local function reelgen(n)
 	if n == 1 or n == 5 then
-		return makereelhot(symset1, 3, {[3]=true}, chunklen, true)
+		return makereelhot(symset1, 3, {[3]=true}, chunklen)
 	elseif n == 2 or n == 4 then
-		return makereelhot(symset2, 3, {[3]=true}, chunklen, true)
+		return makereelhot(symset2, 3, {[3]=true}, chunklen)
 	else -- n == 3
-		return makereelhot(symset3, 3, {[3]=true}, chunklen, true)
+		return makereelhot(symset3, 3, {[3]=true}, chunklen)
 	end
 end
 

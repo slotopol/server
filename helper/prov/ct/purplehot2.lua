@@ -26,7 +26,7 @@ local chunklen = {
 math.randomseed(os.time())
 
 local function reelgen()
-	return makereelhot(symset, 3, {[1]=true}, chunklen, true)
+	return makereelhot(symset, 3, {[1]=true}, chunklen)
 end
 
 if autoscan then

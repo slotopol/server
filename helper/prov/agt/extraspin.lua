@@ -50,5 +50,5 @@ local chunklen234 = {
 }
 
 math.randomseed(os.time())
-printreel(makereelhot(symset15, 3, {[1]=true, [2]=true}, chunklen15, true))
-printreel(makereelhot(symset234, 3, {[1]=true, [2]=true}, chunklen234, true))
+printreel(makereelhot(symset15, 3, {[1]=true, [2]=true}, chunklen15))
+printreel(makereelhot(symset234, 3, {[1]=true, [2]=true}, chunklen234))

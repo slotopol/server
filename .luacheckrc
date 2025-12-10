@@ -5,7 +5,8 @@
 
 globals = {
 	"shuffle", "tcopy", "tglue", "reelglue", "addsym",
-	"correctreel", "makereel", "makereelhot", "printreel",
+	"correctreel", "makereel",
+	"gluechunks", "makereelchunks", "makereelhot", "printreel",
 	"combin", "kenoprob", "kenoprobtable", "kenortp",
 	"autoscan",
 }

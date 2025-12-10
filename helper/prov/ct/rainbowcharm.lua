@@ -42,7 +42,7 @@ math.randomseed(os.time())
 
 local function reelgen()
 	local reel1, iter1 = makereel(symset1, neighbours)
-	local reel2, iter2 = makereelhot(symset2, 3, {}, chunklen, true)
+	local reel2, iter2 = makereelhot(symset2, 3, {}, chunklen)
 	return reelglue(reel1, reel2), iter1, iter2
 end
 

@@ -31,7 +31,7 @@ math.randomseed(os.time())
 
 local function reelgen(n)
 	local function make()
-		return makereelhot(symset, 3, {[1]=true, [2]=true}, chunklen, true)
+		return makereelhot(symset, 3, {[1]=true, [2]=true}, chunklen)
 	end
 	if n == 1 or n == 5 then
 		local n1 = symset[1]

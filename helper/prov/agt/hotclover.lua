@@ -15,4 +15,4 @@ local symset = {
 }
 
 math.randomseed(os.time())
-printreel(makereelhot(symset, 4, {[1]=true, [2]=true}, {}, true))
+printreel(makereelhot(symset, 4, {[1]=true, [2]=true}, {}))

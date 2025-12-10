@@ -138,23 +138,7 @@ function makereel(symset, neighbours)
 	return reel, iter
 end
 
-function makereelhot(symset, sy, scat, chunklen, strict)
-	-- make set of chunks
-	local chunks = {}
-	for sym, n in pairs(symset) do
-		while n > 0 do
-			local m
-			if scat[sym] then
-				m = chunklen[sym] or 1
-			else
-				m = math.min(n, chunklen[sym] or sy)
-			end
-			n = n - m
-			local c = {sym=sym, n=m}
-			chunks[#chunks+1] = c
-		end
-	end
-
+function gluechunks(chunks, sy, scat)
 	-- shuffle until reel become correct
 	local iter = 0
 	repeat
@@ -163,7 +147,7 @@ function makereelhot(symset, sy, scat, chunklen, strict)
 		local last = 0
 		for i = 1, #chunks do
 			local c1, c2 = chunks[i], chunks[i+1]
-			if strict and c1.sym == last then
+			if c1.sym == last then
 				if not c2 or c2.sym == last then
 					ok = false
 					break
@@ -174,7 +158,7 @@ function makereelhot(symset, sy, scat, chunklen, strict)
 			end
 			if scat[c1.sym] then
 				if n < sy then
-					if not c2 or scat[c2.sym] or (strict and c2.sym == last) then
+					if not c2 or scat[c2.sym] or (c2.sym == last) then
 						ok = false
 						break
 					else
@@ -202,6 +186,37 @@ function makereelhot(symset, sy, scat, chunklen, strict)
 
 	setmetatable(reel, reelmt)
 	return reel, iter
+end
+
+function makereelchunks(symchunks, sy, scat)
+	-- make set of chunks
+	local chunks = {}
+	for sym, lens in pairs(symchunks) do
+		for _, l in pairs(lens) do
+			local c = {sym=sym, n=l}
+			chunks[#chunks+1] = c
+		end
+	end
+	return gluechunks(chunks, sy, scat)
+end
+
+function makereelhot(symset, sy, scat, chunklen)
+	-- make set of chunks
+	local chunks = {}
+	for sym, n in pairs(symset) do
+		while n > 0 do
+			local m
+			if scat[sym] then
+				m = chunklen[sym] or 1
+			else
+				m = math.min(n, chunklen[sym] or sy)
+			end
+			n = n - m
+			local c = {sym=sym, n=m}
+			chunks[#chunks+1] = c
+		end
+	end
+	return gluechunks(chunks, sy, scat)
 end
 
 function printreel(reel, ...)
