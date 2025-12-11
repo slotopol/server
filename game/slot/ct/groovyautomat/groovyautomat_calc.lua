@@ -1,34 +1,34 @@
--- Novomatic / Sizzling Hot RTP calculation
+-- CT Interactive / Groovy Automat RTP calculation
 
 -- 1. REEL STRIPS DATA
 local REELS = {
 	-- luacheck: push ignore 631
-	{1, 4, 4, 4, 3, 1, 3, 3, 8, 6, 6, 6, 7, 7, 7, 6, 6, 2, 2, 5, 2, 5, 5, 5, 4},
-	{1, 6, 6, 6, 2, 2, 1, 2, 7, 7, 7, 7, 8, 4, 4, 4, 4, 5, 5, 5, 3, 5, 3, 3, 6},
-	{1, 6, 7, 7, 7, 8, 5, 5, 5, 1, 5, 2, 2, 4, 2, 4, 4, 4, 3, 3, 7, 3, 6, 6, 6},
-	{1, 5, 5, 5, 5, 1, 5, 4, 4, 4, 8, 3, 3, 6, 6, 6, 7, 6, 7, 7, 7, 4, 4, 2, 2},
-	{1, 4, 4, 6, 6, 6, 2, 2, 5, 8, 5, 5, 5, 8, 5, 4, 4, 4, 6, 1, 7, 7, 7, 3, 3},
+	{7, 7, 7, 7, 3, 3, 3, 8, 8, 8, 8, 5, 5, 5, 5, 5, 5, 2, 5, 1, 6, 2, 4, 4, 4, 6, 6, 6, 6, 6, 6},
+	{4, 8, 8, 8, 8, 8, 8, 2, 1, 3, 2, 8, 7, 4, 4, 4, 6, 6, 6, 5, 5, 5, 3, 3, 3, 7, 7, 7, 7, 7, 7},
+	{4, 4, 4, 8, 8, 8, 8, 8, 6, 6, 6, 6, 6, 6, 3, 3, 3, 2, 1, 2, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7},
+	{3, 3, 3, 2, 5, 5, 5, 4, 7, 7, 7, 7, 7, 7, 6, 6, 6, 1, 7, 8, 8, 8, 8, 8, 8, 4, 4, 4, 8, 3, 2},
+	{4, 4, 4, 8, 8, 8, 8, 2, 5, 5, 5, 5, 5, 5, 3, 3, 3, 6, 2, 5, 1, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6},
 	-- luacheck: pop
 }
 
 -- 2. PAYTABLE FOR LINE WINS (indexed by symbol ID)
 local PAYTABLE_LINE = {
-	[1] = {0, 0, 100, 1000, 5000}, -- seven
-	[2] = {0, 0, 50, 200, 500},    -- melon
-	[3] = {0, 0, 50, 200, 500},    -- grapes
-	[4] = {0, 0, 20, 50, 200},     -- plum
-	[5] = {0, 0, 20, 50, 200},     -- orange
-	[6] = {0, 0, 20, 50, 200},     -- lemon
-	[7] = {0, 5, 20, 50, 200},     -- cherry
-	[8] = {0, 0, 0, 0, 0},         -- star (scatter)
+	[1] = {0, 0, 0, 0, 0},         -- scatter
+	[2] = {0, 0, 100, 1000, 5000}, -- 2 dollar
+	[3] = {0, 0, 50, 200, 1000},   -- 3 melon
+	[4] = {0, 0, 50, 200, 1000},   -- 4 apple
+	[5] = {0, 0, 20, 50, 200},     -- 5 orange
+	[6] = {0, 0, 20, 50, 200},     -- 6 lemon
+	[7] = {0, 0, 20, 40, 200},     -- 7 plum
+	[8] = {0, 5, 20, 40, 200},     -- 8 cherry
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
-local PAYTABLE_SCAT = {0, 0, 2, 10, 50}
+local PAYTABLE_SCAT = {0, 0, 10, 50, 250}
 
 -- 4. CONFIGURATION
 local SCRH = 3 -- screen height
-local scat = 8 -- scatter symbol ID
+local scat = 1 -- scatter symbol ID
 
 
 -- Get number of total reshuffles and lengths of each reel.

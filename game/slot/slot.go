@@ -4,11 +4,6 @@ import (
 	"errors"
 )
 
-type (
-	Sym uint8 // symbol type (screen content type)
-	Pos uint8 // screen or line position with 1-based index or offset
-)
-
 // WinItem describes win on each line or by scatters.
 type WinItem struct {
 	Pay float64 `json:"pay,omitempty" yaml:"pay,omitempty" xml:"pay,omitempty,attr"` // payment with selected bet

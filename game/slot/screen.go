@@ -23,10 +23,6 @@ type Bigger interface {
 	SetBig(big Sym)
 }
 
-// Maximum size of Screenx data array.
-// Maximum possible value of this constant is 255 (for Pos type uint8).
-const ScrxSize = 40
-
 // Screenx is a screen with dimensions defined during construction.
 // Screenx has fixed size to avoid extra memory allocations.
 type Screenx struct {

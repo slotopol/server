@@ -1,26 +1,26 @@
--- Novomatic / Sizzling Hot RTP calculation
+-- Novomatic / Just Jewels RTP calculation
 
 -- 1. REEL STRIPS DATA
 local REELS = {
 	-- luacheck: push ignore 631
-	{1, 4, 4, 4, 3, 1, 3, 3, 8, 6, 6, 6, 7, 7, 7, 6, 6, 2, 2, 5, 2, 5, 5, 5, 4},
-	{1, 6, 6, 6, 2, 2, 1, 2, 7, 7, 7, 7, 8, 4, 4, 4, 4, 5, 5, 5, 3, 5, 3, 3, 6},
-	{1, 6, 7, 7, 7, 8, 5, 5, 5, 1, 5, 2, 2, 4, 2, 4, 4, 4, 3, 3, 7, 3, 6, 6, 6},
-	{1, 5, 5, 5, 5, 1, 5, 4, 4, 4, 8, 3, 3, 6, 6, 6, 7, 6, 7, 7, 7, 4, 4, 2, 2},
-	{1, 4, 4, 6, 6, 6, 2, 2, 5, 8, 5, 5, 5, 8, 5, 4, 4, 4, 6, 1, 7, 7, 7, 3, 3},
+	{6, 6, 6, 6, 6, 6, 6, 6, 3, 3, 3, 4, 4, 4, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 8, 7, 7, 7, 5, 5, 5, 6, 6, 6, 1, 2, 2, 2, 1, 7, 7, 7, 7, 7, 7, 7, 7},
+	{4, 4, 4, 4, 4, 1, 3, 3, 3, 8, 6, 6, 6, 6, 7, 7, 7, 7, 1, 5, 5, 5, 5, 5, 2, 2, 2},
+	{5, 5, 5, 5, 1, 2, 2, 2, 2, 2, 2, 1, 8, 1, 6, 6, 6, 1, 3, 3, 3, 3, 3, 1, 8, 1, 4, 4, 4, 4, 1, 8, 7, 7, 7},
+	{7, 7, 7, 7, 2, 2, 2, 5, 5, 5, 5, 5, 1, 6, 6, 6, 6, 4, 4, 4, 4, 4, 3, 3, 3, 8, 1},
+	{6, 6, 6, 6, 6, 6, 6, 6, 8, 1, 7, 7, 7, 7, 7, 7, 7, 7, 2, 2, 2, 1, 7, 7, 7, 3, 3, 3, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 4, 4, 4, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7},
 	-- luacheck: pop
 }
 
 -- 2. PAYTABLE FOR LINE WINS (indexed by symbol ID)
 local PAYTABLE_LINE = {
-	[1] = {0, 0, 100, 1000, 5000}, -- seven
-	[2] = {0, 0, 50, 200, 500},    -- melon
-	[3] = {0, 0, 50, 200, 500},    -- grapes
-	[4] = {0, 0, 20, 50, 200},     -- plum
-	[5] = {0, 0, 20, 50, 200},     -- orange
-	[6] = {0, 0, 20, 50, 200},     -- lemon
-	[7] = {0, 5, 20, 50, 200},     -- cherry
-	[8] = {0, 0, 0, 0, 0},         -- star (scatter)
+	[1] = {0, 0, 50, 500, 5000}, -- crown
+	[2] = {0, 0, 30, 150, 500},  -- gold
+	[3] = {0, 0, 30, 150, 500},  -- money
+	[4] = {0, 0, 15, 50, 200},   -- ruby
+	[5] = {0, 0, 15, 50, 200},   -- sapphire
+	[6] = {0, 0, 10, 25, 150},   -- emerald
+	[7] = {0, 0, 10, 25, 150},   -- amethyst
+	[8] = {0, 0, 0, 0, 0},       -- euro (scatter)
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
@@ -67,17 +67,25 @@ local function calculate_line_wins_ev()
 		local c5 = counts[1] * counts[2] * counts[3] * counts[4] * counts[5]
 		total_ev_line = total_ev_line + c5 * pays[5]
 
-		-- 4-of-a-kind (XXXX-) EV
-		local c4 = counts[1] * counts[2] * counts[3] * counts[4] * (lens[5] - counts[5])
-		total_ev_line = total_ev_line + c4 * pays[4]
+		-- 4-of-a-kind (XXXX-) EV on left side
+		local cl4 = counts[1] * counts[2] * counts[3] * counts[4] * (lens[5] - counts[5])
+		total_ev_line = total_ev_line + cl4 * pays[4]
 
-		-- 3-of-a-kind (XXX--) EV
-		local c3 = counts[1] * counts[2] * counts[3] * (lens[4] - counts[4]) * lens[5]
-		total_ev_line = total_ev_line + c3 * pays[3]
+		-- 4-of-a-kind (-XXXX) EV on right side
+		local cr4 = (lens[1] - counts[1]) * counts[2] * counts[3] * counts[4] * counts[5]
+		total_ev_line = total_ev_line + cr4 * pays[4]
 
-		-- 2-of-a-kind (XX---) EV
-		local c2 = counts[1] * counts[2] * (lens[3] - counts[3]) * lens[4] * lens[5]
-		total_ev_line = total_ev_line + c2 * pays[2]
+		-- 3-of-a-kind (XXX--) EV on left side
+		local cl3 = counts[1] * counts[2] * counts[3] * (lens[4] - counts[4]) * lens[5]
+		total_ev_line = total_ev_line + cl3 * pays[3]
+
+		-- 3-of-a-kind (-XXX-) EV in the middle
+		local cm3 = (lens[1] - counts[1]) * counts[2] * counts[3] * counts[4] * (lens[5] - counts[5])
+		total_ev_line = total_ev_line + cm3 * pays[3]
+
+		-- 3-of-a-kind (--XXX) EV on right side
+		local cr3 = lens[1] * (lens[2] - counts[2]) * counts[3] * counts[4] * counts[5]
+		total_ev_line = total_ev_line + cr3 * pays[3]
 	end
 
 	return total_ev_line / reshuffles

@@ -18,7 +18,7 @@ var LinePay = [10][5]float64{
 	{0, 0, 8, 40, 100},    //  6 orange
 	{0, 0, 8, 40, 100},    //  7 lemon
 	{0, 0, 8, 40, 100},    //  8 cherry
-	{},                    //  9 wild
+	{},                    //  9 wild (2, 3, 4 reels only)
 	{},                    // 10 star
 }
 

@@ -4,11 +4,26 @@ import (
 	"encoding/json"
 )
 
-// Maximum number of hits on screenx.
-// This array has +1 element to make it zero-terminated without extra check up.
-// Zero at x-coordinate means the end of hits,
-// zero at y-coordinate means whole reel.
-const HitxSize = ScrxSize + 1
+const (
+	// Maximum size X*Y of Screenx data array.
+	// Maximum possible value of this constant is 255 (for Pos type uint8).
+	ScrxSize = 40
+
+	// Maximum number of hits on Screenx.
+	// This array has +1 element to make it zero-terminated without extra check up.
+	// Zero at x-coordinate means the end of hits,
+	// zero at y-coordinate means whole reel.
+	HitxSize = ScrxSize + 1
+
+	// Maximum number of positions in Linex,
+	// it's maximum possible width of the Screenx.
+	MaxSX = 8
+)
+
+type (
+	Sym uint8 // symbol type (screen content type)
+	Pos uint8 // screen or line position with 1-based index or offset
+)
 
 // Hitx is array of 1-based coordinates (X, Y) on game screen with hit symbols.
 // Hitx has fixed size to avoid extra memory allocations.
@@ -49,7 +64,7 @@ func (c *Hitx) MarshalJSON() ([]byte, error) {
 	return json.Marshal(c[:c.Len()])
 }
 
-type Linex [8]Pos
+type Linex [MaxSX]Pos
 
 // Make mirror copy of Linex.
 func L2H(op Linex) (c Hitx) {
