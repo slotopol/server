@@ -30,10 +30,9 @@ for i, r in ipairs(REELS) do
 	lens[i] = #r
 end
 
--- Function to count symbol occurrences on each reel and calculate
--- probabilities of landing exactly one symbol in the middle row
+-- Function to count symbol occurrences on each reel
 local function get_symbol_data(symbol_id)
-	local counts, probs = {}, {}
+	local counts = {}
 	for i, r in ipairs(REELS) do
 		local count = 0
 		for _, sym in ipairs(r) do
@@ -41,50 +40,49 @@ local function get_symbol_data(symbol_id)
 				count = count + 1
 			end
 		end
-		counts[i], probs[i] = count, count / lens[i]
+		counts[i] = count
 	end
-	return counts, probs
+	return counts
 end
 
 -- Function to calculate expected return from line wins for all symbols
 local function calculate_line_wins_ev()
-	local total_ev_line = 0
+	local ev_sum = 0
 
 	-- Iterate through all symbols that pay on lines
-	for symbol_id = 1, #PAYTABLE_LINE do
-		local counts, _ = get_symbol_data(symbol_id)
-		local pays = PAYTABLE_LINE[symbol_id]
+	for symbol_id, pays in pairs(PAYTABLE_LINE) do
+		local c = get_symbol_data(symbol_id)
 
 		-- Calculate combinations for 5-of-a-kind (XXXXX)
-		local c5 = counts[1] * counts[2] * counts[3] * counts[4] * counts[5]
-		total_ev_line = total_ev_line + c5 * pays[5]
+		local comb5 = c[1] * c[2] * c[3] * c[4] * c[5]
+		ev_sum = ev_sum + comb5 * pays[5]
 
 		-- 4-of-a-kind (XXXX-) EV on left side
-		local cl4 = counts[1] * counts[2] * counts[3] * counts[4] * (lens[5] - counts[5])
-		total_ev_line = total_ev_line + cl4 * pays[4]
+		local comb4l = c[1] * c[2] * c[3] * c[4] * (lens[5] - c[5])
+		ev_sum = ev_sum + comb4l * pays[4]
 
 		-- 4-of-a-kind (-XXXX) EV on right side
-		local cr4 = (lens[1] - counts[1]) * counts[2] * counts[3] * counts[4] * counts[5]
-		total_ev_line = total_ev_line + cr4 * pays[4]
+		local comb4r = (lens[1] - c[1]) * c[2] * c[3] * c[4] * c[5]
+		ev_sum = ev_sum + comb4r * pays[4]
 
 		-- 3-of-a-kind (XXX--) EV on left side
-		local cl3 = counts[1] * counts[2] * counts[3] * (lens[4] - counts[4]) * lens[5]
-		total_ev_line = total_ev_line + cl3 * pays[3]
+		local comb3l = c[1] * c[2] * c[3] * (lens[4] - c[4]) * lens[5]
+		ev_sum = ev_sum + comb3l * pays[3]
 
 		-- 3-of-a-kind (--XXX) EV on right side
-		local cr3 = lens[1] * (lens[2] - counts[2]) * counts[3] * counts[4] * counts[5]
-		total_ev_line = total_ev_line + cr3 * pays[3]
+		local comb3r = lens[1] * (lens[2] - c[2]) * c[3] * c[4] * c[5]
+		ev_sum = ev_sum + comb3r * pays[3]
 
 		-- 2-of-a-kind (XX---) EV on left side
-		local cl2 = counts[1] * counts[2] * (lens[3] - counts[3]) * lens[4] * lens[5]
-		total_ev_line = total_ev_line + cl2 * pays[2]
+		local cl2 = c[1] * c[2] * (lens[3] - c[3]) * lens[4] * lens[5]
+		ev_sum = ev_sum + cl2 * pays[2]
 
 		-- 2-of-a-kind (---XX) EV on right side
-		local cr2 = lens[1] * lens[2] * (lens[3] - counts[3]) * counts[4] * counts[5]
-		total_ev_line = total_ev_line + cr2 * pays[2]
+		local cr2 = lens[1] * lens[2] * (lens[3] - c[3]) * c[4] * c[5]
+		ev_sum = ev_sum + cr2 * pays[2]
 	end
 
-	return total_ev_line / reshuffles
+	return ev_sum / reshuffles
 end
 
 -- Execute calculation

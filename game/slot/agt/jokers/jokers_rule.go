@@ -10,7 +10,7 @@ var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
 var LinePay = [10][5]float64{
-	{},                    //  1 wild
+	{},                    //  1 wild (2, 3, 4 reels only)
 	{},                    //  2 scatter
 	{0, 4, 40, 100, 1000}, //  3 strawberry
 	{0, 0, 30, 100, 300},  //  4 pear
@@ -66,9 +66,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var x slot.Pos
 		for x = 2; x <= 5; x++ {
 			var sx = g.LY(x, line)
-			if sx == wild {
-				continue
-			} else if sx != syml {
+			if sx != syml && sx != wild {
 				numl = x - 1
 				break
 			}

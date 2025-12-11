@@ -1,34 +1,36 @@
--- AGT / Seven Hot RTP calculation
+-- CT Interactive / Fruit Feast RTP calculation
 
 -- 1. REEL STRIPS DATA
 local REELS = {
 	-- luacheck: push ignore 631
-	{5, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 1, 4, 6, 6, 1, 2, 2, 2, 8, 7, 7, 3, 3, 3, 4, 4, 4},
-	{4, 4, 4, 7, 7, 1, 5, 5, 5, 6, 6, 6, 8, 3, 3, 3, 8, 2, 2, 2, 5, 5, 4, 7, 7, 7, 1, 6, 6},
-	{5, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 1, 4, 6, 6, 1, 2, 2, 2, 8, 7, 7, 3, 3, 3, 4, 4, 4},
-	{4, 4, 4, 7, 7, 1, 5, 5, 5, 6, 6, 6, 8, 3, 3, 3, 8, 2, 2, 2, 5, 5, 4, 7, 7, 7, 1, 6, 6},
-	{5, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 1, 4, 6, 6, 1, 2, 2, 2, 8, 7, 7, 3, 3, 3, 4, 4, 4},
+	{6, 6, 8, 8, 8, 8, 7, 7, 7, 2, 5, 5, 10, 10, 10, 10, 7, 7, 7, 7, 6, 6, 6, 6, 10, 10, 10, 10, 5, 5, 5, 5, 2, 9, 9, 9, 9, 4, 4, 4, 4, 9, 9, 9, 9, 3, 3, 3, 3, 8, 8, 8, 8},
+	{8, 8, 8, 8, 5, 5, 1, 1, 1, 1, 9, 9, 9, 9, 8, 8, 8, 8, 3, 3, 3, 3, 5, 5, 5, 5, 6, 6, 10, 10, 10, 10, 4, 4, 4, 4, 7, 7, 7, 2, 6, 6, 6, 6, 10, 10, 10, 10, 9, 9, 9, 9, 7, 7, 7, 7},
+	{5, 5, 8, 8, 8, 8, 9, 9, 9, 9, 1, 1, 1, 1, 10, 10, 10, 10, 2, 8, 8, 8, 8, 2, 4, 4, 4, 4, 3, 3, 3, 3, 7, 7, 7, 7, 6, 6, 10, 10, 10, 10, 9, 9, 9, 9, 7, 7, 7, 5, 5, 5, 5, 6, 6, 6, 6},
+	{6, 6, 6, 6, 7, 7, 7, 9, 9, 9, 9, 8, 8, 8, 8, 5, 5, 5, 5, 1, 1, 1, 1, 8, 8, 8, 8, 9, 9, 9, 9, 5, 5, 10, 10, 10, 10, 2, 3, 3, 3, 3, 10, 10, 10, 10, 7, 7, 7, 7, 6, 6, 4, 4, 4, 4},
+	{4, 4, 4, 4, 10, 10, 10, 10, 7, 7, 7, 6, 6, 6, 6, 5, 5, 8, 8, 8, 8, 5, 5, 5, 5, 6, 6, 10, 10, 10, 10, 2, 9, 9, 9, 9, 7, 7, 7, 7, 8, 8, 8, 8, 3, 3, 3, 3, 9, 9, 9, 9, 2},
 	-- luacheck: pop
 }
 
 -- 2. PAYTABLE FOR LINE WINS (indexed by symbol ID)
 local PAYTABLE_LINE = {
-	[1] = {0, 0, 100, 1000, 5000}, -- seven
-	[2] = {0, 0, 50, 200, 500},    -- blueberry
-	[3] = {0, 0, 50, 200, 400},    -- strawberry
-	[4] = {0, 0, 25, 60, 220},     -- plum
-	[5] = {0, 0, 20, 50, 200},     -- pear
-	[6] = {0, 0, 20, 40, 180},     -- peach
-	[7] = {0, 5, 15, 40, 180},     -- cherry
-	[8] = {0, 0, 0, 0, 0},         -- bell (scatter)
+	[ 1] = {0, 0, 0, 0, 0},       -- wild (2, 3, 4 reels only)
+	[ 2] = {0, 0, 0, 0, 0},       -- scatter
+	[ 3] = {0, 4, 60, 200, 1000}, -- banana
+	[ 4] = {0, 0, 40, 100, 300},  -- grape
+	[ 5] = {0, 0, 20, 80, 200},   -- melon
+	[ 6] = {0, 0, 20, 80, 200},   -- apple
+	[ 7] = {0, 0, 8, 40, 100},    -- orange
+	[ 8] = {0, 0, 8, 40, 100},    -- lemon
+	[ 9] = {0, 0, 8, 40, 100},    -- plum
+	[10] = {0, 0, 8, 40, 100},    -- cherry
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
-local PAYTABLE_SCAT = {0, 0, 2, 10, 60}
+local PAYTABLE_SCAT = {0, 0, 2, 20, 500}
 
 -- 4. CONFIGURATION
-local SCRH = 3 -- screen height
-local scat = 8 -- scatter symbol ID
+local SCRH = 4 -- screen height
+local wild, scat = 1, 2 -- wild & scatter symbol IDs
 
 
 -- Get number of total reshuffles and lengths of each reel.
@@ -44,7 +46,7 @@ local function get_symbol_data(symbol_id)
 	for i, r in ipairs(REELS) do
 		local count = 0
 		for _, sym in ipairs(r) do
-			if sym == symbol_id then
+			if sym == symbol_id or (sym == wild and symbol_id ~= scat) then
 				count = count + 1
 			end
 		end
