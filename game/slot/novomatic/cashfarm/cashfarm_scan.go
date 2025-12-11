@@ -9,7 +9,7 @@ import (
 )
 
 // Bonus game expectation
-// calculation see at helper/prov/novomatic/cashfarmbon.lua
+// calculation see at generator/prov/novomatic/cashfarmbon.lua
 const Ebon = 50
 
 func CalcStat(ctx context.Context, mrtp float64) float64 {
