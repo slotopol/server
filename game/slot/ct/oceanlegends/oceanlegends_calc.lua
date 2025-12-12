@@ -1,34 +1,36 @@
--- AGT / Seven Hot RTP calculation
+-- CT Interactive / Ocean Legends RTP calculation
 
 -- 1. REEL STRIPS DATA
 local REELS = {
 	-- luacheck: push ignore 631
-	{5, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 1, 4, 6, 6, 1, 2, 2, 2, 8, 7, 7, 3, 3, 3, 4, 4, 4},
-	{4, 4, 4, 7, 7, 1, 5, 5, 5, 6, 6, 6, 8, 3, 3, 3, 8, 2, 2, 2, 5, 5, 4, 7, 7, 7, 1, 6, 6},
-	{5, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 1, 4, 6, 6, 1, 2, 2, 2, 8, 7, 7, 3, 3, 3, 4, 4, 4},
-	{4, 4, 4, 7, 7, 1, 5, 5, 5, 6, 6, 6, 8, 3, 3, 3, 8, 2, 2, 2, 5, 5, 4, 7, 7, 7, 1, 6, 6},
-	{5, 5, 5, 5, 5, 6, 6, 6, 7, 7, 7, 1, 4, 6, 6, 1, 2, 2, 2, 8, 7, 7, 3, 3, 3, 4, 4, 4},
+	{4, 7, 5, 2, 8, 9, 10, 7, 10, 9, 9, 5, 8, 6, 5, 6, 3, 9, 7, 4, 6, 4, 8, 6, 7, 10, 3, 8, 5, 3, 10, 3, 3, 3, 3, 5, 5, 5, 5, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 9, 9, 9, 9, 10, 10, 10, 10, 8, 8, 8, 8, 2},
+	{5, 6, 4, 9, 4, 7, 6, 10, 6, 10, 1, 6, 10, 5, 3, 7, 5, 8, 7, 5, 9, 8, 9, 3, 8, 10, 2, 3, 7, 8, 4, 9, 3, 3, 3, 3, 6, 6, 6, 6, 8, 8, 8, 8, 2, 1, 4, 4, 4, 4, 9, 9, 9, 9, 1, 5, 5, 5, 5, 1, 7, 7, 7, 7, 10, 10, 10, 10, 1},
+	{4, 9, 4, 10, 6, 2, 9, 5, 10, 6, 4, 3, 8, 10, 5, 8, 7, 5, 8, 3, 7, 3, 8, 1, 9, 10, 6, 7, 9, 6, 7, 5, 5, 5, 5, 1, 2, 9, 9, 9, 9, 8, 8, 8, 8, 1, 10, 10, 10, 10, 6, 6, 6, 6, 1, 3, 3, 3, 3, 1, 4, 4, 4, 4, 7, 7, 7, 7},
+	{8, 6, 1, 7, 2, 5, 7, 5, 6, 3, 4, 9, 6, 8, 9, 3, 10, 7, 5, 7, 9, 8, 5, 10, 4, 9, 4, 10, 6, 8, 3, 10, 1, 7, 7, 7, 7, 6, 6, 6, 6, 3, 3, 3, 3, 1, 9, 9, 9, 9, 4, 4, 4, 4, 1, 10, 10, 10, 10, 8, 8, 8, 8, 2, 1, 5, 5, 5, 5},
+	{7, 8, 2, 5, 3, 4, 9, 8, 9, 5, 5, 6, 10, 7, 9, 10, 3, 6, 6, 8, 10, 4, 6, 7, 4, 8, 3, 10, 7, 1, 9, 5, 1, 6, 6, 6, 6, 9, 9, 9, 9, 3, 3, 3, 3, 1, 5, 5, 5, 5, 1, 7, 7, 7, 7, 10, 10, 10, 10, 1, 2, 4, 4, 4, 4, 8, 8, 8, 8},
 	-- luacheck: pop
 }
 
 -- 2. PAYTABLE FOR LINE WINS (indexed by symbol ID)
 local PAYTABLE_LINE = {
-	[1] = {0, 0, 100, 1000, 5000}, -- seven
-	[2] = {0, 0, 50, 200, 500},    -- blueberry
-	[3] = {0, 0, 50, 200, 400},    -- strawberry
-	[4] = {0, 0, 25, 60, 220},     -- plum
-	[5] = {0, 0, 20, 50, 200},     -- pear
-	[6] = {0, 0, 20, 40, 180},     -- peach
-	[7] = {0, 5, 15, 40, 180},     -- cherry
-	[8] = {0, 0, 0, 0, 0},         -- bell (scatter)
+	[ 1] = {0, 0, 0, 0, 0},       -- wild (2, 3, 4, 5 reels only)
+	[ 2] = {0, 0, 0, 0, 0},       -- scatter
+	[ 3] = {0, 0, 50, 200, 1000}, -- aryan
+	[ 4] = {0, 0, 15, 75, 200},   -- nymph
+	[ 5] = {0, 0, 5, 50, 150},    -- pot
+	[ 6] = {0, 0, 5, 50, 150},    -- vase
+	[ 7] = {0, 0, 5, 15, 100},    -- ace
+	[ 8] = {0, 0, 5, 15, 100},    -- king
+	[ 9] = {0, 0, 5, 15, 100},    -- queen
+	[10] = {0, 0, 5, 15, 100},    -- jack
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
-local PAYTABLE_SCAT = {0, 0, 2, 10, 60}
+local PAYTABLE_SCAT = {0, 0, 5, 10, 50}
 
 -- 4. CONFIGURATION
 local sy = 3 -- screen height
-local scat = 8 -- scatter symbol ID
+local wild, scat = 1, 2 -- wild & scatter symbol IDs
 
 -- Performs full RTP calculation for given reels
 local function calculate(reels)
@@ -45,7 +47,7 @@ local function calculate(reels)
 		for i, r in ipairs(reels) do
 			local count = 0
 			for _, sym in ipairs(r) do
-				if sym == symbol_id then
+				if sym == symbol_id or (sym == wild and symbol_id ~= scat) then
 					count = count + 1
 				end
 			end
@@ -73,10 +75,6 @@ local function calculate(reels)
 			-- 3-of-a-kind (XXX--) EV
 			local comb3 = c[1] * c[2] * c[3] * (lens[4] - c[4]) * lens[5]
 			ev_sum = ev_sum + comb3 * pays[3]
-
-			-- 2-of-a-kind (XX---) EV
-			local comb2 = c[1] * c[2] * (lens[3] - c[3]) * lens[4] * lens[5]
-			ev_sum = ev_sum + comb2 * pays[2]
 		end
 
 		return ev_sum
@@ -85,13 +83,14 @@ local function calculate(reels)
 	-- Function to calculate expected return from scatter wins
 	local function calculate_scat_ev()
 		local c = symbol_counts(scat)
-		local ev_sum = 0
+		local ev_sum, fs_sum = 0, 0
 
 		-- Using an recursive approach to sum combinations for exactly N scatters
 		local function find_scatter_combs(reel_index, current_scatters, current_comb)
 			if reel_index > #reels then
 				if current_scatters >= 3 then
 					ev_sum = ev_sum + current_comb * PAYTABLE_SCAT[current_scatters]
+					fs_sum = fs_sum + current_comb * 15
 				end
 				return
 			end
@@ -104,15 +103,22 @@ local function calculate(reels)
 		end
 		find_scatter_combs(1, 0, 1) -- Start recursion
 
-		return ev_sum
+		return ev_sum, fs_sum
 	end
 
 	-- Execute calculation
 	local rtp_line = calculate_line_ev() / reshuffles * 100
-	local rtp_scat = calculate_scat_ev() / reshuffles * 100
-	local rtp_total = rtp_line + rtp_scat
+	local ev_sum, fs_sum = calculate_scat_ev()
+	local rtp_scat = ev_sum / reshuffles * 100
+	local rtp_sym = rtp_line + rtp_scat
+	local q = fs_sum / reshuffles
+	local sq = 1 / (1 - q)
+	local rtp_fs = 2 * sq * rtp_sym
+	local rtp_total = rtp_sym + q * rtp_fs
 	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
-	print(string.format("RTP = %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_total))
+	print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
+	print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
+	print(string.format("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%", rtp_sym, q, rtp_fs, rtp_total))
 	return rtp_total
 end
 

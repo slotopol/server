@@ -29,91 +29,93 @@ local PAYTABLE_LINE = {
 local PAYTABLE_SCAT = {0, 0, 10, 50, 150}
 
 -- 4. CONFIGURATION
-local SCRH = 3 -- screen height
+local sy = 3 -- screen height
 local wild, scat = 1, 2 -- wild & scatter symbol IDs
 
+-- Performs full RTP calculation for given reels
+local function calculate(reels)
+	-- Get number of total reshuffles and lengths of each reel.
+	local reshuffles, lens = 1, {}
+	for i, r in ipairs(reels) do
+		reshuffles = reshuffles * #r
+		lens[i] = #r
+	end
 
--- Get number of total reshuffles and lengths of each reel.
-local reshuffles, lens = 1, {}
-for i, r in ipairs(REELS) do
-	reshuffles = reshuffles * #r
-	lens[i] = #r
-end
-
--- Function to count symbol occurrences on each reel
-local function get_symbol_data(symbol_id)
-	local counts = {}
-	for i, r in ipairs(REELS) do
-		local count = 0
-		for _, sym in ipairs(r) do
-			if sym == symbol_id or (sym == wild and symbol_id ~= scat) then
-				count = count + 1
+	-- Function to count symbol occurrences on each reel
+	local function symbol_counts(symbol_id)
+		local counts = {}
+		for i, r in ipairs(reels) do
+			local count = 0
+			for _, sym in ipairs(r) do
+				if sym == symbol_id or (sym == wild and symbol_id ~= scat) then
+					count = count + 1
+				end
 			end
+			counts[i] = count
 		end
-		counts[i] = count
-	end
-	return counts
-end
-
--- Function to calculate expected return from line wins for all symbols
-local function calculate_line_wins_ev()
-	local ev_sum = 0
-
-	-- Iterate through all symbols that pay on lines
-	for symbol_id, pays in pairs(PAYTABLE_LINE) do
-		local c = get_symbol_data(symbol_id)
-
-		-- Calculate combinations for 5-of-a-kind (XXXXX)
-		local comb5 = c[1] * c[2] * c[3] * c[4] * c[5]
-		ev_sum = ev_sum + comb5 * pays[5]
-
-		-- 4-of-a-kind (XXXX-) EV
-		local comb4 = c[1] * c[2] * c[3] * c[4] * (lens[5] - c[5])
-		ev_sum = ev_sum + comb4 * pays[4]
-
-		-- 3-of-a-kind (XXX--) EV
-		local comb3 = c[1] * c[2] * c[3] * (lens[4] - c[4]) * lens[5]
-		ev_sum = ev_sum + comb3 * pays[3]
-
-		-- 2-of-a-kind (XX---) EV
-		local comb2 = c[1] * c[2] * (lens[3] - c[3]) * lens[4] * lens[5]
-		ev_sum = ev_sum + comb2 * pays[2]
+		return counts
 	end
 
-	return ev_sum / reshuffles
-end
+	-- Function to calculate expected return from line wins for all symbols
+	local function calculate_line_ev()
+		local ev_sum = 0
 
--- Function to calculate expected return from scatter wins using probabilities
-local function calculate_scatter_ev()
-	local c = get_symbol_data(scat)
-	local p = {} -- Probability of scatter appearing ANYWHERE on screen for each reel
-	for i, len in ipairs(lens) do
-		p[i] = (SCRH * c[i]) / len
+		-- Iterate through all symbols that pay on lines
+		for symbol_id, pays in pairs(PAYTABLE_LINE) do
+			local c = symbol_counts(symbol_id)
+
+			-- Calculate combinations for 5-of-a-kind (XXXXX)
+			local comb5 = c[1] * c[2] * c[3] * c[4] * c[5]
+			ev_sum = ev_sum + comb5 * pays[5]
+
+			-- 4-of-a-kind (XXXX-) EV
+			local comb4 = c[1] * c[2] * c[3] * c[4] * (lens[5] - c[5])
+			ev_sum = ev_sum + comb4 * pays[4]
+
+			-- 3-of-a-kind (XXX--) EV
+			local comb3 = c[1] * c[2] * c[3] * (lens[4] - c[4]) * lens[5]
+			ev_sum = ev_sum + comb3 * pays[3]
+
+			-- 2-of-a-kind (XX---) EV
+			local comb2 = c[1] * c[2] * (lens[3] - c[3]) * lens[4] * lens[5]
+			ev_sum = ev_sum + comb2 * pays[2]
+		end
+
+		return ev_sum
 	end
 
-	-- We assume EV is the sum of (Probability(N_scatters) * Pay(N_scatters))
-	local ev_scat = 0
+	-- Function to calculate expected return from scatter wins
+	local function calculate_scat_ev()
+		local c = symbol_counts(scat)
+		local ev_sum = 0
 
-	-- Using an recursive approach to sum probabilities for exactly N scatters
-	local function combinations_prob(reel_index, current_scatters, current_prob)
-		if reel_index > #REELS then
-			if current_scatters >= 3 then
-				ev_scat = ev_scat + current_prob * PAYTABLE_SCAT[current_scatters]
+		-- Using an recursive approach to sum combinations for exactly N scatters
+		local function find_scatter_combs(reel_index, current_scatters, current_comb)
+			if reel_index > #reels then
+				if current_scatters >= 3 then
+					ev_sum = ev_sum + current_comb * PAYTABLE_SCAT[current_scatters]
+				end
+				return
 			end
-			return
+			-- Step 1: having a scatter on this reel
+			find_scatter_combs(reel_index + 1, current_scatters + 1,
+				current_comb * c[reel_index] * sy)
+			-- Step 2: NOT having a scatter on this reel
+			find_scatter_combs(reel_index + 1, current_scatters,
+				current_comb * (lens[reel_index] - c[reel_index] * sy))
 		end
-		-- Probability of having a scatter on this reel
-		combinations_prob(reel_index + 1, current_scatters + 1, current_prob * p[reel_index])
-		-- Probability of NOT having a scatter on this reel
-		combinations_prob(reel_index + 1, current_scatters, current_prob * (1 - p[reel_index]))
+		find_scatter_combs(1, 0, 1) -- Start recursion
+
+		return ev_sum
 	end
-	combinations_prob(1, 0, 1) -- Start recursion
-	return ev_scat
+
+	-- Execute calculation
+	local rtp_line = calculate_line_ev() / reshuffles * 100
+	local rtp_scat = calculate_scat_ev() / reshuffles * 100
+	local rtp_total = rtp_line + rtp_scat
+	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
+	print(string.format("RTP = %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_total))
+	return rtp_total
 end
 
--- Execute calculation
-local line_rtp = calculate_line_wins_ev() * 100
-local scat_rtp = calculate_scatter_ev() * 100
-local total_rtp = line_rtp + scat_rtp
-print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
-print(string.format("RTP = %.5g(lined) + %.5g(scatter) = %.6f%%", line_rtp, scat_rtp, total_rtp))
+calculate(REELS)

@@ -10,7 +10,7 @@ var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
 var LinePay = [10][5]float64{
-	{},                    //  1 wild
+	{},                    //  1 wild (2, 3, 4, 5 reels only)
 	{},                    //  2 scatter
 	{0, 0, 50, 200, 1000}, //  3 aryan
 	{0, 0, 15, 75, 200},   //  4 nymph

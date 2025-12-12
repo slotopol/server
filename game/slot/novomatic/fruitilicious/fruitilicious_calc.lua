@@ -22,72 +22,69 @@ local PAYTABLE_LINE = {
 	[7] = {0, 0, 10, 30, 125},    -- cherry
 }
 
+-- Performs full RTP calculation for given reels
+local function calculate(reels)
+	-- Get number of total reshuffles and lengths of each reel.
+	local reshuffles, lens = 1, {}
+	for i, r in ipairs(reels) do
+		reshuffles = reshuffles * #r
+		lens[i] = #r
+	end
 
--- Get number of total reshuffles and lengths of each reel.
-local reshuffles, lens = 1, {}
-for i, r in ipairs(REELS) do
-	reshuffles = reshuffles * #r
-	lens[i] = #r
-end
-
--- Function to count symbol occurrences on each reel
-local function get_symbol_data(symbol_id)
-	local counts = {}
-	for i, r in ipairs(REELS) do
-		local count = 0
-		for _, sym in ipairs(r) do
-			if sym == symbol_id then
-				count = count + 1
+	-- Function to count symbol occurrences on each reel
+	local function symbol_counts(symbol_id)
+		local counts = {}
+		for i, r in ipairs(reels) do
+			local count = 0
+			for _, sym in ipairs(r) do
+				if sym == symbol_id then
+					count = count + 1
+				end
 			end
+			counts[i] = count
 		end
-		counts[i] = count
-	end
-	return counts
-end
-
--- Function to calculate expected return from line wins for all symbols
-local function calculate_line_wins_ev()
-	local ev_sum = 0
-
-	-- Iterate through all symbols that pay on lines
-	for symbol_id, pays in pairs(PAYTABLE_LINE) do
-		local c = get_symbol_data(symbol_id)
-
-		-- Calculate combinations for 5-of-a-kind (XXXXX)
-		local comb5 = c[1] * c[2] * c[3] * c[4] * c[5]
-		ev_sum = ev_sum + comb5 * pays[5]
-
-		-- 4-of-a-kind (XXXX-) EV on left side
-		local comb4l = c[1] * c[2] * c[3] * c[4] * (lens[5] - c[5])
-		ev_sum = ev_sum + comb4l * pays[4]
-
-		-- 4-of-a-kind (-XXXX) EV on right side
-		local comb4r = (lens[1] - c[1]) * c[2] * c[3] * c[4] * c[5]
-		ev_sum = ev_sum + comb4r * pays[4]
-
-		-- 3-of-a-kind (XXX--) EV on left side
-		local comb3l = c[1] * c[2] * c[3] * (lens[4] - c[4]) * lens[5]
-		ev_sum = ev_sum + comb3l * pays[3]
-
-		-- 3-of-a-kind (--XXX) EV on right side
-		local comb3r = lens[1] * (lens[2] - c[2]) * c[3] * c[4] * c[5]
-		ev_sum = ev_sum + comb3r * pays[3]
-
-		-- 2-of-a-kind (XX---) EV on left side
-		local cl2 = c[1] * c[2] * (lens[3] - c[3]) * lens[4] * lens[5]
-		ev_sum = ev_sum + cl2 * pays[2]
-
-		-- 2-of-a-kind (---XX) EV on right side
-		local cr2 = lens[1] * lens[2] * (lens[3] - c[3]) * c[4] * c[5]
-		ev_sum = ev_sum + cr2 * pays[2]
+		return counts
 	end
 
-	return ev_sum / reshuffles
+	-- Function to calculate expected return from line wins for all symbols
+	local function calculate_line_ev()
+		local ev_sum = 0
+
+		-- Iterate through all symbols that pay on lines
+		for symbol_id, pays in pairs(PAYTABLE_LINE) do
+			local c = symbol_counts(symbol_id)
+
+			-- Calculate combinations for 5-of-a-kind (XXXXX)
+			local comb5 = c[1] * c[2] * c[3] * c[4] * c[5]
+			ev_sum = ev_sum + comb5 * pays[5]
+
+			-- 4-of-a-kind (XXXX-) EV on left side
+			local comb4l = c[1] * c[2] * c[3] * c[4] * (lens[5] - c[5])
+			ev_sum = ev_sum + comb4l * pays[4]
+
+			-- 4-of-a-kind (-XXXX) EV on right side
+			local comb4r = (lens[1] - c[1]) * c[2] * c[3] * c[4] * c[5]
+			ev_sum = ev_sum + comb4r * pays[4]
+
+			-- 3-of-a-kind (XXX--) EV on left side
+			local comb3l = c[1] * c[2] * c[3] * (lens[4] - c[4]) * lens[5]
+			ev_sum = ev_sum + comb3l * pays[3]
+
+			-- 3-of-a-kind (--XXX) EV on right side
+			local comb3r = lens[1] * (lens[2] - c[2]) * c[3] * c[4] * c[5]
+			ev_sum = ev_sum + comb3r * pays[3]
+		end
+
+		return ev_sum
+	end
+
+	-- Execute calculation
+	local rtp_line = calculate_line_ev() / reshuffles * 100
+	local rtp_scat = 0
+	local rtp_total = rtp_line + rtp_scat
+	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
+	print(string.format("RTP = %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_total))
+	return rtp_total
 end
 
--- Execute calculation
-local line_rtp = calculate_line_wins_ev() * 100
-local scat_rtp = 0
-local total_rtp = line_rtp + scat_rtp
-print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
-print(string.format("RTP = %.5g(lined) + %.5g(scatter) = %.6f%%", line_rtp, scat_rtp, total_rtp))
+calculate(REELS)
