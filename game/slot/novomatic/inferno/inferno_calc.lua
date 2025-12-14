@@ -1,4 +1,5 @@
--- Novomatic / Inferno RTP calculation
+-- Novomatic / Inferno
+-- RTP calculation
 
 -- 1. REEL STRIPS DATA
 local REELS = {
@@ -25,6 +26,7 @@ local PAYTABLE_LINE = {
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
 local PAYTABLE_SCAT = {0, 0, 2, 10, 50}
+local scat_min = 3 -- minimum scatters to win
 
 -- 4. CONFIGURATION
 local sy = 3 -- screen height
@@ -88,18 +90,18 @@ local function calculate(reels)
 		local ev_sum = 0
 
 		-- Using an recursive approach to sum combinations for exactly N scatters
-		local function find_scatter_combs(reel_index, current_scatters, current_comb)
+		local function find_scatter_combs(reel_index, scat_sum, current_comb)
 			if reel_index > #reels then
-				if current_scatters >= 3 then
-					ev_sum = ev_sum + current_comb * PAYTABLE_SCAT[current_scatters]
+				if scat_sum >= scat_min then
+					ev_sum = ev_sum + current_comb * PAYTABLE_SCAT[scat_sum]
 				end
 				return
 			end
 			-- Step 1: having a scatter on this reel
-			find_scatter_combs(reel_index + 1, current_scatters + 1,
+			find_scatter_combs(reel_index + 1, scat_sum + 1,
 				current_comb * c[reel_index] * sy)
 			-- Step 2: NOT having a scatter on this reel
-			find_scatter_combs(reel_index + 1, current_scatters,
+			find_scatter_combs(reel_index + 1, scat_sum,
 				current_comb * (lens[reel_index] - c[reel_index] * sy))
 		end
 		find_scatter_combs(1, 0, 1) -- Start recursion

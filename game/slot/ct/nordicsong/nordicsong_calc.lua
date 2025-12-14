@@ -1,4 +1,5 @@
--- CT Interactive / Nordic Song RTP calculation
+-- CT Interactive / Nordic Song
+-- RTP calculation
 
 -- 1. REEL STRIPS DATA
 local REELS_BON = {
@@ -36,7 +37,8 @@ local PAYTABLE_LINE = {
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
-local pay, fs = 5, 12
+local pay, fs = 5, 12 -- scatter pays and number of free spins awarded
+local scat_min = 3 -- minimum scatters to win
 
 -- 4. CONFIGURATION
 local sy = 3 -- screen height
@@ -93,27 +95,28 @@ local function calculate(reels_reg, reels_bon)
 	-- Function to calculate expected return from scatter wins
 	local function calculate_scat_ev()
 		local c = symbol_counts(scat)
-		local ev_sum, fs_sum = 0, 0
+		local ev_sum, fs_sum, fs_num = 0, 0, 0
 
 		-- Using an recursive approach to sum combinations for exactly N scatters
-		local function find_scatter_combs(reel_index, current_scatters, current_comb)
+		local function find_scatter_combs(reel_index, scat_sum, current_comb)
 			if reel_index > #reels then
-				if current_scatters >= 3 then
+				if scat_sum >= scat_min then
 					ev_sum = ev_sum + current_comb * pay
 					fs_sum = fs_sum + current_comb * fs
+					fs_num = fs_num + current_comb
 				end
 				return
 			end
 			-- Step 1: having a scatter on this reel
-			find_scatter_combs(reel_index + 1, current_scatters + 1,
+			find_scatter_combs(reel_index + 1, scat_sum + 1,
 				current_comb * c[reel_index] * sy)
 			-- Step 2: NOT having a scatter on this reel
-			find_scatter_combs(reel_index + 1, current_scatters,
+			find_scatter_combs(reel_index + 1, scat_sum,
 				current_comb * (lens[reel_index] - c[reel_index] * sy))
 		end
 		find_scatter_combs(1, 0, 1) -- Start recursion
 
-		return ev_sum, fs_sum
+		return ev_sum, fs_sum, fs_num
 	end
 
 	-- Execute calculation
@@ -126,7 +129,7 @@ local function calculate(reels_reg, reels_bon)
 			lens[i] = #r
 		end
 		local rtp_line = calculate_line_ev() / reshuffles * 100
-		local ev_sum, fs_sum = calculate_scat_ev()
+		local ev_sum, fs_sum, fs_num = calculate_scat_ev()
 		local rtp_scat = ev_sum / reshuffles * 100
 		local rtp_sym = rtp_line + rtp_scat
 		local q = fs_sum / reshuffles
@@ -136,7 +139,7 @@ local function calculate(reels_reg, reels_bon)
 		print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
 		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
 		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
-		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_sum*fs))
+		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
 		print(string.format("RTP = sq*rtp(sym) = %.5g*%.5g = %.6f%%", sq, rtp_sym, rtp_fs))
 	end
 	local rtp_total

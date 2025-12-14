@@ -1,4 +1,5 @@
--- Novomatic / Jewels RTP calculation
+-- Novomatic / Jewels
+-- RTP calculation
 
 -- 1. REEL STRIPS DATA
 local REELS = {

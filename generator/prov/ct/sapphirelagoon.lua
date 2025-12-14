@@ -2,7 +2,7 @@ local scripts = arg[0]:match("^(.*generator[/%\\])")
 dofile(scripts.."lib/makereel.lua")
 
 local symset1 = {
-	2, --  1 wild    (2, 3, 4, 5 reels only)
+	2, --  1 wild (2, 3, 4, 5 reels only)
 	1, --  2 scatter
 	2, --  3 man
 	3, --  4 woman

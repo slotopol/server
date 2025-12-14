@@ -1,4 +1,5 @@
--- Novomatic / Fruit Sensation RTP calculation
+-- Novomatic / Fruit Sensation
+-- RTP calculation
 
 -- 1. REEL STRIPS DATA
 local REELS = {

@@ -1,14 +1,14 @@
--- CT Interactive / Ocean Legends
+-- CT Interactive / Tropic Dancer
 -- RTP calculation
 
 -- 1. REEL STRIPS DATA
 local REELS = {
 	-- luacheck: push ignore 631
-	{4, 7, 5, 2, 8, 9, 10, 7, 10, 9, 9, 5, 8, 6, 5, 6, 3, 9, 7, 4, 6, 4, 8, 6, 7, 10, 3, 8, 5, 3, 10, 3, 3, 3, 3, 5, 5, 5, 5, 6, 6, 6, 6, 4, 4, 4, 4, 7, 7, 7, 7, 9, 9, 9, 9, 10, 10, 10, 10, 8, 8, 8, 8, 2},
-	{5, 6, 4, 9, 4, 7, 6, 10, 6, 10, 1, 6, 10, 5, 3, 7, 5, 8, 7, 5, 9, 8, 9, 3, 8, 10, 2, 3, 7, 8, 4, 9, 3, 3, 3, 3, 6, 6, 6, 6, 8, 8, 8, 8, 2, 1, 4, 4, 4, 4, 9, 9, 9, 9, 1, 5, 5, 5, 5, 1, 7, 7, 7, 7, 10, 10, 10, 10, 1},
-	{4, 9, 4, 10, 6, 2, 9, 5, 10, 6, 4, 3, 8, 10, 5, 8, 7, 5, 8, 3, 7, 3, 8, 1, 9, 10, 6, 7, 9, 6, 7, 5, 5, 5, 5, 1, 2, 9, 9, 9, 9, 8, 8, 8, 8, 1, 10, 10, 10, 10, 6, 6, 6, 6, 1, 3, 3, 3, 3, 1, 4, 4, 4, 4, 7, 7, 7, 7},
-	{8, 6, 1, 7, 2, 5, 7, 5, 6, 3, 4, 9, 6, 8, 9, 3, 10, 7, 5, 7, 9, 8, 5, 10, 4, 9, 4, 10, 6, 8, 3, 10, 1, 7, 7, 7, 7, 6, 6, 6, 6, 3, 3, 3, 3, 1, 9, 9, 9, 9, 4, 4, 4, 4, 1, 10, 10, 10, 10, 8, 8, 8, 8, 2, 1, 5, 5, 5, 5},
-	{7, 8, 2, 5, 3, 4, 9, 8, 9, 5, 5, 6, 10, 7, 9, 10, 3, 6, 6, 8, 10, 4, 6, 7, 4, 8, 3, 10, 7, 1, 9, 5, 1, 6, 6, 6, 6, 9, 9, 9, 9, 3, 3, 3, 3, 1, 5, 5, 5, 5, 1, 7, 7, 7, 7, 10, 10, 10, 10, 1, 2, 4, 4, 4, 4, 8, 8, 8, 8},
+	{4, 9, 6, 8, 4, 10, 8, 5, 9, 3, 10, 6, 7, 5, 9, 2, 7, 3, 9, 4, 10, 3, 8, 5, 10, 6, 7, 2, 8, 5, 5, 5, 3, 3, 3, 9, 9, 9, 9, 4, 4, 4, 10, 10, 10, 10, 8, 8, 8, 8, 7, 7, 7, 7, 6, 6, 6, 2, 2, 2},
+	{1, 7, 3, 1, 9, 10, 6, 8, 5, 6, 7, 2, 3, 4, 10, 9, 2, 10, 9, 5, 8, 4, 3, 8, 4, 10, 5, 6, 9, 8, 7, 1, 10, 10, 10, 10, 6, 6, 6, 2, 2, 2, 1, 1, 1, 9, 9, 9, 9, 7, 7, 7, 7, 5, 5, 5, 4, 4, 4, 8, 8, 8, 8, 3, 3, 3},
+	{9, 5, 3, 1, 10, 10, 3, 4, 5, 9, 10, 2, 8, 1, 5, 7, 3, 9, 8, 2, 6, 10, 4, 7, 8, 6, 6, 8, 7, 4, 9, 1, 7, 7, 7, 7, 4, 4, 4, 10, 10, 10, 10, 8, 8, 8, 8, 2, 2, 2, 9, 9, 9, 9, 3, 3, 3, 5, 5, 5, 1, 1, 1, 6, 6, 6},
+	{3, 6, 5, 4, 1, 10, 9, 3, 6, 5, 7, 5, 3, 9, 1, 1, 7, 4, 8, 9, 6, 8, 10, 10, 2, 2, 9, 8, 4, 10, 7, 8, 8, 8, 8, 8, 1, 1, 1, 6, 6, 6, 5, 5, 5, 10, 10, 10, 10, 4, 4, 4, 9, 9, 9, 9, 2, 2, 2, 3, 3, 3, 7, 7, 7, 7},
+	{6, 8, 3, 10, 9, 5, 1, 6, 6, 9, 1, 5, 9, 10, 4, 9, 5, 8, 2, 10, 3, 1, 8, 4, 7, 8, 2, 7, 7, 3, 4, 10, 5, 5, 5, 1, 1, 1, 9, 9, 9, 9, 8, 8, 8, 8, 2, 2, 2, 10, 10, 10, 10, 7, 7, 7, 7, 3, 3, 3, 4, 4, 4, 6, 6, 6},
 	-- luacheck: pop
 }
 
@@ -16,10 +16,10 @@ local REELS = {
 local PAYTABLE_LINE = {
 	[ 1] = {0, 0, 0, 0, 0},       -- wild (2, 3, 4, 5 reels only)
 	[ 2] = {0, 0, 0, 0, 0},       -- scatter
-	[ 3] = {0, 0, 50, 200, 1000}, -- aryan
-	[ 4] = {0, 0, 15, 75, 200},   -- nymph
-	[ 5] = {0, 0, 5, 50, 150},    -- pot
-	[ 6] = {0, 0, 5, 50, 150},    -- vase
+	[ 3] = {0, 0, 20, 200, 1000}, -- singer
+	[ 4] = {0, 0, 15, 75, 150},   -- dancer man
+	[ 5] = {0, 0, 5, 50, 150},    -- dancer girl 1
+	[ 6] = {0, 0, 5, 50, 150},    -- dancer girl 2
 	[ 7] = {0, 0, 5, 15, 100},    -- ace
 	[ 8] = {0, 0, 5, 15, 100},    -- king
 	[ 9] = {0, 0, 5, 15, 100},    -- queen
@@ -27,11 +27,13 @@ local PAYTABLE_LINE = {
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
-local PAYTABLE_SCAT = {0, 0, 5, 10, 50}
-local fs = 15 -- number of free spins awarded
-local scat_min = 3 -- minimum scatters to win
+local PAYTABLE_SCAT = {0, 0, 0, 0, 0, 5, 10, 20, 22, 40, 50, 52, 56, 80, 100}
+local scat_min = 6 -- minimum scatters to win
 
--- 4. CONFIGURATION
+-- 4. FREE SPINS TABLE
+local FREESPIN_SCAT = {0, 0, 0, 0, 0, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33}
+
+-- 5. CONFIGURATION
 local sy = 3 -- screen height
 local wild, scat = 1, 2 -- wild & scatter symbol IDs
 
@@ -85,27 +87,59 @@ local function calculate(reels)
 
 	-- Function to calculate expected return from scatter wins
 	local function calculate_scat_ev()
-		local c = symbol_counts(scat)
 		local ev_sum, fs_sum, fs_num = 0, 0, 0
 
-		-- Using an recursive approach to sum combinations for exactly N scatters
-		local function find_scatter_combs(reel_index, scat_sum, current_comb)
-			if reel_index > #reels then
+		-- 1. Preliminary calculation: Determine how many ways
+		-- N scatter symbols can appear on each reel.
+		-- ways_on_reel[reel_idx][scat_count] = number of combinations
+		-- that yield scat_count scatters
+		local ways_on_reel = {}
+		for i, reel in ipairs(reels) do
+			ways_on_reel[i] = {}
+			for count = 0, sy do
+				ways_on_reel[i][count] = 0
+			end
+			for stop_idx = 0, lens[i] - 1 do
+				local count = 0
+				for h = 0, sy - 1 do
+					local symbol_idx = (stop_idx + h) % lens[i] + 1
+					if reel[symbol_idx] == scat then
+						count = count + 1
+					end
+				end
+				ways_on_reel[i][count] = ways_on_reel[i][count] + 1
+			end
+		end
+
+		-- 2. Recursive traversal of the combination tree to sum the EV
+		-- reel_idx: current reel (1-5)
+		-- scat_sum: the sum of scatters on the previous reels
+		-- current_comb: the number of combinations that lead to this state
+		local function find_scatter_ev_recursive(reel_idx, scat_sum, current_comb)
+
+			-- Base case: all 5 reels have been processed
+			if reel_idx > #reels then
 				if scat_sum >= scat_min then
 					ev_sum = ev_sum + current_comb * PAYTABLE_SCAT[scat_sum]
-					fs_sum = fs_sum + current_comb * fs
+					fs_sum = fs_sum + current_comb * FREESPIN_SCAT[scat_sum]
 					fs_num = fs_num + current_comb
 				end
 				return
 			end
-			-- Step 1: having a scatter on this reel
-			find_scatter_combs(reel_index + 1, scat_sum + 1,
-				current_comb * c[reel_index] * sy)
-			-- Step 2: NOT having a scatter on this reel
-			find_scatter_combs(reel_index + 1, scat_sum,
-				current_comb * (lens[reel_index] - c[reel_index] * sy))
+
+			-- Recursive step: iterate through all possible outcomes
+			-- of the current reel (0, 1, 2, or 3 scatters)
+			for scat_count, ways in pairs(ways_on_reel[reel_idx]) do
+				if ways > 0 then
+					find_scatter_ev_recursive(
+						reel_idx + 1,
+						scat_sum + scat_count,
+						current_comb * ways
+					)
+				end
+			end
 		end
-		find_scatter_combs(1, 0, 1) -- Start recursion
+		find_scatter_ev_recursive(1, 0, 1)
 
 		return ev_sum, fs_sum, fs_num
 	end
@@ -118,7 +152,7 @@ local function calculate(reels)
 	local q = fs_sum / reshuffles
 	local sq = 1 / (1 - q)
 	local rtp_fs = 2 * sq * rtp_sym
-	local rtp_total = rtp_sym + q * rtp_fs
+	local rtp_total = rtp_sym + q*rtp_fs
 	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
 	print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
 	print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))

@@ -1,4 +1,5 @@
--- Novomatic / Fruitilicious RTP calculation
+-- Novomatic / Fruitilicious
+-- RTP calculation
 
 -- 1. REEL STRIPS DATA
 local REELS = {
