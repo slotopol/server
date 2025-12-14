@@ -29,7 +29,7 @@ func CalcStatBon(ctx context.Context) (rtp, num float64) {
 		return rtpsym
 	}
 
-	return slot.ScanReels5x(ctx, &s, g, reels, calc), fgf
+	return slot.ScanReelsCommon(ctx, &s, g, reels, calc), fgf
 }
 
 func CalcStatReg(ctx context.Context, mrtp float64) float64 {
@@ -58,5 +58,5 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		return rtp
 	}
 
-	return slot.ScanReels5x(ctx, &s, g, reels, calc)
+	return slot.ScanReelsCommon(ctx, &s, g, reels, calc)
 }

@@ -20,5 +20,5 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		return rtpsym
 	}
 
-	return slot.ScanReels5x(ctx, &s, g, reels, calc)
+	return slot.ScanReelsCommon(ctx, &s, g, reels, calc)
 }
