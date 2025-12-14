@@ -102,15 +102,14 @@ func FormatGameInfo(gi *game.GameInfo) string {
 				b.WriteString(" on bonus reels")
 			}
 		}
-		if gi.GP&game.GPscat > 0 {
+		if gi.GP&game.GPwsc > 0 {
+			b.WriteString(", has wild/scatters")
+		} else if gi.GP&game.GPscany > 0 {
 			b.WriteString(", has scatters")
 		}
 		if gi.GP&game.GPwany > 0 {
 			if gi.GP&game.GPwild > 0 {
 				b.WriteString(", has wilds")
-			}
-			if gi.GP&game.GPwsc > 0 {
-				b.WriteString(", has wild/scatters")
 			}
 			if gi.GP&game.GPrwild > 0 {
 				b.WriteString(", has reel wilds")
@@ -297,7 +296,8 @@ fgt - slots with free games that can be retriggered only once
 fgs - slots with free games that can be retriggered in a sequence
 fgr - slots with separate reels on free games
 fgm - slots with any multipliers on free games
-scat - slots with scatters
+sany - slots with any scatter symbols
+scat - slots with regular scatters
 wany - slots with any wild symbols
 wild - slots with regular wild symbols
 wsc - slots with wild/scatters symbols

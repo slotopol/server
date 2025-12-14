@@ -30,8 +30,11 @@ type Cascade5x3 struct {
 var _ Cascade = (*Cascade5x3)(nil)
 
 func (s *Cascade5x3) SetCol(x Pos, reel []Sym, pos int) {
+	var d = &s.Scr[x-1]
+	var n = len(reel)
+	pos = (n + pos%n) % n // correct position
 	for y := range 3 {
-		s.Scr[x-1][y] = ReelAt(reel, pos+y)
+		d[y] = reel[(pos+y)%n]
 	}
 	s.Pos[x-1] = pos
 }
@@ -111,8 +114,11 @@ type Cascade5x4 struct {
 var _ Cascade = (*Cascade5x4)(nil)
 
 func (s *Cascade5x4) SetCol(x Pos, reel []Sym, pos int) {
+	var d = &s.Scr[x-1]
+	var n = len(reel)
+	pos = (n + pos%n) % n // correct position
 	for y := range 4 {
-		s.Scr[x-1][y] = ReelAt(reel, pos+y)
+		d[y] = reel[(pos+y)%n]
 	}
 	s.Pos[x-1] = pos
 }

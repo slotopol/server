@@ -48,14 +48,15 @@ const (
 
 	GPrgmult // any multipliers on regular games
 	GPfgmult // any multipliers on free games
-	GPwild   // has wild symbols
 	GPscat   // has scatters
+	GPstscat // has stacked scatters (several may appear on the reel)
 
 	GPwsc   // has wild/scatters symbols
+	GPwild  // has wild symbols
 	GPrwild // has reel wild symbols
 	GPbwild // has big (3x3) wild symbols
-	GPewild // has expanding wilds
 
+	GPewild // has expanding wilds
 	GPwturn // symbols turns to wilds
 	GPwmult // has multiplier on wilds
 	GPbsym  // has big symbol reel (usually with 3x3 in the center on free games)
@@ -65,7 +66,9 @@ const (
 	// any free games
 	GPfgany GP = GPfgonce | GPfgtwic | GPfgseq
 	// any wild symbols
-	GPwany GP = GPwild | GPwsc | GPrwild | GPbwild | GPewild
+	GPwany GP = GPwsc | GPwild | GPrwild | GPbwild | GPewild
+	// any scatter symbols
+	GPscany GP = GPwsc | GPscat | GPstscat
 )
 
 type (

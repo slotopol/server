@@ -44,6 +44,7 @@ var FiltMap = map[string]Filter{
 	"fgs":    func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPfgseq > 0 },
 	"fgr":    func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPfgreel > 0 },
 	"fgm":    func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPfgmult > 0 },
+	"sany":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPscany > 0 },
 	"scat":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPscat > 0 },
 	"wany":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPwany > 0 },
 	"wild":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPwild > 0 },

@@ -62,8 +62,10 @@ func (s *Screenx) SetSym(x, y Pos, sym Sym) {
 
 func (s *Screenx) SetCol(x Pos, reel []Sym, pos int) {
 	var d = s.data[(x-1)*s.sy:]
+	var n = len(reel)
+	pos = (n + pos%n) % n // correct position
 	for y := range int(s.sy) {
-		d[y] = ReelAt(reel, pos+y)
+		d[y] = reel[(pos+y)%n]
 	}
 }
 
@@ -146,8 +148,11 @@ func (s *Screen3x3) SetSym(x, y Pos, sym Sym) {
 }
 
 func (s *Screen3x3) SetCol(x Pos, reel []Sym, pos int) {
+	var d = &s.Scr[x-1]
+	var n = len(reel)
+	pos = (n + pos%n) % n // correct position
 	for y := range 3 {
-		s.Scr[x-1][y] = ReelAt(reel, pos+y)
+		d[y] = reel[(pos+y)%n]
 	}
 }
 
@@ -211,8 +216,11 @@ func (s *Screen4x4) SetSym(x, y Pos, sym Sym) {
 }
 
 func (s *Screen4x4) SetCol(x Pos, reel []Sym, pos int) {
+	var d = &s.Scr[x-1]
+	var n = len(reel)
+	pos = (n + pos%n) % n // correct position
 	for y := range 4 {
-		s.Scr[x-1][y] = ReelAt(reel, pos+y)
+		d[y] = reel[(pos+y)%n]
 	}
 }
 
@@ -277,8 +285,11 @@ func (s *Screen5x3) SetSym(x, y Pos, sym Sym) {
 }
 
 func (s *Screen5x3) SetCol(x Pos, reel []Sym, pos int) {
+	var d = &s.Scr[x-1]
+	var n = len(reel)
+	pos = (n + pos%n) % n // correct position
 	for y := range 3 {
-		s.Scr[x-1][y] = ReelAt(reel, pos+y)
+		d[y] = reel[(pos+y)%n]
 	}
 }
 
@@ -395,8 +406,11 @@ func (s *Screen5x4) SetSym(x, y Pos, sym Sym) {
 }
 
 func (s *Screen5x4) SetCol(x Pos, reel []Sym, pos int) {
+	var d = &s.Scr[x-1]
+	var n = len(reel)
+	pos = (n + pos%n) % n // correct position
 	for y := range 4 {
-		s.Scr[x-1][y] = ReelAt(reel, pos+y)
+		d[y] = reel[(pos+y)%n]
 	}
 }
 
@@ -488,8 +502,11 @@ func (s *Screen6x3) SetSym(x, y Pos, sym Sym) {
 }
 
 func (s *Screen6x3) SetCol(x Pos, reel []Sym, pos int) {
+	var d = &s.Scr[x-1]
+	var n = len(reel)
+	pos = (n + pos%n) % n // correct position
 	for y := range 3 {
-		s.Scr[x-1][y] = ReelAt(reel, pos+y)
+		d[y] = reel[(pos+y)%n]
 	}
 }
 
@@ -553,8 +570,11 @@ func (s *Screen6x4) SetSym(x, y Pos, sym Sym) {
 }
 
 func (s *Screen6x4) SetCol(x Pos, reel []Sym, pos int) {
+	var d = &s.Scr[x-1]
+	var n = len(reel)
+	pos = (n + pos%n) % n // correct position
 	for y := range 4 {
-		s.Scr[x-1][y] = ReelAt(reel, pos+y)
+		d[y] = reel[(pos+y)%n]
 	}
 }
 
