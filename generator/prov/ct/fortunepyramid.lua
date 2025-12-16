@@ -23,8 +23,6 @@ local chunklen = {
 	5, -- 8 bowl
 }
 
-math.randomseed(os.time())
-
 local function reelgen()
 	return makereelhot(symset, 3, {[2]=true}, chunklen)
 end
@@ -33,4 +31,5 @@ if autoscan then
 	return reelgen
 end
 
+math.randomseed(os.time())
 printreel(reelgen())

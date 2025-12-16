@@ -36,6 +36,7 @@ local keypool = {}
 local ridt = {} -- reels sets IDs table
 
 -- write temporary yaml-file
+math.randomseed(os.time())
 do
 	local f, err = io.open(genfile, "w")
 	if not f then

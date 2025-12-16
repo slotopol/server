@@ -49,8 +49,6 @@ local neighboursbon = {
 	{ 0, 0, 0, 0, 2,}, -- 5 heliodor
 }
 
-math.randomseed(os.time())
-
 local function reelgen(_, isbon)
 	if isbon then
 		return makereel(symsetbon, neighboursbon)
@@ -63,5 +61,6 @@ if autoscan then
 	return reelgen
 end
 
+math.randomseed(os.time())
 printreel(reelgen(1, false))
 printreel(reelgen(1, true))

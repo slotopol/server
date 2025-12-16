@@ -70,6 +70,7 @@ local function generate()
 end
 
 -- run scanner N times
+math.randomseed(os.time())
 for stage = 1, N do
 	local reels = generate()
 	reels.diff = reels.rtp % gran

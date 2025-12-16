@@ -34,8 +34,6 @@ local neighbours = {
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,}, -- 13 nine
 }
 
-math.randomseed(os.time())
-
 local function reelgen()
 	return makereel(symset, neighbours)
 end
@@ -44,4 +42,5 @@ if autoscan then
 	return reelgen
 end
 
+math.randomseed(os.time())
 printreel(reelgen())

@@ -4,9 +4,10 @@
 -- see: https://github.com/lunarmodules/luacheck
 
 globals = {
-	"shuffle", "tcopy", "tglue", "reelglue", "addsym",
-	"correctreel", "makereel",
-	"gluechunks", "makereelchunks", "makereelhot", "printreel",
+	"shuffle", "tcopy", "tglue",
+	"reelglue", "gluechunks", "addsym",
+	"correctreel", "correctchunks",
+	"makereel", "makereelchunks", "makereelct", "makereelhot", "printreel",
 	"combin", "kenoprob", "kenoprobtable", "kenortp",
 	"autoscan",
 }

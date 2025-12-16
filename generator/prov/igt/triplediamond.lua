@@ -18,8 +18,6 @@ local neighbours = {
 	{ 0, 0, 0, 0, 0,}, -- 5 bar1
 }
 
-math.randomseed(os.time())
-
 local function insertspace(reel)
 	local reelsp = {}
 	local prev
@@ -51,4 +49,5 @@ if autoscan then
 	return reelgen
 end
 
+math.randomseed(os.time())
 printreel(reelgen())

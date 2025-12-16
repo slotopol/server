@@ -38,8 +38,6 @@ local chunklen = {
 	6, -- 6 bell
 }
 
-math.randomseed(os.time())
-
 local function reelgen()
 	local reel1, iter1 = makereel(symset1, neighbours)
 	local reel2, iter2 = makereelhot(symset2, 3, {}, chunklen)
@@ -50,4 +48,5 @@ if autoscan then
 	return reelgen
 end
 
+math.randomseed(os.time())
 printreel(reelgen())

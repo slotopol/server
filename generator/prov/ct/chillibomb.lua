@@ -61,8 +61,6 @@ local chunklen = {
 	6, -- 12 cherry
 }
 
-math.randomseed(os.time())
-
 local function reelgen(n)
 	if n == 1 or n == 5 then
 		return makereelhot(symset1, 3, {[3]=true}, chunklen)
@@ -77,6 +75,7 @@ if autoscan then
 	return reelgen
 end
 
+math.randomseed(os.time())
 print "reel 1, 5"
 printreel(reelgen(1))
 print "reel 2, 4"

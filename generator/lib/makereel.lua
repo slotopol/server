@@ -50,6 +50,19 @@ function reelglue(...)
 	return reel
 end
 
+-- glue chunks to single reel
+function gluechunks(chunks)
+	local reel = {}
+	for _, c in pairs(chunks) do
+		for _ = 1, c.n do
+			reel[rawlen(reel)+1] = c.sym
+		end
+	end
+
+	setmetatable(reel, reelmt)
+	return reel
+end
+
 function addsym(reel, sym, n)
 	local mt = getmetatable(reel)
 	setmetatable(reel, nil)
@@ -120,25 +133,7 @@ function correctreel(reel, neighbours)
 	return iter
 end
 
-function makereel(symset, neighbours)
-	-- make not-shuffled reel
-	local reel = {}
-	for sym, n in pairs(symset) do
-		for _ = 1, n do
-			table.insert(reel, sym)
-		end
-	end
-	setmetatable(reel, reelmt)
-
-	-- shuffle it
-	shuffle(reel)
-
-	-- correct it
-	local iter = correctreel(reel, neighbours)
-	return reel, iter
-end
-
-function gluechunks(chunks, sy, scat)
+function correctchunks(chunks, sy, scat)
 	-- shuffle until reel become correct
 	local iter = 0
 	repeat
@@ -175,16 +170,24 @@ function gluechunks(chunks, sy, scat)
 		end
 		iter = iter + 1
 	until ok or iter >= 1000
+	return gluechunks(chunks), iter
+end
 
-	-- glue chunks to single reel
+function makereel(symset, neighbours)
+	-- make not-shuffled reel
 	local reel = {}
-	for _, c in pairs(chunks) do
-		for _ = 1, c.n do
-			reel[rawlen(reel)+1] = c.sym
+	for sym, n in pairs(symset) do
+		for _ = 1, n do
+			table.insert(reel, sym)
 		end
 	end
-
 	setmetatable(reel, reelmt)
+
+	-- shuffle it
+	shuffle(reel)
+
+	-- correct it
+	local iter = correctreel(reel, neighbours)
 	return reel, iter
 end
 
@@ -197,7 +200,25 @@ function makereelchunks(symchunks, sy, scat)
 			chunks[#chunks+1] = c
 		end
 	end
-	return gluechunks(chunks, sy, scat)
+	return correctchunks(chunks, sy, scat)
+end
+
+function makereelct(symset, sy, scat, ry, bigsym)
+	local chunks = {}
+	for sym, n in pairs(bigsym) do
+		assert(n*ry <= symset[sym], "makereelct: not enough symbols for bigsymbol "..sym)
+		for _ = 1, n do
+			chunks[#chunks+1] = {sym=sym, n=ry}
+		end
+	end
+	for sym, n in pairs(symset) do
+		n = n - bigsym[sym] * ry
+		for _ = 1, n do
+			local c = {sym=sym, n=1}
+			chunks[#chunks+1] = c
+		end
+	end
+	return correctchunks(chunks, sy, scat)
 end
 
 function makereelhot(symset, sy, scat, chunklen)
@@ -216,7 +237,7 @@ function makereelhot(symset, sy, scat, chunklen)
 			chunks[#chunks+1] = c
 		end
 	end
-	return gluechunks(chunks, sy, scat)
+	return correctchunks(chunks, sy, scat)
 end
 
 function printreel(reel, ...)
