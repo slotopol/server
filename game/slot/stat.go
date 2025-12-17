@@ -203,7 +203,7 @@ const (
 
 var (
 	ErrAvalanche = errors.New("too many cascading falls")
-	ErrReelCount = errors.New("invalid reels count")
+	ErrReelCount = errors.New("unexpected number of reels")
 )
 
 func CorrectThrNum() int {

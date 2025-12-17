@@ -1,33 +1,33 @@
--- CT Interactive / Golden Flower Of Life
+-- CT Interactive / Double Hot Habanero
 -- RTP calculation
 
 -- 1. REEL STRIPS DATA
 local REELS = {
 	-- luacheck: push ignore 631
-	{7, 5, 3, 10, 2, 5, 3, 8, 6, 9, 8, 4, 10, 7, 9, 4, 6, 2, 10, 9, 9, 9, 9, 7, 7, 7, 7, 10, 10, 10, 10, 6, 6, 6, 6, 3, 3, 3, 3, 8, 8, 8, 8, 5, 5, 5, 5, 4, 4, 4, 4},
-	{6, 4, 9, 2, 5, 3, 10, 7, 2, 9, 3, 8, 6, 1, 8, 4, 5, 1, 7, 10, 4, 4, 4, 4, 5, 5, 5, 5, 10, 10, 10, 10, 3, 3, 3, 3, 8, 8, 8, 8, 9, 9, 9, 9, 6, 6, 6, 6, 7, 7, 7, 7},
-	{9, 3, 10, 5, 2, 8, 7, 1, 8, 3, 6, 7, 4, 9, 5, 1, 10, 4, 6, 2, 5, 5, 5, 5, 8, 8, 8, 8, 4, 4, 4, 4, 9, 9, 9, 9, 3, 3, 3, 3, 7, 7, 7, 7, 10, 10, 10, 10, 6, 6, 6, 6},
-	{5, 8, 4, 10, 2, 9, 7, 1, 5, 3, 8, 1, 6, 3, 7, 9, 4, 10, 2, 6, 10, 10, 10, 10, 9, 9, 9, 9, 6, 6, 6, 6, 7, 7, 7, 7, 4, 4, 4, 4, 5, 5, 5, 5, 8, 8, 8, 8, 3, 3, 3, 3},
-	{1, 7, 9, 10, 8, 1, 5, 3, 6, 2, 8, 4, 10, 3, 7, 2, 9, 6, 10, 4, 5, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 9, 9, 9, 9, 8, 8, 8, 8, 3, 3, 3, 3, 10, 10, 10, 10, 4, 4, 4, 4},
+	{10, 8, 8, 8, 8, 2, 5, 5, 5, 4, 6, 6, 4, 5, 5, 5, 6, 6, 6, 4, 3, 2, 9, 10, 10, 10, 10, 7, 7, 7, 7, 3, 10, 10, 10, 10, 3, 4, 3, 9, 9, 9, 9, 8, 8, 8, 8, 4, 9, 9, 9, 9, 7, 7, 7, 7, 6, 6, 6, 5, 5, 3},
+	{10, 10, 10, 10, 4, 3, 6, 6, 6, 9, 9, 9, 9, 3, 4, 10, 9, 9, 9, 9, 8, 8, 8, 8, 9, 10, 10, 10, 10, 1, 4, 8, 8, 8, 8, 4, 3, 2, 1, 6, 6, 7, 7, 7, 7, 5, 5, 5, 2, 6, 6, 6, 4, 5, 5, 5, 3, 5, 5, 7, 7, 7, 7, 1, 3},
+	{10, 10, 10, 10, 4, 2, 9, 9, 9, 9, 3, 9, 2, 1, 6, 6, 6, 5, 5, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 4, 9, 9, 9, 9, 5, 5, 5, 1, 6, 6, 3, 1, 4, 3, 10, 10, 10, 10, 4, 3, 8, 8, 8, 8, 5, 5, 5, 4, 10, 7, 7, 7, 7, 3},
+	{9, 9, 9, 9, 3, 2, 10, 10, 10, 10, 8, 8, 8, 8, 5, 7, 7, 7, 7, 5, 5, 5, 4, 3, 10, 6, 6, 6, 5, 5, 5, 6, 4, 1, 4, 3, 4, 2, 7, 3, 8, 8, 8, 8, 6, 6, 6, 10, 10, 10, 10, 9, 4, 9, 9, 9, 9, 3, 8, 1, 7, 7, 7, 7, 1},
+	{7, 7, 7, 7, 5, 5, 5, 9, 5, 5, 4, 3, 10, 10, 10, 10, 8, 8, 8, 8, 5, 5, 5, 3, 8, 8, 8, 8, 2, 3, 7, 7, 7, 7, 4, 6, 6, 4, 6, 6, 6, 10, 4, 9, 9, 9, 9, 6, 6, 6, 4, 2, 3, 9, 9, 9, 9, 3, 10, 10, 10, 10},
 	-- luacheck: pop
 }
 
 -- 2. PAYTABLE FOR LINE WINS (indexed by symbol ID)
 local PAYTABLE_LINE = {
-	[ 1] = {0, 0, 0, 0, 0},       -- wild (2, 3, 4, 5 reels only)
+	[ 1] = {0, 0, 0, 0, 0},       -- wild (2, 3, 4 reels only)
 	[ 2] = {0, 0, 0, 0, 0},       -- scatter
-	[ 3] = {0, 0, 30, 100, 2000}, -- samurai
-	[ 4] = {0, 0, 30, 100, 400},  -- geisha
-	[ 5] = {0, 0, 20, 100, 300},  -- bowl
-	[ 6] = {0, 0, 20, 100, 300},  -- coins
-	[ 7] = {0, 0, 20, 100, 200},  -- ace
-	[ 8] = {0, 0, 20, 100, 200},  -- king
-	[ 9] = {0, 0, 20, 100, 200},  -- queen
-	[10] = {0, 0, 10, 50, 100},   -- jack
+	[ 3] = {0, 0, 50, 150, 1000}, -- woman
+	[ 4] = {0, 0, 30, 50, 500},   -- man
+	[ 5] = {0, 0, 30, 50, 200},   -- crayfish
+	[ 6] = {0, 0, 10, 20, 150},   -- shrimp
+	[ 7] = {0, 0, 5, 20, 50},     -- ananas
+	[ 8] = {0, 0, 5, 20, 50},     -- lime
+	[ 9] = {0, 0, 5, 20, 50},     -- corn
+	[10] = {0, 0, 5, 20, 50},     -- banana
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
-local PAYTABLE_SCAT = {0, 0, 2, 10, 100}
+local PAYTABLE_SCAT = {0, 0, 10, 20, 100}
 local scat_min = 3 -- minimum scatters to win
 
 -- 4. CONFIGURATION
@@ -50,7 +50,7 @@ local function calculate(reels)
 		for i, r in ipairs(reels) do
 			local count = 0
 			for _, sym in ipairs(r) do
-				if sym == symbol_id or (sym == wild and symbol_id ~= scat) then
+				if sym == symbol_id then
 					count = count + 1
 				end
 			end
@@ -59,25 +59,39 @@ local function calculate(reels)
 		return counts
 	end
 
-	-- Function to calculate expected return from line wins for all symbols
+	-- Function to calculate expected return from line wins
 	local function calculate_line_ev()
 		local ev_sum = 0
+		local w = symbol_counts(wild) -- Pure wild counts
 
 		-- Iterate through all symbols that pay on lines
 		for symbol_id, pays in pairs(PAYTABLE_LINE) do
-			local c = symbol_counts(symbol_id)
+			if symbol_id ~= wild and symbol_id ~= scat then
+				local s = symbol_counts(symbol_id) -- Pure symbol counts
+				-- Function to calculate the expected value of a combination of length N.
+				local function get_comb_ev(n, payout)
+					if payout <= 0 then return 0 end
 
-			-- 5-of-a-kind (XXXXX) EV
-			local comb5 = c[1] * c[2] * c[3] * c[4] * c[5]
-			ev_sum = ev_sum + comb5 * pays[5]
-
-			-- 4-of-a-kind (XXXX-) EV
-			local comb4 = c[1] * c[2] * c[3] * c[4] * (lens[5] - c[5])
-			ev_sum = ev_sum + comb4 * pays[4]
-
-			-- 3-of-a-kind (XXX--) EV
-			local comb3 = c[1] * c[2] * c[3] * (lens[4] - c[4]) * lens[5]
-			ev_sum = ev_sum + comb3 * pays[3]
+					local comb_ev = payout
+					for i = 1, sx do
+						if i <= n then
+							if i >= 2 and i <= 4 then
+								comb_ev = comb_ev * (s[i] + w[i] * 2)
+							else
+								comb_ev = comb_ev * (s[i] + w[i])
+							end
+						elseif i == n + 1 then
+							comb_ev = comb_ev * (lens[i] - (s[i] + w[i]))
+						else
+							comb_ev = comb_ev * lens[i]
+						end
+					end
+					return comb_ev
+				end
+				for n = 3, sx do
+					ev_sum = ev_sum + get_comb_ev(n, pays[n])
+				end
+			end
 		end
 
 		return ev_sum

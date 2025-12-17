@@ -34,11 +34,12 @@ local scat_min = 6 -- minimum scatters to win
 local FREESPIN_SCAT = {0, 0, 0, 0, 0, 10, 12, 14, 16, 18, 20, 22, 24, 26, 28}
 
 -- 5. CONFIGURATION
-local sy = 3 -- screen height
+local sx, sy = 5, 3 -- screen width & height
 local wild, scat = 1, 2 -- wild & scatter symbol IDs
 
 -- Performs full RTP calculation for given reels
 local function calculate(reels)
+	assert(#reels == sx, "unexpected number of reels")
 	-- Get number of total reshuffles and lengths of each reel.
 	local reshuffles, lens = 1, {}
 	for i, r in ipairs(reels) do
@@ -118,7 +119,7 @@ local function calculate(reels)
 		local function find_scatter_ev_recursive(reel_idx, scat_sum, current_comb)
 
 			-- Base case: all 5 reels have been processed
-			if reel_idx > #reels then
+			if reel_idx > sx then
 				if scat_sum >= scat_min then
 					ev_sum = ev_sum + current_comb * PAYTABLE_SCAT[scat_sum]
 					fs_sum = fs_sum + current_comb * FREESPIN_SCAT[scat_sum]

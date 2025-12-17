@@ -41,11 +41,14 @@ local pay, fs = 5, 12 -- scatter pays and number of free spins awarded
 local scat_min = 3 -- minimum scatters to win
 
 -- 4. CONFIGURATION
-local sy = 3 -- screen height
+local sx, sy = 5, 3 -- screen width & height
 local wild, scat = 1, 2 -- wild & scatter symbol IDs
 
 -- Performs full RTP calculation for given reels
 local function calculate(reels_reg, reels_bon)
+	assert(#reels_reg == sx, "unexpected number of regular reels")
+	assert(#reels_bon == sx, "unexpected number of bonus reels")
+
 	local reels
 	local reshuffles, lens
 
@@ -99,7 +102,7 @@ local function calculate(reels_reg, reels_bon)
 
 		-- Using an recursive approach to sum combinations for exactly N scatters
 		local function find_scatter_combs(reel_index, scat_sum, current_comb)
-			if reel_index > #reels then
+			if reel_index > sx then
 				if scat_sum >= scat_min then
 					ev_sum = ev_sum + current_comb * pay
 					fs_sum = fs_sum + current_comb * fs

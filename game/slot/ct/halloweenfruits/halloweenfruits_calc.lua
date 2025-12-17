@@ -43,11 +43,14 @@ local fs = 15 -- number of free spins awarded on scatters wins
 local scat_min = 4 -- minimum scatters to win
 
 -- 4. CONFIGURATION
-local sy = 3 -- screen height
+local sx, sy = 5, 3 -- screen width & height
 local wild, scat = 1, 2 -- wild & scatter symbol IDs
 
 -- Performs full RTP calculation for given reels
 local function calculate(reels_reg, reels_bon)
+	assert(#reels_reg == sx, "unexpected number of regular reels")
+	assert(#reels_bon == sx, "unexpected number of bonus reels")
+
 	local reels
 	local reshuffles, lens
 
@@ -123,7 +126,7 @@ local function calculate(reels_reg, reels_bon)
 		local function find_scatter_ev_recursive(reel_idx, scat_sum, current_comb)
 
 			-- Base case: all 5 reels have been processed
-			if reel_idx > #reels then
+			if reel_idx > sx then
 				if scat_sum >= scat_min then
 					ev_sum = ev_sum + current_comb * PAYTABLE_SCAT[math.min(scat_sum, #PAYTABLE_SCAT)]
 					fs_sum = fs_sum + current_comb * fs

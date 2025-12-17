@@ -29,12 +29,13 @@ local PAYTABLE_SCAT = {0, 0, 5, 20, 100}
 local scat_min = 3 -- minimum scatters to win
 
 -- 4. CONFIGURATION
-local sy = 3 -- screen height
+local sx, sy = 5, 3 -- screen width & height
 local wild, scat = 1, 2 -- wild & scatter symbol IDs
 local M = 3 -- average multiplier on wilds (1+2+3+4+5)/5
 
 -- Performs full RTP calculation for given reels
 local function calculate(reels)
+	assert(#reels == sx, "unexpected number of reels")
 	-- Get number of total reshuffles and lengths of each reel.
 	local reshuffles, lens = 1, {}
 	for i, r in ipairs(reels) do
@@ -121,7 +122,7 @@ local function calculate(reels)
 
 		-- Using an recursive approach to sum combinations for exactly N scatters
 		local function find_scatter_combs(reel_index, scat_sum, current_comb)
-			if reel_index > #reels then
+			if reel_index > sx then
 				if scat_sum >= scat_min then
 					ev_sum = ev_sum + current_comb * PAYTABLE_SCAT[scat_sum]
 				end

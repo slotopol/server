@@ -23,8 +23,12 @@ local PAYTABLE_LINE = {
 	[7] = {0, 0, 10, 30, 125},    -- cherry
 }
 
+-- 3. CONFIGURATION
+local sx = 5 -- screen width
+
 -- Performs full RTP calculation for given reels
 local function calculate(reels)
+	assert(#reels == sx, "unexpected number of reels")
 	-- Get number of total reshuffles and lengths of each reel.
 	local reshuffles, lens = 1, {}
 	for i, r in ipairs(reels) do
