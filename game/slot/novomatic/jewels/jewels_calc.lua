@@ -92,4 +92,8 @@ local function calculate(reels)
 	return rtp_total
 end
 
+if autoscan then
+	return calculate
+end
+
 calculate(REELS)

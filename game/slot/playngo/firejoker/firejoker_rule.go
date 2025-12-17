@@ -19,7 +19,7 @@ var LinePay = [13][5]float64{
 	{0, 0, 4, 10, 20},   // 5 orange
 	{0, 0, 4, 10, 20},   // 6 lemon
 	{0, 0, 4, 10, 20},   // 7 cherry
-	{},                  // 8 bonus
+	{},                  // 8 bonus (1, 3, 5 reels only)
 	{},                  // 9 joker
 }
 
@@ -104,7 +104,7 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 	}
 	if count := g.SymNum(jack); count == 5 {
 		*wins = append(*wins, slot.WinItem{
-			Pay: g.Bet * float64(g.Sel) * 100000,
+			Pay: g.Bet * float64(g.Sel) * 20000, // jackpot, 100000 bets for 5 fixed lines
 			MP:  1,
 			Sym: jack,
 			Num: 5,

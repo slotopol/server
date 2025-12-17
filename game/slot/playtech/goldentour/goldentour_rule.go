@@ -112,7 +112,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 			var numw, numr slot.Pos = 0, 5 - numl
 			var symr slot.Sym
 			var x slot.Pos
-			for x = 5; x > numl; x-- {
+			for x = 5; x > 1; x-- {
 				var sx = g.LY(x, line)
 				if sx == wild {
 					if symr == 0 {

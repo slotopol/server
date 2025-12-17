@@ -30,8 +30,16 @@ local neighbours = {
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,}, -- 11
 }
 
+local function reelgen()
+	return makereel(symset, neighbours)
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-printreel(makereel(symset, neighbours))
+printreel(reelgen())
 
 -- bonus game calculation
 local golf = {

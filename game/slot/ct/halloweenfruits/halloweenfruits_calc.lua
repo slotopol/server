@@ -197,4 +197,8 @@ local function calculate(reels_reg, reels_bon)
 	return rtp_total
 end
 
+if autoscan then
+	return calculate
+end
+
 calculate(REELS_REG, REELS_BON)
