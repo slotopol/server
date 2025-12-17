@@ -64,7 +64,7 @@ local function calculate(reels)
 		for symbol_id, pays in pairs(PAYTABLE_LINE) do
 			local c = symbol_counts(symbol_id)
 
-			-- Calculate combinations for 5-of-a-kind (XXXXX)
+			-- 5-of-a-kind (XXXXX) EV
 			local comb5 = c[1] * c[2] * c[3] * c[4] * c[5]
 			ev_sum = ev_sum + comb5 * pays[5]
 

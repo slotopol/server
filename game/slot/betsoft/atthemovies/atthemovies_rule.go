@@ -18,7 +18,7 @@ var LinePay = [10][5]float64{
 	{0, 0, 15, 30, 60},      //  6 maw
 	{0, 0, 10, 20, 40},      //  7 starship
 	{0, 0, 5, 10, 20},       //  8 heart
-	{},                      //  9 masks
+	{},                      //  9 masks (2, 4 reels only)
 	{},                      // 10 projector
 }
 

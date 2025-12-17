@@ -10,7 +10,7 @@ local symset = {
 	6, --  6 maw
 	7, --  7 starship
 	7, --  8 heart
-	0, --  9 masks
+	1, --  9 masks (2, 4 reels only)
 	1, -- 10 projector
 }
 
@@ -28,5 +28,27 @@ local neighbours = {
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 1, 2, }, -- 10
 }
 
+local function reelgen(n)
+	local function make()
+		return makereel(symset, neighbours)
+	end
+	if n == 2 or n == 4 then
+		return make()
+	else
+		local n9 = symset[9]
+		symset[9] = 0
+		local reel, iter = make()
+		symset[9] = n9
+		return reel, iter
+	end
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-printreel(makereel(symset, neighbours))
+print "reel 1, 3, 5"
+printreel(reelgen(1))
+print "reel 2, 4"
+printreel(reelgen(2))

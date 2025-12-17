@@ -27,6 +27,9 @@ var LinePay = [12][5]float64{
 // Scatters payment.
 var ScatPay = [5]float64{0, 2, 4, 15, 100} // 2 scatter
 
+// Scatter freespins table
+var ScatFreespin = [5]int{0, 0, 15, 15, 15} // 2 scatter
+
 // Bet lines
 var BetLines = slot.BetLinesNetEnt5x3[:]
 
@@ -106,18 +109,13 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 	var count = g.SymNum(scat)
 	if g.FSR > 0 {
 		*wins = append(*wins, slot.WinItem{
-			Pay: 0,
-			MP:  1,
 			Sym: scat,
 			Num: count,
 			XY:  g.SymPos(scat),
 			FS:  int(count),
 		})
 	} else if count >= 2 {
-		var pay, fs = ScatPay[count-1], 0
-		if count >= 3 {
-			fs = 15
-		}
+		var pay, fs = ScatPay[count-1], ScatFreespin[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * float64(g.Sel) * pay,
 			MP:  1,

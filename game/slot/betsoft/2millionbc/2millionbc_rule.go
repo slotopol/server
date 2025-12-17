@@ -23,7 +23,7 @@ var LinePay = [13][5]float64{
 	{0, 0, 15, 50, 75},     //  9 vase
 	{0, 0, 10, 25, 50},     // 10 ruby
 	{},                     // 11 fire
-	{},                     // 12 acorn
+	{},                     // 12 acorn (5 reel only)
 	{0, 0, 40, 100, 200},   // 13 diamond
 }
 
