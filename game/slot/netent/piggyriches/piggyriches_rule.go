@@ -24,6 +24,8 @@ var LinePay = [12][5]float64{
 	{0, 0, 5, 10, 50},     // 12 ten
 }
 
+// Remark: wilds does not pay and presents on all reels.
+
 // Scatters payment.
 var ScatPay = [5]float64{0, 2, 4, 15, 100} // 2 scatter
 
@@ -77,7 +79,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 			var sx = g.LY(x, line)
 			if sx == wild {
 				mw = 3
-			} else if syml == 0 && sx != scat {
+			} else if syml == 0 {
 				syml = sx
 			} else if sx != syml {
 				numl = x - 1
@@ -136,14 +138,13 @@ func (g *Game) Prepare() {
 	if g.FSR == 0 {
 		g.M = 0
 	}
+	if g.FSR > 0 && g.M == 0 {
+		g.M = 3
+	}
 }
 
 func (g *Game) Apply(wins slot.Wins) {
 	g.Slotx.Apply(wins)
-
-	if g.FSR > 0 && g.M == 0 {
-		g.M = 3
-	}
 }
 
 func (g *Game) SetSel(sel int) error {
@@ -154,17 +155,23 @@ func (g *Game) SetSel(sel int) error {
 // * 2 with 22 free spins
 // * 3 with 15 free spins
 // * 5 with 9 free spins
+// Can be called only BEFORE first free spin.
 func (g *Game) SetMode(n int) error {
-	var fs = g.FSR * int(g.M)
+	if g.FSN != 0 {
+		return slot.ErrDisabled
+	}
 	switch n {
 	case 2:
-		g.FSR = fs / 2
+		g.M = 2
+		g.FSR = 22
 	case 3:
-		g.FSR = fs / 3
+		g.M = 3
+		g.FSR = 15
 	case 5:
-		g.FSR = fs / 5
+		g.M = 5
+		g.FSR = 9
 	default:
-		return slot.ErrDisabled
+		return slot.ErrNoFeature
 	}
 	return nil
 }

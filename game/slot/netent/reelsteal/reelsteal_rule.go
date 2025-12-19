@@ -25,6 +25,8 @@ var LinePay = [12][5]float64{
 	{0, 0, 2, 10, 40},     // 12 gun
 }
 
+// Remark: wilds does not pay and presents on all reels.
+
 // Scatters payment.
 var ScatPay = [5]float64{0, 2, 4, 15, 100} // 2 scatter
 
@@ -75,7 +77,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 			var sx = g.LY(x, line)
 			if sx == wild {
 				mw = 5
-			} else if syml == 0 && sx != scat {
+			} else if syml == 0 {
 				syml = sx
 			} else if sx != syml {
 				numl = x - 1

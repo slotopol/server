@@ -41,7 +41,7 @@ var LineFreespinReg = [11][5]int{
 
 // Line freespins table on bonus games
 var LineFreespinBon = [11][5]int{
-	{},              //  1 wild
+	{},              //  1 wild (2, 3, 4 reels only)
 	{0, 1, 1, 2, 5}, //  2 cherry
 	{0, 0, 1, 2, 5}, //  3 plum
 	{0, 0, 1, 2, 5}, //  4 lemon

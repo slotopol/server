@@ -77,26 +77,26 @@ local function calculate(reels)
 						-- If it's a 5-of-a-kind and we're counting from right to left,
 						-- we skip it to avoid counting the same line twice.
 						if pays[n] > 0 and (n < 5 or is_left_to_right) then
-							local total_combs = 1
-							local no_wild_combs = 1
+							local combs_total = 1
+							local combs_no_wild = 1
 
 							for i = 1, 5 do
 								-- Determine the reel index depending on the direction
 								local idx = is_left_to_right and i or (6 - i)
 								if i <= n then
-									total_combs = total_combs * c[idx]
-									no_wild_combs = no_wild_combs * s[idx]
+									combs_total = combs_total * c[idx]
+									combs_no_wild = combs_no_wild * s[idx]
 								elseif i == n + 1 then
-									total_combs = total_combs * (lens[idx] - c[idx])
-									no_wild_combs = no_wild_combs * (lens[idx] - c[idx])
+									combs_total = combs_total * (lens[idx] - c[idx])
+									combs_no_wild = combs_no_wild * (lens[idx] - c[idx])
 								else
-									total_combs = total_combs * lens[idx]
-									no_wild_combs = no_wild_combs * lens[idx]
+									combs_total = combs_total * lens[idx]
+									combs_no_wild = combs_no_wild * lens[idx]
 								end
 							end
 
-							local with_wild = total_combs - no_wild_combs
-							dir_ev = dir_ev + (no_wild_combs * pays[n]) + (with_wild * pays[n] * 2)
+							local combs_with_wild = combs_total - combs_no_wild
+							dir_ev = dir_ev + (combs_no_wild * pays[n]) + (combs_with_wild * pays[n] * 2)
 						end
 					end
 					return dir_ev

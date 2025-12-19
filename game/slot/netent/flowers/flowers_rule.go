@@ -35,7 +35,7 @@ var LinePay = [17][10]float64{
 var DoubleSym = [17]slot.Sym{
 	0,  //  1 wild
 	0,  //  2 scatter
-	2,  //  3 scatter2
+	2,  //  3 scatter2 (2, 3, 4 reels only)
 	0,  //  4 red
 	4,  //  5 red2
 	0,  //  6 yellow

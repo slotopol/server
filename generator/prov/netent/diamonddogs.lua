@@ -30,10 +30,18 @@ local neighbours = {
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2,}, -- 11
 }
 
-math.randomseed(os.time())
-printreel(makereel(symset, neighbours))
+local function reelgen()
+	return makereel(symset, neighbours)
+end
 
-local dd = {10,20,20,40,40,80,120,120,450}
+if autoscan then
+	return reelgen
+end
+
+math.randomseed(os.time())
+printreel(reelgen())
+
+local dd = {10, 20, 20, 40, 40, 80, 120, 120, 450}
 local sum = 0
 for _, v in ipairs(dd) do
 	sum = sum + v
