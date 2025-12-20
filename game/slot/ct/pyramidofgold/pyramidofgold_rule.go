@@ -14,7 +14,7 @@ var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
 var LinePay = [12][5]float64{
-	{0, 0, 50, 200, 1000}, //  1 moon wolf
+	{0, 0, 50, 200, 1000}, //  1 wild
 	{0, 0, 25, 100, 400},  //  2 woman
 	{0, 0, 25, 100, 400},  //  3 man
 	{0, 0, 20, 75, 250},   //  4 eagle
