@@ -51,45 +51,58 @@ local function calculate(reels_reg, reels_bon)
 
 	local reels
 	local reshuffles, lens
+	local counts
 
-	-- Function to count symbol occurrences on each reel
-	local function symbol_counts(symbol_id)
-		local counts = {}
+	-- Reels precalculations
+	local function precalculate_reels()
+		-- Get number of total reshuffles and lengths of each reel.
+		reshuffles, lens = 1, {}
 		for i, r in ipairs(reels) do
-			local count = 0
-			for _, sym in ipairs(r) do
-				if sym == symbol_id or (sym == wild and symbol_id ~= scat) then
-					count = count + 1
-				end
-			end
-			counts[i] = count
+			reshuffles = reshuffles * #r
+			lens[i] = #r
 		end
-		return counts
+
+		-- Count symbols occurrences on each reel
+		counts = {}
+		for symbol_id in pairs(PAYTABLE_LINE) do
+			counts[symbol_id] = {}
+			for i = 1, sx do counts[symbol_id][i] = 0 end
+		end
+		for i, r in ipairs(reels) do
+			for _, sym in ipairs(r) do
+				counts[sym][i] = counts[sym][i] + 1
+			end
+		end
 	end
 
 	-- Function to calculate expected return from line wins for all symbols
 	local function calculate_line_ev()
 		local ev_sum = 0
+		local w = counts[wild]
 
 		-- Iterate through all symbols that pay on lines
 		for symbol_id, pays in pairs(PAYTABLE_LINE) do
-			local c = symbol_counts(symbol_id)
+			if symbol_id ~= wild and symbol_id ~= scat then
+				local s = counts[symbol_id]
+				local c = {}
+				for i = 1, sx do c[i] = s[i] + w[i] end
 
-			-- 5-of-a-kind (XXXXX) EV
-			local comb5 = c[1] * c[2] * c[3] * c[4] * c[5]
-			ev_sum = ev_sum + comb5 * pays[5]
+				-- 5-of-a-kind (XXXXX) EV
+				local comb5 = c[1] * c[2] * c[3] * c[4] * c[5]
+				ev_sum = ev_sum + comb5 * pays[5]
 
-			-- 4-of-a-kind (XXXX-) EV
-			local comb4 = c[1] * c[2] * c[3] * c[4] * (lens[5] - c[5])
-			ev_sum = ev_sum + comb4 * pays[4]
+				-- 4-of-a-kind (XXXX-) EV
+				local comb4 = c[1] * c[2] * c[3] * c[4] * (lens[5] - c[5])
+				ev_sum = ev_sum + comb4 * pays[4]
 
-			-- 3-of-a-kind (XXX--) EV
-			local comb3 = c[1] * c[2] * c[3] * (lens[4] - c[4]) * lens[5]
-			ev_sum = ev_sum + comb3 * pays[3]
+				-- 3-of-a-kind (XXX--) EV
+				local comb3 = c[1] * c[2] * c[3] * (lens[4] - c[4]) * lens[5]
+				ev_sum = ev_sum + comb3 * pays[3]
 
-			-- 2-of-a-kind (XX---) EV
-			local comb2 = c[1] * c[2] * (lens[3] - c[3]) * lens[4] * lens[5]
-			ev_sum = ev_sum + comb2 * pays[2]
+				-- 2-of-a-kind (XX---) EV
+				local comb2 = c[1] * c[2] * (lens[3] - c[3]) * lens[4] * lens[5]
+				ev_sum = ev_sum + comb2 * pays[2]
+			end
 		end
 
 		return ev_sum
@@ -97,7 +110,7 @@ local function calculate(reels_reg, reels_bon)
 
 	-- Function to calculate expected return from scatter wins
 	local function calculate_scat_ev()
-		local c = symbol_counts(scat)
+		local c = counts[scat]
 		local ev_sum, fs_sum, fs_num = 0, 0, 0
 
 		-- Using an recursive approach to sum combinations for exactly N scatters
@@ -126,11 +139,7 @@ local function calculate(reels_reg, reels_bon)
 	local rtp_fs
 	do
 		reels = reels_bon
-		reshuffles, lens = 1, {}
-		for i, r in ipairs(reels) do
-			reshuffles = reshuffles * #r
-			lens[i] = #r
-		end
+		precalculate_reels()
 		local rtp_line = calculate_line_ev() / reshuffles * 100
 		local ev_sum, fs_sum, fs_num = calculate_scat_ev()
 		local rtp_scat = ev_sum / reshuffles * 100
@@ -148,11 +157,7 @@ local function calculate(reels_reg, reels_bon)
 	local rtp_total
 	do
 		reels = reels_reg
-		reshuffles, lens = 1, {}
-		for i, r in ipairs(reels) do
-			reshuffles = reshuffles * #r
-			lens[i] = #r
-		end
+		precalculate_reels()
 		local rtp_line = calculate_line_ev() / reshuffles * 100
 		local ev_sum, fs_sum = calculate_scat_ev()
 		local rtp_scat = ev_sum / reshuffles * 100

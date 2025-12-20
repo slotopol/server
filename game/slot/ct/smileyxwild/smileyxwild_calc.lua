@@ -43,72 +43,69 @@ local function calculate(reels)
 		lens[i] = #r
 	end
 
-	-- Function to count symbol occurrences on each reel
-	local function symbol_counts(symbol_id)
-		local counts = {}
-		for i, r in ipairs(reels) do
-			local count = 0
-			for _, sym in ipairs(r) do
-				if sym == symbol_id then
-					count = count + 1
-				end
-			end
-			counts[i] = count
+	-- Count symbols occurrences on each reel
+	local counts = {}
+	for symbol_id in pairs(PAYTABLE_LINE) do
+		counts[symbol_id] = {}
+		for i = 1, sx do counts[symbol_id][i] = 0 end
+	end
+	for i, r in ipairs(reels) do
+		for _, sym in ipairs(r) do
+			counts[sym][i] = counts[sym][i] + 1
 		end
-		return counts
 	end
 
 	-- Function to calculate expected return from line wins for all symbols
 	local function calculate_line_ev()
 		local ev_sum = 0
 		-- count wilds on each reel
-		local cw = symbol_counts(wild)
-		assert(cw[1] == 0 and cw[3] == 0 and cw[5] == 0,
+		local w = counts[wild]
+		assert(w[1] == 0 and w[3] == 0 and w[5] == 0,
 			"wilds should not appear on reels 1, 3, 5")
 
 		-- Iterate through all symbols that pay on lines
 		for symbol_id, pays in pairs(PAYTABLE_LINE) do
 			-- count symbol occurrences without wilds
-			local c = symbol_counts(symbol_id)
+			local s = counts[symbol_id]
 
 			-- 5-of-a-kind (XXXXX) EV: W on R2 and W on R4
-			local comb5_ww = c[1] * cw[2] * c[3] * cw[4] * c[5]
+			local comb5_ww = s[1] * w[2] * s[3] * w[4] * s[5]
 			ev_sum = ev_sum + comb5_ww * pays[5] * M * M
 
 			-- 5-of-a-kind (XXXXX) EV: W on R2
-			local comb5_w2 = c[1] * cw[2] * c[3] * c[4] * c[5]
+			local comb5_w2 = s[1] * w[2] * s[3] * s[4] * s[5]
 			ev_sum = ev_sum + comb5_w2 * pays[5] * M
 
 			-- 5-of-a-kind (XXXXX) EV: W on R4
-			local comb5_w4 = c[1] * c[2] * c[3] * cw[4] * c[5]
+			local comb5_w4 = s[1] * s[2] * s[3] * w[4] * s[5]
 			ev_sum = ev_sum + comb5_w4 * pays[5] * M
 
 			-- 5-of-a-kind (XXXXX) EV: no W
-			local comb5_x1 = c[1] * c[2] * c[3] * c[4] * c[5]
+			local comb5_x1 = s[1] * s[2] * s[3] * s[4] * s[5]
 			ev_sum = ev_sum + comb5_x1 * pays[5] * 1 -- no multiplier
 
 			-- 4-of-a-kind (XXXX-) EV: W on R2 and W on R4
-			local comb4_ww = c[1] * cw[2] * c[3] * cw[4] * (lens[5] - c[5])
+			local comb4_ww = s[1] * w[2] * s[3] * w[4] * (lens[5] - s[5])
 			ev_sum = ev_sum + comb4_ww * pays[4] * M * M
 
 			-- 4-of-a-kind (XXXX-) EV: W on R2
-			local comb4_w2 = c[1] * cw[2] * c[3] * c[4] * (lens[5] - c[5])
+			local comb4_w2 = s[1] * w[2] * s[3] * s[4] * (lens[5] - s[5])
 			ev_sum = ev_sum + comb4_w2 * pays[4] * M
 
 			-- 4-of-a-kind (XXXX-) EV: W on R4
-			local comb4_w4 = c[1] * c[2] * c[3] * cw[4] * (lens[5] - c[5])
+			local comb4_w4 = s[1] * s[2] * s[3] * w[4] * (lens[5] - s[5])
 			ev_sum = ev_sum + comb4_w4 * pays[4] * M
 
 			-- 4-of-a-kind (XXXX-) EV: no W
-			local comb4_x1 = c[1] * c[2] * c[3] * c[4] * (lens[5] - c[5])
+			local comb4_x1 = s[1] * s[2] * s[3] * s[4] * (lens[5] - s[5])
 			ev_sum = ev_sum + comb4_x1 * pays[4] * 1 -- no multiplier
 
 			-- 3-of-a-kind (XXX--) EV: W on R2
-			local comb3_w2 = c[1] * cw[2] * c[3] * (lens[4] - c[4] - cw[4]) * lens[5]
+			local comb3_w2 = s[1] * w[2] * s[3] * (lens[4] - s[4] - w[4]) * lens[5]
 			ev_sum = ev_sum + comb3_w2 * pays[3] * M
 
 			-- 3-of-a-kind (XXX--) EV: no W
-			local comb3_x1 = c[1] * c[2] * c[3] * (lens[4] - c[4] - cw[4]) * lens[5]
+			local comb3_x1 = s[1] * s[2] * s[3] * (lens[4] - s[4] - w[4]) * lens[5]
 			ev_sum = ev_sum + comb3_x1 * pays[3] * 1 -- no multiplier
 		end
 
@@ -117,7 +114,7 @@ local function calculate(reels)
 
 	-- Function to calculate expected return from scatter wins
 	local function calculate_scat_ev()
-		local c = symbol_counts(scat)
+		local c = counts[scat]
 		local ev_sum = 0
 
 		-- Using an recursive approach to sum combinations for exactly N scatters

@@ -163,6 +163,9 @@ func (g *Game) SetSel(sel int) error {
 }
 
 func (g *Game) SetMode(ss int) error {
+	if ss != white && ss != black {
+		return slot.ErrNoFeature
+	}
 	if g.FSR != 10 { // only on free games start it can be
 		return slot.ErrDisabled
 	}

@@ -44,30 +44,27 @@ local function calculate(reels)
 		lens[i] = #r
 	end
 
-	-- Function to count symbol occurrences on each reel
-	local function symbol_counts(symbol_id)
-		local counts = {}
-		for i, r in ipairs(reels) do
-			local count = 0
-			for _, sym in ipairs(r) do
-				if sym == symbol_id then
-					count = count + 1
-				end
-			end
-			counts[i] = count
+	-- Count symbols occurrences on each reel
+	local counts = {}
+	for symbol_id in pairs(PAYTABLE_LINE) do
+		counts[symbol_id] = {}
+		for i = 1, sx do counts[symbol_id][i] = 0 end
+	end
+	for i, r in ipairs(reels) do
+		for _, sym in ipairs(r) do
+			counts[sym][i] = counts[sym][i] + 1
 		end
-		return counts
 	end
 
 	-- Function to calculate expected return from line wins
 	local function calculate_line_ev()
 		local ev_sum = 0
-		local w = symbol_counts(wild) -- Pure wild counts
+		local w = counts[wild]
 
 		-- Iterate through all symbols that pay on lines
 		for symbol_id, pays in pairs(PAYTABLE_LINE) do
 			if symbol_id ~= wild and symbol_id ~= scat then
-				local s = symbol_counts(symbol_id) -- Pure symbol counts
+				local s = counts[symbol_id]
 				-- Function to calculate the expected value of a combination of length N.
 				local function get_comb_ev(n, payout)
 					if payout <= 0 then return 0 end
@@ -99,7 +96,7 @@ local function calculate(reels)
 
 	-- Function to calculate expected return from scatter wins
 	local function calculate_scat_ev()
-		local c = symbol_counts(scat)
+		local c = counts[scat]
 		local ev_sum = 0
 
 		-- Using an recursive approach to sum combinations for exactly N scatters
