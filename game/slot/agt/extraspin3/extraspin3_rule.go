@@ -4,11 +4,22 @@ package extraspin3
 
 import (
 	"github.com/slotopol/server/game/slot"
-	"github.com/slotopol/server/game/slot/agt/extraspin"
 )
 
+var ReelsMap slot.ReelsMap[slot.Reelx]
+
 // Lined payment.
-var LinePay = extraspin.LinePay
+var LinePay = [9][5]float64{
+	{0, 10, 50, 250, 1000}, // 1 wild
+	{},                     // 2 scatter (2, 3, 4 reels only)
+	{0, 0, 40, 120, 500},   // 3 strawberry
+	{0, 0, 20, 40, 200},    // 4 papaya
+	{0, 0, 20, 40, 200},    // 5 grapes
+	{0, 0, 10, 20, 100},    // 6 orange
+	{0, 0, 10, 20, 100},    // 7 plum
+	{0, 0, 5, 10, 50},      // 8 cherry
+	{0, 0, 5, 10, 50},      // 9 pear
+}
 
 // Bet lines
 var BetLines = slot.BetLinesAgt5x3[:]
@@ -105,7 +116,7 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 }
 
 func (g *Game) Spin(mrtp float64) {
-	var reels, _ = extraspin.ReelsMap.FindClosest(mrtp)
+	var reels, _ = ReelsMap.FindClosest(mrtp)
 	g.ReelSpin(reels)
 }
 

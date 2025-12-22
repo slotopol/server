@@ -3,9 +3,13 @@
 package extraspin3
 
 import (
+	_ "embed"
+
 	"github.com/slotopol/server/game"
-	"github.com/slotopol/server/game/slot/agt/extraspin"
 )
+
+//go:embed extraspin3_data.yaml
+var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
@@ -24,9 +28,11 @@ var Info = game.AlgInfo{
 		LN: len(BetLines),
 		BN: 0,
 	},
-	Update: func(ai *game.AlgInfo) { ai.RTP = game.MakeRtpList(extraspin.ReelsMap) },
+	Update: func(ai *game.AlgInfo) { ai.RTP = game.MakeRtpList(ReelsMap) },
 }
 
 func init() {
-	Info.SetupFactory(func(sel int) game.Gamble { return NewGame(sel) }, extraspin.CalcStat)
+	Info.SetupFactory(func(sel int) game.Gamble { return NewGame(sel) }, CalcStat)
+	game.DataRouter["agt/extraspiniii/reel"] = &ReelsMap
+	game.LoadMap = append(game.LoadMap, data)
 }

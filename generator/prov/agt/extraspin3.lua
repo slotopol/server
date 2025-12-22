@@ -16,11 +16,11 @@ local symset15 = {
 local symset234 = {
 	 4, --  1 wild
 	 1, --  2 scatter (always 1 here)
-	 6, --  3 strawberry
-	10, -- 4 papaya
-	10, -- 5 grapes
-	13, -- 6 orange
-	13, -- 7 plum
+	 7, --  3 strawberry
+	12, -- 4 papaya
+	12, -- 5 grapes
+	14, -- 6 orange
+	14, -- 7 plum
 	15, -- 8 cherry
 	15, -- 9 pear
 }

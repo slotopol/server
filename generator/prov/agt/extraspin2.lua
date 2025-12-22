@@ -49,6 +49,20 @@ local chunklen234 = {
 	5, --  9 pear
 }
 
+local function reelgen(n)
+	if n == 1 or n == 5 then
+		return makereelhot(symset15, 3, {[1]=true, [2]=true}, chunklen15)
+	else
+		return makereelhot(symset234, 3, {[1]=true, [2]=true}, chunklen234)
+	end
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-printreel(makereelhot(symset15, 3, {[1]=true, [2]=true}, chunklen15))
-printreel(makereelhot(symset234, 3, {[1]=true, [2]=true}, chunklen234))
+print "reel 1, 5"
+printreel(reelgen(1))
+print "reel 2, 3, 4"
+printreel(reelgen(2))
