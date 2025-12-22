@@ -40,6 +40,20 @@ local chunklen = {
 	4, -- 10 bells
 }
 
+local function reelgen(n)
+	if n == 2 then
+		return makereelhot(symset2, 4, {}, chunklen)
+	else
+		return makereelhot(symset134, 4, {}, chunklen)
+	end
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-printreel(makereelhot(symset134, 4, {}, chunklen))
-printreel(makereelhot(symset2, 4, {}, chunklen))
+print "reel 1, 3, 4"
+printreel(reelgen(1))
+print "reel 2"
+printreel(reelgen(2))

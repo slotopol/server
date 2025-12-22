@@ -92,9 +92,27 @@ local neighbours = {
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 2, }, -- 12 pyramid
 }
 
+local function reelgen(n)
+	if n == 1 then
+		return makereel(symset1, neighbours)
+	elseif n == 2 then
+		return makereel(symset2, neighbours)
+	elseif n == 3 then
+		return makereel(symset3, neighbours)
+	elseif n == 4 then
+		return makereel(symset4, neighbours)
+	else -- n == 5
+		return makereel(symset5, neighbours)
+	end
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-printreel(makereel(symset1, neighbours))
-printreel(makereel(symset2, neighbours))
-printreel(makereel(symset3, neighbours))
-printreel(makereel(symset4, neighbours))
-printreel(makereel(symset5, neighbours))
+printreel(reelgen(1))
+printreel(reelgen(2))
+printreel(reelgen(3))
+printreel(reelgen(4))
+printreel(reelgen(5))

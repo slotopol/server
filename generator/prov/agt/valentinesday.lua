@@ -23,5 +23,13 @@ local chunklen = {
 	6, -- 8 medallion
 }
 
+local function reelgen()
+	return makereelhot(symset, 3, {[1]=true}, chunklen)
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-printreel(makereelhot(symset, 3, {[1]=true}, chunklen))
+printreel(reelgen())

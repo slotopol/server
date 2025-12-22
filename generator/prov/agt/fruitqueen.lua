@@ -23,5 +23,13 @@ local chunklen = { -- set all to full length
 	100, -- 8 cherry
 }
 
+local function reelgen()
+	return makereelhot(symset, 6, {[1]=true}, chunklen)
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-printreel(makereelhot(symset, 6, {[1]=true}, chunklen))
+printreel(reelgen())

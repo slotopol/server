@@ -27,5 +27,13 @@ local chunklen = {
 	5, -- 10 glove
 }
 
+local function reelgen()
+	return makereelhot(symset, 4, {[1]=true}, chunklen)
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-printreel(makereelhot(symset, 4, {[1]=true}, chunklen))
+printreel(reelgen())

@@ -27,5 +27,27 @@ local chunklen = {
 	8, -- 10 cherry
 }
 
+local function reelgen(n)
+	local function make()
+		return makereelhot(symset, 4, {[2]=true}, chunklen)
+	end
+	if n == 1 or n == 5 then
+		local n1 = symset[1]
+		symset[1] = 0
+		local reel, iter = make()
+		symset[1] = n1
+		return reel, iter
+	else
+		return make()
+	end
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-printreel(makereelhot(symset, 4, {[2]=true}, chunklen))
+print "reel 1, 5"
+printreel(reelgen(1))
+print "reel 2, 3, 4"
+printreel(reelgen(2))

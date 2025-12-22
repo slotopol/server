@@ -25,5 +25,13 @@ local chunklen = {
 	1, -- 9 scatter
 }
 
+local function reelgen()
+	return makereelhot(symset, 3, {}, chunklen)
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-printreel(makereelhot(symset, 3, {}, chunklen))
+printreel(reelgen())

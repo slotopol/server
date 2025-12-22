@@ -15,5 +15,29 @@ local symset = {
 	11, -- 11 orange
 }
 
+local function reelgen(n)
+	local function make()
+		return makereelhot(symset, 4, {[1]=true, [2]=true, [3]=true}, {})
+	end
+	local n1, n3 = symset[1], symset[3]
+	if n == 1 or n == 5 then
+		symset[1] = 0
+	end
+	if n == 2 or n == 4 then
+		symset[3] = 0
+	end
+	local reel, iter = make()
+	symset[1], symset[3] = n1, n3
+	return reel, iter
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-printreel(makereelhot(symset, 4, {[1]=true, [2]=true, [3]=true}, {}))
+printreel(reelgen(1))
+printreel(reelgen(2))
+printreel(reelgen(3))
+printreel(reelgen(4))
+printreel(reelgen(5))

@@ -12,5 +12,13 @@ local symset = {
 	1, -- 8 bell
 }
 
+local function reelgen()
+	return makereelhot(symset, 3, {[1]=true, [8]=true}, {})
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-printreel(makereelhot(symset, 3, {[1]=true, [8]=true}, {}))
+printreel(reelgen())

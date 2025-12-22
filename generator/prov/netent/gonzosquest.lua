@@ -35,12 +35,7 @@ local function reelgen(n)
 		symset[2] = 0
 	end
 	local reel, iter = makereel(symset, neighbours)
-	if n == 1 or n == 5 then -- 2, 3, 4 reels only
-		symset[1] = n1
-	end
-	if n == 4 or n == 5 then -- 1, 2, 3 reels only
-		symset[2] = n2
-	end
+	symset[1], symset[2] = n1, n2
 	return reel, iter
 end
 

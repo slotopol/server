@@ -11,5 +11,13 @@ local symset = {
 	1, -- 7 star
 }
 
+local function reelgen()
+	return makereelhot(symset, 3, {}, {})
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-printreel(makereelhot(symset, 3, {}, {}))
+printreel(reelgen())
