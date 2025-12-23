@@ -35,6 +35,20 @@ local neighbours = {
 	{ 0, 0, 0, 0, 0, 0, 0, 2 }, -- 8 emerald
 }
 
+local function reelgen(n)
+	if n == 2 or n == 4 then
+		return makereel(symset24, neighbours)
+	else
+		return makereel(symset135, neighbours)
+	end
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-printreel(makereel(symset135, neighbours))
-printreel(makereel(symset24, neighbours))
+print "reel 1, 3, 5"
+printreel(reelgen(1))
+print "reel 2, 4"
+printreel(reelgen(2))

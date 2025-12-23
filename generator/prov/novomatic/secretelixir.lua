@@ -32,8 +32,16 @@ local neighbours = {
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,}, -- 12 scatter
 }
 
+local function reelgen()
+	return makereel(symset, neighbours)
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-printreel(makereel(symset, neighbours))
+printreel(reelgen())
 
 local s
 --local r5reg = {1, 2, 1, 1, 3, 1, 1, 2, 1, 1, 5, 1, 1, 5, 1} -- Er5reg = 1.8

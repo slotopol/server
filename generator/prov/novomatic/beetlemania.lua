@@ -30,5 +30,27 @@ local neighbours = {
 	{ 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2,}, -- 11 jazzbee
 }
 
+local function reelgen(n)
+	local function make()
+		return makereel(symset, neighbours)
+	end
+	if n ~= 3 then
+		local n11 = symset[11]
+		symset[11] = 0
+		local reel, iter = make()
+		symset[11] = n11
+		return reel, iter
+	else
+		return make()
+	end
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-printreel(makereel(symset, neighbours))
+print "reel 1, 3, 4, 5"
+printreel(reelgen(1))
+print "reel 2"
+printreel(reelgen(2))

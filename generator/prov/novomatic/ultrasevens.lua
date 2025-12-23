@@ -22,13 +22,21 @@ local neighbours = {
 	{ 0, 0, 0, 0, 0, 0, 2, }, -- 7 cherry
 }
 
+local function reelgen()
+	local reel, iter = makereel(symset, neighbours)
+	addsym(reel, 7, 5)
+	addsym(reel, 6, 5)
+	addsym(reel, 5, 5)
+	addsym(reel, 4, 5)
+	addsym(reel, 3, 5)
+	addsym(reel, 2, 5)
+	addsym(reel, 1, 5)
+	return reel, iter
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-local reel, iter = makereel(symset, neighbours)
-addsym(reel, 7, 5)
-addsym(reel, 6, 5)
-addsym(reel, 5, 5)
-addsym(reel, 4, 5)
-addsym(reel, 3, 5)
-addsym(reel, 2, 5)
-addsym(reel, 1, 5)
-printreel(reel, iter)
+printreel(reelgen())

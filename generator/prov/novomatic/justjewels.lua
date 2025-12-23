@@ -45,10 +45,24 @@ local chunklen = {
 	1, -- 8 euro
 }
 
+local function reelgen(n)
+	if n == 1 or n == 5 then
+		return makereelhot(symset15, 3, {[8]=true}, chunklen)
+	elseif n == 2 or n == 4 then
+		return makereelhot(symset24, 3, {[8]=true}, chunklen)
+	else -- n == 3
+		return makereelhot(symset3, 3, {[8]=true}, chunklen)
+	end
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
 print "reel 1, 5"
-printreel(makereelhot(symset15, 3, {[8]=true}, chunklen))
+printreel(reelgen(1))
 print "reel 2, 4"
-printreel(makereelhot(symset24, 3, {[8]=true}, chunklen))
+printreel(reelgen(2))
 print "reel 3"
-printreel(makereelhot(symset3, 3, {[8]=true}, chunklen))
+printreel(reelgen(3))

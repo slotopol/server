@@ -121,14 +121,14 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 		if g.FSR > 0 {
 			mm = 2
 		}
-		var pay float64 = 2
+		const pay, fs = 2, 5
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * float64(g.Sel) * pay,
 			MP:  mm,
 			Sym: scat,
 			Num: count,
 			XY:  g.SymPos(scat),
-			FS:  5,
+			FS:  fs,
 		})
 	}
 }

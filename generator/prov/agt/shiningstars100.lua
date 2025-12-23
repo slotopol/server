@@ -16,9 +16,6 @@ local symset = {
 }
 
 local function reelgen(n)
-	local function make()
-		return makereelhot(symset, 4, {[1]=true, [2]=true, [3]=true}, {})
-	end
 	local n1, n3 = symset[1], symset[3]
 	if n == 1 or n == 5 then
 		symset[1] = 0
@@ -26,7 +23,7 @@ local function reelgen(n)
 	if n == 2 or n == 4 then
 		symset[3] = 0
 	end
-	local reel, iter = make()
+	local reel, iter = makereelhot(symset, 4, {[1]=true, [2]=true, [3]=true}, {})
 	symset[1], symset[3] = n1, n3
 	return reel, iter
 end

@@ -3,7 +3,7 @@ dofile(scripts.."lib/makereel.lua")
 
 local symset = {
 	0, --  1 wild        1000 (insert directly)
-	3, --  2 scatter     (2, 3, 4 reel)
+	3, --  2 scatter     (2, 3, 4 reels only)
 	4, --  3 white       750
 	4, --  4 black       750
 	4, --  5 blue amulet 400
@@ -32,7 +32,29 @@ local neighbours = {
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,}, -- 12 nine
 }
 
+local function reelgen(n)
+	local function make()
+		local reel, iter = makereel(symset, neighbours)
+		addsym(reel, 1, 4)
+		return reel, iter
+	end
+	if n == 1 or n == 5 then
+		local n2 = symset[2]
+		symset[2] = 0
+		local reel, iter = make()
+		symset[2] = n2
+		return reel, iter
+	else
+		return make()
+	end
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-local reel, iter = makereel(symset, neighbours)
-addsym(reel, 1, 4)
-printreel(reel, iter)
+print "reel 1, 5"
+printreel(reelgen(1))
+print "reel 2, 3, 4"
+printreel(reelgen(2))

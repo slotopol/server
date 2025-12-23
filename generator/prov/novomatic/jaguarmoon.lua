@@ -2,7 +2,7 @@ local scripts = arg[0]:match("^(.*generator[/%\\])")
 dofile(scripts.."lib/makereel.lua")
 
 local symsetbon = {
-	0, --  1 wild      (2, 3, 4 reel)
+	2, --  1 wild      (2, 3, 4 reels only)
 	0, --  2 scatter   (not used)
 	3, --  3 wooman    800
 	3, --  4 panther   200
@@ -17,7 +17,7 @@ local symsetbon = {
 }
 
 local symset = {
-	0, --  1 wild      (2, 3, 4 reel)
+	2, --  1 wild      (2, 3, 4 reels only)
 	0, --  2 scatter   (insert directly)
 	3, --  3 wooman    800
 	3, --  4 panther   200
@@ -71,10 +71,45 @@ local function ins2(reel)
 	setmetatable(reel, mt)
 end
 
+local function reelgen(n, isbon)
+	if isbon then
+		local function make()
+			return makereel(symsetbon, neighbours)
+		end
+		if n == 1 or n == 5 then
+			local n1 = symset[1]
+			symset[1] = 0
+			local reel, iter = make()
+			symset[1] = n1
+			return reel, iter
+		else
+			return make()
+		end
+	else
+		local n1, n2 = symset[1], symset[2]
+		if n == 1 or n == 5 then
+			symset[1] = 0
+		end
+		local reel, iter = makereel(symset, neighbours)
+		if n == 1 or n == 2 or n == 3 then
+			ins1(reel)
+			if n == 2 then
+				ins2(reel)
+			end
+		end
+		symset[1], symset[2] = n1, n2
+		return reel, iter
+	end
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
-printreel(makereel(symsetbon, neighbours))
-local reel, iter = makereel(symset, neighbours)
-printreel(reel, iter)
-ins1(reel)
-ins2(reel)
-printreel(reel, iter)
+local isbon = false
+printreel(reelgen(1, isbon))
+printreel(reelgen(2, isbon))
+printreel(reelgen(3, isbon))
+printreel(reelgen(4, isbon))
+printreel(reelgen(5, isbon))

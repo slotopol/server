@@ -46,8 +46,20 @@ local chunklen = {
 	1, -- 12 star
 }
 
+local function reelgen(n)
+	if n == 2 or n == 4 then
+		return makereelhot(symset24, 4, {[12]=true}, chunklen)
+	else
+		return makereelhot(symset135, 4, {[12]=true}, chunklen)
+	end
+end
+
+if autoscan then
+	return reelgen
+end
+
 math.randomseed(os.time())
 print "reel 1, 3, 5"
-printreel(makereelhot(symset135, 4, {[12]=true}, chunklen))
+printreel(reelgen(1))
 print "reel 2, 4"
-printreel(makereelhot(symset24, 4, {[12]=true}, chunklen))
+printreel(reelgen(2))
