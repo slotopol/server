@@ -113,7 +113,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
 	if count := g.SymNum(scat); count >= 3 {
-		const pay, fs = 2.0, 5
+		const pay, fs = 2, 5
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * float64(g.Sel) * pay,
 			MP:  1,

@@ -37,7 +37,7 @@ local PAYTABLE_LINE = {
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
-local pay, fs = 5, 12 -- scatter pays and number of free spins awarded
+local scat_pay, scat_fs = 5, 12 -- scatter pays and number of free spins awarded
 local scat_min = 3 -- minimum scatters to win
 
 -- 4. CONFIGURATION
@@ -117,8 +117,8 @@ local function calculate(reels_reg, reels_bon)
 		local function find_scatter_combs(reel_index, scat_sum, current_comb)
 			if reel_index > sx then
 				if scat_sum >= scat_min then
-					ev_sum = ev_sum + current_comb * pay
-					fs_sum = fs_sum + current_comb * fs
+					ev_sum = ev_sum + current_comb * scat_pay
+					fs_sum = fs_sum + current_comb * scat_fs
 					fs_num = fs_num + current_comb
 				end
 				return
@@ -159,7 +159,7 @@ local function calculate(reels_reg, reels_bon)
 		reels = reels_reg
 		precalculate_reels()
 		local rtp_line = calculate_line_ev() / reshuffles * 100
-		local ev_sum, fs_sum = calculate_scat_ev()
+		local ev_sum, fs_sum, fs_num = calculate_scat_ev()
 		local rtp_scat = ev_sum / reshuffles * 100
 		local rtp_sym = rtp_line + rtp_scat
 		local q = fs_sum / reshuffles
@@ -169,7 +169,7 @@ local function calculate(reels_reg, reels_bon)
 		print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
 		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
 		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
-		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_sum*fs))
+		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
 		print(string.format("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%", rtp_sym, q, rtp_fs, rtp_total))
 	end
 	return rtp_total

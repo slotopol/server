@@ -28,7 +28,7 @@ local PAYTABLE_LINE = {
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
-local pay = 2
+local scat_pay = 2
 
 -- 4. FREE SPINS TABLE
 local FREESPIN_SCAT = {0, 0, 0, 0, 0, 0, 0, 0, 0, 7, 15, 30}
@@ -203,7 +203,7 @@ local function calculate(reels)
 			-- Base case: all 5 reels have been processed
 			if reel_idx > sx then
 				if scat_sum >= scat_min then
-					ev_sum = ev_sum + current_comb * pay
+					ev_sum = ev_sum + current_comb * scat_pay
 					fs_sum = fs_sum + current_comb * FREESPIN_SCAT[scat_sum]
 					fs_num = fs_num + current_comb
 				end

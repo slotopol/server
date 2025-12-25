@@ -1,38 +1,43 @@
--- AGT / Zeus
+-- NetEnt / Tiki Wonders
 -- RTP calculation
 
 -- 1. REEL STRIPS DATA
 local REELS = {
 	-- luacheck: push ignore 631
-	{10, 6, 6, 6, 6, 1, 8, 8, 8, 8, 8, 1, 10, 10, 10, 10, 10, 5, 5, 5, 5, 7, 7, 7, 7, 7, 4, 4, 9, 9, 9, 9, 9, 4, 2, 3},
-	{9, 9, 9, 9, 9, 1, 8, 8, 8, 8, 8, 4, 4, 10, 2, 4, 7, 7, 7, 7, 7, 3, 1, 10, 10, 10, 10, 10, 5, 5, 5, 5, 6, 6, 6, 6},
-	{5, 5, 5, 5, 6, 6, 6, 6, 4, 10, 10, 10, 10, 10, 7, 7, 7, 7, 4, 3, 1, 4, 2, 9, 9, 9, 9, 9, 10, 8, 8, 8, 8, 8, 1},
-	{6, 6, 6, 6, 4, 7, 7, 7, 7, 1, 8, 8, 8, 8, 8, 3, 4, 10, 10, 10, 10, 10, 4, 10, 1, 9, 9, 9, 9, 9, 5, 5, 5, 5, 2},
+	{9, 11, 5, 10, 9, 1, 6, 3, 5, 4, 8, 7, 11, 2, 3, 8, 5, 10, 11, 7, 6, 10, 4, 7, 9, 6, 8, 4, 3},
+	{6, 10, 3, 7, 11, 6, 7, 10, 11, 5, 2, 4, 10, 11, 9, 3, 1, 6, 8, 4, 9, 8, 5, 11, 9, 4, 5, 8, 3, 7},
+	{2, 5, 10, 11, 4, 9, 7, 8, 6, 5, 11, 4, 3, 7, 9, 4, 10, 8, 6, 11, 3, 5, 1, 3, 6, 9, 7, 10, 8},
+	{8, 6, 3, 9, 11, 7, 6, 9, 11, 6, 4, 3, 9, 5, 10, 11, 7, 3, 1, 4, 5, 11, 8, 10, 2, 8, 10, 4, 5, 7},
+	{4, 10, 6, 4, 5, 9, 8, 10, 1, 5, 10, 7, 11, 8, 9, 6, 11, 3, 8, 2, 7, 3, 9, 7, 4, 6, 3, 5, 11},
 	-- luacheck: pop
 }
 
 -- 2. PAYTABLE FOR LINE WINS (indexed by symbol ID)
 local PAYTABLE_LINE = {
-	[ 1] = {0, 0, 0, 0, 0},    -- scatter
-	[ 2] = {0, 20, 200, 1000}, -- wild
-	[ 3] = {0, 10, 100, 500},  -- nymph
-	[ 4] = {0, 0, 50, 100},    -- armor
-	[ 5] = {0, 0, 40, 80},     -- boots
-	[ 6] = {0, 0, 40, 80},     -- crown
-	[ 7] = {0, 0, 30, 60},     -- staff
-	[ 8] = {0, 0, 20, 40},     -- pantheon
-	[ 9] = {0, 0, 20, 40},     -- shield
-	[10] = {0, 0, 10, 20},     -- glove
+	[ 1] = {0, 5, 200, 2000, 10000}, -- wild
+	[ 2] = {0, 0, 0, 0, 0},          -- scatter
+	[ 3] = {0, 0, 50, 125, 1000},    -- dolphin
+	[ 4] = {0, 0, 20, 75, 250},      -- guana
+	[ 5] = {0, 0, 20, 75, 250},      -- turtle
+	[ 6] = {0, 0, 15, 50, 200},      -- parrot
+	[ 7] = {0, 0, 5, 25, 125},       -- ace
+	[ 8] = {0, 0, 5, 25, 100},       -- king
+	[ 9] = {0, 0, 3, 20, 100},       -- queen
+	[10] = {0, 0, 2, 15, 75},        -- jack
+	[11] = {0, 0, 2, 15, 75},        -- ten
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
-local scat_pay, scat_fs = 40, 10 -- scatter pays and number of free spins awarded
+local PAYTABLE_SCAT = {0, 2, 4, 50, 400}
 
--- 4. CONFIGURATION
-local sx, sy = 4, 4 -- screen width & height
-local wild, scat = 2, 1 -- wild & scatter symbol IDs
+-- 4. FREE SPINS TABLE
+local FREESPIN_SCAT = {0, 0, 10, 20, 30}
+
+-- 5. CONFIGURATION
+local sx, sy = 5, 3 -- screen width & height
+local wild, scat = 1, 2 -- wild & scatter symbol IDs
 local line_min = 2 -- minimum line symbols to win
-local scat_min = 4 -- minimum scatters to win
+local scat_min = 2 -- minimum scatters to win
 
 -- Performs full RTP calculation for given reels
 local function calculate(reels)
@@ -172,9 +177,11 @@ local function calculate(reels)
 		local function find_scatter_combs(reel_index, scat_sum, current_comb)
 			if reel_index > sx then
 				if scat_sum >= scat_min then
-					ev_sum = ev_sum + current_comb * scat_pay
-					fs_sum = fs_sum + current_comb * scat_fs
-					fs_num = fs_num + current_comb
+					ev_sum = ev_sum + current_comb * PAYTABLE_SCAT[scat_sum]
+					fs_sum = fs_sum + current_comb * FREESPIN_SCAT[scat_sum]
+					if FREESPIN_SCAT[scat_sum] > 0 then
+						fs_num = fs_num + current_comb
+					end
 				end
 				return
 			end
@@ -197,7 +204,7 @@ local function calculate(reels)
 	local rtp_sym = rtp_line + rtp_scat
 	local q = fs_sum / reshuffles
 	local sq = 1 / (1 - q)
-	local rtp_fs = sq * rtp_sym
+	local rtp_fs = 3 * sq * rtp_sym
 	local rtp_total = rtp_sym + q * rtp_fs
 	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
 	print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))

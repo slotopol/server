@@ -28,7 +28,7 @@ local PAYTABLE_LINE = {
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
 local PAYTABLE_SCAT = {0, 0, 4, 10, 50}
-local fs = 15 -- number of free spins awarded
+local scat_fs = 15 -- number of free spins awarded
 local scat_min = 3 -- minimum scatters to win
 
 -- 4. CONFIGURATION
@@ -96,7 +96,7 @@ local function calculate(reels)
 			if reel_index > sx then
 				if scat_sum >= scat_min then
 					ev_sum = ev_sum + current_comb * PAYTABLE_SCAT[scat_sum]
-					fs_sum = fs_sum + current_comb * fs
+					fs_sum = fs_sum + current_comb * scat_fs
 					fs_num = fs_num + current_comb
 				end
 				return

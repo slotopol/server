@@ -121,7 +121,7 @@ To calculate nearest precise RTP to given value for any game on embedded reels, 
 slot_win_x64 scan -g=ctinteractive/luckydollar@95.0
 ```
 
-Some games algorithms contains Lua-scripts of RTP calculation without full reels bruteforce, and returns result on a fly.
+Some games algorithms contains Lua-scripts with mathematical RTP calculation without full reels brute force, and returns result on a fly.
 
 You can provide your own reels sets for any game at external yaml-file with same data structure as it in the sources by command
 

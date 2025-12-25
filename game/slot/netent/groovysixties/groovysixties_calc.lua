@@ -29,7 +29,7 @@ local PAYTABLE_LINE = {
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
-local pay, fs = 2, 5 -- scatter pays and number of free spins awarded
+local scat_pay, scat_fs = 2, 5 -- scatter pays and number of free spins awarded
 
 -- 4. CONFIGURATION
 local sx, sy = 5, 4 -- screen width & height
@@ -175,8 +175,8 @@ local function calculate(reels)
 		local function find_scatter_combs(reel_index, scat_sum, current_comb)
 			if reel_index > sx then
 				if scat_sum >= scat_min then
-					ev_sum = ev_sum + current_comb * pay
-					fs_sum = fs_sum + current_comb * fs
+					ev_sum = ev_sum + current_comb * scat_pay
+					fs_sum = fs_sum + current_comb * scat_fs
 					fs_num = fs_num + current_comb
 				end
 				return
