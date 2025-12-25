@@ -9,7 +9,7 @@ import (
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
-var LinePay = [8]float64{
+var LinePay = [7]float64{
 	500, // 1 snowman
 	0,   // 2 scatter
 	250, // 3 ice
@@ -89,13 +89,14 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 	}
 
 	if count := g.SymNum(scat); count >= 3 {
+		const pay, fs = 10, 20
 		*wins = append(*wins, slot.WinItem{
-			Pay: g.Bet * float64(g.Sel) * 10,
+			Pay: g.Bet * float64(g.Sel) * pay,
 			MP:  1,
 			Sym: scat,
 			Num: count,
 			XY:  g.SymPos(scat),
-			FS:  20,
+			FS:  fs,
 		})
 	}
 	return nil

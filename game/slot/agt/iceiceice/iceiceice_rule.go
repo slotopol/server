@@ -74,7 +74,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 					break
 				}
 			}
-			if numl == 3 {
+			if numl == 3 && syml != scat {
 				if syml == 0 {
 					syml = wild
 				}
