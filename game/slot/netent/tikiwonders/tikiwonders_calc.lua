@@ -38,10 +38,12 @@ local sx, sy = 5, 3 -- screen width & height
 local wild, scat = 1, 2 -- wild & scatter symbol IDs
 local line_min = 2 -- minimum line symbols to win
 local scat_min = 2 -- minimum scatters to win
+local mfs = 3 -- multiplier on free spins
 
 -- Performs full RTP calculation for given reels
 local function calculate(reels)
 	assert(#reels == sx, "unexpected number of reels")
+
 	-- Get number of total reshuffles and lengths of each reel.
 	local reshuffles, lens = 1, {}
 	for i, r in ipairs(reels) do
@@ -76,14 +78,14 @@ local function calculate(reels)
 				for n = line_min, sx do
 					local payout = pays[n]
 					if payout > 0 then
-						local total_combs = 1
+						local combs_total = 1
 						for i = 1, sx do
 							if i <= n then
-								total_combs = total_combs * c[i]
+								combs_total = combs_total * c[i]
 							elseif i == n + 1 then
-								total_combs = total_combs * (lens[i] - c[i])
+								combs_total = combs_total * (lens[i] - c[i])
 							else
-								total_combs = total_combs * lens[i]
+								combs_total = combs_total * lens[i]
 							end
 						end
 
@@ -95,7 +97,6 @@ local function calculate(reels)
 								break
 							end
 						end
-
 						if wn_min then
 							local bw = 1
 							for i = 1, sx do
@@ -112,7 +113,7 @@ local function calculate(reels)
 							better_wilds = bw
 						end
 
-						ev_sum = ev_sum + (total_combs - better_wilds) * payout
+						ev_sum = ev_sum + (combs_total - better_wilds) * payout
 					end
 				end
 			end
@@ -178,8 +179,8 @@ local function calculate(reels)
 			if reel_index > sx then
 				if scat_sum >= scat_min then
 					ev_sum = ev_sum + current_comb * PAYTABLE_SCAT[scat_sum]
-					fs_sum = fs_sum + current_comb * FREESPIN_SCAT[scat_sum]
 					if FREESPIN_SCAT[scat_sum] > 0 then
+						fs_sum = fs_sum + current_comb * FREESPIN_SCAT[scat_sum]
 						fs_num = fs_num + current_comb
 					end
 				end
@@ -204,7 +205,7 @@ local function calculate(reels)
 	local rtp_sym = rtp_line + rtp_scat
 	local q = fs_sum / reshuffles
 	local sq = 1 / (1 - q)
-	local rtp_fs = 3 * sq * rtp_sym
+	local rtp_fs = mfs * sq * rtp_sym
 	local rtp_total = rtp_sym + q * rtp_fs
 	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
 	print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))

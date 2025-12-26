@@ -39,10 +39,12 @@ local FREESPIN_SCAT = {0, 0, 20, 20, 20}
 -- 5. CONFIGURATION
 local sx, sy = 5, 3 -- screen width & height
 local wild, scat = 1, 13 -- wild & scatter symbol IDs
+local mfs = 4 -- multiplier on free spins
 
 -- Performs full RTP calculation for given reels
 local function calculate(reels)
 	assert(#reels == sx, "unexpected number of reels")
+
 	-- Get number of total reshuffles and lengths of each reel.
 	local reshuffles, lens = 1, {}
 	for i, r in ipairs(reels) do
@@ -102,8 +104,8 @@ local function calculate(reels)
 			if reel_index > sx then
 				if scat_sum >= scat_min then
 					ev_sum = ev_sum + current_comb * PAYTABLE_SCAT[scat_sum]
-					fs_sum = fs_sum + current_comb * FREESPIN_SCAT[scat_sum]
 					if FREESPIN_SCAT[scat_sum] > 0 then
+						fs_sum = fs_sum + current_comb * FREESPIN_SCAT[scat_sum]
 						fs_num = fs_num + current_comb
 					end
 				end
@@ -128,7 +130,7 @@ local function calculate(reels)
 	local rtp_sym = rtp_line + rtp_scat
 	local q = fs_sum / reshuffles
 	local sq = 1 / (1 - q)
-	local rtp_fs = 4 * sq * rtp_sym
+	local rtp_fs = mfs * sq * rtp_sym
 	local rtp_total = rtp_sym + q * rtp_fs
 	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
 	print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))

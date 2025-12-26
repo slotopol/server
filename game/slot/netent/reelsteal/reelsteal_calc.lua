@@ -30,7 +30,6 @@ local PAYTABLE_LINE = {
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
 local PAYTABLE_SCAT = {0, 2, 4, 15, 100}
-local scat_min = 1 -- minimum scatters to win
 
 -- 4. FREE SPINS TABLE
 local FREESPIN_SCAT = {0, 0, 15, 20, 25}
@@ -38,10 +37,15 @@ local FREESPIN_SCAT = {0, 0, 15, 20, 25}
 -- 5. CONFIGURATION
 local sx, sy = 5, 3 -- screen width & height
 local wild, scat = 1, 2 -- wild & scatter symbol IDs
+local line_min = 3 -- minimum line symbols to win
+local scat_min = 1 -- minimum scatters to win
+local mw = 5 -- multiplier on wilds
+local mfs = 5 -- multiplier on free spins
 
 -- Performs full RTP calculation for given reels
 local function calculate(reels)
 	assert(#reels == sx, "unexpected number of reels")
+
 	-- Get number of total reshuffles and lengths of each reel.
 	local reshuffles, lens = 1, {}
 	for i, r in ipairs(reels) do
@@ -79,7 +83,7 @@ local function calculate(reels)
 					-- Total combinations where combination length is EXACTLY n
 					-- Formula: (C1 * C2 * ... * Cn) * (Lens[n+1] - Cn+1) * ...
 					local combs_total = 1
-					for i = 1, 5 do
+					for i = 1, sx do
 						if i <= n then
 							combs_total = combs_total * c[i]
 						elseif i == n + 1 then
@@ -91,7 +95,7 @@ local function calculate(reels)
 
 					-- Combinations WITHOUT any wilds on reels
 					local combs_no_wild = 1
-					for i = 1, 5 do
+					for i = 1, sx do
 						if i <= n then
 							combs_no_wild = combs_no_wild * s[i]
 						elseif i == n + 1 then
@@ -102,7 +106,7 @@ local function calculate(reels)
 					end
 
 					local combs_only_wild = 1
-					for i = 1, 5 do
+					for i = 1, sx do
 						if i <= n then
 							combs_only_wild = combs_only_wild * w[i]
 						elseif i == n + 1 then
@@ -113,10 +117,10 @@ local function calculate(reels)
 					end
 
 					local combs_with_wild = combs_total - combs_no_wild - combs_only_wild
-					return (combs_no_wild * payout) + (combs_with_wild * payout * 5)
+					return (combs_no_wild + combs_with_wild * mw) * payout
 				end
 
-				for n = 3, 5 do
+				for n = line_min, sx do
 					ev_sum = ev_sum + get_comb_ev(n, pays[n])
 				end
 			end
@@ -139,8 +143,8 @@ local function calculate(reels)
 						fs_num = fs_num + current_comb
 					else
 						ev_sum = ev_sum + current_comb * PAYTABLE_SCAT[scat_sum]
-						fs_sum = fs_sum + current_comb * FREESPIN_SCAT[scat_sum]
 						if FREESPIN_SCAT[scat_sum] > 0 then
+							fs_sum = fs_sum + current_comb * FREESPIN_SCAT[scat_sum]
 							fs_num = fs_num + current_comb
 						end
 					end
@@ -169,12 +173,12 @@ local function calculate(reels)
 		local rtp_sym = rtp_line + rtp_scat
 		local q = fs_sum / reshuffles
 		local sq = 1 / (1 - q)
-		rtp_fs = 5 * sq * rtp_sym
+		rtp_fs = mfs * sq * rtp_sym
 		print(string.format("*bonus reels calculations*"))
-		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", 5*rtp_line, 5*rtp_scat, 5*rtp_sym))
+		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
 		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
 		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
-		print(string.format("RTP = sq*rtp(sym) = %.5g*%.5g = %.6f%%", sq, rtp_sym, rtp_fs))
+		print(string.format("RTP = %g*sq*rtp(sym) = %g*%.5g*%.5g = %.6f%%", mfs, mfs, sq, rtp_sym, rtp_fs))
 	end
 	local rtp_total
 	do

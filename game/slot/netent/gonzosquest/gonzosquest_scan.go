@@ -22,7 +22,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
 		var q, sq = s.FSQ()
-		var rtpfs = sq * 3 * rtpsym
+		var rtpfs = 3 * sq * rtpsym
 		var rtp = rtpsym + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCountU(), q, sq)

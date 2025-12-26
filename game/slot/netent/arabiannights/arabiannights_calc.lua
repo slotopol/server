@@ -1,48 +1,55 @@
--- AGT / Sun City
+-- NetEnt / Arabian Nights
 -- RTP calculation
 
 -- 1. REEL STRIPS DATA
 local REELS_BON = {
 	-- luacheck: push ignore 631
-	{12, 1, 9, 10, 8, 5, 12, 1, 13, 12, 6, 4, 10, 13, 2, 6, 4, 9, 13, 7, 5, 3, 7, 11, 12, 13, 8, 11, 2, 3},
-	{3, 1, 7, 12, 13, 1, 11, 12, 13, 10, 3, 8, 10, 4, 8, 5, 7, 6, 13, 4, 11, 9, 6, 12, 9, 5},
-	{12, 5, 10, 4, 1, 5, 8, 13, 11, 3, 7, 6, 3, 8, 10, 12, 13, 9, 1, 7, 6, 9, 13, 12, 4, 11},
-	{9, 5, 6, 1, 11, 4, 8, 10, 12, 13, 3, 6, 7, 12, 13, 3, 8, 1, 5, 12, 9, 4, 7, 13, 11, 10},
-	{3, 1, 8, 12, 2, 11, 8, 13, 12, 4, 6, 13, 9, 5, 10, 12, 11, 10, 3, 12, 1, 7, 5, 9, 13, 2, 4, 6, 13, 7},
+	{8, 7, 5, 11, 7, 10, 4, 12, 8, 6, 3, 10, 1, 9, 3, 5, 10, 9, 6, 7, 9, 2, 5, 10, 8, 9, 6, 4},
+	{3, 8, 9, 2, 10, 9, 7, 6, 11, 4, 10, 5, 8, 3, 10, 7, 9, 5, 6, 1, 9, 10, 4, 12, 7, 5, 8, 6},
+	{10, 9, 6, 4, 10, 8, 1, 7, 5, 9, 12, 3, 9, 5, 8, 10, 7, 4, 10, 9, 11, 3, 6, 7, 8, 6, 2, 5},
+	{10, 6, 9, 7, 5, 6, 9, 2, 5, 9, 6, 3, 8, 1, 10, 4, 9, 3, 12, 10, 7, 5, 10, 8, 7, 4, 11, 8},
+	{5, 9, 1, 10, 8, 7, 3, 5, 2, 11, 8, 9, 5, 4, 10, 9, 6, 3, 12, 4, 7, 6, 10, 9, 8, 7, 6, 10},
 	-- luacheck: pop
 }
 local REELS_REG = {
 	-- luacheck: push ignore 631
-	{3, 9, 7, 12, 8, 10, 3, 1, 7, 12, 9, 13, 8, 4, 10, 13, 9, 1, 7, 11, 12, 8, 10, 9, 13, 1, 6, 11, 4, 5, 11, 6, 4, 12, 9, 13, 5, 10, 2, 13, 7, 11, 3, 13, 6, 11, 9, 10, 6, 12, 7, 1, 8, 5, 10, 6, 8, 11, 12, 8},
-	{8, 13, 5, 4, 10, 6, 9, 12, 10, 9, 13, 3, 7, 9, 11, 7, 13, 12, 10, 11, 5, 8, 12, 1, 6, 8, 3, 11, 13, 4, 1},
-	{11, 8, 13, 5, 12, 7, 6, 12, 11, 10, 3, 12, 9, 8, 6, 13, 10, 1, 4, 9, 11, 13, 1, 5, 8, 7, 4, 3, 9, 13, 10},
-	{4, 7, 12, 1, 6, 13, 5, 10, 13, 12, 3, 9, 10, 12, 8, 7, 5, 11, 9, 8, 3, 9, 6, 11, 13, 10, 4, 11, 8, 13, 1},
-	{8, 9, 1, 11, 7, 9, 3, 12, 11, 8, 6, 11, 8, 3, 12, 7, 11, 2, 12, 4, 13, 7, 5, 9, 13, 4, 7, 12, 10, 13, 6, 4, 5, 1, 6, 8, 13, 10, 6, 8, 1, 9, 10, 13, 1, 10, 5, 12, 9, 3, 11, 6, 12, 11, 13, 8, 10, 9, 7, 10},
+	{6, 10, 9, 8, 5, 9, 2, 10, 5, 4, 10, 9, 7, 8, 1, 9, 8, 10, 3, 9, 7, 11, 6, 4, 10, 3, 6, 5, 7, 8, 12, 7},
+	{8, 9, 5, 6, 10, 3, 9, 11, 5, 4, 10, 9, 7, 8, 9, 7, 2, 10, 7, 8, 4, 10, 3, 5, 7, 1, 6, 8, 9, 6, 10, 12},
+	{4, 5, 8, 10, 7, 6, 3, 8, 11, 9, 7, 10, 12, 8, 6, 9, 4, 5, 9, 1, 10, 9, 2, 8, 5, 7, 3, 10, 7, 6, 9, 10},
+	{7, 10, 9, 6, 10, 9, 7, 4, 6, 5, 2, 9, 6, 8, 3, 7, 10, 1, 8, 10, 3, 8, 5, 11, 7, 9, 4, 5, 9, 12, 10, 8},
+	{7, 2, 5, 6, 10, 9, 3, 5, 8, 6, 4, 9, 7, 1, 9, 3, 8, 12, 7, 10, 9, 7, 10, 11, 8, 5, 10, 4, 6, 9, 8, 10},
 	-- luacheck: pop
 }
 
 -- 2. PAYTABLE FOR LINE WINS (indexed by symbol ID)
 local PAYTABLE_LINE = {
-	[ 1] = {0, 10, 250, 2500, 9000}, -- wild
-	[ 2] = {0, 0, 0, 0, 0},          -- scatter
-	[ 3] = {0, 2, 25, 125, 750},     -- yacht
-	[ 4] = {0, 2, 25, 125, 750},     -- bike
-	[ 5] = {0, 0, 20, 100, 400},     -- lady
-	[ 6] = {0, 0, 15, 75, 250},      -- salesgirl
-	[ 7] = {0, 0, 15, 75, 250},      -- courier
-	[ 8] = {0, 0, 10, 50, 125},      -- ace
-	[ 9] = {0, 0, 10, 50, 125},      -- king
-	[10] = {0, 0, 5, 25, 100},       -- queen
-	[11] = {0, 0, 5, 25, 100},       -- jack
-	[12] = {0, 0, 5, 25, 100},       -- ten
-	[13] = {0, 2, 5, 25, 100},       -- nine
+	[ 1] = {0, 2, 25, 125, 2000},     -- knife
+	[ 2] = {0, 2, 25, 125, 1000},     -- sneakers
+	[ 3] = {0, 2, 10, 75, 500},       -- tent
+	[ 4] = {0, 2, 10, 75, 300},       -- drum
+	[ 5] = {0, 0, 5, 30, 150},        -- camel
+	[ 6] = {0, 0, 5, 30, 150},        -- king
+	[ 7] = {0, 0, 5, 20, 125},        -- queen
+	[ 8] = {0, 0, 5, 20, 125},        -- jack
+	[ 9] = {0, 0, 3, 15, 75},         -- ten
+	[10] = {0, 0, 3, 15, 75},         -- nine
+	[11] = {0, 10, 200, 2500, 10000}, -- wild
+	[12] = {0, 0, 0, 0, 0},           -- scatter
 }
 
--- 3. CONFIGURATION
+-- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
+local PAYTABLE_SCAT = {0, 2, 5, 20, 500}
+
+-- 4. FREE SPINS TABLE
+local FREESPIN_SCAT = {0, 0, 15, 15, 15}
+
+-- 5. CONFIGURATION
 local sx, sy = 5, 3 -- screen width & height
-local wild, scat = 1, 2 -- wild & scatter symbol IDs
+local wild, scat = 11, 12 -- wild & scatter symbol IDs
 local line_min = 2 -- minimum line symbols to win
 local scat_min = 2 -- minimum scatters to win
+local mw = 2 -- multiplier on wilds
+local mfs = 3 -- multiplier on free spins
 
 -- Performs full RTP calculation for given reels
 local function calculate(reels_reg, reels_bon)
@@ -90,6 +97,7 @@ local function calculate(reels_reg, reels_bon)
 				for n = line_min, sx do
 					local payout = pays[n]
 					if payout > 0 then
+						-- Total combinations
 						local combs_total = 1
 						for i = 1, sx do
 							if i <= n then
@@ -101,15 +109,26 @@ local function calculate(reels_reg, reels_bon)
 							end
 						end
 
+						-- Combinations WITHOUT any wilds on reels
+						local combs_no_wild = 1
+						for i = 1, sx do
+							if i <= n then
+								combs_no_wild = combs_no_wild * s[i]
+							elseif i == n + 1 then
+								combs_no_wild = combs_no_wild * (lens[i] - c[i])
+							else
+								combs_no_wild = combs_no_wild * lens[i]
+							end
+						end
+
 						local better_wilds = 0
 						local wn_min = nil
 						for wn = line_min, n do
-							if wpays[wn] >= payout then
+							if wpays[wn] >= payout*mw then
 								wn_min = wn
 								break
 							end
 						end
-
 						if wn_min then
 							local bw = 1
 							for i = 1, sx do
@@ -126,7 +145,8 @@ local function calculate(reels_reg, reels_bon)
 							better_wilds = bw
 						end
 
-						ev_sum = ev_sum + (combs_total - better_wilds) * payout
+						local combs_with_wild = combs_total - combs_no_wild - better_wilds
+						ev_sum = ev_sum + (combs_no_wild + combs_with_wild * mw) * payout
 					end
 				end
 			end
@@ -154,7 +174,7 @@ local function calculate(reels_reg, reels_bon)
 							for i = 1, sx do c[i] = s[i] + w[i] end
 
 							for sn = n + 1, sx do
-								if pays[sn] > payout then
+								if pays[sn]*mw > payout then
 									local loss = 1
 									for i = 1, sx do
 										if i <= n then
@@ -191,7 +211,11 @@ local function calculate(reels_reg, reels_bon)
 		local function find_scatter_combs(reel_index, scat_sum, current_comb)
 			if reel_index > sx then
 				if scat_sum >= scat_min then
-					fs_num = fs_num + current_comb
+					ev_sum = ev_sum + current_comb * PAYTABLE_SCAT[scat_sum]
+					if FREESPIN_SCAT[scat_sum] > 0 then
+						fs_sum = fs_sum + current_comb * FREESPIN_SCAT[scat_sum]
+						fs_num = fs_num + current_comb
+					end
 				end
 				return
 			end
@@ -208,39 +232,42 @@ local function calculate(reels_reg, reels_bon)
 	end
 
 	-- Execute calculation
-	local rtp_fs, fgf_fs
+	local rtp_fs
 	do
 		reels = reels_bon
 		precalculate_reels()
 		local rtp_line = calculate_line_ev() / reshuffles * 100
-		local ev_sum, _, fs_num = calculate_scat_ev()
+		local ev_sum, fs_sum, fs_num = calculate_scat_ev()
 		local rtp_scat = ev_sum / reshuffles * 100
 		local rtp_sym = rtp_line + rtp_scat
-		fgf_fs = reshuffles/fs_num
-		rtp_fs = rtp_sym
+		local q = fs_sum / reshuffles
+		local sq = 1 / (1 - q)
+		rtp_fs = mfs * sq * rtp_sym
 		print(string.format("*bonus reels calculations*"))
 		print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
 		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
+		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
 		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
-		print(string.format("RTP = rtp(sym) = %.6f%%", rtp_fs))
+		print(string.format("RTP = %g*sq*rtp(sym) = %g*%.5g*%.5g = %.6f%%", mfs, mfs, sq, rtp_sym, rtp_fs))
 	end
 	local rtp_total
 	do
 		reels = reels_reg
 		precalculate_reels()
 		local rtp_line = calculate_line_ev() / reshuffles * 100
-		local ev_sum, _, fs_num = calculate_scat_ev()
+		local ev_sum, fs_sum, fs_num = calculate_scat_ev()
 		local rtp_scat = ev_sum / reshuffles * 100
 		local rtp_sym = rtp_line + rtp_scat
-		local fgf = reshuffles/fs_num
-		rtp_total = rtp_sym + rtp_fs*fgf_fs/fgf
+		local q = fs_sum / reshuffles
+		local sq = 1 / (1 - q)
+		rtp_total = rtp_sym + q * rtp_fs
 		print(string.format("*regular reels calculations*"))
 		print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
 		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
+		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
 		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
-		print(string.format("RTP = %.5g(sym) + %.5g(fg)*%.5g/%.5g = %.6f%%", rtp_sym, rtp_fs, fgf_fs, fgf, rtp_total))
+		print(string.format("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%", rtp_sym, q, rtp_fs, rtp_total))
 	end
-	return rtp_total
 end
 
 if autoscan then

@@ -40,6 +40,7 @@ local scat_min = 3 -- minimum scatters to win
 -- Performs full RTP calculation for given reels
 local function calculate(reels)
 	assert(#reels == sx, "unexpected number of reels")
+
 	-- Get number of total reshuffles and lengths of each reel.
 	local reshuffles, lens = 1, {}
 	for i, r in ipairs(reels) do
@@ -74,14 +75,14 @@ local function calculate(reels)
 				for n = line_min, sx do
 					local payout = pays[n]
 					if payout > 0 then
-						local total_combs = 1
+						local combs_total = 1
 						for i = 1, sx do
 							if i <= n then
-								total_combs = total_combs * c[i]
+								combs_total = combs_total * c[i]
 							elseif i == n + 1 then
-								total_combs = total_combs * (lens[i] - c[i])
+								combs_total = combs_total * (lens[i] - c[i])
 							else
-								total_combs = total_combs * lens[i]
+								combs_total = combs_total * lens[i]
 							end
 						end
 
@@ -110,7 +111,7 @@ local function calculate(reels)
 							better_wilds = bw
 						end
 
-						ev_sum = ev_sum + (total_combs - better_wilds) * payout
+						ev_sum = ev_sum + (combs_total - better_wilds) * payout
 					end
 				end
 			end

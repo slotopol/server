@@ -38,10 +38,12 @@ local FREESPIN_SCAT = {0, 0, 15, 15, 15}
 -- 5. CONFIGURATION
 local sx, sy = 5, 3 -- screen width & height
 local wild, scat = 1, 2 -- wild & scatter symbol IDs
+local mfs = 3 -- multiplier on free spins
 
 -- Performs full RTP calculation for given reels
 local function calculate(reels)
 	assert(#reels == sx, "unexpected number of reels")
+
 	-- Get number of total reshuffles and lengths of each reel.
 	local reshuffles, lens = 1, {}
 	for i, r in ipairs(reels) do
@@ -139,8 +141,8 @@ local function calculate(reels)
 						fs_num = fs_num + current_comb
 					else
 						ev_sum = ev_sum + current_comb * PAYTABLE_SCAT[scat_sum]
-						fs_sum = fs_sum + current_comb * FREESPIN_SCAT[scat_sum]
 						if FREESPIN_SCAT[scat_sum] > 0 then
+							fs_sum = fs_sum + current_comb * FREESPIN_SCAT[scat_sum]
 							fs_num = fs_num + current_comb
 						end
 					end
@@ -169,12 +171,12 @@ local function calculate(reels)
 		local rtp_sym = rtp_line + rtp_scat
 		local q = fs_sum / reshuffles
 		local sq = 1 / (1 - q)
-		rtp_fs = 3 * sq * rtp_sym
+		rtp_fs = mfs * sq * rtp_sym
 		print(string.format("*bonus reels calculations*"))
 		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", 5*rtp_line, 5*rtp_scat, 5*rtp_sym))
 		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
 		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
-		print(string.format("RTP = sq*rtp(sym) = %.5g*%.5g = %.6f%%", sq, rtp_sym, rtp_fs))
+		print(string.format("RTP = %g*sq*rtp(sym) = %g*%.5g*%.5g = %.6f%%", mfs, mfs, sq, rtp_sym, rtp_fs))
 	end
 	local rtp_total
 	do

@@ -150,8 +150,8 @@ func (g *Game) Spin(mrtp float64) {
 	g.ReelSpin(reels)
 }
 
-var MultChoose = []float64{1, 2, 3, 5, 10} // E = 4.2
-const Emc = 4.2
+var MultChoose = []float64{1, 2, 3, 5, 10} // EV = 4.2
+const EVmc = 4.2
 
 func (g *Game) Prepare() {
 	if g.FSR > 0 {
