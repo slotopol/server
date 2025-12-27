@@ -2,24 +2,24 @@ local scripts = arg[0]:match("^(.*generator[/%\\])")
 dofile(scripts.."lib/makereel.lua")
 
 local symsetreg = {
-	3, --  1 booth 600
-	3, --  2 vip   240
-	3, --  3 food  240
-	3, --  4 bell  120
-	3, --  5 ace   120
+	3, --  1 hat   600
+	3, --  2 chest 240
+	3, --  3 cell  240
+	3, --  4 cards 120
+	4, --  5 ace   120
 	4, --  6 king  90
 	4, --  7 queen 60
-	4, --  8 jack  60
+	5, --  8 jack  60
 	3, --  9 bonus
 	1, -- 10 wild
 	1, -- 11 scatter
 }
 
 local symsetbon = {
-	3, --  1 booth 600
-	3, --  2 vip   240
-	3, --  3 food  240
-	3, --  4 bell  120
+	3, --  1 hat   600
+	3, --  2 chest 240
+	3, --  3 cell  240
+	3, --  4 cards 120
 	3, --  5 ace   120
 	4, --  6 king  90
 	4, --  7 queen 60

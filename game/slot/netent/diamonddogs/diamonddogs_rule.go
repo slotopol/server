@@ -81,7 +81,10 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 					numl = x - 1
 					break
 				}
-			} else if syml == 0 && sx != scat {
+			} else if syml == 0 {
+				if sx == bon && numw > 0 {
+					break
+				}
 				syml = sx
 			} else if sx != syml {
 				numl = x - 1

@@ -8,7 +8,7 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-const Ene12 = 3 * 100
+const EVne12 = 3 * 100
 
 func CalcStatBon(ctx context.Context) float64 {
 	var reels = ReelsBon
@@ -48,7 +48,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		var rtpsym = lrtp + srtp
 		var q, sq = s.FSQ()
 		var qne12 = s.BonusCount(ne12) / reshuf / float64(g.Sel)
-		var rtpne12 = Ene12 * qne12 * 100
+		var rtpne12 = EVne12 * qne12 * 100
 		var rtp = rtpsym + rtpne12 + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCountU(), q, sq)
