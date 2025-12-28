@@ -6,6 +6,8 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
+var ReelsBon slot.Reelx
+
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
@@ -143,8 +145,12 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 }
 
 func (g *Game) Spin(mrtp float64) {
-	var reels, _ = ReelsMap.FindClosest(mrtp)
-	g.ReelSpin(reels)
+	if g.FSR == 0 {
+		var reels, _ = ReelsMap.FindClosest(mrtp)
+		g.ReelSpin(reels)
+	} else {
+		g.ReelSpin(ReelsBon)
+	}
 }
 
 func (g *Game) SetSel(sel int) error {

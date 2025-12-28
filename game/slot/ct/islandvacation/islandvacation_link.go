@@ -19,6 +19,7 @@ var Info = game.AlgInfo{
 		GT: game.GTslot,
 		GP: game.GPlpay |
 			game.GPfgseq |
+			game.GPfgreel |
 			game.GPfgmult |
 			game.GPscat |
 			game.GPwild |
@@ -33,7 +34,8 @@ var Info = game.AlgInfo{
 }
 
 func init() {
-	Info.SetupFactory(func(sel int) game.Gamble { return NewGame(sel) }, CalcStat)
+	Info.SetupFactory(func(sel int) game.Gamble { return NewGame(sel) }, CalcStatReg)
+	game.DataRouter["ctinteractive/islandvacation/bon"] = &ReelsBon
 	game.DataRouter["ctinteractive/islandvacation/reel"] = &ReelsMap
 	game.LoadMap = append(game.LoadMap, data)
 }
