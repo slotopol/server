@@ -126,6 +126,7 @@
 'Gems' AGT 5x3 videoslot
 'God of Sun' Novomatic 5x3 videoslot
 'Goddess of Bells' CT Interactive 5x3 videoslot
+'Golden Acorn' CT Interactive 5x4 videoslot
 'Golden Amulet' CT Interactive 5x3 videoslot
 'Golden Flower Of Life' CT Interactive 5x3 videoslot
 'Golden Prophecies' Novomatic 5x3 videoslot
@@ -145,6 +146,7 @@
 'Halloween Hot' CT Interactive 5x3 videoslot
 'Happy Santa' AGT 5x3 videoslot
 'Helena' Novomatic 5x3 videoslot
+'Hell's Cherries' CT Interactive 3x3 videoslot
 'Hell's Hot 7's' CT Interactive 5x3 videoslot
 'Hit the Hot' CT Interactive 5x3 videoslot
 'Holmes and Watson Deluxe' Novomatic 5x3 videoslot
@@ -310,11 +312,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 307 games, 159 algorithms, 11 providers
+total: 309 games, 160 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 104 games
+CT Interactive: 106 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

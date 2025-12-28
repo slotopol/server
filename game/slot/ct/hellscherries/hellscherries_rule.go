@@ -1,6 +1,6 @@
-package panda
+package hellscherries
 
-// See: https://agtsoftware.com/games/agt/panda
+// See: https://www.slotsmate.com/software/ct-interactive/hells-cherries
 
 import (
 	"github.com/slotopol/server/game/slot"
@@ -9,20 +9,21 @@ import (
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
-var LinePay = [9]float64{
-	500, // 1 wild
-	160, // 2 bonsai
-	80,  // 3 fish
-	40,  // 4 fan
-	20,  // 5 lamp
-	20,  // 6 pot
-	20,  // 7 flower
-	10,  // 8 button
-	0,   // 9 scatter
+var LinePay = [10]float64{
+	500, //  1 seven
+	250, //  2 bar
+	200, //  3 melon
+	100, //  4 bell
+	50,  //  5 apple
+	50,  //  6 pear
+	50,  //  7 plum
+	10,  //  8 lemon
+	10,  //  9 orange
+	10,  // 10 cherry
 }
 
 // Bet lines
-var BetLines = slot.BetLinesAgt3x3[:27]
+var BetLines = slot.BetLinesHot3x3[:]
 
 type Game struct {
 	slot.Screen3x3 `yaml:",inline"`
@@ -46,7 +47,7 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-const wild, scat = 1, 9
+const wild = 1
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	for li, line := range BetLines[:g.Sel] {
@@ -74,15 +75,6 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				XY:  slot.L2H(line), // whole line is used
 			})
 		}
-	}
-
-	if count := g.SymNum(scat); count > 0 {
-		*wins = append(*wins, slot.WinItem{
-			Sym: scat,
-			Num: count,
-			XY:  g.SymPos(scat),
-			FS:  int(count),
-		})
 	}
 	return nil
 }

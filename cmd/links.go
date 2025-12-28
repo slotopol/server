@@ -70,6 +70,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/groovypowers"
 	_ "github.com/slotopol/server/game/slot/ct/halloweenfruits"
 	_ "github.com/slotopol/server/game/slot/ct/halloweenhot"
+	_ "github.com/slotopol/server/game/slot/ct/hellscherries"
 	_ "github.com/slotopol/server/game/slot/ct/hellshot7s"
 	_ "github.com/slotopol/server/game/slot/ct/hitthehot"
 	_ "github.com/slotopol/server/game/slot/ct/islandvacation"

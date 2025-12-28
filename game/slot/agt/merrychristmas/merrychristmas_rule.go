@@ -48,42 +48,38 @@ const wild, scat = 1, 2
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	for li, line := range BetLines[:g.Sel] {
-		var numw, numl slot.Pos = 0, 3
-		var syml slot.Sym
+		var numl slot.Pos = 3
+		var syml = g.LY(1, line)
 		var x slot.Pos
-		for x = 1; x <= 3; x++ {
-			var sx = g.LY(x, line)
-			if g.FSR > 0 && sx == wild {
-				if syml == 0 {
-					numw = x
+		if g.FSR > 0 {
+			for x = 2; x <= 3; x++ {
+				var sx = g.LY(x, line)
+				if sx == wild {
+					continue
+				} else if syml == wild {
+					syml = sx
+				} else if sx != syml {
+					numl = x - 1
+					break
 				}
-			} else if syml == 0 {
-				syml = sx
-			} else if sx != syml {
-				numl = x - 1
-				break
+			}
+		} else {
+			for x = 2; x <= 3; x++ {
+				var sx = g.LY(x, line)
+				if sx != syml {
+					numl = x - 1
+					break
+				}
 			}
 		}
-
-		if numw == 3 {
-			var pay = LinePay[wild-1]
+		if numl == 3 {
 			*wins = append(*wins, slot.WinItem{
-				Pay: g.Bet * pay,
-				MP:  1,
-				Sym: wild,
-				Num: numw,
-				LI:  li + 1,
-				XY:  line.HitxL(numw),
-			})
-		} else if numl == 3 {
-			var pay = LinePay[syml-1]
-			*wins = append(*wins, slot.WinItem{
-				Pay: g.Bet * pay,
+				Pay: g.Bet * LinePay[syml-1],
 				MP:  1,
 				Sym: syml,
-				Num: numl,
+				Num: 3,
 				LI:  li + 1,
-				XY:  line.HitxL(numl),
+				XY:  slot.L2H(line), // whole line is used
 			})
 		}
 	}

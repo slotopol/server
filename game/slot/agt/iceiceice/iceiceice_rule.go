@@ -61,13 +61,13 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 	for li, line := range BetLines[:g.Sel] {
 		if g.FSR > 0 {
 			var numl slot.Pos = 3
-			var syml slot.Sym
+			var syml = g.LY(1, line)
 			var x slot.Pos
-			for x = 1; x <= 3; x++ {
+			for x = 2; x <= 3; x++ {
 				var sx = g.LY(x, line)
 				if sx == wild {
 					continue
-				} else if syml == 0 {
+				} else if syml == wild {
 					syml = sx
 				} else if sx != syml {
 					numl = x - 1
@@ -75,9 +75,6 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				}
 			}
 			if numl == 3 && syml != scat {
-				if syml == 0 {
-					syml = wild
-				}
 				*wins = append(*wins, slot.WinItem{
 					Pay: g.Bet * LinePay[syml-1],
 					MP:  1,

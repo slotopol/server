@@ -56,19 +56,18 @@ local function calculate(reels)
 	local function calculate_line_ev_bon()
 		local ev_sum = 0
 		local w = counts[wild]
+
 		local comb_w3 = w[1] * w[2] * w[3]
+		ev_sum = ev_sum + comb_w3 * PAYTABLE_LINE[wild]
 
 		-- Iterate through all symbols that pay on lines
 		for symbol_id, pay in pairs(PAYTABLE_LINE) do
 			if symbol_id ~= wild and symbol_id ~= scat then
 				local s = counts[symbol_id]
-				local c = {}
-				for i = 1, sx do c[i] = s[i] + w[i] end
-				local comb = c[1] * c[2] * c[3] - comb_w3
+				local comb = (s[1] + w[1]) * (s[2] + w[2]) * (s[3] + w[3]) - comb_w3
 				ev_sum = ev_sum + comb * pay
 			end
 		end
-		ev_sum = ev_sum + comb_w3 * PAYTABLE_LINE[wild]
 
 		return ev_sum
 	end
