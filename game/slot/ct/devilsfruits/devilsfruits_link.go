@@ -1,6 +1,6 @@
 //go:build !prod || full || ct
 
-package hellscherries
+package devilsfruits
 
 import (
 	_ "embed"
@@ -8,18 +8,18 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed hellscherries_data.yaml
+//go:embed devilsfruits_data.yaml
 var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Hell's Cherries", LNum: 5, Date: game.Date(2025, 9, 30)}, // see: https://www.slotsmate.com/software/ct-interactive/hells-cherries
-		{Prov: "CT Interactive", Name: "Hell's Sevens", LNum: 5, Date: game.Date(2020, 11, 25)},  // see: https://www.slotsmate.com/software/ct-interactive/hells-sevens
+		{Prov: "CT Interactive", Name: "Devil's Fruits", LNum: 5, Date: game.Date(2020, 11, 25)}, // see: https://www.slotsmate.com/software/ct-interactive/devils-fruits
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,
 		GP: game.GPfgno |
-			game.GPwild,
+			game.GPwild |
+			game.GPwmult,
 		SX: 3,
 		SY: 3,
 		SN: len(LinePay),
@@ -31,6 +31,6 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func(sel int) game.Gamble { return NewGame(sel) }, CalcStat)
-	game.DataRouter["ctinteractive/hellscherries/reel"] = &ReelsMap
+	game.DataRouter["ctinteractive/devilsfruits/reel"] = &ReelsMap
 	game.LoadMap = append(game.LoadMap, data)
 }

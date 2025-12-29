@@ -57,6 +57,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/cloverparty"
 	_ "github.com/slotopol/server/game/slot/ct/colibriwild"
 	_ "github.com/slotopol/server/game/slot/ct/dancingbananas"
+	_ "github.com/slotopol/server/game/slot/ct/devilsfruits"
 	_ "github.com/slotopol/server/game/slot/ct/doublehothabanero"
 	_ "github.com/slotopol/server/game/slot/ct/forestnymph"
 	_ "github.com/slotopol/server/game/slot/ct/fortunepyramid"

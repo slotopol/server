@@ -16,11 +16,11 @@ Slots games server. Releases functionality for CT Interactive, Novomatic, NetEnt
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 309 games, 160 algorithms, 11 providers
+total: 311 games, 161 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 106 games
+CT Interactive: 108 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,7 +32,9 @@ Slotopol: 2 games
 
 *Last added games*:
 
-* '[Hells Cherries](https://www.slotsmate.com/software/ct-interactive/hells-cherries)' CT Interactive 3x3 videoslot
+* '[Devil's Fruits](https://www.slotsmate.com/software/ct-interactive/devils-fruits)' CT Interactive 3x3 videoslot
+* '[Hell's Sevens](https://www.slotsmate.com/software/ct-interactive/hells-sevens)' CT Interactive 3x3 videoslot
+* '[Hell's Cherries](https://www.slotsmate.com/software/ct-interactive/hells-cherries)' CT Interactive 3x3 videoslot
 * '[Golden Acorn](https://www.slotsmate.com/software/ct-interactive/golden-acorn)' CT Interactive 5x4 videoslot
 * '[Roaring Wilds](https://www.slotsmate.com/software/novomatic/roaring-wilds)' Novomatic 5x4 videoslot
 * '[Dolphin Reef](https://www.slotsmate.com/software/playtech/dolphin-reef)' Playtech 5x3 videoslot
@@ -46,12 +48,6 @@ Slotopol: 2 games
 * '[Lucky Clover 10](https://www.slotsmate.com/software/ct-interactive/lucky-clover-10)' CT Interactive 5x3 videoslot
 * '[Burning Flower](https://www.slotsmate.com/software/ct-interactive/burning-flower)' CT Interactive 5x3 videoslot
 * '[Hot 7s x2](https://www.slotsmate.com/software/ct-interactive/hot-7s-x2)' CT Interactive 5x3 videoslot
-* '[40 Fruitata Wins](https://www.slotsmate.com/software/ct-interactive/40-fruitata-wins)' CT Interactive 5x4 videoslot
-* '[King of Clovers](https://www.slotsmate.com/software/ct-interactive/king-of-clovers)' CT Interactive 5x3 cascade videoslot
-* '[Sugar Town](https://www.slotsmate.com/software/ct-interactive/sugar-town)' CT Interactive 5x3 cluster cascade videoslot
-* '[Goddess of Bells](https://www.slotsmate.com/software/ct-interactive/goddess-of-bells)' CT Interactive 5x3 videoslot
-* '[Wonder 7's](https://www.slotsmate.com/software/ct-interactive/wonder-7s)' CT Interactive 5x3 videoslot
-* '[Hell's Hot 7's](https://www.slotsmate.com/software/ct-interactive/hells-hot-7s)' CT Interactive 5x3 videoslot
 
 *Top-10 of games with most interesting algorithms released on server*:
 

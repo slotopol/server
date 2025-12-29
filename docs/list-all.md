@@ -75,6 +75,7 @@
 'Dancing Dragons' CT Interactive 5x3 videoslot
 'Dark Woods' CT Interactive 5x3 cascade videoslot
 'Desert Treasure' Playtech 5x3 videoslot
+'Devil's Fruits' CT Interactive 3x3 videoslot
 'Diamond 7' Novomatic 5x3 videoslot
 'Diamond Dogs' NetEnt 5x3 videoslot
 'Dolphin Reef' Playtech 5x3 videoslot
@@ -148,6 +149,7 @@
 'Helena' Novomatic 5x3 videoslot
 'Hell's Cherries' CT Interactive 3x3 videoslot
 'Hell's Hot 7's' CT Interactive 5x3 videoslot
+'Hell's Sevens' CT Interactive 3x3 videoslot
 'Hit the Hot' CT Interactive 5x3 videoslot
 'Holmes and Watson Deluxe' Novomatic 5x3 videoslot
 'Hot 7's x2' CT Interactive 5x3 videoslot
@@ -312,11 +314,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 309 games, 160 algorithms, 11 providers
+total: 311 games, 161 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 106 games
+CT Interactive: 108 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
