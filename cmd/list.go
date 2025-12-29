@@ -81,11 +81,17 @@ func FormatGameInfo(gi *game.GameInfo) string {
 		if gi.GP&game.GPfill > 0 {
 			b.WriteString(", has multiplier on filled screen")
 		}
+		if gi.GP&game.GPmix > 0 {
+			b.WriteString(", has pays by combinations with mixed symbols")
+		}
 		if gi.GP&game.GPcumul > 0 {
 			b.WriteString(", has cumulative pays")
 		}
 		if gi.GP&game.GPbmode > 0 {
 			b.WriteString(", has non-reels bonus mode")
+		}
+		if gi.GP&game.GPpick > 0 {
+			b.WriteString(", has game mode depending on the user's choice")
 		}
 		if gi.GP&(game.GPfgany) > 0 {
 			b.WriteString(", ")
@@ -287,7 +293,9 @@ apay - pays for combination at any position
 cpay - pays by clusters
 jack - slots with jackpots
 fill - has multiplier on filled slot screen
+mix - has pays by combinations with mixed symbols (non-wilds)
 bm - slots with non-reels bonus mode
+um - slots with mode depended on the user's choice
 casc - slots with cascade falls
 cm - multipliers on cascade avalanche
 fg - slots with any free games

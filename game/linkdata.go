@@ -33,11 +33,16 @@ const (
 
 	GPlsel // user can select bet lines
 	GPwsel // user can change ways set
-	GPjack // cumulative jackpot is present
-	GPfill // has multiplier on filled screen
+	_
+	_
 
+	GPjack  // cumulative jackpot is present
+	GPfill  // has multiplier on filled screen
+	GPmix   // has pays by combinations with mixed symbols (non-wilds)
 	GPcumul // has cumulative pays (in this case spin can fails if bank have not enough money)
+
 	GPbmode // has non-reels bonus mode
+	GPpick  // has game mode depending on the user's choice
 	GPcasc  // cascade falls present
 	GPcmult // multipliers on cascade avalanche
 
