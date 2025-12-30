@@ -34,9 +34,9 @@ var ScatFreespinReg = [5]int{0, 0, 15, 15, 15} // 1 dollar
 var ScatFreespinBon = [5]int{0, 0, 30, 30, 30} // 1 dollar
 
 const (
-	mje1 = 1 // Eldorado9
-	mje3 = 2 // Eldorado9
-	mje6 = 3 // Eldorado9
+	mje1 = 1 // Eldorado1
+	mje3 = 2 // Eldorado3
+	mje6 = 3 // Eldorado6
 	mje9 = 4 // Eldorado9
 	mjm  = 5 // Monopoly
 	mjc  = 6 // Champagne
@@ -96,7 +96,6 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				}
 			} else if syml == 0 {
 				if numw > 0 && sx == bon {
-					numl = x - 1
 					break
 				}
 				syml = sx

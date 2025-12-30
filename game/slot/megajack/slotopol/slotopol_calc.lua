@@ -1,41 +1,46 @@
--- Novomatic / Mega Joker
+-- Megajack / Slotopol
 -- RTP calculation
 
 -- 1. REEL STRIPS DATA
 local REELS = {
 	-- luacheck: push ignore 631
-	{1, 1, 1, 1, 4, 4, 4, 4, 4, 12, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 1, 10, 10, 10, 10, 10, 10, 10, 9, 9, 9, 9, 9, 9, 9, 8, 8, 8, 8, 8, 8, 8, 11, 11, 11, 11, 11, 11, 11, 2, 2, 2, 2, 12, 3, 3, 3, 3, 6, 6, 6, 6, 6, 6},
-	{2, 2, 2, 2, 5, 5, 5, 5, 9, 9, 9, 9, 9, 7, 7, 7, 7, 7, 4, 4, 4, 4, 11, 11, 11, 11, 11, 8, 8, 8, 8, 8, 12, 1, 1, 1, 1, 10, 10, 10, 10, 10, 3, 3, 3, 3, 1, 6, 6, 6, 6, 6},
-	{11, 11, 11, 11, 11, 11, 11, 7, 7, 7, 7, 7, 7, 9, 9, 9, 9, 9, 9, 9, 5, 5, 5, 5, 5, 8, 8, 8, 8, 8, 8, 8, 3, 3, 3, 3, 10, 10, 10, 10, 10, 10, 10, 1, 4, 4, 4, 4, 4, 12, 6, 6, 6, 6, 6, 6, 1, 1, 1, 1, 12, 2, 2, 2, 2},
-	{7, 7, 7, 7, 7, 10, 10, 10, 10, 10, 1, 9, 9, 9, 9, 9, 6, 6, 6, 6, 6, 4, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 11, 11, 11, 11, 11, 5, 5, 5, 5, 8, 8, 8, 8, 8, 12},
-	{4, 4, 4, 4, 4, 1, 1, 1, 1, 8, 8, 8, 8, 8, 8, 8, 1, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11, 11, 6, 6, 6, 6, 6, 6, 2, 2, 2, 2, 3, 3, 3, 3, 12, 9, 9, 9, 9, 9, 9, 9, 5, 5, 5, 5, 5, 12, 7, 7, 7, 7, 7, 7},
+	{13, 1, 5, 12, 13, 11, 12, 11, 13, 8, 2, 12, 13, 3, 4, 6, 13, 2, 5, 10, 13, 9, 7, 8, 13, 10, 7, 9, 13, 3, 4, 6},
+	{9, 5, 10, 13, 9, 6, 3, 4, 13, 2, 12, 8, 12, 13, 11, 12, 11, 13, 5, 7, 10, 6, 3, 4, 13, 2, 12, 8, 13, 7, 1, 12},
+	{12, 13, 11, 12, 11, 13, 5, 10, 9, 7, 1, 12, 13, 3, 8, 6, 12, 13, 8, 4, 12, 2, 5, 10, 13, 7, 2, 13, 6, 3, 4, 9},
+	{12, 1, 2, 13, 6, 5, 12, 4, 8, 12, 13, 3, 10, 9, 7, 13, 11, 11, 11, 11, 13, 5, 12, 9, 8, 6, 13, 3, 10, 2, 7, 4},
+	{13, 11, 13, 12, 6, 4, 12, 3, 2, 5, 12, 10, 7, 12, 8, 1, 9, 12, 8, 9, 12, 4, 3, 12, 2, 5, 12, 10, 7, 13, 12, 6},
 	-- luacheck: pop
 }
 
 -- 2. PAYTABLE FOR LINE WINS (indexed by symbol ID)
 local PAYTABLE_LINE = {
-	[ 1] = {0, 0, 40, 200, 2000}, -- wild
-	[ 2] = {0, 0, 20, 80, 400},   -- red seven
-	[ 3] = {0, 0, 20, 80, 400},   -- yellow seven
-	[ 4] = {0, 0, 20, 60, 240},   -- strawberry
-	[ 5] = {0, 0, 20, 60, 240},   -- pear
-	[ 6] = {0, 0, 8, 40, 160},    -- grapes
-	[ 7] = {0, 0, 8, 40, 160},    -- watermelon
-	[ 8] = {0, 0, 4, 20, 100},    -- plum
-	[ 9] = {0, 0, 4, 20, 100},    -- orange
-	[10] = {0, 0, 4, 20, 100},    -- lemon
-	[11] = {0, 0, 4, 20, 100},    -- cherry
-	[12] = {},                    -- scatter
+	[ 1] = {},                        -- dollar
+	[ 2] = {0, 2, 5, 15, 100},        -- cherry
+	[ 3] = {0, 2, 5, 15, 100},        -- plum
+	[ 4] = {0, 0, 5, 15, 100},        -- wmelon
+	[ 5] = {0, 0, 5, 15, 100},        -- grapes
+	[ 6] = {0, 0, 5, 15, 100},        -- ananas
+	[ 7] = {0, 0, 5, 15, 100},        -- lemon
+	[ 8] = {0, 0, 5, 15, 100},        -- drink
+	[ 9] = {0, 2, 5, 15, 100},        -- palm
+	[10] = {0, 2, 5, 15, 100},        -- yacht
+	[11] = {0, 10, 100, 2000, 10000}, -- eldorado
+	[12] = {},                        -- spin
+	[13] = {},                        -- dice
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
-local PAYTABLE_SCAT = {0, 0, 4, 20, 400}
+local PAYTABLE_SCAT = {0, 5, 8, 20, 1000}
 
 -- 4. CONFIGURATION
-local sx, sy = 5, 4 -- screen width & height
-local wild, scat = 1, 12 -- wild & scatter symbol IDs
-local line_min = 3 -- minimum line symbols to win
-local scat_min = 3 -- minimum scatters to win
+local sx, sy = 5, 3 -- screen width & height
+local wild, scat = 11, 1 -- wild & scatter symbol IDs
+local bon1, bon2 = 12, 13 -- bonus games symbol IDs
+local line_min = 2 -- minimum line symbols to win
+local scat_min = 2 -- minimum scatters to win
+local mw = 2 -- multiplier on wilds
+local EVmje9 = 106 * 9 -- Eldorado 9 spins bonus expectation
+local EVmjm = 286.6059742226795 -- Monopoly bonus expectation
 
 -- Performs full RTP calculation for given reels
 local function calculate(reels)
@@ -75,6 +80,7 @@ local function calculate(reels)
 				for n = line_min, sx do
 					local payout = pays[n]
 					if payout > 0 then
+						-- Total combinations
 						local combs_total = 1
 						for i = 1, sx do
 							if i <= n then
@@ -86,10 +92,22 @@ local function calculate(reels)
 							end
 						end
 
+						-- Combinations WITHOUT any wilds on reels
+						local combs_no_wild = 1
+						for i = 1, sx do
+							if i <= n then
+								combs_no_wild = combs_no_wild * s[i]
+							elseif i == n + 1 then
+								combs_no_wild = combs_no_wild * (lens[i] - c[i])
+							else
+								combs_no_wild = combs_no_wild * lens[i]
+							end
+						end
+
 						local better_wilds = 0
 						local wn_min = nil
 						for wn = line_min, n do
-							if wpays[wn] >= payout then
+							if wpays[wn] >= payout*mw then
 								wn_min = wn
 								break
 							end
@@ -110,7 +128,8 @@ local function calculate(reels)
 							better_wilds = bw
 						end
 
-						ev_sum = ev_sum + (combs_total - better_wilds) * payout
+						local combs_with_wild = combs_total - combs_no_wild - better_wilds
+						ev_sum = ev_sum + (combs_no_wild + combs_with_wild * mw) * payout
 					end
 				end
 			end
@@ -138,7 +157,7 @@ local function calculate(reels)
 							for i = 1, sx do c[i] = s[i] + w[i] end
 
 							for sn = n + 1, sx do
-								if pays[sn] > payout then
+								if pays[sn]*mw > payout then
 									local loss = 1
 									for i = 1, sx do
 										if i <= n then
@@ -191,12 +210,34 @@ local function calculate(reels)
 		return ev_sum
 	end
 
+	-- Calculating Eldorado9 bonus symbols
+	local function calculate_mje9_comb()
+		local b = counts[bon1]
+		local comb5 = b[1] * b[2] * b[3] * b[4] * b[5]
+		return comb5
+	end
+
+	-- Calculating Monopoly bonus symbols
+	local function calculate_mjm_comb()
+		local b = counts[bon2]
+		local comb5 = b[1] * b[2] * b[3] * b[4] * b[5]
+		return comb5
+	end
+
 	-- Execute calculation
 	local rtp_line = calculate_line_ev() / reshuffles * 100
 	local rtp_scat = calculate_scat_ev() / reshuffles * 100
-	local rtp_total = rtp_line + rtp_scat
+	local rtp_sym = rtp_line + rtp_scat
+	local qmje9 = calculate_mje9_comb() / reshuffles
+	local rtp_mje9 = EVmje9 * qmje9 * 100
+	local qmjm = calculate_mjm_comb() / reshuffles
+	local rtp_mjm = EVmjm * qmjm * 100
+	local rtp_total = rtp_sym + rtp_mje9 + rtp_mjm
 	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
-	print(string.format("RTP = %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_total))
+	print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
+	print(string.format("spin9 bonuses: frequency 1/%.5g, rtp = %.6f%%", 1/qmje9, rtp_mje9))
+	print(string.format("monopoly bonuses: frequency 1/%.5g, rtp = %.6f%%", 1/qmjm, rtp_mjm))
+	print(string.format("RTP = %.5g(sym) + %.5g(mje9) + %.5g(mjm) = %.6f%%", rtp_sym, rtp_mje9, rtp_mjm, rtp_total))
 	return rtp_total
 end
 

@@ -1,50 +1,54 @@
--- Novomatic / Wild Horses
+-- NetEnt / Simsalabim
 -- RTP calculation
 
 -- 1. REEL STRIPS DATA
 local REELS_BON = {
 	-- luacheck: push ignore 631
-	{1, 1, 1, 1, 7, 7, 11, 8, 9, 3, 8, 5, 7, 4, 11, 7, 10, 8, 9, 4, 7, 3, 10, 12, 8, 4, 9, 10, 6, 8, 9, 12, 10, 8, 5, 12, 12, 10, 6, 11, 12, 9, 6, 11, 3, 9, 11, 11, 10, 5, 7, 12},
-	{1, 1, 1, 1, 8, 7, 9, 4, 10, 9, 11, 12, 8, 3, 9, 9, 6, 7, 10, 8, 9, 11, 7, 7, 4, 10, 8, 11, 7, 6, 8, 12, 11, 12, 4, 12, 10, 5, 12, 3, 11, 5, 11, 6, 12, 10, 7, 5, 8, 10, 3, 9},
-	{1, 1, 1, 1, 8, 7, 8, 3, 12, 7, 12, 12, 5, 11, 9, 8, 3, 10, 10, 6, 9, 5, 11, 10, 12, 8, 11, 8, 4, 11, 8, 3, 7, 10, 11, 10, 6, 9, 9, 7, 9, 5, 12, 7, 10, 4, 9, 7, 12, 4, 11, 6},
-	{1, 1, 1, 1, 5, 7, 10, 9, 6, 12, 9, 3, 9, 11, 10, 8, 8, 6, 8, 12, 5, 12, 8, 9, 3, 12, 4, 11, 10, 8, 11, 10, 4, 11, 7, 6, 8, 10, 9, 9, 7, 11, 3, 12, 11, 5, 7, 10, 4, 7, 12, 7},
-	{1, 1, 1, 1, 8, 12, 11, 10, 5, 10, 4, 7, 11, 11, 9, 10, 9, 12, 12, 8, 7, 7, 11, 4, 7, 3, 8, 4, 9, 8, 9, 6, 7, 11, 8, 10, 6, 9, 11, 10, 6, 10, 5, 12, 7, 3, 8, 9, 5, 12, 3, 12},
+	{3, 2, 6, 8, 7, 4, 1, 5, 2, 7, 6, 8, 7, 3, 5, 4, 6, 1, 8, 10, 2, 4, 7, 3, 5, 1, 8, 6, 11},
+	{3, 8, 6, 5, 4, 2, 6, 1, 2, 10, 3, 6, 7, 8, 11, 1, 3, 7, 1, 8, 4, 5, 2, 4, 7, 8, 5, 7, 6},
+	{2, 6, 4, 5, 8, 4, 10, 8, 3, 4, 8, 1, 7, 3, 2, 5, 6, 11, 1, 5, 6, 7, 8, 1, 2, 7, 6, 3, 7},
+	{10, 2, 1, 3, 8, 7, 2, 3, 6, 7, 8, 6, 7, 4, 5, 8, 4, 11, 1, 2, 7, 5, 6, 8, 3, 5, 1, 6, 4},
+	{4, 10, 5, 8, 7, 6, 3, 8, 1, 11, 2, 3, 6, 8, 7, 2, 4, 8, 1, 5, 6, 4, 7, 5, 1, 3, 6, 7, 2},
 	-- luacheck: pop
 }
 local REELS_REG = {
 	-- luacheck: push ignore 631
-	{1, 1, 1, 1, 7, 5, 10, 12, 8, 4, 10, 5, 7, 11, 4, 9, 12, 3, 9, 12, 5, 11, 10, 3, 12, 12, 12, 4, 12, 9, 6, 12, 4, 7, 11, 6, 10, 12, 8, 8, 9, 8, 10, 7, 8, 6, 8, 11, 8, 6, 11, 11, 9, 7, 3, 9, 5, 7, 10, 10, 3, 11, 11, 7, 9, 8, 10, 9},
-	{1, 1, 1, 1, 4, 8, 10, 11, 5, 7, 10, 12, 5, 10, 6, 10, 9, 9, 12, 12, 3, 8, 5, 10, 7, 9, 7, 3, 12, 12, 4, 8, 11, 6, 8, 9, 2, 7, 3, 11, 7, 12, 11, 12, 6, 7, 2, 11, 8, 10, 2, 8, 10, 9, 10, 4, 9, 3, 9, 7, 4, 11, 11, 11, 12, 8, 12, 6, 8, 5, 9},
-	{1, 1, 1, 1, 9, 10, 9, 8, 12, 5, 10, 6, 7, 11, 4, 12, 6, 7, 4, 9, 7, 10, 10, 11, 10, 3, 8, 11, 2, 8, 5, 11, 6, 12, 3, 8, 12, 5, 9, 11, 8, 12, 11, 5, 12, 7, 4, 8, 2, 7, 8, 10, 9, 4, 7, 8, 10, 3, 12, 10, 9, 3, 12, 6, 9, 2, 9, 11, 7, 7, 11},
-	{1, 1, 1, 1, 12, 11, 11, 12, 5, 12, 3, 9, 6, 11, 2, 9, 8, 6, 9, 12, 4, 7, 3, 7, 10, 4, 8, 7, 10, 7, 9, 10, 7, 8, 3, 12, 4, 8, 9, 9, 6, 11, 11, 11, 8, 10, 7, 7, 6, 8, 5, 8, 2, 7, 12, 4, 8, 5, 10, 9, 11, 11, 3, 9, 10, 10, 12, 2, 12, 5, 10},
-	{1, 1, 1, 1, 11, 9, 11, 8, 9, 9, 9, 8, 4, 10, 12, 6, 7, 5, 12, 6, 11, 5, 11, 8, 10, 11, 12, 10, 3, 10, 8, 10, 8, 8, 10, 6, 8, 9, 7, 12, 9, 7, 4, 11, 12, 3, 12, 9, 11, 7, 7, 4, 7, 6, 7, 10, 5, 8, 3, 10, 11, 4, 12, 9, 3, 12, 5, 7},
+	{6, 5, 3, 6, 7, 8, 5, 2, 6, 4, 7, 9, 4, 2, 10, 8, 5, 4, 9, 8, 7, 1, 3, 5, 6, 9, 7, 8, 3, 1, 2, 11, 1, 8},
+	{2, 5, 9, 8, 5, 6, 7, 1, 4, 6, 7, 3, 8, 10, 7, 8, 3, 2, 11, 8, 6, 7, 4, 1, 6, 8, 2, 5, 9, 3, 5, 9, 4, 1},
+	{2, 3, 5, 7, 11, 4, 5, 8, 10, 1, 8, 7, 3, 6, 1, 2, 4, 7, 2, 3, 9, 8, 6, 1, 5, 9, 6, 8, 4, 5, 9, 8, 7, 6},
+	{2, 7, 8, 9, 7, 4, 6, 5, 1, 11, 8, 1, 10, 3, 2, 5, 6, 7, 3, 8, 6, 9, 4, 8, 6, 1, 2, 5, 9, 7, 3, 4, 5, 8},
+	{4, 8, 7, 6, 5, 8, 6, 1, 5, 6, 3, 5, 4, 8, 5, 11, 7, 8, 9, 7, 2, 8, 9, 1, 2, 3, 9, 2, 7, 3, 4, 1, 6, 10},
 	-- luacheck: pop
 }
 
 -- 2. PAYTABLE FOR LINE WINS (indexed by symbol ID)
 local PAYTABLE_LINE = {
-	[ 1] = {0, 0, 50, 200, 1000}, -- wild
-	[ 2] = {},                    -- scatter (2, 3, 4 reels only)
-	[ 3] = {0, 0, 40, 150, 750},  -- white
-	[ 4] = {0, 0, 40, 150, 750},  -- black
-	[ 5] = {0, 0, 20, 80, 400},   -- blue amulet
-	[ 6] = {0, 0, 20, 80, 400},   -- red amulet
-	[ 7] = {0, 0, 15, 60, 300},   -- ace
-	[ 8] = {0, 0, 15, 60, 300},   -- king
-	[ 9] = {0, 0, 10, 40, 200},   -- queen
-	[10] = {0, 0, 10, 40, 200},   -- jack
-	[11] = {0, 0, 5, 20, 100},    -- ten
-	[12] = {0, 0, 5, 20, 100},    -- nine
+	[ 1] = {0, 0, 50, 150, 1000},   -- hat
+	[ 2] = {0, 0, 25, 100, 500},    -- chest
+	[ 3] = {0, 0, 15, 75, 300},     -- cell
+	[ 4] = {0, 0, 10, 50, 200},     -- cards
+	[ 5] = {0, 0, 5, 50, 150},      -- ace
+	[ 6] = {0, 0, 5, 25, 100},      -- king
+	[ 7] = {0, 0, 5, 25, 100},      -- queen
+	[ 8] = {0, 0, 5, 25, 100},      -- jack
+	[ 9] = {},                      -- bonus
+	[10] = {0, 5, 200, 2000, 7500}, -- wild
+	[11] = {},                      -- scatter
 }
 
--- 3. FREE SPINS TABLE
-local scat_fs = 10
+-- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
+local PAYTABLE_SCAT = {0, 2, 4, 25, 200}
 
--- 4. CONFIGURATION
-local sx, sy = 5, 4 -- screen width & height
-local wild, scat = 1, 2 -- wild & scatter symbol IDs
-local line_min = 3 -- minimum line symbols to win
-local scat_min = 3 -- minimum scatters to win
+-- 4. FREE SPINS TABLE
+local FREESPIN_SCAT = {0, 0, 10, 20, 30}
+
+-- 5. CONFIGURATION
+local sx, sy = 5, 3 -- screen width & height
+local bon, wild, scat = 9, 10, 11 -- wild & scatter symbol IDs
+local line_min = 2 -- minimum line symbols to win
+local scat_min = 2 -- minimum scatters to win
+local mfs = 3 -- multiplier on free spins
+local EVne12 = 3 * 100 -- expectation value for bonus game
 
 -- Performs full RTP calculation for given reels
 local function calculate(reels_reg, reels_bon)
@@ -192,8 +196,11 @@ local function calculate(reels_reg, reels_bon)
 		local function find_scatter_combs(reel_index, scat_sum, current_comb)
 			if reel_index > sx then
 				if scat_sum >= scat_min then
-					fs_sum = fs_sum + current_comb * scat_fs
-					fs_num = fs_num + current_comb
+					ev_sum = ev_sum + current_comb * PAYTABLE_SCAT[scat_sum]
+					if FREESPIN_SCAT[scat_sum] > 0 then
+						fs_sum = fs_sum + current_comb * FREESPIN_SCAT[scat_sum]
+						fs_num = fs_num + current_comb
+					end
 				end
 				return
 			end
@@ -209,6 +216,15 @@ local function calculate(reels_reg, reels_bon)
 		return ev_sum, fs_sum, fs_num
 	end
 
+	-- Calculating bonus symbols
+	local function calculate_bon_comb()
+		local b = counts[bon]
+		local comb5 = b[1] * b[2] * b[3] * b[4] * b[5]
+		local comb4 = b[1] * b[2] * b[3] * b[4] * (lens[5] - b[5])
+		local comb3 = b[1] * b[2] * b[3] * (lens[4] - b[4]) * lens[5]
+		return comb3 + comb4 + comb5
+	end
+
 	-- Execute calculation
 	local rtp_fs
 	do
@@ -218,15 +234,15 @@ local function calculate(reels_reg, reels_bon)
 		local ev_sum, fs_sum, fs_num = calculate_scat_ev()
 		local rtp_scat = ev_sum / reshuffles * 100
 		local rtp_sym = rtp_line + rtp_scat
-		local q = 0.5 -- probability of getting or not getting free spins is equal
+		local q = fs_sum / reshuffles
 		local sq = 1 / (1 - q)
-		rtp_fs = sq * rtp_sym
+		rtp_fs = mfs * sq * rtp_sym
 		print(string.format("*bonus reels calculations*"))
 		print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
 		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
 		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
 		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
-		print(string.format("RTP = sq*rtp(sym) = %.5g*%.5g = %.6f%%", sq, rtp_sym, rtp_fs))
+		print(string.format("RTP = %g*sq*rtp(sym) = %g*%.5g*%.5g = %.6f%%", mfs, mfs, sq, rtp_sym, rtp_fs))
 	end
 	local rtp_total
 	do
@@ -238,13 +254,16 @@ local function calculate(reels_reg, reels_bon)
 		local rtp_sym = rtp_line + rtp_scat
 		local q = fs_sum / reshuffles
 		local sq = 1 / (1 - q)
-		rtp_total = rtp_sym + q * rtp_fs
+		local qne12 = calculate_bon_comb() / reshuffles
+		local rtp_ne12 = EVne12 * qne12 * 100
+		rtp_total = rtp_sym + rtp_ne12 + q * rtp_fs
 		print(string.format("*regular reels calculations*"))
 		print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
 		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
 		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
 		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
-		print(string.format("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%", rtp_sym, q, rtp_fs, rtp_total))
+		print(string.format("ne12 bonuses: frequency 1/%.5g, rtp = %.6f%%", 1/qne12, rtp_ne12))
+		print(string.format("RTP = %.5g(sym) + %.5g(ne12) + %.5g*%.5g(fg) = %.6f%%", rtp_sym, rtp_ne12, q, rtp_fs, rtp_total))
 	end
 	return rtp_total
 end

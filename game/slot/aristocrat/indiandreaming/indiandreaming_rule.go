@@ -83,7 +83,7 @@ loop1:
 							var sx = g.LY(x, line)
 							if sx == wild {
 								mw = mwm
-							} else if syml == 0 && sx != scat {
+							} else if syml == 0 {
 								syml = sx
 							} else if sx != syml {
 								numl = x - 1

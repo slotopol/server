@@ -14,7 +14,7 @@ local REELS = {
 
 -- 2. PAYTABLE FOR LINE WINS (indexed by symbol ID)
 local PAYTABLE_LINE = {
-	[1] = {0, 0, 0, 0, 0},         -- scatter
+	[1] = {},                      -- scatter
 	[2] = {0, 0, 100, 1000, 5000}, -- 2 dollar
 	[3] = {0, 0, 50, 200, 1000},   -- 3 melon
 	[4] = {0, 0, 50, 200, 1000},   -- 4 apple
@@ -61,23 +61,25 @@ local function calculate(reels)
 
 		-- Iterate through all symbols that pay on lines
 		for symbol_id, pays in pairs(PAYTABLE_LINE) do
-			local c = counts[symbol_id]
+			if #pays > 0 then
+				local c = counts[symbol_id]
 
-			-- 5-of-a-kind (XXXXX) EV
-			local comb5 = c[1] * c[2] * c[3] * c[4] * c[5]
-			ev_sum = ev_sum + comb5 * pays[5]
+				-- 5-of-a-kind (XXXXX) EV
+				local comb5 = c[1] * c[2] * c[3] * c[4] * c[5]
+				ev_sum = ev_sum + comb5 * pays[5]
 
-			-- 4-of-a-kind (XXXX-) EV
-			local comb4 = c[1] * c[2] * c[3] * c[4] * (lens[5] - c[5])
-			ev_sum = ev_sum + comb4 * pays[4]
+				-- 4-of-a-kind (XXXX-) EV
+				local comb4 = c[1] * c[2] * c[3] * c[4] * (lens[5] - c[5])
+				ev_sum = ev_sum + comb4 * pays[4]
 
-			-- 3-of-a-kind (XXX--) EV
-			local comb3 = c[1] * c[2] * c[3] * (lens[4] - c[4]) * lens[5]
-			ev_sum = ev_sum + comb3 * pays[3]
+				-- 3-of-a-kind (XXX--) EV
+				local comb3 = c[1] * c[2] * c[3] * (lens[4] - c[4]) * lens[5]
+				ev_sum = ev_sum + comb3 * pays[3]
 
-			-- 2-of-a-kind (XX---) EV
-			local comb2 = c[1] * c[2] * (lens[3] - c[3]) * lens[4] * lens[5]
-			ev_sum = ev_sum + comb2 * pays[2]
+				-- 2-of-a-kind (XX---) EV
+				local comb2 = c[1] * c[2] * (lens[3] - c[3]) * lens[4] * lens[5]
+				ev_sum = ev_sum + comb2 * pays[2]
+			end
 		end
 
 		return ev_sum

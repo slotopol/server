@@ -29,9 +29,9 @@ var LinePay = [13][5]float64{
 var ScatPay = [5]float64{0, 5, 8, 20, 1000} // 1 dollar
 
 const (
-	mje1 = 1 // Eldorado9
-	mje3 = 2 // Eldorado9
-	mje6 = 3 // Eldorado9
+	mje1 = 1 // Eldorado1
+	mje3 = 2 // Eldorado3
+	mje6 = 3 // Eldorado6
 	mje9 = 4 // Eldorado9
 	mjm  = 5 // Monopoly
 	mjc  = 6 // Champagne
@@ -80,26 +80,10 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-// Not from lined paytable.
-var special = [13]bool{
-	true,  //  1
-	false, //  2
-	false, //  3
-	false, //  4
-	false, //  5
-	false, //  6
-	false, //  7
-	false, //  8
-	false, //  9
-	false, // 10
-	false, // 11
-	true,  // 12
-	true,  // 13
-}
-
 const (
 	mjj        = 1     // jackpot ID
 	wild, scat = 11, 1 // symbols
+	bon1, bon2 = 12, 13
 )
 
 func (g *Game) Scanner(wins *slot.Wins) error {
@@ -120,15 +104,15 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 			if sx == wild {
 				if syml == 0 {
 					numw = x
-				} else if special[syml-1] {
+				} else if syml == bon1 || syml == bon2 {
 					numl = x - 1
 					break
 				}
 				mw = 2
-			} else if numw > 0 && special[sx-1] {
-				numl = x - 1
-				break
-			} else if syml == 0 && sx != scat {
+			} else if syml == 0 {
+				if numw > 0 && (sx == bon1 || sx == bon2) {
+					break
+				}
 				syml = sx
 			} else if sx != syml {
 				numl = x - 1
@@ -166,7 +150,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				XY:  line.HitxL(numw),
 				JID: jid,
 			})
-		} else if syml > 0 && numl > 0 && LineBonus[syml-1][numl-1] > 0 {
+		} else if syml > 0 && LineBonus[syml-1][numl-1] > 0 {
 			*wins = append(*wins, slot.WinItem{
 				MP:  1,
 				Sym: syml,

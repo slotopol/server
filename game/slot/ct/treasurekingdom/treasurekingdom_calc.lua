@@ -24,7 +24,7 @@ local REELS_REG = {
 -- 2. PAYTABLE FOR LINE WINS (indexed by symbol ID)
 local PAYTABLE_LINE = {
 	[ 1] = {0, 10, 250, 2500, 10000}, -- wild
-	[ 2] = {0, 0, 0, 0, 0},           -- scatter
+	[ 2] = {},                        -- scatter
 	[ 3] = {0, 2, 30, 150, 1000},     -- heart
 	[ 4] = {0, 2, 20, 125, 500},      -- sword
 	[ 5] = {0, 2, 20, 125, 500},      -- shield
@@ -90,7 +90,7 @@ local function calculate(reels_reg, reels_bon)
 		local wpays = PAYTABLE_LINE[wild]
 
 		for symbol_id, pays in pairs(PAYTABLE_LINE) do
-			if symbol_id ~= scat and symbol_id ~= wild then
+			if symbol_id ~= wild and #pays > 0 then
 				local s = counts[symbol_id]
 				local c = {}
 				for i = 1, sx do c[i] = s[i] + w[i] end
@@ -169,7 +169,7 @@ local function calculate(reels_reg, reels_bon)
 				local losses = 0
 				if n < sx then
 					for symbol_id, pays in pairs(PAYTABLE_LINE) do
-						if symbol_id ~= wild and symbol_id ~= scat then
+						if symbol_id ~= wild and #pays > 0 then
 							local s = counts[symbol_id]
 							local c = {}
 							for i = 1, sx do c[i] = s[i] + w[i] end
@@ -269,6 +269,7 @@ local function calculate(reels_reg, reels_bon)
 		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
 		print(string.format("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%", rtp_sym, q, rtp_fs, rtp_total))
 	end
+	return rtp_total
 end
 
 if autoscan then

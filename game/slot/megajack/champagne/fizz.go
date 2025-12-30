@@ -4,7 +4,7 @@ import (
 	"math/rand/v2"
 )
 
-// len = 5, count = 10, avr boutle gain = 68, M = 168
+// len = 5, count = 10, avr bottle gain = 68, M = 168
 var Bottles = [...]float64{
 	10, 10, 20, 150, 150,
 }

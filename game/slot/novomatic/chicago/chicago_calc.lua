@@ -26,7 +26,7 @@ local PAYTABLE_LINE = {
 	[10] = {0, 0, 5, 20, 100},        -- jack
 	[11] = {0, 0, 5, 20, 100},        -- ten
 	[12] = {0, 0, 5, 20, 100},        -- nine
-	[13] = {0, 0, 0, 0, 0},           -- cadillac
+	[13] = {},                        -- cadillac
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
@@ -72,7 +72,7 @@ local function calculate(reels)
 		local wpays = PAYTABLE_LINE[wild]
 
 		for symbol_id, pays in pairs(PAYTABLE_LINE) do
-			if symbol_id ~= scat and symbol_id ~= wild then
+			if symbol_id ~= wild and #pays > 0 then
 				local s = counts[symbol_id]
 				local c = {}
 				for i = 1, sx do c[i] = s[i] + w[i] end
@@ -137,7 +137,7 @@ local function calculate(reels)
 				local losses = 0
 				if n < sx then
 					for symbol_id, pays in pairs(PAYTABLE_LINE) do
-						if symbol_id ~= wild and symbol_id ~= scat then
+						if symbol_id ~= wild and #pays > 0 then
 							local s = counts[symbol_id]
 							local c = {}
 							for i = 1, sx do c[i] = s[i] + w[i] end

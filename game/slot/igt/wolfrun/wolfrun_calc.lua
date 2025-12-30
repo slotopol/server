@@ -34,7 +34,7 @@ local PAYTABLE_LINE = {
 	[ 9] = {0, 0, 5, 20, 100},    -- jack
 	[10] = {0, 0, 5, 20, 100},    -- ten
 	[11] = {0, 0, 5, 20, 100},    -- nine
-	[12] = {0, 0, 0, 0, 0},       -- bonus (2, 3, 4 reels only)
+	[12] = {},                    -- bonus (2, 3, 4 reels only)
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
@@ -84,7 +84,7 @@ local function calculate(reels_reg, reels_bon)
 		local wpays = PAYTABLE_LINE[wild]
 
 		for symbol_id, pays in pairs(PAYTABLE_LINE) do
-			if symbol_id ~= scat and symbol_id ~= wild then
+			if symbol_id ~= wild and #pays > 0 then
 				local s = counts[symbol_id]
 				local c = {}
 				for i = 1, sx do c[i] = s[i] + w[i] end
@@ -149,7 +149,7 @@ local function calculate(reels_reg, reels_bon)
 				local losses = 0
 				if n < sx then
 					for symbol_id, pays in pairs(PAYTABLE_LINE) do
-						if symbol_id ~= wild and symbol_id ~= scat then
+						if symbol_id ~= wild and #pays > 0 then
 							local s = counts[symbol_id]
 							local c = {}
 							for i = 1, sx do c[i] = s[i] + w[i] end
@@ -247,6 +247,7 @@ local function calculate(reels_reg, reels_bon)
 		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
 		print(string.format("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%", rtp_sym, q, rtp_fs, rtp_total))
 	end
+	return rtp_total
 end
 
 if autoscan then

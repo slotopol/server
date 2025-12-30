@@ -22,4 +22,4 @@ for i = 1,#t do
 	end
 end
 M = M / n
-print(string.format("len = %d, count = %d, avr boutle gain = %g, M = %g", #t, n, m, M))
+print(string.format("len = %d, count = %d, avr bottle gain = %g, M = %g", #t, n, m, M))

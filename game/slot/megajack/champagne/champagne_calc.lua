@@ -1,41 +1,46 @@
--- Novomatic / Mega Joker
+-- Megajack / Champagne
 -- RTP calculation
 
 -- 1. REEL STRIPS DATA
 local REELS = {
 	-- luacheck: push ignore 631
-	{1, 1, 1, 1, 4, 4, 4, 4, 4, 12, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 1, 10, 10, 10, 10, 10, 10, 10, 9, 9, 9, 9, 9, 9, 9, 8, 8, 8, 8, 8, 8, 8, 11, 11, 11, 11, 11, 11, 11, 2, 2, 2, 2, 12, 3, 3, 3, 3, 6, 6, 6, 6, 6, 6},
-	{2, 2, 2, 2, 5, 5, 5, 5, 9, 9, 9, 9, 9, 7, 7, 7, 7, 7, 4, 4, 4, 4, 11, 11, 11, 11, 11, 8, 8, 8, 8, 8, 12, 1, 1, 1, 1, 10, 10, 10, 10, 10, 3, 3, 3, 3, 1, 6, 6, 6, 6, 6},
-	{11, 11, 11, 11, 11, 11, 11, 7, 7, 7, 7, 7, 7, 9, 9, 9, 9, 9, 9, 9, 5, 5, 5, 5, 5, 8, 8, 8, 8, 8, 8, 8, 3, 3, 3, 3, 10, 10, 10, 10, 10, 10, 10, 1, 4, 4, 4, 4, 4, 12, 6, 6, 6, 6, 6, 6, 1, 1, 1, 1, 12, 2, 2, 2, 2},
-	{7, 7, 7, 7, 7, 10, 10, 10, 10, 10, 1, 9, 9, 9, 9, 9, 6, 6, 6, 6, 6, 4, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 11, 11, 11, 11, 11, 5, 5, 5, 5, 8, 8, 8, 8, 8, 12},
-	{4, 4, 4, 4, 4, 1, 1, 1, 1, 8, 8, 8, 8, 8, 8, 8, 1, 10, 10, 10, 10, 10, 10, 10, 11, 11, 11, 11, 11, 11, 11, 6, 6, 6, 6, 6, 6, 2, 2, 2, 2, 3, 3, 3, 3, 12, 9, 9, 9, 9, 9, 9, 9, 5, 5, 5, 5, 5, 12, 7, 7, 7, 7, 7, 7},
+	{12, 1, 5, 2, 12, 11, 2, 11, 12, 3, 2, 8, 12, 3, 4, 6, 12, 2, 5, 10, 3, 9, 7, 8, 4, 3, 7, 9, 2, 3, 4, 6},
+	{2, 5, 10, 12, 9, 6, 3, 4, 12, 2, 6, 8, 3, 12, 11, 2, 11, 12, 5, 7, 4, 6, 3, 4, 12, 2, 5, 8, 2, 7, 1, 9},
+	{12, 5, 10, 12, 9, 6, 3, 4, 12, 2, 6, 8, 3, 12, 11, 2, 11, 12, 5, 7, 4, 6, 3, 4, 12, 2, 5, 8, 12, 7, 1, 9},
+	{12, 8, 2, 12, 6, 5, 2, 4, 12, 2, 1, 3, 2, 9, 7, 12, 11, 11, 11, 11, 12, 5, 2, 12, 8, 6, 2, 3, 10, 12, 2, 4},
+	{12, 11, 7, 12, 6, 4, 12, 3, 2, 12, 3, 7, 12, 3, 5, 1, 12, 3, 8, 9, 12, 4, 3, 2, 12, 5, 3, 10, 2, 12, 3, 6},
 	-- luacheck: pop
 }
 
 -- 2. PAYTABLE FOR LINE WINS (indexed by symbol ID)
 local PAYTABLE_LINE = {
-	[ 1] = {0, 0, 40, 200, 2000}, -- wild
-	[ 2] = {0, 0, 20, 80, 400},   -- red seven
-	[ 3] = {0, 0, 20, 80, 400},   -- yellow seven
-	[ 4] = {0, 0, 20, 60, 240},   -- strawberry
-	[ 5] = {0, 0, 20, 60, 240},   -- pear
-	[ 6] = {0, 0, 8, 40, 160},    -- grapes
-	[ 7] = {0, 0, 8, 40, 160},    -- watermelon
-	[ 8] = {0, 0, 4, 20, 100},    -- plum
-	[ 9] = {0, 0, 4, 20, 100},    -- orange
-	[10] = {0, 0, 4, 20, 100},    -- lemon
-	[11] = {0, 0, 4, 20, 100},    -- cherry
-	[12] = {},                    -- scatter
+	[ 1] = {},                        -- dollar
+	[ 2] = {0, 3, 5, 20, 100},        -- cherry
+	[ 3] = {0, 3, 5, 20, 100},        -- plum
+	[ 4] = {0, 0, 5, 20, 100},        -- wmelon
+	[ 5] = {0, 0, 5, 20, 100},        -- grapes
+	[ 6] = {0, 0, 5, 20, 100},        -- ananas
+	[ 7] = {0, 0, 5, 20, 100},        -- lemon
+	[ 8] = {0, 0, 5, 20, 100},        -- drink
+	[ 9] = {0, 5, 10, 20, 1000},      -- palm
+	[10] = {0, 7, 10, 20, 1000},      -- yacht
+	[11] = {0, 10, 100, 2000, 10000}, -- eldorado
+	[12] = {},                        -- fizz
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
-local PAYTABLE_SCAT = {0, 0, 4, 20, 400}
+local PAYTABLE_SCAT = {0, 0, 0, 0, 1000}
 
--- 4. CONFIGURATION
-local sx, sy = 5, 4 -- screen width & height
-local wild, scat = 1, 12 -- wild & scatter symbol IDs
-local line_min = 3 -- minimum line symbols to win
-local scat_min = 3 -- minimum scatters to win
+-- 4. FREE SPINS TABLE
+local FREESPIN_SCAT = {0, 0, 15, 15, 15}
+
+-- 5. CONFIGURATION
+local sx, sy = 5, 3 -- screen width & height
+local wild, scat, bon = 11, 1, 12 -- wild & scatter symbol IDs
+local line_min = 2 -- minimum line symbols to win
+local scat_min = 2 -- minimum scatters to win
+local mfs = 2 -- multiplier on free spins
+local EVmjc = 168 -- Bottle game calculated expectation
 
 -- Performs full RTP calculation for given reels
 local function calculate(reels)
@@ -61,7 +66,7 @@ local function calculate(reels)
 	end
 
 	-- Function to calculate expected return from line wins for all symbols
-	local function calculate_line_ev()
+	local function calculate_line_ev(free_spins)
 		local ev_sum = 0
 		local w = counts[wild]
 		local wpays = PAYTABLE_LINE[wild]
@@ -110,7 +115,8 @@ local function calculate(reels)
 							better_wilds = bw
 						end
 
-						ev_sum = ev_sum + (combs_total - better_wilds) * payout
+						local mm = free_spins and mfs or 1
+						ev_sum = ev_sum + (combs_total - better_wilds) * payout * mm
 					end
 				end
 			end
@@ -159,7 +165,8 @@ local function calculate(reels)
 						end
 					end
 				end
-				ev_sum = ev_sum + (wc - losses) * payout
+				local mm = (free_spins and n < sx) and mfs or 1
+				ev_sum = ev_sum + (wc - losses) * payout * mm
 			end
 		end
 
@@ -167,15 +174,20 @@ local function calculate(reels)
 	end
 
 	-- Function to calculate expected return from scatter wins
-	local function calculate_scat_ev()
+	local function calculate_scat_ev(free_spins)
 		local c = counts[scat]
-		local ev_sum = 0
+		local mm = free_spins and mfs or 1
+		local ev_sum, fs_sum, fs_num = 0, 0, 0
 
 		-- Using an recursive approach to sum combinations for exactly N scatters
 		local function find_scatter_combs(reel_index, scat_sum, current_comb)
 			if reel_index > sx then
 				if scat_sum >= scat_min then
 					ev_sum = ev_sum + current_comb * PAYTABLE_SCAT[scat_sum]
+					if FREESPIN_SCAT[scat_sum] > 0 then
+						fs_sum = fs_sum + current_comb * FREESPIN_SCAT[scat_sum] * mm
+						fs_num = fs_num + current_comb
+					end
 				end
 				return
 			end
@@ -188,15 +200,54 @@ local function calculate(reels)
 		end
 		find_scatter_combs(1, 0, 1) -- Start recursion
 
-		return ev_sum
+		return ev_sum, fs_sum, fs_num
+	end
+
+	-- Calculating Monopoly bonus symbols
+	local function calculate_mjc_comb()
+		local b = counts[bon]
+		local comb5 = b[1] * b[2] * b[3] * b[4] * b[5]
+		return comb5
 	end
 
 	-- Execute calculation
-	local rtp_line = calculate_line_ev() / reshuffles * 100
-	local rtp_scat = calculate_scat_ev() / reshuffles * 100
-	local rtp_total = rtp_line + rtp_scat
+	local rtp_fs
 	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
-	print(string.format("RTP = %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_total))
+	do
+		local rtp_line = calculate_line_ev(true) / reshuffles * 100
+		local ev_sum, fs_sum, fs_num = calculate_scat_ev(true)
+		local rtp_scat = ev_sum / reshuffles * 100
+		local rtp_sym = rtp_line + rtp_scat
+		local q = fs_sum / reshuffles
+		local sq = 1 / (1 - q)
+		local qmjc = calculate_mjc_comb() / reshuffles
+		local rtp_mjc = EVmjc * qmjc * 100
+		rtp_fs = sq * (rtp_sym + rtp_mjc)
+		print(string.format("*bonus reels calculations*"))
+		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
+		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
+		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
+		print(string.format("bottle bonuses: frequency 1/%.5g, rtp = %.6f%%", 1/qmjc, rtp_mjc))
+		print(string.format("RTP = sq*(rtp(sym)+rtp(mjc)) = %.5g*(%.5g+%.5g) = %.6f%%", sq, rtp_sym, rtp_mjc, rtp_fs))
+	end
+	local rtp_total
+	do
+		local rtp_line = calculate_line_ev(false) / reshuffles * 100
+		local ev_sum, fs_sum, fs_num = calculate_scat_ev(false)
+		local rtp_scat = ev_sum / reshuffles * 100
+		local rtp_sym = rtp_line + rtp_scat
+		local q = fs_sum / reshuffles
+		local sq = 1 / (1 - q)
+		local qmjc = calculate_mjc_comb() / reshuffles
+		local rtp_mjc = EVmjc * qmjc * 100
+		rtp_total = rtp_sym + rtp_mjc + q * rtp_fs
+		print(string.format("*regular reels calculations*"))
+		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
+		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
+		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
+		print(string.format("bottle bonuses: frequency 1/%.5g, rtp = %.6f%%", 1/qmjc, rtp_mjc))
+		print(string.format("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%", rtp_sym, q, rtp_fs, rtp_total))
+	end
 	return rtp_total
 end
 

@@ -14,8 +14,8 @@ local REELS = {
 
 -- 2. PAYTABLE FOR LINE WINS (indexed by symbol ID)
 local PAYTABLE_LINE = {
-	[ 1] = {0, 0, 0, 0, 0},       -- wild (on all reels)
-	[ 2] = {0, 0, 0, 0, 0},       -- scatter
+	[ 1] = {},                    -- wild (on all reels)
+	[ 2] = {},                    -- scatter
 	[ 3] = {0, 0, 25, 150, 1500}, -- killer
 	[ 4] = {0, 0, 20, 100, 1000}, -- baby
 	[ 5] = {0, 0, 15, 75, 750},   -- boss
@@ -71,7 +71,7 @@ local function calculate(reels)
 		local w = counts[wild]
 
 		for symbol_id, pays in pairs(PAYTABLE_LINE) do
-			if symbol_id ~= wild and symbol_id ~= scat then
+			if symbol_id ~= wild and #pays > 0 then
 				local s = counts[symbol_id]
 				local c = {}
 				for i = 1, sx do c[i] = s[i] + w[i] end

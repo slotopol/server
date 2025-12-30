@@ -14,8 +14,8 @@ local REELS = {
 
 -- 2. PAYTABLE FOR LINE WINS (indexed by symbol ID)
 local PAYTABLE_LINE = {
-	[ 1] = {0, 0, 0, 0, 0},       -- wild (2, 3, 4 reels only)
-	[ 2] = {0, 0, 0, 0, 0},       -- scatter
+	[ 1] = {},                    -- wild (2, 3, 4 reels only)
+	[ 2] = {},                    -- scatter
 	[ 3] = {0, 0, 50, 150, 1000}, -- woman
 	[ 4] = {0, 0, 30, 50, 500},   -- man
 	[ 5] = {0, 0, 30, 50, 200},   -- crayfish
@@ -64,7 +64,7 @@ local function calculate(reels)
 
 		-- Iterate through all symbols that pay on lines
 		for symbol_id, pays in pairs(PAYTABLE_LINE) do
-			if symbol_id ~= wild and symbol_id ~= scat then
+			if symbol_id ~= wild and #pays > 0 then
 				local s = counts[symbol_id]
 				-- Function to calculate the expected value of a combination of length N.
 				local function get_comb_ev(n, payout)

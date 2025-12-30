@@ -22,8 +22,8 @@ local PAYTABLE_LINE = {
 	[ 6] = {0, 0, 8, 40, 100},    -- orange
 	[ 7] = {0, 0, 8, 40, 100},    -- lemon
 	[ 8] = {0, 0, 8, 40, 100},    -- cherry
-	[ 9] = {0, 0, 0, 0, 0},       -- wild (2, 3, 4 reels only)
-	[10] = {0, 0, 0, 0, 0},       -- star (scatter)
+	[ 9] = {},                    -- wild (2, 3, 4 reels only)
+	[10] = {},                    -- star (scatter)
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
@@ -64,25 +64,27 @@ local function calculate(reels)
 
 		-- Iterate through all symbols that pay on lines
 		for symbol_id, pays in pairs(PAYTABLE_LINE) do
-			local s = counts[symbol_id]
-			local c = {}
-			for i = 1, sx do c[i] = s[i] + w[i] end
+			if symbol_id ~= wild and #pays > 0 then
+				local s = counts[symbol_id]
+				local c = {}
+				for i = 1, sx do c[i] = s[i] + w[i] end
 
-			-- 5-of-a-kind (XXXXX) EV
-			local comb5 = c[1] * c[2] * c[3] * c[4] * c[5]
-			ev_sum = ev_sum + comb5 * pays[5]
+				-- 5-of-a-kind (XXXXX) EV
+				local comb5 = c[1] * c[2] * c[3] * c[4] * c[5]
+				ev_sum = ev_sum + comb5 * pays[5]
 
-			-- 4-of-a-kind (XXXX-) EV
-			local comb4 = c[1] * c[2] * c[3] * c[4] * (lens[5] - c[5])
-			ev_sum = ev_sum + comb4 * pays[4]
+				-- 4-of-a-kind (XXXX-) EV
+				local comb4 = c[1] * c[2] * c[3] * c[4] * (lens[5] - c[5])
+				ev_sum = ev_sum + comb4 * pays[4]
 
-			-- 3-of-a-kind (XXX--) EV
-			local comb3 = c[1] * c[2] * c[3] * (lens[4] - c[4]) * lens[5]
-			ev_sum = ev_sum + comb3 * pays[3]
+				-- 3-of-a-kind (XXX--) EV
+				local comb3 = c[1] * c[2] * c[3] * (lens[4] - c[4]) * lens[5]
+				ev_sum = ev_sum + comb3 * pays[3]
 
-			-- 2-of-a-kind (XX---) EV
-			local comb2 = c[1] * c[2] * (lens[3] - c[3]) * lens[4] * lens[5]
-			ev_sum = ev_sum + comb2 * pays[2]
+				-- 2-of-a-kind (XX---) EV
+				local comb2 = c[1] * c[2] * (lens[3] - c[3]) * lens[4] * lens[5]
+				ev_sum = ev_sum + comb2 * pays[2]
+			end
 		end
 
 		return ev_sum

@@ -21,7 +21,7 @@ local PAYTABLE_LINE = {
 	[5] = {0, 0, 15, 50, 200},   -- sapphire
 	[6] = {0, 0, 10, 25, 150},   -- emerald
 	[7] = {0, 0, 10, 25, 150},   -- amethyst
-	[8] = {0, 0, 0, 0, 0},       -- euro (scatter)
+	[8] = {},                    -- euro (scatter)
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
@@ -61,31 +61,33 @@ local function calculate(reels)
 
 		-- Iterate through all symbols that pay on lines
 		for symbol_id, pays in pairs(PAYTABLE_LINE) do
-			local c = counts[symbol_id]
+			if #pays > 0 then
+				local c = counts[symbol_id]
 
-			-- 5-of-a-kind (XXXXX) EV
-			local comb5 = c[1] * c[2] * c[3] * c[4] * c[5]
-			ev_sum = ev_sum + comb5 * pays[5]
+				-- 5-of-a-kind (XXXXX) EV
+				local comb5 = c[1] * c[2] * c[3] * c[4] * c[5]
+				ev_sum = ev_sum + comb5 * pays[5]
 
-			-- 4-of-a-kind (XXXX-) EV on left side
-			local comb4l = c[1] * c[2] * c[3] * c[4] * (lens[5] - c[5])
-			ev_sum = ev_sum + comb4l * pays[4]
+				-- 4-of-a-kind (XXXX-) EV on left side
+				local comb4l = c[1] * c[2] * c[3] * c[4] * (lens[5] - c[5])
+				ev_sum = ev_sum + comb4l * pays[4]
 
-			-- 4-of-a-kind (-XXXX) EV on right side
-			local comb4r = (lens[1] - c[1]) * c[2] * c[3] * c[4] * c[5]
-			ev_sum = ev_sum + comb4r * pays[4]
+				-- 4-of-a-kind (-XXXX) EV on right side
+				local comb4r = (lens[1] - c[1]) * c[2] * c[3] * c[4] * c[5]
+				ev_sum = ev_sum + comb4r * pays[4]
 
-			-- 3-of-a-kind (XXX--) EV on left side
-			local comb3l = c[1] * c[2] * c[3] * (lens[4] - c[4]) * lens[5]
-			ev_sum = ev_sum + comb3l * pays[3]
+				-- 3-of-a-kind (XXX--) EV on left side
+				local comb3l = c[1] * c[2] * c[3] * (lens[4] - c[4]) * lens[5]
+				ev_sum = ev_sum + comb3l * pays[3]
 
-			-- 3-of-a-kind (-XXX-) EV in the middle
-			local comb3m = (lens[1] - c[1]) * c[2] * c[3] * c[4] * (lens[5] - c[5])
-			ev_sum = ev_sum + comb3m * pays[3]
+				-- 3-of-a-kind (-XXX-) EV in the middle
+				local comb3m = (lens[1] - c[1]) * c[2] * c[3] * c[4] * (lens[5] - c[5])
+				ev_sum = ev_sum + comb3m * pays[3]
 
-			-- 3-of-a-kind (--XXX) EV on right side
-			local comb3r = lens[1] * (lens[2] - c[2]) * c[3] * c[4] * c[5]
-			ev_sum = ev_sum + comb3r * pays[3]
+				-- 3-of-a-kind (--XXX) EV on right side
+				local comb3r = lens[1] * (lens[2] - c[2]) * c[3] * c[4] * c[5]
+				ev_sum = ev_sum + comb3r * pays[3]
+			end
 		end
 
 		return ev_sum

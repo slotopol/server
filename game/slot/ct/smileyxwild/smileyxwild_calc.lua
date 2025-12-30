@@ -14,8 +14,8 @@ local REELS = {
 
 -- 2. PAYTABLE FOR LINE WINS (indexed by symbol ID)
 local PAYTABLE_LINE = {
-	[1] = {0, 0, 0, 0, 0},       -- wild (2, 4 reels only)
-	[2] = {0, 0, 0, 0, 0},       -- scatter
+	[1] = {},                    -- wild (2, 4 reels only)
+	[2] = {},                    -- scatter
 	[3] = {0, 0, 35, 100, 1000}, -- heart
 	[4] = {0, 0, 15, 50, 300},   -- sun
 	[5] = {0, 0, 15, 50, 300},   -- beer
@@ -66,48 +66,50 @@ local function calculate(reels)
 
 		-- Iterate through all symbols that pay on lines
 		for symbol_id, pays in pairs(PAYTABLE_LINE) do
-			-- count symbol occurrences without wilds
-			local s = counts[symbol_id]
+			if symbol_id ~= wild and #pays > 0 then
+				-- count symbol occurrences without wilds
+				local s = counts[symbol_id]
 
-			-- 5-of-a-kind (XXXXX) EV: W on R2 and W on R4
-			local comb5_ww = s[1] * w[2] * s[3] * w[4] * s[5]
-			ev_sum = ev_sum + comb5_ww * pays[5] * M * M
+				-- 5-of-a-kind (XXXXX) EV: W on R2 and W on R4
+				local comb5_ww = s[1] * w[2] * s[3] * w[4] * s[5]
+				ev_sum = ev_sum + comb5_ww * pays[5] * M * M
 
-			-- 5-of-a-kind (XXXXX) EV: W on R2
-			local comb5_w2 = s[1] * w[2] * s[3] * s[4] * s[5]
-			ev_sum = ev_sum + comb5_w2 * pays[5] * M
+				-- 5-of-a-kind (XXXXX) EV: W on R2
+				local comb5_w2 = s[1] * w[2] * s[3] * s[4] * s[5]
+				ev_sum = ev_sum + comb5_w2 * pays[5] * M
 
-			-- 5-of-a-kind (XXXXX) EV: W on R4
-			local comb5_w4 = s[1] * s[2] * s[3] * w[4] * s[5]
-			ev_sum = ev_sum + comb5_w4 * pays[5] * M
+				-- 5-of-a-kind (XXXXX) EV: W on R4
+				local comb5_w4 = s[1] * s[2] * s[3] * w[4] * s[5]
+				ev_sum = ev_sum + comb5_w4 * pays[5] * M
 
-			-- 5-of-a-kind (XXXXX) EV: no W
-			local comb5_x1 = s[1] * s[2] * s[3] * s[4] * s[5]
-			ev_sum = ev_sum + comb5_x1 * pays[5] * 1 -- no multiplier
+				-- 5-of-a-kind (XXXXX) EV: no W
+				local comb5_x1 = s[1] * s[2] * s[3] * s[4] * s[5]
+				ev_sum = ev_sum + comb5_x1 * pays[5] * 1 -- no multiplier
 
-			-- 4-of-a-kind (XXXX-) EV: W on R2 and W on R4
-			local comb4_ww = s[1] * w[2] * s[3] * w[4] * (lens[5] - s[5])
-			ev_sum = ev_sum + comb4_ww * pays[4] * M * M
+				-- 4-of-a-kind (XXXX-) EV: W on R2 and W on R4
+				local comb4_ww = s[1] * w[2] * s[3] * w[4] * (lens[5] - s[5])
+				ev_sum = ev_sum + comb4_ww * pays[4] * M * M
 
-			-- 4-of-a-kind (XXXX-) EV: W on R2
-			local comb4_w2 = s[1] * w[2] * s[3] * s[4] * (lens[5] - s[5])
-			ev_sum = ev_sum + comb4_w2 * pays[4] * M
+				-- 4-of-a-kind (XXXX-) EV: W on R2
+				local comb4_w2 = s[1] * w[2] * s[3] * s[4] * (lens[5] - s[5])
+				ev_sum = ev_sum + comb4_w2 * pays[4] * M
 
-			-- 4-of-a-kind (XXXX-) EV: W on R4
-			local comb4_w4 = s[1] * s[2] * s[3] * w[4] * (lens[5] - s[5])
-			ev_sum = ev_sum + comb4_w4 * pays[4] * M
+				-- 4-of-a-kind (XXXX-) EV: W on R4
+				local comb4_w4 = s[1] * s[2] * s[3] * w[4] * (lens[5] - s[5])
+				ev_sum = ev_sum + comb4_w4 * pays[4] * M
 
-			-- 4-of-a-kind (XXXX-) EV: no W
-			local comb4_x1 = s[1] * s[2] * s[3] * s[4] * (lens[5] - s[5])
-			ev_sum = ev_sum + comb4_x1 * pays[4] * 1 -- no multiplier
+				-- 4-of-a-kind (XXXX-) EV: no W
+				local comb4_x1 = s[1] * s[2] * s[3] * s[4] * (lens[5] - s[5])
+				ev_sum = ev_sum + comb4_x1 * pays[4] * 1 -- no multiplier
 
-			-- 3-of-a-kind (XXX--) EV: W on R2
-			local comb3_w2 = s[1] * w[2] * s[3] * (lens[4] - s[4] - w[4]) * lens[5]
-			ev_sum = ev_sum + comb3_w2 * pays[3] * M
+				-- 3-of-a-kind (XXX--) EV: W on R2
+				local comb3_w2 = s[1] * w[2] * s[3] * (lens[4] - s[4] - w[4]) * lens[5]
+				ev_sum = ev_sum + comb3_w2 * pays[3] * M
 
-			-- 3-of-a-kind (XXX--) EV: no W
-			local comb3_x1 = s[1] * s[2] * s[3] * (lens[4] - s[4] - w[4]) * lens[5]
-			ev_sum = ev_sum + comb3_x1 * pays[3] * 1 -- no multiplier
+				-- 3-of-a-kind (XXX--) EV: no W
+				local comb3_x1 = s[1] * s[2] * s[3] * (lens[4] - s[4] - w[4]) * lens[5]
+				ev_sum = ev_sum + comb3_x1 * pays[3] * 1 -- no multiplier
+			end
 		end
 
 		return ev_sum

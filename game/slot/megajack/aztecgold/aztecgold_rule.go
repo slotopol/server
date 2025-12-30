@@ -28,9 +28,9 @@ var LinePay = [12][5]float64{
 var ScatPay = [5]float64{0, 0, 2, 10, 50} // 10 scatter
 
 const (
-	mje1 = 1 // Eldorado9
-	mje3 = 2 // Eldorado9
-	mje6 = 3 // Eldorado9
+	mje1 = 1 // Eldorado1
+	mje3 = 2 // Eldorado3
+	mje6 = 3 // Eldorado6
 	mje9 = 4 // Eldorado9
 	mjm  = 5 // Monopoly
 	mjc  = 6 // Champagne

@@ -14,7 +14,7 @@ local REELS = {
 
 -- 2. PAYTABLE FOR LINE WINS (indexed by symbol ID)
 local PAYTABLE_LINE = {
-	[ 1] = {0, 0, 0, 0, 0},        -- wild (2, 3, 4 reels only)
+	[ 1] = {},                     -- wild (2, 3, 4 reels only)
 	[ 2] = {0, 5, 100, 500, 5000}, -- Oliver
 	[ 3] = {0, 0, 25, 200, 1000},  -- friends
 	[ 4] = {0, 0, 25, 200, 1000},  -- couple
@@ -26,7 +26,7 @@ local PAYTABLE_LINE = {
 	[10] = {0, 0, 5, 25, 100},     -- strawberries
 	[11] = {0, 0, 5, 25, 100},     -- oranges
 	[12] = {0, 2, 5, 25, 100},     -- cherry
-	[13] = {0, 0, 0, 0, 0},        -- scatter
+	[13] = {},                     -- scatter
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)
@@ -71,23 +71,25 @@ local function calculate(reels)
 
 		-- Iterate through all symbols that pay on lines
 		for symbol_id, pays in pairs(PAYTABLE_LINE) do
-			local s = counts[symbol_id]
-			local function get_comb_ev(n, payout)
-				if payout <= 0 then return 0 end
-				local comb_ev = payout
-				for i = 1, sx do
-					if i <= n then
-						comb_ev = comb_ev * (s[i] + w[i])
-					elseif i == n + 1 then
-						comb_ev = comb_ev * (lens[i] - (s[i] + w[i]))
-					else
-						comb_ev = comb_ev * lens[i]
+			if symbol_id ~= wild and #pays > 0 then
+				local s = counts[symbol_id]
+				local function get_comb_ev(n, payout)
+					if payout <= 0 then return 0 end
+					local comb_ev = payout
+					for i = 1, sx do
+						if i <= n then
+							comb_ev = comb_ev * (s[i] + w[i])
+						elseif i == n + 1 then
+							comb_ev = comb_ev * (lens[i] - (s[i] + w[i]))
+						else
+							comb_ev = comb_ev * lens[i]
+						end
 					end
+					return comb_ev
 				end
-				return comb_ev
-			end
-			for n = 2, sx do
-				ev_sum = ev_sum + get_comb_ev(n, pays[n])
+				for n = 2, sx do
+					ev_sum = ev_sum + get_comb_ev(n, pays[n])
+				end
 			end
 		end
 

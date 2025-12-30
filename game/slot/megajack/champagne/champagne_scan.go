@@ -9,17 +9,17 @@ import (
 )
 
 var (
-	Ebot float64 // expectation of 1 bottle
-	Emjc float64 // Bottle game calculated expectation
+	EVbot float64 // expectation of 1 bottle
+	EVmjc float64 // Bottle game calculated expectation
 )
 
 func ExpBottle() {
 	// avr 1 bottle gain
-	Ebot = 0
+	EVbot = 0
 	for _, v := range Bottles {
-		Ebot += float64(v)
+		EVbot += float64(v)
 	}
-	Ebot /= float64(len(Bottles))
+	EVbot /= float64(len(Bottles))
 
 	// expectation
 	var E float64
@@ -35,7 +35,7 @@ func ExpBottle() {
 		}
 	}
 	E /= float64(n)
-	Emjc = E
+	EVmjc = E
 }
 
 func CalcStatBon(ctx context.Context, mrtp float64) float64 {
@@ -50,12 +50,12 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 		var rtpsym = lrtp + srtp
 		var q, sq = s.FSQ()
 		var qmjc = s.BonusCount(mjc) / reshuf / float64(g.Sel)
-		var rtpmjc = Emjc * qmjc * 100
+		var rtpmjc = EVmjc * qmjc * 100
 		var rtp = sq * (rtpsym + rtpmjc)
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCountU(), q, sq)
 		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", s.FGF())
-		fmt.Fprintf(w, "champagne bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonusCount(mjc), rtpmjc)
+		fmt.Fprintf(w, "bottle bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonusCount(mjc), rtpmjc)
 		if s.JackCount(mjj) > 0 {
 			fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackCount(mjj), reshuf/s.JackCount(mjj))
 		}
@@ -69,7 +69,7 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*bonus games calculations*\n")
 	ExpBottle()
-	fmt.Printf("len = %d, avr bottle gain = %.5g, E = %g\n", len(Bottles), Ebot, Emjc)
+	fmt.Printf("len = %d, avr bottle gain = %.5g, EV = %g\n", len(Bottles), EVbot, EVmjc)
 	fmt.Printf("*bonus reels calculations*\n")
 	var rtpfs = CalcStatBon(ctx, mrtp)
 	if ctx.Err() != nil {
@@ -87,7 +87,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		var rtpsym = lrtp + srtp
 		var q, _ = s.FSQ()
 		var qmjc = s.BonusCount(mjc) / reshuf / float64(g.Sel)
-		var rtpmjc = Emjc * qmjc * 100
+		var rtpmjc = EVmjc * qmjc * 100
 		var rtp = rtpsym + rtpmjc + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "free spins %d, q = %.6f\n", s.FreeCountU(), q)

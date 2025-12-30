@@ -248,6 +248,7 @@ local function calculate(reels_reg, reels_bon)
 		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
 		print(string.format("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%", rtp_sym, q, rtp_fs, rtp_total))
 	end
+	return rtp_total
 end
 
 if autoscan then
