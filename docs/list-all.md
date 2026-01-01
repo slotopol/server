@@ -15,6 +15,8 @@
 '40 Bigfoot' AGT 5x4 videoslot
 '40 Brilliants' CT Interactive 5x4 videoslot
 '40 Fruitata Wins' CT Interactive 5x4 videoslot
+'40 Mega Slot' CT Interactive 5x4 videoslot
+'40 Roosters' CT Interactive 5x4 videoslot
 '5 Hot Hot Hot' AGT 3x3 videoslot
 '50 Apples' Shine' AGT 5x4 videoslot
 '50 Gems' AGT 5x4 videoslot
@@ -315,11 +317,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 312 games, 162 algorithms, 11 providers
+total: 314 games, 163 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 109 games
+CT Interactive: 111 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
