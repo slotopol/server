@@ -61,7 +61,7 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-func (g *Game) Free() bool {
+func (g *Game) FreeMode() bool {
 	return g.FSR != 0 || g.Cascade()
 }
 
@@ -101,10 +101,10 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 	var fm float64 // fill mult
 	for li, line := range BetLines[:g.Sel] {
 		var numl slot.Pos = 5
-		var syml = g.LY(1, line)
+		var syml = g.LX(1, line)
 		var x slot.Pos
 		for x = 2; x <= 5; x++ {
-			var sx = g.LY(x, line)
+			var sx = g.LX(x, line)
 			if sx != syml && sx != wild {
 				numl = x - 1
 				break
@@ -158,7 +158,7 @@ func (g *Game) ScanScattersBon(wins *slot.Wins) {
 
 func (g *Game) Spin(mrtp float64) {
 	var reels, _ = ReelsMap.FindClosest(mrtp)
-	g.ReelSpin(reels)
+	g.SpinReels(reels)
 }
 
 func (g *Game) Prepare() {

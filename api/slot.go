@@ -287,7 +287,7 @@ func ApiSlotSpin(c *gin.Context) {
 	}
 
 	var cost float64
-	if !game.Free() {
+	if !game.FreeMode() {
 		cost = game.Cost()
 		if props.Wallet < cost {
 			Ret403(c, AEC_slot_spin_nomoney, ErrNoMoney)

@@ -51,21 +51,21 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 func (g *Game) ScanLined(wins *slot.Wins) {
 	for li, line := range BetLines[:g.Sel] {
 		var numl slot.Pos = 1
-		var syml = g.LY(3, line)
+		var syml = g.LX(3, line)
 		var xy slot.Linex
 		xy.Set(3, line.At(3))
-		if g.LY(2, line) == syml {
+		if g.LX(2, line) == syml {
 			xy.Set(2, line.At(2))
 			numl++
-			if g.LY(1, line) == syml {
+			if g.LX(1, line) == syml {
 				xy.Set(1, line.At(1))
 				numl++
 			}
 		}
-		if g.LY(4, line) == syml {
+		if g.LX(4, line) == syml {
 			xy.Set(4, line.At(4))
 			numl++
-			if g.LY(5, line) == syml {
+			if g.LX(5, line) == syml {
 				xy.Set(5, line.At(5))
 				numl++
 			}
@@ -86,7 +86,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 func (g *Game) Spin(mrtp float64) {
 	var reels, _ = ReelsMap.FindClosest(mrtp)
-	g.ReelSpin(reels)
+	g.SpinReels(reels)
 }
 
 func (g *Game) SetSel(sel int) error {

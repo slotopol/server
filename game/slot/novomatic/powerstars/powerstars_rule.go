@@ -83,9 +83,9 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var payl, payr float64
 		var x slot.Pos
 
-		syml, numl = g.LY(1, line), 1
+		syml, numl = g.LX(1, line), 1
 		for x = 2; x <= 5; x++ {
-			var sx = g.LY(x, line)
+			var sx = g.LX(x, line)
 			if sx != syml && !reelwild[x-1] {
 				break
 			}
@@ -94,9 +94,9 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		payl = LinePay[syml-1][numl-1]
 
 		if numl < 4 {
-			symr, numr = g.LY(5, line), 1
+			symr, numr = g.LX(5, line), 1
 			for x = 4; x >= 2; x-- {
-				var sx = g.LY(x, line)
+				var sx = g.LX(x, line)
 				if sx != symr && !reelwild[x-1] {
 					break
 				}
@@ -134,7 +134,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 }
 
 func (g *Game) Spin(mrtp float64) {
-	g.ReelSpin(Reels)
+	g.SpinReels(Reels)
 	if g.FSR == 0 {
 		var _, wc = ChanceMap.FindClosest(mrtp) // wild chance
 		var x, y slot.Pos

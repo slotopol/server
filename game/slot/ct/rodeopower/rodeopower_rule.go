@@ -74,10 +74,10 @@ loop1:
 					for line[4] = 1; line[4] <= 3; line[4]++ {
 						var mw float64 = 1 // mult wild
 						var numl slot.Pos = 5
-						var syml = g.LY(1, line)
+						var syml = g.LX(1, line)
 						var x slot.Pos
 						for x = 2; x <= 5; x++ {
-							var sx = g.LY(x, line)
+							var sx = g.LX(x, line)
 							if sx == wild {
 								if x == 2 {
 									mw *= 2
@@ -150,9 +150,9 @@ func (g *Game) Cost() float64 {
 func (g *Game) Spin(mrtp float64) {
 	if g.FSR == 0 {
 		var reels, _ = ReelsMap.FindClosest(mrtp)
-		g.ReelSpin(reels)
+		g.SpinReels(reels)
 	} else {
-		g.ReelSpin(ReelsBon)
+		g.SpinReels(ReelsBon)
 	}
 }
 

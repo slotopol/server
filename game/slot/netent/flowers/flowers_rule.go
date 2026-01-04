@@ -129,7 +129,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
-			if sx := g.LY(x, line); sx == wild {
+			if sx := g.LX(x, line); sx == wild {
 				if syml == 0 {
 					numw++
 				}
@@ -219,9 +219,9 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 func (g *Game) Spin(mrtp float64) {
 	if g.FSR == 0 {
 		var reels, _ = ReelsMap.FindClosest(mrtp)
-		g.ReelSpin(reels)
+		g.SpinReels(reels)
 	} else {
-		g.ReelSpin(ReelsBon)
+		g.SpinReels(ReelsBon)
 	}
 }
 

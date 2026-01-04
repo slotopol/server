@@ -3,7 +3,6 @@ package slot
 import "math/rand/v2"
 
 type Cascade interface {
-	Screen
 	UntoFall()            // set fall number before scanner call
 	PushFall(reels Reelx) // fill screen on fall in avalanche chain
 	Strike(wins Wins)     // strike win symbols on the screen
@@ -15,7 +14,7 @@ type Cascade interface {
 
 type CascadeSlot interface {
 	Cascade
-	SlotGame
+	ClassicSlot
 }
 
 type Cascade5x3 struct {
@@ -39,7 +38,7 @@ func (s *Cascade5x3) SetCol(x Pos, reel []Sym, pos int) {
 	s.Pos[x-1] = pos
 }
 
-func (s *Cascade5x3) ReelSpin(reels Reelx) {
+func (s *Cascade5x3) SpinReels(reels Reelx) {
 	if s.CFN > 1 {
 		s.PushFall(reels)
 	} else {
@@ -123,7 +122,7 @@ func (s *Cascade5x4) SetCol(x Pos, reel []Sym, pos int) {
 	s.Pos[x-1] = pos
 }
 
-func (s *Cascade5x4) ReelSpin(reels Reelx) {
+func (s *Cascade5x4) SpinReels(reels Reelx) {
 	if s.CFN > 1 {
 		s.PushFall(reels)
 	} else {

@@ -391,7 +391,7 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reelx) {
 							err = ErrAvalanche
 							break
 						}
-						cs.ReelSpin(reels)
+						cs.SpinReels(reels)
 						var wp = len(wins)
 						if err = cs.Scanner(&wins); err != nil {
 							break
@@ -408,7 +408,7 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reelx) {
 					}
 					wins.Reset()
 				} else {
-					sg.ReelSpin(reels)
+					sg.SpinReels(reels)
 					if sg.Scanner(&wins) == nil {
 						s.Update(wins, 1)
 					} else {
@@ -469,7 +469,7 @@ func MonteCarloPrec(ctx context.Context, s Stater, g SlotGame, reels Reelx, calc
 							err = ErrAvalanche
 							break
 						}
-						cs.ReelSpin(reels)
+						cs.SpinReels(reels)
 						var wp = len(wins)
 						if err = cs.Scanner(&wins); err != nil {
 							break
@@ -486,7 +486,7 @@ func MonteCarloPrec(ctx context.Context, s Stater, g SlotGame, reels Reelx, calc
 					}
 					wins.Reset()
 				} else {
-					sg.ReelSpin(reels)
+					sg.SpinReels(reels)
 					if sg.Scanner(&wins) == nil {
 						s.Update(wins, 1)
 					} else {

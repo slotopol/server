@@ -21,6 +21,7 @@
 '50 Apples' Shine' AGT 5x4 videoslot
 '50 Gems' AGT 5x4 videoslot
 '50 Happy Santa' AGT 5x4 videoslot
+'50 Shining Jewels' CT Interactive 5x4 videoslot
 'AI' AGT 5x3 videoslot
 'African Simba' Novomatic 5x3 videoslot
 'Age of Heroes' Novomatic 5x3 videoslot
@@ -317,11 +318,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 314 games, 163 algorithms, 11 providers
+total: 315 games, 164 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 111 games
+CT Interactive: 112 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

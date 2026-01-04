@@ -52,6 +52,7 @@ import (
 	// CT Interactive
 	_ "github.com/slotopol/server/game/slot/ct/30treasures"
 	_ "github.com/slotopol/server/game/slot/ct/40megaslot"
+	_ "github.com/slotopol/server/game/slot/ct/50shiningjewels"
 	_ "github.com/slotopol/server/game/slot/ct/bigjoker"
 	_ "github.com/slotopol/server/game/slot/ct/britania"
 	_ "github.com/slotopol/server/game/slot/ct/cherrycrown"

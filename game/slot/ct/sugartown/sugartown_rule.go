@@ -43,7 +43,7 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-func (g *Game) Free() bool {
+func (g *Game) FreeMode() bool {
 	return g.FSR != 0 || g.Cascade()
 }
 
@@ -102,7 +102,7 @@ func (g *Game) Cost() float64 {
 
 func (g *Game) Spin(mrtp float64) {
 	var reels, _ = ReelsMap.FindClosest(mrtp)
-	g.ReelSpin(reels)
+	g.SpinReels(reels)
 }
 
 func (g *Game) Prepare() {

@@ -71,16 +71,16 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 	for li, line := range BetLines[:g.Sel] {
 		var num slot.Pos = 1
-		var sym3 = scrnwild.LY(3, line)
+		var sym3 = scrnwild.LX(3, line)
 		var xy slot.Linex
 		xy.Set(3, line.At(3))
-		if sym2 := scrnwild.LY(2, line); sym2 == sym3 || sym2 == wild || sym3 == wild {
+		if sym2 := scrnwild.LX(2, line); sym2 == sym3 || sym2 == wild || sym3 == wild {
 			if sym3 == wild {
 				sym3 = sym2
 			}
 			xy.Set(2, line.At(2))
 			num++
-			if sym1 := scrnwild.LY(1, line); sym1 == sym3 || sym1 == wild || sym3 == wild {
+			if sym1 := scrnwild.LX(1, line); sym1 == sym3 || sym1 == wild || sym3 == wild {
 				if sym3 == wild {
 					sym3 = sym1
 				}
@@ -88,13 +88,13 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				num++
 			}
 		}
-		if sym4 := scrnwild.LY(4, line); sym4 == sym3 || sym4 == wild || sym3 == wild {
+		if sym4 := scrnwild.LX(4, line); sym4 == sym3 || sym4 == wild || sym3 == wild {
 			if sym3 == wild {
 				sym3 = sym4
 			}
 			xy.Set(4, line.At(4))
 			num++
-			if sym5 := scrnwild.LY(5, line); sym5 == sym3 || sym5 == wild || sym3 == wild {
+			if sym5 := scrnwild.LX(5, line); sym5 == sym3 || sym5 == wild || sym3 == wild {
 				if sym3 == wild {
 					sym3 = sym5
 				}
@@ -117,7 +117,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 }
 
 func (g *Game) Spin(mrtp float64) {
-	g.ReelSpin(Reels)
+	g.SpinReels(Reels)
 	var _, wc = ChanceMap.FindClosest(mrtp) // wild chance
 	if rand.Float64() < wc {
 		var x, y = rand.N[slot.Pos](5) + 1, rand.N[slot.Pos](3) + 1

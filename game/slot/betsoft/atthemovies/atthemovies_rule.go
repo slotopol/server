@@ -66,10 +66,10 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 	for li, line := range BetLines[:g.Sel] {
 		var mw float64 = 1 // mult wild
 		var numl slot.Pos = 5
-		var syml = g.LY(1, line)
+		var syml = g.LX(1, line)
 		var x slot.Pos
 		for x = 2; x <= 5; x++ {
-			var sx = g.LY(x, line)
+			var sx = g.LX(x, line)
 			if sx == wild {
 				mw = 2
 			} else if sx != syml {
@@ -116,7 +116,7 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 
 func (g *Game) Spin(mrtp float64) {
 	var reels, _ = ReelsMap.FindClosest(mrtp)
-	g.ReelSpin(reels)
+	g.SpinReels(reels)
 }
 
 func (g *Game) SetSel(sel int) error {

@@ -49,11 +49,11 @@ const wild, scat = 1, 2
 func (g *Game) Scanner(wins *slot.Wins) error {
 	for li, line := range BetLines[:g.Sel] {
 		var numl slot.Pos = 3
-		var syml = g.LY(1, line)
+		var syml = g.LX(1, line)
 		var x slot.Pos
 		if g.FSR > 0 {
 			for x = 2; x <= 3; x++ {
-				var sx = g.LY(x, line)
+				var sx = g.LX(x, line)
 				if sx == wild {
 					continue
 				} else if syml == wild {
@@ -65,7 +65,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 			}
 		} else {
 			for x = 2; x <= 3; x++ {
-				var sx = g.LY(x, line)
+				var sx = g.LX(x, line)
 				if sx != syml {
 					numl = x - 1
 					break
@@ -100,7 +100,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 
 func (g *Game) Spin(mrtp float64) {
 	var reels, _ = ReelsMap.FindClosest(mrtp)
-	g.ReelSpin(reels)
+	g.SpinReels(reels)
 }
 
 func (g *Game) SetSel(sel int) error {

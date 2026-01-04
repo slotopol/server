@@ -46,7 +46,7 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-var MBon = [6]float64{2, 2, 4, 8} // multipliers for bonus symbol filled at reels, E = 4
+var MBon = [...]float64{2, 2, 4, 8} // multipliers for bonus symbol filled at reels, E = 4
 
 const bon = 1
 
@@ -108,7 +108,7 @@ func (g *Game) Cost() float64 {
 
 func (g *Game) Spin(mrtp float64) {
 	var reels, _ = ReelsMap.FindClosest(mrtp)
-	g.ReelSpin(reels)
+	g.SpinReels(reels)
 }
 
 func (g *Game) Prepare() {

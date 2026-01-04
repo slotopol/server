@@ -58,7 +58,7 @@ func (g *Game) Clone() slot.SlotGame {
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	for li, line := range BetLines[:g.Sel] {
-		var sym1, sym2, sym3 = g.LY(1, line), g.LY(2, line), g.LY(3, line)
+		var sym1, sym2, sym3 = g.LX(1, line), g.LX(2, line), g.LX(3, line)
 		if sym1 == sym2 && sym1 == sym3 {
 			*wins = append(*wins, slot.WinItem{
 				Pay: g.Bet * LinePay[sym1-1],
@@ -75,7 +75,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 
 func (g *Game) Spin(mrtp float64) {
 	var reels, _ = ReelsMap.FindClosest(mrtp)
-	g.ReelSpin(reels)
+	g.SpinReels(reels)
 }
 
 func (g *Game) SetSel(sel int) error {

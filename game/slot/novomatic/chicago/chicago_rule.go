@@ -84,7 +84,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
-			var sx = g.LY(x, line)
+			var sx = g.LX(x, line)
 			if sx == wild {
 				if syml == 0 {
 					numw = x
@@ -147,7 +147,7 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 
 func (g *Game) Spin(mrtp float64) {
 	var reels, _ = ReelsMap.FindClosest(mrtp)
-	g.ReelSpin(reels)
+	g.SpinReels(reels)
 }
 
 var MultChoose = []float64{1, 2, 3, 5, 10} // EV = 4.2

@@ -94,7 +94,7 @@ var scanCmd = &cobra.Command{
 			}
 			if scan == nil {
 				fmt.Println()
-				fmt.Printf("*** scanner for '%s' game is absent ***\n", alias)
+				fmt.Printf("*** scanner for '%s' game does not provided ***\n", alias)
 			}
 			if len(list) > 1 {
 				fmt.Println()

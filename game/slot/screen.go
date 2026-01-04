@@ -11,10 +11,10 @@ import (
 type Screen interface {
 	Dim() (Pos, Pos)                   // returns screen dimensions
 	At(x, y Pos) Sym                   // returns symbol at position (x, y), starts from (1, 1)
-	LY(x Pos, line Linex) Sym          // returns symbol at position (x, line(x)), starts from (1, 1)
+	LX(x Pos, line Linex) Sym          // returns symbol at position (x, line(x)), starts from (1, 1)
 	SetSym(x, y Pos, sym Sym)          // setup symbol at given position
 	SetCol(x Pos, reel []Sym, pos int) // setup column on screen with given reel at given position
-	ReelSpin(reels Reelx)              // fill the screen with random hits on those reels
+	SpinReels(reels Reelx)             // fill the screen with random hits on those reels
 	SymNum(sym Sym) (n Pos)            // returns number of symbols on the screen
 	SymPos(sym Sym) Hitx               // returns symbols positions on the screen
 }
@@ -52,7 +52,7 @@ func (s *Screenx) At(x, y Pos) Sym {
 	return s.data[(x-1)*s.sy+y-1]
 }
 
-func (s *Screenx) LY(x Pos, line Linex) Sym {
+func (s *Screenx) LX(x Pos, line Linex) Sym {
 	return s.data[(x-1)*s.sy+line[x-1]-1]
 }
 
@@ -69,7 +69,7 @@ func (s *Screenx) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screenx) ReelSpin(reels Reelx) {
+func (s *Screenx) SpinReels(reels Reelx) {
 	var x Pos
 	for x = 1; x <= s.sx; x++ {
 		var reel = reels.Reel(x)
@@ -139,7 +139,7 @@ func (s *Screen3x3) At(x, y Pos) Sym {
 	return s.Scr[x-1][y-1]
 }
 
-func (s *Screen3x3) LY(x Pos, line Linex) Sym {
+func (s *Screen3x3) LX(x Pos, line Linex) Sym {
 	return s.Scr[x-1][line[x-1]-1]
 }
 
@@ -156,7 +156,7 @@ func (s *Screen3x3) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screen3x3) ReelSpin(reels Reelx) {
+func (s *Screen3x3) SpinReels(reels Reelx) {
 	var x Pos
 	for x = 1; x <= 3; x++ {
 		var reel = reels.Reel(x)
@@ -207,7 +207,7 @@ func (s *Screen4x4) At(x, y Pos) Sym {
 	return s.Scr[x-1][y-1]
 }
 
-func (s *Screen4x4) LY(x Pos, line Linex) Sym {
+func (s *Screen4x4) LX(x Pos, line Linex) Sym {
 	return s.Scr[x-1][line[x-1]-1]
 }
 
@@ -224,7 +224,7 @@ func (s *Screen4x4) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screen4x4) ReelSpin(reels Reelx) {
+func (s *Screen4x4) SpinReels(reels Reelx) {
 	var x Pos
 	for x = 1; x <= 4; x++ {
 		var reel = reels.Reel(x)
@@ -276,7 +276,7 @@ func (s *Screen5x3) At(x, y Pos) Sym {
 	return s.Scr[x-1][y-1]
 }
 
-func (s *Screen5x3) LY(x Pos, line Linex) Sym {
+func (s *Screen5x3) LX(x Pos, line Linex) Sym {
 	return s.Scr[x-1][line[x-1]-1]
 }
 
@@ -302,7 +302,7 @@ func (s *Screen5x3) SetBig(big Sym) {
 	}
 }
 
-func (s *Screen5x3) ReelSpin(reels Reelx) {
+func (s *Screen5x3) SpinReels(reels Reelx) {
 	var x Pos
 	for x = 1; x <= 5; x++ {
 		var reel = reels.Reel(x)
@@ -397,7 +397,7 @@ func (s *Screen5x4) At(x, y Pos) Sym {
 	return s.Scr[x-1][y-1]
 }
 
-func (s *Screen5x4) LY(x Pos, line Linex) Sym {
+func (s *Screen5x4) LX(x Pos, line Linex) Sym {
 	return s.Scr[x-1][line[x-1]-1]
 }
 
@@ -414,7 +414,7 @@ func (s *Screen5x4) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screen5x4) ReelSpin(reels Reelx) {
+func (s *Screen5x4) SpinReels(reels Reelx) {
 	var x Pos
 	for x = 1; x <= 5; x++ {
 		var reel = reels.Reel(x)
@@ -493,7 +493,7 @@ func (s *Screen6x3) At(x, y Pos) Sym {
 	return s.Scr[x-1][y-1]
 }
 
-func (s *Screen6x3) LY(x Pos, line Linex) Sym {
+func (s *Screen6x3) LX(x Pos, line Linex) Sym {
 	return s.Scr[x-1][line[x-1]-1]
 }
 
@@ -510,7 +510,7 @@ func (s *Screen6x3) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screen6x3) ReelSpin(reels Reelx) {
+func (s *Screen6x3) SpinReels(reels Reelx) {
 	var x Pos
 	for x = 1; x <= 6; x++ {
 		var reel = reels.Reel(x)
@@ -561,7 +561,7 @@ func (s *Screen6x4) At(x, y Pos) Sym {
 	return s.Scr[x-1][y-1]
 }
 
-func (s *Screen6x4) LY(x Pos, line Linex) Sym {
+func (s *Screen6x4) LX(x Pos, line Linex) Sym {
 	return s.Scr[x-1][line[x-1]-1]
 }
 
@@ -578,7 +578,7 @@ func (s *Screen6x4) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screen6x4) ReelSpin(reels Reelx) {
+func (s *Screen6x4) SpinReels(reels Reelx) {
 	var x Pos
 	for x = 1; x <= 6; x++ {
 		var reel = reels.Reel(x)

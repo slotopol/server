@@ -58,9 +58,9 @@ const (
 func (g *Game) Scanner(wins *slot.Wins) error {
 	for li, line := range BetLines[:g.Sel] {
 		var m = map[slot.Sym]int{}
-		m[g.LY(1, line)]++
-		m[g.LY(2, line)]++
-		m[g.LY(3, line)]++
+		m[g.LX(1, line)]++
+		m[g.LX(2, line)]++
+		m[g.LX(3, line)]++
 		if len(m) == 1 && m[space] == 0 { // 3 symbols
 			for sym := range m {
 				*wins = append(*wins, slot.WinItem{
@@ -152,7 +152,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 
 func (g *Game) Spin(mrtp float64) {
 	var reels, _ = ReelsMap.FindClosest(mrtp)
-	g.ReelSpin(reels)
+	g.SpinReels(reels)
 }
 
 func (g *Game) SetSel(sel int) error {

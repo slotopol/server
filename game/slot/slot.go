@@ -56,7 +56,7 @@ type SlotGame interface {
 	Scanner(*Wins) error          // scan given screen and append result to wins, constant function
 	Cost() float64                // cost of spin on current bet and lines, constant function
 	JackFreq(float64) []float64   // returns occurrence frequency set of progressive jackpots if it has, constant function
-	Free() bool                   // returns true on spins without pay, constant function
+	FreeMode() bool               // returns true on spins without pay, constant function
 	Spin(float64)                 // fill the screen with random hits on reels closest to given RTP, constant function
 	Spawn(Wins, float64, float64) // setup bonus games to wins results, constant function
 	Prepare()                     // update game state before new spin, screen is unknown yet
@@ -111,7 +111,7 @@ func (g *Slotx) JackFreq(mrtp float64) []float64 {
 	return nil
 }
 
-func (g *Slotx) Free() bool {
+func (g *Slotx) FreeMode() bool {
 	return g.FSR != 0
 }
 
