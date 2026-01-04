@@ -88,11 +88,44 @@ func (s *Screenx) SymNum(sym Sym) (n Pos) {
 }
 
 func (s *Screenx) SymPos(sym Sym) (c Hitx) {
-	var i, n Pos
+	var i, j Pos
 	for i = range s.sx * s.sy {
 		if s.data[i] == sym {
-			c[n][0], c[n][1] = i/s.sy+1, i%s.sy+1
-			n++
+			c[j][0], c[j][1] = i/s.sy+1, i%s.sy+1
+			j++
+		}
+	}
+	return
+}
+
+func (s *Screenx) SymPos2(sym1, sym2 Sym) (c Hitx) {
+	var i, j Pos
+	for i = range s.sx * s.sy {
+		if s.data[i] == sym1 || s.data[i] == sym2 {
+			c[j][0], c[j][1] = i/s.sy+1, i%s.sy+1
+			j++
+		}
+	}
+	return
+}
+
+func (s *Screenx) SymPosL(n Pos, sym Sym) (c Hitx) {
+	var i, j Pos
+	for i = range n * s.sy {
+		if s.data[i] == sym {
+			c[j][0], c[j][1] = i/s.sy+1, i%s.sy+1
+			j++
+		}
+	}
+	return
+}
+
+func (s *Screenx) SymPosL2(n Pos, sym1, sym2 Sym) (c Hitx) {
+	var i, j Pos
+	for i = range n * s.sy {
+		if s.data[i] == sym1 || s.data[i] == sym2 {
+			c[j][0], c[j][1] = i/s.sy+1, i%s.sy+1
+			j++
 		}
 	}
 	return
@@ -381,6 +414,34 @@ func (s *Screen5x3) SymPos2(sym1, sym2 Sym) (c Hitx) {
 	return
 }
 
+func (s *Screen5x3) SymPosL(n Pos, sym Sym) (c Hitx) {
+	var x, y, i Pos
+	for x = range n {
+		var r = s.Scr[x]
+		for y = range 3 {
+			if r[y] == sym {
+				c[i][0], c[i][1] = x+1, y+1
+				i++
+			}
+		}
+	}
+	return
+}
+
+func (s *Screen5x3) SymPosL2(n Pos, sym1, sym2 Sym) (c Hitx) {
+	var x, y, i Pos
+	for x = range n {
+		var r = s.Scr[x]
+		for y = range 3 {
+			if r[y] == sym1 || r[y] == sym2 {
+				c[i][0], c[i][1] = x+1, y+1
+				i++
+			}
+		}
+	}
+	return
+}
+
 // Screen for 5x4 slots.
 type Screen5x4 struct {
 	Scr [5][4]Sym `json:"scr" yaml:"scr,flow" xml:"scr"`
@@ -466,6 +527,34 @@ func (s *Screen5x4) SymNum2(sym1, sym2 Sym) (n1, n2 Pos) {
 func (s *Screen5x4) SymPos2(sym1, sym2 Sym) (c Hitx) {
 	var x, y, i Pos
 	for x = range 5 {
+		var r = s.Scr[x]
+		for y = range 4 {
+			if r[y] == sym1 || r[y] == sym2 {
+				c[i][0], c[i][1] = x+1, y+1
+				i++
+			}
+		}
+	}
+	return
+}
+
+func (s *Screen5x4) SymPosL(n Pos, sym Sym) (c Hitx) {
+	var x, y, i Pos
+	for x = range n {
+		var r = s.Scr[x]
+		for y = range 4 {
+			if r[y] == sym {
+				c[i][0], c[i][1] = x+1, y+1
+				i++
+			}
+		}
+	}
+	return
+}
+
+func (s *Screen5x4) SymPosL2(n Pos, sym1, sym2 Sym) (c Hitx) {
+	var x, y, i Pos
+	for x = range n {
 		var r = s.Scr[x]
 		for y = range 4 {
 			if r[y] == sym1 || r[y] == sym2 {

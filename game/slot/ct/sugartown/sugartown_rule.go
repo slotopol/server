@@ -50,16 +50,16 @@ func (g *Game) FreeMode() bool {
 const wild, scat = 2, 1
 
 func (g *Game) Scanner(wins *slot.Wins) error {
-	var sn [10]slot.Pos
+	var sn [10 + 1]slot.Pos
 	var x slot.Pos
 	for x = range 5 {
 		var r = g.Scr[x]
-		sn[r[0]-1]++
-		sn[r[1]-1]++
-		sn[r[2]-1]++
+		sn[r[0]]++
+		sn[r[1]]++
+		sn[r[2]]++
 	}
 
-	if count := sn[scat-1]; count >= 3 {
+	if count := sn[scat]; count >= 3 {
 		var pay = SymPay[scat-1][count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * pay,
@@ -69,7 +69,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 			XY:  g.SymPos(scat),
 		})
 	}
-	if count := sn[wild-1]; count >= 5 {
+	if count := sn[wild]; count >= 5 {
 		var pay = SymPay[wild-1][min(count, 7)-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * pay,
@@ -82,7 +82,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 
 	var sym slot.Sym
 	for sym = 3; sym <= 10; sym++ {
-		if count := sn[sym-1] + sn[wild-1]; count >= 5 {
+		if count := sn[sym] + sn[wild]; count >= 5 {
 			var pay = SymPay[sym-1][min(count-1, 6)]
 			*wins = append(*wins, slot.WinItem{
 				Pay: g.Bet * pay,

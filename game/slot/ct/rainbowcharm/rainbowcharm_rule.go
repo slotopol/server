@@ -52,22 +52,22 @@ const bon = 1
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	var mb float64 = 1.0 // multiplier for bonus symbol filled at reels
-	var sn [6]slot.Pos
+	var sn [6 + 1]slot.Pos
 	var x slot.Pos
 	for x = range 5 {
 		var r = g.Scr[x]
 		if r[0] == bon && r[1] == bon && r[2] == bon {
 			mb *= g.M[x]
 		}
-		sn[r[0]-1]++
-		sn[r[1]-1]++
-		sn[r[2]-1]++
+		sn[r[0]]++
+		sn[r[1]]++
+		sn[r[2]]++
 	}
 	if mb > 1.0 {
 		var has bool
 		var sym slot.Sym
 		for sym = 2; sym <= 6; sym++ {
-			if count := sn[sym-1]; count >= 7 {
+			if count := sn[sym]; count >= 7 {
 				has = true
 				break
 			}
@@ -88,7 +88,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 
 	var sym slot.Sym
 	for sym = 2; sym <= 6; sym++ {
-		if count := sn[sym-1]; count >= 7 {
+		if count := sn[sym]; count >= 7 {
 			var pay = SymPay[sym-1][min(count, 12)-1]
 			*wins = append(*wins, slot.WinItem{
 				Pay: g.Bet * pay,
