@@ -24,7 +24,7 @@ var Info = game.AlgInfo{
 			game.GPwmult,
 		SX: 5,
 		SY: 4,
-		SN: len(LinePay),
+		SN: sn,
 		WN: 1024,
 		BN: 0,
 	},

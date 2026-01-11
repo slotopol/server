@@ -2,7 +2,7 @@ local scripts = arg[0]:match("^(.*generator[/%\\])")
 dofile(scripts.."lib/makereel.lua")
 
 local symsetbon = {
-	2, --  1 wild      (2, 3, 4 reels only)
+	1, --  1 wild      (2, 3, 4 reels only)
 	0, --  2 scatter   (not used)
 	3, --  3 wooman    800
 	3, --  4 panther   200
@@ -16,19 +16,19 @@ local symsetbon = {
 	3, -- 12 nine      40
 }
 
-local symset = {
-	2, --  1 wild      (2, 3, 4 reels only)
+local symsetreg = {
+	1, --  1 wild      (2, 3, 4 reels only)
 	0, --  2 scatter   (insert directly)
-	3, --  3 wooman    800
-	3, --  4 panther   200
+	2, --  3 wooman    800
+	2, --  4 panther   200
 	3, --  5 footprint 100
 	3, --  6 rings     100
 	3, --  7 ace       50
 	3, --  8 king      50
 	3, --  9 queen     50
 	3, -- 10 jack      40
-	3, -- 11 ten       40
-	3, -- 12 nine      40
+	4, -- 11 ten       40
+	4, -- 12 nine      40
 }
 
 local neighbours = {
@@ -73,8 +73,9 @@ end
 
 local function reelgen(n, isbon)
 	if isbon then
+		local symset = symsetbon
 		local function make()
-			return makereel(symsetbon, neighbours)
+			return makereel(symset, neighbours)
 		end
 		if n == 1 or n == 5 then
 			local n1 = symset[1]
@@ -86,6 +87,7 @@ local function reelgen(n, isbon)
 			return make()
 		end
 	else
+		local symset = symsetreg
 		local n1, n2 = symset[1], symset[2]
 		if n == 1 or n == 5 then
 			symset[1] = 0

@@ -8,8 +8,14 @@ import (
 
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
+const (
+	sn         = 12   // number of symbols
+	wild, scat = 1, 2 // wild & scatter symbol IDs
+	linemin    = 3    // minimum line symbols to win
+)
+
 // Lined payment.
-var LinePay = [12][5]float64{
+var LinePay = [sn][5]float64{
 	{},                     //  1 wild (2, 3, 4 reels only)
 	{},                     //  2 scatter (1, 3, 5 reels only)
 	{0, 0, 100, 500, 2500}, //  3 giraffe
@@ -45,11 +51,9 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-const wild, scat = 1, 2
-
 func (g *Game) Scanner(wins *slot.Wins) error {
 	// Count symbols
-	var counts [5 + 1][13 + 1]int
+	var counts [5 + 1][sn + 1]int
 	for x := range 5 {
 		var r = g.Scr[x]
 		counts[x][r[0]]++
@@ -57,26 +61,25 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 		counts[x][r[2]]++
 	}
 	// Ways calculation
-	var combs = [13 + 1]int{0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+	var combs = [sn + 1]int{0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 	for x, cx := range counts {
 		for sym, c := range combs {
 			var n = cx[sym] + cx[wild]
 			combs[sym] = c * n
-			if x >= 3 && c > 0 && n == 0 {
-				if pay := LinePay[sym-1][x-1]; pay > 0 {
-					var mm float64 = 1 // mult mode
-					if g.FSR > 0 {
-						mm = 3
-					}
-					*wins = append(*wins, slot.WinItem{
-						Pay: g.Bet * pay,
-						MP:  mm * float64(c),
-						Sym: slot.Sym(sym),
-						Num: slot.Pos(x),
-						LI:  243,
-						XY:  g.SymPosL2(slot.Pos(x), slot.Sym(sym), wild),
-					})
+			if x >= linemin && c > 0 && n == 0 {
+				var pay = LinePay[sym-1][x-1]
+				var mm float64 = 1 // mult mode
+				if g.FSR > 0 {
+					mm = 3
 				}
+				*wins = append(*wins, slot.WinItem{
+					Pay: g.Bet * pay,
+					MP:  mm * float64(c),
+					Sym: slot.Sym(sym),
+					Num: slot.Pos(x),
+					LI:  243,
+					XY:  g.SymPosL2(slot.Pos(x), slot.Sym(sym), wild),
+				})
 			}
 		}
 	}

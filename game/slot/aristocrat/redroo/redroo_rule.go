@@ -10,8 +10,15 @@ import (
 
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
+const (
+	sn         = 13   // number of symbols
+	wild, scat = 1, 2 // wild & scatter symbol IDs
+	linemin    = 2    // minimum line symbols to win
+	prob2x     = 0.5  // probability of 2x multiplier for wild at free games
+)
+
 // Lined payment.
-var LinePay = [13][5]float64{
+var LinePay = [sn][5]float64{
 	{},                     //  1 wild (2, 3, 4 reels only)
 	{},                     //  2 scatter
 	{0, 50, 150, 200, 250}, //  3 redroo
@@ -60,90 +67,41 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-const wild, scat = 1, 2
-
-const prob2x = 0.5 // probability of 2x multiplier for wild at free games
-
 func (g *Game) Scanner(wins *slot.Wins) error {
-	g.ScanWays(wins)
-	g.ScanScatters(wins)
-	return nil
-}
-
-// Lined symbols calculation.
-func (g *Game) ScanWays(wins *slot.Wins) {
-	var line slot.Linex
-loop1:
-	for line[0] = 1; line[0] <= 4; line[0]++ {
-	loop2:
-		for line[1] = 1; line[1] <= 4; line[1]++ {
-		loop3:
-			for line[2] = 1; line[2] <= 4; line[2]++ {
-			loop4:
-				for line[3] = 1; line[3] <= 4; line[3]++ {
-				loop5:
-					for line[4] = 1; line[4] <= 4; line[4]++ {
-						var mw float64 = 1 // mult wild
-						var numl slot.Pos = 5
-						var syml slot.Sym
-						var x slot.Pos
-						for x = 1; x <= 5; x++ {
-							var sx = g.LX(x, line)
-							if sx == wild {
-								mw *= g.MW[x-2]
-							} else if syml == 0 {
-								syml = sx
-							} else if sx != syml {
-								numl = x - 1
-								break
-							}
-						}
-
-						if numl >= 2 && syml > 0 {
-							if payl := LinePay[syml-1][numl-1]; payl > 0 {
-								// var li = (int(line[0])-1)*256 + (int(line[1])-1)*64 + (int(line[2])-1)*16 + (int(line[line[4]])-1)*4 + int(line[5])
-								*wins = append(*wins, slot.WinItem{
-									Pay: g.Bet * payl,
-									MP:  mw,
-									Sym: syml,
-									Num: numl,
-									LI:  1024,
-									XY:  line.HitxL(numl),
-								})
-							}
-							switch numl {
-							case 2:
-								continue loop2
-							case 3:
-								continue loop3
-							case 4:
-								continue loop4
-							case 5:
-								continue loop5
-							}
-						}
-						switch numl + 1 {
-						case 1:
-							continue loop1
-						case 2:
-							continue loop2
-						case 3:
-							continue loop3
-						case 4:
-							continue loop4
-						case 5:
-							continue loop5
-						}
-					}
+	// Count symbols
+	var counts [5 + 1][sn + 1]int
+	for x := range 5 {
+		var r = g.Scr[x]
+		counts[x][r[0]]++
+		counts[x][r[1]]++
+		counts[x][r[2]]++
+		counts[x][r[3]]++
+	}
+	// Ways calculation
+	var combs = [sn + 1]float64{0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
+	for x, cx := range counts {
+		for sym, c := range combs {
+			var n = float64(cx[sym])
+			if x >= 1 && x <= 3 {
+				n += float64(cx[wild]) * g.MW[x-1]
+			}
+			combs[sym] = c * n
+			if x >= linemin && c > 0 && n == 0 {
+				if pay := LinePay[sym-1][x-1]; pay > 0 {
+					*wins = append(*wins, slot.WinItem{
+						Pay: g.Bet * pay,
+						MP:  float64(c),
+						Sym: slot.Sym(sym),
+						Num: slot.Pos(x),
+						LI:  243,
+						XY:  g.SymPosL2(slot.Pos(x), slot.Sym(sym), wild),
+					})
 				}
 			}
 		}
 	}
-}
-
-// Scatters calculation.
-func (g *Game) ScanScatters(wins *slot.Wins) {
-	if count := g.SymNum(scat); count >= 2 {
+	// Scatters calculation
+	if count := counts[0][scat] + counts[1][scat] + counts[2][scat] + counts[3][scat] + counts[4][scat]; count >= 2 {
 		var pay = ScatPay[count-1]
 		var fs int
 		if g.FSR > 0 {
@@ -151,21 +109,22 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 		} else {
 			fs = ScatFreespinReg[count-1]
 		}
-		if pay >= 0 || fs >= 0 {
+		if pay > 0 || fs > 0 {
 			*wins = append(*wins, slot.WinItem{
 				Pay: g.Bet * pay,
 				MP:  1,
 				Sym: scat,
-				Num: count,
+				Num: slot.Pos(count),
 				XY:  g.SymPos(scat),
 				FS:  fs,
 			})
 		}
 	}
+	return nil
 }
 
 func (g *Game) Cost() float64 {
-	return g.Bet * 40
+	return g.Bet * 50
 }
 
 func (g *Game) Spin(mrtp float64) {
@@ -182,6 +141,8 @@ func (g *Game) Prepare() {
 				g.MW[x] = 3
 			}
 		}
+	} else {
+		g.MW = [3]float64{1, 1, 1}
 	}
 }
 

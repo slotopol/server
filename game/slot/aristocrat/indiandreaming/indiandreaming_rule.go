@@ -8,11 +8,17 @@ import (
 
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
+const (
+	sn         = 12   // number of symbols
+	wild, scat = 1, 2 // wild & scatter symbol IDs
+	linemin    = 3    // minimum line symbols to win
+)
+
 // Lined payment.
-var LinePay = [12][5]float64{
+var LinePay = [sn][5]float64{
 	{},                     //  1 wild
 	{},                     //  2 scatter
-	{0, 0, 100, 200, 5000}, //  3 cash catcher
+	{0, 0, 100, 200, 5000}, //  3 catcher
 	{0, 0, 50, 100, 2500},  //  4 man
 	{0, 0, 50, 100, 1000},  //  5 woman
 	{0, 0, 10, 40, 250},    //  6 guy
@@ -48,13 +54,63 @@ func (g *Game) Clone() slot.SlotGame {
 	return &clone
 }
 
-const wild, scat = 1, 2
-
 func (g *Game) Scanner(wins *slot.Wins) error {
-	if g.SymNum(wild) < 5 {
-		g.ScanWays(wins)
+	// Count symbols
+	var counts [5 + 1][sn + 1]int
+	for x := range 5 {
+		var r = g.Scr[x]
+		counts[x][r[0]]++
+		counts[x][r[1]]++
+		counts[x][r[2]]++
 	}
-	g.ScanScatters(wins)
+	var wn = counts[0][wild] + counts[1][wild] + counts[2][wild] + counts[3][wild] + counts[4][wild]
+	// Ways calculation
+	if wn < 5 {
+		var mwm = 1 // mult wild mode
+		if g.FSR > 0 {
+			mwm = 5
+		}
+		var combs1 = [sn + 1]int{0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1} // pure symbols
+		var combs2 = [sn + 1]int{0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1} // symbols + wilds
+		for x, cx := range counts {
+			var cw = combs1[wild]
+			for sym := range combs2 {
+				var c1, c2 = combs1[sym], combs2[sym]
+				var n = cx[sym] + cx[wild]
+				combs1[sym] = c1 * cx[sym]
+				combs2[sym] = c2 * n
+				var c = (c2-c1-cw)*mwm + c1
+				if x >= linemin && c > 0 && n == 0 {
+					var pay = LinePay[sym-1][x-1]
+					*wins = append(*wins, slot.WinItem{
+						Pay: g.Bet * pay,
+						MP:  float64(c),
+						Sym: slot.Sym(sym),
+						Num: slot.Pos(x),
+						LI:  243,
+						XY:  g.SymPosL2(slot.Pos(x), slot.Sym(sym), wild),
+					})
+				}
+			}
+		}
+	}
+	// Scatters calculation
+	var sn = counts[0][scat] + counts[1][scat] + counts[2][scat] + counts[3][scat] + counts[4][scat]
+	if sn+wn >= 3 {
+		var mw float64 = 1 // mult wild
+		if g.FSR > 0 && wn > 0 {
+			mw = 5
+		}
+		var pay = ScatPay[sn+wn-1]
+		*wins = append(*wins, slot.WinItem{
+			Pay: g.Bet * pay,
+			MP:  mw,
+			Sym: scat,
+			Num: slot.Pos(sn + wn),
+			XY:  g.SymPos2(scat, wild),
+			FS:  12,
+		})
+	}
 	return nil
 }
 

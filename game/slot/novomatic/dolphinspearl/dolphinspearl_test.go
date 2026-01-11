@@ -10,7 +10,7 @@ import (
 	"github.com/slotopol/server/game/slot/novomatic/dolphinspearl"
 )
 
-// go test -v -bench ^BenchmarkSpin$ -benchmem -count=5 -cover ./game/slot/novomatic/dolphinspearl
+// go test -v -bench=^BenchmarkSpin$ -run=^$ -benchmem -count=5 ./game/slot/novomatic/dolphinspearl
 
 //go:embed dolphinspearl_data.yaml
 var data []byte

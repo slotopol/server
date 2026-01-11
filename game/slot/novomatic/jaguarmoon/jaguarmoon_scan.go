@@ -16,7 +16,7 @@ type Stat struct {
 	errcount   uint64
 	linepay    float64
 	scatpay    float64
-	freecount  uint64
+	freecount  [6]uint64
 	freehits   uint64
 	bonuscount [8]uint64
 	jackcount  [4]uint64
@@ -85,19 +85,18 @@ func (s *Stat) SymRTP(cost float64) (lrtp, srtp float64) {
 	return
 }
 
-func (s *Stat) FreeCountU() uint64 {
-	return atomic.LoadUint64(&s.freecount)
+func (s *Stat) FreeCountU(n int) uint64 {
+	return atomic.LoadUint64(&s.freecount[n-1])
 }
 
-func (s *Stat) FreeCount() float64 {
-	return float64(atomic.LoadUint64(&s.freecount))
+func (s *Stat) FreeCount(n int) float64 {
+	return float64(atomic.LoadUint64(&s.freecount[n-1]))
 }
 
 // Returns (q, sq), where q = free spins quantifier, sq = 1/(1-q)
 // sum of a decreasing geometric progression for retriggered free spins.
-func (s *Stat) FSQ() (q float64, sq float64) {
-	q = s.FreeCount() / s.Count()
-	sq = 1 / (1 - q)
+func (s *Stat) FSQ(n int) (q float64) {
+	q = s.FreeCount(n) / s.Count()
 	return
 }
 
@@ -137,7 +136,7 @@ func (s *Stat) Update(wins slot.Wins, cfn int) {
 			}
 		}
 		if wi.FS != 0 {
-			atomic.AddUint64(&s.freecount, uint64(wi.FS*int(FreeMult[wi.Num-1])))
+			atomic.AddUint64(&s.freecount[wi.Num-1], uint64(wi.FS))
 			atomic.AddUint64(&s.freehits, 1)
 		}
 		if wi.BID != 0 {
@@ -181,12 +180,18 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var calc = func(w io.Writer) float64 {
 		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
-		var q, sq = s.FSQ()
-		var rtp = rtpsym + q*rtpfs
+		var q3 = s.FSQ(3)
+		var q4 = s.FSQ(4)
+		var q5 = s.FSQ(5)
+		var q6 = s.FSQ(6)
+		var rtpqfs = q3*rtpfs*FreeMult[2] + q4*rtpfs*FreeMult[3] + q5*rtpfs*FreeMult[4] + q6*rtpfs*FreeMult[5]
+		var rtp = rtpsym + rtpqfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCountU(), q, sq)
+		fmt.Fprintf(w, "free spins %d, q3 = %.5g, q4 = %.5g, q5 = %.5g, q6 = %.5g\n",
+			s.FreeCountU(3)+s.FreeCountU(4)+s.FreeCountU(5)+s.FreeCountU(6),
+			q3, q4, q5, q6)
 		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", s.FGF())
-		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, q, rtpfs, rtp)
+		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(fg) = %.6f%%\n", rtpsym, rtpqfs, rtp)
 		return rtp
 	}
 

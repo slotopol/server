@@ -11,7 +11,7 @@
 
 ![slotopol-server](docs/logo.webp)
 
-Slots games server. Releases functionality for CT Interactive, Novomatic, NetEnt, BetSoft, and some others providers of slot games. Has built-in reels scanner and the sets of reels on different RTP for each game.
+Slots games server. Releases functionality a wide variety of games from different providers like Novomatic, NetEnt, and CT Interactive. Has built-in reels scanner and the sets of reels on different RTP for each game.
 
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
