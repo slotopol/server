@@ -53,12 +53,12 @@ func (g *Game) Clone() slot.SlotGame {
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	// Count symbols
-	var counts [5 + 1][sn + 1]int
+	var counts [5 + 1][sn + 1]int // symbol counts per reel
 	for x := range 5 {
-		var r = g.Scr[x]
-		counts[x][r[0]]++
-		counts[x][r[1]]++
-		counts[x][r[2]]++
+		var cx = &counts[x]
+		for _, sym := range g.Scr[x] {
+			cx[sym]++
+		}
 	}
 	// Ways calculation
 	var combs = [sn + 1]int{0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}

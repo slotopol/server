@@ -158,22 +158,22 @@ func (g *Game) ScatPosFG() (c slot.Hitx) {
 
 // Scatters calculation on regular games.
 func (g *Game) ScanScattersReg(wins *slot.Wins) {
-	var sn, wn = g.SymNum2(scat, wild)
-	if sn+wn >= 3 {
-		var pay = ScatPay[sn+wn-1]
+	var ns, nw = g.SymNum2(scat, wild)
+	if ns+nw >= 3 {
+		var pay = ScatPay[ns+nw-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * float64(g.Sel) * pay,
 			MP:  1,
 			Sym: scat,
-			Num: sn + wn,
+			Num: ns + nw,
 			XY:  g.SymPos2(scat, wild),
 		})
 	}
-	if wn >= 2 {
+	if nw >= 2 {
 		*wins = append(*wins, slot.WinItem{
 			MP:  1,
 			Sym: wild,
-			Num: wn,
+			Num: nw,
 			XY:  g.SymPos(wild),
 			FS:  5,
 		})

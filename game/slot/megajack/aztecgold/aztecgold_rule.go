@@ -119,13 +119,13 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
-	if sn, wn := g.SymNum2(scat, wild); sn+wn >= 3 {
-		var pay = ScatPay[sn+wn-1]
+	if ns, nw := g.SymNum2(scat, wild); ns+nw >= 3 {
+		var pay = ScatPay[ns+nw-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * float64(g.Sel) * pay,
 			MP:  1,
 			Sym: scat,
-			Num: sn + wn,
+			Num: ns + nw,
 			XY:  g.SymPos2(scat, wild),
 		})
 	}

@@ -69,35 +69,45 @@ func (g *Game) Clone() slot.SlotGame {
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	// Count symbols
-	var counts [5 + 1][sn + 1]int
+	var counts [5 + 1][sn + 1]int // symbol counts per reel
+	var active [sn + 1]bool       // symbols present on 1st reel
 	for x := range 5 {
-		var r = g.Scr[x]
-		counts[x][r[0]]++
-		counts[x][r[1]]++
-		counts[x][r[2]]++
-		counts[x][r[3]]++
+		var cx = &counts[x]
+		for _, sym := range g.Scr[x] {
+			cx[sym]++
+		}
+	}
+	for _, sym := range g.Scr[0] {
+		active[sym] = true
 	}
 	// Ways calculation
-	var combs = [sn + 1]float64{0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-	for x, cx := range counts {
-		for sym, c := range combs {
+	var sym slot.Sym
+	for sym = 3; sym <= sn; sym++ { // ignore wild & scatter
+		if !active[sym] {
+			continue
+		}
+		var c float64 = 1 // current ways
+		for x, cx := range counts {
 			var n = float64(cx[sym])
 			if x >= 1 && x <= 3 {
 				n += float64(cx[wild]) * g.MW[x-1]
 			}
-			combs[sym] = c * n
-			if x >= linemin && c > 0 && n == 0 {
-				if pay := LinePay[sym-1][x-1]; pay > 0 {
-					*wins = append(*wins, slot.WinItem{
-						Pay: g.Bet * pay,
-						MP:  float64(c),
-						Sym: slot.Sym(sym),
-						Num: slot.Pos(x),
-						LI:  243,
-						XY:  g.SymPosL2(slot.Pos(x), slot.Sym(sym), wild),
-					})
+			if n == 0 {
+				if x >= linemin {
+					if pay := LinePay[sym-1][x-1]; pay > 0 {
+						*wins = append(*wins, slot.WinItem{
+							Pay: g.Bet * pay,
+							MP:  c,
+							Sym: sym,
+							Num: slot.Pos(x),
+							LI:  1024,
+							XY:  g.SymPosL2(slot.Pos(x), sym, wild),
+						})
+					}
 				}
+				break
 			}
+			c *= n
 		}
 	}
 	// Scatters calculation

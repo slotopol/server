@@ -56,16 +56,16 @@ func (g *Game) Clone() slot.SlotGame {
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	// Count symbols
-	var counts [5 + 1][sn + 1]int
+	var counts [5 + 1][sn + 1]int // symbol counts per reel
 	for x := range 5 {
-		var r = g.Scr[x]
-		counts[x][r[0]]++
-		counts[x][r[1]]++
-		counts[x][r[2]]++
+		var cx = &counts[x]
+		for _, sym := range g.Scr[x] {
+			cx[sym]++
+		}
 	}
-	var wn = counts[0][wild] + counts[1][wild] + counts[2][wild] + counts[3][wild] + counts[4][wild]
+	var nw = counts[0][wild] + counts[1][wild] + counts[2][wild] + counts[3][wild] + counts[4][wild]
 	// Ways calculation
-	if wn < 5 {
+	if nw < 5 {
 		var mwm = 1 // mult wild mode
 		if g.FSR > 0 {
 			mwm = 5
@@ -93,115 +93,55 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				}
 			}
 		}
+		/*
+			// this algorithm has lower performance due to cache misses
+			var sym slot.Sym
+			for sym = 3; sym <= sn; sym++ { // ignore wild & scatter
+				var cw = 1 // current ways on wilds only
+				var c1 = 1 // current ways on pure symbols
+				var c2 = 1 // current ways on symbols + wilds
+				for x, cx := range counts {
+					var n1, nw = cx[sym], cx[wild]
+					var n2 = n1 + nw
+					if n2 == 0 {
+						if x >= linemin && c2 > cw {
+							var pay = LinePay[sym-1][x-1]
+							*wins = append(*wins, slot.WinItem{
+								Pay: g.Bet * pay,
+								MP:  float64(c1 + (c2-c1-cw)*mwm),
+								Sym: sym,
+								Num: slot.Pos(x),
+								LI:  243,
+								XY:  g.SymPosL2(slot.Pos(x), sym, wild),
+							})
+						}
+						break
+					}
+					cw *= nw
+					c1 *= n1
+					c2 *= n2
+				}
+			}
+		*/
 	}
 	// Scatters calculation
-	var sn = counts[0][scat] + counts[1][scat] + counts[2][scat] + counts[3][scat] + counts[4][scat]
-	if sn+wn >= 3 {
+	var ns = counts[0][scat] + counts[1][scat] + counts[2][scat] + counts[3][scat] + counts[4][scat]
+	if ns+nw >= 3 {
 		var mw float64 = 1 // mult wild
-		if g.FSR > 0 && wn > 0 {
+		if g.FSR > 0 && nw > 0 {
 			mw = 5
 		}
-		var pay = ScatPay[sn+wn-1]
+		var pay = ScatPay[ns+nw-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * pay,
 			MP:  mw,
 			Sym: scat,
-			Num: slot.Pos(sn + wn),
+			Num: slot.Pos(ns + nw),
 			XY:  g.SymPos2(scat, wild),
 			FS:  12,
 		})
 	}
 	return nil
-}
-
-// Lined symbols calculation.
-func (g *Game) ScanWays(wins *slot.Wins) {
-	var mwm float64 = 1 // mult wild mode
-	if g.FSR > 0 {
-		mwm = 5
-	}
-	var line slot.Linex
-loop1:
-	for line[0] = 1; line[0] <= 3; line[0]++ {
-	loop2:
-		for line[1] = 1; line[1] <= 3; line[1]++ {
-		loop3:
-			for line[2] = 1; line[2] <= 3; line[2]++ {
-			loop4:
-				for line[3] = 1; line[3] <= 3; line[3]++ {
-				loop5:
-					for line[4] = 1; line[4] <= 3; line[4]++ {
-						var mw float64 = 1 // mult wild
-						var numl slot.Pos = 5
-						var syml slot.Sym
-						var x slot.Pos
-						for x = 1; x <= 5; x++ {
-							var sx = g.LX(x, line)
-							if sx == wild {
-								mw = mwm
-							} else if syml == 0 {
-								syml = sx
-							} else if sx != syml {
-								numl = x - 1
-								break
-							}
-						}
-
-						if numl >= 3 && syml > 0 {
-							// var li = (int(line[0])-1)*81 + (int(line[1])-1)*27 + (int(line[2])-1)*9 + (int(line[line[4]])-1)*3 + int(line[5])
-							*wins = append(*wins, slot.WinItem{
-								Pay: g.Bet * LinePay[syml-1][numl-1],
-								MP:  mw,
-								Sym: syml,
-								Num: numl,
-								LI:  243,
-								XY:  line.HitxL(numl),
-							})
-							switch numl {
-							case 3:
-								continue loop3
-							case 4:
-								continue loop4
-							case 5:
-								continue loop5
-							}
-						}
-						switch numl + 1 {
-						case 1:
-							continue loop1
-						case 2:
-							continue loop2
-						case 3:
-							continue loop3
-						case 4:
-							continue loop4
-						case 5:
-							continue loop5
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-// Scatters calculation.
-func (g *Game) ScanScatters(wins *slot.Wins) {
-	if sn, wn := g.SymNum2(scat, wild); sn+wn >= 3 {
-		var mw float64 = 1 // mult wild
-		if g.FSR > 0 && wn > 0 {
-			mw = 5
-		}
-		var pay = ScatPay[sn+wn-1]
-		*wins = append(*wins, slot.WinItem{
-			Pay: g.Bet * pay,
-			MP:  mw,
-			Sym: scat,
-			Num: sn + wn,
-			XY:  g.SymPos2(scat, wild),
-			FS:  12,
-		})
-	}
 }
 
 func (g *Game) Cost() float64 {
