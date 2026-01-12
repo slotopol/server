@@ -43,7 +43,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var reshuf = s.Count()
 		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
-		var fghits = s.FreeHits()
+		var fghits = float64(s.FreeHits.Load())
 		var fsavr1, multavr = FirstSreespins()
 		var q = fghits * fsavr1 / reshuf
 		var sq = 1 / (1 - fghits*multavr*15/reshuf)

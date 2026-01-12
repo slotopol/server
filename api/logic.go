@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"go.uber.org/atomic"
 
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/game"
@@ -68,7 +69,7 @@ type Story struct {
 	CTime time.Time `xorm:"created 'ctime' notnull default CURRENT_TIMESTAMP" json:"ctime" yaml:"ctime" xml:"ctime"` // creation time
 }
 
-var StoryCounter uint64 // last GID
+var StoryCounter atomic.Uint64 // last GID
 
 // Scene represents game with all the connected environment.
 type Scene struct {
@@ -115,7 +116,7 @@ type Spinlog struct {
 	Wallet float64   `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"`
 }
 
-var SpinCounter uint64 // last spin log ID
+var SpinCounter atomic.Uint64 // last spin log ID
 
 type Multlog struct {
 	ID     uint64    `xorm:"pk" json:"id" yaml:"id" xml:"id,attr"`
@@ -129,7 +130,7 @@ type Multlog struct {
 	Wallet float64   `xorm:"notnull" json:"wallet" yaml:"wallet" xml:"wallet"` // wallet after double up
 }
 
-var MultCounter uint64 // last multiplier log ID
+var MultCounter atomic.Uint64 // last multiplier log ID
 
 type Walletlog struct {
 	ID     uint64    `xorm:"pk autoincr" json:"id" yaml:"id" xml:"id,attr"`

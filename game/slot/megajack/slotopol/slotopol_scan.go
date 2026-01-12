@@ -93,16 +93,16 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var reshuf = s.Count()
 		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
-		var qmje9 = s.BonusCount(mje9) / reshuf / float64(g.Sel)
+		var qmje9 = s.BonCountF(mje9) / reshuf / float64(g.Sel)
 		var rtpmje9 = Emje * 9 * qmje9 * 100
-		var qmjm = s.BonusCount(mjm) / reshuf / float64(g.Sel)
+		var qmjm = s.BonCountF(mjm) / reshuf / float64(g.Sel)
 		var rtpmjm = Emjm * qmjm * 100
 		var rtp = rtpsym + rtpmje9 + rtpmjm
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "spin9 bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonusCount(mje9), rtpmje9)
-		fmt.Fprintf(w, "monopoly bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonusCount(mjm), rtpmjm)
-		if s.JackCount(mjj) > 0 {
-			fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackCount(mjj), reshuf/s.JackCount(mjj))
+		fmt.Fprintf(w, "spin9 bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mje9), rtpmje9)
+		fmt.Fprintf(w, "monopoly bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mjm), rtpmjm)
+		if s.JackCountF(mjj) > 0 {
+			fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackCountF(mjj), reshuf/s.JackCountF(mjj))
 		}
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(mje9) + %.5g(mjm) = %.6f%%\n", rtpsym, rtpmje9, rtpmjm, rtp)
 		return rtp

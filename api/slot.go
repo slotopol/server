@@ -5,7 +5,6 @@ import (
 	"encoding/xml"
 	"log"
 	"math/rand/v2"
-	"sync/atomic"
 
 	"github.com/gin-gonic/gin"
 
@@ -345,7 +344,7 @@ func ApiSlotSpin(c *gin.Context) {
 	game.Apply(wins)
 
 	// write spin result to log and get spin ID
-	var sid = atomic.AddUint64(&SpinCounter, 1)
+	var sid = SpinCounter.Inc()
 	scene.SID = sid
 	var rec = Spinlog{
 		SID:    sid,
@@ -488,7 +487,7 @@ func ApiSlotDoubleup(c *gin.Context) {
 	game.SetGain(newgain)
 
 	// write doubleup result to log and get spin ID
-	var id = atomic.AddUint64(&MultCounter, 1)
+	var id = MultCounter.Inc()
 	if Cfg.UseSpinLog {
 		go func() {
 			var rec = Multlog{

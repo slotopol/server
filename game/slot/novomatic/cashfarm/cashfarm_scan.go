@@ -25,7 +25,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var reshuf5 = s.Reshuf(5)
 		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
-		var qfarm = s.BonusCount(farmbn) / reshuf1
+		var qfarm = s.BonCountF(farmbn) / reshuf1
 		var rtpbon = Ebon * qfarm * 100
 		var rtp = rtpsym + rtpbon
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
@@ -33,7 +33,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		fmt.Fprintf(w, "fall[3] = %.10g, freq = 1/%.5g, freq2 = 1/%.5g\n", reshuf3, reshuf1/reshuf3, reshuf2/reshuf3)
 		fmt.Fprintf(w, "fall[4] = %.10g, freq = 1/%.5g, freq2 = 1/%.5g\n", reshuf4, reshuf1/reshuf4, reshuf3/reshuf4)
 		fmt.Fprintf(w, "fall[5] = %.10g, freq = 1/%.5g, freq2 = 1/%.5g\n", reshuf5, reshuf1/reshuf5, reshuf4/reshuf5)
-		fmt.Fprintf(w, "farm bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf1/s.BonusCount(farmbn), rtpbon)
+		fmt.Fprintf(w, "farm bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf1/s.BonCountF(farmbn), rtpbon)
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(farm) = %.6f%%\n", rtpsym, rtpbon, rtp)
 		return rtp
 	}

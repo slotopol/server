@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"sort"
 	"strings"
-	"sync/atomic"
 
 	"github.com/gin-gonic/gin"
 
@@ -167,7 +166,7 @@ func ApiGameNew(c *gin.Context) {
 	}
 
 	var anygame = maker()
-	var gid = atomic.AddUint64(&StoryCounter, 1)
+	var gid = StoryCounter.Inc()
 	scene = &Scene{
 		Story: Story{
 			GID:   gid,

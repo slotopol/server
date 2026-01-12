@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"encoding/xml"
 	"log"
-	"sync/atomic"
 
 	"github.com/gin-gonic/gin"
 
@@ -370,7 +369,7 @@ func ApiKenoSpin(c *gin.Context) {
 	props.Wallet -= debit
 
 	// write spin result to log and get spin ID
-	var sid = atomic.AddUint64(&SpinCounter, 1)
+	var sid = SpinCounter.Inc()
 	scene.SID = sid
 	var rec = Spinlog{
 		SID:    sid,

@@ -49,15 +49,15 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
 		var q, sq = s.FSQ()
-		var qmjc = s.BonusCount(mjc) / reshuf / float64(g.Sel)
+		var qmjc = s.BonCountF(mjc) / reshuf / float64(g.Sel)
 		var rtpmjc = EVmjc * qmjc * 100
 		var rtp = sq * (rtpsym + rtpmjc)
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCountU(), q, sq)
+		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount.Load(), q, sq)
 		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", s.FGF())
-		fmt.Fprintf(w, "bottle bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonusCount(mjc), rtpmjc)
-		if s.JackCount(mjj) > 0 {
-			fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackCount(mjj), reshuf/s.JackCount(mjj))
+		fmt.Fprintf(w, "bottle bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mjc), rtpmjc)
+		if s.JackCountF(mjj) > 0 {
+			fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackCountF(mjj), reshuf/s.JackCountF(mjj))
 		}
 		fmt.Fprintf(w, "RTP = sq*(rtp(sym)+rtp(mjc)) = %.5g*(%.5g+%.5g) = %.6f%%\n", sq, rtpsym, rtpmjc, rtp)
 		return rtp
@@ -86,15 +86,15 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
 		var q, _ = s.FSQ()
-		var qmjc = s.BonusCount(mjc) / reshuf / float64(g.Sel)
+		var qmjc = s.BonCountF(mjc) / reshuf / float64(g.Sel)
 		var rtpmjc = EVmjc * qmjc * 100
 		var rtp = rtpsym + rtpmjc + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "free spins %d, q = %.6f\n", s.FreeCountU(), q)
+		fmt.Fprintf(w, "free spins %d, q = %.6f\n", s.FreeCount.Load(), q)
 		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", s.FGF())
-		fmt.Fprintf(w, "champagne bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonusCount(mjc), rtpmjc)
-		if s.JackCount(mjj) > 0 {
-			fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackCount(mjj), reshuf/s.JackCount(mjj))
+		fmt.Fprintf(w, "champagne bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mjc), rtpmjc)
+		if s.JackCountF(mjj) > 0 {
+			fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackCountF(mjj), reshuf/s.JackCountF(mjj))
 		}
 		fmt.Fprintf(w, "RTP = rtp(sym) + rtp(mjc) + q*rtp(fg) = %.5g + %.5g + %.5g*%.5g = %.6f%%\n", rtpsym, rtpmjc, q, rtpfs, rtp)
 		return rtp

@@ -274,7 +274,7 @@ func InitStorage() (err error) {
 	if i64, err = session.Count(&api.Story{}); err != nil {
 		return
 	}
-	api.StoryCounter = uint64(i64)
+	api.StoryCounter.Store(uint64(i64))
 
 	api.JoinBuf.Init(Cfg.ClubInsertBuffer)
 	return
@@ -316,11 +316,11 @@ func InitSpinlog() (err error) {
 	if i64, err = session.Count(&api.Spinlog{}); err != nil {
 		return
 	}
-	api.SpinCounter = uint64(i64)
+	api.SpinCounter.Store(uint64(i64))
 	if i64, err = session.Count(&api.Multlog{}); err != nil {
 		return
 	}
-	api.MultCounter = uint64(i64)
+	api.MultCounter.Store(uint64(i64))
 
 	api.SpinBuf.Init(Cfg.SpinInsertBuffer)
 	api.MultBuf.Init(Cfg.SpinInsertBuffer)

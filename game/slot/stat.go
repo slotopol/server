@@ -8,15 +8,16 @@ import (
 	"os"
 	"runtime"
 	"sync"
-	"sync/atomic"
 	"time"
+
+	"go.uber.org/atomic"
 
 	cfg "github.com/slotopol/server/config"
 )
 
 type Stater interface {
 	SetPlan(n uint64)
-	Planned() float64
+	Planned() uint64
 	Reshuf(cfn int) float64
 	Errors() float64
 	IncErr()
@@ -25,33 +26,32 @@ type Stater interface {
 
 // Stat is statistics calculation for slot reels.
 type Stat struct {
-	planned    uint64
-	reshuffles [FallLimit]uint64
-	errcount   uint64
-	linepay    float64
-	scatpay    float64
-	freecount  uint64
-	freehits   uint64
-	bonuscount [8]uint64
-	jackcount  [4]uint64
-	lpm, spm   sync.Mutex
+	Plan      atomic.Uint64
+	Falls     [FallLimit]atomic.Uint64
+	ErrCount  atomic.Uint64
+	LinePay   atomic.Float64
+	ScatPay   atomic.Float64
+	FreeCount atomic.Uint64
+	FreeHits  atomic.Uint64
+	BonCount  [8]atomic.Uint64
+	JackCount [4]atomic.Uint64
 }
 
 // Declare conformity with Stater interface.
 var _ Stater = (*Stat)(nil)
 
 func (s *Stat) SetPlan(n uint64) {
-	atomic.StoreUint64(&s.planned, n)
+	s.Plan.Store(n)
 }
 
-func (s *Stat) Planned() float64 {
-	return float64(atomic.LoadUint64(&s.planned))
+func (s *Stat) Planned() uint64 {
+	return s.Plan.Load()
 }
 
 func (s *Stat) Count() float64 {
 	var n uint64
 	for i := range FallLimit {
-		n += atomic.LoadUint64(&s.reshuffles[i])
+		n += s.Falls[i].Load()
 	}
 	return float64(n)
 }
@@ -59,110 +59,89 @@ func (s *Stat) Count() float64 {
 func (s *Stat) Reshuf(cfn int) float64 {
 	var n uint64
 	for i := cfn - 1; i < FallLimit; i++ {
-		n += atomic.LoadUint64(&s.reshuffles[i])
+		n += s.Falls[i].Load()
 	}
 	return float64(n)
 }
 
 func (s *Stat) Errors() float64 {
-	return float64(atomic.LoadUint64(&s.errcount))
+	return float64(s.ErrCount.Load())
 }
 
 func (s *Stat) IncErr() {
-	atomic.AddUint64(&s.errcount, 1)
+	s.ErrCount.Add(1)
 }
 
 func (s *Stat) LineRTP(cost float64) float64 {
-	s.lpm.Lock()
-	var lp = s.linepay
-	s.lpm.Unlock()
-	return lp / s.Count() / cost * 100
+	return s.LinePay.Load() / s.Count() / cost * 100
 }
 
 func (s *Stat) ScatRTP(cost float64) float64 {
-	s.spm.Lock()
-	var sp = s.scatpay
-	s.spm.Unlock()
-	return sp / s.Count() / cost * 100
+	return s.ScatPay.Load() / s.Count() / cost * 100
 }
 
 func (s *Stat) SymRTP(cost float64) (lrtp, srtp float64) {
-	s.lpm.Lock()
-	var lp = s.linepay
-	s.lpm.Unlock()
-	s.spm.Lock()
-	var sp = s.scatpay
-	s.spm.Unlock()
 	var reshuf = s.Count()
-	lrtp = lp / reshuf / cost * 100
-	srtp = sp / reshuf / cost * 100
+	lrtp = s.LinePay.Load() / reshuf / cost * 100
+	srtp = s.ScatPay.Load() / reshuf / cost * 100
 	return
-}
-
-func (s *Stat) FreeCountU() uint64 {
-	return atomic.LoadUint64(&s.freecount)
-}
-
-func (s *Stat) FreeCount() float64 {
-	return float64(atomic.LoadUint64(&s.freecount))
 }
 
 // Returns (q, sq), where q = free spins quantifier, sq = 1/(1-q)
 // sum of a decreasing geometric progression for retriggered free spins.
 func (s *Stat) FSQ() (q float64, sq float64) {
-	q = s.FreeCount() / s.Count()
+	q = float64(s.FreeCount.Load()) / s.Count()
 	sq = 1 / (1 - q)
 	return
 }
 
-func (s *Stat) FreeHits() float64 {
-	return float64(atomic.LoadUint64(&s.freehits))
-}
-
 // Quantifier of free games per reshuffles.
 func (s *Stat) FGQ() float64 {
-	return s.FreeHits() / s.Count()
+	return float64(s.FreeHits.Load()) / s.Count()
 }
 
 // Free Games Frequency: average number of reshuffles per free games hit.
 func (s *Stat) FGF() float64 {
-	return s.Count() / s.FreeHits()
+	return s.Count() / float64(s.FreeHits.Load())
 }
 
-func (s *Stat) BonusCount(bid int) float64 {
-	return float64(atomic.LoadUint64(&s.bonuscount[bid]))
+func (s *Stat) BonCountF(bid int) float64 {
+	return float64(s.BonCount[bid].Load())
 }
 
-func (s *Stat) JackCount(jid int) float64 {
-	return float64(atomic.LoadUint64(&s.jackcount[jid]))
+func (s *Stat) JackCountF(jid int) float64 {
+	return float64(s.JackCount[jid].Load())
 }
 
 func (s *Stat) Update(wins Wins, cfn int) {
+	var lpay, spay float64
 	for _, wi := range wins {
 		if wi.Pay != 0 {
 			if wi.LI != 0 { // line win
-				s.lpm.Lock()
-				s.linepay += wi.Pay * wi.MP
-				s.lpm.Unlock()
+				lpay += wi.Pay * wi.MP
 			} else { // scatter win
-				s.spm.Lock()
-				s.scatpay += wi.Pay * wi.MP
-				s.spm.Unlock()
+				spay += wi.Pay * wi.MP
 			}
 		}
 		if wi.FS != 0 {
-			atomic.AddUint64(&s.freecount, uint64(wi.FS))
-			atomic.AddUint64(&s.freehits, 1)
+			s.FreeCount.Add(uint64(wi.FS))
+			s.FreeHits.Add(1)
 		}
 		if wi.BID != 0 {
-			atomic.AddUint64(&s.bonuscount[wi.BID], 1)
+			s.BonCount[wi.BID].Add(1)
 		}
 		if wi.JID != 0 {
-			atomic.AddUint64(&s.jackcount[wi.JID], 1)
+			s.JackCount[wi.JID].Add(1)
 		}
 	}
+	if lpay != 0 {
+		s.LinePay.Add(lpay)
+	}
+	if spay != 0 {
+		s.ScatPay.Add(spay)
+	}
 	if cfn <= FallLimit {
-		atomic.AddUint64(&s.reshuffles[cfn-1], 1)
+		s.Falls[cfn-1].Add(1)
 	}
 }
 
@@ -177,7 +156,7 @@ func Progress(ctx context.Context, s Stater, calc func(io.Writer) float64) {
 			return
 		case <-steps:
 			var reshuf = s.Reshuf(1)
-			var total = s.Planned()
+			var total = float64(s.Planned())
 			var rtp = calc(io.Discard)
 			var dur = time.Since(t0)
 			if total > 0 {
@@ -362,7 +341,7 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reelx) {
 	s.SetPlan(cfg.MCCount * 1e6)
 	var tn = CorrectThrNum()
 	var tn64 = uint64(tn)
-	var n = uint64(s.Planned())
+	var n = s.Planned()
 	var wg sync.WaitGroup
 	wg.Add(tn)
 	for range tn64 {
@@ -427,7 +406,7 @@ func MonteCarloPrec(ctx context.Context, s Stater, g SlotGame, reels Reelx, calc
 	var tn = CorrectThrNum()
 	var rtpcmp float64
 	var rtpmux sync.Mutex
-	var rtpnum uint64
+	var rtpnum atomic.Uint64
 	var mcc = cfg.MCCount * 1e6 / CtxGranulation
 	if mcc == 0 {
 		mcc = 1e7 / CtxGranulation
@@ -442,7 +421,7 @@ func MonteCarloPrec(ctx context.Context, s Stater, g SlotGame, reels Reelx, calc
 			defer wg.Done()
 
 			var wins Wins
-			for atomic.LoadUint64(&rtpnum) < mcc {
+			for rtpnum.Load() < mcc {
 				reshuf++
 				if reshuf%CtxGranulation == 0 {
 					select {
@@ -453,9 +432,9 @@ func MonteCarloPrec(ctx context.Context, s Stater, g SlotGame, reels Reelx, calc
 					var rtp = calc(io.Discard)
 					rtpmux.Lock()
 					if diff := rtp - rtpcmp; diff < cfg.MCPrec && diff > -cfg.MCPrec {
-						rtpnum++
+						rtpnum.Inc()
 					} else {
-						rtpnum = 0
+						rtpnum.Store(0)
 						rtpcmp = rtp
 					}
 					rtpmux.Unlock()
@@ -535,7 +514,7 @@ func ScanReels(ctx context.Context, s Stater, g ClassicSlot, reels Reelx,
 	var dur = time.Since(t0)
 
 	if s.Planned() > 0 {
-		var comp = s.Reshuf(1) / s.Planned() * 100
+		var comp = s.Reshuf(1) / float64(s.Planned()) * 100
 		fmt.Printf("completed %.5g%%, selected %d lines, time spent %v            \n", comp, g.GetSel(), dur)
 	} else {
 		fmt.Printf("produced %.1fm, selected %d lines, time spent %v            \n", s.Reshuf(1)/1e6, g.GetSel(), dur)

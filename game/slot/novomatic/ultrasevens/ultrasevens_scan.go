@@ -20,9 +20,9 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 			panic("scatters have no pays")
 		}
 		var rtpsym = lrtp + srtp
-		fmt.Fprintf(w, "jackpots1: count %g, frequency 1/%.12g\n", s.JackCount(ssj1), reshuf/s.JackCount(ssj1))
-		fmt.Fprintf(w, "jackpots2: count %g, frequency 1/%.12g\n", s.JackCount(ssj2), reshuf/s.JackCount(ssj2))
-		fmt.Fprintf(w, "jackpots3: count %g, frequency 1/%.12g\n", s.JackCount(ssj3), reshuf/s.JackCount(ssj3))
+		fmt.Fprintf(w, "jackpots1: count %g, frequency 1/%.12g\n", s.JackCountF(ssj1), reshuf/s.JackCountF(ssj1))
+		fmt.Fprintf(w, "jackpots2: count %g, frequency 1/%.12g\n", s.JackCountF(ssj2), reshuf/s.JackCountF(ssj2))
+		fmt.Fprintf(w, "jackpots3: count %g, frequency 1/%.12g\n", s.JackCountF(ssj3), reshuf/s.JackCountF(ssj3))
 		fmt.Fprintf(w, "RTP = %.6f%%\n", rtpsym)
 		return rtpsym
 	}

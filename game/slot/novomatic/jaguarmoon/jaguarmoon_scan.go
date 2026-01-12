@@ -4,150 +4,60 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"sync"
-	"sync/atomic"
+
+	"go.uber.org/atomic"
 
 	"github.com/slotopol/server/game/slot"
 )
 
 type Stat struct {
-	planned    uint64
-	reshuffles [slot.FallLimit]uint64
-	errcount   uint64
-	linepay    float64
-	scatpay    float64
-	freecount  [6]uint64
-	freehits   uint64
-	bonuscount [8]uint64
-	jackcount  [4]uint64
-	lpm, spm   sync.Mutex
+	slot.Stat
+	FreeCount [6]atomic.Uint64
 }
 
 // Declare conformity with Stater interface.
 var _ slot.Stater = (*Stat)(nil)
 
-func (s *Stat) SetPlan(n uint64) {
-	atomic.StoreUint64(&s.planned, n)
-}
-
-func (s *Stat) Planned() float64 {
-	return float64(atomic.LoadUint64(&s.planned))
-}
-
-func (s *Stat) Count() float64 {
-	var n uint64
-	for i := range slot.FallLimit {
-		n += atomic.LoadUint64(&s.reshuffles[i])
-	}
-	return float64(n)
-}
-
-func (s *Stat) Reshuf(cfn int) float64 {
-	var n uint64
-	for i := cfn - 1; i < slot.FallLimit; i++ {
-		n += atomic.LoadUint64(&s.reshuffles[i])
-	}
-	return float64(n)
-}
-
-func (s *Stat) Errors() float64 {
-	return float64(atomic.LoadUint64(&s.errcount))
-}
-
-func (s *Stat) IncErr() {
-	atomic.AddUint64(&s.errcount, 1)
-}
-
-func (s *Stat) LineRTP(cost float64) float64 {
-	s.lpm.Lock()
-	var lp = s.linepay
-	s.lpm.Unlock()
-	return lp / s.Count() / cost * 100
-}
-
-func (s *Stat) ScatRTP(cost float64) float64 {
-	s.spm.Lock()
-	var sp = s.scatpay
-	s.spm.Unlock()
-	return sp / s.Count() / cost * 100
-}
-
-func (s *Stat) SymRTP(cost float64) (lrtp, srtp float64) {
-	s.lpm.Lock()
-	var lp = s.linepay
-	s.lpm.Unlock()
-	s.spm.Lock()
-	var sp = s.scatpay
-	s.spm.Unlock()
-	var reshuf = s.Count()
-	lrtp = lp / reshuf / cost * 100
-	srtp = sp / reshuf / cost * 100
-	return
-}
-
-func (s *Stat) FreeCountU(n int) uint64 {
-	return atomic.LoadUint64(&s.freecount[n-1])
-}
-
-func (s *Stat) FreeCount(n int) float64 {
-	return float64(atomic.LoadUint64(&s.freecount[n-1]))
+func (s *Stat) FreeCountF(n int) float64 {
+	return float64(s.FreeCount[n-1].Load())
 }
 
 // Returns (q, sq), where q = free spins quantifier, sq = 1/(1-q)
 // sum of a decreasing geometric progression for retriggered free spins.
 func (s *Stat) FSQ(n int) (q float64) {
-	q = s.FreeCount(n) / s.Count()
+	q = s.FreeCountF(n) / s.Count()
 	return
 }
 
-func (s *Stat) FreeHits() float64 {
-	return float64(atomic.LoadUint64(&s.freehits))
-}
-
-// Quantifier of free games per reshuffles.
-func (s *Stat) FGQ() float64 {
-	return s.FreeHits() / s.Count()
-}
-
-// Free Games Frequency: average number of reshuffles per free games hit.
-func (s *Stat) FGF() float64 {
-	return s.Count() / s.FreeHits()
-}
-
-func (s *Stat) BonusCount(bid int) float64 {
-	return float64(atomic.LoadUint64(&s.bonuscount[bid]))
-}
-
-func (s *Stat) JackCount(jid int) float64 {
-	return float64(atomic.LoadUint64(&s.jackcount[jid]))
-}
-
 func (s *Stat) Update(wins slot.Wins, cfn int) {
+	var lpay, spay float64
 	for _, wi := range wins {
 		if wi.Pay != 0 {
-			if wi.LI != 0 {
-				s.lpm.Lock()
-				s.linepay += wi.Pay * wi.MP
-				s.lpm.Unlock()
-			} else {
-				s.spm.Lock()
-				s.scatpay += wi.Pay * wi.MP
-				s.spm.Unlock()
+			if wi.LI != 0 { // line win
+				lpay += wi.Pay * wi.MP
+			} else { // scatter win
+				spay += wi.Pay * wi.MP
 			}
 		}
 		if wi.FS != 0 {
-			atomic.AddUint64(&s.freecount[wi.Num-1], uint64(wi.FS))
-			atomic.AddUint64(&s.freehits, 1)
+			s.FreeCount[wi.Num-1].Add(uint64(wi.FS))
+			s.FreeHits.Add(1)
 		}
 		if wi.BID != 0 {
-			atomic.AddUint64(&s.bonuscount[wi.BID], 1)
+			s.BonCount[wi.BID].Add(1)
 		}
 		if wi.JID != 0 {
-			atomic.AddUint64(&s.jackcount[wi.JID], 1)
+			s.JackCount[wi.JID].Add(1)
 		}
 	}
+	if lpay != 0 {
+		s.LinePay.Add(lpay)
+	}
+	if spay != 0 {
+		s.ScatPay.Add(spay)
+	}
 	if cfn <= slot.FallLimit {
-		atomic.AddUint64(&s.reshuffles[cfn-1], 1)
+		s.Falls[cfn-1].Add(1)
 	}
 }
 
@@ -188,7 +98,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		var rtp = rtpsym + rtpqfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "free spins %d, q3 = %.5g, q4 = %.5g, q5 = %.5g, q6 = %.5g\n",
-			s.FreeCountU(3)+s.FreeCountU(4)+s.FreeCountU(5)+s.FreeCountU(6),
+			s.FreeCount[2].Load()+s.FreeCount[3].Load()+s.FreeCount[4].Load()+s.FreeCount[5].Load(),
 			q3, q4, q5, q6)
 		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(fg) = %.6f%%\n", rtpsym, rtpqfs, rtp)
