@@ -67,7 +67,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 		var has bool
 		var sym slot.Sym
 		for sym = 2; sym <= 6; sym++ {
-			if count := sn[sym]; count >= 7 {
+			if sn[sym] >= 7 {
 				has = true
 				break
 			}

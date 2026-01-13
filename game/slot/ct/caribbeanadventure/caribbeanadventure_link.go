@@ -1,6 +1,6 @@
 //go:build !prod || full || ct
 
-package fullofluck
+package caribbeanadventure
 
 import (
 	_ "embed"
@@ -8,22 +8,20 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed fullofluck_data.yaml
+//go:embed caribbeanadventure_data.yaml
 var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Full of Luck", LNum: 15, Date: game.Date(2020, 11, 26)},  // see: https://www.slotsmate.com/software/ct-interactive/full-of-luck
-		{Prov: "CT Interactive", Name: "Aztec Empress", LNum: 15, Date: game.Date(2018, 12, 31)}, // see: https://www.slotsmate.com/software/ct-interactive/aztec-empress
+		{Prov: "CT Interactive", Name: "Caribbean Adventure", LNum: 10, Date: game.Date(2020, 11, 25)}, // see: https://www.slotsmate.com/software/ct-interactive/caribbean-adventure
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,
 		GP: game.GPlpay |
+			game.GPcpay |
 			game.GPfgseq |
-			game.GPfgmult |
 			game.GPscat |
-			game.GPwild |
-			game.GPwmult,
+			game.GPwild,
 		SX: 5,
 		SY: 3,
 		SN: len(LinePay),
@@ -35,6 +33,6 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func(sel int) game.Gamble { return NewGame(sel) }, CalcStatReg)
-	game.DataRouter["ctinteractive/fullofluck/reel"] = &ReelsMap
+	game.DataRouter["ctinteractive/caribbeanadventure/reel"] = &ReelsMap
 	game.LoadMap = append(game.LoadMap, data)
 }

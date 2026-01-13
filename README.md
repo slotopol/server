@@ -16,11 +16,11 @@ Slots games server. Releases functionality a wide variety of games from differen
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 317 games, 165 algorithms, 11 providers
+total: 319 games, 166 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 114 games
+CT Interactive: 116 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,8 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Caribbean Adventure](https://www.slotsmate.com/software/ct-interactive/caribbean-adventure)' CT Interactive 5x3 videoslot
+* '[Aztec Empress](https://www.slotsmate.com/software/ct-interactive/aztec-empress)' CT Interactive 5x3 videoslot
 * '[American Gigolo](https://www.slotsmate.com/software/ct-interactive/american-gigolo)' CT Interactive 5x3 videoslot
 * '[Alaska Wild](https://www.slotsmate.com/software/ct-interactive/alaska-wild)' CT Interactive 5x4 videoslot
 * '[50 Shining Jewels](https://www.slotsmate.com/software/ct-interactive/50-shining-jewels)' CT Interactive 5x4 videoslot
@@ -49,7 +51,7 @@ Slotopol: 2 games
 * '[Rainbow Charm](https://www.slotsmate.com/software/ct-interactive/rainbow-charm)' CT Interactive 5x3 cluster videoslot
 * '[The Magic Goblet](https://www.slotsmate.com/software/ct-interactive/the-magic-goblet)' CT Interactive 5x3 cluster videoslot
 
-*Top-10 of games with most interesting algorithms released on server*:
+*Games with most interesting algorithms released on server*:
 
 * 'Aztec Gold' Megajack 5x3 videoslot has unique 'Aztec Pyramid' bonus game
 * '[Book of Ra Deluxe](https://www.slotsmate.com/software/novomatic/book-of-ra-deluxe)' Novomatic 5x3 videoslot with special expanding symbol on free games
@@ -59,6 +61,7 @@ Slotopol: 2 games
 * '[Egypt](https://agtsoftware.com/games/agt/egypt)' AGT 5x3 videoslot with minislot for wilds multiplier
 * 'Fire Joker' Play'n GO 5x3 videoslot with jackpot on lined pays and big symbols on free games
 * '[Secret Elixir](https://www.slotsmate.com/software/novomatic/secret-elixir)' Novomatic 5x3 videoslot with multipliers on 5th reel
+* '[Caribbean Adventure](https://www.slotsmate.com/software/ct-interactive/caribbean-adventure)' CT Interactive 5x3 videoslot, all symbols pays as scatters on freegames
 * '[Vikings Fun](https://www.slotsmate.com/software/ct-interactive/vikings-fun)' CT Interactive 5x3 videoslot, some symbols become wilds on free games
 * '[Ultra Sevens](https://www.slotsmate.com/software/novomatic/ultra-sevens)' Novomatic 5x4 videoslot with 3 jackpots
 

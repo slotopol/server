@@ -42,6 +42,7 @@
 'Around The World' AGT 5x4 videoslot
 'At the Movies' BetSoft 5x3 videoslot
 'Attila' Novomatic 5x3 videoslot
+'Aztec Empress' CT Interactive 5x3 videoslot
 'Aztec Gold' Megajack 5x3 videoslot
 'Banana Splash' Novomatic 5x3 videoslot
 'Bananas Go Bahamas' Novomatic 5x3 videoslot
@@ -59,6 +60,7 @@
 'Britania' CT Interactive 5x3 videoslot
 'Burning Flower' CT Interactive 5x3 videoslot
 'Captain's Treasure' Playtech 5x3 videoslot
+'Caribbean Adventure' CT Interactive 5x3 cluster videoslot
 'Cash Farm' Novomatic 5x3 cascade videoslot
 'Casino' AGT 5x4 videoslot
 'Champagne' Megajack 5x3 videoslot
@@ -320,11 +322,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 317 games, 165 algorithms, 11 providers
+total: 319 games, 166 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 114 games
+CT Interactive: 116 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

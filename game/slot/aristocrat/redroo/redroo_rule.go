@@ -8,14 +8,14 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-var ReelsMap slot.ReelsMap[slot.Reelx]
-
 const (
 	sn         = 13   // number of symbols
 	wild, scat = 1, 2 // wild & scatter symbol IDs
 	linemin    = 2    // minimum line symbols to win
 	prob2x     = 0.5  // probability of 2x multiplier for wild at free games
 )
+
+var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
 var LinePay = [sn][5]float64{

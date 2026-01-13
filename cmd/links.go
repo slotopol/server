@@ -57,6 +57,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/americangigolo"
 	_ "github.com/slotopol/server/game/slot/ct/bigjoker"
 	_ "github.com/slotopol/server/game/slot/ct/britania"
+	_ "github.com/slotopol/server/game/slot/ct/caribbeanadventure"
 	_ "github.com/slotopol/server/game/slot/ct/cherrycrown"
 	_ "github.com/slotopol/server/game/slot/ct/chillibomb"
 	_ "github.com/slotopol/server/game/slot/ct/cloverparty"
