@@ -30,6 +30,7 @@
 'Always American' Novomatic 3x3 videoslot
 'Always Hot' Novomatic 3x3 videoslot
 'Always Hot Deluxe' Novomatic 3x3 videoslot
+'American Gigolo' CT Interactive 5x3 videoslot
 'American Keno' Aristocrat 80 spots lottery
 'Angry Birds' Novomatic 5x3 videoslot
 'Anonymous' AGT 5x3 videoslot
@@ -319,11 +320,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 316 games, 164 algorithms, 11 providers
+total: 317 games, 165 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 113 games
+CT Interactive: 114 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
