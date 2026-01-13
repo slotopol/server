@@ -1,31 +1,27 @@
-package pyramidofgold
+package alaskawild
 
-// See: https://www.slotsmate.com/software/ct-interactive/pyramid-of-gold
-// similar: igt/wolfrun
-// (difference on bet lines)
+// See: https://www.slotsmate.com/software/ct-interactive/alaska-wild
 
 import (
 	"github.com/slotopol/server/game/slot"
 )
-
-var ReelsBon slot.Reelx
 
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
 var LinePay = [12][5]float64{
 	{0, 0, 50, 200, 1000}, //  1 wild
-	{0, 0, 25, 100, 400},  //  2 woman
-	{0, 0, 25, 100, 400},  //  3 man
-	{0, 0, 20, 75, 250},   //  4 eagle
-	{0, 0, 20, 75, 250},   //  5 leopard
-	{0, 0, 5, 50, 150},    //  6 mask1
-	{0, 0, 5, 50, 150},    //  7 mask2
-	{0, 0, 5, 20, 100},    //  8 ace
-	{0, 0, 5, 20, 100},    //  9 king
-	{0, 0, 5, 20, 100},    // 10 queen
-	{0, 0, 5, 20, 100},    // 11 jack
-	{},                    // 12 scatter (2, 3, 4 reels only)
+	{},                    //  2 scatter (2, 3, 4 reels only)
+	{0, 0, 25, 100, 400},  //  3 fox
+	{0, 0, 25, 100, 400},  //  4 squirrel
+	{0, 0, 15, 75, 250},   //  5 owl
+	{0, 0, 15, 75, 250},   //  6 eagle
+	{0, 0, 5, 50, 150},    //  7 rockfish
+	{0, 0, 5, 50, 150},    //  8 bulltrout
+	{0, 0, 5, 15, 100},    //  9 ace
+	{0, 0, 5, 15, 100},    // 10 king
+	{0, 0, 5, 15, 100},    // 11 queen
+	{0, 0, 5, 15, 100},    // 12 jack
 }
 
 // Bet lines
@@ -125,12 +121,8 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 }
 
 func (g *Game) Spin(mrtp float64) {
-	if g.FSR == 0 {
-		var reels, _ = ReelsMap.FindClosest(mrtp)
-		g.SpinReels(reels)
-	} else {
-		g.SpinReels(ReelsBon)
-	}
+	var reels, _ = ReelsMap.FindClosest(mrtp)
+	g.SpinReels(reels)
 }
 
 func (g *Game) SetSel(sel int) error {

@@ -1,8 +1,6 @@
 package wolfrun
 
 // See: https://www.slotsmate.com/software/igt/wolf-run
-// similar: ct/pyramidofgold
-// (difference on bet lines)
 
 import (
 	"github.com/slotopol/server/game/slot"

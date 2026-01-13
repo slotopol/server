@@ -1,6 +1,6 @@
 //go:build !prod || full || ct
 
-package pyramidofgold
+package alaskawild
 
 import (
 	_ "embed"
@@ -8,18 +8,18 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed pyramidofgold_data.yaml
+//go:embed alaskawild_data.yaml
 var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
+		{Prov: "CT Interactive", Name: "Alaska Wild", LNum: 50, Date: game.Date(2018, 12, 31)},     // see: https://www.slotsmate.com/software/ct-interactive/alaska-wild
 		{Prov: "CT Interactive", Name: "Pyramid of Gold", LNum: 50, Date: game.Date(2020, 11, 25)}, // see: https://www.slotsmate.com/software/ct-interactive/pyramid-of-gold
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,
 		GP: game.GPlpay |
 			game.GPfgseq |
-			game.GPfgreel |
 			game.GPscat |
 			game.GPwild,
 		SX: 5,
@@ -32,8 +32,7 @@ var Info = game.AlgInfo{
 }
 
 func init() {
-	Info.SetupFactory(func(sel int) game.Gamble { return NewGame(sel) }, CalcStatReg)
-	game.DataRouter["ctinteractive/pyramidofgold/bon"] = &ReelsBon
-	game.DataRouter["ctinteractive/pyramidofgold/reel"] = &ReelsMap
+	Info.SetupFactory(func(sel int) game.Gamble { return NewGame(sel) }, CalcStat)
+	game.DataRouter["ctinteractive/alaskawild/reel"] = &ReelsMap
 	game.LoadMap = append(game.LoadMap, data)
 }
