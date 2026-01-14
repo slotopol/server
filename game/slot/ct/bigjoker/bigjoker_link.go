@@ -13,7 +13,8 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Big Joker", LNum: 20, Date: game.Date(2018, 12, 31)}, // see: https://www.slotsmate.com/software/ct-interactive/big-joker
+		{Prov: "CT Interactive", Name: "Big Joker", LNum: 20, Date: game.Date(2018, 12, 31)},     // see: https://www.slotsmate.com/software/ct-interactive/big-joker
+		{Prov: "CT Interactive", Name: "Celestial Ruler", LNum: 5, Date: game.Date(2023, 5, 12)}, // see: https://www.livebet2.com/casino/slots/ct-interactive/celestial-ruler
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

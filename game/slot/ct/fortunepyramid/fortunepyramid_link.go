@@ -15,6 +15,8 @@ var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "CT Interactive", Name: "Fortune Pyramid", LNum: 20, Date: game.Date(2019, 12, 1)}, // see: https://www.slotsmate.com/software/ct-interactive/fortune-pyramid
 		{Prov: "CT Interactive", Name: "Fortune Fish", LNum: 25, Date: game.Date(2020, 11, 26)},   // see: https://www.slotsmate.com/software/ct-interactive/fortune-fish
+		{Prov: "CT Interactive", Name: "Clover Gems", LNum: 25, Date: game.Date(2021, 8, 2)},      // see: https://www.livebet2.com/casino/slots/ct-interactive/clover-gems
+		{Prov: "CT Interactive", Name: "Banana Party", LNum: 25, Date: game.Date(2021, 8, 2)},     // see: https://www.livebet2.com/casino/slots/ct-interactive/banana-party
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

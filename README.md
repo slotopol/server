@@ -16,11 +16,11 @@ Slots games server. Releases functionality a wide variety of games from differen
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 319 games, 166 algorithms, 11 providers
+total: 333 games, 166 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 116 games
+CT Interactive: 130 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,20 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[50 Treasures](https://www.livebet2.com/casino/slots/ct-interactive/50-treasures)' CT Interactive 5x4 videoslot
+* '[20 Fruitata Wins](https://www.livebet2.com/casino/slots/ct-interactive/20-fruitata-wins)' CT Interactive 5x3 videoslot
+* '[20 Star Party](https://www.livebet2.com/casino/slots/ct-interactive/20-star-party)' CT Interactive 5x3 videoslot
+* '[30 Fruitata Wins](https://www.livebet2.com/casino/slots/ct-interactive/30-fruitata-wins)' CT Interactive 5x3 cascade videoslot
+* '[40 Hell's Cherries](https://www.livebet2.com/casino/slots/ct-interactive/40-hell-s-cherries)' CT Interactive 5x4 videoslot
+* '[40 Dice Treasures](https://www.livebet2.com/casino/slots/ct-interactive/40-dice-treasures)' CT Interactive 5x4 videoslot
+* '[40 Shining Coins](https://www.livebet2.com/casino/slots/ct-interactive/40-shining-coins)' CT Interactive 5x4 videoslot
+* '[40 Shining jewels](https://www.livebet2.com/casino/slots/ct-interactive/40-shining-jewels)' CT Interactive 5x4 videoslot
+* '[Celestial Ruler](https://www.livebet2.com/casino/slots/ct-interactive/celestial-ruler)' CT Interactive 5x3 videoslot
+* '[Banana Party](https://www.livebet2.com/casino/slots/ct-interactive/banana-party)' CT Interactive 5x3 videoslot
+* '[20 Dice Party](https://www.livebet2.com/casino/slots/ct-interactive/20-dice-party)' CT Interactive 5x3 videoslot
+* '[Easter Bonanza](https://www.livebet2.com/casino/slots/ct-interactive/easter-bonanza)' CT Interactive 5x4 videoslot
+* '[40 Diamond Treasures](https://www.livebet2.com/casino/slots/ct-interactive/40-diamond-treasures)' CT Interactive 5x4 videoslot
+* '[Clover Gems](https://www.livebet2.com/casino/slots/ct-interactive/clover-gems)' CT Interactive 5x3 videoslot
 * '[Caribbean Adventure](https://www.slotsmate.com/software/ct-interactive/caribbean-adventure)' CT Interactive 5x3 videoslot
 * '[Aztec Empress](https://www.slotsmate.com/software/ct-interactive/aztec-empress)' CT Interactive 5x3 videoslot
 * '[American Gigolo](https://www.slotsmate.com/software/ct-interactive/american-gigolo)' CT Interactive 5x3 videoslot

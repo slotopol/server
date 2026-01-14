@@ -6,22 +6,32 @@
 '100 Shining Stars' AGT 5x4 videoslot
 '2 Million B.C.' BetSoft 5x3 videoslot
 '20 Clovers Hot' CT Interactive 5x3 videoslot
+'20 Dice Party' CT Interactive 5x3 videoslot
+'20 Fruitata Wins' CT Interactive 5x3 videoslot
 '20 Mega Fresh' CT Interactive 5x3 videoslot
 '20 Mega Slot' CT Interactive 5x3 videoslot
 '20 Mega Star' CT Interactive 5x3 videoslot
 '20 Roosters' CT Interactive 5x3 videoslot
 '20 Shining Coins' CT Interactive 5x3 videoslot
+'20 Star Party' CT Interactive 5x3 videoslot
+'30 Fruitata Wins' CT Interactive 5x3 cascade videoslot
 '30 Treasures' CT Interactive 5x3 videoslot
 '40 Bigfoot' AGT 5x4 videoslot
 '40 Brilliants' CT Interactive 5x4 videoslot
+'40 Diamond Treasures' CT Interactive 5x4 videoslot
+'40 Dice Treasures' CT Interactive 5x4 videoslot
 '40 Fruitata Wins' CT Interactive 5x4 videoslot
+'40 Hell's Cherries' CT Interactive 5x4 videoslot
 '40 Mega Slot' CT Interactive 5x4 videoslot
 '40 Roosters' CT Interactive 5x4 videoslot
+'40 Shining Coins' CT Interactive 5x4 videoslot
+'40 Shining jewels' CT Interactive 5x4 videoslot
 '5 Hot Hot Hot' AGT 3x3 videoslot
 '50 Apples' Shine' AGT 5x4 videoslot
 '50 Gems' AGT 5x4 videoslot
 '50 Happy Santa' AGT 5x4 videoslot
 '50 Shining Jewels' CT Interactive 5x4 videoslot
+'50 Treasures' CT Interactive 5x4 videoslot
 'AI' AGT 5x3 videoslot
 'African Simba' Novomatic 5x3 videoslot
 'Age of Heroes' Novomatic 5x3 videoslot
@@ -44,6 +54,7 @@
 'Attila' Novomatic 5x3 videoslot
 'Aztec Empress' CT Interactive 5x3 videoslot
 'Aztec Gold' Megajack 5x3 videoslot
+'Banana Party' CT Interactive 5x3 videoslot
 'Banana Splash' Novomatic 5x3 videoslot
 'Bananas Go Bahamas' Novomatic 5x3 videoslot
 'Bavarian Forest' CT Interactive 5x3 videoslot
@@ -63,6 +74,7 @@
 'Caribbean Adventure' CT Interactive 5x3 cluster videoslot
 'Cash Farm' Novomatic 5x3 cascade videoslot
 'Casino' AGT 5x4 videoslot
+'Celestial Ruler' CT Interactive 5x3 videoslot
 'Champagne' Megajack 5x3 videoslot
 'Champagne and Fruits' CT Interactive 5x3 videoslot
 'Cherry Crown' CT Interactive 5x3 videoslot
@@ -70,6 +82,7 @@
 'Chicago' Novomatic 5x3 videoslot
 'Chilli Bomb' CT Interactive 5x3 videoslot
 'Cleopatra' IGT 5x3 videoslot
+'Clover Gems' CT Interactive 5x3 videoslot
 'Clover Joker' CT Interactive 5x3 videoslot
 'Clover Party' CT Interactive 5x3 videoslot
 'Clover Wheel' CT Interactive 5x3 videoslot
@@ -98,6 +111,7 @@
 'Dragon's Deep' Novomatic 5x3 videoslot
 'Dynasty Of Ming' Novomatic 5x3 videoslot
 'Dynasty of Ra' Novomatic 5x3 videoslot
+'Easter Bonanza' CT Interactive 5x4 videoslot
 'Egg and Rooster' CT Interactive 5x3 videoslot
 'Egypt' AGT 5x3 videoslot
 'English Rose' CT Interactive 5x3 videoslot
@@ -322,11 +336,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 319 games, 166 algorithms, 11 providers
+total: 333 games, 166 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 116 games
+CT Interactive: 130 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

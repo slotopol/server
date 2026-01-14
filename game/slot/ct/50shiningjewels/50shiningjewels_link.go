@@ -14,6 +14,7 @@ var data []byte
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "CT Interactive", Name: "50 Shining Jewels", LNum: 50, Date: game.Date(2019, 3, 31)}, // see: https://www.slotsmate.com/software/ct-interactive/50-shining-jewels
+		{Prov: "CT Interactive", Name: "50 Treasures", LNum: 50, Date: game.Date(2023, 5, 12)},      // see: https://www.livebet2.com/casino/slots/ct-interactive/50-treasures
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

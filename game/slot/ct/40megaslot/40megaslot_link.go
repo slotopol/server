@@ -13,8 +13,9 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "40 Mega Slot", LNum: 40, Date: game.Date(2020, 12, 19)}, // see: https://www.slotsmate.com/software/ct-interactive/40-mega-slot
-		{Prov: "CT Interactive", Name: "40 Roosters", LNum: 40, Date: game.Date(2020, 1, 3)},    // see: https://www.slotsmate.com/software/ct-interactive/40-roosters
+		{Prov: "CT Interactive", Name: "40 Mega Slot", LNum: 40, Date: game.Date(2020, 12, 19)},    // see: https://www.slotsmate.com/software/ct-interactive/40-mega-slot
+		{Prov: "CT Interactive", Name: "40 Roosters", LNum: 40, Date: game.Date(2020, 1, 3)},       // see: https://www.slotsmate.com/software/ct-interactive/40-roosters
+		{Prov: "CT Interactive", Name: "40 Shining Coins", LNum: 40, Date: game.Date(2019, 11, 1)}, // see: https://www.livebet2.com/casino/slots/ct-interactive/40-shining-coins
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,
