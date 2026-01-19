@@ -14,7 +14,7 @@ local symset = {
 	4, -- 10 jack
 	4, -- 11 ten
 	1, -- 12 wild
-	1, -- 13 golden
+	1, -- 13 golden (3 reel only)
 	1, -- 14 scatter
 }
 
@@ -37,18 +37,11 @@ local neighbours = {
 }
 
 local function reelgen(n)
-	local function make()
-		return makereel(symset, neighbours)
-	end
+	local ss = tcopy(symset)
 	if n ~= 3 then
-		local n13 = symset[13]
-		symset[13] = 0
-		local reel, iter = make()
-		symset[13] = n13
-		return reel, iter
-	else
-		return make()
+		ss[13] = 0
 	end
+	return makereel(ss, neighbours)
 end
 
 if autoscan then

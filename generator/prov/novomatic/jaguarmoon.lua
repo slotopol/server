@@ -73,33 +73,23 @@ end
 
 local function reelgen(n, isbon)
 	if isbon then
-		local symset = symsetbon
-		local function make()
-			return makereel(symset, neighbours)
-		end
+		local ss = tcopy(symsetbon)
 		if n == 1 or n == 5 then
-			local n1 = symset[1]
-			symset[1] = 0
-			local reel, iter = make()
-			symset[1] = n1
-			return reel, iter
-		else
-			return make()
+			ss[1] = 0
 		end
+		return makereel(ss, neighbours)
 	else
-		local symset = symsetreg
-		local n1, n2 = symset[1], symset[2]
+		local ss = tcopy(symsetreg)
 		if n == 1 or n == 5 then
-			symset[1] = 0
+			ss[1] = 0
 		end
-		local reel, iter = makereel(symset, neighbours)
+		local reel, iter = makereel(ss, neighbours)
 		if n == 1 or n == 2 or n == 3 then
 			ins1(reel)
 			if n == 2 then
 				ins2(reel)
 			end
 		end
-		symset[1], symset[2] = n1, n2
 		return reel, iter
 	end
 end

@@ -2,7 +2,7 @@ local scripts = arg[0]:match("^(.*generator[/%\\])")
 dofile(scripts.."lib/makereel.lua")
 
 local symset = {
-	 0, --  1 wild (2, 3, 4 reels only)
+	 1, --  1 wild (2, 3, 4 reels only)
 	 2, --  2 scatter
 	 4, --  3 seven
 	 8, --  4 strawberr
@@ -15,18 +15,11 @@ local symset = {
 }
 
 local function reelgen(n)
-	local function make()
-		return makereelhot(symset, 4, {[1]=true, [2]=true}, {})
-	end
+	local ss = tcopy(symset)
 	if n == 1 or n == 5 then
-		local n1 = symset[1]
-		symset[1] = 0
-		local reel, iter = make()
-		symset[1] = n1
-		return reel, iter
-	else
-		return make()
+		ss[1] = 0
 	end
+	return makereelhot(ss, 4, {[1]=true, [2]=true}, {})
 end
 
 if autoscan then

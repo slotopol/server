@@ -15,12 +15,16 @@ function shuffle(t)
 	end
 end
 
-function tcopy(t)
-	local t2 = {}
-	for k, v in pairs(t) do
-		t2[k] = v
+function tcopy(t1)
+	if table.move then -- Lua 5.3+
+		return table.move(t1, 1, #t1, 1, {})
+	else
+		local t2 = {}
+		for k, v in pairs(t1) do
+			t2[k] = v
+		end
+		return t2
 	end
-	return t2
 end
 
 function tglue(...)

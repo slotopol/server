@@ -27,18 +27,11 @@ local neighbours = {
 }
 
 local function reelgen(n)
-	local function make()
-		return makereel(symset, neighbours)
-	end
+	local ss = tcopy(symset)
 	if n == 2 or n == 4 then
-		local n8 = symset[8]
-		symset[8] = 0
-		local reel, iter = make()
-		symset[8] = n8
-		return reel, iter
-	else
-		return make()
+		ss[8] = 0
 	end
+	return makereel(ss, neighbours)
 end
 
 if autoscan then

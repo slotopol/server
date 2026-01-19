@@ -12,7 +12,7 @@ local symset = {
 	5, --  8 jack
 	5, --  9 ten
 	1, -- 10 note
-	0, -- 11 jazzbee (3 reel only)
+	1, -- 11 jazzbee (3 reel only)
 }
 
 local neighbours = {
@@ -31,18 +31,11 @@ local neighbours = {
 }
 
 local function reelgen(n)
-	local function make()
-		return makereel(symset, neighbours)
-	end
+	local ss = tcopy(symset)
 	if n ~= 3 then
-		local n11 = symset[11]
-		symset[11] = 0
-		local reel, iter = make()
-		symset[11] = n11
-		return reel, iter
-	else
-		return make()
+		ss[11] = 0
 	end
+	return makereel(ss, neighbours)
 end
 
 if autoscan then
@@ -50,7 +43,7 @@ if autoscan then
 end
 
 math.randomseed(os.time())
-print "reel 1, 3, 4, 5"
+print "reel 1, 2, 4, 5"
 printreel(reelgen(1))
-print "reel 2"
-printreel(reelgen(2))
+print "reel 3"
+printreel(reelgen(3))

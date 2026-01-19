@@ -55,20 +55,13 @@ local chunklen = {
 }
 
 local function reelgen(n)
-	local function make()
-		local reel1, iter1 = makereel(symset1, neighbours)
-		local reel2, iter2 = makereelhot(symset2, 3, {[2]=true}, chunklen)
-		return reelglue(reel1, reel2), iter1, iter2
-	end
+	local ss1, ss2 = tcopy(symset1), tcopy(symset2)
 	if n == 1 then
-		local n1, n2 = symset1[1], symset2[1]
-		symset1[1], symset2[1] = 0, 0
-		local reel, iter1, iter2 = make()
-		symset1[1], symset2[1] = n1, n2
-		return reel, iter1, iter2
-	else
-		return make()
+		ss1[1], ss2[1] = 0, 0
 	end
+	local reel1, iter1 = makereel(ss1, neighbours)
+	local reel2, iter2 = makereelhot(ss2, 3, {[2]=true}, chunklen)
+	return reelglue(reel1, reel2), iter1, iter2
 end
 
 if autoscan then

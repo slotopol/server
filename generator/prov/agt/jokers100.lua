@@ -28,18 +28,11 @@ local chunklen = {
 }
 
 local function reelgen(n)
-	local function make()
-		return makereelhot(symset, 4, {[2]=true}, chunklen)
-	end
+	local ss = tcopy(symset)
 	if n == 1 or n == 5 then
-		local n1 = symset[1]
-		symset[1] = 0
-		local reel, iter = make()
-		symset[1] = n1
-		return reel, iter
-	else
-		return make()
+		ss[1] = 0
 	end
+	return makereelhot(ss, 4, {[2]=true}, chunklen)
 end
 
 if autoscan then

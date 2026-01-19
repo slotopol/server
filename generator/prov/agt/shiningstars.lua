@@ -16,16 +16,14 @@ local symset = {
 }
 
 local function reelgen(n)
-	local n1, n3 = symset[1], symset[3]
+	local ss = tcopy(symset)
 	if n == 1 or n == 5 then
-		symset[1] = 0
+		ss[1] = 0
 	end
 	if n == 2 or n == 4 then
-		symset[3] = 0
+		ss[3] = 0
 	end
-	local reel, iter = makereelhot(symset, 3, {[1]=true, [2]=true, [3]=true}, {})
-	symset[1], symset[3] = n1, n3
-	return reel, iter
+	return makereelhot(ss, 3, {[1]=true, [2]=true, [3]=true}, {})
 end
 
 if autoscan then

@@ -28,20 +28,12 @@ local bigsym = {
 }
 
 local function reelgen(n)
-	local function make()
-		return makereelct(symset, 3, {[1]=true, [2]=true}, 4, bigsym)
-	end
+	local ss = tcopy(symset)
 	if n == 1 or n == 5 then
-		local n1 = symset[1]
-		symset[1] = 0
-		symset[2] = symset[2]-1
-		local reel, iter = make()
-		symset[1] = n1
-		symset[2] = symset[2]+1
-		return reel, iter
-	else
-		return make()
+		ss[1] = 0
+		ss[2] = ss[2]-1
 	end
+	return makereelct(ss, 3, {[1]=true, [2]=true}, 4, bigsym)
 end
 
 if autoscan then
