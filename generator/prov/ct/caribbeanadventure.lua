@@ -1,7 +1,7 @@
 local scripts = arg[0]:match("^(.*generator[/%\\])")
 dofile(scripts.."lib/makereel.lua")
 
-local symsetreg = {
+local symset = {
 	2, --  1 wild     10000
 	1, --  2 scatter
 	3, --  3 pirate   1000
@@ -35,7 +35,7 @@ local neighbours = {
 }
 
 local function reelgen()
-	return makereel(symsetreg, neighbours)
+	return makereel(symset, neighbours)
 end
 
 if autoscan then

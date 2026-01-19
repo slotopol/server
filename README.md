@@ -16,11 +16,11 @@ Slots games server. Releases functionality a wide variety of games from differen
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 333 games, 166 algorithms, 11 providers
+total: 334 games, 167 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 130 games
+CT Interactive: 131 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,7 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Amazons Spear](https://www.livebet2.com/casino/slots/ct-interactive/amazons-spear)' CT Interactive 5x3 videoslot
 * '[50 Treasures](https://www.livebet2.com/casino/slots/ct-interactive/50-treasures)' CT Interactive 5x4 videoslot
 * '[20 Fruitata Wins](https://www.livebet2.com/casino/slots/ct-interactive/20-fruitata-wins)' CT Interactive 5x3 videoslot
 * '[20 Star Party](https://www.livebet2.com/casino/slots/ct-interactive/20-star-party)' CT Interactive 5x3 videoslot
