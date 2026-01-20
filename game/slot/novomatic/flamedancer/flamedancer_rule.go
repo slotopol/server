@@ -68,8 +68,8 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 func (g *Game) ScanLinedReg(wins *slot.Wins) {
 	var reelwild [5]bool
 	for x := 1; x < 4; x += 2 { // 2, 4 reels only
-		for y := range 3 {
-			if g.Scr[x][y] == wild {
+		for _, sy := range g.Scr[x] {
+			if sy == wild {
 				reelwild[x] = true
 				break
 			}
@@ -108,8 +108,8 @@ func (g *Game) ScanLinedReg(wins *slot.Wins) {
 func (g *Game) ScanLinedBon(wins *slot.Wins) {
 	var reelwild [5]bool
 	for x := 1; x < 4; x += 2 { // 2, 4 reels only
-		for y := range 3 {
-			if g.Scr[x][y] == wild {
+		for _, sy := range g.Scr[x] {
+			if sy == wild {
 				reelwild[x] = true
 				break
 			}

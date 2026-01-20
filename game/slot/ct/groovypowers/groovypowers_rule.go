@@ -70,8 +70,8 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 	var reelwild [5]bool
 	if g.BM {
 		for x := 1; x < 4; x++ { // 2, 3, 4 reels only
-			for y := range 3 {
-				if g.Scr[x][y] == wild {
+			for _, sy := range g.Scr[x] {
+				if sy == wild {
 					reelwild[x] = true
 					break
 				}

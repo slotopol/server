@@ -69,7 +69,7 @@ func (s *Stat) Errors() float64 {
 }
 
 func (s *Stat) IncErr() {
-	s.ErrCount.Add(1)
+	s.ErrCount.Inc()
 }
 
 func (s *Stat) LineRTP(cost float64) float64 {
@@ -125,13 +125,13 @@ func (s *Stat) Update(wins Wins, cfn int) {
 		}
 		if wi.FS != 0 {
 			s.FreeCount.Add(uint64(wi.FS))
-			s.FreeHits.Add(1)
+			s.FreeHits.Inc()
 		}
 		if wi.BID != 0 {
-			s.BonCount[wi.BID].Add(1)
+			s.BonCount[wi.BID].Inc()
 		}
 		if wi.JID != 0 {
-			s.JackCount[wi.JID].Add(1)
+			s.JackCount[wi.JID].Inc()
 		}
 	}
 	if lpay != 0 {
@@ -141,7 +141,7 @@ func (s *Stat) Update(wins Wins, cfn int) {
 		s.ScatPay.Add(spay)
 	}
 	if cfn <= FallLimit {
-		s.Falls[cfn-1].Add(1)
+		s.Falls[cfn-1].Inc()
 	}
 }
 

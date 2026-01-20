@@ -41,13 +41,13 @@ func (s *Stat) Update(wins slot.Wins, cfn int) {
 		}
 		if wi.FS != 0 {
 			s.FreeCount[wi.Num-1].Add(uint64(wi.FS))
-			s.FreeHits.Add(1)
+			s.FreeHits.Inc()
 		}
 		if wi.BID != 0 {
-			s.BonCount[wi.BID].Add(1)
+			s.BonCount[wi.BID].Inc()
 		}
 		if wi.JID != 0 {
-			s.JackCount[wi.JID].Add(1)
+			s.JackCount[wi.JID].Inc()
 		}
 	}
 	if lpay != 0 {
@@ -57,7 +57,7 @@ func (s *Stat) Update(wins slot.Wins, cfn int) {
 		s.ScatPay.Add(spay)
 	}
 	if cfn <= slot.FallLimit {
-		s.Falls[cfn-1].Add(1)
+		s.Falls[cfn-1].Inc()
 	}
 }
 

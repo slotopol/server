@@ -96,12 +96,12 @@ func (l *Linex) Add(op Linex) *Linex {
 }
 
 // Copy of chunk at given position.
-func (l *Linex) HitxPos(pos Pos, num int) (dst Hitx) {
+func (l *Linex) HitxPos(pos, num Pos) (dst Hitx) {
 	var x1, x2 Pos
 	if num >= 0 {
-		x1, x2 = pos-1, Pos(int(pos)-1+num)
+		x1, x2 = pos-1, pos-1+num
 	} else {
-		x1, x2 = Pos(int(pos)+num), pos
+		x1, x2 = pos+num, pos
 	}
 	for x := x1; x < x2; x++ {
 		dst[x][0], dst[x][1] = x+1, l[x]

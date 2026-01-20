@@ -29,11 +29,11 @@ type Cascade5x3 struct {
 var _ Cascade = (*Cascade5x3)(nil)
 
 func (s *Cascade5x3) SetCol(x Pos, reel []Sym, pos int) {
-	var d = &s.Scr[x-1]
+	var sr = &s.Scr[x-1]
 	var n = len(reel)
 	pos = (n + pos%n) % n // correct position
-	for y := range 3 {
-		d[y] = reel[(pos+y)%n]
+	for y := range sr {
+		sr[y] = reel[(pos+y)%n]
 	}
 	s.Pos[x-1] = pos
 }
@@ -47,21 +47,21 @@ func (s *Cascade5x3) SpinReels(reels Reelx) {
 }
 
 func (s *Cascade5x3) TopFall(reels Reelx) {
-	for x := range Pos(5) {
-		var reel = reels[x]
+	for x, reel := range reels {
 		var pos = rand.N(len(reel))
-		s.SetCol(x+1, reel, pos)
+		s.SetCol(Pos(x+1), reel, pos)
 	}
 }
 
 func (s *Cascade5x3) PushFall(reels Reelx) {
-	for x := range 5 {
+	for x, hr := range s.Hit {
+		var sr = &s.Scr[x]
 		// fall old symbols
 		var n = 0
-		for y := range 3 {
-			if s.Hit[x][y] > 0 {
+		for y, h := range hr {
+			if h > 0 {
 				for i := range y {
-					s.Scr[x][y-i] = s.Scr[x][y-i-1]
+					sr[y-i] = sr[y-i-1]
 				}
 				n++
 			}
@@ -69,16 +69,18 @@ func (s *Cascade5x3) PushFall(reels Reelx) {
 		// fall new symbols
 		s.Pos[x] -= n
 		for y := range n {
-			s.Scr[x][y] = ReelAt(reels[x], s.Pos[x]+y)
+			sr[y] = ReelAt(reels[x], s.Pos[x]+y)
 		}
 	}
 }
 
 // Returns true on avalanche continue.
 func (s *Cascade5x3) Cascade() bool {
-	for _, r := range s.Hit {
-		if r[0] > 0 || r[1] > 0 || r[2] > 0 {
-			return true
+	for _, hr := range s.Hit {
+		for _, h := range hr {
+			if h > 0 {
+				return true
+			}
 		}
 	}
 	return false
@@ -113,11 +115,11 @@ type Cascade5x4 struct {
 var _ Cascade = (*Cascade5x4)(nil)
 
 func (s *Cascade5x4) SetCol(x Pos, reel []Sym, pos int) {
-	var d = &s.Scr[x-1]
+	var sr = &s.Scr[x-1]
 	var n = len(reel)
 	pos = (n + pos%n) % n // correct position
-	for y := range 4 {
-		d[y] = reel[(pos+y)%n]
+	for y := range sr {
+		sr[y] = reel[(pos+y)%n]
 	}
 	s.Pos[x-1] = pos
 }
@@ -131,21 +133,21 @@ func (s *Cascade5x4) SpinReels(reels Reelx) {
 }
 
 func (s *Cascade5x4) TopFall(reels Reelx) {
-	for x := range Pos(5) {
-		var reel = reels[x]
+	for x, reel := range reels {
 		var pos = rand.N(len(reel))
-		s.SetCol(x+1, reel, pos)
+		s.SetCol(Pos(x+1), reel, pos)
 	}
 }
 
 func (s *Cascade5x4) PushFall(reels Reelx) {
-	for x := range 5 {
+	for x, hr := range s.Hit {
+		var sr = &s.Scr[x]
 		// fall old symbols
 		var n = 0
-		for y := range 4 {
-			if s.Hit[x][y] > 0 {
+		for y, h := range hr {
+			if h > 0 {
 				for i := range y {
-					s.Scr[x][y-i] = s.Scr[x][y-i-1]
+					sr[y-i] = sr[y-i-1]
 				}
 				n++
 			}
@@ -153,16 +155,18 @@ func (s *Cascade5x4) PushFall(reels Reelx) {
 		// fall new symbols
 		s.Pos[x] -= n
 		for y := range n {
-			s.Scr[x][y] = ReelAt(reels[x], s.Pos[x]+y)
+			sr[y] = ReelAt(reels[x], s.Pos[x]+y)
 		}
 	}
 }
 
 // Returns true on avalanche continue.
 func (s *Cascade5x4) Cascade() bool {
-	for _, r := range s.Hit {
-		if r[0] > 0 || r[1] > 0 || r[2] > 0 || r[3] > 0 {
-			return true
+	for _, hr := range s.Hit {
+		for _, h := range hr {
+			if h > 0 {
+				return true
+			}
 		}
 	}
 	return false

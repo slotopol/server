@@ -67,8 +67,8 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		if g.PRW[x] > 0 {
 			reelwild[x] = true
 		} else {
-			for y := range 3 {
-				if g.Scr[x][y] == wild {
+			for _, sy := range g.Scr[x] {
+				if sy == wild {
 					reelwild[x] = true
 					fs = true
 					break

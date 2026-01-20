@@ -61,26 +61,24 @@ func (s *Screenx) SetSym(x, y Pos, sym Sym) {
 }
 
 func (s *Screenx) SetCol(x Pos, reel []Sym, pos int) {
-	var d = s.data[(x-1)*s.sy:]
+	var sr = s.data[(x-1)*s.sy : x*s.sy]
 	var n = len(reel)
 	pos = (n + pos%n) % n // correct position
-	for y := range int(s.sy) {
-		d[y] = reel[(pos+y)%n]
+	for y := range sr {
+		sr[y] = reel[(pos+y)%n]
 	}
 }
 
 func (s *Screenx) SpinReels(reels Reelx) {
-	var x Pos
-	for x = 1; x <= s.sx; x++ {
-		var reel = reels.Reel(x)
+	for x, reel := range reels {
 		var hit = rand.N(len(reel))
-		s.SetCol(x, reel, hit)
+		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
 
 func (s *Screenx) SymNum(sym Sym) (n Pos) {
-	for i := range s.sx * s.sy {
-		if s.data[i] == sym {
+	for _, si := range s.data[:s.sx*s.sy] {
+		if si == sym {
 			n++
 		}
 	}
@@ -88,10 +86,10 @@ func (s *Screenx) SymNum(sym Sym) (n Pos) {
 }
 
 func (s *Screenx) SymPos(sym Sym) (c Hitx) {
-	var i, j Pos
-	for i = range s.sx * s.sy {
-		if s.data[i] == sym {
-			c[j][0], c[j][1] = i/s.sy+1, i%s.sy+1
+	var j Pos
+	for i, si := range s.data[:s.sx*s.sy] {
+		if si == sym {
+			c[j][0], c[j][1] = Pos(i)/s.sy+1, Pos(i)%s.sy+1
 			j++
 		}
 	}
@@ -99,10 +97,10 @@ func (s *Screenx) SymPos(sym Sym) (c Hitx) {
 }
 
 func (s *Screenx) SymPos2(sym1, sym2 Sym) (c Hitx) {
-	var i, j Pos
-	for i = range s.sx * s.sy {
-		if s.data[i] == sym1 || s.data[i] == sym2 {
-			c[j][0], c[j][1] = i/s.sy+1, i%s.sy+1
+	var j Pos
+	for i, si := range s.data[:s.sx*s.sy] {
+		if si == sym1 || si == sym2 {
+			c[j][0], c[j][1] = Pos(i)/s.sy+1, Pos(i)%s.sy+1
 			j++
 		}
 	}
@@ -110,10 +108,10 @@ func (s *Screenx) SymPos2(sym1, sym2 Sym) (c Hitx) {
 }
 
 func (s *Screenx) SymPosL(n Pos, sym Sym) (c Hitx) {
-	var i, j Pos
-	for i = range n * s.sy {
-		if s.data[i] == sym {
-			c[j][0], c[j][1] = i/s.sy+1, i%s.sy+1
+	var j Pos
+	for i, si := range s.data[:n*s.sy] {
+		if si == sym {
+			c[j][0], c[j][1] = Pos(i)/s.sy+1, Pos(i)%s.sy+1
 			j++
 		}
 	}
@@ -121,10 +119,10 @@ func (s *Screenx) SymPosL(n Pos, sym Sym) (c Hitx) {
 }
 
 func (s *Screenx) SymPosL2(n Pos, sym1, sym2 Sym) (c Hitx) {
-	var i, j Pos
-	for i = range n * s.sy {
-		if s.data[i] == sym1 || s.data[i] == sym2 {
-			c[j][0], c[j][1] = i/s.sy+1, i%s.sy+1
+	var j Pos
+	for i, si := range s.data[:n*s.sy] {
+		if si == sym1 || si == sym2 {
+			c[j][0], c[j][1] = Pos(i)/s.sy+1, Pos(i)%s.sy+1
 			j++
 		}
 	}
@@ -181,28 +179,25 @@ func (s *Screen3x3) SetSym(x, y Pos, sym Sym) {
 }
 
 func (s *Screen3x3) SetCol(x Pos, reel []Sym, pos int) {
-	var d = &s.Scr[x-1]
+	var sr = &s.Scr[x-1]
 	var n = len(reel)
 	pos = (n + pos%n) % n // correct position
-	for y := range 3 {
-		d[y] = reel[(pos+y)%n]
+	for y := range sr {
+		sr[y] = reel[(pos+y)%n]
 	}
 }
 
 func (s *Screen3x3) SpinReels(reels Reelx) {
-	var x Pos
-	for x = 1; x <= 3; x++ {
-		var reel = reels.Reel(x)
+	for x, reel := range reels {
 		var hit = rand.N(len(reel))
-		s.SetCol(x, reel, hit)
+		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
 
 func (s *Screen3x3) SymNum(sym Sym) (n Pos) {
-	for x := range 3 {
-		var r = s.Scr[x]
-		for y := range 3 {
-			if r[y] == sym {
+	for _, sr := range s.Scr {
+		for _, sy := range sr {
+			if sy == sym {
 				n++
 			}
 		}
@@ -211,12 +206,11 @@ func (s *Screen3x3) SymNum(sym Sym) (n Pos) {
 }
 
 func (s *Screen3x3) SymPos(sym Sym) (c Hitx) {
-	var x, y, i Pos
-	for x = range 3 {
-		var r = s.Scr[x]
-		for y = range 3 {
-			if r[y] == sym {
-				c[i][0], c[i][1] = x+1, y+1
+	var i Pos
+	for x, sr := range s.Scr {
+		for y, sy := range sr {
+			if sy == sym {
+				c[i][0], c[i][1] = Pos(x+1), Pos(y+1)
 				i++
 			}
 		}
@@ -249,28 +243,25 @@ func (s *Screen4x4) SetSym(x, y Pos, sym Sym) {
 }
 
 func (s *Screen4x4) SetCol(x Pos, reel []Sym, pos int) {
-	var d = &s.Scr[x-1]
+	var sr = &s.Scr[x-1]
 	var n = len(reel)
 	pos = (n + pos%n) % n // correct position
-	for y := range 4 {
-		d[y] = reel[(pos+y)%n]
+	for y := range sr {
+		sr[y] = reel[(pos+y)%n]
 	}
 }
 
 func (s *Screen4x4) SpinReels(reels Reelx) {
-	var x Pos
-	for x = 1; x <= 4; x++ {
-		var reel = reels.Reel(x)
+	for x, reel := range reels {
 		var hit = rand.N(len(reel))
-		s.SetCol(x, reel, hit)
+		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
 
 func (s *Screen4x4) SymNum(sym Sym) (n Pos) {
-	for x := range 4 {
-		var r = s.Scr[x]
-		for y := range 4 {
-			if r[y] == sym {
+	for _, sr := range s.Scr {
+		for _, sy := range sr {
+			if sy == sym {
 				n++
 			}
 		}
@@ -279,12 +270,11 @@ func (s *Screen4x4) SymNum(sym Sym) (n Pos) {
 }
 
 func (s *Screen4x4) SymPos(sym Sym) (c Hitx) {
-	var x, y, i Pos
-	for x = range 4 {
-		var r = s.Scr[x]
-		for y = range 4 {
-			if r[y] == sym {
-				c[i][0], c[i][1] = x+1, y+1
+	var i Pos
+	for x, sr := range s.Scr {
+		for y, sy := range sr {
+			if sy == sym {
+				c[i][0], c[i][1] = Pos(x+1), Pos(y+1)
 				i++
 			}
 		}
@@ -318,29 +308,28 @@ func (s *Screen5x3) SetSym(x, y Pos, sym Sym) {
 }
 
 func (s *Screen5x3) SetCol(x Pos, reel []Sym, pos int) {
-	var d = &s.Scr[x-1]
+	var sr = &s.Scr[x-1]
 	var n = len(reel)
 	pos = (n + pos%n) % n // correct position
-	for y := range 3 {
-		d[y] = reel[(pos+y)%n]
+	for y := range sr {
+		sr[y] = reel[(pos+y)%n]
 	}
 }
 
 func (s *Screen5x3) SetBig(big Sym) {
 	var x Pos
 	for x = 1; x <= 3; x++ {
-		s.Scr[x][0] = big
-		s.Scr[x][1] = big
-		s.Scr[x][2] = big
+		var sr = &s.Scr[x]
+		for y := range sr {
+			sr[y] = big
+		}
 	}
 }
 
 func (s *Screen5x3) SpinReels(reels Reelx) {
-	var x Pos
-	for x = 1; x <= 5; x++ {
-		var reel = reels.Reel(x)
+	for x, reel := range reels {
 		var hit = rand.N(len(reel))
-		s.SetCol(x, reel, hit)
+		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
 
@@ -358,10 +347,9 @@ func (s *Screen5x3) SpinBig(r1, rb, r5 []Sym) {
 }
 
 func (s *Screen5x3) SymNum(sym Sym) (n Pos) {
-	for x := range 5 {
-		var r = s.Scr[x]
-		for y := range 3 {
-			if r[y] == sym {
+	for _, sr := range s.Scr {
+		for _, sy := range sr {
+			if sy == sym {
 				n++
 			}
 		}
@@ -373,12 +361,11 @@ func (s *Screen5x3) SymNum(sym Sym) (n Pos) {
 }
 
 func (s *Screen5x3) SymPos(sym Sym) (c Hitx) {
-	var x, y, i Pos
-	for x = range 5 {
-		var r = s.Scr[x]
-		for y = range 3 {
-			if r[y] == sym {
-				c[i][0], c[i][1] = x+1, y+1
+	var i Pos
+	for x, sr := range s.Scr {
+		for y, sy := range sr {
+			if sy == sym {
+				c[i][0], c[i][1] = Pos(x+1), Pos(y+1)
 				i++
 			}
 		}
@@ -387,12 +374,11 @@ func (s *Screen5x3) SymPos(sym Sym) (c Hitx) {
 }
 
 func (s *Screen5x3) SymNum2(sym1, sym2 Sym) (n1, n2 Pos) {
-	for x := range 5 {
-		var r = s.Scr[x]
-		for y := range 3 {
-			if r[y] == sym1 {
+	for _, sr := range s.Scr {
+		for _, sy := range sr {
+			if sy == sym1 {
 				n1++
-			} else if r[y] == sym2 {
+			} else if sy == sym2 {
 				n2++
 			}
 		}
@@ -401,12 +387,11 @@ func (s *Screen5x3) SymNum2(sym1, sym2 Sym) (n1, n2 Pos) {
 }
 
 func (s *Screen5x3) SymPos2(sym1, sym2 Sym) (c Hitx) {
-	var x, y, i Pos
-	for x = range 5 {
-		var r = s.Scr[x]
-		for y = range 3 {
-			if r[y] == sym1 || r[y] == sym2 {
-				c[i][0], c[i][1] = x+1, y+1
+	var i Pos
+	for x, sr := range s.Scr {
+		for y, sy := range sr {
+			if sy == sym1 || sy == sym2 {
+				c[i][0], c[i][1] = Pos(x+1), Pos(y+1)
 				i++
 			}
 		}
@@ -415,12 +400,12 @@ func (s *Screen5x3) SymPos2(sym1, sym2 Sym) (c Hitx) {
 }
 
 func (s *Screen5x3) SymPosL(n Pos, sym Sym) (c Hitx) {
-	var x, y, i Pos
-	for x = range n {
-		var r = s.Scr[x]
-		for y = range 3 {
-			if r[y] == sym {
-				c[i][0], c[i][1] = x+1, y+1
+	var i Pos
+	for x := range n {
+		var sr = &s.Scr[x]
+		for y, sy := range sr {
+			if sy == sym {
+				c[i][0], c[i][1] = x+1, Pos(y+1)
 				i++
 			}
 		}
@@ -429,12 +414,12 @@ func (s *Screen5x3) SymPosL(n Pos, sym Sym) (c Hitx) {
 }
 
 func (s *Screen5x3) SymPosL2(n Pos, sym1, sym2 Sym) (c Hitx) {
-	var x, y, i Pos
-	for x = range n {
-		var r = s.Scr[x]
-		for y = range 3 {
-			if r[y] == sym1 || r[y] == sym2 {
-				c[i][0], c[i][1] = x+1, y+1
+	var i Pos
+	for x := range n {
+		var sr = &s.Scr[x]
+		for y, sy := range sr {
+			if sy == sym1 || sy == sym2 {
+				c[i][0], c[i][1] = x+1, Pos(y+1)
 				i++
 			}
 		}
@@ -467,28 +452,25 @@ func (s *Screen5x4) SetSym(x, y Pos, sym Sym) {
 }
 
 func (s *Screen5x4) SetCol(x Pos, reel []Sym, pos int) {
-	var d = &s.Scr[x-1]
+	var sr = &s.Scr[x-1]
 	var n = len(reel)
 	pos = (n + pos%n) % n // correct position
-	for y := range 4 {
-		d[y] = reel[(pos+y)%n]
+	for y := range sr {
+		sr[y] = reel[(pos+y)%n]
 	}
 }
 
 func (s *Screen5x4) SpinReels(reels Reelx) {
-	var x Pos
-	for x = 1; x <= 5; x++ {
-		var reel = reels.Reel(x)
+	for x, reel := range reels {
 		var hit = rand.N(len(reel))
-		s.SetCol(x, reel, hit)
+		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
 
 func (s *Screen5x4) SymNum(sym Sym) (n Pos) {
-	for x := range 5 {
-		var r = s.Scr[x]
-		for y := range 4 {
-			if r[y] == sym {
+	for _, sr := range s.Scr {
+		for _, sy := range sr {
+			if sy == sym {
 				n++
 			}
 		}
@@ -497,12 +479,11 @@ func (s *Screen5x4) SymNum(sym Sym) (n Pos) {
 }
 
 func (s *Screen5x4) SymPos(sym Sym) (c Hitx) {
-	var x, y, i Pos
-	for x = range 5 {
-		var r = s.Scr[x]
-		for y = range 4 {
-			if r[y] == sym {
-				c[i][0], c[i][1] = x+1, y+1
+	var i Pos
+	for x, sr := range s.Scr {
+		for y, sy := range sr {
+			if sy == sym {
+				c[i][0], c[i][1] = Pos(x+1), Pos(y+1)
 				i++
 			}
 		}
@@ -511,12 +492,11 @@ func (s *Screen5x4) SymPos(sym Sym) (c Hitx) {
 }
 
 func (s *Screen5x4) SymNum2(sym1, sym2 Sym) (n1, n2 Pos) {
-	for x := range 5 {
-		var r = s.Scr[x]
-		for y := range 4 {
-			if r[y] == sym1 {
+	for _, sr := range s.Scr {
+		for _, sy := range sr {
+			if sy == sym1 {
 				n1++
-			} else if r[y] == sym2 {
+			} else if sy == sym2 {
 				n2++
 			}
 		}
@@ -525,12 +505,11 @@ func (s *Screen5x4) SymNum2(sym1, sym2 Sym) (n1, n2 Pos) {
 }
 
 func (s *Screen5x4) SymPos2(sym1, sym2 Sym) (c Hitx) {
-	var x, y, i Pos
-	for x = range 5 {
-		var r = s.Scr[x]
-		for y = range 4 {
-			if r[y] == sym1 || r[y] == sym2 {
-				c[i][0], c[i][1] = x+1, y+1
+	var i Pos
+	for x, sr := range s.Scr {
+		for y, sy := range sr {
+			if sy == sym1 || sy == sym2 {
+				c[i][0], c[i][1] = Pos(x+1), Pos(y+1)
 				i++
 			}
 		}
@@ -539,12 +518,12 @@ func (s *Screen5x4) SymPos2(sym1, sym2 Sym) (c Hitx) {
 }
 
 func (s *Screen5x4) SymPosL(n Pos, sym Sym) (c Hitx) {
-	var x, y, i Pos
-	for x = range n {
-		var r = s.Scr[x]
-		for y = range 4 {
-			if r[y] == sym {
-				c[i][0], c[i][1] = x+1, y+1
+	var i Pos
+	for x := range n {
+		var sr = &s.Scr[x]
+		for y, sy := range sr {
+			if sy == sym {
+				c[i][0], c[i][1] = x+1, Pos(y+1)
 				i++
 			}
 		}
@@ -553,12 +532,12 @@ func (s *Screen5x4) SymPosL(n Pos, sym Sym) (c Hitx) {
 }
 
 func (s *Screen5x4) SymPosL2(n Pos, sym1, sym2 Sym) (c Hitx) {
-	var x, y, i Pos
-	for x = range n {
-		var r = s.Scr[x]
-		for y = range 4 {
-			if r[y] == sym1 || r[y] == sym2 {
-				c[i][0], c[i][1] = x+1, y+1
+	var i Pos
+	for x := range n {
+		var sr = &s.Scr[x]
+		for y, sy := range sr {
+			if sy == sym1 || sy == sym2 {
+				c[i][0], c[i][1] = x+1, Pos(y+1)
 				i++
 			}
 		}
@@ -591,28 +570,25 @@ func (s *Screen6x3) SetSym(x, y Pos, sym Sym) {
 }
 
 func (s *Screen6x3) SetCol(x Pos, reel []Sym, pos int) {
-	var d = &s.Scr[x-1]
+	var sr = &s.Scr[x-1]
 	var n = len(reel)
 	pos = (n + pos%n) % n // correct position
-	for y := range 3 {
-		d[y] = reel[(pos+y)%n]
+	for y := range sr {
+		sr[y] = reel[(pos+y)%n]
 	}
 }
 
 func (s *Screen6x3) SpinReels(reels Reelx) {
-	var x Pos
-	for x = 1; x <= 6; x++ {
-		var reel = reels.Reel(x)
+	for x, reel := range reels {
 		var hit = rand.N(len(reel))
-		s.SetCol(x, reel, hit)
+		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
 
 func (s *Screen6x3) SymNum(sym Sym) (n Pos) {
-	for x := range 6 {
-		var r = s.Scr[x]
-		for y := range 3 {
-			if r[y] == sym {
+	for _, sr := range s.Scr {
+		for _, sy := range sr {
+			if sy == sym {
 				n++
 			}
 		}
@@ -621,12 +597,11 @@ func (s *Screen6x3) SymNum(sym Sym) (n Pos) {
 }
 
 func (s *Screen6x3) SymPos(sym Sym) (c Hitx) {
-	var x, y, i Pos
-	for x = range 6 {
-		var r = s.Scr[x]
-		for y = range 3 {
-			if r[y] == sym {
-				c[i][0], c[i][1] = x+1, y+1
+	var i Pos
+	for x, sr := range s.Scr {
+		for y, sy := range sr {
+			if sy == sym {
+				c[i][0], c[i][1] = Pos(x+1), Pos(y+1)
 				i++
 			}
 		}
@@ -659,28 +634,25 @@ func (s *Screen6x4) SetSym(x, y Pos, sym Sym) {
 }
 
 func (s *Screen6x4) SetCol(x Pos, reel []Sym, pos int) {
-	var d = &s.Scr[x-1]
+	var sr = &s.Scr[x-1]
 	var n = len(reel)
 	pos = (n + pos%n) % n // correct position
-	for y := range 4 {
-		d[y] = reel[(pos+y)%n]
+	for y := range sr {
+		sr[y] = reel[(pos+y)%n]
 	}
 }
 
 func (s *Screen6x4) SpinReels(reels Reelx) {
-	var x Pos
-	for x = 1; x <= 6; x++ {
-		var reel = reels.Reel(x)
+	for x, reel := range reels {
 		var hit = rand.N(len(reel))
-		s.SetCol(x, reel, hit)
+		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
 
 func (s *Screen6x4) SymNum(sym Sym) (n Pos) {
-	for x := range 6 {
-		var r = s.Scr[x]
-		for y := range 4 {
-			if r[y] == sym {
+	for _, sr := range s.Scr {
+		for _, sy := range sr {
+			if sy == sym {
 				n++
 			}
 		}
@@ -689,12 +661,11 @@ func (s *Screen6x4) SymNum(sym Sym) (n Pos) {
 }
 
 func (s *Screen6x4) SymPos(sym Sym) (c Hitx) {
-	var x, y, i Pos
-	for x = range 6 {
-		var r = s.Scr[x]
-		for y = range 4 {
-			if r[y] == sym {
-				c[i][0], c[i][1] = x+1, y+1
+	var i Pos
+	for x, sr := range s.Scr {
+		for y, sy := range sr {
+			if sy == sym {
+				c[i][0], c[i][1] = Pos(x+1), Pos(y+1)
 				i++
 			}
 		}
