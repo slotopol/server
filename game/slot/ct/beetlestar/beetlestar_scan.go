@@ -1,4 +1,4 @@
-package nordicsong
+package beetlestar
 
 import (
 	"context"
@@ -8,10 +8,10 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-func CalcStatBon(ctx context.Context) float64 {
-	var reels = ReelsBon
+func CalcStatBon(ctx context.Context, mrtp float64) float64 {
+	var reels, _ = ReelsMap.FindClosest(mrtp)
 	var g = NewGame(1)
-	g.FSR = 12 // set free spins mode
+	g.FSR = 15 // set free spins mode
 	var s slot.Stat
 
 	var calc = func(w io.Writer) float64 {
@@ -30,12 +30,12 @@ func CalcStatBon(ctx context.Context) float64 {
 }
 
 func CalcStatReg(ctx context.Context, mrtp float64) float64 {
-	fmt.Printf("*bonus reels calculations*\n")
-	var rtpfs = CalcStatBon(ctx) // 180.03743854550543801452
+	fmt.Printf("*free games calculations*\n")
+	var rtpfs = CalcStatBon(ctx, mrtp)
 	if ctx.Err() != nil {
 		return 0
 	}
-	fmt.Printf("*regular reels calculations*\n")
+	fmt.Printf("*regular games calculations*\n")
 	var reels, _ = ReelsMap.FindClosest(mrtp)
 	var g = NewGame(1)
 	var s slot.Stat

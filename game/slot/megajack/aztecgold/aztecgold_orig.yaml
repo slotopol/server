@@ -20,7 +20,7 @@ megajack/aztecgold/reel
 # 101.396947
 # 102.577700
 
-# *bonus games calculations*
+# *free games calculations*
 # Ebon = Epyr + Eroom*app[6] = 20.325 + 78.319 * 0.15482 = 32.45020277404064
 # *reels calculations*
 # reels lengths [22, 25, 32, 25, 21], total reshuffles 9240000
@@ -35,7 +35,7 @@ megajack/aztecgold/reel
   - [ 2, 1, 4, 5, 1, 3, 4,11, 6, 5, 3, 4, 8, 1, 9,10, 2, 3, 7, 2,12, 3, 2, 1, 4,]
   - [ 1, 6, 3, 2, 1, 7, 4, 1, 8,12, 5,10, 3, 2, 6, 4, 2, 3, 5, 9,12,]
 
-# *bonus games calculations*
+# *free games calculations*
 # Ebon = Epyr + Eroom*app[6] = 20.325 + 78.319 * 0.15482 = 32.45020277404064
 # *reels calculations*
 # reels lengths [34, 34, 34, 34, 34], total reshuffles 45435424
@@ -51,7 +51,7 @@ megajack/aztecgold/reel
   - [ 6, 4, 7,10, 8, 5, 1, 3, 4, 9,12, 1, 6, 2, 7, 5, 4, 3, 5,12, 6, 2, 7, 3, 4, 5,12, 6, 2, 7, 3, 4, 5, 3,]
 
 # Original reels.
-# *bonus games calculations*
+# *free games calculations*
 # Ebon = Epyr + Eroom*app[6] = 20.325 + 78.319 * 0.15482 = 32.45020277404064
 # *reels calculations*
 # reels lengths [34, 34, 34, 34, 34], total reshuffles 45435424

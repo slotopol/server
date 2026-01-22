@@ -9,7 +9,7 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-func CalcStatBon(ctx context.Context, mrtp float64) float64 {
+func CalcStatBon(ctx context.Context) float64 {
 	var reels = ReelsBon
 	var g = NewGame(1)
 	g.FSR = 15 // set free spins mode
@@ -33,7 +33,7 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 
 func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*bonus reels calculations*\n")
-	var rtpfs = CalcStatBon(ctx, mrtp)
+	var rtpfs = CalcStatBon(ctx)
 	if ctx.Err() != nil {
 		return 0
 	}

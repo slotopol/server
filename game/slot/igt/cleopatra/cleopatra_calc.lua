@@ -229,7 +229,7 @@ local function calculate(reels)
 		local q = fs_sum / reshuffles
 		local sq = 1 / (1 - q)
 		rtp_fs = sq * rtp_sym
-		print(string.format("*bonus reels calculations*"))
+		print(string.format("*free games calculations*"))
 		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
 		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
 		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
@@ -244,7 +244,7 @@ local function calculate(reels)
 		local q = fs_sum / reshuffles
 		local sq = 1 / (1 - q)
 		rtp_total = rtp_sym + q * rtp_fs
-		print(string.format("*regular reels calculations*"))
+		print(string.format("*regular games calculations*"))
 		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
 		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
 		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))

@@ -22,12 +22,12 @@ playngo/fortuneteller/reel
 
 # *bonus games calculations*
 # total = 64, E = 40.703125
-# *bonus reels calculations*
+# *free games calculations*
 # reels lengths [35, 35, 35, 35, 35], total reshuffles 52521875
 # symbols: 83.217(lined) + 0(scatter) = 83.216850%
 # cards bonuses: frequency 1/181.31, rtp = 22.449700%
 # RTP = 83.217(sym) + 22.45(cards) = 105.666550%
-# *regular reels calculations*
+# *regular games calculations*
 # reels lengths [35, 35, 35, 35, 35], total reshuffles 52521875
 # symbols: 39.928(lined) + 13.688(scatter) = 53.616431%
 # free spins 4412475, q = 0.084012
@@ -43,12 +43,12 @@ playngo/fortuneteller/reel
 
 # *bonus games calculations*
 # total = 64, E = 40.703125
-# *bonus reels calculations*
+# *free games calculations*
 # reels lengths [34, 35, 35, 35, 34], total reshuffles 49563500
 # symbols: 84.226(lined) + 0(scatter) = 84.225781%
 # cards bonuses: frequency 1/175.36, rtp = 23.210969%
 # RTP = 84.226(sym) + 23.211(cards) = 107.436750%
-# *regular reels calculations*
+# *regular games calculations*
 # reels lengths [34, 35, 35, 35, 34], total reshuffles 49563500
 # symbols: 40.111(lined) + 14.011(scatter) = 54.121680%
 # free spins 4305960, q = 0.086878
@@ -64,12 +64,12 @@ playngo/fortuneteller/reel
 
 # *bonus games calculations*
 # total = 64, E = 40.703125
-# *bonus reels calculations*
+# *free games calculations*
 # reels lengths [34, 34, 35, 34, 34], total reshuffles 46771760
 # symbols: 86.095(lined) + 0(scatter) = 86.095082%
 # cards bonuses: frequency 1/169.65, rtp = 23.992532%
 # RTP = 86.095(sym) + 23.993(cards) = 110.087614%
-# *regular reels calculations*
+# *regular games calculations*
 # reels lengths [34, 34, 35, 34, 34], total reshuffles 46771760
 # symbols: 40.714(lined) + 14.339(scatter) = 55.053417%
 # free spins 4201065, q = 0.089821
@@ -85,12 +85,12 @@ playngo/fortuneteller/reel
 
 # *bonus games calculations*
 # total = 64, E = 40.703125
-# *bonus reels calculations*
+# *free games calculations*
 # reels lengths [34, 34, 34, 34, 34], total reshuffles 45435424
 # symbols: 87.48(lined) + 0(scatter) = 87.479507%
 # cards bonuses: frequency 1/166.88, rtp = 24.391009%
 # RTP = 87.48(sym) + 24.391(cards) = 111.870516%
-# *regular reels calculations*
+# *regular games calculations*
 # reels lengths [34, 34, 34, 34, 34], total reshuffles 45435424
 # symbols: 41.257(lined) + 14.505(scatter) = 55.761755%
 # free spins 4149225, q = 0.091321
@@ -106,12 +106,12 @@ playngo/fortuneteller/reel
 
 # *bonus games calculations*
 # total = 64, E = 40.703125
-# *bonus reels calculations*
+# *free games calculations*
 # reels lengths [34, 34, 33, 34, 34], total reshuffles 44099088
 # symbols: 88.227(lined) + 0(scatter) = 88.226688%
 # cards bonuses: frequency 1/164.04, rtp = 24.813637%
 # RTP = 88.227(sym) + 24.814(cards) = 113.040325%
-# *regular reels calculations*
+# *regular games calculations*
 # reels lengths [34, 34, 33, 34, 34], total reshuffles 44099088
 # symbols: 41.325(lined) + 14.681(scatter) = 56.005303%
 # free spins 4097385, q = 0.092913
@@ -127,12 +127,12 @@ playngo/fortuneteller/reel
 
 # *bonus games calculations*
 # total = 64, E = 40.703125
-# *bonus reels calculations*
+# *free games calculations*
 # reels lengths [33, 34, 34, 34, 33], total reshuffles 42802056
 # symbols: 88.527(lined) + 0(scatter) = 88.526892%
 # cards bonuses: frequency 1/161.25, rtp = 25.242048%
 # RTP = 88.527(sym) + 25.242(cards) = 113.768940%
-# *regular reels calculations*
+# *regular games calculations*
 # reels lengths [33, 34, 34, 34, 33], total reshuffles 42802056
 # symbols: 41.402(lined) + 14.858(scatter) = 56.259671%
 # free spins 4045950, q = 0.094527
@@ -148,12 +148,12 @@ playngo/fortuneteller/reel
 
 # *bonus games calculations*
 # total = 64, E = 40.703125
-# *bonus reels calculations*
+# *free games calculations*
 # reels lengths [34, 33, 33, 33, 34], total reshuffles 41543172
 # symbols: 90.119(lined) + 0(scatter) = 90.118889%
 # cards bonuses: frequency 1/158.52, rtp = 25.676283%
 # RTP = 90.119(sym) + 25.676(cards) = 115.795172%
-# *regular reels calculations*
+# *regular games calculations*
 # reels lengths [34, 33, 33, 33, 34], total reshuffles 41543172
 # symbols: 41.874(lined) + 15.037(scatter) = 56.911280%
 # free spins 3994920, q = 0.096163
@@ -169,12 +169,12 @@ playngo/fortuneteller/reel
 
 # *bonus games calculations*
 # total = 64, E = 40.703125
-# *bonus reels calculations*
+# *free games calculations*
 # reels lengths [33, 33, 34, 33, 33], total reshuffles 40321314
 # symbols: 90.505(lined) + 0(scatter) = 90.504962%
 # cards bonuses: frequency 1/155.85, rtp = 26.116382%
 # RTP = 90.505(sym) + 26.116(cards) = 116.621344%
-# *regular reels calculations*
+# *regular games calculations*
 # reels lengths [33, 33, 34, 33, 33], total reshuffles 40321314
 # symbols: 41.994(lined) + 15.217(scatter) = 57.211367%
 # free spins 3944295, q = 0.097822
@@ -190,12 +190,12 @@ playngo/fortuneteller/reel
 
 # *bonus games calculations*
 # total = 64, E = 40.703125
-# *bonus reels calculations*
+# *free games calculations*
 # reels lengths [33, 33, 33, 33, 33], total reshuffles 39135393
 # symbols: 91.971(lined) + 0(scatter) = 91.970560%
 # cards bonuses: frequency 1/153.24, rtp = 26.562384%
 # RTP = 91.971(sym) + 26.562(cards) = 118.532943%
-# *regular reels calculations*
+# *regular games calculations*
 # reels lengths [33, 33, 33, 33, 33], total reshuffles 39135393
 # symbols: 42.54(lined) + 15.399(scatter) = 57.939127%
 # free spins 3894075, q = 0.099503
@@ -211,12 +211,12 @@ playngo/fortuneteller/reel
 
 # *bonus games calculations*
 # total = 64, E = 40.703125
-# *bonus reels calculations*
+# *free games calculations*
 # reels lengths [33, 33, 32, 33, 33], total reshuffles 37949472
 # symbols: 93.696(lined) + 0(scatter) = 93.696323%
 # cards bonuses: frequency 1/150.55, rtp = 27.036261%
 # RTP = 93.696(sym) + 27.036(cards) = 120.732584%
-# *regular reels calculations*
+# *regular games calculations*
 # reels lengths [33, 33, 32, 33, 33], total reshuffles 37949472
 # symbols: 43.17(lined) + 15.592(scatter) = 58.761964%
 # free spins 3843855, q = 0.101289
@@ -232,12 +232,12 @@ playngo/fortuneteller/reel
 
 # *bonus games calculations*
 # total = 64, E = 40.703125
-# *bonus reels calculations*
+# *free games calculations*
 # reels lengths [32, 33, 33, 33, 32], total reshuffles 36799488
 # symbols: 94.104(lined) + 0(scatter) = 94.103932%
 # cards bonuses: frequency 1/147.92, rtp = 27.516801%
 # RTP = 94.104(sym) + 27.517(cards) = 121.620733%
-# *regular reels calculations*
+# *regular games calculations*
 # reels lengths [32, 33, 33, 33, 32], total reshuffles 36799488
 # symbols: 43.285(lined) + 15.787(scatter) = 59.071259%
 # free spins 3794040, q = 0.103100
@@ -253,12 +253,12 @@ playngo/fortuneteller/reel
 
 # *bonus games calculations*
 # total = 64, E = 40.703125
-# *bonus reels calculations*
+# *free games calculations*
 # reels lengths [31, 31, 32, 31, 31], total reshuffles 29552672
 # symbols: 105.81(lined) + 0(scatter) = 105.810229%
 # cards bonuses: frequency 1/130.55, rtp = 31.177841%
 # RTP = 105.81(sym) + 31.178(cards) = 136.988070%
-# *regular reels calculations*
+# *regular games calculations*
 # reels lengths [31, 31, 32, 31, 31], total reshuffles 29552672
 # symbols: 47.745(lined) + 17.243(scatter) = 64.987284%
 # free spins 3455055, q = 0.116912
@@ -274,12 +274,12 @@ playngo/fortuneteller/reel
 
 # *bonus games calculations*
 # total = 64, E = 40.703125
-# *bonus reels calculations*
+# *free games calculations*
 # reels lengths [30, 30, 30, 30, 30], total reshuffles 24300000
 # symbols: 118.13(lined) + 0(scatter) = 118.131790%
 # cards bonuses: frequency 1/116.82, rtp = 34.841875%
 # RTP = 118.13(sym) + 34.842(cards) = 152.973665%
-# *regular reels calculations*
+# *regular games calculations*
 # reels lengths [30, 30, 30, 30, 30], total reshuffles 24300000
 # symbols: 52.418(lined) + 18.66(scatter) = 71.077901%
 # free spins 3177225, q = 0.130750

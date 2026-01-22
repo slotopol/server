@@ -1,7 +1,7 @@
-package forestnymph
+package beetlestar
 
-// See: https://www.slotsmate.com/software/ct-interactive/forest-nymph
-// similar: ct/wildhills, ct/beetlestar (difference in payouts for wilds)
+// See: https://www.livebet2.com/casino/slots/ct-interactive/beetle-star
+// similar: ct/forestnymph, ct/wildhills (difference in payouts for wilds)
 
 import (
 	"github.com/slotopol/server/game/slot"
@@ -11,13 +11,13 @@ var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
 var LinePay = [13][5]float64{
-	{0, 10, 250, 1500, 10000}, //  1 wild
+	{0, 10, 250, 2500, 15000}, //  1 wild
 	{},                        //  2 scatter
-	{0, 2, 25, 125, 750},      //  3 ram
-	{0, 2, 25, 125, 750},      //  4 goat
-	{0, 0, 20, 100, 400},      //  5 dove
-	{0, 0, 15, 75, 250},       //  6 gopher
-	{0, 0, 15, 75, 250},       //  7 hare
+	{0, 2, 25, 125, 750},      //  3 yellow
+	{0, 2, 25, 125, 750},      //  4 green
+	{0, 0, 20, 100, 400},      //  5 gangbang
+	{0, 0, 15, 75, 250},       //  6 blue
+	{0, 0, 15, 75, 250},       //  7 red
 	{0, 0, 10, 50, 125},       //  8 ace
 	{0, 0, 10, 50, 125},       //  9 king
 	{0, 0, 5, 25, 100},        // 10 queen

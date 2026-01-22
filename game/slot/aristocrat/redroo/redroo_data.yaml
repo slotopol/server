@@ -24,7 +24,7 @@ aristocrat/redroo/reel
 # 108.698514
 
 # reels lengths [60, 61, 61, 61, 60], total reshuffles 817131600
-# *bonus games calculations*
+# *free games calculations*
 # symbols: 152.01(lined) + 0.47439(scatter) = 152.485423%
 # free spins 162558160, q = 0.19894, sq = 1/(1-q) = 1.248342
 # free games frequency: 1/26.246
@@ -42,7 +42,7 @@ aristocrat/redroo/reel
   - [3, 10, 11, 5, 9, 7, 11, 13, 4, 10, 9, 12, 3, 11, 8, 5, 12, 9, 3, 10, 7, 9, 4, 13, 5, 12, 4, 10, 8, 6, 13, 7, 8, 4, 10, 11, 6, 9, 13, 12, 11, 2, 13, 6, 8, 12, 13, 9, 6, 12, 13, 7, 8, 12, 6, 10, 5, 11, 7, 8] # 60
 
 # reels lengths [60, 61, 61, 61, 60], total reshuffles 817131600
-# *bonus games calculations*
+# *free games calculations*
 # symbols: 153.81(lined) + 0.47439(scatter) = 154.288336%
 # free spins 162558160, q = 0.19894, sq = 1/(1-q) = 1.248342
 # free games frequency: 1/26.246
@@ -60,7 +60,7 @@ aristocrat/redroo/reel
   - [5, 10, 6, 13, 4, 11, 8, 7, 9, 12, 8, 4, 10, 7, 11, 9, 4, 8, 10, 12, 6, 9, 13, 10, 3, 12, 6, 13, 2, 10, 11, 13, 9, 7, 12, 11, 5, 9, 8, 13, 6, 12, 11, 3, 13, 5, 8, 3, 12, 5, 10, 7, 11, 4, 12, 7, 11, 9, 6, 13] # 60
 
 # reels lengths [59, 60, 60, 60, 59], total reshuffles 751896000
-# *bonus games calculations*
+# *free games calculations*
 # symbols: 155.29(lined) + 0.4989(scatter) = 155.788768%
 # free spins 154411136, q = 0.20536, sq = 1/(1-q) = 1.258435
 # free games frequency: 1/25.445
@@ -78,7 +78,7 @@ aristocrat/redroo/reel
   - [7, 8, 6, 13, 12, 2, 11, 8, 5, 12, 11, 7, 9, 13, 5, 12, 7, 8, 5, 12, 10, 6, 13, 11, 3, 8, 10, 12, 3, 9, 7, 10, 13, 4, 9, 6, 10, 11, 4, 9, 6, 11, 8, 13, 4, 11, 12, 6, 13, 8, 5, 10, 4, 9, 13, 7, 10, 3, 9] # 59
 
 # reels lengths [60, 61, 61, 61, 60], total reshuffles 817131600
-# *bonus games calculations*
+# *free games calculations*
 # symbols: 155.36(lined) + 0.47439(scatter) = 155.833149%
 # free spins 162558160, q = 0.19894, sq = 1/(1-q) = 1.248342
 # free games frequency: 1/26.246
@@ -96,7 +96,7 @@ aristocrat/redroo/reel
   - [13, 5, 10, 11, 8, 5, 9, 11, 8, 10, 12, 4, 8, 11, 6, 9, 7, 12, 3, 13, 9, 12, 6, 11, 3, 10, 13, 7, 11, 4, 12, 8, 7, 9, 13, 5, 10, 3, 8, 7, 11, 6, 13, 8, 2, 9, 5, 13, 4, 12, 7, 10, 4, 13, 12, 6, 9, 7, 10, 6] # 60
 
 # reels lengths [60, 61, 61, 61, 60], total reshuffles 817131600
-# *bonus games calculations*
+# *free games calculations*
 # symbols: 155.59(lined) + 0.47439(scatter) = 156.063251%
 # free spins 162558160, q = 0.19894, sq = 1/(1-q) = 1.248342
 # free games frequency: 1/26.246
@@ -114,7 +114,7 @@ aristocrat/redroo/reel
   - [8, 6, 12, 4, 11, 7, 10, 13, 3, 8, 9, 6, 10, 5, 9, 12, 8, 4, 13, 6, 12, 10, 13, 2, 8, 6, 10, 11, 4, 13, 5, 11, 7, 10, 5, 8, 12, 9, 11, 4, 12, 7, 9, 6, 10, 13, 9, 7, 11, 13, 12, 3, 11, 5, 12, 10, 3, 13, 11, 7] # 60
 
 # reels lengths [58, 59, 59, 59, 58], total reshuffles 690894956
-# *bonus games calculations*
+# *free games calculations*
 # symbols: 158.45(lined) + 0.52514(scatter) = 158.974074%
 # free spins 146541232, q = 0.2121, sq = 1/(1-q) = 1.269202
 # free games frequency: 1/24.657
@@ -132,7 +132,7 @@ aristocrat/redroo/reel
   - [13, 5, 10, 4, 8, 6, 12, 5, 13, 9, 3, 12, 6, 13, 11, 8, 4, 10, 12, 9, 11, 3, 10, 8, 13, 5, 11, 7, 10, 2, 11, 7, 12, 9, 5, 8, 6, 10, 7, 9, 4, 12, 11, 8, 9, 13, 7, 12, 4, 11, 9, 6, 10, 3, 13, 7, 8, 6] # 58
 
 # reels lengths [59, 60, 60, 60, 59], total reshuffles 751896000
-# *bonus games calculations*
+# *free games calculations*
 # symbols: 157.02(lined) + 0.4989(scatter) = 157.520816%
 # free spins 154411136, q = 0.20536, sq = 1/(1-q) = 1.258435
 # free games frequency: 1/25.445
@@ -150,7 +150,7 @@ aristocrat/redroo/reel
   - [11, 6, 8, 12, 4, 13, 10, 9, 7, 12, 5, 13, 10, 4, 12, 6, 9, 7, 10, 5, 11, 3, 10, 6, 11, 7, 8, 13, 11, 6, 12, 4, 13, 5, 8, 7, 11, 9, 13, 3, 8, 5, 11, 9, 12, 13, 10, 9, 2, 11, 7, 13, 4, 8, 12, 6, 10, 3, 12] # 59
 
 # reels lengths [58, 59, 59, 59, 58], total reshuffles 690894956
-# *bonus games calculations*
+# *free games calculations*
 # symbols: 158.44(lined) + 0.52514(scatter) = 158.963836%
 # free spins 146541232, q = 0.2121, sq = 1/(1-q) = 1.269202
 # free games frequency: 1/24.657
@@ -168,7 +168,7 @@ aristocrat/redroo/reel
   - [12, 8, 5, 9, 7, 13, 4, 10, 5, 12, 13, 4, 9, 11, 6, 12, 7, 11, 2, 8, 7, 10, 5, 8, 3, 12, 13, 6, 11, 3, 10, 12, 13, 5, 8, 12, 13, 3, 9, 7, 13, 6, 10, 9, 11, 6, 13, 7, 11, 4, 8, 12, 6, 10, 9, 4, 11, 10] # 58
 
 # reels lengths [57, 58, 58, 58, 57], total reshuffles 633918888
-# *bonus games calculations*
+# *free games calculations*
 # symbols: 161.36(lined) + 0.55324(scatter) = 161.912411%
 # free spins 138943648, q = 0.21918, sq = 1/(1-q) = 1.280708
 # free games frequency: 1/23.881
@@ -186,7 +186,7 @@ aristocrat/redroo/reel
   - [4, 13, 7, 11, 3, 9, 13, 6, 11, 5, 13, 9, 2, 8, 13, 10, 4, 12, 5, 13, 7, 12, 10, 8, 11, 12, 10, 7, 11, 6, 12, 10, 3, 9, 6, 8, 4, 13, 6, 12, 11, 5, 9, 6, 8, 4, 12, 7, 10, 5, 11, 8, 3, 13, 9, 7, 10] # 57
 
 # reels lengths [56, 57, 57, 57, 56], total reshuffles 580765248
-# *bonus games calculations*
+# *free games calculations*
 # symbols: 163.72(lined) + 0.58339(scatter) = 164.308042%
 # free spins 131613584, q = 0.22662, sq = 1/(1-q) = 1.293027
 # free games frequency: 1/23.117
@@ -204,7 +204,7 @@ aristocrat/redroo/reel
   - [11, 7, 12, 5, 10, 6, 12, 4, 11, 7, 10, 6, 9, 5, 13, 10, 11, 6, 13, 9, 2, 12, 11, 7, 9, 4, 10, 13, 9, 4, 10, 13, 12, 5, 8, 7, 13, 3, 8, 12, 10, 7, 8, 4, 11, 13, 8, 3, 11, 6, 8, 5, 12, 6, 9, 3] # 56
 
 # reels lengths [56, 57, 57, 57, 56], total reshuffles 580765248
-# *bonus games calculations*
+# *free games calculations*
 # symbols: 163.96(lined) + 0.58339(scatter) = 164.547329%
 # free spins 131613584, q = 0.22662, sq = 1/(1-q) = 1.293027
 # free games frequency: 1/23.117
@@ -222,7 +222,7 @@ aristocrat/redroo/reel
   - [6, 12, 5, 13, 8, 4, 9, 11, 5, 13, 12, 11, 8, 4, 10, 12, 6, 11, 2, 12, 7, 10, 4, 12, 6, 9, 10, 7, 8, 9, 3, 13, 5, 11, 12, 3, 10, 7, 8, 4, 11, 7, 13, 3, 11, 5, 9, 6, 8, 7, 10, 13, 6, 9, 10, 13] # 56
 
 # reels lengths [55, 56, 56, 56, 55], total reshuffles 531238400
-# *bonus games calculations*
+# *free games calculations*
 # symbols: 165.95(lined) + 0.61576(scatter) = 166.570653%
 # free spins 124546240, q = 0.23445, sq = 1/(1-q) = 1.306242
 # free games frequency: 1/22.366
@@ -240,7 +240,7 @@ aristocrat/redroo/reel
   - [3, 13, 7, 9, 4, 8, 7, 11, 2, 13, 6, 9, 11, 10, 6, 9, 12, 7, 11, 5, 12, 8, 6, 13, 7, 11, 3, 10, 6, 12, 11, 5, 13, 9, 6, 12, 7, 10, 8, 4, 11, 13, 12, 5, 10, 9, 3, 8, 5, 10, 4, 13, 8, 12, 10] # 55
 
 # reels lengths [54, 55, 55, 55, 54], total reshuffles 485149500
-# *bonus games calculations*
+# *free games calculations*
 # symbols: 167.55(lined) + 0.65058(scatter) = 168.201991%
 # free spins 117736816, q = 0.24268, sq = 1/(1-q) = 1.320448
 # free games frequency: 1/21.628
@@ -258,7 +258,7 @@ aristocrat/redroo/reel
   - [10, 13, 8, 6, 11, 12, 3, 13, 7, 12, 10, 6, 11, 7, 10, 5, 12, 3, 13, 7, 11, 5, 9, 4, 11, 12, 8, 2, 10, 13, 9, 8, 12, 6, 10, 5, 11, 3, 13, 6, 9, 12, 4, 8, 13, 9, 7, 10, 6, 8, 4, 9, 11, 7] # 54
 
 # reels lengths [54, 55, 55, 55, 54], total reshuffles 485149500
-# *bonus games calculations*
+# *free games calculations*
 # symbols: 171.5(lined) + 0.65058(scatter) = 172.148745%
 # free spins 117736816, q = 0.24268, sq = 1/(1-q) = 1.320448
 # free games frequency: 1/21.628
@@ -276,7 +276,7 @@ aristocrat/redroo/reel
   - [5, 11, 7, 10, 2, 12, 7, 13, 5, 11, 6, 8, 12, 9, 3, 10, 7, 9, 4, 8, 5, 12, 3, 13, 6, 12, 4, 8, 6, 11, 10, 7, 9, 8, 4, 13, 5, 9, 6, 11, 7, 12, 13, 10, 9, 3, 13, 8, 12, 10, 6, 11, 4, 13] # 54
 
 # reels lengths [52, 53, 53, 53, 52], total reshuffles 402563408
-# *bonus games calculations*
+# *free games calculations*
 # symbols: 174.46(lined) + 0.72849(scatter) = 175.186375%
 # free spins 104872528, q = 0.26051, sq = 1/(1-q) = 1.352287
 # free games frequency: 1/20.189
@@ -294,7 +294,7 @@ aristocrat/redroo/reel
   - [6, 9, 10, 13, 12, 6, 9, 7, 8, 10, 4, 11, 7, 8, 3, 13, 5, 12, 7, 13, 6, 11, 12, 3, 8, 5, 11, 12, 13, 7, 11, 6, 13, 2, 9, 12, 5, 10, 4, 9, 7, 10, 8, 3, 9, 6, 11, 8, 10, 4, 12, 13] # 52
 
 # reels lengths [50, 51, 51, 51, 50], total reshuffles 331627500
-# *bonus games calculations*
+# *free games calculations*
 # symbols: 183.88(lined) + 0.81935(scatter) = 184.696311%
 # free spins 92982320, q = 0.28038, sq = 1/(1-q) = 1.389626
 # free games frequency: 1/18.799

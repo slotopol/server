@@ -56,6 +56,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/alaskawild"
 	_ "github.com/slotopol/server/game/slot/ct/amazonsspear"
 	_ "github.com/slotopol/server/game/slot/ct/americangigolo"
+	_ "github.com/slotopol/server/game/slot/ct/beetlestar"
 	_ "github.com/slotopol/server/game/slot/ct/bigjoker"
 	_ "github.com/slotopol/server/game/slot/ct/britania"
 	_ "github.com/slotopol/server/game/slot/ct/caribbeanadventure"

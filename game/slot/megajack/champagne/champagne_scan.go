@@ -70,12 +70,12 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*bonus games calculations*\n")
 	ExpBottle()
 	fmt.Printf("len = %d, avr bottle gain = %.5g, EV = %g\n", len(Bottles), EVbot, EVmjc)
-	fmt.Printf("*bonus reels calculations*\n")
+	fmt.Printf("*free games calculations*\n")
 	var rtpfs = CalcStatBon(ctx, mrtp)
 	if ctx.Err() != nil {
 		return 0
 	}
-	fmt.Printf("*regular reels calculations*\n")
+	fmt.Printf("*regular games calculations*\n")
 	var reels, _ = ReelsMap.FindClosest(mrtp)
 	var g = NewGame(1)
 	g.FSR = 0 // no free spins

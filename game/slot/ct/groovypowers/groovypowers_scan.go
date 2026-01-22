@@ -25,12 +25,12 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 }
 
 func CalcStatReg(ctx context.Context, mrtp float64) float64 {
-	fmt.Printf("*bonus mode calculations*\n")
+	fmt.Printf("*free games calculations*\n")
 	var rtpbm = CalcStatBon(ctx, mrtp)
 	if ctx.Err() != nil {
 		return 0
 	}
-	fmt.Printf("*regular mode calculations*\n")
+	fmt.Printf("*regular games calculations*\n")
 	var reels, _ = ReelsMap.FindClosest(mrtp)
 	var g = NewGame(1)
 	var s slot.Stat

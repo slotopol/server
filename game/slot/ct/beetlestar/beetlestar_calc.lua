@@ -1,4 +1,4 @@
--- CT Interactive / Forest Nymph
+-- CT Interactive / Beetle Star
 -- RTP calculation
 
 -- 1. REEL STRIPS DATA
@@ -14,19 +14,19 @@ local REELS = {
 
 -- 2. PAYTABLE FOR LINE WINS (indexed by symbol ID)
 local PAYTABLE_LINE = {
-	[ 1] = {0, 10, 250, 1500, 10000}, -- wild
-	[ 2] = {},                        -- scatter
-	[ 3] = {0, 2, 25, 125, 750},      -- ram
-	[ 4] = {0, 2, 25, 125, 750},      -- goat
-	[ 5] = {0, 0, 20, 100, 400},      -- dove
-	[ 6] = {0, 0, 15, 75, 250},       -- gopher
-	[ 7] = {0, 0, 15, 75, 250},       -- hare
-	[ 8] = {0, 0, 10, 50, 125},       -- ace
-	[ 9] = {0, 0, 10, 50, 125},       -- king
-	[10] = {0, 0, 5, 25, 100},        -- queen
-	[11] = {0, 0, 5, 25, 100},        -- jack
-	[12] = {0, 0, 5, 25, 100},        -- ten
-	[13] = {0, 2, 5, 25, 100},        -- nine
+	[ 1] = {0, 10, 250, 2500, 15000}, --  1 wild
+	[ 2] = {},                        --  2 scatter
+	[ 3] = {0, 2, 25, 125, 750},      --  3 yellow
+	[ 4] = {0, 2, 25, 125, 750},      --  4 green
+	[ 5] = {0, 0, 20, 100, 400},      --  5 gangbang
+	[ 6] = {0, 0, 15, 75, 250},       --  6 blue
+	[ 7] = {0, 0, 15, 75, 250},       --  7 red
+	[ 8] = {0, 0, 10, 50, 125},       --  8 ace
+	[ 9] = {0, 0, 10, 50, 125},       --  9 king
+	[10] = {0, 0, 5, 25, 100},        -- 10 queen
+	[11] = {0, 0, 5, 25, 100},        -- 11 jack
+	[12] = {0, 0, 5, 25, 100},        -- 12 ten
+	[13] = {0, 2, 5, 25, 100},        -- 13 nine
 }
 
 -- 3. PAYTABLE FOR SCATTER WINS (for 1 selected line bet)

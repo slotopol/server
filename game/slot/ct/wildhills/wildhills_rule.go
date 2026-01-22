@@ -1,7 +1,7 @@
 package wildhills
 
 // See: https://www.slotsmate.com/software/ct-interactive/wild-hills
-// similar: ct/forestnymph
+// similar: ct/forestnymph, ct/beetlestar (difference in payouts for wilds)
 
 import (
 	"github.com/slotopol/server/game/slot"

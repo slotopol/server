@@ -127,9 +127,9 @@ local function calculate(reels)
 	local rtp_fs = sq * rtp_sym_bon
 	local rtp_total = rtp_sym_reg + q * rtp_fs
 	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
-	print(string.format("*bonus reels calculations*"))
+	print(string.format("*free games calculations*"))
 	print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line_bon, rtp_scat, rtp_sym_bon))
-	print(string.format("*regular reels calculations*"))
+	print(string.format("*regular games calculations*"))
 	print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line_reg, rtp_scat, rtp_sym_reg))
 	print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
 	print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
