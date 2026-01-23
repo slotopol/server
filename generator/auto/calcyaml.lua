@@ -7,11 +7,11 @@
 -- data router ID for bonus reels if it has
 local bonid = nil
 -- data router ID for regular reels map
-local regid = "ctinteractive/beetlestar/reel"
+local regid = "novomatic/sizzlinghot/reel"
 -- full path to YAML file with reels data
-local yamlfile = "d:/srv/config/reeldev.yaml"
+local yamlfile = "reeldev.yaml"
 -- full path to calculation script
-local calcscript = "game/slot/ct/beetlestar/beetlestar_calc.lua"
+local calcscript = "game/slot/novomatic/sizzlinghot/sizzlinghot_calc.lua"
 -- percent key pointed to regular reels to calculate
 local rtplookup = 50
 

@@ -1,6 +1,6 @@
-package fortunepyramid
+package blackpharaoh
 
-// See: https://www.slotsmate.com/software/ct-interactive/fortune-pyramid
+// See: https://www.livebet2.com/casino/slots/ct-interactive/black-pharaoh
 
 import (
 	"github.com/slotopol/server/game/slot"
@@ -9,22 +9,22 @@ import (
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
-var LinePay = [8][5]float64{
-	{0, 0, 40, 750, 1000}, // 1 wild
-	{},                    // 2 scatter
-	{0, 0, 10, 50, 500},   // 3 scarab
-	{0, 0, 10, 40, 200},   // 4 ankh
-	{0, 0, 10, 40, 200},   // 5 eye
-	{0, 0, 5, 20, 100},    // 6 ring
-	{0, 0, 5, 20, 100},    // 7 cup
-	{0, 0, 5, 20, 100},    // 8 bowl
+var LinePay = [11][5]float64{
+	{},                     //  1 wild (2, 3, 4, 5 reels only)
+	{},                     //  2 scatter (1, 3, 5 reels only)
+	{0, 5, 100, 300, 1000}, //  3 cleopatra
+	{0, 0, 50, 250, 500},   //  4 cat
+	{0, 0, 30, 150, 400},   //  5 ankh
+	{0, 0, 30, 150, 400},   //  6 eye
+	{0, 0, 20, 100, 300},   //  7 ace
+	{0, 0, 20, 100, 300},   //  8 king
+	{0, 0, 10, 40, 200},    //  9 queen
+	{0, 0, 10, 40, 200},    // 10 jack
+	{0, 0, 10, 40, 200},    // 11 ten
 }
 
-// Scatters payment.
-var ScatPay = [5]float64{0, 0, 5, 20, 500} // 2 scatter
-
 // Bet lines
-var BetLines = slot.BetLinesAgt5x3[:]
+var BetLines = slot.BetLinesCT5x3[:]
 
 type Game struct {
 	slot.Screen5x3 `yaml:",inline"`
@@ -59,47 +59,25 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 // Lined symbols calculation.
 func (g *Game) ScanLined(wins *slot.Wins) {
 	for li, line := range BetLines[:g.Sel] {
-		var numw, numl slot.Pos = 0, 5
-		var syml slot.Sym
+		var numl slot.Pos = 5
+		var syml = g.LX(1, line)
 		var x slot.Pos
-		for x = 1; x <= 5; x++ {
+		for x = 2; x <= 5; x++ {
 			var sx = g.LX(x, line)
-			if sx == wild {
-				if syml == 0 {
-					numw = x
-				}
-			} else if syml == 0 {
-				syml = sx
-			} else if sx != syml {
+			if sx != syml && sx != wild {
 				numl = x - 1
 				break
 			}
 		}
 
-		var payw, payl float64
-		if numw >= 3 {
-			payw = LinePay[wild-1][numw-1]
-		}
-		if numl >= 3 && syml > 0 {
-			payl = LinePay[syml-1][numl-1]
-		}
-		if payl > payw {
+		if pay := LinePay[syml-1][numl-1]; pay > 0 {
 			*wins = append(*wins, slot.WinItem{
-				Pay: g.Bet * payl,
+				Pay: g.Bet * pay,
 				MP:  1,
 				Sym: syml,
 				Num: numl,
 				LI:  li + 1,
 				XY:  line.HitxL(numl),
-			})
-		} else if payw > 0 {
-			*wins = append(*wins, slot.WinItem{
-				Pay: g.Bet * payw,
-				MP:  1,
-				Sym: wild,
-				Num: numw,
-				LI:  li + 1,
-				XY:  line.HitxL(numw),
 			})
 		}
 	}
@@ -108,13 +86,14 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
 	if count := g.SymNum(scat); count >= 3 {
-		var pay = ScatPay[count-1]
+		const pay, fs = 6, 10
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * float64(g.Sel) * pay,
 			MP:  1,
 			Sym: scat,
 			Num: count,
 			XY:  g.SymPos(scat),
+			FS:  fs,
 		})
 	}
 }

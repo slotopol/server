@@ -1,6 +1,6 @@
 //go:build !prod || full || ct
 
-package americangigolo
+package blackpharaoh
 
 import (
 	_ "embed"
@@ -8,12 +8,12 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-//go:embed americangigolo_data.yaml
+//go:embed blackpharaoh_data.yaml
 var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "American Gigolo", LNum: 30, Date: game.Date(2018, 12, 31)}, // see: https://www.slotsmate.com/software/ct-interactive/american-gigolo
+		{Prov: "CT Interactive", Name: "Black Pharaoh", LNum: 20, Date: game.Date(2019, 1, 1)}, // see: https://www.livebet2.com/casino/slots/ct-interactive/black-pharaoh
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,
@@ -32,6 +32,6 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func(sel int) game.Gamble { return NewGame(sel) }, CalcStat)
-	game.DataRouter["ctinteractive/americangigolo/reel"] = &ReelsMap
+	game.DataRouter["ctinteractive/blackpharaoh/reel"] = &ReelsMap
 	game.LoadMap = append(game.LoadMap, data)
 }

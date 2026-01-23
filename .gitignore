@@ -29,3 +29,6 @@ go.work.sum
 
 # Visual Studio Code settings
 .vscode/
+
+# Reels development file
+reeldev.yaml

@@ -15,6 +15,7 @@ var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "CT Interactive", Name: "Win Storm", LNum: 30, Date: game.Date(2020, 12, 27)},       // see: https://www.slotsmate.com/software/ct-interactive/win-storm
 		{Prov: "CT Interactive", Name: "Dark Woods", LNum: 30, Date: game.Date(2020, 12, 16)},      // see: https://www.slotsmate.com/software/ct-interactive/dark-woods
+		{Prov: "CT Interactive", Name: "Christmas Storm", LNum: 30, Date: game.Date(2023, 12, 1)},  // see: https://www.livebet2.com/casino/slots/ct-interactive/christmas-storm
 		{Prov: "CT Interactive", Name: "30 Fruitata Wins", LNum: 30, Date: game.Date(2024, 2, 15)}, // see: https://www.livebet2.com/casino/slots/ct-interactive/30-fruitata-wins
 	},
 	AlgDescr: game.AlgDescr{

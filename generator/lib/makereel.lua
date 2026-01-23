@@ -6,7 +6,7 @@ reelmt.__newindex = function(t, i, v)
 	rawset(t, (i - 1) % rawlen(t) + 1, v)
 end
 
-local maxiter = 10000
+local miniter, maxiter = 100, 10000
 
 function shuffle(t)
 	for i = rawlen(t), 1, -1 do
@@ -246,7 +246,7 @@ end
 
 function printreel(reel, ...)
 	local iter = { ... }
-	if #iter > 0 and iter[1] > 1 then
+	if #iter > 0 and iter[1] > miniter then
 		if iter[1] >= maxiter then
 			print"too many neighbours shuffle iterations"
 			return
@@ -254,5 +254,5 @@ function printreel(reel, ...)
 			print(table.concat(iter, ", ").." iterations")
 		end
 	end
-	print("- [" .. table.concat(reel, ", ") .. "] # "..rawlen(reel)) -- for yaml-file
+	print("  - [" .. table.concat(reel, ", ") .. "] # "..rawlen(reel)) -- for yaml-file
 end

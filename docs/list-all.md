@@ -61,10 +61,12 @@
 'Bavarian Forest' CT Interactive 5x3 videoslot
 'Beetle Mania' Novomatic 5x3 videoslot
 'Beetle Mania Deluxe' Novomatic 5x3 videoslot
+'Beetle Star' CT Interactive 5x3 videoslot
 'Big Five' AGT 5x3 videoslot
 'Big Joker' CT Interactive 5x3 videoslot
 'Bigfoot' AGT 5x3 videoslot
 'Bitcoin' AGT 5x3 videoslot
+'Black Pharaoh' CT Interactive 5x3 videoslot
 'Bloody Princess' CT Interactive 5x3 videoslot
 'Book of Ra' Novomatic 5x3 videoslot
 'Book of Ra Deluxe' Novomatic 5x3 videoslot
@@ -82,6 +84,7 @@
 'Cherry Hot' AGT 5x3 videoslot
 'Chicago' Novomatic 5x3 videoslot
 'Chilli Bomb' CT Interactive 5x3 videoslot
+'Christmas Storm' CT Interactive 5x3 cascade videoslot
 'Cleopatra' IGT 5x3 videoslot
 'Clover Gems' CT Interactive 5x3 videoslot
 'Clover Joker' CT Interactive 5x3 videoslot
@@ -337,11 +340,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 334 games, 167 algorithms, 11 providers
+total: 337 games, 169 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 131 games
+CT Interactive: 134 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

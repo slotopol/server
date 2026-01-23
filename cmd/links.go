@@ -58,6 +58,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/americangigolo"
 	_ "github.com/slotopol/server/game/slot/ct/beetlestar"
 	_ "github.com/slotopol/server/game/slot/ct/bigjoker"
+	_ "github.com/slotopol/server/game/slot/ct/blackpharaoh"
 	_ "github.com/slotopol/server/game/slot/ct/britania"
 	_ "github.com/slotopol/server/game/slot/ct/caribbeanadventure"
 	_ "github.com/slotopol/server/game/slot/ct/cherrycrown"
