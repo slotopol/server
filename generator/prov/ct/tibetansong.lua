@@ -4,27 +4,27 @@ dofile(scripts.."lib/makereel.lua")
 local symset = {
 	5, --  1 wild (2, 3, 4, 5 reels only)
 	2, --  2 scatter
-	8, --  3 blonde   50/150/500
-	8, --  4 brunette 15/50/100
-	8, --  5 cat      10/50/100
-	8, --  6 dog      10/50/100
-	8, --  7 ace      10/20/100
-	8, --  8 king     10/20/100
-	9, --  9 queen    10/20/100
-	9, -- 10 jack     10/20/100
+	8, --  3 woman 50/200/1000
+	8, --  4 ox    15/50/100
+	8, --  5 dog   10/50/100
+	8, --  6 fox   10/50/100
+	8, --  7 ace   10/20/100
+	8, --  8 king  10/20/100
+	8, --  9 queen 10/20/100
+	9, -- 10 jack  10/20/100
 }
 
 local chained = {
 	0, --  1 wild
 	0, --  2 scatter
-	4, --  3 blonde
-	4, --  4 brunette
-	4, --  5 cat
-	4, --  6 dog
-	4, --  7 ace
-	4, --  8 king
-	4, --  9 queen
-	4, -- 10 jack
+	0, --  3 woman
+	0, --  4 ox
+	0, --  5 dog
+	0, --  6 fox
+	5, --  7 ace
+	5, --  8 king
+	5, --  9 queen
+	5, -- 10 jack
 }
 
 local function reelgen(n)

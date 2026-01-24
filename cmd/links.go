@@ -105,6 +105,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/smileyxwild"
 	_ "github.com/slotopol/server/game/slot/ct/sugartown"
 	_ "github.com/slotopol/server/game/slot/ct/thepowerofankh"
+	_ "github.com/slotopol/server/game/slot/ct/tibetansong"
 	_ "github.com/slotopol/server/game/slot/ct/treasurehill"
 	_ "github.com/slotopol/server/game/slot/ct/treasurekingdom"
 	_ "github.com/slotopol/server/game/slot/ct/tropicdancer"

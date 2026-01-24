@@ -310,6 +310,7 @@
 'The Real King Gold Records' Novomatic 5x3 videoslot
 'The Temple of Astarta' CT Interactive 5x3 videoslot
 'Thrill Spin' NetEnt 5x3 videoslot
+'Tibetan Song' CT Interactive 5x3 videoslot
 'Tiki Wonders' NetEnt 5x3 videoslot
 'Time Machine II' AGT 5x3 videoslot
 'Treasure Hill' CT Interactive 5x4 videoslot
@@ -340,11 +341,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 337 games, 169 algorithms, 11 providers
+total: 338 games, 170 algorithms, 11 providers
 AGT: 64 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 134 games
+CT Interactive: 135 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
