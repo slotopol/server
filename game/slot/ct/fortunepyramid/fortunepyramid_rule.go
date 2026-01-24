@@ -125,5 +125,5 @@ func (g *Game) Spin(mrtp float64) {
 }
 
 func (g *Game) SetSel(sel int) error {
-	return slot.ErrNoFeature
+	return slot.ErrDisabled
 }

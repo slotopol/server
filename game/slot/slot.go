@@ -82,12 +82,10 @@ type ClassicSlot interface {
 }
 
 var (
-	ErrNoWay      = errors.New("no way to here")
-	ErrBetEmpty   = errors.New("bet is empty")
-	ErrNoLineset  = errors.New("lines set is empty")
-	ErrLinesetOut = errors.New("lines set is out of range bet lines")
-	ErrNoFeature  = errors.New("feature not available")
-	ErrDisabled   = errors.New("feature is disabled")
+	ErrNoWay     = errors.New("no way to here")
+	ErrBadParam  = errors.New("wrong parameter")     // parameter is not acceptable
+	ErrNoFeature = errors.New("feature unavailable") // feature is unavailable by game logic
+	ErrDisabled  = errors.New("feature is disabled") // feature is currently can not be applicable
 )
 
 // Slotx is base struct for all slot games with subsequent screen.
@@ -155,7 +153,7 @@ func (g *Slotx) GetBet() float64 {
 
 func (g *Slotx) SetBet(bet float64) error {
 	if bet <= 0 {
-		return ErrBetEmpty
+		return ErrBadParam
 	}
 	if bet == g.Bet {
 		return nil
@@ -172,11 +170,8 @@ func (g *Slotx) GetSel() int {
 }
 
 func (g *Slotx) SetSelNum(sel int, bln int) error {
-	if sel < 1 {
-		return ErrNoLineset
-	}
-	if sel > bln {
-		return ErrLinesetOut
+	if sel < 1 || sel > bln {
+		return ErrBadParam
 	}
 	if sel == g.Sel {
 		return nil

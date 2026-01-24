@@ -91,7 +91,7 @@ type KenoGame interface {
 }
 
 var (
-	ErrBetEmpty      = errors.New("bet is empty")
+	ErrBadParam      = errors.New("wrong parameter") // parameter is not acceptable
 	ErrKenoNotEnough = errors.New("no pays with this selected numbers")
 	ErrKenoTooMany   = errors.New("too many numbers selected, not more than 10 expected")
 	ErrKenoOutRange  = errors.New("some of given number is out of range 1..80")
@@ -127,7 +127,7 @@ func (g *Keno80) GetBet() float64 {
 
 func (g *Keno80) SetBet(bet float64) error {
 	if bet <= 0 {
-		return ErrBetEmpty
+		return ErrBadParam
 	}
 	g.Bet = bet
 	return nil

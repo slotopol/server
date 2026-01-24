@@ -1,6 +1,7 @@
 package americangigolo
 
 // See: https://www.slotsmate.com/software/ct-interactive/american-gigolo
+// similar: ct/tibetansong
 
 import (
 	"github.com/slotopol/server/game/slot"
@@ -107,5 +108,5 @@ func (g *Game) Spin(mrtp float64) {
 }
 
 func (g *Game) SetSel(sel int) error {
-	return slot.ErrNoFeature
+	return slot.ErrDisabled
 }

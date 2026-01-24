@@ -130,5 +130,5 @@ func (g *Game) Prepare() {
 }
 
 func (g *Game) SetSel(sel int) error {
-	return slot.ErrNoFeature
+	return slot.ErrDisabled
 }
