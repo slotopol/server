@@ -1,6 +1,4 @@
-package icefruits
-
-// See: https://agtsoftware.com/games/agt/megaice
+package icefruits6x3
 
 import (
 	"github.com/slotopol/server/game/slot"
@@ -9,25 +7,25 @@ import (
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
-var LinePay = [8][5]float64{
-	{0, 0, 40, 400, 1200}, // 1 wild
-	{},                    // 2 scatter
-	{0, 0, 20, 100, 400},  // 3 grapes
-	{0, 0, 20, 40, 200},   // 4 melon
-	{0, 0, 20, 40, 200},   // 5 plum
-	{0, 0, 10, 24, 120},   // 6 orange
-	{0, 0, 10, 20, 100},   // 7 pear
-	{0, 0, 8, 16, 80},     // 8 cherry
+var LinePay = [8][6]float64{
+	{0, 0, 40, 200, 400, 2000}, // 1 wild
+	{},                         // 2 scatter
+	{0, 0, 30, 80, 160, 500},   // 3 grapes
+	{0, 0, 20, 50, 100, 300},   // 4 melon
+	{0, 0, 20, 50, 100, 300},   // 5 plum
+	{0, 0, 10, 25, 60, 150},    // 6 orange
+	{0, 0, 10, 25, 60, 150},    // 7 pear
+	{0, 0, 10, 25, 60, 150},    // 8 cherry
 }
 
 // Scatters payment.
-var ScatPay = [5]float64{0, 0, 5, 25, 500} // 2 scatter
+var ScatPay = [6]float64{0, 0, 1, 20, 140, 800} // 2 scatter
 
 // Bet lines
-var BetLines = slot.BetLinesAgt5x3[:]
+var BetLines = slot.BetLinesAgt6x3[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Screen6x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -59,10 +57,10 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 // Lined symbols calculation.
 func (g *Game) ScanLined(wins *slot.Wins) {
 	for li, line := range BetLines[:g.Sel] {
-		var numw, numl slot.Pos = 0, 5
+		var numw, numl slot.Pos = 0, 6
 		var syml slot.Sym
 		var x slot.Pos
-		for x = 1; x <= 5; x++ {
+		for x = 1; x <= 6; x++ {
 			var sx = g.LX(x, line)
 			if sx == wild {
 				if syml == 0 {
@@ -125,5 +123,5 @@ func (g *Game) Spin(mrtp float64) {
 }
 
 func (g *Game) SetSel(sel int) error {
-	return slot.ErrDisabled
+	return g.SetSelNum(sel, len(BetLines))
 }

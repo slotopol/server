@@ -184,6 +184,7 @@
 'Hot Cubes' Novomatic 5x3 videoslot
 'Hot Target' Novomatic 5x3 videoslot
 'Ice Fruits' AGT 5x3 videoslot
+'Ice Fruits 6 reels' AGT 6x3 videoslot
 'Ice Ice Ice' AGT 3x3 videoslot
 'Ice Queen' AGT 5x3 videoslot
 'Ice Rubies' CT Interactive 5x4 videoslot
@@ -341,8 +342,8 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 338 games, 170 algorithms, 11 providers
-AGT: 64 games
+total: 339 games, 171 algorithms, 11 providers
+AGT: 65 games
 Aristocrat: 6 games
 BetSoft: 3 games
 CT Interactive: 135 games

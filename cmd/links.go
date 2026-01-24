@@ -23,6 +23,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/agt/halloween"
 	_ "github.com/slotopol/server/game/slot/agt/hotclover"
 	_ "github.com/slotopol/server/game/slot/agt/icefruits"
+	_ "github.com/slotopol/server/game/slot/agt/icefruits6x3"
 	_ "github.com/slotopol/server/game/slot/agt/iceiceice"
 	_ "github.com/slotopol/server/game/slot/agt/icequeen"
 	_ "github.com/slotopol/server/game/slot/agt/infinitygems"

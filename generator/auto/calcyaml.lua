@@ -4,6 +4,8 @@
 
 --- input data begin ---
 
+-- reels number
+local sx = 5
 -- data router ID for bonus reels if it has
 local bonid = nil
 -- data router ID for regular reels map
@@ -42,7 +44,7 @@ local function read_reels(iter)
 	-- Read plain reels data
 	local function reels_lines()
 		local t = {}
-		for i = 1, 5 do
+		for i = 1, sx do
 			t[i] = assert(nextline():match("- %[(.-)%]"))
 		end
 		return t
