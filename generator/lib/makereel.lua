@@ -207,17 +207,15 @@ function makereelchunks(symchunks, sy, scat)
 	return correctchunks(chunks, sy, scat)
 end
 
-function makereelct(symset, sy, scat, ry, bigsym)
+function makereelct(symset, sy, scat, chained)
 	local chunks = {}
-	for sym, n in pairs(bigsym) do
-		assert(n*ry <= symset[sym], "makereelct: not enough symbols for bigsymbol "..sym)
-		for _ = 1, n do
+	for sym, n in pairs(symset) do
+		local ry = chained[sym] or 0
+		if ry > 0 then
+			assert(ry <= n, "makereelct: not enough symbols for bigsymbol "..sym)
 			chunks[#chunks+1] = {sym=sym, n=ry}
 		end
-	end
-	for sym, n in pairs(symset) do
-		n = n - bigsym[sym] * ry
-		for _ = 1, n do
+		for _ = 1, n - ry do
 			local c = {sym=sym, n=1}
 			chunks[#chunks+1] = c
 		end

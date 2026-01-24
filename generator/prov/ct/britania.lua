@@ -14,26 +14,25 @@ local symset = {
 	8, -- 10 jack
 }
 
-local bigsym = {
-	1, --  1 wild (2, 3, 4 reels only)
+local chained = {
+	4, --  1 wild (2, 3, 4 reels only)
 	0, --  2 scatter
-	1, --  3 blue
-	1, --  4 red
-	1, --  5 swords
-	1, --  6 axe
-	1, --  7 ace
-	1, --  8 king
-	1, --  9 queen
-	1, -- 10 jack
+	3, --  3 blue
+	3, --  4 red
+	3, --  5 swords
+	3, --  6 axe
+	4, --  7 ace
+	4, --  8 king
+	4, --  9 queen
+	4, -- 10 jack
 }
 
 local function reelgen(n)
-	local ss, bs = tcopy(symset), tcopy(bigsym)
+	local ss, cs = tcopy(symset), tcopy(chained)
 	if n == 1 or n == 5 then
-		ss[1] = 0
-		bs[1] = 0
+		ss[1], cs[1] = 0, 0
 	end
-	return makereelct(ss, 3, {[1]=true, [2]=true}, 4, bs)
+	return makereelct(ss, 3, {[1]=true, [2]=true}, cs)
 end
 
 if autoscan then

@@ -14,17 +14,17 @@ local symset = {
 	8, -- 10 cherry  100
 }
 
-local bigsym = {
+local chained = {
 	0, --  1 wild
 	0, --  2 scatter
-	1, --  3 seven
-	1, --  4 grape
-	1, --  5 melon
-	1, --  6 apple
-	1, --  7 orange
-	1, --  8 lemon
-	1, --  9 plum
-	1, -- 10 cherry
+	4, --  3 seven
+	4, --  4 grape
+	4, --  5 melon
+	4, --  6 apple
+	4, --  7 orange
+	4, --  8 lemon
+	4, --  9 plum
+	4, -- 10 cherry
 }
 
 local function reelgen(n)
@@ -33,7 +33,7 @@ local function reelgen(n)
 		ss[1] = 0
 		ss[2] = ss[2]-1
 	end
-	return makereelct(ss, 3, {[1]=true, [2]=true}, 4, bigsym)
+	return makereelct(ss, 3, {[1]=true, [2]=true}, chained)
 end
 
 if autoscan then

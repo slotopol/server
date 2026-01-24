@@ -15,18 +15,18 @@ local symset = {
 	8, -- 11 ten       200
 }
 
-local bigsym = {
+local chained = {
 	0, --  1 wild (2, 3, 4, 5 reels only)
 	0, --  2 scatter (1, 3, 5 reels only)
 	0, --  3 cleopatra
 	0, --  4 cat
 	0, --  5 ankh
 	0, --  6 eye
-	1, --  7 ace
-	1, --  8 king
-	1, --  9 queen
-	1, -- 10 jack
-	1, -- 11 ten
+	3, --  7 ace
+	3, --  8 king
+	3, --  9 queen
+	3, -- 10 jack
+	3, -- 11 ten
 }
 
 local function reelgen(n)
@@ -37,7 +37,7 @@ local function reelgen(n)
 	if n == 2 or n == 4 then
 		ss[2] = 0
 	end
-	return makereelct(ss, 3, {[1]=true, [2]=true}, 3, bigsym)
+	return makereelct(ss, 3, {[1]=true, [2]=true}, chained)
 end
 
 if autoscan then

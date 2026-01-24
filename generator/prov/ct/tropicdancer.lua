@@ -1,67 +1,38 @@
 local scripts = arg[0]:match("^(.*generator[/%\\])")
 dofile(scripts.."lib/makereel.lua")
 
-local symset1 = {
-	3, --  1 wild (2, 3, 4, 5 reels only)
-	2, --  2 scatter
-	3, --  3 singer
-	3, --  4 dancer man
-	3, --  5 dancer girl 1
-	3, --  6 dancer girl 2
-	4, --  7 ace
-	4, --  8 king
-	4, --  9 queen
-	4, -- 10 jack
-}
-
-local neighbours = {
-	--1, 2, 3, 4, 5, 6, 7, 8, 9,10,
-	{ 2, 2, 1, 1, 1, 1, 0, 0, 0, 0,}, --  1 wild
-	{ 2, 2, 1, 1, 1, 1, 0, 0, 0, 0,}, --  2 scatter
-	{ 1, 1, 2, 1, 0, 0, 0, 0, 0, 0,}, --  3 singer
-	{ 1, 1, 1, 2, 0, 0, 0, 0, 0, 0,}, --  4 dancer man
-	{ 1, 1, 0, 0, 2, 1, 0, 0, 0, 0,}, --  5 dancer girl 1
-	{ 1, 1, 0, 0, 1, 2, 0, 0, 0, 0,}, --  6 dancer girl 2
-	{ 0, 0, 0, 0, 0, 0, 2, 0, 0, 0,}, --  7 ace
-	{ 0, 0, 0, 0, 0, 0, 0, 2, 0, 0,}, --  8 king
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,}, --  9 queen
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,}, -- 10 jack
-}
-
-local symset2 = {
-	3, --  1 wild (2, 3, 4, 5 reels only)
-	3, --  2 scatter
-	3, --  3 singer
-	3, --  4 dancer man
-	3, --  5 dancer girl 1
-	3, --  6 dancer girl 2
-	4, --  7 ace
-	4, --  8 king
-	4, --  9 queen
-	4, -- 10 jack
-}
-
-local chunklen = {
-	3, --  1 wild
-	3, --  2 scatter
+local symset = {
+	6, --  1 wild (2, 3, 4, 5 reels only)
+	5, --  2 scatter
 	6, --  3 singer
 	6, --  4 dancer man
 	6, --  5 dancer girl 1
 	6, --  6 dancer girl 2
-	6, --  7 ace
-	6, --  8 king
-	6, --  9 queen
-	6, -- 10 jack
+	8, --  7 ace
+	8, --  8 king
+	8, --  9 queen
+	8, -- 10 jack
+}
+
+local chained = {
+	3, --  1 wild
+	3, --  2 scatter
+	3, --  3 singer
+	3, --  4 dancer man
+	3, --  5 dancer girl 1
+	3, --  6 dancer girl 2
+	4, --  7 ace
+	4, --  8 king
+	4, --  9 queen
+	4, -- 10 jack
 }
 
 local function reelgen(n)
-	local ss1, ss2 = tcopy(symset1), tcopy(symset2)
+	local ss, cs = tcopy(symset), tcopy(chained)
 	if n == 1 then
-		ss1[1], ss2[1] = 0, 0
+		ss[1], cs[1] = 0, 0
 	end
-	local reel1, iter1 = makereel(ss1, neighbours)
-	local reel2, iter2 = makereelhot(ss2, 3, {[2]=true}, chunklen)
-	return reelglue(reel1, reel2), iter1, iter2
+	return makereelct(ss, 3, {[1]=true, [2]=true}, cs)
 end
 
 if autoscan then

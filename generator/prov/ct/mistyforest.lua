@@ -1,36 +1,22 @@
 local scripts = arg[0]:match("^(.*generator[/%\\])")
 dofile(scripts.."lib/makereel.lua")
 
-local symset1 = {
-	1, --  1 wild    (2, 3, 4 reels only)
-	1, --  2 scatter
-	3, --  3 woman   1000
-	3, --  4 man     100
-	3, --  5 axe     100
-	3, --  6 hummer  100
-	4, --  7 bear    75
-	4, --  8 wolf    75
-	4, --  9 boar    75
-	5, -- 10 fox     75
+local symset = {
+	2, --  1 wild    (2, 3, 4 reels only)
+	2, --  2 scatter
+	6, --  3 woman   1000
+	7, --  4 man     100
+	7, --  5 axe     100
+	7, --  6 hummer  100
+	8, --  7 bear    75
+	8, --  8 wolf    75
+	8, --  9 boar    75
+	9, -- 10 fox     75
 }
 
-local neighbours = {
-	--1, 2, 3, 4, 5, 6, 7, 8, 9,10,
-	{ 2, 2, 1, 1, 1, 1, 0, 0, 0, 0,}, --  1 wild
-	{ 2, 2, 1, 1, 1, 1, 0, 0, 0, 0,}, --  2 scatter
-	{ 1, 1, 2, 1, 1, 1, 0, 0, 0, 0,}, --  3 woman
-	{ 1, 1, 1, 2, 1, 1, 0, 0, 0, 0,}, --  4 man
-	{ 1, 1, 1, 1, 2, 1, 0, 0, 0, 0,}, --  5 axe
-	{ 1, 1, 1, 1, 1, 2, 0, 0, 0, 0,}, --  6 hummer
-	{ 0, 0, 0, 0, 0, 0, 2, 0, 0, 0,}, --  7 bear
-	{ 0, 0, 0, 0, 0, 0, 0, 2, 0, 0,}, --  8 wolf
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 2, 0,}, --  9 boar
-	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,}, -- 10 fox
-}
-
-local symset2 = {
-	1, --  1 wild
-	1, --  2 scatter
+local chained = {
+	0, --  1 wild
+	0, --  2 scatter
 	3, --  3 woman
 	4, --  4 man
 	4, --  5 axe
@@ -41,27 +27,12 @@ local symset2 = {
 	4, -- 10 fox
 }
 
-local chunklen = {
-	1, --  1 wild
-	1, --  2 scatter
-	6, --  3 woman
-	6, --  4 man
-	6, --  5 axe
-	6, --  6 hummer
-	6, --  7 bear
-	6, --  8 wolf
-	6, --  9 boar
-	6, -- 10 fox
-}
-
 local function reelgen(n)
-	local ss1, ss2 = tcopy(symset1), tcopy(symset2)
+	local ss = tcopy(symset)
 	if n == 1 or n == 5 then
-		ss1[1], ss2[1] = 0, 0
+		ss[1] = 0
 	end
-	local reel1, iter1 = makereel(ss1, neighbours)
-	local reel2, iter2 = makereelhot(ss2, 3, {[2]=true}, chunklen)
-	return reelglue(reel1, reel2), iter1, iter2
+	return makereelct(ss, 3, {[1]=true, [2]=true}, chained)
 end
 
 if autoscan then
