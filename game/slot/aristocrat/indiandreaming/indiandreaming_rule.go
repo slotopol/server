@@ -65,11 +65,11 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 	}
 	var nw = counts[0][wild] + counts[1][wild] + counts[2][wild] + counts[3][wild] + counts[4][wild]
 	// Ways calculation
+	var mm = 1 // mult mode
+	if g.FSR > 0 && nw > 0 {
+		mm = 5
+	}
 	if nw < 5 {
-		var mwm = 1 // mult wild mode
-		if g.FSR > 0 {
-			mwm = 5
-		}
 		var combs1 = [sn + 1]int{0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1} // pure symbols
 		var combs2 = [sn + 1]int{0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1} // symbols + wilds
 		for x, cx := range counts {
@@ -79,7 +79,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 				var n = cx[sym] + cx[wild]
 				combs1[sym] = c1 * cx[sym]
 				combs2[sym] = c2 * n
-				var c = (c2-c1-cw)*mwm + c1
+				var c = (c2-c1-cw)*mm + c1
 				if x >= linemin && c > 0 && n == 0 {
 					var pay = LinePay[sym-1][x-1]
 					*wins = append(*wins, slot.WinItem{
@@ -108,7 +108,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 							var pay = LinePay[sym-1][x-1]
 							*wins = append(*wins, slot.WinItem{
 								Pay: g.Bet * pay,
-								MP:  float64(c1 + (c2-c1-cw)*mwm),
+								MP:  float64(c1 + (c2-c1-cw)*mm),
 								Sym: sym,
 								Num: slot.Pos(x),
 								LI:  243,
@@ -127,14 +127,10 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 	// Scatters calculation
 	var ns = counts[0][scat] + counts[1][scat] + counts[2][scat] + counts[3][scat] + counts[4][scat]
 	if ns+nw >= 3 {
-		var mw float64 = 1 // mult wild
-		if g.FSR > 0 && nw > 0 {
-			mw = 5
-		}
 		var pay = ScatPay[ns+nw-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * pay,
-			MP:  mw,
+			MP:  float64(mm),
 			Sym: scat,
 			Num: slot.Pos(ns + nw),
 			XY:  g.SymPos2(scat, wild),

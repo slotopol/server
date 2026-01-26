@@ -49,9 +49,9 @@ local function calculate(reels)
 
 	-- Count symbols occurrences on each reel
 	local counts = {}
-	for symbol_id in pairs(PAYTABLE_LINE) do
-		counts[symbol_id] = {}
-		for i = 1, sx do counts[symbol_id][i] = 0 end
+	for sym_id in pairs(PAYTABLE_LINE) do
+		counts[sym_id] = {}
+		for i = 1, sx do counts[sym_id][i] = 0 end
 	end
 	for i, r in ipairs(reels) do
 		for _, sym in ipairs(r) do
@@ -65,9 +65,9 @@ local function calculate(reels)
 		local w = counts[wild]
 
 		-- Iterate through all symbols that pay on lines
-		for symbol_id, pays in pairs(PAYTABLE_LINE) do
-			if symbol_id ~= wild and #pays > 0 then
-				local s = counts[symbol_id]
+		for sym_id, pays in pairs(PAYTABLE_LINE) do
+			if sym_id ~= wild and #pays > 0 then
+				local s = counts[sym_id]
 				local c = {}
 				for i = 1, sx do c[i] = s[i] + w[i] end
 

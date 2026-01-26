@@ -47,9 +47,9 @@ local function calculate(reels)
 
 	-- Count symbols occurrences on each reel
 	local counts = {}
-	for symbol_id in pairs(PAYTABLE_LINE) do
-		counts[symbol_id] = {}
-		for i = 1, sx do counts[symbol_id][i] = 0 end
+	for sym_id in pairs(PAYTABLE_LINE) do
+		counts[sym_id] = {}
+		for i = 1, sx do counts[sym_id][i] = 0 end
 	end
 	for i, r in ipairs(reels) do
 		for _, sym in ipairs(r) do
@@ -69,17 +69,17 @@ local function calculate(reels)
 		local b3 = counts[bar3]
 
 		-- Iterate through all symbols that pay on lines
-		for symbol_id, pay in pairs(PAYTABLE_LINE) do
-			if symbol_id ~= space then
-				local s = counts[symbol_id]
+		for sym_id, pay in pairs(PAYTABLE_LINE) do
+			if sym_id ~= space then
+				local s = counts[sym_id]
 				local comb = s[1] * s[2] * s[3]
 				ev_sum = ev_sum + comb * pay
 			end
 		end
 		-- 1 diamond and any 2 symbols
-		for symbol_id, pay in pairs(PAYTABLE_LINE) do
-			if symbol_id ~= diamond and symbol_id ~= space then
-				local s = counts[symbol_id]
+		for sym_id, pay in pairs(PAYTABLE_LINE) do
+			if sym_id ~= diamond and sym_id ~= space then
+				local s = counts[sym_id]
 				local comb =
 					w[1] * s[2] * s[3] +
 					s[1] * w[2] * s[3] +
@@ -88,9 +88,9 @@ local function calculate(reels)
 			end
 		end
 		-- 2 diamonds and any 1 symbol
-		for symbol_id, pay in pairs(PAYTABLE_LINE) do
-			if symbol_id ~= diamond and symbol_id ~= space then
-				local s = counts[symbol_id]
+		for sym_id, pay in pairs(PAYTABLE_LINE) do
+			if sym_id ~= diamond and sym_id ~= space then
+				local s = counts[sym_id]
 				local comb =
 					w[1] * w[2] * s[3] +
 					s[1] * w[2] * w[3] +

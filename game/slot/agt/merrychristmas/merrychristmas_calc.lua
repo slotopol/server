@@ -42,9 +42,9 @@ local function calculate(reels)
 
 	-- Count symbols occurrences on each reel
 	local counts = {}
-	for symbol_id in pairs(PAYTABLE_LINE) do
-		counts[symbol_id] = {}
-		for i = 1, sx do counts[symbol_id][i] = 0 end
+	for sym_id in pairs(PAYTABLE_LINE) do
+		counts[sym_id] = {}
+		for i = 1, sx do counts[sym_id][i] = 0 end
 	end
 	for i, r in ipairs(reels) do
 		for _, sym in ipairs(r) do
@@ -61,9 +61,9 @@ local function calculate(reels)
 		ev_sum = ev_sum + comb_w3 * PAYTABLE_LINE[wild]
 
 		-- Iterate through all symbols that pay on lines
-		for symbol_id, pay in pairs(PAYTABLE_LINE) do
-			if symbol_id ~= wild and symbol_id ~= scat then
-				local s = counts[symbol_id]
+		for sym_id, pay in pairs(PAYTABLE_LINE) do
+			if sym_id ~= wild and sym_id ~= scat then
+				local s = counts[sym_id]
 				local comb = (s[1] + w[1]) * (s[2] + w[2]) * (s[3] + w[3]) - comb_w3
 				ev_sum = ev_sum + comb * pay
 			end
@@ -77,9 +77,9 @@ local function calculate(reels)
 		local ev_sum = 0
 
 		-- Iterate through all symbols that pay on lines
-		for symbol_id, pay in pairs(PAYTABLE_LINE) do
-			if symbol_id ~= scat then
-				local s = counts[symbol_id]
+		for sym_id, pay in pairs(PAYTABLE_LINE) do
+			if sym_id ~= scat then
+				local s = counts[sym_id]
 				local comb = s[1] * s[2] * s[3]
 				ev_sum = ev_sum + comb * pay
 			end

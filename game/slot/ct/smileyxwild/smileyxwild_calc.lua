@@ -46,9 +46,9 @@ local function calculate(reels)
 
 	-- Count symbols occurrences on each reel
 	local counts = {}
-	for symbol_id in pairs(PAYTABLE_LINE) do
-		counts[symbol_id] = {}
-		for i = 1, sx do counts[symbol_id][i] = 0 end
+	for sym_id in pairs(PAYTABLE_LINE) do
+		counts[sym_id] = {}
+		for i = 1, sx do counts[sym_id][i] = 0 end
 	end
 	for i, r in ipairs(reels) do
 		for _, sym in ipairs(r) do
@@ -65,10 +65,10 @@ local function calculate(reels)
 			"wilds should not appear on reels 1, 3, 5")
 
 		-- Iterate through all symbols that pay on lines
-		for symbol_id, pays in pairs(PAYTABLE_LINE) do
-			if symbol_id ~= wild and #pays > 0 then
+		for sym_id, pays in pairs(PAYTABLE_LINE) do
+			if sym_id ~= wild and #pays > 0 then
 				-- count symbol occurrences without wilds
-				local s = counts[symbol_id]
+				local s = counts[sym_id]
 
 				-- 5-of-a-kind (XXXXX) EV: W on R2 and W on R4
 				local comb5_ww = s[1] * w[2] * s[3] * w[4] * s[5]
