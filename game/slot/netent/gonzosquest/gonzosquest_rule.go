@@ -29,8 +29,8 @@ type Game struct {
 	slot.Slotx      `yaml:",inline"`
 }
 
-// Declare conformity with CascadeSlot interface.
-var _ slot.CascadeSlot = (*Game)(nil)
+// Declare conformity with SlotCascade interface.
+var _ slot.SlotCascade = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{

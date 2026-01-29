@@ -41,11 +41,10 @@ func BruteForceEuro(ctx context.Context, s slot.Stater, g *Game, reels slot.Reel
 							sym = g.At(x, y)
 							g.SetSym(x, y, wild)
 						}
-						g.Scanner(&wins)
+						s.Simulate(g, reels, &wins)
 						if x > 0 {
 							g.SetSym(x, y, sym)
 						}
-						s.Update(wins, 1)
 						wins.Reset()
 					}
 				}

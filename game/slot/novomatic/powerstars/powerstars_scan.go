@@ -52,11 +52,10 @@ func BruteForceStars(ctx context.Context, s slot.Stater, g *Game, reels slot.Ree
 						if wc4 {
 							g.SetSym(4, 1, wild)
 						}
-						g.Scanner(&wins)
+						s.Simulate(g, reels, &wins)
 						g.SetSym(2, 1, sym2)
 						g.SetSym(3, 1, sym3)
 						g.SetSym(4, 1, sym4)
-						s.Update(wins, 1)
 						wins.Reset()
 					}
 				}
@@ -92,7 +91,7 @@ func CalcStatStars(ctx context.Context, wc2, wc3, wc4 bool) float64 {
 		go slot.Progress(ctx2, &s, calc)
 		BruteForceStars(ctx2, &s, g, reels, wc2, wc3, wc4)
 		var dur = time.Since(t0)
-		var comp = s.Reshuf(1) / float64(s.Planned()) * 100
+		var comp = s.Count() / float64(s.GetPlan()) * 100
 		fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", comp, g.GetSel(), dur)
 	}()
 	return calc(os.Stdout)

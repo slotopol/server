@@ -76,7 +76,7 @@ type SlotGame interface {
 // If scanner algorithm receives wrong data - its case for panic.
 // The scanning method should never change the game state.
 
-type ClassicSlot interface {
+type SlotGeneric interface {
 	Screen
 	SlotGame
 }

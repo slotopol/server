@@ -12,15 +12,15 @@ type Cascade interface {
 // if the same positions appear on the reels during a spin, there
 // will be an endless avalanche.
 
-type CascadeSlot interface {
+type SlotCascade interface {
 	Cascade
-	ClassicSlot
+	SlotGeneric
 }
 
 type Cascade5x3 struct {
 	Screen5x3 `yaml:",inline"`
-	Hit       [5][3]Pos `json:"hit" yaml:"hit,flow" xml:"hit"` // hits to fall down
-	Pos       [5]int    `json:"pos" yaml:"pos,flow" xml:"pos"` // reels positions
+	Hits      [5][3]Pos `json:"hits" yaml:"hits,flow" xml:"hits"` // hits to fall down
+	Seed      [5]int    `json:"seed" yaml:"seed,flow" xml:"seed"` // reels positions
 	// cascade fall number
 	CFN int `json:"cfn,omitempty" yaml:"cfn,omitempty" xml:"cfn,omitempty"`
 }
@@ -35,7 +35,7 @@ func (s *Cascade5x3) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range sr {
 		sr[y] = reel[(pos+y)%n]
 	}
-	s.Pos[x-1] = pos
+	s.Seed[x-1] = pos
 }
 
 func (s *Cascade5x3) SpinReels(reels Reelx) {
@@ -54,7 +54,7 @@ func (s *Cascade5x3) TopFall(reels Reelx) {
 }
 
 func (s *Cascade5x3) PushFall(reels Reelx) {
-	for x, hr := range s.Hit {
+	for x, hr := range s.Hits {
 		var sr = &s.Scr[x]
 		// fall old symbols
 		var n = 0
@@ -67,16 +67,16 @@ func (s *Cascade5x3) PushFall(reels Reelx) {
 			}
 		}
 		// fall new symbols
-		s.Pos[x] -= n
+		s.Seed[x] -= n
 		for y := range n {
-			sr[y] = ReelAt(reels[x], s.Pos[x]+y)
+			sr[y] = ReelAt(reels[x], s.Seed[x]+y)
 		}
 	}
 }
 
 // Returns true on avalanche continue.
 func (s *Cascade5x3) Cascade() bool {
-	for _, hr := range s.Hit {
+	for _, hr := range s.Hits {
 		for _, h := range hr {
 			if h > 0 {
 				return true
@@ -95,18 +95,18 @@ func (s *Cascade5x3) UntoFall() {
 }
 
 func (s *Cascade5x3) Strike(wins Wins) {
-	clear(s.Hit[:])
+	clear(s.Hits[:])
 	for _, wi := range wins {
 		for i := 0; wi.XY[i][0] > 0; i++ {
-			s.Hit[wi.XY[i][0]-1][wi.XY[i][1]-1]++
+			s.Hits[wi.XY[i][0]-1][wi.XY[i][1]-1]++
 		}
 	}
 }
 
 type Cascade5x4 struct {
 	Screen5x4 `yaml:",inline"`
-	Hit       [5][4]Pos `json:"hit" yaml:"hit,flow" xml:"hit"` // hits to fall down
-	Pos       [5]int    `json:"pos" yaml:"pos,flow" xml:"pos"` // reels positions
+	Hits      [5][4]Pos `json:"hits" yaml:"hits,flow" xml:"hits"` // hits to fall down
+	Seed      [5]int    `json:"seed" yaml:"seed,flow" xml:"seed"` // reels positions
 	// cascade fall number
 	CFN int `json:"cfn,omitempty" yaml:"cfn,omitempty" xml:"cfn,omitempty"`
 }
@@ -121,7 +121,7 @@ func (s *Cascade5x4) SetCol(x Pos, reel []Sym, pos int) {
 	for y := range sr {
 		sr[y] = reel[(pos+y)%n]
 	}
-	s.Pos[x-1] = pos
+	s.Seed[x-1] = pos
 }
 
 func (s *Cascade5x4) SpinReels(reels Reelx) {
@@ -140,7 +140,7 @@ func (s *Cascade5x4) TopFall(reels Reelx) {
 }
 
 func (s *Cascade5x4) PushFall(reels Reelx) {
-	for x, hr := range s.Hit {
+	for x, hr := range s.Hits {
 		var sr = &s.Scr[x]
 		// fall old symbols
 		var n = 0
@@ -153,16 +153,16 @@ func (s *Cascade5x4) PushFall(reels Reelx) {
 			}
 		}
 		// fall new symbols
-		s.Pos[x] -= n
+		s.Seed[x] -= n
 		for y := range n {
-			sr[y] = ReelAt(reels[x], s.Pos[x]+y)
+			sr[y] = ReelAt(reels[x], s.Seed[x]+y)
 		}
 	}
 }
 
 // Returns true on avalanche continue.
 func (s *Cascade5x4) Cascade() bool {
-	for _, hr := range s.Hit {
+	for _, hr := range s.Hits {
 		for _, h := range hr {
 			if h > 0 {
 				return true
@@ -181,10 +181,10 @@ func (s *Cascade5x4) UntoFall() {
 }
 
 func (s *Cascade5x4) Strike(wins Wins) {
-	clear(s.Hit[:])
+	clear(s.Hits[:])
 	for _, wi := range wins {
 		for i := 0; wi.XY[i][0] > 0; i++ {
-			s.Hit[wi.XY[i][0]-1][wi.XY[i][1]-1]++
+			s.Hits[wi.XY[i][0]-1][wi.XY[i][1]-1]++
 		}
 	}
 }
@@ -194,10 +194,10 @@ func CascadeGain(game SlotGame, wins Wins, fund, mrtp float64) (sumgain float64,
 	if len(wins) == 0 {
 		return
 	}
-	if _, ok := game.(CascadeSlot); !ok {
+	if _, ok := game.(SlotCascade); !ok {
 		return
 	}
-	var casc = game.Clone().(CascadeSlot)
+	var casc = game.Clone().(SlotCascade)
 	casc.Strike(wins)
 	var cfn = 1
 	var cw Wins
