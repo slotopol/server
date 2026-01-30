@@ -48,7 +48,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [34, 37, 35, 33, 32], total reshuffles 46495680
 # symbols: 65.455(lined) + 0(scatter) = 65.455010%
 # free spins 1841664, q3 = 0.0029071, q4 = 0.013082, q5 = 0.016352, q6 = 0.0072678
-# free games frequency: 1/343.98
+# free games hit rate: 1/343.98
 # RTP = 65.455(sym) + 22.335(fg) = 87.790375%
 87.790375:
   - [2, 2, 10, 11, 7, 8, 12, 9, 8, 4, 11, 7, 8, 9, 12, 5, 10, 12, 5, 8, 11, 6, 9, 10, 3, 9, 6, 7, 12, 10, 4, 7, 11, 3] # 34
@@ -60,7 +60,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [34, 37, 35, 33, 32], total reshuffles 46495680
 # symbols: 66.078(lined) + 0(scatter) = 66.077705%
 # free spins 1841664, q3 = 0.0029071, q4 = 0.013082, q5 = 0.016352, q6 = 0.0072678
-# free games frequency: 1/343.98
+# free games hit rate: 1/343.98
 # RTP = 66.078(sym) + 22.335(fg) = 88.413070%
 88.413070:
   - [2, 2, 11, 10, 8, 6, 11, 4, 9, 3, 10, 5, 12, 9, 4, 12, 8, 6, 11, 7, 6, 12, 7, 3, 10, 11, 7, 8, 9, 12, 5, 9, 10, 5] # 34
@@ -72,7 +72,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [34, 37, 34, 33, 32], total reshuffles 45167232
 # symbols: 66.311(lined) + 0(scatter) = 66.311042%
 # free spins 1841664, q3 = 0.0029926, q4 = 0.013467, q5 = 0.016833, q6 = 0.0074815
-# free games frequency: 1/334.16
+# free games hit rate: 1/334.16
 # RTP = 66.311(sym) + 22.992(fg) = 89.303330%
 89.303330:
   - [2, 2, 11, 10, 8, 6, 11, 4, 9, 3, 10, 5, 12, 9, 4, 12, 8, 6, 11, 7, 6, 12, 7, 3, 10, 11, 7, 8, 9, 12, 5, 9, 10, 5] # 34
@@ -84,7 +84,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [34, 36, 34, 32, 32], total reshuffles 42614784
 # symbols: 67.405(lined) + 0(scatter) = 67.405419%
 # free spins 1785856, q3 = 0.0030757, q4 = 0.013841, q5 = 0.017301, q6 = 0.0076894
-# free games frequency: 1/325.12
+# free games hit rate: 1/325.12
 # RTP = 67.405(sym) + 23.631(fg) = 91.036381%
 91.036381:
   - [2, 2, 11, 10, 8, 6, 11, 4, 9, 3, 10, 5, 12, 9, 4, 12, 8, 6, 11, 7, 6, 12, 7, 3, 10, 11, 7, 8, 9, 12, 5, 9, 10, 5] # 34
@@ -96,7 +96,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [33, 36, 34, 32, 32], total reshuffles 41361408
 # symbols: 67.727(lined) + 0(scatter) = 67.726751%
 # free spins 1785856, q3 = 0.0031689, q4 = 0.01426, q5 = 0.017825, q6 = 0.0079224
-# free games frequency: 1/315.56
+# free games hit rate: 1/315.56
 # RTP = 67.727(sym) + 24.347(fg) = 92.073802%
 92.073802:
   - [2, 2, 5, 11, 4, 8, 5, 12, 9, 7, 6, 8, 11, 3, 10, 11, 3, 10, 5, 11, 4, 10, 12, 6, 9, 7, 12, 6, 8, 10, 12, 7, 9] # 33
@@ -108,7 +108,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [33, 36, 34, 32, 32], total reshuffles 41361408
 # symbols: 68.178(lined) + 0(scatter) = 68.177954%
 # free spins 1785856, q3 = 0.0031689, q4 = 0.01426, q5 = 0.017825, q6 = 0.0079224
-# free games frequency: 1/315.56
+# free games hit rate: 1/315.56
 # RTP = 68.178(sym) + 24.347(fg) = 92.525006%
 92.525006:
   - [2, 2, 5, 11, 4, 8, 5, 12, 9, 7, 6, 8, 11, 3, 10, 11, 3, 10, 5, 11, 4, 10, 12, 6, 9, 7, 12, 6, 8, 10, 12, 7, 9] # 33
@@ -120,7 +120,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [33, 36, 34, 32, 31], total reshuffles 40068864
 # symbols: 68.504(lined) + 0(scatter) = 68.504075%
 # free spins 1730048, q3 = 0.0031689, q4 = 0.01426, q5 = 0.017825, q6 = 0.0079224
-# free games frequency: 1/315.56
+# free games hit rate: 1/315.56
 # RTP = 68.504(sym) + 24.347(fg) = 92.851127%
 92.851127:
   - [2, 2, 5, 11, 4, 8, 5, 12, 9, 7, 6, 8, 11, 3, 10, 11, 3, 10, 5, 11, 4, 10, 12, 6, 9, 7, 12, 6, 8, 10, 12, 7, 9] # 33
@@ -132,7 +132,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [33, 36, 34, 31, 31], total reshuffles 38816712
 # symbols: 68.853(lined) + 0(scatter) = 68.853411%
 # free spins 1675984, q3 = 0.0031689, q4 = 0.01426, q5 = 0.017825, q6 = 0.0079224
-# free games frequency: 1/315.56
+# free games hit rate: 1/315.56
 # RTP = 68.853(sym) + 24.347(fg) = 93.200463%
 93.200463:
   - [2, 2, 5, 11, 4, 8, 5, 12, 9, 7, 6, 8, 11, 3, 10, 11, 3, 10, 5, 11, 4, 10, 12, 6, 9, 7, 12, 6, 8, 10, 12, 7, 9] # 33
@@ -144,7 +144,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [33, 35, 34, 32, 31], total reshuffles 38955840
 # symbols: 69.001(lined) + 0(scatter) = 69.001127%
 # free spins 1730048, q3 = 0.0032595, q4 = 0.014668, q5 = 0.018335, q6 = 0.0081487
-# free games frequency: 1/306.8
+# free games hit rate: 1/306.8
 # RTP = 69.001(sym) + 25.043(fg) = 94.043809%
 94.043809:
   - [2, 2, 5, 11, 4, 8, 5, 12, 9, 7, 6, 8, 11, 3, 10, 11, 3, 10, 5, 11, 4, 10, 12, 6, 9, 7, 12, 6, 8, 10, 12, 7, 9] # 33
@@ -156,7 +156,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [33, 36, 33, 32, 31], total reshuffles 38890368
 # symbols: 69.117(lined) + 0(scatter) = 69.117291%
 # free spins 1730048, q3 = 0.003265, q4 = 0.014692, q5 = 0.018365, q6 = 0.0081624
-# free games frequency: 1/306.28
+# free games hit rate: 1/306.28
 # RTP = 69.117(sym) + 25.085(fg) = 94.202132%
 94.202132:
   - [2, 2, 5, 11, 4, 8, 5, 12, 9, 7, 6, 8, 11, 3, 10, 11, 3, 10, 5, 11, 4, 10, 12, 6, 9, 7, 12, 6, 8, 10, 12, 7, 9] # 33
@@ -168,7 +168,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [33, 35, 34, 31, 30], total reshuffles 36521100
 # symbols: 69.716(lined) + 0(scatter) = 69.716454%
 # free spins 1621920, q3 = 0.0032595, q4 = 0.014668, q5 = 0.018335, q6 = 0.0081487
-# free games frequency: 1/306.8
+# free games hit rate: 1/306.8
 # RTP = 69.716(sym) + 25.043(fg) = 94.759136%
 94.759136:
   - [2, 2, 5, 11, 4, 8, 5, 12, 9, 7, 6, 8, 11, 3, 10, 11, 3, 10, 5, 11, 4, 10, 12, 6, 9, 7, 12, 6, 8, 10, 12, 7, 9] # 33
@@ -180,7 +180,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [32, 35, 34, 31, 32], total reshuffles 37775360
 # symbols: 69.666(lined) + 0(scatter) = 69.665869%
 # free spins 1730048, q3 = 0.0033613, q4 = 0.015126, q5 = 0.018908, q6 = 0.0084034
-# free games frequency: 1/297.5
+# free games hit rate: 1/297.5
 # RTP = 69.666(sym) + 25.825(fg) = 95.491135%
 95.491135:
   - [2, 2, 10, 12, 6, 9, 11, 7, 3, 11, 5, 10, 4, 12, 7, 5, 8, 12, 6, 9, 11, 10, 8, 6, 12, 5, 9, 7, 3, 11, 8, 4] # 32
@@ -192,7 +192,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [32, 35, 34, 32, 30], total reshuffles 36556800
 # symbols: 69.838(lined) + 0(scatter) = 69.838038%
 # free spins 1674240, q3 = 0.0033613, q4 = 0.015126, q5 = 0.018908, q6 = 0.0084034
-# free games frequency: 1/297.5
+# free games hit rate: 1/297.5
 # RTP = 69.838(sym) + 25.825(fg) = 95.663304%
 95.663304:
   - [2, 2, 10, 12, 6, 9, 11, 7, 3, 11, 5, 10, 4, 12, 7, 5, 8, 12, 6, 9, 11, 10, 8, 6, 12, 5, 9, 7, 3, 11, 8, 4] # 32
@@ -204,7 +204,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [32, 36, 33, 31, 32], total reshuffles 37711872
 # symbols: 70.278(lined) + 0(scatter) = 70.278020%
 # free spins 1730048, q3 = 0.003367, q4 = 0.015152, q5 = 0.018939, q6 = 0.0084175
-# free games frequency: 1/297
+# free games hit rate: 1/297
 # RTP = 70.278(sym) + 25.869(fg) = 96.146762%
 96.146762:
   - [2, 2, 10, 12, 6, 9, 11, 7, 3, 11, 5, 10, 4, 12, 7, 5, 8, 12, 6, 9, 11, 10, 8, 6, 12, 5, 9, 7, 3, 11, 8, 4] # 32
@@ -216,7 +216,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [32, 35, 33, 32, 32], total reshuffles 37847040
 # symbols: 70.544(lined) + 0(scatter) = 70.543869%
 # free spins 1785856, q3 = 0.0034632, q4 = 0.015584, q5 = 0.019481, q6 = 0.008658
-# free games frequency: 1/288.75
+# free games hit rate: 1/288.75
 # RTP = 70.544(sym) + 26.608(fg) = 97.151719%
 97.151719:
   - [2, 2, 10, 12, 6, 9, 11, 7, 3, 11, 5, 10, 4, 12, 7, 5, 8, 12, 6, 9, 11, 10, 8, 6, 12, 5, 9, 7, 3, 11, 8, 4] # 32
@@ -228,7 +228,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [32, 35, 33, 31, 32], total reshuffles 36664320
 # symbols: 71.5(lined) + 0(scatter) = 71.499830%
 # free spins 1730048, q3 = 0.0034632, q4 = 0.015584, q5 = 0.019481, q6 = 0.008658
-# free games frequency: 1/288.75
+# free games hit rate: 1/288.75
 # RTP = 71.5(sym) + 26.608(fg) = 98.107679%
 98.107679:
   - [2, 2, 10, 12, 6, 9, 11, 7, 3, 11, 5, 10, 4, 12, 7, 5, 8, 12, 6, 9, 11, 10, 8, 6, 12, 5, 9, 7, 3, 11, 8, 4] # 32
@@ -240,7 +240,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [32, 35, 33, 31, 30], total reshuffles 34372800
 # symbols: 72.195(lined) + 0(scatter) = 72.194554%
 # free spins 1621920, q3 = 0.0034632, q4 = 0.015584, q5 = 0.019481, q6 = 0.008658
-# free games frequency: 1/288.75
+# free games hit rate: 1/288.75
 # RTP = 72.195(sym) + 26.608(fg) = 98.802403%
 98.802403:
   - [2, 2, 10, 12, 6, 9, 11, 7, 3, 11, 5, 10, 4, 12, 7, 5, 8, 12, 6, 9, 11, 10, 8, 6, 12, 5, 9, 7, 3, 11, 8, 4] # 32
@@ -252,7 +252,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [32, 34, 33, 32, 30], total reshuffles 34467840
 # symbols: 71.604(lined) + 0(scatter) = 71.604069%
 # free spins 1674240, q3 = 0.0035651, q4 = 0.016043, q5 = 0.020053, q6 = 0.0089127
-# free games frequency: 1/280.5
+# free games hit rate: 1/280.5
 # RTP = 71.604(sym) + 27.39(fg) = 98.994502%
 98.994502:
   - [2, 2, 10, 12, 6, 9, 11, 7, 3, 11, 5, 10, 4, 12, 7, 5, 8, 12, 6, 9, 11, 10, 8, 6, 12, 5, 9, 7, 3, 11, 8, 4] # 32
@@ -264,7 +264,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [32, 34, 33, 31, 30], total reshuffles 33390720
 # symbols: 72.649(lined) + 0(scatter) = 72.648956%
 # free spins 1621920, q3 = 0.0035651, q4 = 0.016043, q5 = 0.020053, q6 = 0.0089127
-# free games frequency: 1/280.5
+# free games hit rate: 1/280.5
 # RTP = 72.649(sym) + 27.39(fg) = 100.039390%
 100.039390:
   - [2, 2, 10, 12, 6, 9, 11, 7, 3, 11, 5, 10, 4, 12, 7, 5, 8, 12, 6, 9, 11, 10, 8, 6, 12, 5, 9, 7, 3, 11, 8, 4] # 32
@@ -276,7 +276,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [31, 35, 32, 30, 29], total reshuffles 30206400
 # symbols: 74.324(lined) + 0(scatter) = 74.324011%
 # free spins 1517280, q3 = 0.0036866, q4 = 0.01659, q5 = 0.020737, q6 = 0.0092166
-# free games frequency: 1/271.25
+# free games hit rate: 1/271.25
 # RTP = 74.324(sym) + 28.324(fg) = 102.648496%
 102.648496:
   - [2, 2, 12, 9, 5, 12, 9, 7, 12, 8, 6, 11, 4, 10, 6, 9, 3, 8, 10, 5, 11, 7, 5, 12, 3, 7, 11, 4, 8, 6, 10] # 31
@@ -288,7 +288,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [31, 34, 32, 30, 29], total reshuffles 29343360
 # symbols: 75.706(lined) + 0(scatter) = 75.705735%
 # free spins 1517280, q3 = 0.0037951, q4 = 0.017078, q5 = 0.021347, q6 = 0.0094877
-# free games frequency: 1/263.5
+# free games hit rate: 1/263.5
 # RTP = 75.706(sym) + 29.158(fg) = 104.863293%
 104.863293:
   - [2, 2, 12, 9, 5, 12, 9, 7, 12, 8, 6, 11, 4, 10, 6, 9, 3, 8, 10, 5, 11, 7, 5, 12, 3, 7, 11, 4, 8, 6, 10] # 31
@@ -300,7 +300,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [31, 34, 32, 30, 29], total reshuffles 29343360
 # symbols: 78.401(lined) + 0(scatter) = 78.401009%
 # free spins 1517280, q3 = 0.0037951, q4 = 0.017078, q5 = 0.021347, q6 = 0.0094877
-# free games frequency: 1/263.5
+# free games hit rate: 1/263.5
 # RTP = 78.401(sym) + 29.158(fg) = 107.558567%
 107.558567:
   - [2, 2, 8, 5, 12, 3, 7, 6, 8, 9, 10, 5, 7, 6, 11, 9, 4, 12, 10, 4, 12, 3, 10, 6, 11, 4, 8, 5, 9, 11, 7] # 31
@@ -312,7 +312,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [31, 34, 32, 30, 29], total reshuffles 29343360
 # symbols: 79.977(lined) + 0(scatter) = 79.976657%
 # free spins 1517280, q3 = 0.0037951, q4 = 0.017078, q5 = 0.021347, q6 = 0.0094877
-# free games frequency: 1/263.5
+# free games hit rate: 1/263.5
 # RTP = 79.977(sym) + 29.158(fg) = 109.134215%
 109.134215:
   - [2, 2, 8, 5, 12, 3, 7, 6, 8, 9, 10, 5, 7, 6, 11, 9, 4, 12, 10, 4, 12, 3, 10, 6, 11, 4, 8, 5, 9, 11, 7] # 31
@@ -324,7 +324,7 @@ novomatic/jaguarmoon/reel
 # reels lengths [31, 34, 32, 30, 29], total reshuffles 29343360
 # symbols: 84.3(lined) + 0(scatter) = 84.300137%
 # free spins 1517280, q3 = 0.0037951, q4 = 0.017078, q5 = 0.021347, q6 = 0.0094877
-# free games frequency: 1/263.5
+# free games hit rate: 1/263.5
 # RTP = 84.3(sym) + 29.158(fg) = 113.457695%
 113.457695:
   - [2, 2, 8, 5, 12, 3, 7, 6, 8, 9, 10, 5, 7, 6, 11, 9, 4, 12, 10, 4, 12, 3, 10, 6, 11, 4, 8, 5, 9, 11, 7] # 31

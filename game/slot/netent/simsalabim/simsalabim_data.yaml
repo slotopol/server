@@ -8,7 +8,7 @@ netent/simsalabim/bon
 # reels lengths [29, 29, 29, 29, 29], total reshuffles 20511149
 # symbols: 193.44(lined) + 61.512(scatter) = 254.952806%
 # free spins 2043090, q = 0.099609, sq = 1/(1-q) = 1.110628
-# free games frequency: 1/106.11
+# free games hit rate: 1/106.11
 # RTP = sq*rtp(sym) = 1.1106*254.95 = 283.157802%
 - [3, 2, 6, 8, 7, 4, 1, 5, 2, 7, 6, 8, 7, 3, 5, 4, 6, 1, 8, 10, 2, 4, 7, 3, 5, 1, 8, 6, 11] # 29
 - [3, 8, 6, 5, 4, 2, 6, 1, 2, 10, 3, 6, 7, 8, 11, 1, 3, 7, 1, 8, 4, 5, 2, 4, 7, 8, 5, 7, 6] # 29
@@ -50,8 +50,8 @@ netent/simsalabim/reel
 # reels lengths [36, 36, 36, 36, 36], total reshuffles 60466176
 # symbols: 38.853(lined) + 13.276(scatter) = 52.128888%
 # free spins 3214890, q = 0.053168, sq = 1/(1-q) = 1.056154
-# free games frequency: 1/196.55
-# ne12 bonuses: frequency 1/1728, rtp = 17.361111%
+# free games hit rate: 1/196.55
+# ne12 bonuses: hit rate 1/1728, rtp = 17.361111%
 # RTP = 52.129(sym) + 17.361(ne12) + 0.053168*283.16(fg) = 84.545047%
 84.545047:
   - [7, 10, 2, 8, 7, 4, 1, 5, 11, 6, 3, 1, 5, 8, 3, 1, 4, 6, 7, 2, 8, 9, 6, 7, 9, 5, 8, 3, 9, 7, 6, 2, 5, 8, 4, 6] # 36
@@ -63,8 +63,8 @@ netent/simsalabim/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 39.171(lined) + 13.58(scatter) = 52.751111%
 # free spins 3140640, q = 0.054951, sq = 1/(1-q) = 1.058146
-# free games frequency: 1/190.27
-# ne12 bonuses: frequency 1/1680, rtp = 17.857143%
+# free games hit rate: 1/190.27
+# ne12 bonuses: hit rate 1/1680, rtp = 17.857143%
 # RTP = 52.751(sym) + 17.857(ne12) + 0.054951*283.16(fg) = 86.168021%
 86.168021:
   - [2, 5, 8, 9, 7, 3, 1, 5, 3, 2, 7, 8, 3, 9, 5, 7, 8, 4, 7, 1, 6, 5, 9, 6, 4, 8, 10, 1, 6, 2, 11, 6, 4, 8, 7] # 35
@@ -76,8 +76,8 @@ netent/simsalabim/reel
 # reels lengths [35, 35, 36, 35, 35], total reshuffles 54022500
 # symbols: 39.786(lined) + 13.889(scatter) = 53.675507%
 # free spins 3067470, q = 0.056781, sq = 1/(1-q) = 1.060200
-# free games frequency: 1/184.24
-# ne12 bonuses: frequency 1/1633.3, rtp = 18.367347%
+# free games hit rate: 1/184.24
+# ne12 bonuses: hit rate 1/1633.3, rtp = 18.367347%
 # RTP = 53.676(sym) + 18.367(ne12) + 0.056781*283.16(fg) = 88.120934%
 88.120934:
   - [2, 5, 8, 9, 7, 3, 1, 5, 3, 2, 7, 8, 3, 9, 5, 7, 8, 4, 7, 1, 6, 5, 9, 6, 4, 8, 10, 1, 6, 2, 11, 6, 4, 8, 7] # 35
@@ -89,8 +89,8 @@ netent/simsalabim/reel
 # reels lengths [35, 35, 35, 35, 35], total reshuffles 52521875
 # symbols: 40.376(lined) + 14.045(scatter) = 54.420963%
 # free spins 3031290, q = 0.057715, sq = 1/(1-q) = 1.061250
-# free games frequency: 1/181.31
-# ne12 bonuses: frequency 1/1588, rtp = 18.892128%
+# free games hit rate: 1/181.31
+# ne12 bonuses: hit rate 1/1588, rtp = 18.892128%
 # RTP = 54.421(sym) + 18.892(ne12) + 0.057715*283.16(fg) = 89.655490%
 89.655490:
   - [2, 5, 8, 9, 7, 3, 1, 5, 3, 2, 7, 8, 3, 9, 5, 7, 8, 4, 7, 1, 6, 5, 9, 6, 4, 8, 10, 1, 6, 2, 11, 6, 4, 8, 7] # 35
@@ -102,8 +102,8 @@ netent/simsalabim/reel
 # reels lengths [35, 35, 34, 35, 35], total reshuffles 51021250
 # symbols: 40.644(lined) + 14.21(scatter) = 54.854730%
 # free spins 2995110, q = 0.058703, sq = 1/(1-q) = 1.062364
-# free games frequency: 1/178.3
-# ne12 bonuses: frequency 1/1542.6, rtp = 19.447779%
+# free games hit rate: 1/178.3
+# ne12 bonuses: hit rate 1/1542.6, rtp = 19.447779%
 # RTP = 54.855(sym) + 19.448(ne12) + 0.058703*283.16(fg) = 90.924775%
 90.924775:
   - [2, 5, 8, 9, 7, 3, 1, 5, 3, 2, 7, 8, 3, 9, 5, 7, 8, 4, 7, 1, 6, 5, 9, 6, 4, 8, 10, 1, 6, 2, 11, 6, 4, 8, 7] # 35
@@ -115,8 +115,8 @@ netent/simsalabim/reel
 # reels lengths [34, 35, 35, 34, 34], total reshuffles 48147400
 # symbols: 40.787(lined) + 14.545(scatter) = 55.331611%
 # free spins 2923560, q = 0.060721, sq = 1/(1-q) = 1.064646
-# free games frequency: 1/172.48
-# ne12 bonuses: frequency 1/1542.6, rtp = 19.447779%
+# free games hit rate: 1/172.48
+# ne12 bonuses: hit rate 1/1542.6, rtp = 19.447779%
 # RTP = 55.332(sym) + 19.448(ne12) + 0.060721*283.16(fg) = 91.973025%
 91.973025:
   - [6, 5, 3, 6, 7, 8, 5, 2, 6, 4, 7, 9, 4, 2, 10, 8, 5, 4, 9, 8, 7, 1, 3, 5, 6, 9, 7, 8, 3, 1, 2, 11, 1, 8] # 34
@@ -128,8 +128,8 @@ netent/simsalabim/reel
 # reels lengths [34, 34, 35, 34, 35], total reshuffles 48147400
 # symbols: 41.206(lined) + 14.545(scatter) = 55.751249%
 # free spins 2923560, q = 0.060721, sq = 1/(1-q) = 1.064646
-# free games frequency: 1/172.48
-# ne12 bonuses: frequency 1/1498.5, rtp = 20.019773%
+# free games hit rate: 1/172.48
+# ne12 bonuses: hit rate 1/1498.5, rtp = 20.019773%
 # RTP = 55.751(sym) + 20.02(ne12) + 0.060721*283.16(fg) = 92.964657%
 92.964657:
   - [2, 5, 8, 9, 7, 3, 1, 5, 3, 2, 7, 8, 3, 9, 5, 7, 8, 4, 7, 1, 6, 5, 9, 6, 4, 8, 10, 1, 6, 2, 11, 6, 4, 8, 7] # 35
@@ -141,8 +141,8 @@ netent/simsalabim/reel
 # reels lengths [34, 34, 35, 34, 34], total reshuffles 46771760
 # symbols: 41.277(lined) + 14.714(scatter) = 55.991254%
 # free spins 2888190, q = 0.061751, sq = 1/(1-q) = 1.065815
-# free games frequency: 1/169.65
-# ne12 bonuses: frequency 1/1498.5, rtp = 20.019773%
+# free games hit rate: 1/169.65
+# ne12 bonuses: hit rate 1/1498.5, rtp = 20.019773%
 # RTP = 55.991(sym) + 20.02(ne12) + 0.061751*283.16(fg) = 93.496226%
 93.496226:
   - [6, 5, 3, 6, 7, 8, 5, 2, 6, 4, 7, 9, 4, 2, 10, 8, 5, 4, 9, 8, 7, 1, 3, 5, 6, 9, 7, 8, 3, 1, 2, 11, 1, 8] # 34
@@ -154,8 +154,8 @@ netent/simsalabim/reel
 # reels lengths [34, 34, 34, 35, 35], total reshuffles 48147400
 # symbols: 41.582(lined) + 14.545(scatter) = 56.127230%
 # free spins 2923560, q = 0.060721, sq = 1/(1-q) = 1.064646
-# free games frequency: 1/172.48
-# ne12 bonuses: frequency 1/1455.7, rtp = 20.608589%
+# free games hit rate: 1/172.48
+# ne12 bonuses: hit rate 1/1455.7, rtp = 20.608589%
 # RTP = 56.127(sym) + 20.609(ne12) + 0.060721*283.16(fg) = 93.929455%
 93.929455:
   - [6, 5, 3, 6, 7, 8, 5, 2, 6, 4, 7, 9, 4, 2, 10, 8, 5, 4, 9, 8, 7, 1, 3, 5, 6, 9, 7, 8, 3, 1, 2, 11, 1, 8] # 34
@@ -167,8 +167,8 @@ netent/simsalabim/reel
 # reels lengths [35, 34, 34, 33, 34], total reshuffles 45396120
 # symbols: 41.276(lined) + 14.893(scatter) = 56.168761%
 # free spins 2852820, q = 0.062843, sq = 1/(1-q) = 1.067057
-# free games frequency: 1/166.75
-# ne12 bonuses: frequency 1/1498.5, rtp = 20.019773%
+# free games hit rate: 1/166.75
+# ne12 bonuses: hit rate 1/1498.5, rtp = 20.019773%
 # RTP = 56.169(sym) + 20.02(ne12) + 0.062843*283.16(fg) = 93.982967%
 93.982967:
   - [2, 5, 8, 9, 7, 3, 1, 5, 3, 2, 7, 8, 3, 9, 5, 7, 8, 4, 7, 1, 6, 5, 9, 6, 4, 8, 10, 1, 6, 2, 11, 6, 4, 8, 7] # 35
@@ -180,8 +180,8 @@ netent/simsalabim/reel
 # reels lengths [35, 34, 34, 33, 33], total reshuffles 44060940
 # symbols: 41.29(lined) + 15.074(scatter) = 56.364403%
 # free spins 2817720, q = 0.063951, sq = 1/(1-q) = 1.068320
-# free games frequency: 1/163.91
-# ne12 bonuses: frequency 1/1498.5, rtp = 20.019773%
+# free games hit rate: 1/163.91
+# ne12 bonuses: hit rate 1/1498.5, rtp = 20.019773%
 # RTP = 56.364(sym) + 20.02(ne12) + 0.063951*283.16(fg) = 94.492265%
 94.492265:
   - [2, 5, 8, 9, 7, 3, 1, 5, 3, 2, 7, 8, 3, 9, 5, 7, 8, 4, 7, 1, 6, 5, 9, 6, 4, 8, 10, 1, 6, 2, 11, 6, 4, 8, 7] # 35
@@ -193,8 +193,8 @@ netent/simsalabim/reel
 # reels lengths [34, 34, 34, 34, 34], total reshuffles 45435424
 # symbols: 41.883(lined) + 14.884(scatter) = 56.767413%
 # free spins 2853090, q = 0.062794, sq = 1/(1-q) = 1.067002
-# free games frequency: 1/166.88
-# ne12 bonuses: frequency 1/1455.7, rtp = 20.608589%
+# free games hit rate: 1/166.88
+# ne12 bonuses: hit rate 1/1455.7, rtp = 20.608589%
 # RTP = 56.767(sym) + 20.609(ne12) + 0.062794*283.16(fg) = 95.156726%
 95.156726:
   - [6, 5, 3, 6, 7, 8, 5, 2, 6, 4, 7, 9, 4, 2, 10, 8, 5, 4, 9, 8, 7, 1, 3, 5, 6, 9, 7, 8, 3, 1, 2, 11, 1, 8] # 34
@@ -206,8 +206,8 @@ netent/simsalabim/reel
 # reels lengths [34, 34, 34, 33, 34], total reshuffles 44099088
 # symbols: 41.872(lined) + 15.065(scatter) = 56.937436%
 # free spins 2817990, q = 0.063901, sq = 1/(1-q) = 1.068263
-# free games frequency: 1/164.04
-# ne12 bonuses: frequency 1/1455.7, rtp = 20.608589%
+# free games hit rate: 1/164.04
+# ne12 bonuses: hit rate 1/1455.7, rtp = 20.608589%
 # RTP = 56.937(sym) + 20.609(ne12) + 0.063901*283.16(fg) = 95.640183%
 95.640183:
   - [6, 5, 3, 6, 7, 8, 5, 2, 6, 4, 7, 9, 4, 2, 10, 8, 5, 4, 9, 8, 7, 1, 3, 5, 6, 9, 7, 8, 3, 1, 2, 11, 1, 8] # 34
@@ -219,8 +219,8 @@ netent/simsalabim/reel
 # reels lengths [34, 34, 34, 33, 33], total reshuffles 42802056
 # symbols: 41.884(lined) + 15.247(scatter) = 57.131664%
 # free spins 2783160, q = 0.065024, sq = 1/(1-q) = 1.069546
-# free games frequency: 1/161.25
-# ne12 bonuses: frequency 1/1455.7, rtp = 20.608589%
+# free games hit rate: 1/161.25
+# ne12 bonuses: hit rate 1/1455.7, rtp = 20.608589%
 # RTP = 57.132(sym) + 20.609(ne12) + 0.065024*283.16(fg) = 96.152301%
 96.152301:
   - [6, 5, 3, 6, 7, 8, 5, 2, 6, 4, 7, 9, 4, 2, 10, 8, 5, 4, 9, 8, 7, 1, 3, 5, 6, 9, 7, 8, 3, 1, 2, 11, 1, 8] # 34
@@ -232,8 +232,8 @@ netent/simsalabim/reel
 # reels lengths [34, 34, 33, 34, 34], total reshuffles 44099088
 # symbols: 42.127(lined) + 15.065(scatter) = 57.191999%
 # free spins 2817990, q = 0.063901, sq = 1/(1-q) = 1.068263
-# free games frequency: 1/164.04
-# ne12 bonuses: frequency 1/1412.9, rtp = 21.233092%
+# free games hit rate: 1/164.04
+# ne12 bonuses: hit rate 1/1412.9, rtp = 21.233092%
 # RTP = 57.192(sym) + 21.233(ne12) + 0.063901*283.16(fg) = 96.519249%
 96.519249:
   - [6, 5, 3, 6, 7, 8, 5, 2, 6, 4, 7, 9, 4, 2, 10, 8, 5, 4, 9, 8, 7, 1, 3, 5, 6, 9, 7, 8, 3, 1, 2, 11, 1, 8] # 34
@@ -245,8 +245,8 @@ netent/simsalabim/reel
 # reels lengths [33, 34, 34, 34, 33], total reshuffles 42802056
 # symbols: 42.139(lined) + 15.247(scatter) = 57.386372%
 # free spins 2783160, q = 0.065024, sq = 1/(1-q) = 1.069546
-# free games frequency: 1/161.25
-# ne12 bonuses: frequency 1/1412.9, rtp = 21.233092%
+# free games hit rate: 1/161.25
+# ne12 bonuses: hit rate 1/1412.9, rtp = 21.233092%
 # RTP = 57.386(sym) + 21.233(ne12) + 0.065024*283.16(fg) = 97.031511%
 97.031511:
   - [11, 8, 1, 7, 5, 8, 10, 4, 5, 1, 6, 3, 8, 5, 6, 9, 1, 2, 4, 9, 7, 4, 3, 2, 6, 7, 3, 8, 9, 2, 6, 5, 7] # 33
@@ -258,8 +258,8 @@ netent/simsalabim/reel
 # reels lengths [33, 34, 33, 34, 34], total reshuffles 42802056
 # symbols: 42.523(lined) + 15.247(scatter) = 57.770419%
 # free spins 2783160, q = 0.065024, sq = 1/(1-q) = 1.069546
-# free games frequency: 1/161.25
-# ne12 bonuses: frequency 1/1371.3, rtp = 21.876519%
+# free games hit rate: 1/161.25
+# ne12 bonuses: hit rate 1/1371.3, rtp = 21.876519%
 # RTP = 57.77(sym) + 21.877(ne12) + 0.065024*283.16(fg) = 98.058985%
 98.058985:
   - [11, 8, 1, 7, 5, 8, 10, 4, 5, 1, 6, 3, 8, 5, 6, 9, 1, 2, 4, 9, 7, 4, 3, 2, 6, 7, 3, 8, 9, 2, 6, 5, 7] # 33
@@ -271,8 +271,8 @@ netent/simsalabim/reel
 # reels lengths [33, 33, 33, 35, 34], total reshuffles 42765030
 # symbols: 42.847(lined) + 15.256(scatter) = 58.103551%
 # free spins 2782890, q = 0.065074, sq = 1/(1-q) = 1.069603
-# free games frequency: 1/161.13
-# ne12 bonuses: frequency 1/1331, rtp = 22.539444%
+# free games hit rate: 1/161.13
+# ne12 bonuses: hit rate 1/1331, rtp = 22.539444%
 # RTP = 58.104(sym) + 22.539(ne12) + 0.065074*283.16(fg) = 99.069195%
 99.069195:
   - [11, 8, 1, 7, 5, 8, 10, 4, 5, 1, 6, 3, 8, 5, 6, 9, 1, 2, 4, 9, 7, 4, 3, 2, 6, 7, 3, 8, 9, 2, 6, 5, 7] # 33
@@ -284,8 +284,8 @@ netent/simsalabim/reel
 # reels lengths [33, 33, 34, 32, 33], total reshuffles 39099456
 # symbols: 42.658(lined) + 15.813(scatter) = 58.471036%
 # free spins 2680020, q = 0.068544, sq = 1/(1-q) = 1.073588
-# free games frequency: 1/153.11
-# ne12 bonuses: frequency 1/1371.3, rtp = 21.876519%
+# free games hit rate: 1/153.11
+# ne12 bonuses: hit rate 1/1371.3, rtp = 21.876519%
 # RTP = 58.471(sym) + 21.877(ne12) + 0.068544*283.16(fg) = 99.756229%
 99.756229:
   - [11, 8, 1, 7, 5, 8, 10, 4, 5, 1, 6, 3, 8, 5, 6, 9, 1, 2, 4, 9, 7, 4, 3, 2, 6, 7, 3, 8, 9, 2, 6, 5, 7] # 33
@@ -297,8 +297,8 @@ netent/simsalabim/reel
 # reels lengths [33, 33, 33, 33, 33], total reshuffles 39135393
 # symbols: 43.339(lined) + 15.802(scatter) = 59.141734%
 # free spins 2680290, q = 0.068488, sq = 1/(1-q) = 1.073523
-# free games frequency: 1/153.24
-# ne12 bonuses: frequency 1/1331, rtp = 22.539444%
+# free games hit rate: 1/153.24
+# ne12 bonuses: hit rate 1/1331, rtp = 22.539444%
 # RTP = 59.142(sym) + 22.539(ne12) + 0.068488*283.16(fg) = 101.073982%
 101.073982:
   - [11, 8, 1, 7, 5, 8, 10, 4, 5, 1, 6, 3, 8, 5, 6, 9, 1, 2, 4, 9, 7, 4, 3, 2, 6, 7, 3, 8, 9, 2, 6, 5, 7] # 33
@@ -310,8 +310,8 @@ netent/simsalabim/reel
 # reels lengths [32, 33, 33, 33, 32], total reshuffles 36799488
 # symbols: 43.761(lined) + 16.201(scatter) = 59.961454%
 # free spins 2612520, q = 0.070993, sq = 1/(1-q) = 1.076419
-# free games frequency: 1/147.92
-# ne12 bonuses: frequency 1/1290.7, rtp = 23.243802%
+# free games hit rate: 1/147.92
+# ne12 bonuses: hit rate 1/1290.7, rtp = 23.243802%
 # RTP = 59.961(sym) + 23.244(ne12) + 0.070993*283.16(fg) = 103.307585%
 103.307585:
   - [4, 8, 9, 7, 1, 5, 6, 7, 2, 3, 4, 8, 5, 1, 9, 8, 6, 9, 8, 3, 10, 5, 6, 2, 7, 4, 1, 6, 2, 7, 11, 3] # 32
@@ -323,8 +323,8 @@ netent/simsalabim/reel
 # reels lengths [32, 32, 33, 32, 32], total reshuffles 34603008
 # symbols: 44.47(lined) + 16.605(scatter) = 61.075459%
 # free spins 2545830, q = 0.073573, sq = 1/(1-q) = 1.079415
-# free games frequency: 1/142.83
-# ne12 bonuses: frequency 1/1251.6, rtp = 23.970170%
+# free games hit rate: 1/142.83
+# ne12 bonuses: hit rate 1/1251.6, rtp = 23.970170%
 # RTP = 61.075(sym) + 23.97(ne12) + 0.073573*283.16(fg) = 105.878259%
 105.878259:
   - [4, 8, 9, 7, 1, 5, 6, 7, 2, 3, 4, 8, 5, 1, 9, 8, 6, 9, 8, 3, 10, 5, 6, 2, 7, 4, 1, 6, 2, 7, 11, 3] # 32
@@ -336,8 +336,8 @@ netent/simsalabim/reel
 # reels lengths [32, 32, 32, 32, 32], total reshuffles 33554432
 # symbols: 45.265(lined) + 16.81(scatter) = 62.074915%
 # free spins 2512890, q = 0.07489, sq = 1/(1-q) = 1.080952
-# free games frequency: 1/140.36
-# ne12 bonuses: frequency 1/1213.6, rtp = 24.719238%
+# free games hit rate: 1/140.36
+# ne12 bonuses: hit rate 1/1213.6, rtp = 24.719238%
 # RTP = 62.075(sym) + 24.719(ne12) + 0.07489*283.16(fg) = 107.999829%
 107.999829:
   - [4, 8, 9, 7, 1, 5, 6, 7, 2, 3, 4, 8, 5, 1, 9, 8, 6, 9, 8, 3, 10, 5, 6, 2, 7, 4, 1, 6, 2, 7, 11, 3] # 32

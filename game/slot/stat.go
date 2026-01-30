@@ -213,6 +213,7 @@ func (s *StatCascade) JackCountF(jid int) float64 {
 	return float64(s.JackCount[jid].Load())
 }
 
+// Cascade multiplier.
 func (s *StatCascade) Mcascade() float64 {
 	var pay1 = s.LinePay[0].Load() + s.ScatPay[0].Load()
 	var pays float64
@@ -226,6 +227,7 @@ func (s *StatCascade) Mcascade() float64 {
 	return pays / pay1
 }
 
+// Inverse coefficient of fading (C1/Cn)^(1/(n-1)).
 func (s *StatCascade) Kfading() float64 {
 	var reshuf1 = s.Reshuf[0].Load()
 	var reshufn uint64
@@ -240,6 +242,7 @@ func (s *StatCascade) Kfading() float64 {
 	return math.Pow(float64(reshuf1)/float64(reshufn), 1/(float64(i)-1))
 }
 
+// Maximum number of cascades in avalanche.
 func (s *StatCascade) Ncascmax() int {
 	for i := range FallLimit {
 		if s.Reshuf[i].Load() == 0 {
@@ -489,7 +492,7 @@ type CalcAlg = func(ctx context.Context, s Stater, g SlotGame, reels Reelx)
 
 const (
 	CtxGranulation = 1000 // check context every N reshuffles
-	FallLimit      = 15
+	FallLimit      = 20   // maximum 20 cascades for reels ~100 symbols length
 )
 
 var (

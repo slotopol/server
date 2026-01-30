@@ -221,7 +221,7 @@ local function calculate(reels_reg, reels_bon)
 		print(string.format("*bonus reels calculations*"))
 		print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
 		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
-		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
+		print(string.format("free games hit rate: 1/%.5g", reshuffles/fs_num))
 		print(string.format("RTP = rtp(sym) = %.6f%%", rtp_fs))
 	end
 	local rtp_total
@@ -237,7 +237,7 @@ local function calculate(reels_reg, reels_bon)
 		print(string.format("*regular reels calculations*"))
 		print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
 		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
-		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
+		print(string.format("free games hit rate: 1/%.5g", reshuffles/fs_num))
 		print(string.format("RTP = %.5g(sym) + %.5g(fg)*%.5g/%.5g = %.6f%%", rtp_sym, rtp_fs, fgf_fs, fgf, rtp_total))
 	end
 	return rtp_total

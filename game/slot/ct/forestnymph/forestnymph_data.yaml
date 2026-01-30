@@ -38,13 +38,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [34, 34, 34, 35, 35], total reshuffles 48147400
 # symbols: 160.04(lined) + 43.953(scatter) = 203.996052%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = sq*rtp(sym) = 1.0953*204 = 223.427116%
 # *regular reels calculations*
 # reels lengths [34, 34, 34, 35, 35], total reshuffles 48147400
 # symbols: 53.362(lined) + 14.651(scatter) = 68.012530%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = 68.013(sym) + 0.086968*223.43(fg) = 87.443595%
 87.443595:
   - [11, 12, 4, 13, 5, 8, 4, 12, 6, 10, 9, 11, 3, 10, 1, 9, 8, 7, 10, 13, 3, 10, 12, 11, 13, 8, 2, 12, 5, 11, 9, 7, 13, 6] # 34
@@ -57,13 +57,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [34, 34, 34, 34, 35], total reshuffles 46771760
 # symbols: 160.26(lined) + 44.456(scatter) = 204.713344%
 # free spins 4135455, q = 0.088418, sq = 1/(1-q) = 1.096994
-# free games frequency: 1/169.65
+# free games hit rate: 1/169.65
 # RTP = sq*rtp(sym) = 1.097*204.71 = 224.569259%
 # *regular reels calculations*
 # reels lengths [34, 34, 34, 34, 35], total reshuffles 46771760
 # symbols: 53.433(lined) + 14.819(scatter) = 68.252035%
 # free spins 4135455, q = 0.088418, sq = 1/(1-q) = 1.096994
-# free games frequency: 1/169.65
+# free games hit rate: 1/169.65
 # RTP = 68.252(sym) + 0.088418*224.57(fg) = 88.107949%
 88.107949:
   - [11, 12, 4, 13, 5, 8, 4, 12, 6, 10, 9, 11, 3, 10, 1, 9, 8, 7, 10, 13, 3, 10, 12, 11, 13, 8, 2, 12, 5, 11, 9, 7, 13, 6] # 34
@@ -76,13 +76,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [34, 34, 35, 34, 35], total reshuffles 48147400
 # symbols: 163.5(lined) + 43.953(scatter) = 207.452188%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = sq*rtp(sym) = 1.0953*207.45 = 227.212458%
 # *regular reels calculations*
 # reels lengths [34, 34, 35, 34, 35], total reshuffles 48147400
 # symbols: 54.514(lined) + 14.651(scatter) = 69.164576%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = 69.165(sym) + 0.086968*227.21(fg) = 88.924845%
 88.924845:
   - [11, 12, 4, 13, 5, 8, 4, 12, 6, 10, 9, 11, 3, 10, 1, 9, 8, 7, 10, 13, 3, 10, 12, 11, 13, 8, 2, 12, 5, 11, 9, 7, 13, 6] # 34
@@ -95,13 +95,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [35, 34, 34, 34, 35], total reshuffles 48147400
 # symbols: 167.96(lined) + 43.953(scatter) = 211.910996%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = sq*rtp(sym) = 1.0953*211.91 = 232.095977%
 # *regular reels calculations*
 # reels lengths [35, 34, 34, 34, 35], total reshuffles 48147400
 # symbols: 56(lined) + 14.651(scatter) = 70.650845%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = 70.651(sym) + 0.086968*232.1(fg) = 90.835825%
 90.835825:
   - [12, 6, 10, 4, 13, 5, 9, 7, 10, 8, 5, 9, 2, 13, 4, 11, 5, 9, 3, 12, 6, 10, 3, 11, 6, 13, 4, 8, 7, 11, 1, 12, 3, 8, 7] # 35
@@ -114,13 +114,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [34, 35, 34, 35, 34], total reshuffles 48147400
 # symbols: 170.38(lined) + 43.953(scatter) = 214.331314%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = sq*rtp(sym) = 1.0953*214.33 = 234.746835%
 # *regular reels calculations*
 # reels lengths [34, 35, 34, 35, 34], total reshuffles 48147400
 # symbols: 56.807(lined) + 14.651(scatter) = 71.457618%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = 71.458(sym) + 0.086968*234.75(fg) = 91.873138%
 91.873138:
   - [11, 12, 4, 13, 5, 8, 4, 12, 6, 10, 9, 11, 3, 10, 1, 9, 8, 7, 10, 13, 3, 10, 12, 11, 13, 8, 2, 12, 5, 11, 9, 7, 13, 6] # 34
@@ -133,13 +133,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [35, 34, 35, 34, 35], total reshuffles 49563500
 # symbols: 172.95(lined) + 43.454(scatter) = 216.404889%
 # free spins 4239540, q = 0.085538, sq = 1/(1-q) = 1.093539
-# free games frequency: 1/175.36
+# free games hit rate: 1/175.36
 # RTP = sq*rtp(sym) = 1.0935*216.4 = 236.647100%
 # *regular reels calculations*
 # reels lengths [35, 34, 35, 34, 35], total reshuffles 49563500
 # symbols: 57.664(lined) + 14.485(scatter) = 72.148414%
 # free spins 4239540, q = 0.085538, sq = 1/(1-q) = 1.093539
-# free games frequency: 1/175.36
+# free games hit rate: 1/175.36
 # RTP = 72.148(sym) + 0.085538*236.65(fg) = 92.390625%
 92.390625:
   - [12, 6, 10, 4, 13, 5, 9, 7, 10, 8, 5, 9, 2, 13, 4, 11, 5, 9, 3, 12, 6, 10, 3, 11, 6, 13, 4, 8, 7, 11, 1, 12, 3, 8, 7] # 35
@@ -152,13 +152,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [34, 34, 35, 34, 34], total reshuffles 46771760
 # symbols: 171.35(lined) + 44.456(scatter) = 215.807846%
 # free spins 4135455, q = 0.088418, sq = 1/(1-q) = 1.096994
-# free games frequency: 1/169.65
+# free games hit rate: 1/169.65
 # RTP = sq*rtp(sym) = 1.097*215.81 = 236.739858%
 # *regular reels calculations*
 # reels lengths [34, 34, 35, 34, 34], total reshuffles 46771760
 # symbols: 57.132(lined) + 14.819(scatter) = 71.950202%
 # free spins 4135455, q = 0.088418, sq = 1/(1-q) = 1.096994
-# free games frequency: 1/169.65
+# free games hit rate: 1/169.65
 # RTP = 71.95(sym) + 0.088418*236.74(fg) = 92.882214%
 92.882214:
   - [11, 12, 4, 13, 5, 8, 4, 12, 6, 10, 9, 11, 3, 10, 1, 9, 8, 7, 10, 13, 3, 10, 12, 11, 13, 8, 2, 12, 5, 11, 9, 7, 13, 6] # 34
@@ -171,13 +171,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [35, 35, 34, 34, 34], total reshuffles 48147400
 # symbols: 174.16(lined) + 43.953(scatter) = 218.109163%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = sq*rtp(sym) = 1.0953*218.11 = 238.884532%
 # *regular reels calculations*
 # reels lengths [35, 35, 34, 34, 34], total reshuffles 48147400
 # symbols: 58.066(lined) + 14.651(scatter) = 72.716901%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = 72.717(sym) + 0.086968*238.88(fg) = 93.492270%
 93.492270:
   - [12, 6, 10, 4, 13, 5, 9, 7, 10, 8, 5, 9, 2, 13, 4, 11, 5, 9, 3, 12, 6, 10, 3, 11, 6, 13, 4, 8, 7, 11, 1, 12, 3, 8, 7] # 35
@@ -190,13 +190,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [34, 34, 35, 34, 35], total reshuffles 48147400
 # symbols: 175.03(lined) + 43.953(scatter) = 218.982967%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = sq*rtp(sym) = 1.0953*218.98 = 239.841568%
 # *regular reels calculations*
 # reels lengths [34, 34, 35, 34, 35], total reshuffles 48147400
 # symbols: 58.357(lined) + 14.651(scatter) = 73.008169%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = 73.008(sym) + 0.086968*239.84(fg) = 93.866769%
 93.866769:
   - [11, 12, 4, 13, 5, 8, 4, 12, 6, 10, 9, 11, 3, 10, 1, 9, 8, 7, 10, 13, 3, 10, 12, 11, 13, 8, 2, 12, 5, 11, 9, 7, 13, 6] # 34
@@ -209,13 +209,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [34, 34, 35, 34, 34], total reshuffles 46771760
 # symbols: 174.85(lined) + 44.456(scatter) = 219.310537%
 # free spins 4135455, q = 0.088418, sq = 1/(1-q) = 1.096994
-# free games frequency: 1/169.65
+# free games hit rate: 1/169.65
 # RTP = sq*rtp(sym) = 1.097*219.31 = 240.582288%
 # *regular reels calculations*
 # reels lengths [34, 34, 35, 34, 34], total reshuffles 46771760
 # symbols: 58.299(lined) + 14.819(scatter) = 73.117766%
 # free spins 4135455, q = 0.088418, sq = 1/(1-q) = 1.096994
-# free games frequency: 1/169.65
+# free games hit rate: 1/169.65
 # RTP = 73.118(sym) + 0.088418*240.58(fg) = 94.389517%
 94.389517:
   - [11, 12, 4, 13, 5, 8, 4, 12, 6, 10, 9, 11, 3, 10, 1, 9, 8, 7, 10, 13, 3, 10, 12, 11, 13, 8, 2, 12, 5, 11, 9, 7, 13, 6] # 34
@@ -228,13 +228,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [34, 35, 34, 34, 34], total reshuffles 46771760
 # symbols: 176.07(lined) + 44.456(scatter) = 220.526553%
 # free spins 4135455, q = 0.088418, sq = 1/(1-q) = 1.096994
-# free games frequency: 1/169.65
+# free games hit rate: 1/169.65
 # RTP = sq*rtp(sym) = 1.097*220.53 = 241.916250%
 # *regular reels calculations*
 # reels lengths [34, 35, 34, 34, 34], total reshuffles 46771760
 # symbols: 58.705(lined) + 14.819(scatter) = 73.523105%
 # free spins 4135455, q = 0.088418, sq = 1/(1-q) = 1.096994
-# free games frequency: 1/169.65
+# free games hit rate: 1/169.65
 # RTP = 73.523(sym) + 0.088418*241.92(fg) = 94.912801%
 94.912801:
   - [11, 12, 4, 13, 5, 8, 4, 12, 6, 10, 9, 11, 3, 10, 1, 9, 8, 7, 10, 13, 3, 10, 12, 11, 13, 8, 2, 12, 5, 11, 9, 7, 13, 6] # 34
@@ -247,13 +247,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [34, 34, 34, 35, 35], total reshuffles 48147400
 # symbols: 178.75(lined) + 43.953(scatter) = 222.701735%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = sq*rtp(sym) = 1.0953*222.7 = 243.914556%
 # *regular reels calculations*
 # reels lengths [34, 34, 34, 35, 35], total reshuffles 48147400
 # symbols: 59.597(lined) + 14.651(scatter) = 74.247758%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = 74.248(sym) + 0.086968*243.91(fg) = 95.460579%
 95.460579:
   - [12, 2, 10, 6, 8, 11, 13, 5, 9, 1, 8, 7, 11, 4, 13, 6, 11, 5, 12, 3, 10, 13, 9, 3, 13, 6, 12, 7, 10, 5, 9, 7, 8, 4] # 34
@@ -266,13 +266,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [35, 34, 34, 34, 35], total reshuffles 48147400
 # symbols: 180.58(lined) + 43.953(scatter) = 224.528344%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = sq*rtp(sym) = 1.0953*224.53 = 245.915154%
 # *regular reels calculations*
 # reels lengths [35, 34, 34, 34, 35], total reshuffles 48147400
 # symbols: 60.206(lined) + 14.651(scatter) = 74.856628%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = 74.857(sym) + 0.086968*245.92(fg) = 96.243438%
 96.243438:
   - [12, 6, 10, 4, 13, 5, 9, 7, 10, 8, 5, 9, 2, 13, 4, 11, 5, 9, 3, 12, 6, 10, 3, 11, 6, 13, 4, 8, 7, 11, 1, 12, 3, 8, 7] # 35
@@ -285,13 +285,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [34, 35, 34, 35, 34], total reshuffles 48147400
 # symbols: 181.17(lined) + 43.953(scatter) = 225.122364%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = sq*rtp(sym) = 1.0953*225.12 = 246.565755%
 # *regular reels calculations*
 # reels lengths [34, 35, 34, 35, 34], total reshuffles 48147400
 # symbols: 60.404(lined) + 14.651(scatter) = 75.054634%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = 75.055(sym) + 0.086968*246.57(fg) = 96.498026%
 96.498026:
   - [12, 2, 10, 6, 8, 11, 13, 5, 9, 1, 8, 7, 11, 4, 13, 6, 11, 5, 12, 3, 10, 13, 9, 3, 13, 6, 12, 7, 10, 5, 9, 7, 8, 4] # 34
@@ -304,13 +304,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [35, 34, 35, 34, 34], total reshuffles 48147400
 # symbols: 183.02(lined) + 43.953(scatter) = 226.977486%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = sq*rtp(sym) = 1.0953*226.98 = 248.597582%
 # *regular reels calculations*
 # reels lengths [35, 34, 35, 34, 34], total reshuffles 48147400
 # symbols: 61.022(lined) + 14.651(scatter) = 75.673008%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = 75.673(sym) + 0.086968*248.6(fg) = 97.293104%
 97.293104:
   - [12, 6, 10, 4, 13, 5, 9, 7, 10, 8, 5, 9, 2, 13, 4, 11, 5, 9, 3, 12, 6, 10, 3, 11, 6, 13, 4, 8, 7, 11, 1, 12, 3, 8, 7] # 35
@@ -323,13 +323,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [35, 34, 35, 34, 35], total reshuffles 49563500
 # symbols: 185.21(lined) + 43.454(scatter) = 228.661741%
 # free spins 4239540, q = 0.085538, sq = 1/(1-q) = 1.093539
-# free games frequency: 1/175.36
+# free games hit rate: 1/175.36
 # RTP = sq*rtp(sym) = 1.0935*228.66 = 250.050441%
 # *regular reels calculations*
 # reels lengths [35, 34, 35, 34, 35], total reshuffles 49563500
 # symbols: 61.75(lined) + 14.485(scatter) = 76.234031%
 # free spins 4239540, q = 0.085538, sq = 1/(1-q) = 1.093539
-# free games frequency: 1/175.36
+# free games hit rate: 1/175.36
 # RTP = 76.234(sym) + 0.085538*250.05(fg) = 97.622731%
 97.622731:
   - [12, 6, 10, 4, 13, 5, 9, 7, 10, 8, 5, 9, 2, 13, 4, 11, 5, 9, 3, 12, 6, 10, 3, 11, 6, 13, 4, 8, 7, 11, 1, 12, 3, 8, 7] # 35
@@ -342,13 +342,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [34, 34, 35, 34, 35], total reshuffles 48147400
 # symbols: 184.6(lined) + 43.953(scatter) = 228.557783%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = sq*rtp(sym) = 1.0953*228.56 = 250.328406%
 # *regular reels calculations*
 # reels lengths [34, 34, 35, 34, 35], total reshuffles 48147400
 # symbols: 61.549(lined) + 14.651(scatter) = 76.199774%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = 76.2(sym) + 0.086968*250.33(fg) = 97.970397%
 97.970397:
   - [12, 7, 13, 5, 11, 6, 10, 7, 11, 1, 8, 5, 12, 13, 4, 9, 8, 6, 9, 3, 13, 5, 11, 3, 8, 7, 9, 2, 10, 4, 12, 3, 10, 6] # 34
@@ -361,13 +361,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [34, 35, 35, 35, 35], total reshuffles 51021250
 # symbols: 188.19(lined) + 42.958(scatter) = 231.148637%
 # free spins 4292190, q = 0.084126, sq = 1/(1-q) = 1.091853
-# free games frequency: 1/178.3
+# free games hit rate: 1/178.3
 # RTP = sq*rtp(sym) = 1.0919*231.15 = 252.380262%
 # *regular reels calculations*
 # reels lengths [34, 35, 35, 35, 35], total reshuffles 51021250
 # symbols: 62.743(lined) + 14.319(scatter) = 77.062612%
 # free spins 4292190, q = 0.084126, sq = 1/(1-q) = 1.091853
-# free games frequency: 1/178.3
+# free games hit rate: 1/178.3
 # RTP = 77.063(sym) + 0.084126*252.38(fg) = 98.294237%
 98.294237:
   - [12, 2, 10, 6, 8, 11, 13, 5, 9, 1, 8, 7, 11, 4, 13, 6, 11, 5, 12, 3, 10, 13, 9, 3, 13, 6, 12, 7, 10, 5, 9, 7, 8, 4] # 34
@@ -380,13 +380,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [35, 35, 34, 34, 34], total reshuffles 48147400
 # symbols: 185.79(lined) + 43.953(scatter) = 229.745118%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = sq*rtp(sym) = 1.0953*229.75 = 251.628837%
 # *regular reels calculations*
 # reels lengths [35, 35, 34, 34, 34], total reshuffles 48147400
 # symbols: 61.945(lined) + 14.651(scatter) = 76.595552%
 # free spins 4187295, q = 0.086968, sq = 1/(1-q) = 1.095252
-# free games frequency: 1/172.48
+# free games hit rate: 1/172.48
 # RTP = 76.596(sym) + 0.086968*251.63(fg) = 98.479271%
 98.479271:
   - [12, 6, 10, 4, 13, 5, 9, 7, 10, 8, 5, 9, 2, 13, 4, 11, 5, 9, 3, 12, 6, 10, 3, 11, 6, 13, 4, 8, 7, 11, 1, 12, 3, 8, 7] # 35
@@ -399,13 +399,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [35, 35, 34, 35, 34], total reshuffles 49563500
 # symbols: 188.22(lined) + 43.454(scatter) = 231.677963%
 # free spins 4239540, q = 0.085538, sq = 1/(1-q) = 1.093539
-# free games frequency: 1/175.36
+# free games hit rate: 1/175.36
 # RTP = sq*rtp(sym) = 1.0935*231.68 = 253.348796%
 # *regular reels calculations*
 # reels lengths [35, 35, 34, 35, 34], total reshuffles 49563500
 # symbols: 62.755(lined) + 14.485(scatter) = 77.239438%
 # free spins 4239540, q = 0.085538, sq = 1/(1-q) = 1.093539
-# free games frequency: 1/175.36
+# free games hit rate: 1/175.36
 # RTP = 77.239(sym) + 0.085538*253.35(fg) = 98.910272%
 98.910272:
   - [12, 6, 10, 4, 13, 5, 9, 7, 10, 8, 5, 9, 2, 13, 4, 11, 5, 9, 3, 12, 6, 10, 3, 11, 6, 13, 4, 8, 7, 11, 1, 12, 3, 8, 7] # 35
@@ -418,14 +418,14 @@ ctinteractive/forestnymph/reel
 # reels lengths [33, 35, 35, 35, 35], total reshuffles 49520625
 # symbols: 190.1(lined) + 43.48(scatter) = 233.581822%
 # free spins 4239135, q = 0.085603, sq = 1/(1-q) = 1.093617
-# free games frequency: 1/175.23
+# free games hit rate: 1/175.23
 # RTP = sq*rtp(sym) = 1.0936*233.58 = 255.449143%
 # *regular reels calculations*
 # completed 100%, selected 1 lines, time spent 3.3616925s
 # reels lengths [33, 35, 35, 35, 35], total reshuffles 49520625
 # symbols: 63.381(lined) + 14.493(scatter) = 77.874070%
 # free spins 4239135, q = 0.085603, sq = 1/(1-q) = 1.093617
-# free games frequency: 1/175.23
+# free games hit rate: 1/175.23
 # RTP = 77.874(sym) + 0.085603*255.45(fg) = 99.741391%
 99.741391:
   - [10, 3, 12, 7, 11, 5, 10, 9, 2, 12, 4, 11, 9, 6, 12, 1, 8, 5, 9, 6, 11, 3, 13, 8, 7, 13, 4, 8, 5, 10, 7, 13, 6] # 33
@@ -438,13 +438,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [33, 35, 35, 35, 34], total reshuffles 48105750
 # symbols: 189.49(lined) + 43.979(scatter) = 233.466166%
 # free spins 4186890, q = 0.087035, sq = 1/(1-q) = 1.095332
-# free games frequency: 1/172.34
+# free games hit rate: 1/172.34
 # RTP = sq*rtp(sym) = 1.0953*233.47 = 255.723054%
 # *regular reels calculations*
 # reels lengths [33, 35, 35, 35, 34], total reshuffles 48105750
 # symbols: 63.176(lined) + 14.66(scatter) = 77.835914%
 # free spins 4186890, q = 0.087035, sq = 1/(1-q) = 1.095332
-# free games frequency: 1/172.34
+# free games hit rate: 1/172.34
 # RTP = 77.836(sym) + 0.087035*255.72(fg) = 100.092802%
 100.092802:
   - [10, 3, 12, 7, 11, 5, 10, 9, 2, 12, 4, 11, 9, 6, 12, 1, 8, 5, 9, 6, 11, 3, 13, 8, 7, 13, 4, 8, 5, 10, 7, 13, 6] # 33
@@ -457,13 +457,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [33, 35, 35, 35, 33], total reshuffles 46690875
 # symbols: 188.83(lined) + 44.509(scatter) = 233.343500%
 # free spins 4134645, q = 0.088554, sq = 1/(1-q) = 1.097157
-# free games frequency: 1/169.39
+# free games hit rate: 1/169.39
 # RTP = sq*rtp(sym) = 1.0972*233.34 = 256.014506%
 # *regular reels calculations*
 # reels lengths [33, 35, 35, 35, 33], total reshuffles 46690875
 # symbols: 62.959(lined) + 14.836(scatter) = 77.795445%
 # free spins 4134645, q = 0.088554, sq = 1/(1-q) = 1.097157
-# free games frequency: 1/169.39
+# free games hit rate: 1/169.39
 # RTP = 77.795(sym) + 0.088554*256.01(fg) = 100.466451%
 100.466451:
   - [10, 3, 12, 7, 11, 5, 10, 9, 2, 12, 4, 11, 9, 6, 12, 1, 8, 5, 9, 6, 11, 3, 13, 8, 7, 13, 4, 8, 5, 10, 7, 13, 6] # 33
@@ -476,13 +476,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [34, 34, 34, 34, 34], total reshuffles 45435424
 # symbols: 192.6(lined) + 44.962(scatter) = 237.561384%
 # free spins 4084020, q = 0.089886, sq = 1/(1-q) = 1.098764
-# free games frequency: 1/166.88
+# free games hit rate: 1/166.88
 # RTP = sq*rtp(sym) = 1.0988*237.56 = 261.023839%
 # *regular reels calculations*
 # reels lengths [34, 34, 34, 34, 34], total reshuffles 45435424
 # symbols: 64.214(lined) + 14.987(scatter) = 79.201801%
 # free spins 4084020, q = 0.089886, sq = 1/(1-q) = 1.098764
-# free games frequency: 1/166.88
+# free games hit rate: 1/166.88
 # RTP = 79.202(sym) + 0.089886*261.02(fg) = 102.664255%
 102.664255:
   - [12, 7, 13, 5, 11, 6, 10, 7, 11, 1, 8, 5, 12, 13, 4, 9, 8, 6, 9, 3, 13, 5, 11, 3, 8, 7, 9, 2, 10, 4, 12, 3, 10, 6] # 34
@@ -495,13 +495,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [33, 34, 33, 34, 33], total reshuffles 41543172
 # symbols: 193.56(lined) + 46.585(scatter) = 240.143596%
 # free spins 3930930, q = 0.094623, sq = 1/(1-q) = 1.104512
-# free games frequency: 1/158.52
+# free games hit rate: 1/158.52
 # RTP = sq*rtp(sym) = 1.1045*240.14 = 265.241479%
 # *regular reels calculations*
 # reels lengths [33, 34, 33, 34, 33], total reshuffles 41543172
 # symbols: 64.536(lined) + 15.528(scatter) = 80.063913%
 # free spins 3930930, q = 0.094623, sq = 1/(1-q) = 1.104512
-# free games frequency: 1/158.52
+# free games hit rate: 1/158.52
 # RTP = 80.064(sym) + 0.094623*265.24(fg) = 105.161796%
 105.161796:
   - [1, 12, 11, 6, 13, 2, 10, 5, 8, 9, 3, 11, 4, 13, 3, 9, 7, 12, 13, 3, 9, 6, 10, 8, 4, 10, 7, 13, 11, 5, 12, 4, 8] # 33
@@ -514,13 +514,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [33, 33, 34, 33, 33], total reshuffles 40321314
 # symbols: 203.6(lined) + 47.134(scatter) = 250.733357%
 # free spins 3880710, q = 0.096245, sq = 1/(1-q) = 1.106494
-# free games frequency: 1/155.85
+# free games hit rate: 1/155.85
 # RTP = sq*rtp(sym) = 1.1065*250.73 = 277.434984%
 # *regular reels calculations*
 # reels lengths [33, 33, 34, 33, 33], total reshuffles 40321314
 # symbols: 67.883(lined) + 15.711(scatter) = 83.594319%
 # free spins 3880710, q = 0.096245, sq = 1/(1-q) = 1.106494
-# free games frequency: 1/155.85
+# free games hit rate: 1/155.85
 # RTP = 83.594(sym) + 0.096245*277.43(fg) = 110.295947%
 110.295947:
   - [1, 12, 11, 6, 13, 2, 10, 5, 8, 9, 3, 11, 4, 13, 3, 9, 7, 12, 13, 3, 9, 6, 10, 8, 4, 10, 7, 13, 11, 5, 12, 4, 8] # 33
@@ -533,13 +533,13 @@ ctinteractive/forestnymph/reel
 # reels lengths [33, 33, 33, 33, 33], total reshuffles 39135393
 # symbols: 211.15(lined) + 47.687(scatter) = 258.838147%
 # free spins 3830895, q = 0.097888, sq = 1/(1-q) = 1.108510
-# free games frequency: 1/153.24
+# free games hit rate: 1/153.24
 # RTP = sq*rtp(sym) = 1.1085*258.84 = 286.924703%
 # *regular reels calculations*
 # reels lengths [33, 33, 33, 33, 33], total reshuffles 39135393
 # symbols: 70.401(lined) + 15.896(scatter) = 86.296417%
 # free spins 3830895, q = 0.097888, sq = 1/(1-q) = 1.108510
-# free games frequency: 1/153.24
+# free games hit rate: 1/153.24
 # RTP = 86.296(sym) + 0.097888*286.92(fg) = 114.382973%
 114.382973:
   - [1, 12, 11, 6, 13, 2, 10, 5, 8, 9, 3, 11, 4, 13, 3, 9, 7, 12, 13, 3, 9, 6, 10, 8, 4, 10, 7, 13, 11, 5, 12, 4, 8] # 33

@@ -24,8 +24,8 @@ megajack/champagne/reel
 # reels lengths [32, 32, 32, 32, 32], total reshuffles 33554432
 # symbols: 138.99(lined) + 0.7242(scatter) = 139.718556%
 # free spins 7171740, q = 0.21373, sq = 1/(1-q) = 1.271835
-# free games frequency: 1/140.36
-# champagne bonuses: frequency 1/3043.5, rtp = 5.519986%
+# free games hit rate: 1/140.36
+# champagne bonuses: hit rate 1/3043.5, rtp = 5.519986%
 # jackpots: count 32, frequency 1/1048576
 # RTP = sq*(rtp(sym)+rtp(mjc)) = 1.2718*(139.72+5.52) = 184.719467%
 # *regular reels calculations*
@@ -33,8 +33,8 @@ megajack/champagne/reel
 # reels lengths [32, 32, 32, 32, 32], total reshuffles 33554432
 # symbols: 69.974(lined) + 0.7242(scatter) = 70.698214%
 # free spins 3585870, q = 0.106867
-# free games frequency: 1/140.36
-# champagne bonuses: frequency 1/3043.5, rtp = 5.519986%
+# free games hit rate: 1/140.36
+# champagne bonuses: hit rate 1/3043.5, rtp = 5.519986%
 # jackpots: count 32, frequency 1/1048576
 # RTP = rtp(sym) + rtp(mjc) + q*rtp(fg) = 70.698 + 5.52 + 0.10687*184.72 = 95.958662%
 95.958662:

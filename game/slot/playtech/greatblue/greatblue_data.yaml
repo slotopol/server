@@ -20,7 +20,7 @@ playtech/greatblue/reel
 # average plain freespins at 1st iteration: 124.8
 # average multiplier at free games: 7.2
 # free games 470718, q = 0.35621, sq = 1.4456
-# free games frequency: 1/350.35
+# free games hit rate: 1/350.35
 # RTP = rtpsym + q*sq*rtpsym = 57.443 + 29.581 = 87.023352%
 87.023352:
   - [10, 4, 8, 13, 6, 11, 10, 2, 11, 4, 9, 6, 10, 5, 12, 10, 6, 9, 1, 7, 3, 12, 6, 7, 3, 12, 8, 5, 7, 11, 8, 5, 9, 2, 7, 4, 12, 8, 3, 12, 2, 11, 9, 5]
@@ -34,7 +34,7 @@ playtech/greatblue/reel
 # average plain freespins at 1st iteration: 124.8
 # average multiplier at free games: 7.2
 # free games 470718, q = 0.35621, sq = 1.4456
-# free games frequency: 1/350.35
+# free games hit rate: 1/350.35
 # RTP = rtpsym + q*sq*rtpsym = 58.635 + 30.194 = 88.828983%
 88.828983:
   - [9, 7, 4, 9, 3, 8, 5, 9, 10, 6, 7, 4, 12, 2, 8, 11, 2, 7, 5, 11, 6, 10, 2, 12, 4, 7, 3, 11, 5, 8, 1, 12, 10, 3, 9, 6, 10, 4, 8, 5, 13, 12, 11, 6]
@@ -48,7 +48,7 @@ playtech/greatblue/reel
 # average plain freespins at 1st iteration: 124.8
 # average multiplier at free games: 7.2
 # free games 448443, q = 0.3807, sq = 1.4913
-# free games frequency: 1/327.82
+# free games hit rate: 1/327.82
 # RTP = rtpsym + q*sq*rtpsym = 58.787 + 33.376 = 92.162519%
 92.162519:
   - [5, 9, 6, 12, 3, 10, 5, 8, 6, 12, 2, 7, 3, 8, 4, 9, 8, 1, 11, 4, 7, 5, 12, 6, 11, 9, 2, 7, 8, 10, 3, 13, 10, 4, 11, 9, 5, 11, 12, 2, 7, 6, 10]
@@ -62,7 +62,7 @@ playtech/greatblue/reel
 # average plain freespins at 1st iteration: 124.8
 # average multiplier at free games: 7.2
 # free games 426708, q = 0.40747, sq = 1.5447
-# free games frequency: 1/306.28
+# free games hit rate: 1/306.28
 # RTP = rtpsym + q*sq*rtpsym = 57.611 + 36.261 = 93.871960%
 93.871960:
   - [4, 12, 5, 9, 4, 7, 6, 13, 5, 8, 1, 12, 10, 6, 8, 9, 12, 10, 3, 12, 11, 3, 12, 7, 8, 2, 11, 6, 7, 8, 5, 9, 11, 2, 10, 4, 7, 6, 10, 11, 5, 9]
@@ -76,7 +76,7 @@ playtech/greatblue/reel
 # average plain freespins at 1st iteration: 124.8
 # average multiplier at free games: 7.2
 # free games 426708, q = 0.40747, sq = 1.5447
-# free games frequency: 1/306.28
+# free games hit rate: 1/306.28
 # RTP = rtpsym + q*sq*rtpsym = 59.123 + 37.213 = 96.335718%
 96.335718:
   - [1, 9, 4, 10, 3, 8, 5, 9, 6, 11, 4, 9, 12, 5, 7, 12, 4, 10, 11, 6, 12, 7, 5, 8, 3, 11, 8, 7, 4, 11, 6, 13, 2, 10, 5, 7, 2, 8, 6, 12, 9, 10]
@@ -90,7 +90,7 @@ playtech/greatblue/reel
 # average plain freespins at 1st iteration: 124.8
 # average multiplier at free games: 7.2
 # free games 426708, q = 0.40747, sq = 1.5447
-# free games frequency: 1/306.28
+# free games hit rate: 1/306.28
 # RTP = rtpsym + q*sq*rtpsym = 59.681 + 37.564 = 97.245122%
 97.245122:
   - [7, 5, 10, 8, 4, 9, 2, 7, 12, 9, 3, 11, 6, 9, 10, 2, 8, 1, 12, 5, 7, 4, 11, 5, 12, 6, 13, 7, 6, 11, 10, 12, 9, 4, 8, 3, 11, 2, 10, 12, 8, 3]
@@ -104,7 +104,7 @@ playtech/greatblue/reel
 # average plain freespins at 1st iteration: 124.8
 # average multiplier at free games: 7.2
 # free games 405513, q = 0.43682, sq = 1.6078
-# free games frequency: 1/285.7
+# free games hit rate: 1/285.7
 # RTP = rtpsym + q*sq*rtpsym = 58.758 + 41.266 = 100.024241%
 100.024241:
   - [5, 9, 1, 8, 4, 12, 3, 8, 6, 11, 9, 2, 7, 8, 2, 10, 11, 4, 12, 8, 4, 13, 7, 11, 6, 9, 12, 5, 10, 7, 6, 10, 9, 5, 12, 6, 11, 5, 10, 3, 7]
@@ -118,7 +118,7 @@ playtech/greatblue/reel
 # average plain freespins at 1st iteration: 124.8
 # average multiplier at free games: 7.2
 # free games 405513, q = 0.43682, sq = 1.6078
-# free games frequency: 1/285.7
+# free games hit rate: 1/285.7
 # RTP = rtpsym + q*sq*rtpsym = 63.433 + 44.549 = 107.982338%
 107.982338:
   - [2, 12, 6, 8, 5, 12, 4, 11, 12, 3, 9, 4, 13, 2, 8, 9, 6, 10, 2, 7, 12, 5, 10, 4, 8, 3, 11, 6, 9, 10, 5, 11, 9, 5, 11, 6, 7, 3, 10, 1, 7]

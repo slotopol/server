@@ -37,7 +37,7 @@ playtech/dolphinreef/reel
 # reels lengths [33, 34, 33, 34, 33], total reshuffles 41543172
 # symbols: 35.188(lined) + 5.3783(scatter) = 40.565992%
 # free spins 1617165, q = 0.038927, sq = 1/(1-q) = 1.040504
-# free games frequency: 1/128.44
+# free games hit rate: 1/128.44
 # RTP = 40.566(sym) + 0.038927*1077.5(fg) = 82.508769%
 82.508769:
   - [11, 5, 12, 6, 9, 8, 10, 5, 11, 7, 6, 9, 11, 3, 7, 12, 4, 11, 10, 8, 2, 12, 4, 10, 12, 9, 3, 8, 5, 10, 7, 6, 9] # 33
@@ -53,7 +53,7 @@ playtech/dolphinreef/reel
 # reels lengths [32, 34, 32, 34, 32], total reshuffles 37879808
 # symbols: 35.738(lined) + 5.6495(scatter) = 41.387567%
 # free spins 1474560, q = 0.038927, sq = 1/(1-q) = 1.040504
-# free games frequency: 1/128.44
+# free games hit rate: 1/128.44
 # RTP = 41.388(sym) + 0.038927*1118.9(fg) = 84.941801%
 84.941801:
   - [8, 10, 9, 3, 12, 6, 7, 3, 11, 12, 4, 9, 8, 5, 10, 6, 7, 5, 11, 7, 9, 5, 12, 11, 2, 10, 8, 12, 6, 11, 10, 4] # 32
@@ -69,7 +69,7 @@ playtech/dolphinreef/reel
 # reels lengths [33, 33, 33, 33, 33], total reshuffles 39135393
 # symbols: 35.748(lined) + 5.615(scatter) = 41.362970%
 # free spins 1617165, q = 0.041322, sq = 1/(1-q) = 1.043103
-# free games frequency: 1/121
+# free games hit rate: 1/121
 # RTP = 41.363(sym) + 0.041322*1077.5(fg) = 85.886249%
 85.886249:
   - [11, 5, 12, 6, 9, 8, 10, 5, 11, 7, 6, 9, 11, 3, 7, 12, 4, 11, 10, 8, 2, 12, 4, 10, 12, 9, 3, 8, 5, 10, 7, 6, 9] # 33
@@ -85,7 +85,7 @@ playtech/dolphinreef/reel
 # reels lengths [32, 33, 33, 33, 32], total reshuffles 36799488
 # symbols: 36.293(lined) + 5.8015(scatter) = 42.094295%
 # free spins 1520640, q = 0.041322, sq = 1/(1-q) = 1.043103
-# free games frequency: 1/121
+# free games hit rate: 1/121
 # RTP = 42.094(sym) + 0.041322*1099.8(fg) = 87.542604%
 87.542604:
   - [8, 10, 9, 3, 12, 6, 7, 3, 11, 12, 4, 9, 8, 5, 10, 6, 7, 5, 11, 7, 9, 5, 12, 11, 2, 10, 8, 12, 6, 11, 10, 4] # 32
@@ -101,7 +101,7 @@ playtech/dolphinreef/reel
 # reels lengths [32, 33, 32, 33, 32], total reshuffles 35684352
 # symbols: 36.673(lined) + 5.8965(scatter) = 42.569272%
 # free spins 1474560, q = 0.041322, sq = 1/(1-q) = 1.043103
-# free games frequency: 1/121
+# free games hit rate: 1/121
 # RTP = 42.569(sym) + 0.041322*1118.9(fg) = 88.803151%
 88.803151:
   - [8, 10, 9, 3, 12, 6, 7, 3, 11, 12, 4, 9, 8, 5, 10, 6, 7, 5, 11, 7, 9, 5, 12, 11, 2, 10, 8, 12, 6, 11, 10, 4] # 32
@@ -117,7 +117,7 @@ playtech/dolphinreef/reel
 # reels lengths [32, 33, 31, 33, 32], total reshuffles 34569216
 # symbols: 36.668(lined) + 5.9977(scatter) = 42.665743%
 # free spins 1428480, q = 0.041322, sq = 1/(1-q) = 1.043103
-# free games frequency: 1/121
+# free games hit rate: 1/121
 # RTP = 42.666(sym) + 0.041322*1133.8(fg) = 89.517833%
 89.517833:
   - [8, 10, 9, 3, 12, 6, 7, 3, 11, 12, 4, 9, 8, 5, 10, 6, 7, 5, 11, 7, 9, 5, 12, 11, 2, 10, 8, 12, 6, 11, 10, 4] # 32
@@ -133,7 +133,7 @@ playtech/dolphinreef/reel
 # reels lengths [31, 33, 32, 33, 31], total reshuffles 33488928
 # symbols: 36.977(lined) + 6.1002(scatter) = 43.076795%
 # free spins 1383840, q = 0.041322, sq = 1/(1-q) = 1.043103
-# free games frequency: 1/121
+# free games hit rate: 1/121
 # RTP = 43.077(sym) + 0.041322*1142.8(fg) = 90.298074%
 90.298074:
   - [3, 12, 6, 7, 4, 12, 11, 5, 8, 3, 11, 9, 2, 8, 12, 5, 10, 9, 4, 10, 6, 7, 11, 9, 6, 12, 7, 5, 11, 8, 10] # 31
@@ -149,7 +149,7 @@ playtech/dolphinreef/reel
 # reels lengths [32, 32, 32, 33, 31], total reshuffles 33521664
 # symbols: 37.113(lined) + 6.1322(scatter) = 43.244852%
 # free spins 1428480, q = 0.042614, sq = 1/(1-q) = 1.044510
-# free games frequency: 1/117.33
+# free games hit rate: 1/117.33
 # RTP = 43.245(sym) + 0.042614*1123.4(fg) = 91.118475%
 91.118475:
   - [8, 10, 9, 3, 12, 6, 7, 3, 11, 12, 4, 9, 8, 5, 10, 6, 7, 5, 11, 7, 9, 5, 12, 11, 2, 10, 8, 12, 6, 11, 10, 4] # 32
@@ -165,7 +165,7 @@ playtech/dolphinreef/reel
 # reels lengths [32, 32, 32, 32, 32], total reshuffles 33554432
 # symbols: 37.246(lined) + 6.1644(scatter) = 43.410015%
 # free spins 1474560, q = 0.043945, sq = 1/(1-q) = 1.045965
-# free games frequency: 1/113.78
+# free games hit rate: 1/113.78
 # RTP = 43.41(sym) + 0.043945*1118.9(fg) = 92.578661%
 92.578661:
   - [8, 10, 9, 3, 12, 6, 7, 3, 11, 12, 4, 9, 8, 5, 10, 6, 7, 5, 11, 7, 9, 5, 12, 11, 2, 10, 8, 12, 6, 11, 10, 4] # 32
@@ -181,7 +181,7 @@ playtech/dolphinreef/reel
 # reels lengths [32, 32, 31, 32, 32], total reshuffles 32505856
 # symbols: 37.448(lined) + 6.2695(scatter) = 43.717243%
 # free spins 1428480, q = 0.043945, sq = 1/(1-q) = 1.045965
-# free games frequency: 1/113.78
+# free games hit rate: 1/113.78
 # RTP = 43.717(sym) + 0.043945*1133.8(fg) = 93.543342%
 93.543342:
   - [8, 10, 9, 3, 12, 6, 7, 3, 11, 12, 4, 9, 8, 5, 10, 6, 7, 5, 11, 7, 9, 5, 12, 11, 2, 10, 8, 12, 6, 11, 10, 4] # 32
@@ -197,7 +197,7 @@ playtech/dolphinreef/reel
 # reels lengths [31, 32, 32, 32, 31], total reshuffles 31490048
 # symbols: 37.804(lined) + 6.3761(scatter) = 44.179964%
 # free spins 1383840, q = 0.043945, sq = 1/(1-q) = 1.045965
-# free games frequency: 1/113.78
+# free games hit rate: 1/113.78
 # RTP = 44.18(sym) + 0.043945*1142.8(fg) = 94.398687%
 94.398687:
   - [3, 12, 6, 7, 4, 12, 11, 5, 8, 3, 11, 9, 2, 8, 12, 5, 10, 9, 4, 10, 6, 7, 11, 9, 6, 12, 7, 5, 11, 8, 10] # 31
@@ -213,7 +213,7 @@ playtech/dolphinreef/reel
 # reels lengths [31, 32, 31, 32, 32], total reshuffles 31490048
 # symbols: 38.116(lined) + 6.3761(scatter) = 44.492190%
 # free spins 1383840, q = 0.043945, sq = 1/(1-q) = 1.045965
-# free games frequency: 1/113.78
+# free games hit rate: 1/113.78
 # RTP = 44.492(sym) + 0.043945*1155.8(fg) = 95.282094%
 95.282094:
   - [3, 12, 6, 7, 4, 12, 11, 5, 8, 3, 11, 9, 2, 8, 12, 5, 10, 9, 4, 10, 6, 7, 11, 9, 6, 12, 7, 5, 11, 8, 10] # 31
@@ -229,7 +229,7 @@ playtech/dolphinreef/reel
 # reels lengths [31, 32, 31, 32, 31], total reshuffles 30505984
 # symbols: 38.189(lined) + 6.484(scatter) = 44.672848%
 # free spins 1340595, q = 0.043945, sq = 1/(1-q) = 1.045965
-# free games frequency: 1/113.78
+# free games hit rate: 1/113.78
 # RTP = 44.673(sym) + 0.043945*1163.1(fg) = 95.786951%
 95.786951:
   - [3, 12, 6, 7, 4, 12, 11, 5, 8, 3, 11, 9, 2, 8, 12, 5, 10, 9, 4, 10, 6, 7, 11, 9, 6, 12, 7, 5, 11, 8, 10] # 31
@@ -245,7 +245,7 @@ playtech/dolphinreef/reel
 # reels lengths [31, 32, 31, 32, 30], total reshuffles 29521920
 # symbols: 38.219(lined) + 6.5992(scatter) = 44.818128%
 # free spins 1297350, q = 0.043945, sq = 1/(1-q) = 1.045965
-# free games frequency: 1/113.78
+# free games hit rate: 1/113.78
 # RTP = 44.818(sym) + 0.043945*1170.5(fg) = 96.254417%
 96.254417:
   - [3, 12, 6, 7, 4, 12, 11, 5, 8, 3, 11, 9, 2, 8, 12, 5, 10, 9, 4, 10, 6, 7, 11, 9, 6, 12, 7, 5, 11, 8, 10] # 31
@@ -261,7 +261,7 @@ playtech/dolphinreef/reel
 # reels lengths [31, 32, 30, 32, 31], total reshuffles 29521920
 # symbols: 38.537(lined) + 6.5992(scatter) = 45.136468%
 # free spins 1297350, q = 0.043945, sq = 1/(1-q) = 1.045965
-# free games frequency: 1/113.78
+# free games hit rate: 1/113.78
 # RTP = 45.136(sym) + 0.043945*1183.8(fg) = 97.158389%
 97.158389:
   - [3, 12, 6, 7, 4, 12, 11, 5, 8, 3, 11, 9, 2, 8, 12, 5, 10, 9, 4, 10, 6, 7, 11, 9, 6, 12, 7, 5, 11, 8, 10] # 31
@@ -277,7 +277,7 @@ playtech/dolphinreef/reel
 # reels lengths [30, 32, 31, 32, 30], total reshuffles 28569600
 # symbols: 38.915(lined) + 6.716(scatter) = 45.631328%
 # free spins 1255500, q = 0.043945, sq = 1/(1-q) = 1.045965
-# free games frequency: 1/113.78
+# free games hit rate: 1/113.78
 # RTP = 45.631(sym) + 0.043945*1195.3(fg) = 98.160783%
 98.160783:
   - [5, 7, 4, 10, 8, 9, 4, 7, 6, 11, 9, 2, 10, 11, 12, 9, 6, 12, 8, 5, 10, 6, 7, 5, 12, 3, 8, 12, 3, 11] # 30
@@ -293,7 +293,7 @@ playtech/dolphinreef/reel
 # reels lengths [30, 32, 30, 32, 30], total reshuffles 27648000
 # symbols: 39.432(lined) + 6.8344(scatter) = 46.265979%
 # free spins 1215000, q = 0.043945, sq = 1/(1-q) = 1.045965
-# free games frequency: 1/113.78
+# free games hit rate: 1/113.78
 # RTP = 46.266(sym) + 0.043945*1220.6(fg) = 99.905791%
 99.905791:
   - [5, 7, 4, 10, 8, 9, 4, 7, 6, 11, 9, 2, 10, 11, 12, 9, 6, 12, 8, 5, 10, 6, 7, 5, 12, 3, 8, 12, 3, 11] # 30
@@ -309,7 +309,7 @@ playtech/dolphinreef/reel
 # reels lengths [31, 31, 31, 31, 31], total reshuffles 28629151
 # symbols: 39.126(lined) + 6.7883(scatter) = 45.914631%
 # free spins 1340595, q = 0.046826, sq = 1/(1-q) = 1.049127
-# free games frequency: 1/106.78
+# free games hit rate: 1/106.78
 # RTP = 45.915(sym) + 0.046826*1163.1(fg) = 100.379606%
 100.379606:
   - [3, 12, 6, 7, 4, 12, 11, 5, 8, 3, 11, 9, 2, 8, 12, 5, 10, 9, 4, 10, 6, 7, 11, 9, 6, 12, 7, 5, 11, 8, 10] # 31
@@ -325,7 +325,7 @@ playtech/dolphinreef/reel
 # reels lengths [31, 31, 30, 31, 31], total reshuffles 27705630
 # symbols: 39.639(lined) + 6.9082(scatter) = 46.546890%
 # free spins 1297350, q = 0.046826, sq = 1/(1-q) = 1.049127
-# free games frequency: 1/106.78
+# free games hit rate: 1/106.78
 # RTP = 46.547(sym) + 0.046826*1183.8(fg) = 101.979197%
 101.979197:
   - [3, 12, 6, 7, 4, 12, 11, 5, 8, 3, 11, 9, 2, 8, 12, 5, 10, 9, 4, 10, 6, 7, 11, 9, 6, 12, 7, 5, 11, 8, 10] # 31
@@ -341,7 +341,7 @@ playtech/dolphinreef/reel
 # reels lengths [30, 31, 31, 31, 30], total reshuffles 26811900
 # symbols: 40.059(lined) + 7.0297(scatter) = 47.088602%
 # free spins 1255500, q = 0.046826, sq = 1/(1-q) = 1.049127
-# free games frequency: 1/106.78
+# free games hit rate: 1/106.78
 # RTP = 47.089(sym) + 0.046826*1195.3(fg) = 103.061715%
 103.061715:
   - [5, 7, 4, 10, 8, 9, 4, 7, 6, 11, 9, 2, 10, 11, 12, 9, 6, 12, 8, 5, 10, 6, 7, 5, 12, 3, 8, 12, 3, 11] # 30
@@ -357,7 +357,7 @@ playtech/dolphinreef/reel
 # reels lengths [30, 31, 30, 31, 30], total reshuffles 25947000
 # symbols: 40.707(lined) + 7.1529(scatter) = 47.860304%
 # free spins 1215000, q = 0.046826, sq = 1/(1-q) = 1.049127
-# free games frequency: 1/106.78
+# free games hit rate: 1/106.78
 # RTP = 47.86(sym) + 0.046826*1220.6(fg) = 105.016565%
 105.016565:
   - [5, 7, 4, 10, 8, 9, 4, 7, 6, 11, 9, 2, 10, 11, 12, 9, 6, 12, 8, 5, 10, 6, 7, 5, 12, 3, 8, 12, 3, 11] # 30
@@ -373,7 +373,7 @@ playtech/dolphinreef/reel
 # reels lengths [30, 30, 30, 30, 30], total reshuffles 24300000
 # symbols: 41.724(lined) + 7.5(scatter) = 49.223786%
 # free spins 1215000, q = 0.05, sq = 1/(1-q) = 1.052632
-# free games frequency: 1/100
+# free games hit rate: 1/100
 # RTP = 49.224(sym) + 0.05*1220.6(fg) = 110.253971%
 110.253971:
   - [5, 7, 4, 10, 8, 9, 4, 7, 6, 11, 9, 2, 10, 11, 12, 9, 6, 12, 8, 5, 10, 6, 7, 5, 12, 3, 8, 12, 3, 11] # 30
@@ -389,7 +389,7 @@ playtech/dolphinreef/reel
 # reels lengths [29, 30, 29, 30, 29], total reshuffles 21950100
 # symbols: 43.449(lined) + 7.9177(scatter) = 51.366764%
 # free spins 1097505, q = 0.05, sq = 1/(1-q) = 1.052632
-# free games frequency: 1/100
+# free games hit rate: 1/100
 # RTP = 51.367(sym) + 0.05*1283.4(fg) = 115.536676%
 115.536676:
   - [4, 12, 7, 2, 10, 8, 5, 10, 3, 8, 6, 9, 11, 4, 7, 6, 12, 11, 5, 10, 9, 12, 5, 8, 6, 7, 9, 3, 11] # 29

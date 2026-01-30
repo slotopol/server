@@ -59,7 +59,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [66, 67, 66, 67, 66], total reshuffles 1290569544
 # symbols: 69.594(lined) + 1.9068(scatter) = 71.500819%
 # free spins 155982400, q = 0.12086, sq = 1/(1-q) = 1.137479
-# free games frequency: 1/206.85
+# free games hit rate: 1/206.85
 # jackpots: count 68, frequency 1/18978963.8824
 # RTP = 71.501(sym) + 0.12086*1.1375*71.501(sym) = 81.330711%
 81.330711:
@@ -72,7 +72,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [66, 67, 65, 67, 66], total reshuffles 1271015460
 # symbols: 70.178(lined) + 1.9235(scatter) = 72.101437%
 # free spins 154785600, q = 0.12178, sq = 1/(1-q) = 1.138668
-# free games frequency: 1/205.29
+# free games hit rate: 1/205.29
 # jackpots: count 68, frequency 1/18691403.8235
 # RTP = 72.101(sym) + 0.12178*1.1387*72.101(sym) = 82.099614%
 82.099614:
@@ -85,7 +85,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [65, 67, 65, 67, 65], total reshuffles 1232791625
 # symbols: 71.197(lined) + 1.9572(scatter) = 73.154336%
 # free spins 152411200, q = 0.12363, sq = 1/(1-q) = 1.141072
-# free games frequency: 1/202.21
+# free games hit rate: 1/202.21
 # jackpots: count 68, frequency 1/18129288.6029
 # RTP = 73.154(sym) + 0.12363*1.1411*73.154(sym) = 83.474350%
 83.474350:
@@ -98,7 +98,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [65, 66, 65, 66, 65], total reshuffles 1196266500
 # symbols: 72.397(lined) + 2.0016(scatter) = 74.398697%
 # free spins 151027200, q = 0.12625, sq = 1/(1-q) = 1.144491
-# free games frequency: 1/198.02
+# free games hit rate: 1/198.02
 # jackpots: count 68, frequency 1/17592154.4118
 # RTP = 74.399(sym) + 0.12625*1.1445*74.399(sym) = 85.148605%
 85.148605:
@@ -111,7 +111,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [64, 66, 65, 66, 64], total reshuffles 1159741440
 # symbols: 73.429(lined) + 2.0374(scatter) = 75.465975%
 # free spins 148678400, q = 0.1282, sq = 1/(1-q) = 1.147052
-# free games frequency: 1/195.01
+# free games hit rate: 1/195.01
 # jackpots: count 68, frequency 1/17055021.1765
 # RTP = 75.466(sym) + 0.1282*1.1471*75.466(sym) = 86.563364%
 86.563364:
@@ -124,7 +124,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [64, 66, 64, 66, 64], total reshuffles 1141899264
 # symbols: 74.095(lined) + 2.0554(scatter) = 76.150205%
 # free spins 147513600, q = 0.12918, sq = 1/(1-q) = 1.148346
-# free games frequency: 1/193.52
+# free games hit rate: 1/193.52
 # jackpots: count 68, frequency 1/16792636.2353
 # RTP = 76.15(sym) + 0.12918*1.1483*76.15(sym) = 87.446819%
 87.446819:
@@ -137,7 +137,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [64, 65, 64, 65, 64], total reshuffles 1107558400
 # symbols: 75.367(lined) + 2.1028(scatter) = 77.470269%
 # free spins 146152000, q = 0.13196, sq = 1/(1-q) = 1.152019
-# free games frequency: 1/189.45
+# free games hit rate: 1/189.45
 # jackpots: count 68, frequency 1/16287623.5294
 # RTP = 77.47(sym) + 0.13196*1.152*77.47(sym) = 89.247218%
 89.247218:
@@ -150,7 +150,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [64, 64, 64, 64, 64], total reshuffles 1073741824
 # symbols: 76.577(lined) + 2.1523(scatter) = 78.728764%
 # free spins 144793600, q = 0.13485, sq = 1/(1-q) = 1.155868
-# free games frequency: 1/185.39
+# free games hit rate: 1/185.39
 # jackpots: count 68, frequency 1/15790320.9412
 # RTP = 78.729(sym) + 0.13485*1.1559*78.729(sym) = 91.000085%
 91.000085:
@@ -163,7 +163,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [64, 64, 63, 64, 64], total reshuffles 1056964608
 # symbols: 77.287(lined) + 2.1717(scatter) = 79.459183%
 # free spins 143641600, q = 0.1359, sq = 1/(1-q) = 1.157274
-# free games frequency: 1/183.96
+# free games hit rate: 1/183.96
 # jackpots: count 68, frequency 1/15543597.1765
 # RTP = 79.459(sym) + 0.1359*1.1573*79.459(sym) = 91.956015%
 91.956015:
@@ -176,7 +176,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [63, 64, 64, 64, 63], total reshuffles 1040449536
 # symbols: 77.757(lined) + 2.1913(scatter) = 79.948716%
 # free spins 142496000, q = 0.13696, sq = 1/(1-q) = 1.158690
-# free games frequency: 1/182.54
+# free games hit rate: 1/182.54
 # jackpots: count 68, frequency 1/15300728.4706
 # RTP = 79.949(sym) + 0.13696*1.1587*79.949(sym) = 92.635756%
 92.635756:
@@ -189,7 +189,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [63, 64, 63, 64, 63], total reshuffles 1024192512
 # symbols: 78.518(lined) + 2.211(scatter) = 80.729118%
 # free spins 141356800, q = 0.13802, sq = 1/(1-q) = 1.160117
-# free games frequency: 1/181.14
+# free games hit rate: 1/181.14
 # jackpots: count 68, frequency 1/15061654.5882
 # RTP = 80.729(sym) + 0.13802*1.1601*80.729(sym) = 93.655203%
 93.655203:
@@ -202,7 +202,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [63, 64, 62, 64, 63], total reshuffles 1007935488
 # symbols: 79.209(lined) + 2.2314(scatter) = 81.440674%
 # free spins 140217600, q = 0.13911, sq = 1/(1-q) = 1.161594
-# free games frequency: 1/179.71
+# free games hit rate: 1/179.71
 # jackpots: count 68, frequency 1/14822580.7059
 # RTP = 81.441(sym) + 0.13911*1.1616*81.441(sym) = 94.600960%
 94.600960:
@@ -215,7 +215,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [62, 64, 63, 64, 62], total reshuffles 991936512
 # symbols: 79.68(lined) + 2.2519(scatter) = 81.932403%
 # free spins 139084800, q = 0.14022, sq = 1/(1-q) = 1.163082
-# free games frequency: 1/178.3
+# free games hit rate: 1/178.3
 # jackpots: count 68, frequency 1/14587301.6471
 # RTP = 81.932(sym) + 0.14022*1.1631*81.932(sym) = 95.294107%
 95.294107:
@@ -228,7 +228,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [62, 64, 62, 64, 62], total reshuffles 976191488
 # symbols: 80.428(lined) + 2.2726(scatter) = 82.700137%
 # free spins 137958400, q = 0.14132, sq = 1/(1-q) = 1.164582
-# free games frequency: 1/176.9
+# free games hit rate: 1/176.9
 # jackpots: count 68, frequency 1/14355757.1765
 # RTP = 82.7(sym) + 0.14132*1.1646*82.7(sym) = 96.311122%
 96.311122:
@@ -241,7 +241,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [62, 63, 63, 63, 62], total reshuffles 961180668
 # symbols: 81.057(lined) + 2.3056(scatter) = 83.362559%
 # free spins 137761600, q = 0.14333, sq = 1/(1-q) = 1.167304
-# free games frequency: 1/174.43
+# free games hit rate: 1/174.43
 # jackpots: count 68, frequency 1/14135009.8235
 # RTP = 83.363(sym) + 0.14333*1.1673*83.363(sym) = 97.309478%
 97.309478:
@@ -254,7 +254,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [62, 63, 62, 63, 62], total reshuffles 945923832
 # symbols: 81.863(lined) + 2.3268(scatter) = 84.190124%
 # free spins 136641600, q = 0.14445, sq = 1/(1-q) = 1.168843
-# free games frequency: 1/173.07
+# free games hit rate: 1/173.07
 # jackpots: count 68, frequency 1/13910644.5882
 # RTP = 84.19(sym) + 0.14445*1.1688*84.19(sym) = 98.405033%
 98.405033:
@@ -267,7 +267,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [62, 63, 61, 63, 62], total reshuffles 930666996
 # symbols: 82.696(lined) + 2.3486(scatter) = 85.044801%
 # free spins 135521600, q = 0.14562, sq = 1/(1-q) = 1.170436
-# free games frequency: 1/171.68
+# free games hit rate: 1/171.68
 # jackpots: count 69, frequency 1/13487927.4783
 # RTP = 85.045(sym) + 0.14562*1.1704*85.045(sym) = 99.539518%
 99.539518:
@@ -281,7 +281,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [61, 63, 62, 63, 61], total reshuffles 915656238
 # symbols: 83.243(lined) + 2.3706(scatter) = 85.614069%
 # free spins 134408000, q = 0.14679, sq = 1/(1-q) = 1.172043
-# free games frequency: 1/170.31
+# free games hit rate: 1/170.31
 # jackpots: count 71, frequency 1/12896566.7324
 # RTP = 85.614(sym) + 0.14679*1.172*85.614(sym) = 100.343338%
 100.343338:
@@ -294,7 +294,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [61, 63, 61, 63, 61], total reshuffles 900887589
 # symbols: 84.132(lined) + 2.3928(scatter) = 86.524900%
 # free spins 133300800, q = 0.14797, sq = 1/(1-q) = 1.173662
-# free games frequency: 1/168.96
+# free games hit rate: 1/168.96
 # jackpots: count 75, frequency 1/12011834.52
 # RTP = 86.525(sym) + 0.14797*1.1737*86.525(sym) = 101.551004%
 101.551004:
@@ -307,7 +307,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [61, 62, 61, 62, 61], total reshuffles 872514964
 # symbols: 85.808(lined) + 2.4508(scatter) = 88.258829%
 # free spins 132006400, q = 0.15129, sq = 1/(1-q) = 1.178265
-# free games frequency: 1/165.24
+# free games hit rate: 1/165.24
 # jackpots: count 75, frequency 1/11633532.8533
 # RTP = 88.259(sym) + 0.15129*1.1783*88.259(sym) = 103.992247%
 103.992247:
@@ -320,7 +320,7 @@ novomatic/lovelymermaid/reel
 # reels lengths [61, 61, 61, 61, 61], total reshuffles 844596301
 # symbols: 87.442(lined) + 2.5114(scatter) = 89.953236%
 # free spins 130715200, q = 0.15477, sq = 1/(1-q) = 1.183105
-# free games frequency: 1/161.53
+# free games hit rate: 1/161.53
 # jackpots: count 75, frequency 1/11261284.0133
 # RTP = 89.953(sym) + 0.15477*1.1831*89.953(sym) = 106.424123%
 106.424123:

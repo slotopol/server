@@ -74,7 +74,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var rtpmjap = Ebon * qmjap * 100
 		var rtp = rtpsym + rtpmjap
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "pyramid bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mjap), rtpmjap)
+		fmt.Fprintf(w, "pyramid bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mjap), rtpmjap)
 		if s.JackCountF(mjj) > 0 {
 			fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackCountF(mjj), reshuf/s.JackCountF(mjj))
 		}

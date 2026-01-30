@@ -9,55 +9,55 @@ novomatic/bookofra/bon
 # reels lengths [37, 37, 36, 37, 37], total reshuffles 67469796
 # symbols: 774.39(lined) + 9.2681(scatter) = 783.656364%
 # free spins 16336080, q = 0.24212, sq = 1/(1-q) = 1.319478
-# free games frequency: 1/41.301
+# free games hit rate: 1/41.301
 # RTP[1] = sq*rtp(sym) = 1.3195*783.66 = 1034.017066%
 # *calculations for expanding symbol [2]*
 # reels lengths [37, 37, 36, 37, 37], total reshuffles 67469796
 # symbols: 525.21(lined) + 9.2681(scatter) = 534.482156%
 # free spins 16336080, q = 0.24212, sq = 1/(1-q) = 1.319478
-# free games frequency: 1/41.301
+# free games hit rate: 1/41.301
 # RTP[2] = sq*rtp(sym) = 1.3195*534.48 = 705.237265%
 # *calculations for expanding symbol [3]*
 # reels lengths [37, 37, 36, 37, 37], total reshuffles 67469796
 # symbols: 470.29(lined) + 9.2681(scatter) = 479.557579%
 # free spins 16336080, q = 0.24212, sq = 1/(1-q) = 1.319478
-# free games frequency: 1/41.301
+# free games hit rate: 1/41.301
 # RTP[3] = sq*rtp(sym) = 1.3195*479.56 = 632.765512%
 # *calculations for expanding symbol [4]*
 # reels lengths [37, 37, 36, 37, 37], total reshuffles 67469796
 # symbols: 452.2(lined) + 9.2681(scatter) = 461.466454%
 # free spins 16336080, q = 0.24212, sq = 1/(1-q) = 1.319478
-# free games frequency: 1/41.301
+# free games hit rate: 1/41.301
 # RTP[4] = sq*rtp(sym) = 1.3195*461.47 = 608.894677%
 # *calculations for expanding symbol [5]*
 # reels lengths [37, 37, 36, 37, 37], total reshuffles 67469796
 # symbols: 589.91(lined) + 9.2681(scatter) = 599.180039%
 # free spins 16336080, q = 0.24212, sq = 1/(1-q) = 1.319478
-# free games frequency: 1/41.301
+# free games hit rate: 1/41.301
 # RTP[5] = sq*rtp(sym) = 1.3195*599.18 = 790.604677%
 # *calculations for expanding symbol [6]*
 # reels lengths [37, 37, 36, 37, 37], total reshuffles 67469796
 # symbols: 765.85(lined) + 9.2681(scatter) = 775.121167%
 # free spins 16336080, q = 0.24212, sq = 1/(1-q) = 1.319478
-# free games frequency: 1/41.301
+# free games hit rate: 1/41.301
 # RTP[6] = sq*rtp(sym) = 1.3195*775.12 = 1022.755064%
 # *calculations for expanding symbol [7]*
 # reels lengths [37, 37, 36, 37, 37], total reshuffles 67469796
 # symbols: 577.15(lined) + 9.2681(scatter) = 586.417261%
 # free spins 16336080, q = 0.24212, sq = 1/(1-q) = 1.319478
-# free games frequency: 1/41.301
+# free games hit rate: 1/41.301
 # RTP[7] = sq*rtp(sym) = 1.3195*586.42 = 773.764477%
 # *calculations for expanding symbol [8]*
 # reels lengths [37, 37, 36, 37, 37], total reshuffles 67469796
 # symbols: 569.17(lined) + 9.2681(scatter) = 578.437335%
 # free spins 16336080, q = 0.24212, sq = 1/(1-q) = 1.319478
-# free games frequency: 1/41.301
+# free games hit rate: 1/41.301
 # RTP[8] = sq*rtp(sym) = 1.3195*578.44 = 763.235142%
 # *calculations for expanding symbol [9]*
 # reels lengths [37, 37, 36, 37, 37], total reshuffles 67469796
 # symbols: 507.83(lined) + 9.2681(scatter) = 517.094308%
 # free spins 16336080, q = 0.24212, sq = 1/(1-q) = 1.319478
-# free games frequency: 1/41.301
+# free games hit rate: 1/41.301
 # RTP[9] = sq*rtp(sym) = 1.3195*517.09 = 682.294389%
 # RTPfs = 779.285363%
 - [ 8, 2, 6, 8, 1, 6, 5, 3, 9, 6, 8, 5, 2, 7, 9,10, 5, 8, 2, 7, 9,10, 6, 8, 2, 7, 6, 5, 4, 7, 8, 3, 6, 5, 4, 7, 5]
@@ -84,7 +84,7 @@ novomatic/bookofra/reel
 # reels lengths [50, 45, 46, 50, 52], total reshuffles 269100000
 # symbols: 48.57(lined) + 1.4815(scatter) = 50.051844%
 # free spins 13809960, q = 0.051319, sq = 1/(1-q) = 1.054095
-# free games frequency: 1/194.86
+# free games hit rate: 1/194.86
 # RTP = 50.052(sym) + 0.051319*779.29(fg) = 90.044039%
 90.044039: # 90.07
   - [ 7, 9,10, 5, 8, 3, 5, 7, 1, 6, 5, 3, 7, 6, 4, 5, 8, 6, 7, 2, 9, 6, 3, 7, 6, 3, 8, 5, 6, 7, 4, 6, 8, 3, 7, 9, 5, 8, 2, 6, 7, 3, 5, 9, 1, 5, 7, 6, 8, 5]
@@ -96,7 +96,7 @@ novomatic/bookofra/reel
 # reels lengths [50, 45, 46, 50, 49], total reshuffles 253575000
 # symbols: 48.923(lined) + 1.5487(scatter) = 50.471322%
 # free spins 13555620, q = 0.053458, sq = 1/(1-q) = 1.056477
-# free games frequency: 1/187.06
+# free games hit rate: 1/187.06
 # RTP = 50.471(sym) + 0.053458*779.29(fg) = 92.130383%
 92.130383: # 92.15
   - [ 7, 9,10, 5, 8, 3, 5, 7, 1, 6, 5, 3, 7, 6, 4, 5, 8, 6, 7, 2, 9, 6, 3, 7, 6, 3, 8, 5, 6, 7, 4, 6, 8, 3, 7, 9, 5, 8, 2, 6, 7, 3, 5, 9, 1, 5, 7, 6, 8, 5]
@@ -108,7 +108,7 @@ novomatic/bookofra/reel
 # reels lengths [50, 45, 46, 50, 46], total reshuffles 238050000
 # symbols: 49.097(lined) + 1.6247(scatter) = 50.721735%
 # free spins 13301280, q = 0.055876, sq = 1/(1-q) = 1.059183
-# free games frequency: 1/178.97
+# free games hit rate: 1/178.97
 # RTP = 50.722(sym) + 0.055876*779.29(fg) = 94.265078%
 94.265078: # 94.28
   - [ 7, 9,10, 5, 8, 3, 5, 7, 1, 6, 5, 3, 7, 6, 4, 5, 8, 6, 7, 2, 9, 6, 3, 7, 6, 3, 8, 5, 6, 7, 4, 6, 8, 3, 7, 9, 5, 8, 2, 6, 7, 3, 5, 9, 1, 5, 7, 6, 8, 5]
@@ -120,7 +120,7 @@ novomatic/bookofra/reel
 # reels lengths [50, 45, 46, 50, 45], total reshuffles 232875000
 # symbols: 49.232(lined) + 1.6522(scatter) = 50.884699%
 # free spins 13216500, q = 0.056754, sq = 1/(1-q) = 1.060168
-# free games frequency: 1/176.2
+# free games hit rate: 1/176.2
 # RTP = 50.885(sym) + 0.056754*779.29(fg) = 95.111967%
 95.111967: # 95.12
   - [ 7, 9,10, 5, 8, 3, 5, 7, 1, 6, 5, 3, 7, 6, 4, 5, 8, 6, 7, 2, 9, 6, 3, 7, 6, 3, 8, 5, 6, 7, 4, 6, 8, 3, 7, 9, 5, 8, 2, 6, 7, 3, 5, 9, 1, 5, 7, 6, 8, 5]
@@ -132,7 +132,7 @@ novomatic/bookofra/reel
 # reels lengths [50, 45, 46, 50, 44], total reshuffles 227700000
 # symbols: 49.455(lined) + 1.681(scatter) = 51.135545%
 # free spins 13131720, q = 0.057671, sq = 1/(1-q) = 1.061201
-# free games frequency: 1/173.4
+# free games hit rate: 1/173.4
 # RTP = 51.136(sym) + 0.057671*779.29(fg) = 96.077825%
 96.077825: # 96.08
   - [ 7, 9,10, 5, 8, 3, 5, 7, 1, 6, 5, 3, 7, 6, 4, 5, 8, 6, 7, 2, 9, 6, 3, 7, 6, 3, 8, 5, 6, 7, 4, 6, 8, 3, 7, 9, 5, 8, 2, 6, 7, 3, 5, 9, 1, 5, 7, 6, 8, 5]
@@ -144,7 +144,7 @@ novomatic/bookofra/reel
 # reels lengths [50, 45, 46, 50, 43], total reshuffles 222525000
 # symbols: 49.607(lined) + 1.7112(scatter) = 51.318615%
 # free spins 13046940, q = 0.058631, sq = 1/(1-q) = 1.062283
-# free games frequency: 1/170.56
+# free games hit rate: 1/170.56
 # RTP = 51.319(sym) + 0.058631*779.29(fg) = 97.009164%
 97.009164: # 97.01
   - [ 7, 9,10, 5, 8, 3, 5, 7, 1, 6, 5, 3, 7, 6, 4, 5, 8, 6, 7, 2, 9, 6, 3, 7, 6, 3, 8, 5, 6, 7, 4, 6, 8, 3, 7, 9, 5, 8, 2, 6, 7, 3, 5, 9, 1, 5, 7, 6, 8, 5]
@@ -156,7 +156,7 @@ novomatic/bookofra/reel
 # reels lengths [51, 46, 46, 41, 46], total reshuffles 203529576
 # symbols: 69.634(lined) + 4.425(scatter) = 74.058554%
 # free spins 26834760, q = 0.13185, sq = 1/(1-q) = 1.151871
-# free games frequency: 1/75.845
+# free games hit rate: 1/75.845
 # RTP = 74.059(sym) + 0.13185*779.29(fg) = 176.804975%
 176.804975: # 100
   - [ 7, 9,10, 5, 8, 3, 5, 7, 1, 6, 5, 3, 7, 6, 4, 5, 8, 6, 7, 2, 9, 6, 3, 7, 6, 3, 8, 5,10, 6, 7, 4, 6, 8, 3, 7, 9, 5, 8, 2, 6, 7, 3, 5, 9, 1, 5, 7, 6, 8, 5]

@@ -61,7 +61,7 @@ novomatic/kingsjester/reel
 # reels lengths [37, 37, 38, 37, 37], total reshuffles 71218118
 # symbols: 77.479(lined) + 3.3601(scatter) = 80.839005%
 # free spins 4948290, q = 0.069481, sq = 1/(1-q) = 1.074669
-# free games frequency: 1/215.89
+# free games hit rate: 1/215.89
 # jackpots1: count 1, frequency 1/71218118
 # jackpots2: count 47, frequency 1/1515279.10638
 # RTP = 80.839(sym) + 0.069481*1.0747*80.839(sym) = 86.875158%
@@ -75,7 +75,7 @@ novomatic/kingsjester/reel
 # reels lengths [37, 37, 38, 37, 37], total reshuffles 71218118
 # symbols: 78.23(lined) + 3.3601(scatter) = 81.590050%
 # free spins 4948290, q = 0.069481, sq = 1/(1-q) = 1.074669
-# free games frequency: 1/215.89
+# free games hit rate: 1/215.89
 # jackpots1: count 1, frequency 1/71218118
 # jackpots2: count 47, frequency 1/1515279.10638
 # RTP = 81.59(sym) + 0.069481*1.0747*81.59(sym) = 87.682283%
@@ -89,7 +89,7 @@ novomatic/kingsjester/reel
 # reels lengths [37, 37, 38, 37, 37], total reshuffles 71218118
 # symbols: 78.684(lined) + 3.3601(scatter) = 82.043637%
 # free spins 4948290, q = 0.069481, sq = 1/(1-q) = 1.074669
-# free games frequency: 1/215.89
+# free games hit rate: 1/215.89
 # jackpots1: count 1, frequency 1/71218118
 # jackpots2: count 47, frequency 1/1515279.10638
 # RTP = 82.044(sym) + 0.069481*1.0747*82.044(sym) = 88.169738%
@@ -103,7 +103,7 @@ novomatic/kingsjester/reel
 # reels lengths [37, 37, 38, 37, 37], total reshuffles 71218118
 # symbols: 80.557(lined) + 3.3601(scatter) = 83.917351%
 # free spins 4948290, q = 0.069481, sq = 1/(1-q) = 1.074669
-# free games frequency: 1/215.89
+# free games hit rate: 1/215.89
 # jackpots1: count 1, frequency 1/71218118
 # jackpots2: count 47, frequency 1/1515279.10638
 # RTP = 83.917(sym) + 0.069481*1.0747*83.917(sym) = 90.183361%
@@ -117,7 +117,7 @@ novomatic/kingsjester/reel
 # reels lengths [36, 36, 37, 36, 36], total reshuffles 62145792
 # symbols: 80.626(lined) + 3.6716(scatter) = 84.297630%
 # free spins 4669245, q = 0.075134, sq = 1/(1-q) = 1.081237
-# free games frequency: 1/199.64
+# free games hit rate: 1/199.64
 # jackpots1: count 1, frequency 1/62145792
 # jackpots2: count 47, frequency 1/1322250.89362
 # RTP = 84.298(sym) + 0.075134*1.0812*84.298(sym) = 91.145750%
@@ -131,7 +131,7 @@ novomatic/kingsjester/reel
 # reels lengths [36, 36, 37, 36, 36], total reshuffles 62145792
 # symbols: 80.936(lined) + 3.6716(scatter) = 84.607875%
 # free spins 4669245, q = 0.075134, sq = 1/(1-q) = 1.081237
-# free games frequency: 1/199.64
+# free games hit rate: 1/199.64
 # jackpots1: count 1, frequency 1/62145792
 # jackpots2: count 47, frequency 1/1322250.89362
 # RTP = 84.608(sym) + 0.075134*1.0812*84.608(sym) = 91.481198%
@@ -145,7 +145,7 @@ novomatic/kingsjester/reel
 # reels lengths [35, 36, 38, 36, 36], total reshuffles 62052480
 # symbols: 81.424(lined) + 3.6767(scatter) = 85.101137%
 # free spins 4668435, q = 0.075234, sq = 1/(1-q) = 1.081354
-# free games frequency: 1/199.38
+# free games hit rate: 1/199.38
 # jackpots1: count 1, frequency 1/62052480
 # jackpots2: count 47, frequency 1/1320265.53191
 # RTP = 85.101(sym) + 0.075234*1.0814*85.101(sym) = 92.024475%
@@ -159,7 +159,7 @@ novomatic/kingsjester/reel
 # reels lengths [36, 36, 37, 36, 36], total reshuffles 62145792
 # symbols: 83.131(lined) + 3.6716(scatter) = 86.802279%
 # free spins 4669245, q = 0.075134, sq = 1/(1-q) = 1.081237
-# free games frequency: 1/199.64
+# free games hit rate: 1/199.64
 # jackpots1: count 1, frequency 1/62145792
 # jackpots2: count 47, frequency 1/1322250.89362
 # RTP = 86.802(sym) + 0.075134*1.0812*86.802(sym) = 93.853871%
@@ -173,7 +173,7 @@ novomatic/kingsjester/reel
 # reels lengths [35, 35, 36, 35, 35], total reshuffles 54022500
 # symbols: 82.78(lined) + 4.0228(scatter) = 86.802721%
 # free spins 4398300, q = 0.081416, sq = 1/(1-q) = 1.088632
-# free games frequency: 1/184.24
+# free games hit rate: 1/184.24
 # jackpots1: count 1, frequency 1/54022500
 # jackpots2: count 47, frequency 1/1149414.89362
 # RTP = 86.803(sym) + 0.081416*1.0886*86.803(sym) = 94.496234%
@@ -187,7 +187,7 @@ novomatic/kingsjester/reel
 # reels lengths [36, 35, 36, 35, 36], total reshuffles 57153600
 # symbols: 83.636(lined) + 3.8778(scatter) = 87.514006%
 # free spins 4505625, q = 0.078834, sq = 1/(1-q) = 1.085580
-# free games frequency: 1/190.27
+# free games hit rate: 1/190.27
 # jackpots1: count 1, frequency 1/57153600
 # jackpots2: count 47, frequency 1/1216034.04255
 # RTP = 87.514(sym) + 0.078834*1.0856*87.514(sym) = 95.003474%
@@ -201,7 +201,7 @@ novomatic/kingsjester/reel
 # reels lengths [35, 35, 36, 35, 35], total reshuffles 54022500
 # symbols: 83.814(lined) + 4.0228(scatter) = 87.836938%
 # free spins 4398300, q = 0.081416, sq = 1/(1-q) = 1.088632
-# free games frequency: 1/184.24
+# free games hit rate: 1/184.24
 # jackpots1: count 1, frequency 1/54022500
 # jackpots2: count 47, frequency 1/1149414.89362
 # RTP = 87.837(sym) + 0.081416*1.0886*87.837(sym) = 95.622116%
@@ -215,7 +215,7 @@ novomatic/kingsjester/reel
 # reels lengths [35, 35, 36, 35, 35], total reshuffles 54022500
 # symbols: 84.203(lined) + 4.0228(scatter) = 88.225961%
 # free spins 4398300, q = 0.081416, sq = 1/(1-q) = 1.088632
-# free games frequency: 1/184.24
+# free games hit rate: 1/184.24
 # jackpots1: count 1, frequency 1/54022500
 # jackpots2: count 47, frequency 1/1149414.89362
 # RTP = 88.226(sym) + 0.081416*1.0886*88.226(sym) = 96.045619%
@@ -229,7 +229,7 @@ novomatic/kingsjester/reel
 # reels lengths [35, 35, 36, 35, 35], total reshuffles 54022500
 # symbols: 84.474(lined) + 4.0228(scatter) = 88.496404%
 # free spins 4398300, q = 0.081416, sq = 1/(1-q) = 1.088632
-# free games frequency: 1/184.24
+# free games hit rate: 1/184.24
 # jackpots1: count 1, frequency 1/54022500
 # jackpots2: count 47, frequency 1/1149414.89362
 # RTP = 88.496(sym) + 0.081416*1.0886*88.496(sym) = 96.340032%
@@ -243,7 +243,7 @@ novomatic/kingsjester/reel
 # reels lengths [35, 35, 36, 35, 35], total reshuffles 54022500
 # symbols: 85.557(lined) + 4.0228(scatter) = 89.579842%
 # free spins 4398300, q = 0.081416, sq = 1/(1-q) = 1.088632
-# free games frequency: 1/184.24
+# free games hit rate: 1/184.24
 # jackpots1: count 1, frequency 1/54022500
 # jackpots2: count 47, frequency 1/1149414.89362
 # RTP = 89.58(sym) + 0.081416*1.0886*89.58(sym) = 97.519497%
@@ -257,7 +257,7 @@ novomatic/kingsjester/reel
 # reels lengths [35, 35, 36, 35, 35], total reshuffles 54022500
 # symbols: 86.006(lined) + 4.0228(scatter) = 90.028766%
 # free spins 4398300, q = 0.081416, sq = 1/(1-q) = 1.088632
-# free games frequency: 1/184.24
+# free games hit rate: 1/184.24
 # jackpots1: count 1, frequency 1/54022500
 # jackpots2: count 47, frequency 1/1149414.89362
 # RTP = 90.029(sym) + 0.081416*1.0886*90.029(sym) = 98.008210%
@@ -271,7 +271,7 @@ novomatic/kingsjester/reel
 # reels lengths [35, 35, 36, 35, 35], total reshuffles 54022500
 # symbols: 86.993(lined) + 4.0228(scatter) = 91.015725%
 # free spins 4398300, q = 0.081416, sq = 1/(1-q) = 1.088632
-# free games frequency: 1/184.24
+# free games hit rate: 1/184.24
 # jackpots1: count 1, frequency 1/54022500
 # jackpots2: count 47, frequency 1/1149414.89362
 # RTP = 91.016(sym) + 0.081416*1.0886*91.016(sym) = 99.082645%
@@ -285,7 +285,7 @@ novomatic/kingsjester/reel
 # reels lengths [35, 35, 36, 35, 35], total reshuffles 54022500
 # symbols: 87.926(lined) + 4.0228(scatter) = 91.948947%
 # free spins 4398300, q = 0.081416, sq = 1/(1-q) = 1.088632
-# free games frequency: 1/184.24
+# free games hit rate: 1/184.24
 # jackpots1: count 1, frequency 1/54022500
 # jackpots2: count 47, frequency 1/1149414.89362
 # RTP = 91.949(sym) + 0.081416*1.0886*91.949(sym) = 100.098581%
@@ -299,7 +299,7 @@ novomatic/kingsjester/reel
 # reels lengths [35, 35, 36, 35, 35], total reshuffles 54022500
 # symbols: 88.065(lined) + 4.0228(scatter) = 92.087501%
 # free spins 4398300, q = 0.081416, sq = 1/(1-q) = 1.088632
-# free games frequency: 1/184.24
+# free games hit rate: 1/184.24
 # jackpots1: count 1, frequency 1/54022500
 # jackpots2: count 47, frequency 1/1149414.89362
 # RTP = 92.088(sym) + 0.081416*1.0886*92.088(sym) = 100.249415%
@@ -313,7 +313,7 @@ novomatic/kingsjester/reel
 # reels lengths [35, 35, 35, 35, 35], total reshuffles 52521875
 # symbols: 88.993(lined) + 4.0971(scatter) = 93.089670%
 # free spins 4345245, q = 0.082732, sq = 1/(1-q) = 1.090194
-# free games frequency: 1/181.31
+# free games hit rate: 1/181.31
 # jackpots1: count 1, frequency 1/52521875
 # jackpots2: count 47, frequency 1/1117486.70213
 # RTP = 93.09(sym) + 0.082732*1.0902*93.09(sym) = 101.485803%
@@ -327,7 +327,7 @@ novomatic/kingsjester/reel
 # reels lengths [34, 35, 35, 35, 34], total reshuffles 49563500
 # symbols: 91.292(lined) + 4.2559(scatter) = 95.548226%
 # free spins 4239540, q = 0.085538, sq = 1/(1-q) = 1.093539
-# free games frequency: 1/175.36
+# free games hit rate: 1/175.36
 # jackpots1: count 1, frequency 1/49563500
 # jackpots2: count 47, frequency 1/1054542.55319
 # RTP = 95.548(sym) + 0.085538*1.0935*95.548(sym) = 104.485674%
@@ -341,7 +341,7 @@ novomatic/kingsjester/reel
 # reels lengths [34, 34, 35, 34, 34], total reshuffles 46771760
 # symbols: 94.123(lined) + 4.4202(scatter) = 98.543095%
 # free spins 4135455, q = 0.088418, sq = 1/(1-q) = 1.096994
-# free games frequency: 1/169.65
+# free games hit rate: 1/169.65
 # jackpots1: count 1, frequency 1/46771760
 # jackpots2: count 47, frequency 1/995143.829787
 # RTP = 98.543(sym) + 0.088418*1.097*98.543(sym) = 108.101159%
@@ -355,7 +355,7 @@ novomatic/kingsjester/reel
 # reels lengths [34, 33, 35, 33, 34], total reshuffles 44060940
 # symbols: 96.514(lined) + 4.5974(scatter) = 101.111381%
 # free spins 4032180, q = 0.091514, sq = 1/(1-q) = 1.100732
-# free games frequency: 1/163.91
+# free games hit rate: 1/163.91
 # jackpots1: count 1, frequency 1/44060940
 # jackpots2: count 47, frequency 1/937466.808511
 # RTP = 101.11(sym) + 0.091514*1.1007*101.11(sym) = 111.296540%

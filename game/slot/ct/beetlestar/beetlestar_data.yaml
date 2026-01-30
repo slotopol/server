@@ -36,12 +36,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 170.31(lined) + 36.11(scatter) = 206.421113%
 # free spins 5177520, q = 0.065344, sq = 1/(1-q) = 1.069912
-# free games frequency: 1/229.56
+# free games hit rate: 1/229.56
 # RTP = 3*sq*rtp(sym) = 3*1.0699*206.42 = 220.852431%
 # *regular games calculations*
 # symbols: 56.783(lined) + 12.037(scatter) = 68.819658%
 # free spins 5177520, q = 0.065344, sq = 1/(1-q) = 1.069912
-# free games frequency: 1/229.56
+# free games hit rate: 1/229.56
 # RTP = 68.82(sym) + 0.065344*220.85(fg) = 83.250976%
 83.250976:
   - [3, 13, 9, 5, 11, 6, 12, 3, 8, 11, 5, 13, 1, 9, 4, 13, 10, 7, 11, 3, 10, 4, 12, 7, 13, 6, 10, 4, 8, 2, 11, 5, 9, 12, 6, 8, 7, 12] # 38
@@ -54,12 +54,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 172.55(lined) + 36.882(scatter) = 209.436549%
 # free spins 5062095, q = 0.067387, sq = 1/(1-q) = 1.072256
-# free games frequency: 1/222.59
+# free games hit rate: 1/222.59
 # RTP = 3*sq*rtp(sym) = 3*1.0723*209.44 = 224.569620%
 # *regular games calculations*
 # symbols: 57.531(lined) + 12.294(scatter) = 69.825495%
 # free spins 5062095, q = 0.067387, sq = 1/(1-q) = 1.072256
-# free games frequency: 1/222.59
+# free games hit rate: 1/222.59
 # RTP = 69.825(sym) + 0.067387*224.57(fg) = 84.958566%
 84.958566:
   - [3, 13, 9, 5, 11, 6, 12, 3, 8, 11, 5, 13, 1, 9, 4, 13, 10, 7, 11, 3, 10, 4, 12, 7, 13, 6, 10, 4, 8, 2, 11, 5, 9, 12, 6, 8, 7, 12] # 38
@@ -72,12 +72,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 176.46(lined) + 37.272(scatter) = 213.729894%
 # free spins 5004990, q = 0.068428, sq = 1/(1-q) = 1.073454
-# free games frequency: 1/219.21
+# free games hit rate: 1/219.21
 # RTP = 3*sq*rtp(sym) = 3*1.0735*213.73 = 229.429164%
 # *regular games calculations*
 # symbols: 58.833(lined) + 12.424(scatter) = 71.256970%
 # free spins 5004990, q = 0.068428, sq = 1/(1-q) = 1.073454
-# free games frequency: 1/219.21
+# free games hit rate: 1/219.21
 # RTP = 71.257(sym) + 0.068428*229.43(fg) = 86.956240%
 86.956240:
   - [3, 13, 9, 5, 11, 6, 12, 3, 8, 11, 5, 13, 1, 9, 4, 13, 10, 7, 11, 3, 10, 4, 12, 7, 13, 6, 10, 4, 8, 2, 11, 5, 9, 12, 6, 8, 7, 12] # 38
@@ -90,12 +90,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 180.46(lined) + 38.059(scatter) = 218.515162%
 # free spins 4891995, q = 0.070547, sq = 1/(1-q) = 1.075901
-# free games frequency: 1/212.62
+# free games hit rate: 1/212.62
 # RTP = 3*sq*rtp(sym) = 3*1.0759*218.52 = 235.100772%
 # *regular games calculations*
 # symbols: 60.166(lined) + 12.686(scatter) = 72.852808%
 # free spins 4891995, q = 0.070547, sq = 1/(1-q) = 1.075901
-# free games frequency: 1/212.62
+# free games hit rate: 1/212.62
 # RTP = 72.853(sym) + 0.070547*235.1(fg) = 89.438418%
 89.438418:
   - [8, 1, 10, 6, 12, 5, 8, 9, 5, 13, 3, 12, 7, 13, 11, 3, 10, 7, 11, 4, 13, 9, 6, 10, 4, 9, 3, 12, 4, 11, 7, 13, 6, 8, 2, 12, 5] # 37
@@ -108,12 +108,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 180.7(lined) + 38.476(scatter) = 219.179195%
 # free spins 4835700, q = 0.071672, sq = 1/(1-q) = 1.077206
-# free games frequency: 1/209.29
+# free games hit rate: 1/209.29
 # RTP = 3*sq*rtp(sym) = 3*1.0772*219.18 = 236.101046%
 # *regular games calculations*
 # symbols: 60.249(lined) + 12.825(scatter) = 73.074553%
 # free spins 4835700, q = 0.071672, sq = 1/(1-q) = 1.077206
-# free games frequency: 1/209.29
+# free games hit rate: 1/209.29
 # RTP = 73.075(sym) + 0.071672*236.1(fg) = 89.996404%
 89.996404:
   - [8, 1, 10, 6, 12, 5, 8, 9, 5, 13, 3, 12, 7, 13, 11, 3, 10, 7, 11, 4, 13, 9, 6, 10, 4, 9, 3, 12, 4, 11, 7, 13, 6, 8, 2, 12, 5] # 37
@@ -126,12 +126,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 183.47(lined) + 38.476(scatter) = 221.946078%
 # free spins 4835700, q = 0.071672, sq = 1/(1-q) = 1.077206
-# free games frequency: 1/209.29
+# free games hit rate: 1/209.29
 # RTP = 3*sq*rtp(sym) = 3*1.0772*221.95 = 239.081548%
 # *regular games calculations*
 # symbols: 61.171(lined) + 12.825(scatter) = 73.996847%
 # free spins 4835700, q = 0.071672, sq = 1/(1-q) = 1.077206
-# free games frequency: 1/209.29
+# free games hit rate: 1/209.29
 # RTP = 73.997(sym) + 0.071672*239.08(fg) = 91.132317%
 91.132317:
   - [12, 6, 11, 1, 12, 3, 13, 5, 9, 4, 8, 6, 13, 5, 12, 7, 10, 5, 13, 4, 11, 8, 3, 10, 2, 9, 10, 7, 11, 4, 8, 6, 9, 3, 13, 7] # 36
@@ -144,12 +144,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 183.27(lined) + 38.896(scatter) = 222.162799%
 # free spins 4779810, q = 0.072812, sq = 1/(1-q) = 1.078529
-# free games frequency: 1/206.01
+# free games hit rate: 1/206.01
 # RTP = 3*sq*rtp(sym) = 3*1.0785*222.16 = 239.609118%
 # *regular games calculations*
 # symbols: 61.104(lined) + 12.965(scatter) = 74.069500%
 # free spins 4779810, q = 0.072812, sq = 1/(1-q) = 1.078529
-# free games frequency: 1/206.01
+# free games hit rate: 1/206.01
 # RTP = 74.069(sym) + 0.072812*239.61(fg) = 91.515818%
 91.515818:
   - [8, 1, 10, 6, 12, 5, 8, 9, 5, 13, 3, 12, 7, 13, 11, 3, 10, 7, 11, 4, 13, 9, 6, 10, 4, 9, 3, 12, 4, 11, 7, 13, 6, 8, 2, 12, 5] # 37
@@ -162,12 +162,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 183.57(lined) + 39.318(scatter) = 222.884488%
 # free spins 4724325, q = 0.073965, sq = 1/(1-q) = 1.079873
-# free games frequency: 1/202.8
+# free games hit rate: 1/202.8
 # RTP = 3*sq*rtp(sym) = 3*1.0799*222.88 = 240.687007%
 # *regular games calculations*
 # symbols: 61.204(lined) + 13.106(scatter) = 74.310486%
 # free spins 4724325, q = 0.073965, sq = 1/(1-q) = 1.079873
-# free games frequency: 1/202.8
+# free games hit rate: 1/202.8
 # RTP = 74.31(sym) + 0.073965*240.69(fg) = 92.113005%
 92.113005:
   - [10, 6, 11, 2, 9, 7, 11, 5, 12, 4, 13, 5, 10, 3, 9, 4, 12, 7, 10, 13, 1, 8, 6, 12, 5, 8, 7, 13, 6, 12, 3, 8, 9, 4, 11, 3] # 36
@@ -180,12 +180,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 184.63(lined) + 39.318(scatter) = 223.945187%
 # free spins 4724325, q = 0.073965, sq = 1/(1-q) = 1.079873
-# free games frequency: 1/202.8
+# free games hit rate: 1/202.8
 # RTP = 3*sq*rtp(sym) = 3*1.0799*223.95 = 241.832427%
 # *regular games calculations*
 # symbols: 61.558(lined) + 13.106(scatter) = 74.664052%
 # free spins 4724325, q = 0.073965, sq = 1/(1-q) = 1.079873
-# free games frequency: 1/202.8
+# free games hit rate: 1/202.8
 # RTP = 74.664(sym) + 0.073965*241.83(fg) = 92.551293%
 92.551293:
   - [10, 6, 11, 2, 9, 7, 11, 5, 12, 4, 13, 5, 10, 3, 9, 4, 12, 7, 10, 13, 1, 8, 6, 12, 5, 8, 7, 13, 6, 12, 3, 8, 9, 4, 11, 3] # 36
@@ -198,12 +198,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 186.88(lined) + 38.896(scatter) = 225.779628%
 # free spins 4779810, q = 0.072812, sq = 1/(1-q) = 1.078529
-# free games frequency: 1/206.01
+# free games hit rate: 1/206.01
 # RTP = 3*sq*rtp(sym) = 3*1.0785*225.78 = 243.509974%
 # *regular games calculations*
 # symbols: 62.31(lined) + 12.965(scatter) = 75.275109%
 # free spins 4779810, q = 0.072812, sq = 1/(1-q) = 1.078529
-# free games frequency: 1/206.01
+# free games hit rate: 1/206.01
 # RTP = 75.275(sym) + 0.072812*243.51(fg) = 93.005455%
 93.005455:
   - [12, 6, 11, 1, 12, 3, 13, 5, 9, 4, 8, 6, 13, 5, 12, 7, 10, 5, 13, 4, 11, 8, 3, 10, 2, 9, 10, 7, 11, 4, 8, 6, 9, 3, 13, 7] # 36
@@ -216,12 +216,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 186.32(lined) + 39.318(scatter) = 225.638810%
 # free spins 4724325, q = 0.073965, sq = 1/(1-q) = 1.079873
-# free games frequency: 1/202.8
+# free games hit rate: 1/202.8
 # RTP = 3*sq*rtp(sym) = 3*1.0799*225.64 = 243.661326%
 # *regular games calculations*
 # symbols: 62.122(lined) + 13.106(scatter) = 75.228593%
 # free spins 4724325, q = 0.073965, sq = 1/(1-q) = 1.079873
-# free games frequency: 1/202.8
+# free games hit rate: 1/202.8
 # RTP = 75.229(sym) + 0.073965*243.66(fg) = 93.251109%
 93.251109:
   - [12, 6, 11, 1, 12, 3, 13, 5, 9, 4, 8, 6, 13, 5, 12, 7, 10, 5, 13, 4, 11, 8, 3, 10, 2, 9, 10, 7, 11, 4, 8, 6, 9, 3, 13, 7] # 36
@@ -234,12 +234,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 185.99(lined) + 40.172(scatter) = 226.159630%
 # free spins 4614570, q = 0.076317, sq = 1/(1-q) = 1.082622
-# free games frequency: 1/196.55
+# free games hit rate: 1/196.55
 # RTP = 3*sq*rtp(sym) = 3*1.0826*226.16 = 244.845385%
 # *regular games calculations*
 # symbols: 62.013(lined) + 13.391(scatter) = 75.403082%
 # free spins 4614570, q = 0.076317, sq = 1/(1-q) = 1.082622
-# free games frequency: 1/196.55
+# free games hit rate: 1/196.55
 # RTP = 75.403(sym) + 0.076317*244.85(fg) = 94.088837%
 94.088837:
   - [10, 6, 11, 2, 9, 7, 11, 5, 12, 4, 13, 5, 10, 3, 9, 4, 12, 7, 10, 13, 1, 8, 6, 12, 5, 8, 7, 13, 6, 12, 3, 8, 9, 4, 11, 3] # 36
@@ -252,12 +252,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 187.34(lined) + 40.172(scatter) = 227.511536%
 # free spins 4614570, q = 0.076317, sq = 1/(1-q) = 1.082622
-# free games frequency: 1/196.55
+# free games hit rate: 1/196.55
 # RTP = 3*sq*rtp(sym) = 3*1.0826*227.51 = 246.308989%
 # *regular games calculations*
 # symbols: 62.463(lined) + 13.391(scatter) = 75.853717%
 # free spins 4614570, q = 0.076317, sq = 1/(1-q) = 1.082622
-# free games frequency: 1/196.55
+# free games hit rate: 1/196.55
 # RTP = 75.854(sym) + 0.076317*246.31(fg) = 94.651169%
 94.651169:
   - [10, 6, 11, 2, 9, 7, 11, 5, 12, 4, 13, 5, 10, 3, 9, 4, 12, 7, 10, 13, 1, 8, 6, 12, 5, 8, 7, 13, 6, 12, 3, 8, 9, 4, 11, 3] # 36
@@ -270,12 +270,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 188.19(lined) + 40.172(scatter) = 228.357156%
 # free spins 4614570, q = 0.076317, sq = 1/(1-q) = 1.082622
-# free games frequency: 1/196.55
+# free games hit rate: 1/196.55
 # RTP = 3*sq*rtp(sym) = 3*1.0826*228.36 = 247.224476%
 # *regular games calculations*
 # symbols: 62.745(lined) + 13.391(scatter) = 76.135590%
 # free spins 4614570, q = 0.076317, sq = 1/(1-q) = 1.082622
-# free games frequency: 1/196.55
+# free games hit rate: 1/196.55
 # RTP = 76.136(sym) + 0.076317*247.22(fg) = 95.002910%
 95.002910:
   - [10, 6, 11, 2, 9, 7, 11, 5, 12, 4, 13, 5, 10, 3, 9, 4, 12, 7, 10, 13, 1, 8, 6, 12, 5, 8, 7, 13, 6, 12, 3, 8, 9, 4, 11, 3] # 36
@@ -288,12 +288,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 188.22(lined) + 40.624(scatter) = 228.842858%
 # free spins 4559895, q = 0.077567, sq = 1/(1-q) = 1.084090
-# free games frequency: 1/193.38
+# free games hit rate: 1/193.38
 # RTP = 3*sq*rtp(sym) = 3*1.0841*228.84 = 248.086147%
 # *regular games calculations*
 # symbols: 62.757(lined) + 13.541(scatter) = 76.297963%
 # free spins 4559895, q = 0.077567, sq = 1/(1-q) = 1.084090
-# free games frequency: 1/193.38
+# free games hit rate: 1/193.38
 # RTP = 76.298(sym) + 0.077567*248.09(fg) = 95.541253%
 95.541253:
   - [10, 6, 11, 2, 9, 7, 11, 5, 12, 4, 13, 5, 10, 3, 9, 4, 12, 7, 10, 13, 1, 8, 6, 12, 5, 8, 7, 13, 6, 12, 3, 8, 9, 4, 11, 3] # 36
@@ -306,12 +306,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 190.78(lined) + 40.172(scatter) = 230.956441%
 # free spins 4614570, q = 0.076317, sq = 1/(1-q) = 1.082622
-# free games frequency: 1/196.55
+# free games hit rate: 1/196.55
 # RTP = 3*sq*rtp(sym) = 3*1.0826*230.96 = 250.038518%
 # *regular games calculations*
 # symbols: 63.611(lined) + 13.391(scatter) = 77.002018%
 # free spins 4614570, q = 0.076317, sq = 1/(1-q) = 1.082622
-# free games frequency: 1/196.55
+# free games hit rate: 1/196.55
 # RTP = 77.002(sym) + 0.076317*250.04(fg) = 96.084096%
 96.084096:
   - [12, 6, 11, 1, 12, 3, 13, 5, 9, 4, 8, 6, 13, 5, 12, 7, 10, 5, 13, 4, 11, 8, 3, 10, 2, 9, 10, 7, 11, 4, 8, 6, 9, 3, 13, 7] # 36
@@ -324,12 +324,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 191.46(lined) + 40.172(scatter) = 231.626763%
 # free spins 4614570, q = 0.076317, sq = 1/(1-q) = 1.082622
-# free games frequency: 1/196.55
+# free games hit rate: 1/196.55
 # RTP = 3*sq*rtp(sym) = 3*1.0826*231.63 = 250.764223%
 # *regular games calculations*
 # symbols: 63.835(lined) + 13.391(scatter) = 77.225459%
 # free spins 4614570, q = 0.076317, sq = 1/(1-q) = 1.082622
-# free games frequency: 1/196.55
+# free games hit rate: 1/196.55
 # RTP = 77.225(sym) + 0.076317*250.76(fg) = 96.362920%
 96.362920:
   - [12, 6, 11, 1, 12, 3, 13, 5, 9, 4, 8, 6, 13, 5, 12, 7, 10, 5, 13, 4, 11, 8, 3, 10, 2, 9, 10, 7, 11, 4, 8, 6, 9, 3, 13, 7] # 36
@@ -342,12 +342,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 191.72(lined) + 40.624(scatter) = 232.344500%
 # free spins 4559895, q = 0.077567, sq = 1/(1-q) = 1.084090
-# free games frequency: 1/193.38
+# free games hit rate: 1/193.38
 # RTP = 3*sq*rtp(sym) = 3*1.0841*232.34 = 251.882241%
 # *regular games calculations*
 # symbols: 63.924(lined) + 13.541(scatter) = 77.465177%
 # free spins 4559895, q = 0.077567, sq = 1/(1-q) = 1.084090
-# free games frequency: 1/193.38
+# free games hit rate: 1/193.38
 # RTP = 77.465(sym) + 0.077567*251.88(fg) = 97.002918%
 97.002918:
   - [12, 6, 11, 1, 12, 3, 13, 5, 9, 4, 8, 6, 13, 5, 12, 7, 10, 5, 13, 4, 11, 8, 3, 10, 2, 9, 10, 7, 11, 4, 8, 6, 9, 3, 13, 7] # 36
@@ -360,12 +360,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 191.56(lined) + 41.08(scatter) = 232.637855%
 # free spins 4505625, q = 0.078834, sq = 1/(1-q) = 1.085580
-# free games frequency: 1/190.27
+# free games hit rate: 1/190.27
 # RTP = 3*sq*rtp(sym) = 3*1.0856*232.64 = 252.547052%
 # *regular games calculations*
 # symbols: 63.87(lined) + 13.693(scatter) = 77.563448%
 # free spins 4505625, q = 0.078834, sq = 1/(1-q) = 1.085580
-# free games frequency: 1/190.27
+# free games hit rate: 1/190.27
 # RTP = 77.563(sym) + 0.078834*252.55(fg) = 97.472646%
 97.472646:
   - [10, 6, 11, 2, 9, 7, 11, 5, 12, 4, 13, 5, 10, 3, 9, 4, 12, 7, 10, 13, 1, 8, 6, 12, 5, 8, 7, 13, 6, 12, 3, 8, 9, 4, 11, 3] # 36
@@ -378,12 +378,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 194.16(lined) + 40.624(scatter) = 234.782777%
 # free spins 4559895, q = 0.077567, sq = 1/(1-q) = 1.084090
-# free games frequency: 1/193.38
+# free games hit rate: 1/193.38
 # RTP = 3*sq*rtp(sym) = 3*1.0841*234.78 = 254.525551%
 # *regular games calculations*
 # symbols: 64.737(lined) + 13.541(scatter) = 78.277936%
 # free spins 4559895, q = 0.077567, sq = 1/(1-q) = 1.084090
-# free games frequency: 1/193.38
+# free games hit rate: 1/193.38
 # RTP = 78.278(sym) + 0.077567*254.53(fg) = 98.020711%
 98.020711:
   - [12, 6, 11, 1, 12, 3, 13, 5, 9, 4, 8, 6, 13, 5, 12, 7, 10, 5, 13, 4, 11, 8, 3, 10, 2, 9, 10, 7, 11, 4, 8, 6, 9, 3, 13, 7] # 36
@@ -396,12 +396,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 195.24(lined) + 41.08(scatter) = 236.315104%
 # free spins 4505625, q = 0.078834, sq = 1/(1-q) = 1.085580
-# free games frequency: 1/190.27
+# free games hit rate: 1/190.27
 # RTP = 3*sq*rtp(sym) = 3*1.0856*236.32 = 256.539001%
 # *regular games calculations*
 # symbols: 65.096(lined) + 13.693(scatter) = 78.789198%
 # free spins 4505625, q = 0.078834, sq = 1/(1-q) = 1.085580
-# free games frequency: 1/190.27
+# free games hit rate: 1/190.27
 # RTP = 78.789(sym) + 0.078834*256.54(fg) = 99.013095%
 99.013095:
   - [12, 6, 11, 1, 12, 3, 13, 5, 9, 4, 8, 6, 13, 5, 12, 7, 10, 5, 13, 4, 11, 8, 3, 10, 2, 9, 10, 7, 11, 4, 8, 6, 9, 3, 13, 7] # 36
@@ -414,12 +414,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 196.53(lined) + 41.539(scatter) = 238.063935%
 # free spins 4451760, q = 0.080117, sq = 1/(1-q) = 1.087094
-# free games frequency: 1/187.23
+# free games hit rate: 1/187.23
 # RTP = 3*sq*rtp(sym) = 3*1.0871*238.06 = 258.797951%
 # *regular games calculations*
 # symbols: 65.526(lined) + 13.846(scatter) = 79.372642%
 # free spins 4451760, q = 0.080117, sq = 1/(1-q) = 1.087094
-# free games frequency: 1/187.23
+# free games hit rate: 1/187.23
 # RTP = 79.373(sym) + 0.080117*258.8(fg) = 100.106658%
 100.106658:
   - [12, 6, 11, 1, 12, 3, 13, 5, 9, 4, 8, 6, 13, 5, 12, 7, 10, 5, 13, 4, 11, 8, 3, 10, 2, 9, 10, 7, 11, 4, 8, 6, 9, 3, 13, 7] # 36
@@ -432,12 +432,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 199.07(lined) + 42.465(scatter) = 241.537017%
 # free spins 4345245, q = 0.082732, sq = 1/(1-q) = 1.090194
-# free games frequency: 1/181.31
+# free games hit rate: 1/181.31
 # RTP = 3*sq*rtp(sym) = 3*1.0902*241.54 = 263.322217%
 # *regular games calculations*
 # symbols: 66.376(lined) + 14.155(scatter) = 80.531379%
 # free spins 4345245, q = 0.082732, sq = 1/(1-q) = 1.090194
-# free games frequency: 1/181.31
+# free games hit rate: 1/181.31
 # RTP = 80.531(sym) + 0.082732*263.32(fg) = 102.316578%
 102.316578:
   - [9, 3, 10, 1, 13, 6, 11, 3, 12, 6, 11, 5, 9, 4, 11, 7, 13, 3, 8, 7, 10, 4, 9, 5, 10, 7, 12, 6, 8, 2, 13, 4, 8, 12, 5] # 35
@@ -450,12 +450,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 205.36(lined) + 42(scatter) = 247.359944%
 # free spins 4398300, q = 0.081416, sq = 1/(1-q) = 1.088632
-# free games frequency: 1/184.24
+# free games hit rate: 1/184.24
 # RTP = 3*sq*rtp(sym) = 3*1.0886*247.36 = 269.283990%
 # *regular games calculations*
 # symbols: 68.49(lined) + 14(scatter) = 82.490336%
 # free spins 4398300, q = 0.081416, sq = 1/(1-q) = 1.088632
-# free games frequency: 1/184.24
+# free games hit rate: 1/184.24
 # RTP = 82.49(sym) + 0.081416*269.28(fg) = 104.414382%
 104.414382:
   - [9, 3, 10, 1, 13, 6, 11, 3, 12, 6, 11, 5, 9, 4, 11, 7, 13, 3, 8, 7, 10, 4, 9, 5, 10, 7, 12, 6, 8, 2, 13, 4, 8, 12, 5] # 35
@@ -468,12 +468,12 @@ ctinteractive/beetlestar/reel
 # *free games calculations*
 # symbols: 218.52(lined) + 42(scatter) = 260.523293%
 # free spins 4398300, q = 0.081416, sq = 1/(1-q) = 1.088632
-# free games frequency: 1/184.24
+# free games hit rate: 1/184.24
 # RTP = 3*sq*rtp(sym) = 3*1.0886*260.52 = 283.614035%
 # *regular games calculations*
 # symbols: 72.878(lined) + 14(scatter) = 86.878119%
 # free spins 4398300, q = 0.081416, sq = 1/(1-q) = 1.088632
-# free games frequency: 1/184.24
+# free games hit rate: 1/184.24
 # RTP = 86.878(sym) + 0.081416*283.61(fg) = 109.968861%
 109.968861:
   - [9, 3, 10, 1, 13, 6, 11, 3, 12, 6, 11, 5, 9, 4, 11, 7, 13, 3, 8, 7, 10, 4, 9, 5, 10, 7, 12, 6, 8, 2, 13, 4, 8, 12, 5] # 35

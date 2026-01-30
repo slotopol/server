@@ -25,7 +25,7 @@ megajack/aztecgold/reel
 # *reels calculations*
 # reels lengths [22, 25, 32, 25, 21], total reshuffles 9240000
 # symbols: 71.965(lined) + 14.602(scatter) = 86.567630%
-# pyramid bonuses: frequency 1/311.11, rtp = 10.430422%
+# pyramid bonuses: hit rate 1/311.11, rtp = 10.430422%
 # jackpots: count 64, frequency 1/144375
 # RTP = 86.568(sym) + 10.43(mjap) = 96.998052%
 96.998052:
@@ -40,7 +40,7 @@ megajack/aztecgold/reel
 # *reels calculations*
 # reels lengths [34, 34, 34, 34, 34], total reshuffles 45435424
 # symbols: 53.387(lined) + 21.259(scatter) = 74.646831%
-# pyramid bonuses: frequency 1/121.31, rtp = 26.750116%
+# pyramid bonuses: hit rate 1/121.31, rtp = 26.750116%
 # jackpots: count 64, frequency 1/709928
 # RTP = 74.647(sym) + 26.75(mjap) = 101.396947%
 101.396947:
@@ -56,7 +56,7 @@ megajack/aztecgold/reel
 # *reels calculations*
 # reels lengths [34, 34, 34, 34, 34], total reshuffles 45435424
 # symbols: 54.568(lined) + 21.259(scatter) = 75.827583%
-# pyramid bonuses: frequency 1/121.31, rtp = 26.750116%
+# pyramid bonuses: hit rate 1/121.31, rtp = 26.750116%
 # jackpots: count 128, frequency 1/354964
 # RTP = 75.828(sym) + 26.75(mjap) = 102.577700%
 102.577700:

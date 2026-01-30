@@ -7,7 +7,7 @@ ctinteractive/mightyrex/bon
 
 # reels lengths [28, 28, 30, 30, 30], total reshuffles 21168000
 # symbols: 114.84(lined) + 4(scatter) = 118.839380%
-# free games frequency: 1/125
+# free games hit rate: 1/125
 # probability of 100 new spins: 0.113507
 # RTP = rtp(sym)*(1+p*100/15) = 118.84*(1+0.75672) = 208.767093%
 - [10, 8, 3, 11, 1, 9, 6, 7, 12, 5, 7, 10, 8, 9, 3, 12, 4, 11, 6, 12, 9, 4, 7, 11, 10, 5, 8, 1] # 28
@@ -49,7 +49,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [36, 36, 38, 38, 38], total reshuffles 71114112
 # symbols: 73.39(lined) + 1.9682(scatter) = 75.357996%
 # free spins 4199040, q = 0.059047
-# free games frequency: 1/254.04
+# free games hit rate: 1/254.04
 # RTP = 75.358(sym) + 0.059047*208.77(fg) = 87.684964%
 87.684964:
   - [10, 3, 9, 8, 4, 11, 6, 10, 12, 5, 11, 1, 12, 8, 4, 7, 11, 6, 10, 3, 9, 6, 12, 9, 11, 7, 5, 12, 8, 7, 11, 5, 10, 9, 12, 1] # 36
@@ -61,7 +61,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [36, 36, 38, 38, 38], total reshuffles 71114112
 # symbols: 74.636(lined) + 1.9682(scatter) = 76.603938%
 # free spins 4199040, q = 0.059047
-# free games frequency: 1/254.04
+# free games hit rate: 1/254.04
 # RTP = 76.604(sym) + 0.059047*208.77(fg) = 88.930906%
 88.930906:
   - [11, 12, 1, 10, 9, 11, 3, 8, 5, 7, 10, 5, 9, 1, 10, 5, 12, 6, 10, 8, 7, 4, 12, 7, 6, 12, 11, 4, 7, 9, 8, 6, 9, 11, 3, 8] # 36
@@ -73,7 +73,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [36, 36, 38, 37, 37], total reshuffles 67420512
 # symbols: 74.969(lined) + 2.076(scatter) = 77.045217%
 # free spins 4199040, q = 0.062281
-# free games frequency: 1/240.84
+# free games hit rate: 1/240.84
 # RTP = 77.045(sym) + 0.062281*208.77(fg) = 90.047512%
 90.047512:
   - [11, 12, 1, 10, 9, 11, 3, 8, 5, 7, 10, 5, 9, 1, 10, 5, 12, 6, 10, 8, 7, 4, 12, 7, 6, 12, 11, 4, 7, 9, 8, 6, 9, 11, 3, 8] # 36
@@ -85,7 +85,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [36, 36, 37, 37, 37], total reshuffles 65646288
 # symbols: 75.496(lined) + 2.1322(scatter) = 77.628213%
 # free spins 4199040, q = 0.063965
-# free games frequency: 1/234.5
+# free games hit rate: 1/234.5
 # RTP = 77.628(sym) + 0.063965*208.77(fg) = 90.981921%
 90.981921:
   - [11, 12, 1, 10, 9, 11, 3, 8, 5, 7, 10, 5, 9, 1, 10, 5, 12, 6, 10, 8, 7, 4, 12, 7, 6, 12, 11, 4, 7, 9, 8, 6, 9, 11, 3, 8] # 36
@@ -97,7 +97,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [35, 35, 37, 37, 38], total reshuffles 63726950
 # symbols: 76.92(lined) + 2.076(scatter) = 78.996312%
 # free spins 3969000, q = 0.062281
-# free games frequency: 1/240.84
+# free games hit rate: 1/240.84
 # RTP = 78.996(sym) + 0.062281*208.77(fg) = 91.998606%
 91.998606:
   - [7, 3, 8, 6, 10, 5, 11, 9, 4, 11, 7, 12, 10, 1, 12, 8, 3, 11, 6, 10, 5, 9, 10, 8, 11, 1, 12, 8, 5, 9, 7, 6, 9, 12, 4] # 35
@@ -109,7 +109,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [35, 35, 37, 37, 37], total reshuffles 62049925
 # symbols: 77.448(lined) + 2.1322(scatter) = 79.580531%
 # free spins 3969000, q = 0.063965
-# free games frequency: 1/234.5
+# free games hit rate: 1/234.5
 # RTP = 79.581(sym) + 0.063965*208.77(fg) = 92.934240%
 92.934240:
   - [7, 3, 8, 6, 10, 5, 11, 9, 4, 11, 7, 12, 10, 1, 12, 8, 3, 11, 6, 10, 5, 9, 10, 8, 11, 1, 12, 8, 5, 9, 7, 6, 9, 12, 4] # 35
@@ -121,7 +121,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [35, 35, 37, 36, 37], total reshuffles 60372900
 # symbols: 77.647(lined) + 2.1914(scatter) = 79.838106%
 # free spins 3969000, q = 0.065741
-# free games frequency: 1/228.17
+# free games hit rate: 1/228.17
 # RTP = 79.838(sym) + 0.065741*208.77(fg) = 93.562751%
 93.562751:
   - [7, 3, 8, 6, 10, 5, 11, 9, 4, 11, 7, 12, 10, 1, 12, 8, 3, 11, 6, 10, 5, 9, 10, 8, 11, 1, 12, 8, 5, 9, 7, 6, 9, 12, 4] # 35
@@ -133,7 +133,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [34, 34, 37, 37, 37], total reshuffles 58554868
 # symbols: 78.513(lined) + 2.1322(scatter) = 80.644909%
 # free spins 3745440, q = 0.063965
-# free games frequency: 1/234.5
+# free games hit rate: 1/234.5
 # RTP = 80.645(sym) + 0.063965*208.77(fg) = 93.998617%
 93.998617:
   - [1, 9, 7, 12, 5, 10, 8, 3, 11, 4, 9, 5, 11, 7, 1, 10, 9, 6, 10, 4, 9, 11, 6, 12, 10, 11, 12, 3, 8, 5, 12, 6, 7, 8] # 34
@@ -145,7 +145,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [35, 35, 36, 36, 36], total reshuffles 57153600
 # symbols: 78.222(lined) + 2.3148(scatter) = 80.537184%
 # free spins 3969000, q = 0.069444
-# free games frequency: 1/216
+# free games hit rate: 1/216
 # RTP = 80.537(sym) + 0.069444*208.77(fg) = 95.034899%
 95.034899:
   - [7, 3, 8, 6, 10, 5, 11, 9, 4, 11, 7, 12, 10, 1, 12, 8, 3, 11, 6, 10, 5, 9, 10, 8, 11, 1, 12, 8, 5, 9, 7, 6, 9, 12, 4] # 35
@@ -157,7 +157,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [34, 34, 37, 36, 36], total reshuffles 55432512
 # symbols: 79.222(lined) + 2.2523(scatter) = 81.473991%
 # free spins 3745440, q = 0.067568
-# free games frequency: 1/222
+# free games hit rate: 1/222
 # RTP = 81.474(sym) + 0.067568*208.77(fg) = 95.579876%
 95.579876:
   - [1, 9, 7, 12, 5, 10, 8, 3, 11, 4, 9, 5, 11, 7, 1, 10, 9, 6, 10, 4, 9, 11, 6, 12, 10, 11, 12, 3, 8, 5, 12, 6, 7, 8] # 34
@@ -169,7 +169,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [35, 34, 36, 36, 36], total reshuffles 55520640
 # symbols: 79.096(lined) + 2.3148(scatter) = 81.410805%
 # free spins 3855600, q = 0.069444
-# free games frequency: 1/216
+# free games hit rate: 1/216
 # RTP = 81.411(sym) + 0.069444*208.77(fg) = 95.908520%
 95.908520:
   - [7, 3, 8, 6, 10, 5, 11, 9, 4, 11, 7, 12, 10, 1, 12, 8, 3, 11, 6, 10, 5, 9, 10, 8, 11, 1, 12, 8, 5, 9, 7, 6, 9, 12, 4] # 35
@@ -181,7 +181,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [34, 34, 36, 36, 36], total reshuffles 53934336
 # symbols: 80.198(lined) + 2.3148(scatter) = 82.512984%
 # free spins 3745440, q = 0.069444
-# free games frequency: 1/216
+# free games hit rate: 1/216
 # RTP = 82.513(sym) + 0.069444*208.77(fg) = 97.010699%
 97.010699:
   - [1, 9, 7, 12, 5, 10, 8, 3, 11, 4, 9, 5, 11, 7, 1, 10, 9, 6, 10, 4, 9, 11, 6, 12, 10, 11, 12, 3, 8, 5, 12, 6, 7, 8] # 34
@@ -193,7 +193,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [34, 34, 36, 35, 36], total reshuffles 52436160
 # symbols: 80.762(lined) + 2.381(scatter) = 83.142454%
 # free spins 3745440, q = 0.071429
-# free games frequency: 1/210
+# free games hit rate: 1/210
 # RTP = 83.142(sym) + 0.071429*208.77(fg) = 98.054389%
 98.054389:
   - [1, 9, 7, 12, 5, 10, 8, 3, 11, 4, 9, 5, 11, 7, 1, 10, 9, 6, 10, 4, 9, 11, 6, 12, 10, 11, 12, 3, 8, 5, 12, 6, 7, 8] # 34
@@ -205,7 +205,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [34, 34, 35, 36, 36], total reshuffles 52436160
 # symbols: 81.254(lined) + 2.381(scatter) = 83.634709%
 # free spins 3745440, q = 0.071429
-# free games frequency: 1/210
+# free games hit rate: 1/210
 # RTP = 83.635(sym) + 0.071429*208.77(fg) = 98.546645%
 98.546645:
   - [1, 9, 7, 12, 5, 10, 8, 3, 11, 4, 9, 5, 11, 7, 1, 10, 9, 6, 10, 4, 9, 11, 6, 12, 10, 11, 12, 3, 8, 5, 12, 6, 7, 8] # 34
@@ -217,7 +217,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [33, 34, 36, 36, 35], total reshuffles 50893920
 # symbols: 81.613(lined) + 2.381(scatter) = 83.993510%
 # free spins 3635280, q = 0.071429
-# free games frequency: 1/210
+# free games hit rate: 1/210
 # RTP = 83.994(sym) + 0.071429*208.77(fg) = 98.905446%
 98.905446:
   - [3, 11, 6, 9, 5, 10, 1, 12, 4, 8, 11, 5, 12, 4, 11, 12, 3, 9, 10, 12, 6, 10, 5, 9, 8, 7, 10, 11, 1, 7, 8, 6, 7] # 33
@@ -229,7 +229,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [33, 33, 36, 36, 36], total reshuffles 50808384
 # symbols: 82.794(lined) + 2.3148(scatter) = 85.108926%
 # free spins 3528360, q = 0.069444
-# free games frequency: 1/216
+# free games hit rate: 1/216
 # RTP = 85.109(sym) + 0.069444*208.77(fg) = 99.606641%
 99.606641:
   - [3, 11, 6, 9, 5, 10, 1, 12, 4, 8, 11, 5, 12, 4, 11, 12, 3, 9, 10, 12, 6, 10, 5, 9, 8, 7, 10, 11, 1, 7, 8, 6, 7] # 33
@@ -241,7 +241,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [34, 33, 35, 36, 36], total reshuffles 50893920
 # symbols: 82.655(lined) + 2.381(scatter) = 85.035914%
 # free spins 3635280, q = 0.071429
-# free games frequency: 1/210
+# free games hit rate: 1/210
 # RTP = 85.036(sym) + 0.071429*208.77(fg) = 99.947849%
 99.947849:
   - [1, 9, 7, 12, 5, 10, 8, 3, 11, 4, 9, 5, 11, 7, 1, 10, 9, 6, 10, 4, 9, 11, 6, 12, 10, 11, 12, 3, 8, 5, 12, 6, 7, 8] # 34
@@ -253,7 +253,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [33, 33, 36, 36, 35], total reshuffles 49397040
 # symbols: 83.074(lined) + 2.381(scatter) = 85.455424%
 # free spins 3528360, q = 0.071429
-# free games frequency: 1/210
+# free games hit rate: 1/210
 # RTP = 85.455(sym) + 0.071429*208.77(fg) = 100.367359%
 100.367359:
   - [3, 11, 6, 9, 5, 10, 1, 12, 4, 8, 11, 5, 12, 4, 11, 12, 3, 9, 10, 12, 6, 10, 5, 9, 8, 7, 10, 11, 1, 7, 8, 6, 7] # 33
@@ -265,7 +265,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [33, 33, 35, 36, 36], total reshuffles 49397040
 # symbols: 84.249(lined) + 2.381(scatter) = 86.629624%
 # free spins 3528360, q = 0.071429
-# free games frequency: 1/210
+# free games hit rate: 1/210
 # RTP = 86.63(sym) + 0.071429*208.77(fg) = 101.541559%
 101.541559:
   - [3, 11, 6, 9, 5, 10, 1, 12, 4, 8, 11, 5, 12, 4, 11, 12, 3, 9, 10, 12, 6, 10, 5, 9, 8, 7, 10, 11, 1, 7, 8, 6, 7] # 33
@@ -277,7 +277,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [33, 33, 35, 35, 35], total reshuffles 46690875
 # symbols: 85.545(lined) + 2.519(scatter) = 88.064210%
 # free spins 3528360, q = 0.075569
-# free games frequency: 1/198.5
+# free games hit rate: 1/198.5
 # RTP = 88.064(sym) + 0.075569*208.77(fg) = 103.840428%
 103.840428:
   - [3, 11, 6, 9, 5, 10, 1, 12, 4, 8, 11, 5, 12, 4, 11, 12, 3, 9, 10, 12, 6, 10, 5, 9, 8, 7, 10, 11, 1, 7, 8, 6, 7] # 33
@@ -289,7 +289,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [32, 33, 35, 35, 35], total reshuffles 45276000
 # symbols: 86.827(lined) + 2.519(scatter) = 89.346431%
 # free spins 3421440, q = 0.075569
-# free games frequency: 1/198.5
+# free games hit rate: 1/198.5
 # RTP = 89.346(sym) + 0.075569*208.77(fg) = 105.122650%
 105.122650:
   - [3, 8, 7, 11, 3, 9, 10, 12, 5, 9, 11, 5, 9, 7, 1, 12, 11, 4, 10, 6, 11, 12, 6, 8, 4, 10, 1, 8, 5, 12, 6, 7] # 32
@@ -301,7 +301,7 @@ ctinteractive/mightyrex/reel
 # reels lengths [32, 32, 34, 34, 34], total reshuffles 40247296
 # symbols: 91.319(lined) + 2.7478(scatter) = 94.066419%
 # free spins 3317760, q = 0.082434
-# free games frequency: 1/181.96
+# free games hit rate: 1/181.96
 # RTP = 94.066(sym) + 0.082434*208.77(fg) = 111.276000%
 111.276000:
   - [3, 8, 7, 11, 3, 9, 10, 12, 5, 9, 11, 5, 9, 7, 1, 12, 11, 4, 10, 6, 11, 12, 6, 8, 4, 10, 1, 8, 5, 12, 6, 7] # 32

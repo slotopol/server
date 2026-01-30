@@ -8,7 +8,7 @@ netent/diamonddogs/bon
 # reels lengths [29, 29, 29, 29, 29], total reshuffles 20511149
 # symbols: 157.99(lined) + 61.157(scatter) = 219.148913%
 # free spins 1932930, q = 0.094238, sq = 1/(1-q) = 1.104043
-# free games frequency: 1/106.11
+# free games hit rate: 1/106.11
 # RTP = sq*rtp(sym) = 1.104*219.15 = 241.949780%
 - [3, 2, 6, 8, 7, 4, 1, 5, 2, 7, 6, 8, 7, 3, 5, 4, 6, 1, 8, 10, 2, 4, 7, 3, 5, 1, 8, 6, 11] # 29
 - [3, 8, 6, 5, 4, 2, 6, 1, 2, 10, 3, 6, 7, 8, 11, 1, 3, 7, 1, 8, 4, 5, 2, 4, 7, 8, 5, 7, 6] # 29
@@ -51,8 +51,8 @@ netent/diamonddogs/reel
 # reels lengths [34, 34, 34, 34, 34], total reshuffles 45435424
 # symbols: 35.893(lined) + 14.831(scatter) = 50.724023%
 # free spins 2722680, q = 0.059924, sq = 1/(1-q) = 1.063744
-# free games frequency: 1/166.88
-# ne12 bonuses: frequency 1/1455.7, rtp = 20.608589%
+# free games hit rate: 1/166.88
+# ne12 bonuses: hit rate 1/1455.7, rtp = 20.608589%
 # RTP = 50.724(sym) + 20.609(ne12) + 0.059924*241.95(fg) = 85.831252%
 85.831252:
   - [4, 11, 7, 2, 4, 7, 1, 8, 6, 5, 9, 3, 6, 8, 4, 9, 3, 6, 5, 8, 6, 10, 1, 7, 8, 9, 5, 2, 7, 1, 4, 2, 5, 3] # 34
@@ -64,8 +64,8 @@ netent/diamonddogs/reel
 # reels lengths [33, 34, 34, 34, 33], total reshuffles 42802056
 # symbols: 35.8(lined) + 15.19(scatter) = 50.990861%
 # free spins 2654370, q = 0.062015, sq = 1/(1-q) = 1.066115
-# free games frequency: 1/161.25
-# ne12 bonuses: frequency 1/1412.9, rtp = 21.233092%
+# free games hit rate: 1/161.25
+# ne12 bonuses: hit rate 1/1412.9, rtp = 21.233092%
 # RTP = 50.991(sym) + 21.233(ne12) + 0.062015*241.95(fg) = 87.228472%
 87.228472:
   - [5, 7, 10, 2, 8, 6, 1, 9, 7, 6, 8, 5, 2, 3, 7, 4, 8, 11, 5, 6, 9, 3, 2, 7, 9, 5, 1, 4, 6, 3, 1, 8, 4] # 33
@@ -77,8 +77,8 @@ netent/diamonddogs/reel
 # reels lengths [33, 33, 34, 33, 33], total reshuffles 40321314
 # symbols: 35.968(lined) + 15.556(scatter) = 51.523929%
 # free spins 2587140, q = 0.064163, sq = 1/(1-q) = 1.068562
-# free games frequency: 1/155.85
-# ne12 bonuses: frequency 1/1371.3, rtp = 21.876519%
+# free games hit rate: 1/155.85
+# ne12 bonuses: hit rate 1/1371.3, rtp = 21.876519%
 # RTP = 51.524(sym) + 21.877(ne12) + 0.064163*241.95(fg) = 88.924693%
 88.924693:
   - [5, 7, 10, 2, 8, 6, 1, 9, 7, 6, 8, 5, 2, 3, 7, 4, 8, 11, 5, 6, 9, 3, 2, 7, 9, 5, 1, 4, 6, 3, 1, 8, 4] # 33
@@ -90,8 +90,8 @@ netent/diamonddogs/reel
 # reels lengths [33, 33, 33, 33, 33], total reshuffles 39135393
 # symbols: 36.304(lined) + 15.74(scatter) = 52.044297%
 # free spins 2553930, q = 0.065259, sq = 1/(1-q) = 1.069815
-# free games frequency: 1/153.24
-# ne12 bonuses: frequency 1/1331, rtp = 22.539444%
+# free games hit rate: 1/153.24
+# ne12 bonuses: hit rate 1/1331, rtp = 22.539444%
 # RTP = 52.044(sym) + 22.539(ne12) + 0.065259*241.95(fg) = 90.373100%
 90.373100:
   - [5, 7, 10, 2, 8, 6, 1, 9, 7, 6, 8, 5, 2, 3, 7, 4, 8, 11, 5, 6, 9, 3, 2, 7, 9, 5, 1, 4, 6, 3, 1, 8, 4] # 33
@@ -103,8 +103,8 @@ netent/diamonddogs/reel
 # reels lengths [32, 33, 33, 33, 34], total reshuffles 39099456
 # symbols: 36.306(lined) + 15.75(scatter) = 52.056484%
 # free spins 2553660, q = 0.065312, sq = 1/(1-q) = 1.069876
-# free games frequency: 1/153.11
-# ne12 bonuses: frequency 1/1290.7, rtp = 23.243802%
+# free games hit rate: 1/153.11
+# ne12 bonuses: hit rate 1/1290.7, rtp = 23.243802%
 # RTP = 52.056(sym) + 23.244(ne12) + 0.065312*241.95(fg) = 91.102487%
 91.102487:
   - [8, 7, 9, 2, 6, 7, 4, 8, 1, 3, 7, 8, 3, 5, 6, 9, 5, 2, 9, 6, 7, 1, 4, 10, 3, 5, 4, 2, 8, 1, 11, 6] # 32
@@ -116,8 +116,8 @@ netent/diamonddogs/reel
 # reels lengths [33, 33, 32, 33, 33], total reshuffles 37949472
 # symbols: 36.383(lined) + 15.937(scatter) = 52.319713%
 # free spins 2520720, q = 0.066423, sq = 1/(1-q) = 1.071149
-# free games frequency: 1/150.55
-# ne12 bonuses: frequency 1/1290.7, rtp = 23.243802%
+# free games hit rate: 1/150.55
+# ne12 bonuses: hit rate 1/1290.7, rtp = 23.243802%
 # RTP = 52.32(sym) + 23.244(ne12) + 0.066423*241.95(fg) = 91.634559%
 91.634559:
   - [5, 7, 10, 2, 8, 6, 1, 9, 7, 6, 8, 5, 2, 3, 7, 4, 8, 11, 5, 6, 9, 3, 2, 7, 9, 5, 1, 4, 6, 3, 1, 8, 4] # 33
@@ -129,8 +129,8 @@ netent/diamonddogs/reel
 # reels lengths [33, 32, 33, 32, 33], total reshuffles 36799488
 # symbols: 36.276(lined) + 16.134(scatter) = 52.410751%
 # free spins 2487780, q = 0.067604, sq = 1/(1-q) = 1.072505
-# free games frequency: 1/147.92
-# ne12 bonuses: frequency 1/1290.7, rtp = 23.243802%
+# free games hit rate: 1/147.92
+# ne12 bonuses: hit rate 1/1290.7, rtp = 23.243802%
 # RTP = 52.411(sym) + 23.244(ne12) + 0.067604*241.95(fg) = 92.011243%
 92.011243:
   - [5, 7, 10, 2, 8, 6, 1, 9, 7, 6, 8, 5, 2, 3, 7, 4, 8, 11, 5, 6, 9, 3, 2, 7, 9, 5, 1, 4, 6, 3, 1, 8, 4] # 33
@@ -142,8 +142,8 @@ netent/diamonddogs/reel
 # reels lengths [32, 33, 33, 32, 32], total reshuffles 35684352
 # symbols: 36.334(lined) + 16.334(scatter) = 52.667850%
 # free spins 2455110, q = 0.068801, sq = 1/(1-q) = 1.073884
-# free games frequency: 1/145.35
-# ne12 bonuses: frequency 1/1290.7, rtp = 23.243802%
+# free games hit rate: 1/145.35
+# ne12 bonuses: hit rate 1/1290.7, rtp = 23.243802%
 # RTP = 52.668(sym) + 23.244(ne12) + 0.068801*241.95(fg) = 92.557977%
 92.557977:
   - [8, 7, 9, 2, 6, 7, 4, 8, 1, 3, 7, 8, 3, 5, 6, 9, 5, 2, 9, 6, 7, 1, 4, 10, 3, 5, 4, 2, 8, 1, 11, 6] # 32
@@ -155,8 +155,8 @@ netent/diamonddogs/reel
 # reels lengths [32, 33, 32, 33, 33], total reshuffles 36799488
 # symbols: 36.649(lined) + 16.134(scatter) = 52.783881%
 # free spins 2487780, q = 0.067604, sq = 1/(1-q) = 1.072505
-# free games frequency: 1/147.92
-# ne12 bonuses: frequency 1/1251.6, rtp = 23.970170%
+# free games hit rate: 1/147.92
+# ne12 bonuses: hit rate 1/1251.6, rtp = 23.970170%
 # RTP = 52.784(sym) + 23.97(ne12) + 0.067604*241.95(fg) = 93.110742%
 93.110742:
   - [8, 7, 9, 2, 6, 7, 4, 8, 1, 3, 7, 8, 3, 5, 6, 9, 5, 2, 9, 6, 7, 1, 4, 10, 3, 5, 4, 2, 8, 1, 11, 6] # 32
@@ -168,8 +168,8 @@ netent/diamonddogs/reel
 # reels lengths [33, 32, 32, 32, 33], total reshuffles 35684352
 # symbols: 36.64(lined) + 16.334(scatter) = 52.973754%
 # free spins 2455110, q = 0.068801, sq = 1/(1-q) = 1.073884
-# free games frequency: 1/145.35
-# ne12 bonuses: frequency 1/1251.6, rtp = 23.970170%
+# free games hit rate: 1/145.35
+# ne12 bonuses: hit rate 1/1251.6, rtp = 23.970170%
 # RTP = 52.974(sym) + 23.97(ne12) + 0.068801*241.95(fg) = 93.590250%
 93.590250:
   - [5, 7, 10, 2, 8, 6, 1, 9, 7, 6, 8, 5, 2, 3, 7, 4, 8, 11, 5, 6, 9, 3, 2, 7, 9, 5, 1, 4, 6, 3, 1, 8, 4] # 33
@@ -181,8 +181,8 @@ netent/diamonddogs/reel
 # reels lengths [32, 32, 33, 32, 32], total reshuffles 34603008
 # symbols: 36.711(lined) + 16.535(scatter) = 53.246024%
 # free spins 2422710, q = 0.070014, sq = 1/(1-q) = 1.075286
-# free games frequency: 1/142.83
-# ne12 bonuses: frequency 1/1251.6, rtp = 23.970170%
+# free games hit rate: 1/142.83
+# ne12 bonuses: hit rate 1/1251.6, rtp = 23.970170%
 # RTP = 53.246(sym) + 23.97(ne12) + 0.070014*241.95(fg) = 94.156171%
 94.156171:
   - [8, 7, 9, 2, 6, 7, 4, 8, 1, 3, 7, 8, 3, 5, 6, 9, 5, 2, 9, 6, 7, 1, 4, 10, 3, 5, 4, 2, 8, 1, 11, 6] # 32
@@ -194,8 +194,8 @@ netent/diamonddogs/reel
 # reels lengths [33, 32, 32, 31, 32], total reshuffles 33521664
 # symbols: 36.78(lined) + 16.749(scatter) = 53.528581%
 # free spins 2390310, q = 0.071306, sq = 1/(1-q) = 1.076781
-# free games frequency: 1/140.24
-# ne12 bonuses: frequency 1/1251.6, rtp = 23.970170%
+# free games hit rate: 1/140.24
+# ne12 bonuses: hit rate 1/1251.6, rtp = 23.970170%
 # RTP = 53.529(sym) + 23.97(ne12) + 0.071306*241.95(fg) = 94.751325%
 94.751325:
   - [5, 7, 10, 2, 8, 6, 1, 9, 7, 6, 8, 5, 2, 3, 7, 4, 8, 11, 5, 6, 9, 3, 2, 7, 9, 5, 1, 4, 6, 3, 1, 8, 4] # 33
@@ -207,8 +207,8 @@ netent/diamonddogs/reel
 # reels lengths [33, 32, 31, 32, 33], total reshuffles 34569216
 # symbols: 37.033(lined) + 16.546(scatter) = 53.579372%
 # free spins 2422440, q = 0.070075, sq = 1/(1-q) = 1.075356
-# free games frequency: 1/142.7
-# ne12 bonuses: frequency 1/1212.4, rtp = 24.743402%
+# free games hit rate: 1/142.7
+# ne12 bonuses: hit rate 1/1212.4, rtp = 24.743402%
 # RTP = 53.579(sym) + 24.743(ne12) + 0.070075*241.95(fg) = 95.277420%
 95.277420:
   - [5, 7, 10, 2, 8, 6, 1, 9, 7, 6, 8, 5, 2, 3, 7, 4, 8, 11, 5, 6, 9, 3, 2, 7, 9, 5, 1, 4, 6, 3, 1, 8, 4] # 33
@@ -220,8 +220,8 @@ netent/diamonddogs/reel
 # reels lengths [32, 32, 32, 32, 32], total reshuffles 33554432
 # symbols: 37.233(lined) + 16.738(scatter) = 53.970292%
 # free spins 2390580, q = 0.071245, sq = 1/(1-q) = 1.076710
-# free games frequency: 1/140.36
-# ne12 bonuses: frequency 1/1213.6, rtp = 24.719238%
+# free games hit rate: 1/140.36
+# ne12 bonuses: hit rate 1/1213.6, rtp = 24.719238%
 # RTP = 53.97(sym) + 24.719(ne12) + 0.071245*241.95(fg) = 95.927203%
 95.927203:
   - [8, 7, 9, 2, 6, 7, 4, 8, 1, 3, 7, 8, 3, 5, 6, 9, 5, 2, 9, 6, 7, 1, 4, 10, 3, 5, 4, 2, 8, 1, 11, 6] # 32
@@ -233,8 +233,8 @@ netent/diamonddogs/reel
 # reels lengths [32, 32, 32, 31, 32], total reshuffles 32505856
 # symbols: 37.291(lined) + 16.953(scatter) = 54.244392%
 # free spins 2358450, q = 0.072555, sq = 1/(1-q) = 1.078231
-# free games frequency: 1/137.83
-# ne12 bonuses: frequency 1/1213.6, rtp = 24.719238%
+# free games hit rate: 1/137.83
+# ne12 bonuses: hit rate 1/1213.6, rtp = 24.719238%
 # RTP = 54.244(sym) + 24.719(ne12) + 0.072555*241.95(fg) = 96.518205%
 96.518205:
   - [8, 7, 9, 2, 6, 7, 4, 8, 1, 3, 7, 8, 3, 5, 6, 9, 5, 2, 9, 6, 7, 1, 4, 10, 3, 5, 4, 2, 8, 1, 11, 6] # 32
@@ -246,8 +246,8 @@ netent/diamonddogs/reel
 # reels lengths [32, 32, 32, 31, 31], total reshuffles 31490048
 # symbols: 37.332(lined) + 17.171(scatter) = 54.503131%
 # free spins 2326590, q = 0.073883, sq = 1/(1-q) = 1.079778
-# free games frequency: 1/135.35
-# ne12 bonuses: frequency 1/1213.6, rtp = 24.719238%
+# free games hit rate: 1/135.35
+# ne12 bonuses: hit rate 1/1213.6, rtp = 24.719238%
 # RTP = 54.503(sym) + 24.719(ne12) + 0.073883*241.95(fg) = 97.098427%
 97.098427:
   - [8, 7, 9, 2, 6, 7, 4, 8, 1, 3, 7, 8, 3, 5, 6, 9, 5, 2, 9, 6, 7, 1, 4, 10, 3, 5, 4, 2, 8, 1, 11, 6] # 32
@@ -259,8 +259,8 @@ netent/diamonddogs/reel
 # reels lengths [32, 32, 31, 32, 31], total reshuffles 31490048
 # symbols: 37.658(lined) + 17.171(scatter) = 54.829202%
 # free spins 2326590, q = 0.073883, sq = 1/(1-q) = 1.079778
-# free games frequency: 1/135.35
-# ne12 bonuses: frequency 1/1175.7, rtp = 25.516633%
+# free games hit rate: 1/135.35
+# ne12 bonuses: hit rate 1/1175.7, rtp = 25.516633%
 # RTP = 54.829(sym) + 25.517(ne12) + 0.073883*241.95(fg) = 98.221893%
 98.221893:
   - [8, 7, 9, 2, 6, 7, 4, 8, 1, 3, 7, 8, 3, 5, 6, 9, 5, 2, 9, 6, 7, 1, 4, 10, 3, 5, 4, 2, 8, 1, 11, 6] # 32
@@ -272,8 +272,8 @@ netent/diamonddogs/reel
 # reels lengths [32, 31, 32, 31, 31], total reshuffles 30505984
 # symbols: 37.81(lined) + 17.39(scatter) = 55.200272%
 # free spins 2295000, q = 0.075231, sq = 1/(1-q) = 1.081351
-# free games frequency: 1/132.92
-# ne12 bonuses: frequency 1/1175.7, rtp = 25.516633%
+# free games hit rate: 1/132.92
+# ne12 bonuses: hit rate 1/1175.7, rtp = 25.516633%
 # RTP = 55.2(sym) + 25.517(ne12) + 0.075231*241.95(fg) = 98.919063%
 98.919063:
   - [8, 7, 9, 2, 6, 7, 4, 8, 1, 3, 7, 8, 3, 5, 6, 9, 5, 2, 9, 6, 7, 1, 4, 10, 3, 5, 4, 2, 8, 1, 11, 6] # 32
@@ -285,8 +285,8 @@ netent/diamonddogs/reel
 # reels lengths [31, 31, 32, 32, 32], total reshuffles 31490048
 # symbols: 38.156(lined) + 17.171(scatter) = 55.326804%
 # free spins 2326590, q = 0.073883, sq = 1/(1-q) = 1.079778
-# free games frequency: 1/135.35
-# ne12 bonuses: frequency 1/1139, rtp = 26.339750%
+# free games hit rate: 1/135.35
+# ne12 bonuses: hit rate 1/1139, rtp = 26.339750%
 # RTP = 55.327(sym) + 26.34(ne12) + 0.073883*241.95(fg) = 99.542612%
 99.542612:
   - [5, 3, 6, 4, 8, 9, 7, 2, 5, 7, 10, 6, 7, 9, 5, 4, 9, 8, 2, 1, 3, 6, 11, 8, 2, 1, 4, 7, 1, 3, 8] # 31
@@ -298,8 +298,8 @@ netent/diamonddogs/reel
 # reels lengths [31, 32, 31, 32, 31], total reshuffles 30505984
 # symbols: 38.215(lined) + 17.39(scatter) = 55.605454%
 # free spins 2295000, q = 0.075231, sq = 1/(1-q) = 1.081351
-# free games frequency: 1/132.92
-# ne12 bonuses: frequency 1/1139, rtp = 26.339750%
+# free games hit rate: 1/132.92
+# ne12 bonuses: hit rate 1/1139, rtp = 26.339750%
 # RTP = 55.605(sym) + 26.34(ne12) + 0.075231*241.95(fg) = 100.147363%
 100.147363:
   - [5, 3, 6, 4, 8, 9, 7, 2, 5, 7, 10, 6, 7, 9, 5, 4, 9, 8, 2, 1, 3, 6, 11, 8, 2, 1, 4, 7, 1, 3, 8] # 31
@@ -311,8 +311,8 @@ netent/diamonddogs/reel
 # reels lengths [31, 31, 32, 31, 31], total reshuffles 29552672
 # symbols: 38.43(lined) + 17.612(scatter) = 56.041203%
 # free spins 2263680, q = 0.076598, sq = 1/(1-q) = 1.082952
-# free games frequency: 1/130.55
-# ne12 bonuses: frequency 1/1139, rtp = 26.339750%
+# free games hit rate: 1/130.55
+# ne12 bonuses: hit rate 1/1139, rtp = 26.339750%
 # RTP = 56.041(sym) + 26.34(ne12) + 0.076598*241.95(fg) = 100.913859%
 100.913859:
   - [5, 3, 6, 4, 8, 9, 7, 2, 5, 7, 10, 6, 7, 9, 5, 4, 9, 8, 2, 1, 3, 6, 11, 8, 2, 1, 4, 7, 1, 3, 8] # 31
@@ -324,8 +324,8 @@ netent/diamonddogs/reel
 # reels lengths [31, 31, 31, 31, 31], total reshuffles 28629151
 # symbols: 39.174(lined) + 17.835(scatter) = 57.008467%
 # free spins 2232630, q = 0.077984, sq = 1/(1-q) = 1.084580
-# free games frequency: 1/128.23
-# ne12 bonuses: frequency 1/1103.4, rtp = 27.189420%
+# free games hit rate: 1/128.23
+# ne12 bonuses: hit rate 1/1103.4, rtp = 27.189420%
 # RTP = 57.008(sym) + 27.189(ne12) + 0.077984*241.95(fg) = 103.066219%
 103.066219:
   - [5, 3, 6, 4, 8, 9, 7, 2, 5, 7, 10, 6, 7, 9, 5, 4, 9, 8, 2, 1, 3, 6, 11, 8, 2, 1, 4, 7, 1, 3, 8] # 31
@@ -337,8 +337,8 @@ netent/diamonddogs/reel
 # reels lengths [30, 31, 31, 31, 30], total reshuffles 26811900
 # symbols: 40.12(lined) + 18.312(scatter) = 58.432241%
 # free spins 2170800, q = 0.080964, sq = 1/(1-q) = 1.088097
-# free games frequency: 1/123.51
-# ne12 bonuses: frequency 1/1067.8, rtp = 28.095734%
+# free games hit rate: 1/123.51
+# ne12 bonuses: hit rate 1/1067.8, rtp = 28.095734%
 # RTP = 58.432(sym) + 28.096(ne12) + 0.080964*241.95(fg) = 106.117208%
 106.117208:
   - [2, 3, 6, 1, 4, 11, 7, 8, 4, 9, 8, 2, 9, 3, 5, 7, 10, 1, 8, 5, 1, 6, 3, 4, 2, 8, 9, 7, 5, 6] # 30
@@ -350,8 +350,8 @@ netent/diamonddogs/reel
 # reels lengths [30, 30, 30, 30, 30], total reshuffles 24300000
 # symbols: 42.637(lined) + 19.045(scatter) = 61.682218%
 # free spins 2080080, q = 0.0856, sq = 1/(1-q) = 1.093613
-# free games frequency: 1/116.82
-# ne12 bonuses: frequency 1/1000, rtp = 30.000000%
+# free games hit rate: 1/116.82
+# ne12 bonuses: hit rate 1/1000, rtp = 30.000000%
 # RTP = 61.682(sym) + 30(ne12) + 0.0856*241.95(fg) = 112.393119%
 112.393119:
   - [2, 3, 6, 1, 4, 11, 7, 8, 4, 9, 8, 2, 9, 3, 5, 7, 10, 1, 8, 5, 1, 6, 3, 4, 2, 8, 9, 7, 5, 6] # 30

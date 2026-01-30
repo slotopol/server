@@ -25,7 +25,7 @@ func CalcStatBon(ctx context.Context) float64 {
 		var rtpjazz = lrtp*jpow - lrtp
 		var rtp = lrtp * jpow
 		fmt.Fprintf(w, "symbols: %.5g(lined) + 0(scatter) = %.6f%%\n", lrtp, lrtp)
-		fmt.Fprintf(w, "jazzbee bonuses: frequency 1/%.5g, pow = %.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(jbonus), jpow, rtpjazz)
+		fmt.Fprintf(w, "jazzbee bonuses: hit rate 1/%.5g, pow = %.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(jbonus), jpow, rtpjazz)
 		fmt.Fprintf(w, "RTP = rtp(sym) + rtp(jazz) = %.5g + %.5g = %.6f%%\n", lrtp, rtpjazz, rtp)
 		return rtp
 	}
@@ -51,7 +51,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		var rtp = rtpsym + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "free spins %d, q = %.5g\n", s.FreeCount.Load(), q)
-		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", s.FGF())
+		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, q, rtpfs, rtp)
 		return rtp
 	}

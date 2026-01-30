@@ -35,7 +35,7 @@ playngo/firejoker/reel
 # reels lengths [35, 33, 35, 33, 35], total reshuffles 46690875
 # symbols: 14.043(lined) + 57.208(scatter) = 71.251280%
 # free spins 2352240, q = 0.050379
-# free games frequency: 1/198.5
+# free games hit rate: 1/198.5
 # RTP = 71.251(sym) + 0.050379*276.69(fg) = 85.190549%
 85.190549:
   - [9, 4, 2, 6, 1, 8, 6, 3, 4, 6, 7, 5, 1, 7, 4, 6, 2, 5, 8, 1, 3, 4, 7, 5, 1, 2, 4, 3, 2, 7, 5, 3, 6, 5, 7] # 35
@@ -50,7 +50,7 @@ playngo/firejoker/reel
 # reels lengths [35, 33, 35, 32, 35], total reshuffles 45276000
 # symbols: 14.074(lined) + 58.835(scatter) = 72.908791%
 # free spins 2280960, q = 0.050379
-# free games frequency: 1/198.5
+# free games hit rate: 1/198.5
 # RTP = 72.909(sym) + 0.050379*276.69(fg) = 86.848060%
 86.848060:
   - [9, 4, 2, 6, 1, 8, 6, 3, 4, 6, 7, 5, 1, 7, 4, 6, 2, 5, 8, 1, 3, 4, 7, 5, 1, 2, 4, 3, 2, 7, 5, 3, 6, 5, 7] # 35
@@ -65,7 +65,7 @@ playngo/firejoker/reel
 # reels lengths [35, 32, 35, 32, 35], total reshuffles 43904000
 # symbols: 14.407(lined) + 60.512(scatter) = 74.919224%
 # free spins 2211840, q = 0.050379
-# free games frequency: 1/198.5
+# free games hit rate: 1/198.5
 # RTP = 74.919(sym) + 0.050379*276.69(fg) = 88.858493%
 88.858493:
   - [9, 4, 2, 6, 1, 8, 6, 3, 4, 6, 7, 5, 1, 7, 4, 6, 2, 5, 8, 1, 3, 4, 7, 5, 1, 2, 4, 3, 2, 7, 5, 3, 6, 5, 7] # 35
@@ -80,7 +80,7 @@ playngo/firejoker/reel
 # reels lengths [34, 33, 35, 33, 34], total reshuffles 44060940
 # symbols: 14.309(lined) + 60.534(scatter) = 74.842847%
 # free spins 2352240, q = 0.053386
-# free games frequency: 1/187.31
+# free games hit rate: 1/187.31
 # RTP = 74.843(sym) + 0.053386*288.45(fg) = 90.241810%
 90.241810:
   - [1, 3, 7, 4, 6, 2, 9, 5, 3, 6, 8, 1, 6, 3, 7, 1, 3, 5, 6, 4, 5, 7, 8, 2, 3, 1, 2, 4, 7, 5, 2, 7, 4, 6] # 34
@@ -95,7 +95,7 @@ playngo/firejoker/reel
 # reels lengths [35, 32, 34, 32, 35], total reshuffles 42649600
 # symbols: 14.985(lined) + 62.248(scatter) = 77.233559%
 # free spins 2211840, q = 0.051861
-# free games frequency: 1/192.82
+# free games hit rate: 1/192.82
 # RTP = 77.234(sym) + 0.051861*276.69(fg) = 91.582807%
 91.582807:
   - [9, 4, 2, 6, 1, 8, 6, 3, 4, 6, 7, 5, 1, 7, 4, 6, 2, 5, 8, 1, 3, 4, 7, 5, 1, 2, 4, 3, 2, 7, 5, 3, 6, 5, 7] # 35
@@ -110,7 +110,7 @@ playngo/firejoker/reel
 # reels lengths [35, 31, 35, 31, 35], total reshuffles 41202875
 # symbols: 14.328(lined) + 64.14(scatter) = 78.468442%
 # free spins 2075760, q = 0.050379
-# free games frequency: 1/198.5
+# free games hit rate: 1/198.5
 # RTP = 78.468(sym) + 0.050379*276.69(fg) = 92.407711%
 92.407711:
   - [9, 4, 2, 6, 1, 8, 6, 3, 4, 6, 7, 5, 1, 7, 4, 6, 2, 5, 8, 1, 3, 4, 7, 5, 1, 2, 4, 3, 2, 7, 5, 3, 6, 5, 7] # 35
@@ -125,7 +125,7 @@ playngo/firejoker/reel
 # reels lengths [35, 33, 35, 31, 33], total reshuffles 41354775
 # symbols: 14.079(lined) + 64.148(scatter) = 78.226164%
 # free spins 2209680, q = 0.053432
-# free games frequency: 1/187.15
+# free games hit rate: 1/187.15
 # RTP = 78.226(sym) + 0.053432*277.38(fg) = 93.047096%
 93.047096:
   - [9, 4, 2, 6, 1, 8, 6, 3, 4, 6, 7, 5, 1, 7, 4, 6, 2, 5, 8, 1, 3, 4, 7, 5, 1, 2, 4, 3, 2, 7, 5, 3, 6, 5, 7] # 35
@@ -140,7 +140,7 @@ playngo/firejoker/reel
 # reels lengths [33, 33, 35, 31, 35], total reshuffles 41354775
 # symbols: 14.275(lined) + 64.148(scatter) = 78.423094%
 # free spins 2209680, q = 0.053432
-# free games frequency: 1/187.15
+# free games hit rate: 1/187.15
 # RTP = 78.423(sym) + 0.053432*283.56(fg) = 93.574467%
 93.574467:
   - [8, 7, 6, 2, 7, 4, 5, 1, 7, 3, 5, 2, 4, 6, 7, 5, 1, 2, 4, 8, 6, 4, 7, 3, 1, 9, 6, 3, 5, 2, 3, 6, 1] # 33
@@ -155,7 +155,7 @@ playngo/firejoker/reel
 # reels lengths [33, 33, 35, 33, 33], total reshuffles 41507235
 # symbols: 14.227(lined) + 64.164(scatter) = 78.391052%
 # free spins 2352240, q = 0.056671
-# free games frequency: 1/176.46
+# free games hit rate: 1/176.46
 # RTP = 78.391(sym) + 0.056671*284.48(fg) = 94.512771%
 94.512771:
   - [8, 7, 6, 2, 7, 4, 5, 1, 7, 3, 5, 2, 4, 6, 7, 5, 1, 2, 4, 8, 6, 4, 7, 3, 1, 9, 6, 3, 5, 2, 3, 6, 1] # 33
@@ -170,7 +170,7 @@ playngo/firejoker/reel
 # reels lengths [34, 33, 33, 33, 34], total reshuffles 41543172
 # symbols: 14.626(lined) + 64.108(scatter) = 78.734811%
 # free spins 2352240, q = 0.056622
-# free games frequency: 1/176.61
+# free games hit rate: 1/176.61
 # RTP = 78.735(sym) + 0.056622*288.45(fg) = 95.067044%
 95.067044:
   - [1, 3, 7, 4, 6, 2, 9, 5, 3, 6, 8, 1, 6, 3, 7, 1, 3, 5, 6, 4, 5, 7, 8, 2, 3, 1, 2, 4, 7, 5, 2, 7, 4, 6] # 34
@@ -185,7 +185,7 @@ playngo/firejoker/reel
 # reels lengths [34, 31, 35, 31, 35], total reshuffles 40025650
 # symbols: 14.746(lined) + 65.984(scatter) = 80.729122%
 # free spins 2075760, q = 0.051861
-# free games frequency: 1/192.82
+# free games hit rate: 1/192.82
 # RTP = 80.729(sym) + 0.051861*286.93(fg) = 95.609358%
 95.609358:
   - [1, 3, 7, 4, 6, 2, 9, 5, 3, 6, 8, 1, 6, 3, 7, 1, 3, 5, 6, 4, 5, 7, 8, 2, 3, 1, 2, 4, 7, 5, 2, 7, 4, 6] # 34
@@ -200,7 +200,7 @@ playngo/firejoker/reel
 # reels lengths [34, 33, 35, 31, 33], total reshuffles 40173210
 # symbols: 14.367(lined) + 65.988(scatter) = 80.355540%
 # free spins 2209680, q = 0.055004
-# free games frequency: 1/181.81
+# free games hit rate: 1/181.81
 # RTP = 80.356(sym) + 0.055004*287.89(fg) = 96.190674%
 96.190674:
   - [1, 3, 7, 4, 6, 2, 9, 5, 3, 6, 8, 1, 6, 3, 7, 1, 3, 5, 6, 4, 5, 7, 8, 2, 3, 1, 2, 4, 7, 5, 2, 7, 4, 6] # 34
@@ -215,7 +215,7 @@ playngo/firejoker/reel
 # reels lengths [35, 31, 35, 31, 33], total reshuffles 38848425
 # symbols: 14.338(lined) + 67.939(scatter) = 82.276226%
 # free spins 2075760, q = 0.053432
-# free games frequency: 1/187.15
+# free games hit rate: 1/187.15
 # RTP = 82.276(sym) + 0.053432*277.38(fg) = 97.097158%
 97.097158:
   - [9, 4, 2, 6, 1, 8, 6, 3, 4, 6, 7, 5, 1, 7, 4, 6, 2, 5, 8, 1, 3, 4, 7, 5, 1, 2, 4, 3, 2, 7, 5, 3, 6, 5, 7] # 35
@@ -230,7 +230,7 @@ playngo/firejoker/reel
 # reels lengths [34, 32, 34, 32, 34], total reshuffles 40247296
 # symbols: 15.906(lined) + 65.872(scatter) = 81.778510%
 # free spins 2211840, q = 0.054956
-# free games frequency: 1/181.96
+# free games hit rate: 1/181.96
 # RTP = 81.779(sym) + 0.054956*288.45(fg) = 97.630383%
 97.630383:
   - [1, 3, 7, 4, 6, 2, 9, 5, 3, 6, 8, 1, 6, 3, 7, 1, 3, 5, 6, 4, 5, 7, 8, 2, 3, 1, 2, 4, 7, 5, 2, 7, 4, 6] # 34
@@ -245,7 +245,7 @@ playngo/firejoker/reel
 # reels lengths [34, 31, 35, 31, 34], total reshuffles 38882060
 # symbols: 14.765(lined) + 67.88(scatter) = 82.644381%
 # free spins 2075760, q = 0.053386
-# free games frequency: 1/187.31
+# free games hit rate: 1/187.31
 # RTP = 82.644(sym) + 0.053386*288.45(fg) = 98.043344%
 98.043344:
   - [1, 3, 7, 4, 6, 2, 9, 5, 3, 6, 8, 1, 6, 3, 7, 1, 3, 5, 6, 4, 5, 7, 8, 2, 3, 1, 2, 4, 7, 5, 2, 7, 4, 6] # 34
@@ -260,7 +260,7 @@ playngo/firejoker/reel
 # reels lengths [35, 31, 33, 33, 33], total reshuffles 38991645
 # symbols: 14.576(lined) + 67.941(scatter) = 82.517026%
 # free spins 2209680, q = 0.056671
-# free games frequency: 1/176.46
+# free games hit rate: 1/176.46
 # RTP = 82.517(sym) + 0.056671*277.38(fg) = 98.236197%
 98.236197:
   - [9, 4, 2, 6, 1, 8, 6, 3, 4, 6, 7, 5, 1, 7, 4, 6, 2, 5, 8, 1, 3, 4, 7, 5, 1, 2, 4, 3, 2, 7, 5, 3, 6, 5, 7] # 35
@@ -275,7 +275,7 @@ playngo/firejoker/reel
 # reels lengths [33, 31, 33, 33, 35], total reshuffles 38991645
 # symbols: 14.964(lined) + 67.941(scatter) = 82.904494%
 # free spins 2209680, q = 0.056671
-# free games frequency: 1/176.46
+# free games hit rate: 1/176.46
 # RTP = 82.904(sym) + 0.056671*283.56(fg) = 98.974132%
 98.974132:
   - [8, 7, 6, 2, 7, 4, 5, 1, 7, 3, 5, 2, 4, 6, 7, 5, 1, 2, 4, 8, 6, 4, 7, 3, 1, 9, 6, 3, 5, 2, 3, 6, 1] # 33
@@ -290,7 +290,7 @@ playngo/firejoker/reel
 # reels lengths [33, 33, 33, 33, 33], total reshuffles 39135393
 # symbols: 14.523(lined) + 67.952(scatter) = 82.474996%
 # free spins 2352240, q = 0.060105
-# free games frequency: 1/166.38
+# free games hit rate: 1/166.38
 # RTP = 82.475(sym) + 0.060105*284.48(fg) = 99.573790%
 99.573790:
   - [8, 7, 6, 2, 7, 4, 5, 1, 7, 3, 5, 2, 4, 6, 7, 5, 1, 2, 4, 8, 6, 4, 7, 3, 1, 9, 6, 3, 5, 2, 3, 6, 1] # 33
@@ -305,7 +305,7 @@ playngo/firejoker/reel
 # reels lengths [34, 31, 34, 31, 34], total reshuffles 37771144
 # symbols: 15.452(lined) + 69.83(scatter) = 85.282024%
 # free spins 2075760, q = 0.054956
-# free games frequency: 1/181.96
+# free games hit rate: 1/181.96
 # RTP = 85.282(sym) + 0.054956*288.45(fg) = 101.133897%
 101.133897:
   - [1, 3, 7, 4, 6, 2, 9, 5, 3, 6, 8, 1, 6, 3, 7, 1, 3, 5, 6, 4, 5, 7, 8, 2, 3, 1, 2, 4, 7, 5, 2, 7, 4, 6] # 34
@@ -320,7 +320,7 @@ playngo/firejoker/reel
 # reels lengths [33, 31, 33, 31, 35], total reshuffles 36628515
 # symbols: 15.06(lined) + 71.962(scatter) = 87.021551%
 # free spins 2075760, q = 0.056671
-# free games frequency: 1/176.46
+# free games hit rate: 1/176.46
 # RTP = 87.022(sym) + 0.056671*283.56(fg) = 103.091189%
 103.091189:
   - [8, 7, 6, 2, 7, 4, 5, 1, 7, 3, 5, 2, 4, 6, 7, 5, 1, 2, 4, 8, 6, 4, 7, 3, 1, 9, 6, 3, 5, 2, 3, 6, 1] # 33
@@ -335,7 +335,7 @@ playngo/firejoker/reel
 # reels lengths [33, 31, 33, 33, 33], total reshuffles 36763551
 # symbols: 14.977(lined) + 71.958(scatter) = 86.935144%
 # free spins 2209680, q = 0.060105
-# free games frequency: 1/166.38
+# free games hit rate: 1/166.38
 # RTP = 86.935(sym) + 0.060105*284.48(fg) = 104.033937%
 104.033937:
   - [8, 7, 6, 2, 7, 4, 5, 1, 7, 3, 5, 2, 4, 6, 7, 5, 1, 2, 4, 8, 6, 4, 7, 3, 1, 9, 6, 3, 5, 2, 3, 6, 1] # 33
@@ -350,7 +350,7 @@ playngo/firejoker/reel
 # reels lengths [33, 31, 33, 31, 33], total reshuffles 34535457
 # symbols: 15.077(lined) + 76.223(scatter) = 91.299380%
 # free spins 2075760, q = 0.060105
-# free games frequency: 1/166.38
+# free games hit rate: 1/166.38
 # RTP = 91.299(sym) + 0.060105*284.48(fg) = 108.398173%
 108.398173:
   - [8, 7, 6, 2, 7, 4, 5, 1, 7, 3, 5, 2, 4, 6, 7, 5, 1, 2, 4, 8, 6, 4, 7, 3, 1, 9, 6, 3, 5, 2, 3, 6, 1] # 33

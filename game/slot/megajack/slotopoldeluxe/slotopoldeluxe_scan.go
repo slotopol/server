@@ -32,10 +32,10 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var rtpmjm = slotopol.Emjm * qmjm * 100
 		var rtp = rtpsym + rtpmje1 + rtpmje3 + rtpmje6 + rtpmjm
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "spin1 bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mje1), rtpmje1)
-		fmt.Fprintf(w, "spin3 bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mje3), rtpmje3)
-		fmt.Fprintf(w, "spin6 bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mje6), rtpmje6)
-		fmt.Fprintf(w, "monopoly bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mjm), rtpmjm)
+		fmt.Fprintf(w, "spin1 bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mje1), rtpmje1)
+		fmt.Fprintf(w, "spin3 bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mje3), rtpmje3)
+		fmt.Fprintf(w, "spin6 bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mje6), rtpmje6)
+		fmt.Fprintf(w, "monopoly bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mjm), rtpmjm)
 		if s.JackCountF(mjj) > 0 {
 			fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackCountF(mjj), reshuf/s.JackCountF(mjj))
 		}

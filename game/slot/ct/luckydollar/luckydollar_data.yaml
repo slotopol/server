@@ -32,13 +32,13 @@ ctinteractive/luckydollar/reel
 # reels lengths [39, 39, 39, 39, 39], total reshuffles 90224199
 # symbols: 171.97(lined) + 34.792(scatter) = 206.760156%
 # free spins 5471145, q = 0.060639, sq = 1/(1-q) = 1.064554
-# free games frequency: 1/247.36
+# free games hit rate: 1/247.36
 # RTP = sq*rtp(sym) = 1.0646*206.76 = 220.107343%
 # *regular reels calculations*
 # reels lengths [39, 39, 39, 39, 39], total reshuffles 90224199
 # symbols: 57.329(lined) + 11.597(scatter) = 68.926702%
 # free spins 5471145, q = 0.060639, sq = 1/(1-q) = 1.064554
-# free games frequency: 1/247.36
+# free games hit rate: 1/247.36
 # RTP = 68.927(sym) + 0.060639*220.11(fg) = 82.273888%
 82.273888:
   - [4, 13, 12, 10, 6, 9, 8, 11, 3, 13, 10, 3, 9, 5, 12, 2, 11, 6, 13, 11, 7, 4, 11, 9, 5, 12, 10, 1, 7, 5, 10, 3, 7, 4, 12, 8, 6, 13, 8] # 39
@@ -51,13 +51,13 @@ ctinteractive/luckydollar/reel
 # reels lengths [38, 39, 38, 39, 38], total reshuffles 83460312
 # symbols: 177.36(lined) + 35.897(scatter) = 213.252707%
 # free spins 5293755, q = 0.063428, sq = 1/(1-q) = 1.067724
-# free games frequency: 1/236.49
+# free games hit rate: 1/236.49
 # RTP = sq*rtp(sym) = 1.0677*213.25 = 227.695042%
 # *regular reels calculations*
 # reels lengths [38, 39, 38, 39, 38], total reshuffles 83460312
 # symbols: 59.126(lined) + 11.966(scatter) = 71.091425%
 # free spins 5293755, q = 0.063428, sq = 1/(1-q) = 1.067724
-# free games frequency: 1/236.49
+# free games hit rate: 1/236.49
 # RTP = 71.091(sym) + 0.063428*227.7(fg) = 85.533760%
 85.533760:
   - [9, 4, 8, 7, 13, 12, 7, 6, 8, 3, 11, 4, 7, 10, 6, 12, 3, 13, 9, 5, 12, 2, 11, 13, 5, 10, 1, 11, 3, 10, 6, 12, 9, 4, 8, 11, 5, 13] # 38
@@ -70,13 +70,13 @@ ctinteractive/luckydollar/reel
 # reels lengths [38, 38, 39, 39, 38], total reshuffles 83460312
 # symbols: 178.52(lined) + 35.897(scatter) = 214.417836%
 # free spins 5293755, q = 0.063428, sq = 1/(1-q) = 1.067724
-# free games frequency: 1/236.49
+# free games hit rate: 1/236.49
 # RTP = sq*rtp(sym) = 1.0677*214.42 = 228.939078%
 # *regular reels calculations*
 # reels lengths [38, 38, 39, 39, 38], total reshuffles 83460312
 # symbols: 59.514(lined) + 11.966(scatter) = 71.479801%
 # free spins 5293755, q = 0.063428, sq = 1/(1-q) = 1.067724
-# free games frequency: 1/236.49
+# free games hit rate: 1/236.49
 # RTP = 71.48(sym) + 0.063428*228.94(fg) = 86.001043%
 86.001043:
   - [9, 4, 8, 7, 13, 12, 7, 6, 8, 3, 11, 4, 7, 10, 6, 12, 3, 13, 9, 5, 12, 2, 11, 13, 5, 10, 1, 11, 3, 10, 6, 12, 9, 4, 8, 11, 5, 13] # 38
@@ -89,13 +89,13 @@ ctinteractive/luckydollar/reel
 # reels lengths [38, 38, 38, 38, 38], total reshuffles 79235168
 # symbols: 182.19(lined) + 36.647(scatter) = 218.841462%
 # free spins 5177520, q = 0.065344, sq = 1/(1-q) = 1.069912
-# free games frequency: 1/229.56
+# free games hit rate: 1/229.56
 # RTP = sq*rtp(sym) = 1.0699*218.84 = 234.141111%
 # *regular reels calculations*
 # reels lengths [38, 38, 38, 38, 38], total reshuffles 79235168
 # symbols: 60.739(lined) + 12.216(scatter) = 72.954726%
 # free spins 5177520, q = 0.065344, sq = 1/(1-q) = 1.069912
-# free games frequency: 1/229.56
+# free games hit rate: 1/229.56
 # RTP = 72.955(sym) + 0.065344*234.14(fg) = 88.254376%
 88.254376:
   - [9, 4, 8, 7, 13, 12, 7, 6, 8, 3, 11, 4, 7, 10, 6, 12, 3, 13, 9, 5, 12, 2, 11, 13, 5, 10, 1, 11, 3, 10, 6, 12, 9, 4, 8, 11, 5, 13] # 38
@@ -109,14 +109,14 @@ ctinteractive/luckydollar/reel
 # reels lengths [38, 38, 37, 38, 37], total reshuffles 75119768
 # symbols: 184.54(lined) + 37.442(scatter) = 221.982994%
 # free spins 5062095, q = 0.067387, sq = 1/(1-q) = 1.072256
-# free games frequency: 1/222.59
+# free games hit rate: 1/222.59
 # RTP = sq*rtp(sym) = 1.0723*221.98 = 238.022622%
 # *regular reels calculations*
 # completed 100%, selected 1 lines, time spent 5.6418277s
 # reels lengths [38, 38, 37, 38, 37], total reshuffles 75119768
 # symbols: 61.522(lined) + 12.481(scatter) = 74.002319%
 # free spins 5062095, q = 0.067387, sq = 1/(1-q) = 1.072256
-# free games frequency: 1/222.59
+# free games hit rate: 1/222.59
 # RTP = 74.002(sym) + 0.067387*238.02(fg) = 90.041946%
 90.041946:
   - [9, 4, 8, 7, 13, 12, 7, 6, 8, 3, 11, 4, 7, 10, 6, 12, 3, 13, 9, 5, 12, 2, 11, 13, 5, 10, 1, 11, 3, 10, 6, 12, 9, 4, 8, 11, 5, 13] # 38
@@ -129,13 +129,13 @@ ctinteractive/luckydollar/reel
 # reels lengths [38, 37, 38, 38, 37], total reshuffles 75119768
 # symbols: 185.77(lined) + 37.442(scatter) = 223.210913%
 # free spins 5062095, q = 0.067387, sq = 1/(1-q) = 1.072256
-# free games frequency: 1/222.59
+# free games hit rate: 1/222.59
 # RTP = sq*rtp(sym) = 1.0723*223.21 = 239.339266%
 # *regular reels calculations*
 # reels lengths [38, 37, 38, 38, 37], total reshuffles 75119768
 # symbols: 61.931(lined) + 12.481(scatter) = 74.411625%
 # free spins 5062095, q = 0.067387, sq = 1/(1-q) = 1.072256
-# free games frequency: 1/222.59
+# free games hit rate: 1/222.59
 # RTP = 74.412(sym) + 0.067387*239.34(fg) = 90.539977%
 90.539977:
   - [9, 4, 8, 7, 13, 12, 7, 6, 8, 3, 11, 4, 7, 10, 6, 12, 3, 13, 9, 5, 12, 2, 11, 13, 5, 10, 1, 11, 3, 10, 6, 12, 9, 4, 8, 11, 5, 13] # 38
@@ -149,14 +149,14 @@ ctinteractive/luckydollar/reel
 # reels lengths [38, 38, 37, 37, 37], total reshuffles 73142932
 # symbols: 185.71(lined) + 37.844(scatter) = 223.557699%
 # free spins 5004990, q = 0.068428, sq = 1/(1-q) = 1.073454
-# free games frequency: 1/219.21
+# free games hit rate: 1/219.21
 # RTP = sq*rtp(sym) = 1.0735*223.56 = 239.978859%
 # *regular reels calculations*
 # completed 100%, selected 1 lines, time spent 4.5011125s
 # reels lengths [38, 38, 37, 37, 37], total reshuffles 73142932
 # symbols: 61.913(lined) + 12.615(scatter) = 74.527436%
 # free spins 5004990, q = 0.068428, sq = 1/(1-q) = 1.073454
-# free games frequency: 1/219.21
+# free games hit rate: 1/219.21
 # RTP = 74.527(sym) + 0.068428*239.98(fg) = 90.948596%
 90.948596:
   - [9, 4, 8, 7, 13, 12, 7, 6, 8, 3, 11, 4, 7, 10, 6, 12, 3, 13, 9, 5, 12, 2, 11, 13, 5, 10, 1, 11, 3, 10, 6, 12, 9, 4, 8, 11, 5, 13] # 38
@@ -169,13 +169,13 @@ ctinteractive/luckydollar/reel
 # reels lengths [37, 38, 37, 38, 36], total reshuffles 71166096
 # symbols: 188.48(lined) + 38.268(scatter) = 226.748362%
 # free spins 4947885, q = 0.069526, sq = 1/(1-q) = 1.074721
-# free games frequency: 1/215.75
+# free games hit rate: 1/215.75
 # RTP = sq*rtp(sym) = 1.0747*226.75 = 243.691206%
 # *regular reels calculations*
 # reels lengths [37, 38, 37, 38, 36], total reshuffles 71166096
 # symbols: 62.835(lined) + 12.756(scatter) = 75.591218%
 # free spins 4947885, q = 0.069526, sq = 1/(1-q) = 1.074721
-# free games frequency: 1/215.75
+# free games hit rate: 1/215.75
 # RTP = 75.591(sym) + 0.069526*243.69(fg) = 92.534062%
 92.534062:
   - [6, 7, 12, 11, 1, 9, 8, 11, 13, 4, 12, 3, 7, 13, 8, 3, 10, 4, 7, 12, 6, 10, 2, 9, 5, 8, 6, 9, 5, 13, 4, 11, 5, 10, 12, 3, 13] # 37
@@ -188,13 +188,13 @@ ctinteractive/luckydollar/reel
 # reels lengths [37, 37, 37, 38, 37], total reshuffles 71218118
 # symbols: 191.88(lined) + 38.248(scatter) = 230.127935%
 # free spins 4948290, q = 0.069481, sq = 1/(1-q) = 1.074669
-# free games frequency: 1/215.89
+# free games hit rate: 1/215.89
 # RTP = sq*rtp(sym) = 1.0747*230.13 = 247.311316%
 # *regular reels calculations*
 # reels lengths [37, 37, 37, 38, 37], total reshuffles 71218118
 # symbols: 63.968(lined) + 12.749(scatter) = 76.717736%
 # free spins 4948290, q = 0.069481, sq = 1/(1-q) = 1.074669
-# free games frequency: 1/215.89
+# free games hit rate: 1/215.89
 # RTP = 76.718(sym) + 0.069481*247.31(fg) = 93.901118%
 93.901118:
   - [6, 7, 12, 11, 1, 9, 8, 11, 13, 4, 12, 3, 7, 13, 8, 3, 10, 4, 7, 12, 6, 10, 2, 9, 5, 8, 6, 9, 5, 13, 4, 11, 5, 10, 12, 3, 13] # 37
@@ -207,13 +207,13 @@ ctinteractive/luckydollar/reel
 # reels lengths [37, 37, 37, 37, 37], total reshuffles 69343957
 # symbols: 193.32(lined) + 38.655(scatter) = 231.976861%
 # free spins 4891995, q = 0.070547, sq = 1/(1-q) = 1.075901
-# free games frequency: 1/212.62
+# free games hit rate: 1/212.62
 # RTP = sq*rtp(sym) = 1.0759*231.98 = 249.584233%
 # *regular reels calculations*
 # reels lengths [37, 37, 37, 37, 37], total reshuffles 69343957
 # symbols: 64.449(lined) + 12.885(scatter) = 77.334273%
 # free spins 4891995, q = 0.070547, sq = 1/(1-q) = 1.075901
-# free games frequency: 1/212.62
+# free games hit rate: 1/212.62
 # RTP = 77.334(sym) + 0.070547*249.58(fg) = 94.941645%
 94.941645:
   - [6, 7, 12, 11, 1, 9, 8, 11, 13, 4, 12, 3, 7, 13, 8, 3, 10, 4, 7, 12, 6, 10, 2, 9, 5, 8, 6, 9, 5, 13, 4, 11, 5, 10, 12, 3, 13] # 37
@@ -226,13 +226,13 @@ ctinteractive/luckydollar/reel
 # reels lengths [37, 37, 37, 37, 36], total reshuffles 67469796
 # symbols: 193.77(lined) + 39.085(scatter) = 232.858383%
 # free spins 4835700, q = 0.071672, sq = 1/(1-q) = 1.077206
-# free games frequency: 1/209.29
+# free games hit rate: 1/209.29
 # RTP = sq*rtp(sym) = 1.0772*232.86 = 250.836343%
 # *regular reels calculations*
 # reels lengths [37, 37, 37, 37, 36], total reshuffles 67469796
 # symbols: 64.6(lined) + 13.028(scatter) = 77.628354%
 # free spins 4835700, q = 0.071672, sq = 1/(1-q) = 1.077206
-# free games frequency: 1/209.29
+# free games hit rate: 1/209.29
 # RTP = 77.628(sym) + 0.071672*250.84(fg) = 95.606314%
 95.606314:
   - [6, 7, 12, 11, 1, 9, 8, 11, 13, 4, 12, 3, 7, 13, 8, 3, 10, 4, 7, 12, 6, 10, 2, 9, 5, 8, 6, 9, 5, 13, 4, 11, 5, 10, 12, 3, 13] # 37
@@ -245,13 +245,13 @@ ctinteractive/luckydollar/reel
 # reels lengths [37, 37, 37, 36, 36], total reshuffles 65646288
 # symbols: 194.89(lined) + 39.518(scatter) = 234.410154%
 # free spins 4779810, q = 0.072812, sq = 1/(1-q) = 1.078529
-# free games frequency: 1/206.01
+# free games hit rate: 1/206.01
 # RTP = sq*rtp(sym) = 1.0785*234.41 = 252.818251%
 # *regular reels calculations*
 # reels lengths [37, 37, 37, 36, 36], total reshuffles 65646288
 # symbols: 64.973(lined) + 13.173(scatter) = 78.145858%
 # free spins 4779810, q = 0.072812, sq = 1/(1-q) = 1.078529
-# free games frequency: 1/206.01
+# free games hit rate: 1/206.01
 # RTP = 78.146(sym) + 0.072812*252.82(fg) = 96.553954%
 96.553954:
   - [6, 7, 12, 11, 1, 9, 8, 11, 13, 4, 12, 3, 7, 13, 8, 3, 10, 4, 7, 12, 6, 10, 2, 9, 5, 8, 6, 9, 5, 13, 4, 11, 5, 10, 12, 3, 13] # 37
@@ -264,13 +264,13 @@ ctinteractive/luckydollar/reel
 # reels lengths [37, 37, 36, 37, 36], total reshuffles 65646288
 # symbols: 195.88(lined) + 39.518(scatter) = 235.398634%
 # free spins 4779810, q = 0.072812, sq = 1/(1-q) = 1.078529
-# free games frequency: 1/206.01
+# free games hit rate: 1/206.01
 # RTP = sq*rtp(sym) = 1.0785*235.4 = 253.884355%
 # *regular reels calculations*
 # reels lengths [37, 37, 36, 37, 36], total reshuffles 65646288
 # symbols: 65.303(lined) + 13.173(scatter) = 78.475351%
 # free spins 4779810, q = 0.072812, sq = 1/(1-q) = 1.078529
-# free games frequency: 1/206.01
+# free games hit rate: 1/206.01
 # RTP = 78.475(sym) + 0.072812*253.88(fg) = 96.961072%
 96.961072:
   - [6, 7, 12, 11, 1, 9, 8, 11, 13, 4, 12, 3, 7, 13, 8, 3, 10, 4, 7, 12, 6, 10, 2, 9, 5, 8, 6, 9, 5, 13, 4, 11, 5, 10, 12, 3, 13] # 37
@@ -283,13 +283,13 @@ ctinteractive/luckydollar/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 197.21(lined) + 39.518(scatter) = 236.729585%
 # free spins 4779810, q = 0.072812, sq = 1/(1-q) = 1.078529
-# free games frequency: 1/206.01
+# free games hit rate: 1/206.01
 # RTP = sq*rtp(sym) = 1.0785*236.73 = 255.319825%
 # *regular reels calculations*
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 65.746(lined) + 13.173(scatter) = 78.919001%
 # free spins 4779810, q = 0.072812, sq = 1/(1-q) = 1.078529
-# free games frequency: 1/206.01
+# free games hit rate: 1/206.01
 # RTP = 78.919(sym) + 0.072812*255.32(fg) = 97.509242%
 97.509242:
   - [7, 8, 5, 10, 13, 7, 6, 12, 4, 9, 11, 4, 9, 11, 5, 7, 6, 8, 3, 10, 2, 8, 12, 6, 13, 11, 3, 13, 1, 12, 4, 9, 3, 10, 13, 5] # 36
@@ -302,13 +302,13 @@ ctinteractive/luckydollar/reel
 # reels lengths [36, 37, 37, 36, 36], total reshuffles 63872064
 # symbols: 198.51(lined) + 39.954(scatter) = 238.460641%
 # free spins 4724325, q = 0.073965, sq = 1/(1-q) = 1.079873
-# free games frequency: 1/202.8
+# free games hit rate: 1/202.8
 # RTP = sq*rtp(sym) = 1.0799*238.46 = 257.507279%
 # *regular reels calculations*
 # reels lengths [36, 37, 37, 36, 36], total reshuffles 63872064
 # symbols: 66.178(lined) + 13.318(scatter) = 79.496274%
 # free spins 4724325, q = 0.073965, sq = 1/(1-q) = 1.079873
-# free games frequency: 1/202.8
+# free games hit rate: 1/202.8
 # RTP = 79.496(sym) + 0.073965*257.51(fg) = 98.542912%
 98.542912:
   - [7, 8, 5, 10, 13, 7, 6, 12, 4, 9, 11, 4, 9, 11, 5, 7, 6, 8, 3, 10, 2, 8, 12, 6, 13, 11, 3, 13, 1, 12, 4, 9, 3, 10, 13, 5] # 36
@@ -321,13 +321,13 @@ ctinteractive/luckydollar/reel
 # reels lengths [36, 37, 36, 37, 36], total reshuffles 63872064
 # symbols: 199.69(lined) + 39.954(scatter) = 239.638902%
 # free spins 4724325, q = 0.073965, sq = 1/(1-q) = 1.079873
-# free games frequency: 1/202.8
+# free games hit rate: 1/202.8
 # RTP = sq*rtp(sym) = 1.0799*239.64 = 258.779652%
 # *regular reels calculations*
 # reels lengths [36, 37, 36, 37, 36], total reshuffles 63872064
 # symbols: 66.571(lined) + 13.318(scatter) = 79.889028%
 # free spins 4724325, q = 0.073965, sq = 1/(1-q) = 1.079873
-# free games frequency: 1/202.8
+# free games hit rate: 1/202.8
 # RTP = 79.889(sym) + 0.073965*258.78(fg) = 99.029777%
 99.029777:
   - [7, 8, 5, 10, 13, 7, 6, 12, 4, 9, 11, 4, 9, 11, 5, 7, 6, 8, 3, 10, 2, 8, 12, 6, 13, 11, 3, 13, 1, 12, 4, 9, 3, 10, 13, 5] # 36
@@ -340,13 +340,13 @@ ctinteractive/luckydollar/reel
 # reels lengths [36, 36, 36, 38, 36], total reshuffles 63825408
 # symbols: 202.35(lined) + 39.974(scatter) = 242.318987%
 # free spins 4723920, q = 0.074013, sq = 1/(1-q) = 1.079929
-# free games frequency: 1/202.67
+# free games hit rate: 1/202.67
 # RTP = sq*rtp(sym) = 1.0799*242.32 = 261.687289%
 # *regular reels calculations*
 # reels lengths [36, 36, 36, 38, 36], total reshuffles 63825408
 # symbols: 67.458(lined) + 13.325(scatter) = 80.782396%
 # free spins 4723920, q = 0.074013, sq = 1/(1-q) = 1.079929
-# free games frequency: 1/202.67
+# free games hit rate: 1/202.67
 # RTP = 80.782(sym) + 0.074013*261.69(fg) = 100.150699%
 100.150699:
   - [7, 8, 5, 10, 13, 7, 6, 12, 4, 9, 11, 4, 9, 11, 5, 7, 6, 8, 3, 10, 2, 8, 12, 6, 13, 11, 3, 13, 1, 12, 4, 9, 3, 10, 13, 5] # 36
@@ -360,14 +360,14 @@ ctinteractive/luckydollar/reel
 # reels lengths [36, 36, 36, 36, 37], total reshuffles 62145792
 # symbols: 204.77(lined) + 40.393(scatter) = 245.162900%
 # free spins 4669245, q = 0.075134, sq = 1/(1-q) = 1.081237
-# free games frequency: 1/199.64
+# free games hit rate: 1/199.64
 # RTP = sq*rtp(sym) = 1.0812*245.16 = 265.079296%
 # *regular reels calculations*
 # completed 100%, selected 1 lines, time spent 4.0936018s
 # reels lengths [36, 36, 36, 36, 37], total reshuffles 62145792
 # symbols: 68.266(lined) + 13.464(scatter) = 81.730621%
 # free spins 4669245, q = 0.075134, sq = 1/(1-q) = 1.081237
-# free games frequency: 1/199.64
+# free games hit rate: 1/199.64
 # RTP = 81.731(sym) + 0.075134*265.08(fg) = 101.647017%
 101.647017:
   - [7, 8, 5, 10, 13, 7, 6, 12, 4, 9, 11, 4, 9, 11, 5, 7, 6, 8, 3, 10, 2, 8, 12, 6, 13, 11, 3, 13, 1, 12, 4, 9, 3, 10, 13, 5] # 36
@@ -380,13 +380,13 @@ ctinteractive/luckydollar/reel
 # reels lengths [36, 36, 36, 36, 36], total reshuffles 60466176
 # symbols: 205.45(lined) + 40.835(scatter) = 246.287197%
 # free spins 4614570, q = 0.076317, sq = 1/(1-q) = 1.082622
-# free games frequency: 1/196.55
+# free games hit rate: 1/196.55
 # RTP = sq*rtp(sym) = 1.0826*246.29 = 266.635932%
 # *regular reels calculations*
 # reels lengths [36, 36, 36, 36, 36], total reshuffles 60466176
 # symbols: 68.494(lined) + 13.612(scatter) = 82.105655%
 # free spins 4614570, q = 0.076317, sq = 1/(1-q) = 1.082622
-# free games frequency: 1/196.55
+# free games hit rate: 1/196.55
 # RTP = 82.106(sym) + 0.076317*266.64(fg) = 102.454390%
 102.454390:
   - [7, 8, 5, 10, 13, 7, 6, 12, 4, 9, 11, 4, 9, 11, 5, 7, 6, 8, 3, 10, 2, 8, 12, 6, 13, 11, 3, 13, 1, 12, 4, 9, 3, 10, 13, 5] # 36
@@ -399,13 +399,13 @@ ctinteractive/luckydollar/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 209.69(lined) + 41.773(scatter) = 251.467351%
 # free spins 4505625, q = 0.078834, sq = 1/(1-q) = 1.085580
-# free games frequency: 1/190.27
+# free games hit rate: 1/190.27
 # RTP = sq*rtp(sym) = 1.0856*251.47 = 272.987981%
 # *regular reels calculations*
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 69.909(lined) + 13.924(scatter) = 83.832948%
 # free spins 4505625, q = 0.078834, sq = 1/(1-q) = 1.085580
-# free games frequency: 1/190.27
+# free games hit rate: 1/190.27
 # RTP = 83.833(sym) + 0.078834*272.99(fg) = 105.353578%
 105.353578:
   - [7, 3, 8, 6, 9, 13, 4, 7, 3, 9, 10, 3, 7, 4, 11, 12, 2, 8, 5, 11, 1, 10, 8, 6, 13, 9, 6, 11, 5, 12, 13, 4, 10, 12, 5] # 35
@@ -418,13 +418,13 @@ ctinteractive/luckydollar/reel
 # reels lengths [35, 35, 35, 35, 35], total reshuffles 52521875
 # symbols: 218.7(lined) + 43.206(scatter) = 261.910099%
 # free spins 4345245, q = 0.082732, sq = 1/(1-q) = 1.090194
-# free games frequency: 1/181.31
+# free games hit rate: 1/181.31
 # RTP = sq*rtp(sym) = 1.0902*261.91 = 285.532830%
 # *regular reels calculations*
 # reels lengths [35, 35, 35, 35, 35], total reshuffles 52521875
 # symbols: 72.913(lined) + 14.402(scatter) = 87.314790%
 # free spins 4345245, q = 0.082732, sq = 1/(1-q) = 1.090194
-# free games frequency: 1/181.31
+# free games hit rate: 1/181.31
 # RTP = 87.315(sym) + 0.082732*285.53(fg) = 110.937521%
 110.937521:
   - [7, 3, 8, 6, 9, 13, 4, 7, 3, 9, 10, 3, 7, 4, 11, 12, 2, 8, 5, 11, 1, 10, 8, 6, 13, 9, 6, 11, 5, 12, 13, 4, 10, 12, 5] # 35

@@ -29,10 +29,10 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var rtpls6 = Els * 6 * qls6 * 100
 		var rtp = rtpsym + rtpbb + rtpls1 + rtpls3 + rtpls6
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "bananas bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(bbid), rtpbb)
-		fmt.Fprintf(w, "lucky spin1 bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(lsb1), rtpls1)
-		fmt.Fprintf(w, "lucky spin3 bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(lsb3), rtpls3)
-		fmt.Fprintf(w, "lucky spin6 bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(lsb6), rtpls6)
+		fmt.Fprintf(w, "bananas bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(bbid), rtpbb)
+		fmt.Fprintf(w, "lucky spin1 bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(lsb1), rtpls1)
+		fmt.Fprintf(w, "lucky spin3 bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(lsb3), rtpls3)
+		fmt.Fprintf(w, "lucky spin6 bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(lsb6), rtpls6)
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(bb) + %.5g(ls1) + %.5g(ls3) + %.5g(ls6) = %.6f%%\n", rtpsym, rtpbb, rtpls1, rtpls3, rtpls6, rtp)
 		return rtp
 	}

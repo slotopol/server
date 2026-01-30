@@ -46,13 +46,13 @@ agt/merrychristmas/reel
 # reels lengths [53, 52, 53], total reshuffles 146068
 # symbols: 180.68(lined) + 3.3272(scatter) = 184.006764%
 # free spins 9720, q = 0.066544, sq = 1/(1-q) = 1.071288
-# free games frequency: 1/300.55
+# free games hit rate: 1/300.55
 # RTP = sq*rtp(sym) = 1.0713*184.01 = 197.124270%
 # *regular reels calculations*
 # reels lengths [53, 52, 53], total reshuffles 146068
 # symbols: 70.707(lined) + 3.3272(scatter) = 74.034012%
 # free spins 9720, q = 0.066544, sq = 1/(1-q) = 1.071288
-# free games frequency: 1/300.55
+# free games hit rate: 1/300.55
 # RTP = 74.034(sym) + 0.066544*197.12(fg) = 87.151518%
 87.151518:
   - [3, 3, 3, 3, 2, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 2, 5, 5, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 2, 1, 1, 1, 6, 6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4, 4, 7, 7]
@@ -63,13 +63,13 @@ agt/merrychristmas/reel
 # reels lengths [53, 52, 53], total reshuffles 146068
 # symbols: 182.69(lined) + 3.3272(scatter) = 186.012679%
 # free spins 9720, q = 0.066544, sq = 1/(1-q) = 1.071288
-# free games frequency: 1/300.55
+# free games hit rate: 1/300.55
 # RTP = sq*rtp(sym) = 1.0713*186.01 = 199.273183%
 # *regular reels calculations*
 # reels lengths [53, 52, 53], total reshuffles 146068
 # symbols: 71.46(lined) + 3.3272(scatter) = 74.787085%
 # free spins 9720, q = 0.066544, sq = 1/(1-q) = 1.071288
-# free games frequency: 1/300.55
+# free games hit rate: 1/300.55
 # RTP = 74.787(sym) + 0.066544*199.27(fg) = 88.047590%
 88.047590:
   - [6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 4, 4, 4, 4, 4, 4, 1, 1, 1, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 2, 6, 6, 6, 6, 6, 6, 6, 2, 5, 5, 5, 2, 7, 3, 3, 3, 3]
@@ -80,13 +80,13 @@ agt/merrychristmas/reel
 # reels lengths [53, 52, 53], total reshuffles 146068
 # symbols: 183.46(lined) + 3.3272(scatter) = 186.786291%
 # free spins 9720, q = 0.066544, sq = 1/(1-q) = 1.071288
-# free games frequency: 1/300.55
+# free games hit rate: 1/300.55
 # RTP = sq*rtp(sym) = 1.0713*186.79 = 200.101945%
 # *regular reels calculations*
 # reels lengths [53, 52, 53], total reshuffles 146068
 # symbols: 71.843(lined) + 3.3272(scatter) = 75.170469%
 # free spins 9720, q = 0.066544, sq = 1/(1-q) = 1.071288
-# free games frequency: 1/300.55
+# free games hit rate: 1/300.55
 # RTP = 75.17(sym) + 0.066544*200.1(fg) = 88.486122%
 88.486122:
   - [6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 4, 4, 4, 4, 4, 4, 1, 1, 1, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 2, 6, 6, 6, 6, 6, 6, 6, 2, 5, 5, 5, 2, 7, 3, 3, 3, 3]
@@ -97,13 +97,13 @@ agt/merrychristmas/reel
 # reels lengths [53, 52, 53], total reshuffles 146068
 # symbols: 183.89(lined) + 3.3272(scatter) = 187.217597%
 # free spins 9720, q = 0.066544, sq = 1/(1-q) = 1.071288
-# free games frequency: 1/300.55
+# free games hit rate: 1/300.55
 # RTP = sq*rtp(sym) = 1.0713*187.22 = 200.563998%
 # *regular reels calculations*
 # reels lengths [53, 52, 53], total reshuffles 146068
 # symbols: 72.059(lined) + 3.3272(scatter) = 75.386122%
 # free spins 9720, q = 0.066544, sq = 1/(1-q) = 1.071288
-# free games frequency: 1/300.55
+# free games hit rate: 1/300.55
 # RTP = 75.386(sym) + 0.066544*200.56(fg) = 88.732522%
 88.732522:
   - [6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 4, 4, 4, 4, 4, 4, 1, 1, 1, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 2, 6, 6, 6, 6, 6, 6, 6, 2, 5, 5, 5, 2, 7, 3, 3, 3, 3]
@@ -114,13 +114,13 @@ agt/merrychristmas/reel
 # reels lengths [52, 52, 52], total reshuffles 140608
 # symbols: 186.45(lined) + 3.4564(scatter) = 189.910958%
 # free spins 9720, q = 0.069128, sq = 1/(1-q) = 1.074262
-# free games frequency: 1/289.32
+# free games hit rate: 1/289.32
 # RTP = sq*rtp(sym) = 1.0743*189.91 = 204.014119%
 # *regular reels calculations*
 # reels lengths [52, 52, 52], total reshuffles 140608
 # symbols: 72.286(lined) + 3.4564(scatter) = 75.742490%
 # free spins 9720, q = 0.069128, sq = 1/(1-q) = 1.074262
-# free games frequency: 1/289.32
+# free games hit rate: 1/289.32
 # RTP = 75.742(sym) + 0.069128*204.01(fg) = 89.845651%
 89.845651:
   - [7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 2, 6, 6, 6, 6, 6, 6, 6, 3, 3, 3, 3, 1, 1, 1, 4, 4, 4, 4, 4, 4, 2, 7, 7, 7, 7, 7, 7, 7, 2, 6, 6, 6, 6, 6, 6, 5, 5]
@@ -131,13 +131,13 @@ agt/merrychristmas/reel
 # reels lengths [52, 51, 52], total reshuffles 137904
 # symbols: 188.25(lined) + 3.5242(scatter) = 191.778339%
 # free spins 9720, q = 0.070484, sq = 1/(1-q) = 1.075828
-# free games frequency: 1/283.75
+# free games hit rate: 1/283.75
 # RTP = sq*rtp(sym) = 1.0758*191.78 = 206.320602%
 # *regular reels calculations*
 # reels lengths [52, 51, 52], total reshuffles 137904
 # symbols: 72.478(lined) + 3.5242(scatter) = 76.002146%
 # free spins 9720, q = 0.070484, sq = 1/(1-q) = 1.075828
-# free games frequency: 1/283.75
+# free games hit rate: 1/283.75
 # RTP = 76.002(sym) + 0.070484*206.32(fg) = 90.544410%
 90.544410:
   - [7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 2, 6, 6, 6, 6, 6, 6, 6, 3, 3, 3, 3, 1, 1, 1, 4, 4, 4, 4, 4, 4, 2, 7, 7, 7, 7, 7, 7, 7, 2, 6, 6, 6, 6, 6, 6, 5, 5]
@@ -148,13 +148,13 @@ agt/merrychristmas/reel
 # reels lengths [52, 51, 52], total reshuffles 137904
 # symbols: 189.29(lined) + 3.5242(scatter) = 192.818918%
 # free spins 9720, q = 0.070484, sq = 1/(1-q) = 1.075828
-# free games frequency: 1/283.75
+# free games hit rate: 1/283.75
 # RTP = sq*rtp(sym) = 1.0758*192.82 = 207.440086%
 # *regular reels calculations*
 # reels lengths [52, 51, 52], total reshuffles 137904
 # symbols: 72.942(lined) + 3.5242(scatter) = 76.466237%
 # free spins 9720, q = 0.070484, sq = 1/(1-q) = 1.075828
-# free games frequency: 1/283.75
+# free games hit rate: 1/283.75
 # RTP = 76.466(sym) + 0.070484*207.44(fg) = 91.087406%
 91.087406:
   - [7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 2, 6, 6, 6, 6, 6, 6, 6, 3, 3, 3, 3, 1, 1, 1, 4, 4, 4, 4, 4, 4, 2, 7, 7, 7, 7, 7, 7, 7, 2, 6, 6, 6, 6, 6, 6, 5, 5]
@@ -165,13 +165,13 @@ agt/merrychristmas/reel
 # reels lengths [52, 51, 52], total reshuffles 137904
 # symbols: 190.04(lined) + 3.5242(scatter) = 193.565814%
 # free spins 9720, q = 0.070484, sq = 1/(1-q) = 1.075828
-# free games frequency: 1/283.75
+# free games hit rate: 1/283.75
 # RTP = sq*rtp(sym) = 1.0758*193.57 = 208.243619%
 # *regular reels calculations*
 # reels lengths [52, 51, 52], total reshuffles 137904
 # symbols: 73.297(lined) + 3.5242(scatter) = 76.821557%
 # free spins 9720, q = 0.070484, sq = 1/(1-q) = 1.075828
-# free games frequency: 1/283.75
+# free games hit rate: 1/283.75
 # RTP = 76.822(sym) + 0.070484*208.24(fg) = 91.499362%
 91.499362:
   - [7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 2, 1, 1, 1, 2, 6, 6, 6, 6, 6, 6, 6, 2, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3]
@@ -182,13 +182,13 @@ agt/merrychristmas/reel
 # reels lengths [52, 51, 52], total reshuffles 137904
 # symbols: 190.86(lined) + 3.5242(scatter) = 194.385225%
 # free spins 9720, q = 0.070484, sq = 1/(1-q) = 1.075828
-# free games frequency: 1/283.75
+# free games hit rate: 1/283.75
 # RTP = sq*rtp(sym) = 1.0758*194.39 = 209.125164%
 # *regular reels calculations*
 # reels lengths [52, 51, 52], total reshuffles 137904
 # symbols: 73.703(lined) + 3.5242(scatter) = 77.227637%
 # free spins 9720, q = 0.070484, sq = 1/(1-q) = 1.075828
-# free games frequency: 1/283.75
+# free games hit rate: 1/283.75
 # RTP = 77.228(sym) + 0.070484*209.13(fg) = 91.967576%
 91.967576:
   - [7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 2, 1, 1, 1, 2, 6, 6, 6, 6, 6, 6, 6, 2, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3]
@@ -199,13 +199,13 @@ agt/merrychristmas/reel
 # reels lengths [52, 51, 52], total reshuffles 137904
 # symbols: 191.44(lined) + 3.5242(scatter) = 194.968964%
 # free spins 9720, q = 0.070484, sq = 1/(1-q) = 1.075828
-# free games frequency: 1/283.75
+# free games hit rate: 1/283.75
 # RTP = sq*rtp(sym) = 1.0758*194.97 = 209.753167%
 # *regular reels calculations*
 # reels lengths [52, 51, 52], total reshuffles 137904
 # symbols: 74.037(lined) + 3.5242(scatter) = 77.561202%
 # free spins 9720, q = 0.070484, sq = 1/(1-q) = 1.075828
-# free games frequency: 1/283.75
+# free games hit rate: 1/283.75
 # RTP = 77.561(sym) + 0.070484*209.75(fg) = 92.345405%
 92.345405:
   - [5, 5, 5, 2, 7, 7, 7, 7, 7, 7, 7, 2, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 1, 1, 1, 4, 4, 4, 4, 4, 4, 2, 7, 7, 7, 7, 7, 7, 7, 3, 3, 3, 3]
@@ -216,13 +216,13 @@ agt/merrychristmas/reel
 # reels lengths [51, 51, 51], total reshuffles 132651
 # symbols: 192.44(lined) + 3.6637(scatter) = 196.101047%
 # free spins 9720, q = 0.073275, sq = 1/(1-q) = 1.079069
-# free games frequency: 1/272.94
+# free games hit rate: 1/272.94
 # RTP = sq*rtp(sym) = 1.0791*196.1 = 211.606511%
 # *regular reels calculations*
 # reels lengths [51, 51, 51], total reshuffles 132651
 # symbols: 73.275(lined) + 3.6637(scatter) = 76.938734%
 # free spins 9720, q = 0.073275, sq = 1/(1-q) = 1.079069
-# free games frequency: 1/272.94
+# free games hit rate: 1/272.94
 # RTP = 76.939(sym) + 0.073275*211.61(fg) = 92.444198%
 92.444198:
   - [5, 5, 1, 1, 1, 3, 3, 3, 3, 2, 6, 6, 6, 6, 6, 2, 4, 4, 4, 4, 4, 4, 2, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7]
@@ -233,13 +233,13 @@ agt/merrychristmas/reel
 # reels lengths [51, 51, 51], total reshuffles 132651
 # symbols: 193.52(lined) + 3.6637(scatter) = 197.182833%
 # free spins 9720, q = 0.073275, sq = 1/(1-q) = 1.079069
-# free games frequency: 1/272.94
+# free games hit rate: 1/272.94
 # RTP = sq*rtp(sym) = 1.0791*197.18 = 212.773832%
 # *regular reels calculations*
 # reels lengths [51, 51, 51], total reshuffles 132651
 # symbols: 73.757(lined) + 3.6637(scatter) = 77.421203%
 # free spins 9720, q = 0.073275, sq = 1/(1-q) = 1.079069
-# free games frequency: 1/272.94
+# free games hit rate: 1/272.94
 # RTP = 77.421(sym) + 0.073275*212.77(fg) = 93.012202%
 93.012202:
   - [5, 5, 1, 1, 1, 3, 3, 3, 3, 2, 6, 6, 6, 6, 6, 2, 4, 4, 4, 4, 4, 4, 2, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7]
@@ -250,13 +250,13 @@ agt/merrychristmas/reel
 # reels lengths [51, 51, 51], total reshuffles 132651
 # symbols: 194.6(lined) + 3.6637(scatter) = 198.260850%
 # free spins 9720, q = 0.073275, sq = 1/(1-q) = 1.079069
-# free games frequency: 1/272.94
+# free games hit rate: 1/272.94
 # RTP = sq*rtp(sym) = 1.0791*198.26 = 213.937087%
 # *regular reels calculations*
 # reels lengths [51, 51, 51], total reshuffles 132651
 # symbols: 74.225(lined) + 3.6637(scatter) = 77.888595%
 # free spins 9720, q = 0.073275, sq = 1/(1-q) = 1.079069
-# free games frequency: 1/272.94
+# free games hit rate: 1/272.94
 # RTP = 77.889(sym) + 0.073275*213.94(fg) = 93.564832%
 93.564832:
   - [5, 5, 5, 2, 1, 1, 1, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4, 4, 7, 7, 7, 7, 7, 7, 7, 2, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 3, 3, 3, 3, 2]
@@ -267,13 +267,13 @@ agt/merrychristmas/reel
 # reels lengths [51, 51, 51], total reshuffles 132651
 # symbols: 195.33(lined) + 3.6637(scatter) = 198.992092%
 # free spins 9720, q = 0.073275, sq = 1/(1-q) = 1.079069
-# free games frequency: 1/272.94
+# free games hit rate: 1/272.94
 # RTP = sq*rtp(sym) = 1.0791*198.99 = 214.726147%
 # *regular reels calculations*
 # reels lengths [51, 51, 51], total reshuffles 132651
 # symbols: 74.673(lined) + 3.6637(scatter) = 78.337140%
 # free spins 9720, q = 0.073275, sq = 1/(1-q) = 1.079069
-# free games frequency: 1/272.94
+# free games hit rate: 1/272.94
 # RTP = 78.337(sym) + 0.073275*214.73(fg) = 94.071195%
 94.071195:
   - [5, 5, 5, 2, 1, 1, 1, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4, 4, 7, 7, 7, 7, 7, 7, 7, 2, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 3, 3, 3, 3, 2]
@@ -284,13 +284,13 @@ agt/merrychristmas/reel
 # reels lengths [51, 51, 51], total reshuffles 132651
 # symbols: 196.18(lined) + 3.6637(scatter) = 199.843951%
 # free spins 9720, q = 0.073275, sq = 1/(1-q) = 1.079069
-# free games frequency: 1/272.94
+# free games hit rate: 1/272.94
 # RTP = sq*rtp(sym) = 1.0791*199.84 = 215.645362%
 # *regular reels calculations*
 # reels lengths [51, 51, 51], total reshuffles 132651
 # symbols: 75.096(lined) + 3.6637(scatter) = 78.759301%
 # free spins 9720, q = 0.073275, sq = 1/(1-q) = 1.079069
-# free games frequency: 1/272.94
+# free games hit rate: 1/272.94
 # RTP = 78.759(sym) + 0.073275*215.65(fg) = 94.560711%
 94.560711:
   - [5, 5, 5, 2, 1, 1, 1, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4, 4, 7, 7, 7, 7, 7, 7, 7, 2, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 3, 3, 3, 3, 2]
@@ -301,13 +301,13 @@ agt/merrychristmas/reel
 # reels lengths [51, 50, 51], total reshuffles 130050
 # symbols: 197.5(lined) + 3.737(scatter) = 201.241830%
 # free spins 9720, q = 0.07474, sq = 1/(1-q) = 1.080778
-# free games frequency: 1/267.59
+# free games hit rate: 1/267.59
 # RTP = sq*rtp(sym) = 1.0808*201.24 = 217.497715%
 # *regular reels calculations*
 # reels lengths [51, 50, 51], total reshuffles 130050
 # symbols: 75.06(lined) + 3.737(scatter) = 78.796617%
 # free spins 9720, q = 0.07474, sq = 1/(1-q) = 1.080778
-# free games frequency: 1/267.59
+# free games hit rate: 1/267.59
 # RTP = 78.797(sym) + 0.07474*217.5(fg) = 95.052501%
 95.052501:
   - [5, 5, 5, 2, 1, 1, 1, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4, 4, 7, 7, 7, 7, 7, 7, 7, 2, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 3, 3, 3, 3, 2]
@@ -318,13 +318,13 @@ agt/merrychristmas/reel
 # reels lengths [51, 51, 51], total reshuffles 132651
 # symbols: 197.76(lined) + 3.6637(scatter) = 201.427053%
 # free spins 9720, q = 0.073275, sq = 1/(1-q) = 1.079069
-# free games frequency: 1/272.94
+# free games hit rate: 1/272.94
 # RTP = sq*rtp(sym) = 1.0791*201.43 = 217.353637%
 # *regular reels calculations*
 # reels lengths [51, 51, 51], total reshuffles 132651
 # symbols: 75.966(lined) + 3.6637(scatter) = 79.630007%
 # free spins 9720, q = 0.073275, sq = 1/(1-q) = 1.079069
-# free games frequency: 1/272.94
+# free games hit rate: 1/272.94
 # RTP = 79.63(sym) + 0.073275*217.35(fg) = 95.556591%
 95.556591:
   - [5, 5, 5, 2, 1, 1, 1, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4, 4, 7, 7, 7, 7, 7, 7, 7, 2, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 3, 3, 3, 3, 2]
@@ -335,13 +335,13 @@ agt/merrychristmas/reel
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 199.91(lined) + 3.888(scatter) = 203.796000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = sq*rtp(sym) = 1.0843*203.8 = 220.979355%
 # *regular reels calculations*
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 74.88(lined) + 3.888(scatter) = 78.768000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = 78.768(sym) + 0.07776*220.98(fg) = 95.951355%
 95.951355:
   - [5, 5, 7, 7, 7, 7, 7, 7, 7, 4, 4, 4, 4, 4, 4, 2, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 3, 3, 3, 3, 2, 7, 6, 6, 6, 6, 6, 6, 6, 1, 1, 1, 2]
@@ -352,13 +352,13 @@ agt/merrychristmas/reel
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 200.68(lined) + 3.888(scatter) = 204.572000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = sq*rtp(sym) = 1.0843*204.57 = 221.820784%
 # *regular reels calculations*
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 75.356(lined) + 3.888(scatter) = 79.244000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = 79.244(sym) + 0.07776*221.82(fg) = 96.492784%
 96.492784:
   - [7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 2, 4, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 5, 5, 2, 5, 5, 5, 5, 5, 5, 5, 2, 1, 1, 1]
@@ -369,13 +369,13 @@ agt/merrychristmas/reel
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 201.46(lined) + 3.888(scatter) = 205.348000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = sq*rtp(sym) = 1.0843*205.35 = 222.662214%
 # *regular reels calculations*
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 75.832(lined) + 3.888(scatter) = 79.720000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = 79.72(sym) + 0.07776*222.66(fg) = 97.034214%
 97.034214:
   - [7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 2, 4, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 5, 5, 2, 5, 5, 5, 5, 5, 5, 5, 2, 1, 1, 1]
@@ -386,13 +386,13 @@ agt/merrychristmas/reel
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 202.24(lined) + 3.888(scatter) = 206.124000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = sq*rtp(sym) = 1.0843*206.12 = 223.503643%
 # *regular reels calculations*
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 76.308(lined) + 3.888(scatter) = 80.196000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = 80.196(sym) + 0.07776*223.5(fg) = 97.575643%
 97.575643:
   - [7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 2, 4, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 5, 5, 2, 5, 5, 5, 5, 5, 5, 5, 2, 1, 1, 1]
@@ -403,13 +403,13 @@ agt/merrychristmas/reel
 # reels lengths [50, 51, 50], total reshuffles 127500
 # symbols: 202.8(lined) + 3.8118(scatter) = 206.611765%
 # free spins 9720, q = 0.076235, sq = 1/(1-q) = 1.082527
-# free games frequency: 1/262.35
+# free games hit rate: 1/262.35
 # RTP = sq*rtp(sym) = 1.0825*206.61 = 223.662761%
 # *regular reels calculations*
 # reels lengths [50, 51, 50], total reshuffles 127500
 # symbols: 77.224(lined) + 3.8118(scatter) = 81.035294%
 # free spins 9720, q = 0.076235, sq = 1/(1-q) = 1.082527
-# free games frequency: 1/262.35
+# free games hit rate: 1/262.35
 # RTP = 81.035(sym) + 0.076235*223.66(fg) = 98.086290%
 98.086290:
   - [1, 1, 1, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 4, 4, 4, 4, 4, 4, 2, 7, 7, 7, 7, 7, 2, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 2, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5]
@@ -420,13 +420,13 @@ agt/merrychristmas/reel
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 204.02(lined) + 3.888(scatter) = 207.908000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = sq*rtp(sym) = 1.0843*207.91 = 225.438064%
 # *regular reels calculations*
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 77.072(lined) + 3.888(scatter) = 80.960000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = 80.96(sym) + 0.07776*225.44(fg) = 98.490064%
 98.490064:
   - [7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 2, 4, 4, 4, 4, 4, 4, 6, 6, 6, 6, 6, 6, 6, 5, 5, 2, 5, 5, 5, 5, 5, 5, 5, 2, 1, 1, 1]
@@ -437,13 +437,13 @@ agt/merrychristmas/reel
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 204.46(lined) + 3.888(scatter) = 208.348000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = sq*rtp(sym) = 1.0843*208.35 = 225.915163%
 # *regular reels calculations*
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 77.284(lined) + 3.888(scatter) = 81.172000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = 81.172(sym) + 0.07776*225.92(fg) = 98.739163%
 98.739163:
   - [7, 7, 7, 7, 7, 7, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 2, 6, 6, 6, 6, 6, 6, 6, 2, 6, 6, 6, 6, 2, 5, 5, 5, 5, 5, 5, 5, 1, 1, 1]
@@ -454,13 +454,13 @@ agt/merrychristmas/reel
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 205(lined) + 3.888(scatter) = 208.892000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = sq*rtp(sym) = 1.0843*208.89 = 226.505031%
 # *regular reels calculations*
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 77.576(lined) + 3.888(scatter) = 81.464000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = 81.464(sym) + 0.07776*226.51(fg) = 99.077031%
 99.077031:
   - [7, 7, 7, 7, 7, 7, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 2, 6, 6, 6, 6, 6, 6, 6, 2, 6, 6, 6, 6, 2, 5, 5, 5, 5, 5, 5, 5, 1, 1, 1]
@@ -471,13 +471,13 @@ agt/merrychristmas/reel
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 205.6(lined) + 3.888(scatter) = 209.484000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = sq*rtp(sym) = 1.0843*209.48 = 227.146947%
 # *regular reels calculations*
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 77.916(lined) + 3.888(scatter) = 81.804000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = 81.804(sym) + 0.07776*227.15(fg) = 99.466947%
 99.466947:
   - [7, 7, 7, 7, 7, 7, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 2, 6, 6, 6, 6, 6, 6, 6, 2, 6, 6, 6, 6, 2, 5, 5, 5, 5, 5, 5, 5, 1, 1, 1]
@@ -488,13 +488,13 @@ agt/merrychristmas/reel
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 205.96(lined) + 3.888(scatter) = 209.844000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = sq*rtp(sym) = 1.0843*209.84 = 227.537300%
 # *regular reels calculations*
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 78.192(lined) + 3.888(scatter) = 82.080000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = 82.08(sym) + 0.07776*227.54(fg) = 99.773300%
 99.773300:
   - [1, 1, 1, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 4, 4, 4, 4, 4, 4, 2, 7, 7, 7, 7, 7, 2, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 2, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5]
@@ -505,13 +505,13 @@ agt/merrychristmas/reel
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 206.14(lined) + 3.888(scatter) = 210.028000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = sq*rtp(sym) = 1.0843*210.03 = 227.736815%
 # *regular reels calculations*
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 78.208(lined) + 3.888(scatter) = 82.096000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = 82.096(sym) + 0.07776*227.74(fg) = 99.804815%
 99.804815:
   - [7, 7, 7, 7, 7, 7, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 2, 6, 6, 6, 6, 6, 6, 6, 2, 6, 6, 6, 6, 2, 5, 5, 5, 5, 5, 5, 5, 1, 1, 1]
@@ -522,13 +522,13 @@ agt/merrychristmas/reel
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 206.86(lined) + 3.888(scatter) = 210.748000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = sq*rtp(sym) = 1.0843*210.75 = 228.517523%
 # *regular reels calculations*
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 78.64(lined) + 3.888(scatter) = 82.528000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = 82.528(sym) + 0.07776*228.52(fg) = 100.297523%
 100.297523:
   - [7, 7, 7, 7, 7, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 2, 6, 6, 6, 6, 6, 1, 1, 1, 2, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6]
@@ -539,13 +539,13 @@ agt/merrychristmas/reel
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 207.76(lined) + 3.888(scatter) = 211.648000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = sq*rtp(sym) = 1.0843*211.65 = 229.493407%
 # *regular reels calculations*
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 79.216(lined) + 3.888(scatter) = 83.104000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = 83.104(sym) + 0.07776*229.49(fg) = 100.949407%
 100.949407:
   - [1, 1, 1, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 4, 4, 4, 4, 4, 4, 2, 7, 7, 7, 7, 7, 2, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 2, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5]
@@ -556,13 +556,13 @@ agt/merrychristmas/reel
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 208.66(lined) + 3.888(scatter) = 212.552000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = sq*rtp(sym) = 1.0843*212.55 = 230.473629%
 # *regular reels calculations*
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 79.664(lined) + 3.888(scatter) = 83.552000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = 83.552(sym) + 0.07776*230.47(fg) = 101.473629%
 101.473629:
   - [1, 1, 1, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 4, 4, 4, 4, 4, 4, 2, 7, 7, 7, 7, 7, 2, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 2, 3, 3, 3, 3, 5, 5, 5, 5, 5, 5, 5]
@@ -573,13 +573,13 @@ agt/merrychristmas/reel
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 210.33(lined) + 3.888(scatter) = 214.216000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = sq*rtp(sym) = 1.0843*214.22 = 232.277932%
 # *regular reels calculations*
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 80.704(lined) + 3.888(scatter) = 84.592000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = 84.592(sym) + 0.07776*232.28(fg) = 102.653932%
 102.653932:
   - [6, 6, 6, 6, 2, 7, 7, 7, 7, 7, 7, 7, 2, 1, 1, 1, 3, 3, 3, 3, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 2]
@@ -590,13 +590,13 @@ agt/merrychristmas/reel
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 217.96(lined) + 3.888(scatter) = 221.848000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = sq*rtp(sym) = 1.0843*221.85 = 240.553435%
 # *regular reels calculations*
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 83.248(lined) + 3.888(scatter) = 87.136000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = 87.136(sym) + 0.07776*240.55(fg) = 105.841435%
 105.841435:
   - [3, 3, 3, 3, 7, 7, 7, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 2, 6, 6, 6, 6, 5, 5, 5, 2, 4, 4, 4, 4, 4, 4, 1, 1, 1, 4, 7, 7, 7, 7, 7, 2]
@@ -607,13 +607,13 @@ agt/merrychristmas/reel
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 223.26(lined) + 3.888(scatter) = 227.144000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = sq*rtp(sym) = 1.0843*227.14 = 246.295975%
 # *regular reels calculations*
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 85.568(lined) + 3.888(scatter) = 89.456000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = 89.456(sym) + 0.07776*246.3(fg) = 108.607975%
 108.607975:
   - [6, 6, 6, 6, 6, 6, 6, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 2, 1, 1, 1, 4, 2, 7, 7, 7, 7, 7, 5, 5, 5, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 2]
@@ -624,13 +624,13 @@ agt/merrychristmas/reel
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 228.7(lined) + 3.888(scatter) = 232.588000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = sq*rtp(sym) = 1.0843*232.59 = 252.198994%
 # *regular reels calculations*
 # reels lengths [50, 50, 50], total reshuffles 125000
 # symbols: 88.792(lined) + 3.888(scatter) = 92.680000%
 # free spins 9720, q = 0.07776, sq = 1/(1-q) = 1.084316
-# free games frequency: 1/257.2
+# free games hit rate: 1/257.2
 # RTP = 92.68(sym) + 0.07776*252.2(fg) = 112.290994%
 112.290994:
   - [6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 3, 3, 3, 3, 2, 6, 6, 6, 6, 2, 4, 4, 4, 4, 4, 4, 2, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 7, 7, 7, 7, 7, 7, 7, 1, 1, 1, 4]

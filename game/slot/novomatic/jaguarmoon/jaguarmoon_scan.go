@@ -100,7 +100,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		fmt.Fprintf(w, "free spins %d, q3 = %.5g, q4 = %.5g, q5 = %.5g, q6 = %.5g\n",
 			s.FreeCount[2].Load()+s.FreeCount[3].Load()+s.FreeCount[4].Load()+s.FreeCount[5].Load(),
 			q3, q4, q5, q6)
-		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", s.FGF())
+		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(fg) = %.6f%%\n", rtpsym, rtpqfs, rtp)
 		return rtp
 	}

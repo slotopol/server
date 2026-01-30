@@ -39,7 +39,7 @@ agt/extraspiniii/reel
 # reels lengths [49, 100, 100, 100, 49], total reshuffles 2401000000
 # symbols: 62.411(lined) + 0(scatter) = 62.411180%
 # free spins 648270000, q = 0.27, sq = 1/(1-q) = 1.369863
-# free games frequency: 1/11.451
+# free games hit rate: 1/11.451
 # RTP = 62.411(sym) + 0.27*85.495(fg) = 85.494766%
 85.494766:
   - [9, 4, 6, 6, 6, 4, 9, 9, 9, 4, 5, 3, 9, 9, 9, 3, 5, 6, 6, 8, 8, 8, 3, 9, 9, 9, 7, 7, 7, 1, 7, 7, 8, 8, 8, 6, 6, 6, 5, 1, 5, 8, 8, 8, 4, 7, 7, 7, 8] # 49
@@ -51,7 +51,7 @@ agt/extraspiniii/reel
 # reels lengths [49, 99, 100, 99, 49], total reshuffles 2353220100
 # symbols: 62.665(lined) + 0(scatter) = 62.664868%
 # free spins 639648009, q = 0.27182, sq = 1/(1-q) = 1.373283
-# free games frequency: 1/11.377
+# free games hit rate: 1/11.377
 # RTP = 62.665(sym) + 0.27182*86.057(fg) = 86.056622%
 86.056622:
   - [9, 4, 6, 6, 6, 4, 9, 9, 9, 4, 5, 3, 9, 9, 9, 3, 5, 6, 6, 8, 8, 8, 3, 9, 9, 9, 7, 7, 7, 1, 7, 7, 8, 8, 8, 6, 6, 6, 5, 1, 5, 8, 8, 8, 4, 7, 7, 7, 8] # 49
@@ -63,7 +63,7 @@ agt/extraspiniii/reel
 # reels lengths [47, 98, 98, 98, 47], total reshuffles 2079093128
 # symbols: 63.826(lined) + 0(scatter) = 63.826388%
 # free spins 572811372, q = 0.27551, sq = 1/(1-q) = 1.380282
-# free games frequency: 1/11.229
+# free games hit rate: 1/11.229
 # RTP = 63.826(sym) + 0.27551*88.098(fg) = 88.098395%
 88.098395:
   - [4, 5, 8, 8, 8, 7, 7, 7, 8, 8, 8, 7, 7, 5, 4, 5, 4, 6, 6, 7, 7, 7, 3, 1, 8, 8, 8, 9, 9, 9, 5, 3, 9, 9, 9, 1, 3, 6, 6, 6, 4, 6, 6, 6, 9, 9, 9] # 47
@@ -75,7 +75,7 @@ agt/extraspiniii/reel
 # reels lengths [47, 98, 97, 98, 47], total reshuffles 2057877892
 # symbols: 64.06(lined) + 0(scatter) = 64.059726%
 # free spins 568914696, q = 0.27646, sq = 1/(1-q) = 1.382088
-# free games frequency: 1/11.192
+# free games hit rate: 1/11.192
 # RTP = 64.06(sym) + 0.27646*88.536(fg) = 88.536167%
 88.536167:
   - [4, 5, 8, 8, 8, 7, 7, 7, 8, 8, 8, 7, 7, 5, 4, 5, 4, 6, 6, 7, 7, 7, 3, 1, 8, 8, 8, 9, 9, 9, 5, 3, 9, 9, 9, 1, 3, 6, 6, 6, 4, 6, 6, 6, 9, 9, 9] # 47
@@ -87,7 +87,7 @@ agt/extraspiniii/reel
 # reels lengths [47, 97, 95, 97, 47], total reshuffles 1974525695
 # symbols: 64.883(lined) + 0(scatter) = 64.883161%
 # free spins 553467159, q = 0.2803, sq = 1/(1-q) = 1.389475
-# free games frequency: 1/11.043
+# free games hit rate: 1/11.043
 # RTP = 64.883(sym) + 0.2803*90.154(fg) = 90.153547%
 90.153547:
   - [4, 5, 8, 8, 8, 7, 7, 7, 8, 8, 8, 7, 7, 5, 4, 5, 4, 6, 6, 7, 7, 7, 3, 1, 8, 8, 8, 9, 9, 9, 5, 3, 9, 9, 9, 1, 3, 6, 6, 6, 4, 6, 6, 6, 9, 9, 9] # 47
@@ -99,7 +99,7 @@ agt/extraspiniii/reel
 # reels lengths [45, 96, 96, 96, 45], total reshuffles 1791590400
 # symbols: 65.524(lined) + 0(scatter) = 65.524411%
 # free spins 503884800, q = 0.28125, sq = 1/(1-q) = 1.391304
-# free games frequency: 1/11.007
+# free games hit rate: 1/11.007
 # RTP = 65.524(sym) + 0.28125*91.164(fg) = 91.164398%
 91.164398:
   - [6, 6, 6, 5, 7, 7, 7, 9, 9, 9, 6, 6, 6, 8, 8, 8, 6, 8, 8, 8, 5, 1, 4, 3, 4, 5, 3, 9, 9, 9, 4, 9, 9, 9, 8, 8, 8, 5, 1, 7, 4, 7, 7, 7, 3] # 45
@@ -111,7 +111,7 @@ agt/extraspiniii/reel
 # reels lengths [45, 96, 94, 96, 45], total reshuffles 1754265600
 # symbols: 66.028(lined) + 0(scatter) = 66.027599%
 # free spins 496886400, q = 0.28324, sq = 1/(1-q) = 1.395176
-# free games frequency: 1/10.932
+# free games hit rate: 1/10.932
 # RTP = 66.028(sym) + 0.28324*92.12(fg) = 92.120138%
 92.120138:
   - [4, 7, 7, 7, 1, 6, 6, 6, 5, 9, 9, 9, 5, 3, 6, 5, 3, 4, 5, 1, 8, 8, 8, 4, 8, 8, 8, 6, 6, 6, 9, 9, 9, 4, 3, 8, 8, 8, 7, 9, 9, 9, 7, 7, 7] # 45
@@ -123,7 +123,7 @@ agt/extraspiniii/reel
 # reels lengths [45, 94, 96, 94, 45], total reshuffles 1717718400
 # symbols: 66.16(lined) + 0(scatter) = 66.160194%
 # free spins 489960900, q = 0.28524, sq = 1/(1-q) = 1.399070
-# free games frequency: 1/10.858
+# free games hit rate: 1/10.858
 # RTP = 66.16(sym) + 0.28524*92.563(fg) = 92.562727%
 92.562727:
   - [4, 7, 7, 7, 1, 6, 6, 6, 5, 9, 9, 9, 5, 3, 6, 5, 3, 4, 5, 1, 8, 8, 8, 4, 8, 8, 8, 6, 6, 6, 9, 9, 9, 4, 3, 8, 8, 8, 7, 9, 9, 9, 7, 7, 7] # 45
@@ -135,7 +135,7 @@ agt/extraspiniii/reel
 # reels lengths [45, 94, 95, 94, 45], total reshuffles 1699825500
 # symbols: 66.433(lined) + 0(scatter) = 66.433275%
 # free spins 486534600, q = 0.28623, sq = 1/(1-q) = 1.401004
-# free games frequency: 1/10.822
+# free games hit rate: 1/10.822
 # RTP = 66.433(sym) + 0.28623*93.073(fg) = 93.073290%
 93.073290:
   - [4, 7, 7, 7, 1, 6, 6, 6, 5, 9, 9, 9, 5, 3, 6, 5, 3, 4, 5, 1, 8, 8, 8, 4, 8, 8, 8, 6, 6, 6, 9, 9, 9, 4, 3, 8, 8, 8, 7, 9, 9, 9, 7, 7, 7] # 45
@@ -147,7 +147,7 @@ agt/extraspiniii/reel
 # reels lengths [45, 94, 94, 94, 45], total reshuffles 1681932600
 # symbols: 66.712(lined) + 0(scatter) = 66.712167%
 # free spins 483108300, q = 0.28723, sq = 1/(1-q) = 1.402985
-# free games frequency: 1/10.785
+# free games hit rate: 1/10.785
 # RTP = 66.712(sym) + 0.28723*93.596(fg) = 93.596175%
 93.596175:
   - [4, 3, 4, 9, 9, 9, 7, 7, 7, 5, 7, 1, 7, 7, 7, 3, 5, 1, 9, 9, 9, 3, 8, 8, 8, 6, 6, 6, 4, 5, 8, 8, 8, 5, 4, 6, 6, 6, 9, 9, 9, 6, 8, 8, 8] # 45
@@ -159,7 +159,7 @@ agt/extraspiniii/reel
 # reels lengths [45, 94, 93, 94, 45], total reshuffles 1664039700
 # symbols: 66.997(lined) + 0(scatter) = 66.997057%
 # free spins 479682000, q = 0.28826, sq = 1/(1-q) = 1.405014
-# free games frequency: 1/10.748
+# free games hit rate: 1/10.748
 # RTP = 66.997(sym) + 0.28826*94.132(fg) = 94.131834%
 94.131834:
   - [4, 7, 7, 7, 1, 6, 6, 6, 5, 9, 9, 9, 5, 3, 6, 5, 3, 4, 5, 1, 8, 8, 8, 4, 8, 8, 8, 6, 6, 6, 9, 9, 9, 4, 3, 8, 8, 8, 7, 9, 9, 9, 7, 7, 7] # 45
@@ -171,7 +171,7 @@ agt/extraspiniii/reel
 # reels lengths [45, 94, 92, 94, 45], total reshuffles 1646146800
 # symbols: 67.288(lined) + 0(scatter) = 67.288140%
 # free spins 476255700, q = 0.28932, sq = 1/(1-q) = 1.407094
-# free games frequency: 1/10.71
+# free games hit rate: 1/10.71
 # RTP = 67.288(sym) + 0.28932*94.681(fg) = 94.680741%
 94.680741:
   - [5, 4, 8, 8, 8, 7, 7, 7, 6, 8, 8, 8, 9, 9, 9, 4, 1, 3, 4, 3, 5, 1, 7, 7, 7, 8, 8, 8, 6, 6, 6, 5, 9, 9, 9, 5, 9, 9, 9, 6, 6, 6, 7, 3, 4] # 45
@@ -183,7 +183,7 @@ agt/extraspiniii/reel
 # reels lengths [45, 93, 93, 93, 45], total reshuffles 1628822925
 # symbols: 67.392(lined) + 0(scatter) = 67.392325%
 # free spins 472884075, q = 0.29032, sq = 1/(1-q) = 1.409091
-# free games frequency: 1/10.674
+# free games hit rate: 1/10.674
 # RTP = 67.392(sym) + 0.29032*94.962(fg) = 94.961913%
 94.961913:
   - [4, 7, 7, 7, 1, 6, 6, 6, 5, 9, 9, 9, 5, 3, 6, 5, 3, 4, 5, 1, 8, 8, 8, 4, 8, 8, 8, 6, 6, 6, 9, 9, 9, 4, 3, 8, 8, 8, 7, 9, 9, 9, 7, 7, 7] # 45
@@ -195,7 +195,7 @@ agt/extraspiniii/reel
 # reels lengths [45, 92, 94, 92, 45], total reshuffles 1611122400
 # symbols: 67.452(lined) + 0(scatter) = 67.452359%
 # free spins 469476000, q = 0.2914, sq = 1/(1-q) = 1.411227
-# free games frequency: 1/10.636
+# free games hit rate: 1/10.636
 # RTP = 67.452(sym) + 0.2914*95.191(fg) = 95.190600%
 95.190600:
   - [5, 4, 8, 8, 8, 7, 7, 7, 6, 8, 8, 8, 9, 9, 9, 4, 1, 3, 4, 3, 5, 1, 7, 7, 7, 8, 8, 8, 6, 6, 6, 5, 9, 9, 9, 5, 9, 9, 9, 6, 6, 6, 7, 3, 4] # 45
@@ -207,7 +207,7 @@ agt/extraspiniii/reel
 # reels lengths [45, 93, 92, 93, 45], total reshuffles 1611308700
 # symbols: 67.681(lined) + 0(scatter) = 67.681283%
 # free spins 469494225, q = 0.29137, sq = 1/(1-q) = 1.411183
-# free games frequency: 1/10.637
+# free games hit rate: 1/10.637
 # RTP = 67.681(sym) + 0.29137*95.511(fg) = 95.510648%
 95.510648:
   - [4, 7, 7, 7, 1, 6, 6, 6, 5, 9, 9, 9, 5, 3, 6, 5, 3, 4, 5, 1, 8, 8, 8, 4, 8, 8, 8, 6, 6, 6, 9, 9, 9, 4, 3, 8, 8, 8, 7, 9, 9, 9, 7, 7, 7] # 45
@@ -219,7 +219,7 @@ agt/extraspiniii/reel
 # reels lengths [44, 93, 94, 93, 44], total reshuffles 1573979616
 # symbols: 68.024(lined) + 0(scatter) = 68.024488%
 # free spins 455341392, q = 0.28929, sq = 1/(1-q) = 1.407050
-# free games frequency: 1/10.711
+# free games hit rate: 1/10.711
 # RTP = 68.024(sym) + 0.28929*95.714(fg) = 95.713838%
 95.713838:
   - [8, 8, 8, 3, 8, 8, 1, 7, 7, 7, 1, 7, 9, 9, 9, 5, 9, 9, 9, 6, 6, 6, 4, 6, 5, 9, 9, 9, 4, 5, 4, 6, 6, 6, 8, 8, 8, 3, 7, 7, 7, 3, 4, 5] # 44
@@ -231,7 +231,7 @@ agt/extraspiniii/reel
 # reels lengths [43, 94, 94, 94, 43], total reshuffles 1535749816
 # symbols: 68.506(lined) + 0(scatter) = 68.506257%
 # free spins 441119628, q = 0.28723, sq = 1/(1-q) = 1.402985
-# free games frequency: 1/10.785
+# free games hit rate: 1/10.785
 # RTP = 68.506(sym) + 0.28723*96.113(fg) = 96.113256%
 96.113256:
   - [4, 5, 7, 7, 7, 5, 7, 7, 7, 3, 6, 9, 9, 9, 7, 6, 6, 6, 5, 9, 9, 9, 4, 6, 6, 6, 3, 8, 8, 1, 8, 8, 8, 3, 1, 4, 8, 8, 8, 4, 5, 9, 9] # 43
@@ -243,7 +243,7 @@ agt/extraspiniii/reel
 # reels lengths [43, 94, 92, 94, 43], total reshuffles 1503074288
 # symbols: 68.591(lined) + 0(scatter) = 68.590915%
 # free spins 434862612, q = 0.28932, sq = 1/(1-q) = 1.407094
-# free games frequency: 1/10.71
+# free games hit rate: 1/10.71
 # RTP = 68.591(sym) + 0.28932*96.514(fg) = 96.513867%
 96.513867:
   - [9, 9, 9, 1, 7, 7, 7, 5, 4, 5, 4, 6, 6, 6, 4, 9, 9, 9, 6, 6, 6, 1, 7, 7, 7, 3, 7, 3, 4, 8, 8, 8, 9, 9, 3, 5, 8, 8, 8, 5, 6, 8, 8] # 43
@@ -255,7 +255,7 @@ agt/extraspiniii/reel
 # reels lengths [43, 93, 94, 93, 43], total reshuffles 1503248094
 # symbols: 68.937(lined) + 0(scatter) = 68.936900%
 # free spins 434879253, q = 0.28929, sq = 1/(1-q) = 1.407050
-# free games frequency: 1/10.711
+# free games hit rate: 1/10.711
 # RTP = 68.937(sym) + 0.28929*96.998(fg) = 96.997647%
 96.997647:
   - [4, 5, 7, 7, 7, 5, 7, 7, 7, 3, 6, 9, 9, 9, 7, 6, 6, 6, 5, 9, 9, 9, 4, 6, 6, 6, 3, 8, 8, 1, 8, 8, 8, 3, 1, 4, 8, 8, 8, 4, 5, 9, 9] # 43
@@ -267,7 +267,7 @@ agt/extraspiniii/reel
 # reels lengths [43, 92, 92, 92, 43], total reshuffles 1439794112
 # symbols: 68.866(lined) + 0(scatter) = 68.866388%
 # free spins 422548272, q = 0.29348, sq = 1/(1-q) = 1.415385
-# free games frequency: 1/10.563
+# free games hit rate: 1/10.563
 # RTP = 68.866(sym) + 0.29348*97.472(fg) = 97.472426%
 97.472426:
   - [9, 9, 9, 1, 7, 7, 7, 5, 4, 5, 4, 6, 6, 6, 4, 9, 9, 9, 6, 6, 6, 1, 7, 7, 7, 3, 7, 3, 4, 8, 8, 8, 9, 9, 3, 5, 8, 8, 8, 5, 6, 8, 8] # 43
@@ -279,7 +279,7 @@ agt/extraspiniii/reel
 # reels lengths [43, 92, 91, 92, 43], total reshuffles 1424144176
 # symbols: 69.195(lined) + 0(scatter) = 69.194560%
 # free spins 419486328, q = 0.29455, sq = 1/(1-q) = 1.417541
-# free games frequency: 1/10.526
+# free games hit rate: 1/10.526
 # RTP = 69.195(sym) + 0.29455*98.086(fg) = 98.086159%
 98.086159:
   - [9, 9, 9, 1, 7, 7, 7, 5, 4, 5, 4, 6, 6, 6, 4, 9, 9, 9, 6, 6, 6, 1, 7, 7, 7, 3, 7, 3, 4, 8, 8, 8, 9, 9, 3, 5, 8, 8, 8, 5, 6, 8, 8] # 43
@@ -291,7 +291,7 @@ agt/extraspiniii/reel
 # reels lengths [43, 92, 93, 92, 43], total reshuffles 1455444048
 # symbols: 69.731(lined) + 0(scatter) = 69.731432%
 # free spins 425610216, q = 0.29243, sq = 1/(1-q) = 1.413280
-# free games frequency: 1/10.6
+# free games hit rate: 1/10.6
 # RTP = 69.731(sym) + 0.29243*98.55(fg) = 98.550072%
 98.550072:
   - [4, 5, 7, 7, 7, 5, 7, 7, 7, 3, 6, 9, 9, 9, 7, 6, 6, 6, 5, 9, 9, 9, 4, 6, 6, 6, 3, 8, 8, 1, 8, 8, 8, 3, 1, 4, 8, 8, 8, 4, 5, 9, 9] # 43
@@ -303,7 +303,7 @@ agt/extraspiniii/reel
 # reels lengths [43, 91, 91, 91, 43], total reshuffles 1393352779
 # symbols: 69.652(lined) + 0(scatter) = 69.652416%
 # free spins 413412363, q = 0.2967, sq = 1/(1-q) = 1.421875
-# free games frequency: 1/10.452
+# free games hit rate: 1/10.452
 # RTP = 69.652(sym) + 0.2967*99.037(fg) = 99.037030%
 99.037030:
   - [9, 9, 9, 1, 7, 7, 7, 5, 4, 5, 4, 6, 6, 6, 4, 9, 9, 9, 6, 6, 6, 1, 7, 7, 7, 3, 7, 3, 4, 8, 8, 8, 9, 9, 3, 5, 8, 8, 8, 5, 6, 8, 8] # 43
@@ -315,7 +315,7 @@ agt/extraspiniii/reel
 # reels lengths [43, 90, 91, 90, 43], total reshuffles 1362897900
 # symbols: 70.089(lined) + 0(scatter) = 70.088562%
 # free spins 407371680, q = 0.2989, sq = 1/(1-q) = 1.426332
-# free games frequency: 1/10.378
+# free games hit rate: 1/10.378
 # RTP = 70.089(sym) + 0.2989*99.97(fg) = 99.969579%
 99.969579:
   - [9, 9, 9, 1, 7, 7, 7, 5, 4, 5, 4, 6, 6, 6, 4, 9, 9, 9, 6, 6, 6, 1, 7, 7, 7, 3, 7, 3, 4, 8, 8, 8, 9, 9, 3, 5, 8, 8, 8, 5, 6, 8, 8] # 43
@@ -327,7 +327,7 @@ agt/extraspiniii/reel
 # reels lengths [43, 90, 88, 90, 43], total reshuffles 1317967200
 # symbols: 70.593(lined) + 0(scatter) = 70.592842%
 # free spins 398385540, q = 0.30227, sq = 1/(1-q) = 1.433225
-# free games frequency: 1/10.266
+# free games hit rate: 1/10.266
 # RTP = 70.593(sym) + 0.30227*101.18(fg) = 101.175408%
 101.175408:
   - [9, 9, 9, 1, 7, 7, 7, 5, 4, 5, 4, 6, 6, 6, 4, 9, 9, 9, 6, 6, 6, 1, 7, 7, 7, 3, 7, 3, 4, 8, 8, 8, 9, 9, 3, 5, 8, 8, 8, 5, 6, 8, 8] # 43
@@ -339,7 +339,7 @@ agt/extraspiniii/reel
 # reels lengths [43, 88, 88, 88, 43], total reshuffles 1260041728
 # symbols: 70.819(lined) + 0(scatter) = 70.819337%
 # free spins 386603712, q = 0.30682, sq = 1/(1-q) = 1.442623
-# free games frequency: 1/10.119
+# free games hit rate: 1/10.119
 # RTP = 70.819(sym) + 0.30682*102.17(fg) = 102.165601%
 102.165601:
   - [9, 9, 9, 1, 7, 7, 7, 5, 4, 5, 4, 6, 6, 6, 4, 9, 9, 9, 6, 6, 6, 1, 7, 7, 7, 3, 7, 3, 4, 8, 8, 8, 9, 9, 3, 5, 8, 8, 8, 5, 6, 8, 8] # 43
@@ -351,7 +351,7 @@ agt/extraspiniii/reel
 # reels lengths [43, 86, 86, 86, 43], total reshuffles 1176067544
 # symbols: 71.39(lined) + 0(scatter) = 71.390167%
 # free spins 369230508, q = 0.31395, sq = 1/(1-q) = 1.457627
-# free games frequency: 1/9.8968
+# free games hit rate: 1/9.8968
 # RTP = 71.39(sym) + 0.31395*104.06(fg) = 104.060243%
 104.060243:
   - [9, 9, 9, 1, 7, 7, 7, 5, 4, 5, 4, 6, 6, 6, 4, 9, 9, 9, 6, 6, 6, 1, 7, 7, 7, 3, 7, 3, 4, 8, 8, 8, 9, 9, 3, 5, 8, 8, 8, 5, 6, 8, 8] # 43
@@ -363,7 +363,7 @@ agt/extraspiniii/reel
 # reels lengths [41, 85, 85, 85, 41], total reshuffles 1032344125
 # symbols: 73.339(lined) + 0(scatter) = 73.338762%
 # free spins 327921075, q = 0.31765, sq = 1/(1-q) = 1.465517
-# free games frequency: 1/9.7858
+# free games hit rate: 1/9.7858
 # RTP = 73.339(sym) + 0.31765*107.48(fg) = 107.479220%
 107.479220:
   - [8, 8, 7, 7, 7, 8, 8, 8, 1, 4, 6, 6, 6, 8, 8, 8, 5, 3, 7, 7, 7, 3, 6, 6, 6, 5, 4, 9, 9, 9, 4, 5, 4, 1, 9, 9, 9, 3, 9, 9, 5] # 41
@@ -375,7 +375,7 @@ agt/extraspiniii/reel
 # reels lengths [41, 84, 83, 84, 41], total reshuffles 984474288
 # symbols: 74.614(lined) + 0(scatter) = 74.614149%
 # free spins 317709000, q = 0.32272, sq = 1/(1-q) = 1.476493
-# free games frequency: 1/9.6374
+# free games hit rate: 1/9.6374
 # RTP = 74.614(sym) + 0.32272*110.17(fg) = 110.167269%
 110.167269:
   - [8, 8, 7, 7, 7, 8, 8, 8, 1, 4, 6, 6, 6, 8, 8, 8, 5, 3, 7, 7, 7, 3, 6, 6, 6, 5, 4, 9, 9, 9, 4, 5, 4, 1, 9, 9, 9, 3, 9, 9, 5] # 41

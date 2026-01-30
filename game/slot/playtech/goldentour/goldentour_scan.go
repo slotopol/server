@@ -34,7 +34,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var qgolfbn = s.BonCountF(golfbon) / reshuf / float64(g.Sel)
 		var rtpgolfbn = Egolfbn * qgolfbn * 100
 		var rtp = rtpsym + rtpgolfbn
-		fmt.Fprintf(w, "golf bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(golfbon), rtpgolfbn)
+		fmt.Fprintf(w, "golf bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(golfbon), rtpgolfbn)
 		fmt.Fprintf(w, "RTP = %.5g(lined) + %.5g(scatter) + %.5g(golf) = %.6f%%\n", lrtp, srtp, rtpgolfbn, rtp)
 		return rtp
 	}

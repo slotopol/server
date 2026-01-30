@@ -36,7 +36,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [37, 38, 38, 38, 37], total reshuffles 75119768
 # symbols: 78.336(lined) + 0(scatter) = 78.335785%
 # free spins 7022970, q = 0.09349, sq = 1/(1-q) = 1.103132
-# free games frequency: 1/160.44
+# free games hit rate: 1/160.44
 # RTP = 78.336(sym) + 0.09349*86.415(fg) = 86.414724%
 86.414724:
   - [4, 4, 4, 8, 7, 4, 3, 6, 6, 6, 7, 7, 7, 2, 5, 10, 10, 10, 3, 3, 3, 2, 6, 10, 10, 5, 5, 5, 8, 8, 8, 9, 9, 2, 9, 9, 9] # 37
@@ -48,7 +48,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [37, 38, 38, 38, 37], total reshuffles 75119768
 # symbols: 79.373(lined) + 0(scatter) = 79.372583%
 # free spins 7022970, q = 0.09349, sq = 1/(1-q) = 1.103132
-# free games frequency: 1/160.44
+# free games hit rate: 1/160.44
 # RTP = 79.373(sym) + 0.09349*87.558(fg) = 87.558449%
 87.558449:
   - [4, 4, 4, 8, 7, 4, 3, 6, 6, 6, 7, 7, 7, 2, 5, 10, 10, 10, 3, 3, 3, 2, 6, 10, 10, 5, 5, 5, 8, 8, 8, 9, 9, 2, 9, 9, 9] # 37
@@ -60,7 +60,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [37, 38, 38, 38, 37], total reshuffles 75119768
 # symbols: 80.232(lined) + 0(scatter) = 80.232277%
 # free spins 7022970, q = 0.09349, sq = 1/(1-q) = 1.103132
-# free games frequency: 1/160.44
+# free games hit rate: 1/160.44
 # RTP = 80.232(sym) + 0.09349*88.507(fg) = 88.506805%
 88.506805:
   - [4, 4, 4, 8, 7, 4, 3, 6, 6, 6, 7, 7, 7, 2, 5, 10, 10, 10, 3, 3, 3, 2, 6, 10, 10, 5, 5, 5, 8, 8, 8, 9, 9, 2, 9, 9, 9] # 37
@@ -72,7 +72,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [37, 38, 38, 38, 37], total reshuffles 75119768
 # symbols: 80.69(lined) + 0(scatter) = 80.689999%
 # free spins 7022970, q = 0.09349, sq = 1/(1-q) = 1.103132
-# free games frequency: 1/160.44
+# free games hit rate: 1/160.44
 # RTP = 80.69(sym) + 0.09349*89.012(fg) = 89.011733%
 89.011733:
   - [4, 4, 4, 8, 7, 4, 3, 6, 6, 6, 7, 7, 7, 2, 5, 10, 10, 10, 3, 3, 3, 2, 6, 10, 10, 5, 5, 5, 8, 8, 8, 9, 9, 2, 9, 9, 9] # 37
@@ -84,7 +84,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [37, 38, 38, 38, 37], total reshuffles 75119768
 # symbols: 81.138(lined) + 0(scatter) = 81.137791%
 # free spins 7022970, q = 0.09349, sq = 1/(1-q) = 1.103132
-# free games frequency: 1/160.44
+# free games hit rate: 1/160.44
 # RTP = 81.138(sym) + 0.09349*89.506(fg) = 89.505706%
 89.505706:
   - [4, 4, 4, 8, 7, 4, 3, 6, 6, 6, 7, 7, 7, 2, 5, 10, 10, 10, 3, 3, 3, 2, 6, 10, 10, 5, 5, 5, 8, 8, 8, 9, 9, 2, 9, 9, 9] # 37
@@ -96,7 +96,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [37, 38, 38, 38, 37], total reshuffles 75119768
 # symbols: 81.621(lined) + 0(scatter) = 81.620753%
 # free spins 7022970, q = 0.09349, sq = 1/(1-q) = 1.103132
-# free games frequency: 1/160.44
+# free games hit rate: 1/160.44
 # RTP = 81.621(sym) + 0.09349*90.038(fg) = 90.038477%
 90.038477:
   - [4, 4, 4, 8, 7, 4, 3, 6, 6, 6, 7, 7, 7, 2, 5, 10, 10, 10, 3, 3, 3, 2, 6, 10, 10, 5, 5, 5, 8, 8, 8, 9, 9, 2, 9, 9, 9] # 37
@@ -108,7 +108,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 82.067(lined) + 0(scatter) = 82.066605%
 # free spins 6473520, q = 0.098612, sq = 1/(1-q) = 1.109400
-# free games frequency: 1/152.11
+# free games hit rate: 1/152.11
 # RTP = 82.067(sym) + 0.098612*91.045(fg) = 91.044718%
 91.044718:
   - [6, 6, 6, 9, 9, 9, 2, 9, 3, 3, 3, 10, 10, 3, 4, 4, 4, 8, 8, 8, 2, 5, 5, 5, 2, 4, 7, 7, 7, 5, 7, 6, 10, 10, 10, 8] # 36
@@ -120,7 +120,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 82.551(lined) + 0(scatter) = 82.550532%
 # free spins 6473520, q = 0.098612, sq = 1/(1-q) = 1.109400
-# free games frequency: 1/152.11
+# free games hit rate: 1/152.11
 # RTP = 82.551(sym) + 0.098612*91.582(fg) = 91.581587%
 91.581587:
   - [6, 6, 6, 9, 9, 9, 2, 9, 3, 3, 3, 10, 10, 3, 4, 4, 4, 8, 8, 8, 2, 5, 5, 5, 2, 4, 7, 7, 7, 5, 7, 6, 10, 10, 10, 8] # 36
@@ -132,7 +132,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 82.945(lined) + 0(scatter) = 82.945010%
 # free spins 6473520, q = 0.098612, sq = 1/(1-q) = 1.109400
-# free games frequency: 1/152.11
+# free games hit rate: 1/152.11
 # RTP = 82.945(sym) + 0.098612*92.019(fg) = 92.019221%
 92.019221:
   - [6, 6, 6, 9, 9, 9, 2, 9, 3, 3, 3, 10, 10, 3, 4, 4, 4, 8, 8, 8, 2, 5, 5, 5, 2, 4, 7, 7, 7, 5, 7, 6, 10, 10, 10, 8] # 36
@@ -144,7 +144,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 83.439(lined) + 0(scatter) = 83.438808%
 # free spins 6473520, q = 0.098612, sq = 1/(1-q) = 1.109400
-# free games frequency: 1/152.11
+# free games hit rate: 1/152.11
 # RTP = 83.439(sym) + 0.098612*92.567(fg) = 92.567040%
 92.567040:
   - [6, 6, 6, 9, 9, 9, 2, 9, 3, 3, 3, 10, 10, 3, 4, 4, 4, 8, 8, 8, 2, 5, 5, 5, 2, 4, 7, 7, 7, 5, 7, 6, 10, 10, 10, 8] # 36
@@ -156,7 +156,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 83.879(lined) + 0(scatter) = 83.878741%
 # free spins 6473520, q = 0.098612, sq = 1/(1-q) = 1.109400
-# free games frequency: 1/152.11
+# free games hit rate: 1/152.11
 # RTP = 83.879(sym) + 0.098612*93.055(fg) = 93.055103%
 93.055103:
   - [6, 6, 6, 9, 9, 9, 2, 9, 3, 3, 3, 10, 10, 3, 4, 4, 4, 8, 8, 8, 2, 5, 5, 5, 2, 4, 7, 7, 7, 5, 7, 6, 10, 10, 10, 8] # 36
@@ -168,7 +168,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 84.283(lined) + 0(scatter) = 84.282846%
 # free spins 6473520, q = 0.098612, sq = 1/(1-q) = 1.109400
-# free games frequency: 1/152.11
+# free games hit rate: 1/152.11
 # RTP = 84.283(sym) + 0.098612*93.503(fg) = 93.503417%
 93.503417:
   - [8, 2, 10, 10, 10, 8, 8, 8, 10, 10, 5, 6, 6, 6, 7, 7, 7, 6, 3, 4, 3, 3, 3, 4, 4, 4, 2, 9, 7, 9, 9, 9, 5, 5, 5, 2] # 36
@@ -180,7 +180,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 84.813(lined) + 0(scatter) = 84.813326%
 # free spins 6473520, q = 0.098612, sq = 1/(1-q) = 1.109400
-# free games frequency: 1/152.11
+# free games hit rate: 1/152.11
 # RTP = 84.813(sym) + 0.098612*94.092(fg) = 94.091931%
 94.091931:
   - [6, 6, 6, 9, 9, 9, 2, 9, 3, 3, 3, 10, 10, 3, 4, 4, 4, 8, 8, 8, 2, 5, 5, 5, 2, 4, 7, 7, 7, 5, 7, 6, 10, 10, 10, 8] # 36
@@ -192,7 +192,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 85.202(lined) + 0(scatter) = 85.201832%
 # free spins 6473520, q = 0.098612, sq = 1/(1-q) = 1.109400
-# free games frequency: 1/152.11
+# free games hit rate: 1/152.11
 # RTP = 85.202(sym) + 0.098612*94.523(fg) = 94.522940%
 94.522940:
   - [6, 6, 6, 9, 9, 9, 2, 9, 3, 3, 3, 10, 10, 3, 4, 4, 4, 8, 8, 8, 2, 5, 5, 5, 2, 4, 7, 7, 7, 5, 7, 6, 10, 10, 10, 8] # 36
@@ -204,7 +204,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 85.648(lined) + 0(scatter) = 85.648346%
 # free spins 6473520, q = 0.098612, sq = 1/(1-q) = 1.109400
-# free games frequency: 1/152.11
+# free games hit rate: 1/152.11
 # RTP = 85.648(sym) + 0.098612*95.018(fg) = 95.018303%
 95.018303:
   - [6, 6, 6, 9, 9, 9, 2, 9, 3, 3, 3, 10, 10, 3, 4, 4, 4, 8, 8, 8, 2, 5, 5, 5, 2, 4, 7, 7, 7, 5, 7, 6, 10, 10, 10, 8] # 36
@@ -216,7 +216,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 86.086(lined) + 0(scatter) = 86.085599%
 # free spins 6473520, q = 0.098612, sq = 1/(1-q) = 1.109400
-# free games frequency: 1/152.11
+# free games hit rate: 1/152.11
 # RTP = 86.086(sym) + 0.098612*95.503(fg) = 95.503391%
 95.503391:
   - [8, 2, 10, 10, 10, 8, 8, 8, 10, 10, 5, 6, 6, 6, 7, 7, 7, 6, 3, 4, 3, 3, 3, 4, 4, 4, 2, 9, 7, 9, 9, 9, 5, 5, 5, 2] # 36
@@ -228,7 +228,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 86.019(lined) + 0(scatter) = 86.018519%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 86.019(sym) + 0.10417*96.021(fg) = 96.020672%
 96.020672:
   - [4, 4, 4, 2, 4, 8, 8, 8, 9, 7, 5, 8, 9, 9, 9, 6, 6, 6, 2, 5, 5, 5, 10, 3, 10, 10, 10, 7, 7, 7, 2, 6, 3, 3, 3] # 35
@@ -240,7 +240,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 86.441(lined) + 0(scatter) = 86.441064%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 86.441(sym) + 0.10417*96.492(fg) = 96.492351%
 96.492351:
   - [4, 4, 4, 2, 4, 8, 8, 8, 9, 7, 5, 8, 9, 9, 9, 6, 6, 6, 2, 5, 5, 5, 10, 3, 10, 10, 10, 7, 7, 7, 2, 6, 3, 3, 3] # 35
@@ -252,7 +252,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 87.075(lined) + 0(scatter) = 87.074760%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 87.075(sym) + 0.10417*97.2(fg) = 97.199732%
 97.199732:
   - [4, 4, 4, 2, 4, 8, 8, 8, 9, 7, 5, 8, 9, 9, 9, 6, 6, 6, 2, 5, 5, 5, 10, 3, 10, 10, 10, 7, 7, 7, 2, 6, 3, 3, 3] # 35
@@ -264,7 +264,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 87.804(lined) + 0(scatter) = 87.804478%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 87.804(sym) + 0.10417*98.014(fg) = 98.014301%
 98.014301:
   - [4, 4, 4, 2, 4, 8, 8, 8, 9, 7, 5, 8, 9, 9, 9, 6, 6, 6, 2, 5, 5, 5, 10, 3, 10, 10, 10, 7, 7, 7, 2, 6, 3, 3, 3] # 35
@@ -276,7 +276,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 88.287(lined) + 0(scatter) = 88.287282%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 88.287(sym) + 0.10417*98.553(fg) = 98.553245%
 98.553245:
   - [4, 4, 4, 2, 4, 8, 8, 8, 9, 7, 5, 8, 9, 9, 9, 6, 6, 6, 2, 5, 5, 5, 10, 3, 10, 10, 10, 7, 7, 7, 2, 6, 3, 3, 3] # 35
@@ -288,7 +288,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 88.67(lined) + 0(scatter) = 88.669620%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 88.67(sym) + 0.10417*98.98(fg) = 98.980041%
 98.980041:
   - [4, 4, 4, 2, 4, 8, 8, 8, 9, 7, 5, 8, 9, 9, 9, 6, 6, 6, 2, 5, 5, 5, 10, 3, 10, 10, 10, 7, 7, 7, 2, 6, 3, 3, 3] # 35
@@ -300,7 +300,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 89.65(lined) + 0(scatter) = 89.649681%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 89.65(sym) + 0.10417*100.07(fg) = 100.074062%
 100.074062:
   - [4, 4, 4, 2, 4, 8, 8, 8, 9, 7, 5, 8, 9, 9, 9, 6, 6, 6, 2, 5, 5, 5, 10, 3, 10, 10, 10, 7, 7, 7, 2, 6, 3, 3, 3] # 35
@@ -312,7 +312,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 91.526(lined) + 0(scatter) = 91.526273%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 91.526(sym) + 0.10417*102.17(fg) = 102.168863%
 102.168863:
   - [4, 4, 4, 2, 4, 8, 8, 8, 9, 7, 5, 8, 9, 9, 9, 6, 6, 6, 2, 5, 5, 5, 10, 3, 10, 10, 10, 7, 7, 7, 2, 6, 3, 3, 3] # 35
@@ -324,7 +324,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 97.354(lined) + 0(scatter) = 97.354233%
 # free spins 6473520, q = 0.098612, sq = 1/(1-q) = 1.109400
-# free games frequency: 1/152.11
+# free games hit rate: 1/152.11
 # RTP = 97.354(sym) + 0.098612*108(fg) = 108.004817%
 108.004817:
   - [5, 5, 5, 7, 7, 7, 2, 9, 2, 10, 10, 10, 6, 8, 3, 3, 3, 10, 4, 4, 4, 3, 4, 9, 9, 9, 2, 7, 2, 5, 8, 8, 8, 6, 6, 6] # 36
@@ -336,7 +336,7 @@ ctinteractive/penguinparty/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 100.94(lined) + 0(scatter) = 100.943895%
 # free spins 6473520, q = 0.098612, sq = 1/(1-q) = 1.109400
-# free games frequency: 1/152.11
+# free games hit rate: 1/152.11
 # RTP = 100.94(sym) + 0.098612*111.99(fg) = 111.987190%
 111.987190:
   - [5, 5, 5, 7, 7, 7, 2, 9, 2, 10, 10, 10, 6, 8, 3, 3, 3, 10, 4, 4, 4, 3, 4, 9, 9, 9, 2, 7, 2, 5, 8, 8, 8, 6, 6, 6] # 36

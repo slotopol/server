@@ -256,10 +256,10 @@ local function calculate(reels)
 	local rtp_total = rtp_sym + rtp_mje1 + rtp_mje3 + rtp_mje6 + rtp_mjm
 	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
 	print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
-	print(string.format("spin1 bonuses: frequency 1/%.5g, rtp = %.6f%%", 1/qmje1, rtp_mje1))
-	print(string.format("spin3 bonuses: frequency 1/%.5g, rtp = %.6f%%", 1/qmje3, rtp_mje3))
-	print(string.format("spin6 bonuses: frequency 1/%.5g, rtp = %.6f%%", 1/qmje6, rtp_mje6))
-	print(string.format("monopoly bonuses: frequency 1/%.5g, rtp = %.6f%%", reshuffles/comb_mjm, rtp_mjm))
+	print(string.format("spin1 bonuses: hit rate 1/%.5g, rtp = %.6f%%", 1/qmje1, rtp_mje1))
+	print(string.format("spin3 bonuses: hit rate 1/%.5g, rtp = %.6f%%", 1/qmje3, rtp_mje3))
+	print(string.format("spin6 bonuses: hit rate 1/%.5g, rtp = %.6f%%", 1/qmje6, rtp_mje6))
+	print(string.format("monopoly bonuses: hit rate 1/%.5g, rtp = %.6f%%", reshuffles/comb_mjm, rtp_mjm))
 	print(string.format("RTP = %.5g(sym) + %.5g(mje) + %.5g(mjm) = %.6f%%",
 		rtp_sym, rtp_mje1 + rtp_mje3 + rtp_mje6, rtp_mjm, rtp_total))
 	return rtp_total

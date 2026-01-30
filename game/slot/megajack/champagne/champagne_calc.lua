@@ -226,8 +226,8 @@ local function calculate(reels)
 		print(string.format("*free games calculations*"))
 		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
 		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
-		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
-		print(string.format("bottle bonuses: frequency 1/%.5g, rtp = %.6f%%", 1/qmjc, rtp_mjc))
+		print(string.format("free games hit rate: 1/%.5g", reshuffles/fs_num))
+		print(string.format("bottle bonuses: hit rate 1/%.5g, rtp = %.6f%%", 1/qmjc, rtp_mjc))
 		print(string.format("RTP = sq*(rtp(sym)+rtp(mjc)) = %.5g*(%.5g+%.5g) = %.6f%%", sq, rtp_sym, rtp_mjc, rtp_fs))
 	end
 	local rtp_total
@@ -244,8 +244,8 @@ local function calculate(reels)
 		print(string.format("*regular games calculations*"))
 		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
 		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
-		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
-		print(string.format("bottle bonuses: frequency 1/%.5g, rtp = %.6f%%", 1/qmjc, rtp_mjc))
+		print(string.format("free games hit rate: 1/%.5g", reshuffles/fs_num))
+		print(string.format("bottle bonuses: hit rate 1/%.5g, rtp = %.6f%%", 1/qmjc, rtp_mjc))
 		print(string.format("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%", rtp_sym, q, rtp_fs, rtp_total))
 	end
 	return rtp_total

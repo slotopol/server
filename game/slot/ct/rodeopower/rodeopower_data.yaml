@@ -8,7 +8,7 @@ ctinteractive/rodeopower/bon
 # reels lengths [37, 37, 37, 37, 37], total reshuffles 69343957
 # symbols: 123.47(lined) + 0.41072(scatter) = 123.878416%
 # free spins 17467650, q = 0.2519, sq = 1/(1-q) = 1.336717
-# free games frequency: 1/59.548
+# free games hit rate: 1/59.548
 # RTP = sq*rtp(sym) = 1.3367*123.88 = 165.590422%
 - [7, 4, 11, 12, 9, 13, 8, 10, 4, 12, 9, 3, 5, 11, 12, 8, 5, 4, 6, 12, 3, 6, 13, 9, 10, 7, 5, 3, 7, 6, 13, 2, 10, 11, 13, 2, 8] # 37
 - [4, 7, 5, 13, 3, 12, 7, 3, 12, 4, 5, 11, 12, 13, 9, 10, 8, 6, 10, 9, 6, 1, 12, 8, 13, 11, 10, 7, 3, 9, 5, 4, 2, 8, 13, 11, 6] # 37
@@ -44,7 +44,7 @@ ctinteractive/rodeopower/reel
 # reels lengths [37, 38, 37, 38, 37], total reshuffles 73142932
 # symbols: 77.892(lined) + 0.10393(scatter) = 77.995591%
 # free spins 5004990, q = 0.068428, sq = 1/(1-q) = 1.073454
-# free games frequency: 1/219.21
+# free games hit rate: 1/219.21
 # RTP = 77.996(sym) + 0.068428*165.59(fg) = 89.326534%
 89.326534:
   - [10, 11, 7, 12, 10, 13, 9, 11, 3, 10, 7, 4, 9, 8, 11, 12, 9, 11, 5, 8, 13, 3, 4, 13, 2, 6, 8, 7, 12, 8, 9, 5, 10, 7, 6, 12, 13] # 37
@@ -56,7 +56,7 @@ ctinteractive/rodeopower/reel
 # reels lengths [37, 38, 37, 38, 37], total reshuffles 73142932
 # symbols: 78.631(lined) + 0.10393(scatter) = 78.734817%
 # free spins 5004990, q = 0.068428, sq = 1/(1-q) = 1.073454
-# free games frequency: 1/219.21
+# free games hit rate: 1/219.21
 # RTP = 78.735(sym) + 0.068428*165.59(fg) = 90.065760%
 90.065760:
   - [13, 10, 7, 4, 6, 12, 4, 3, 8, 13, 12, 11, 10, 5, 9, 11, 10, 7, 13, 8, 9, 11, 2, 8, 11, 6, 10, 12, 5, 7, 8, 6, 13, 9, 3, 12, 9] # 37
@@ -68,7 +68,7 @@ ctinteractive/rodeopower/reel
 # reels lengths [37, 38, 37, 38, 37], total reshuffles 73142932
 # symbols: 79.576(lined) + 0.10393(scatter) = 79.680303%
 # free spins 5004990, q = 0.068428, sq = 1/(1-q) = 1.073454
-# free games frequency: 1/219.21
+# free games hit rate: 1/219.21
 # RTP = 79.68(sym) + 0.068428*165.59(fg) = 91.011246%
 91.011246:
   - [10, 11, 7, 12, 10, 13, 9, 11, 3, 10, 7, 4, 9, 8, 11, 12, 9, 11, 5, 8, 13, 3, 4, 13, 2, 6, 8, 7, 12, 8, 9, 5, 10, 7, 6, 12, 13] # 37
@@ -80,7 +80,7 @@ ctinteractive/rodeopower/reel
 # reels lengths [37, 37, 37, 38, 37], total reshuffles 71218118
 # symbols: 80.921(lined) + 0.10561(scatter) = 81.026495%
 # free spins 4948290, q = 0.069481, sq = 1/(1-q) = 1.074669
-# free games frequency: 1/215.89
+# free games hit rate: 1/215.89
 # RTP = 81.026(sym) + 0.069481*165.59(fg) = 92.531846%
 92.531846:
   - [13, 10, 7, 4, 6, 12, 4, 3, 8, 13, 12, 11, 10, 5, 9, 11, 10, 7, 13, 8, 9, 11, 2, 8, 11, 6, 10, 12, 5, 7, 8, 6, 13, 9, 3, 12, 9] # 37
@@ -92,7 +92,7 @@ ctinteractive/rodeopower/reel
 # reels lengths [37, 38, 37, 37, 37], total reshuffles 71218118
 # symbols: 81.549(lined) + 0.10561(scatter) = 81.654874%
 # free spins 4948290, q = 0.069481, sq = 1/(1-q) = 1.074669
-# free games frequency: 1/215.89
+# free games hit rate: 1/215.89
 # RTP = 81.655(sym) + 0.069481*165.59(fg) = 93.160225%
 93.160225:
   - [13, 10, 7, 4, 6, 12, 4, 3, 8, 13, 12, 11, 10, 5, 9, 11, 10, 7, 13, 8, 9, 11, 2, 8, 11, 6, 10, 12, 5, 7, 8, 6, 13, 9, 3, 12, 9] # 37
@@ -104,7 +104,7 @@ ctinteractive/rodeopower/reel
 # reels lengths [36, 38, 37, 38, 36], total reshuffles 69242688
 # symbols: 82.31(lined) + 0.10745(scatter) = 82.417100%
 # free spins 4891185, q = 0.070638, sq = 1/(1-q) = 1.076007
-# free games frequency: 1/212.35
+# free games hit rate: 1/212.35
 # RTP = 82.417(sym) + 0.070638*165.59(fg) = 94.114124%
 94.114124:
   - [6, 10, 3, 4, 8, 13, 11, 3, 10, 7, 5, 11, 7, 13, 6, 9, 12, 11, 7, 9, 11, 6, 10, 12, 8, 5, 12, 13, 9, 4, 2, 10, 9, 12, 8, 13] # 36
@@ -116,7 +116,7 @@ ctinteractive/rodeopower/reel
 # reels lengths [37, 38, 37, 38, 37], total reshuffles 73142932
 # symbols: 83.616(lined) + 0.10393(scatter) = 83.720063%
 # free spins 5004990, q = 0.068428, sq = 1/(1-q) = 1.073454
-# free games frequency: 1/219.21
+# free games hit rate: 1/219.21
 # RTP = 83.72(sym) + 0.068428*165.59(fg) = 95.051006%
 95.051006:
   - [13, 10, 7, 4, 6, 12, 4, 3, 8, 13, 12, 11, 10, 5, 9, 11, 10, 7, 13, 8, 9, 11, 2, 8, 11, 6, 10, 12, 5, 7, 8, 6, 13, 9, 3, 12, 9] # 37
@@ -128,7 +128,7 @@ ctinteractive/rodeopower/reel
 # reels lengths [37, 38, 37, 38, 37], total reshuffles 73142932
 # symbols: 85.073(lined) + 0.10393(scatter) = 85.177037%
 # free spins 5004990, q = 0.068428, sq = 1/(1-q) = 1.073454
-# free games frequency: 1/219.21
+# free games hit rate: 1/219.21
 # RTP = 85.177(sym) + 0.068428*165.59(fg) = 96.507981%
 96.507981:
   - [13, 10, 7, 4, 6, 12, 4, 3, 8, 13, 12, 11, 10, 5, 9, 11, 10, 7, 13, 8, 9, 11, 2, 8, 11, 6, 10, 12, 5, 7, 8, 6, 13, 9, 3, 12, 9] # 37
@@ -140,7 +140,7 @@ ctinteractive/rodeopower/reel
 # reels lengths [37, 38, 37, 38, 37], total reshuffles 73142932
 # symbols: 85.312(lined) + 0.10393(scatter) = 85.416240%
 # free spins 5004990, q = 0.068428, sq = 1/(1-q) = 1.073454
-# free games frequency: 1/219.21
+# free games hit rate: 1/219.21
 # RTP = 85.416(sym) + 0.068428*165.59(fg) = 96.747184%
 96.747184:
   - [13, 10, 7, 4, 6, 12, 4, 3, 8, 13, 12, 11, 10, 5, 9, 11, 10, 7, 13, 8, 9, 11, 2, 8, 11, 6, 10, 12, 5, 7, 8, 6, 13, 9, 3, 12, 9] # 37
@@ -152,7 +152,7 @@ ctinteractive/rodeopower/reel
 # reels lengths [36, 37, 37, 38, 37], total reshuffles 69293304
 # symbols: 85.216(lined) + 0.10738(scatter) = 85.323203%
 # free spins 4891590, q = 0.070593, sq = 1/(1-q) = 1.075954
-# free games frequency: 1/212.49
+# free games hit rate: 1/212.49
 # RTP = 85.323(sym) + 0.070593*165.59(fg) = 97.012650%
 97.012650:
   - [6, 10, 3, 4, 8, 13, 11, 3, 10, 7, 5, 11, 7, 13, 6, 9, 12, 11, 7, 9, 11, 6, 10, 12, 8, 5, 12, 13, 9, 4, 2, 10, 9, 12, 8, 13] # 36
@@ -164,7 +164,7 @@ ctinteractive/rodeopower/reel
 # reels lengths [36, 38, 36, 38, 36], total reshuffles 67371264
 # symbols: 86.32(lined) + 0.10925(scatter) = 86.429655%
 # free spins 4834890, q = 0.071765, sq = 1/(1-q) = 1.077313
-# free games frequency: 1/209.02
+# free games hit rate: 1/209.02
 # RTP = 86.43(sym) + 0.071765*165.59(fg) = 98.313230%
 98.313230:
   - [6, 10, 3, 4, 8, 13, 11, 3, 10, 7, 5, 11, 7, 13, 6, 9, 12, 11, 7, 9, 11, 6, 10, 12, 8, 5, 12, 13, 9, 4, 2, 10, 9, 12, 8, 13] # 36
@@ -176,7 +176,7 @@ ctinteractive/rodeopower/reel
 # reels lengths [36, 38, 36, 37, 36], total reshuffles 65598336
 # symbols: 87.906(lined) + 0.111(scatter) = 88.016701%
 # free spins 4779405, q = 0.072859, sq = 1/(1-q) = 1.078584
-# free games frequency: 1/205.88
+# free games hit rate: 1/205.88
 # RTP = 88.017(sym) + 0.072859*165.59(fg) = 100.081392%
 100.081392:
   - [6, 10, 3, 4, 8, 13, 11, 3, 10, 7, 5, 11, 7, 13, 6, 9, 12, 11, 7, 9, 11, 6, 10, 12, 8, 5, 12, 13, 9, 4, 2, 10, 9, 12, 8, 13] # 36
@@ -188,7 +188,7 @@ ctinteractive/rodeopower/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 88.349(lined) + 0.11093(scatter) = 88.459988%
 # free spins 4779810, q = 0.072812, sq = 1/(1-q) = 1.078529
-# free games frequency: 1/206.01
+# free games hit rate: 1/206.01
 # RTP = 88.46(sym) + 0.072812*165.59(fg) = 100.516888%
 100.516888:
   - [6, 10, 3, 4, 8, 13, 11, 3, 10, 7, 5, 11, 7, 13, 6, 9, 12, 11, 7, 9, 11, 6, 10, 12, 8, 5, 12, 13, 9, 4, 2, 10, 9, 12, 8, 13] # 36
@@ -200,7 +200,7 @@ ctinteractive/rodeopower/reel
 # reels lengths [36, 37, 36, 37, 36], total reshuffles 63872064
 # symbols: 89.571(lined) + 0.11277(scatter) = 89.683324%
 # free spins 4724325, q = 0.073965, sq = 1/(1-q) = 1.079873
-# free games frequency: 1/202.8
+# free games hit rate: 1/202.8
 # RTP = 89.683(sym) + 0.073965*165.59(fg) = 101.931291%
 101.931291:
   - [6, 10, 3, 4, 8, 13, 11, 3, 10, 7, 5, 11, 7, 13, 6, 9, 12, 11, 7, 9, 11, 6, 10, 12, 8, 5, 12, 13, 9, 4, 2, 10, 9, 12, 8, 13] # 36
@@ -212,7 +212,7 @@ ctinteractive/rodeopower/reel
 # reels lengths [36, 37, 36, 37, 36], total reshuffles 63872064
 # symbols: 92.187(lined) + 0.11277(scatter) = 92.299284%
 # free spins 4724325, q = 0.073965, sq = 1/(1-q) = 1.079873
-# free games frequency: 1/202.8
+# free games hit rate: 1/202.8
 # RTP = 92.299(sym) + 0.073965*165.59(fg) = 104.547252%
 104.547252:
   - [12, 4, 5, 13, 10, 11, 4, 13, 3, 10, 6, 12, 5, 6, 11, 7, 8, 9, 12, 13, 6, 7, 9, 10, 8, 2, 10, 13, 12, 11, 8, 5, 11, 9, 3, 7] # 36
@@ -224,7 +224,7 @@ ctinteractive/rodeopower/reel
 # reels lengths [36, 37, 36, 37, 36], total reshuffles 63872064
 # symbols: 97.843(lined) + 0.11277(scatter) = 97.955785%
 # free spins 4724325, q = 0.073965, sq = 1/(1-q) = 1.079873
-# free games frequency: 1/202.8
+# free games hit rate: 1/202.8
 # RTP = 97.956(sym) + 0.073965*165.59(fg) = 110.203753%
 110.203753:
   - [12, 4, 5, 13, 10, 11, 4, 13, 3, 10, 6, 12, 5, 6, 11, 7, 8, 9, 12, 13, 6, 7, 9, 10, 8, 2, 10, 13, 12, 11, 8, 5, 11, 9, 3, 7] # 36
@@ -236,7 +236,7 @@ ctinteractive/rodeopower/reel
 # reels lengths [37, 38, 37, 38, 37], total reshuffles 73142932
 # symbols: 103.19(lined) + 0.10393(scatter) = 103.297350%
 # free spins 5004990, q = 0.068428, sq = 1/(1-q) = 1.073454
-# free games frequency: 1/219.21
+# free games hit rate: 1/219.21
 # RTP = 103.3(sym) + 0.068428*165.59(fg) = 114.628293%
 114.628293:
   - [9, 10, 3, 4, 10, 12, 6, 13, 12, 11, 13, 10, 11, 9, 5, 4, 11, 7, 5, 6, 13, 12, 7, 8, 13, 9, 11, 8, 2, 6, 7, 12, 3, 5, 8, 10, 4] # 37

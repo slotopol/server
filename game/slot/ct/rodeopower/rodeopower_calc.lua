@@ -177,7 +177,7 @@ local function calculate(reels_reg, reels_bon)
 		print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
 		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
 		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
-		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
+		print(string.format("free games hit rate: 1/%.5g", reshuffles/fs_num))
 		print(string.format("RTP = sq*rtp(sym) = %.5g*%.5g = %.6f%%", sq, rtp_sym, rtp_fs))
 	end
 	local rtp_total
@@ -195,7 +195,7 @@ local function calculate(reels_reg, reels_bon)
 		print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
 		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
 		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
-		print(string.format("free games frequency: 1/%.5g", reshuffles/fs_num))
+		print(string.format("free games hit rate: 1/%.5g", reshuffles/fs_num))
 		print(string.format("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%", rtp_sym, q, rtp_fs, rtp_total))
 	end
 	return rtp_total

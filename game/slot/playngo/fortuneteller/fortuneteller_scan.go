@@ -36,7 +36,7 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 		var rtpcbn = Ecards * qcbn * 100
 		var rtp = rtpsym + rtpcbn
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "cards bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(cbn), rtpcbn)
+		fmt.Fprintf(w, "cards bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(cbn), rtpcbn)
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(cards) = %.6f%%\n", rtpsym, rtpcbn, rtp)
 		return rtp
 	}
@@ -68,8 +68,8 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		var rtp = rtpsym + rtpcbn + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "free spins %d, q = %.6f\n", s.FreeCount.Load(), q)
-		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", s.FGF())
-		fmt.Fprintf(w, "cards bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(cbn), rtpcbn)
+		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
+		fmt.Fprintf(w, "cards bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(cbn), rtpcbn)
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(cards) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, rtpcbn, q, rtpfs, rtp)
 		return rtp
 	}

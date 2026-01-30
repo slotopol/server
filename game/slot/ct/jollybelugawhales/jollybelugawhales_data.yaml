@@ -33,7 +33,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [37, 38, 38, 38, 37], total reshuffles 75119768
 # symbols: 78.021(lined) + 0(scatter) = 78.021114%
 # free spins 7022970, q = 0.09349, sq = 1/(1-q) = 1.103132
-# free games frequency: 1/160.44
+# free games hit rate: 1/160.44
 # RTP = 78.021(sym) + 0.09349*86.068(fg) = 86.067600%
 86.067600:
   - [9, 9, 10, 10, 2, 4, 2, 5, 8, 8, 8, 5, 5, 5, 9, 9, 9, 8, 8, 3, 3, 3, 4, 4, 4, 7, 7, 7, 6, 6, 6, 7, 10, 10, 10, 3, 6] # 37
@@ -45,7 +45,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [37, 38, 38, 38, 37], total reshuffles 75119768
 # symbols: 79.808(lined) + 0(scatter) = 79.807834%
 # free spins 7022970, q = 0.09349, sq = 1/(1-q) = 1.103132
-# free games frequency: 1/160.44
+# free games hit rate: 1/160.44
 # RTP = 79.808(sym) + 0.09349*88.039(fg) = 88.038589%
 88.038589:
   - [9, 9, 10, 10, 2, 4, 2, 5, 8, 8, 8, 5, 5, 5, 9, 9, 9, 8, 8, 3, 3, 3, 4, 4, 4, 7, 7, 7, 6, 6, 6, 7, 10, 10, 10, 3, 6] # 37
@@ -57,7 +57,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 80.593(lined) + 0(scatter) = 80.592645%
 # free spins 6473520, q = 0.098612, sq = 1/(1-q) = 1.109400
-# free games frequency: 1/152.11
+# free games hit rate: 1/152.11
 # RTP = 80.593(sym) + 0.098612*89.41(fg) = 89.409507%
 89.409507:
   - [10, 10, 9, 9, 3, 4, 4, 4, 6, 6, 6, 5, 8, 2, 6, 9, 9, 9, 7, 7, 7, 5, 5, 5, 7, 2, 8, 8, 8, 4, 3, 3, 3, 10, 10, 10] # 36
@@ -69,7 +69,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 81.179(lined) + 0(scatter) = 81.179061%
 # free spins 6473520, q = 0.098612, sq = 1/(1-q) = 1.109400
-# free games frequency: 1/152.11
+# free games hit rate: 1/152.11
 # RTP = 81.179(sym) + 0.098612*90.06(fg) = 90.060076%
 90.060076:
   - [10, 10, 9, 9, 3, 4, 4, 4, 6, 6, 6, 5, 8, 2, 6, 9, 9, 9, 7, 7, 7, 5, 5, 5, 7, 2, 8, 8, 8, 4, 3, 3, 3, 10, 10, 10] # 36
@@ -81,7 +81,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 82.057(lined) + 0(scatter) = 82.057465%
 # free spins 6473520, q = 0.098612, sq = 1/(1-q) = 1.109400
-# free games frequency: 1/152.11
+# free games hit rate: 1/152.11
 # RTP = 82.057(sym) + 0.098612*91.035(fg) = 91.034579%
 91.034579:
   - [10, 10, 9, 9, 3, 4, 4, 4, 6, 6, 6, 5, 8, 2, 6, 9, 9, 9, 7, 7, 7, 5, 5, 5, 7, 2, 8, 8, 8, 4, 3, 3, 3, 10, 10, 10] # 36
@@ -93,7 +93,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 82.96(lined) + 0(scatter) = 82.959755%
 # free spins 6473520, q = 0.098612, sq = 1/(1-q) = 1.109400
-# free games frequency: 1/152.11
+# free games hit rate: 1/152.11
 # RTP = 82.96(sym) + 0.098612*92.036(fg) = 92.035580%
 92.035580:
   - [10, 10, 9, 9, 3, 4, 4, 4, 6, 6, 6, 5, 8, 2, 6, 9, 9, 9, 7, 7, 7, 5, 5, 5, 7, 2, 8, 8, 8, 4, 3, 3, 3, 10, 10, 10] # 36
@@ -105,7 +105,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 83.379(lined) + 0(scatter) = 83.379337%
 # free spins 6473520, q = 0.098612, sq = 1/(1-q) = 1.109400
-# free games frequency: 1/152.11
+# free games hit rate: 1/152.11
 # RTP = 83.379(sym) + 0.098612*92.501(fg) = 92.501064%
 92.501064:
   - [10, 10, 9, 9, 3, 4, 4, 4, 6, 6, 6, 5, 8, 2, 6, 9, 9, 9, 7, 7, 7, 5, 5, 5, 7, 2, 8, 8, 8, 4, 3, 3, 3, 10, 10, 10] # 36
@@ -117,7 +117,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [36, 37, 37, 37, 36], total reshuffles 65646288
 # symbols: 83.836(lined) + 0(scatter) = 83.836332%
 # free spins 6473520, q = 0.098612, sq = 1/(1-q) = 1.109400
-# free games frequency: 1/152.11
+# free games hit rate: 1/152.11
 # RTP = 83.836(sym) + 0.098612*93.008(fg) = 93.008054%
 93.008054:
   - [10, 10, 9, 9, 3, 4, 4, 4, 6, 6, 6, 5, 8, 2, 6, 9, 9, 9, 7, 7, 7, 5, 5, 5, 7, 2, 8, 8, 8, 4, 3, 3, 3, 10, 10, 10] # 36
@@ -129,7 +129,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 84.34(lined) + 0(scatter) = 84.339674%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 84.34(sym) + 0.10417*94.147(fg) = 94.146613%
 94.146613:
   - [2, 6, 7, 2, 5, 8, 8, 8, 4, 4, 4, 5, 5, 5, 4, 9, 7, 7, 7, 6, 6, 6, 10, 10, 10, 9, 9, 9, 3, 8, 10, 10, 3, 3, 3] # 35
@@ -141,7 +141,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 85.309(lined) + 0(scatter) = 85.309202%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 85.309(sym) + 0.10417*95.229(fg) = 95.228877%
 95.228877:
   - [2, 6, 7, 2, 5, 8, 8, 8, 4, 4, 4, 5, 5, 5, 4, 9, 7, 7, 7, 6, 6, 6, 10, 10, 10, 9, 9, 9, 3, 8, 10, 10, 3, 3, 3] # 35
@@ -153,7 +153,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 85.559(lined) + 0(scatter) = 85.558705%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 85.559(sym) + 0.10417*95.507(fg) = 95.507392%
 95.507392:
   - [2, 6, 7, 2, 5, 8, 8, 8, 4, 4, 4, 5, 5, 5, 4, 9, 7, 7, 7, 6, 6, 6, 10, 10, 10, 9, 9, 9, 3, 8, 10, 10, 3, 3, 3] # 35
@@ -165,7 +165,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 86.067(lined) + 0(scatter) = 86.066984%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 86.067(sym) + 0.10417*96.075(fg) = 96.074773%
 96.074773:
   - [2, 6, 7, 2, 5, 8, 8, 8, 4, 4, 4, 5, 5, 5, 4, 9, 7, 7, 7, 6, 6, 6, 10, 10, 10, 9, 9, 9, 3, 8, 10, 10, 3, 3, 3] # 35
@@ -177,7 +177,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 86.981(lined) + 0(scatter) = 86.981153%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 86.981(sym) + 0.10417*97.095(fg) = 97.095240%
 97.095240:
   - [2, 6, 7, 2, 5, 8, 8, 8, 4, 4, 4, 5, 5, 5, 4, 9, 7, 7, 7, 6, 6, 6, 10, 10, 10, 9, 9, 9, 3, 8, 10, 10, 3, 3, 3] # 35
@@ -189,7 +189,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 87.398(lined) + 0(scatter) = 87.398309%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 87.398(sym) + 0.10417*97.561(fg) = 97.560903%
 97.560903:
   - [2, 6, 7, 2, 5, 8, 8, 8, 4, 4, 4, 5, 5, 5, 4, 9, 7, 7, 7, 6, 6, 6, 10, 10, 10, 9, 9, 9, 3, 8, 10, 10, 3, 3, 3] # 35
@@ -201,7 +201,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 87.851(lined) + 0(scatter) = 87.850564%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 87.851(sym) + 0.10417*98.066(fg) = 98.065746%
 98.065746:
   - [2, 6, 7, 2, 5, 8, 8, 8, 4, 4, 4, 5, 5, 5, 4, 9, 7, 7, 7, 6, 6, 6, 10, 10, 10, 9, 9, 9, 3, 8, 10, 10, 3, 3, 3] # 35
@@ -213,7 +213,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 88.285(lined) + 0(scatter) = 88.285217%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 88.285(sym) + 0.10417*98.551(fg) = 98.550940%
 98.550940:
   - [2, 6, 7, 2, 5, 8, 8, 8, 4, 4, 4, 5, 5, 5, 4, 9, 7, 7, 7, 6, 6, 6, 10, 10, 10, 9, 9, 9, 3, 8, 10, 10, 3, 3, 3] # 35
@@ -225,7 +225,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 88.81(lined) + 0(scatter) = 88.810154%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 88.81(sym) + 0.10417*99.137(fg) = 99.136916%
 99.136916:
   - [2, 6, 7, 2, 5, 8, 8, 8, 4, 4, 4, 5, 5, 5, 4, 9, 7, 7, 7, 6, 6, 6, 10, 10, 10, 9, 9, 9, 3, 8, 10, 10, 3, 3, 3] # 35
@@ -237,7 +237,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 89.123(lined) + 0(scatter) = 89.122960%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 89.123(sym) + 0.10417*99.486(fg) = 99.486095%
 99.486095:
   - [2, 6, 7, 2, 5, 8, 8, 8, 4, 4, 4, 5, 5, 5, 4, 9, 7, 7, 7, 6, 6, 6, 10, 10, 10, 9, 9, 9, 3, 8, 10, 10, 3, 3, 3] # 35
@@ -249,7 +249,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 89.569(lined) + 0(scatter) = 89.569266%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 89.569(sym) + 0.10417*99.984(fg) = 99.984297%
 99.984297:
   - [2, 6, 7, 2, 5, 8, 8, 8, 4, 4, 4, 5, 5, 5, 4, 9, 7, 7, 7, 6, 6, 6, 10, 10, 10, 9, 9, 9, 3, 8, 10, 10, 3, 3, 3] # 35
@@ -261,7 +261,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 89.61(lined) + 0(scatter) = 89.610418%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 89.61(sym) + 0.10417*100.03(fg) = 100.030234%
 100.030234:
   - [2, 6, 7, 2, 5, 8, 8, 8, 4, 4, 4, 5, 5, 5, 4, 9, 7, 7, 7, 6, 6, 6, 10, 10, 10, 9, 9, 9, 3, 8, 10, 10, 3, 3, 3] # 35
@@ -273,7 +273,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [35, 36, 36, 36, 35], total reshuffles 57153600
 # symbols: 90.963(lined) + 0(scatter) = 90.962564%
 # free spins 5953500, q = 0.10417, sq = 1/(1-q) = 1.116279
-# free games frequency: 1/144
+# free games hit rate: 1/144
 # RTP = 90.963(sym) + 0.10417*101.54(fg) = 101.539606%
 101.539606:
   - [2, 6, 7, 2, 5, 8, 8, 8, 4, 4, 4, 5, 5, 5, 4, 9, 7, 7, 7, 6, 6, 6, 10, 10, 10, 9, 9, 9, 3, 8, 10, 10, 3, 3, 3] # 35
@@ -285,7 +285,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [34, 35, 35, 35, 34], total reshuffles 49563500
 # symbols: 94.646(lined) + 0(scatter) = 94.645616%
 # free spins 5462100, q = 0.1102, sq = 1/(1-q) = 1.123853
-# free games frequency: 1/136.11
+# free games hit rate: 1/136.11
 # RTP = 94.646(sym) + 0.1102*106.37(fg) = 106.367780%
 106.367780:
   - [6, 6, 6, 9, 9, 9, 7, 9, 2, 3, 5, 5, 5, 4, 3, 3, 3, 6, 7, 7, 7, 10, 2, 5, 8, 4, 4, 4, 8, 8, 8, 10, 10, 10] # 34
@@ -297,7 +297,7 @@ ctinteractive/jollybelugawhales/reel
 # reels lengths [34, 35, 35, 35, 34], total reshuffles 49563500
 # symbols: 97.879(lined) + 0(scatter) = 97.879125%
 # free spins 5462100, q = 0.1102, sq = 1/(1-q) = 1.123853
-# free games frequency: 1/136.11
+# free games hit rate: 1/136.11
 # RTP = 97.879(sym) + 0.1102*110(fg) = 110.001769%
 110.001769:
   - [6, 6, 6, 9, 9, 9, 7, 9, 2, 3, 5, 5, 5, 4, 3, 3, 3, 6, 7, 7, 7, 10, 2, 5, 8, 4, 4, 4, 8, 8, 8, 10, 10, 10] # 34

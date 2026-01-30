@@ -8,7 +8,7 @@ novomatic/columbus/bon
 # reels lengths [25, 25, 24, 25, 24], total reshuffles 9000000
 # symbols: 194.86(lined) + 0(scatter) = 194.856667%
 # free spins 2025000, q = 0.225, sq = 1/(1-q) = 1.290323
-# free games frequency: 1/44.444
+# free games hit rate: 1/44.444
 # RTP = sq*rtp(sym) = 1.2903*194.86 = 251.427957%
 - [5, 1, 9, 8, 2, 10, 6, 5, 10, 8, 3, 4, 8, 5, 10, 7, 8, 5, 9, 8, 5, 3, 6, 5, 8]
 - [7, 9, 3, 7, 4, 6, 9, 7, 8, 9, 7, 8, 9, 7, 8, 5, 2, 8, 5, 4, 9, 6, 7, 9, 1]
@@ -36,7 +36,7 @@ novomatic/columbus/reel
 # reels lengths [32, 28, 32, 28, 32], total reshuffles 25690112
 # symbols: 60.236(lined) + 0(scatter) = 60.236366%
 # free spins 2540160, q = 0.098877, sq = 1/(1-q) = 1.109726
-# free games frequency: 1/101.14
+# free games hit rate: 1/101.14
 # RTP = 60.236(sym) + 0.098877*251.43(fg) = 85.096797%
 85.096797:
   - [1, 5, 7, 9, 8, 2, 10, 6, 4, 10, 6, 3, 4, 8, 9, 10, 7, 8, 9, 7, 8, 9, 3, 8, 9, 7, 5, 9, 7, 2, 5, 9]
@@ -48,7 +48,7 @@ novomatic/columbus/reel
 # reels lengths [32, 28, 32, 28, 32], total reshuffles 25690112
 # symbols: 63.094(lined) + 0(scatter) = 63.094159%
 # free spins 2540160, q = 0.098877, sq = 1/(1-q) = 1.109726
-# free games frequency: 1/101.14
+# free games hit rate: 1/101.14
 # RTP = 63.094(sym) + 0.098877*251.43(fg) = 87.954589%
 87.954589:
   - [1, 5, 7, 9, 8, 2, 10, 6, 4, 10, 6, 3, 4, 8, 9, 10, 7, 8, 9, 7, 8, 9, 3, 8, 9, 7, 5, 9, 7, 2, 5, 9]
@@ -60,7 +60,7 @@ novomatic/columbus/reel
 # reels lengths [32, 28, 32, 28, 32], total reshuffles 25690112
 # symbols: 65.101(lined) + 0(scatter) = 65.101001%
 # free spins 2540160, q = 0.098877, sq = 1/(1-q) = 1.109726
-# free games frequency: 1/101.14
+# free games hit rate: 1/101.14
 # RTP = 65.101(sym) + 0.098877*251.43(fg) = 89.961431%
 89.961431:
   - [1, 5, 7, 9, 8, 2, 10, 6, 4, 10, 6, 3, 4, 8, 9, 10, 7, 8, 9, 7, 8, 9, 3, 8, 9, 7, 5, 9, 7, 2, 5, 9]
@@ -72,7 +72,7 @@ novomatic/columbus/reel
 # reels lengths [32, 28, 32, 28, 32], total reshuffles 25690112
 # symbols: 67.18(lined) + 0(scatter) = 67.180478%
 # free spins 2540160, q = 0.098877, sq = 1/(1-q) = 1.109726
-# free games frequency: 1/101.14
+# free games hit rate: 1/101.14
 # RTP = 67.18(sym) + 0.098877*251.43(fg) = 92.040908%
 92.040908:
   - [1, 5, 7, 9, 8, 2, 10, 6, 4, 10, 6, 3, 4, 8, 9, 10, 7, 8, 9, 7, 8, 9, 3, 8, 9, 7, 5, 9, 7, 2, 5, 9]
@@ -84,7 +84,7 @@ novomatic/columbus/reel
 # reels lengths [32, 28, 32, 28, 32], total reshuffles 25690112
 # symbols: 69.142(lined) + 0(scatter) = 69.142322%
 # free spins 2540160, q = 0.098877, sq = 1/(1-q) = 1.109726
-# free games frequency: 1/101.14
+# free games hit rate: 1/101.14
 # RTP = 69.142(sym) + 0.098877*251.43(fg) = 94.002752%
 94.002752:
   - [1, 5, 7, 9, 8, 2, 10, 6, 4, 10, 6, 3, 4, 8, 9, 10, 7, 8, 9, 7, 8, 9, 3, 8, 9, 7, 5, 9, 7, 2, 5, 9]
@@ -96,7 +96,7 @@ novomatic/columbus/reel
 # reels lengths [32, 28, 32, 28, 32], total reshuffles 25690112
 # symbols: 70.162(lined) + 0(scatter) = 70.162364%
 # free spins 2540160, q = 0.098877, sq = 1/(1-q) = 1.109726
-# free games frequency: 1/101.14
+# free games hit rate: 1/101.14
 # RTP = 70.162(sym) + 0.098877*251.43(fg) = 95.022795%
 95.022795:
   - [1, 5, 7, 9, 8, 2, 10, 6, 4, 10, 6, 3, 4, 8, 9, 10, 7, 8, 9, 7, 8, 9, 3, 8, 9, 7, 5, 9, 7, 2, 5, 9]
@@ -108,7 +108,7 @@ novomatic/columbus/reel
 # reels lengths [32, 28, 32, 28, 32], total reshuffles 25690112
 # symbols: 71.226(lined) + 0(scatter) = 71.225614%
 # free spins 2540160, q = 0.098877, sq = 1/(1-q) = 1.109726
-# free games frequency: 1/101.14
+# free games hit rate: 1/101.14
 # RTP = 71.226(sym) + 0.098877*251.43(fg) = 96.086044%
 96.086044:
   - [1, 5, 7, 9, 8, 2, 10, 6, 4, 10, 6, 3, 4, 8, 9, 10, 7, 8, 9, 7, 8, 9, 3, 8, 9, 7, 5, 9, 7, 2, 5, 9]
@@ -120,7 +120,7 @@ novomatic/columbus/reel
 # reels lengths [32, 28, 32, 28, 32], total reshuffles 25690112
 # symbols: 72.169(lined) + 0(scatter) = 72.168623%
 # free spins 2540160, q = 0.098877, sq = 1/(1-q) = 1.109726
-# free games frequency: 1/101.14
+# free games hit rate: 1/101.14
 # RTP = 72.169(sym) + 0.098877*251.43(fg) = 97.029053%
 97.029053:
   - [1, 5, 7, 9, 8, 2, 10, 6, 4, 10, 6, 3, 4, 8, 9, 10, 7, 8, 9, 7, 8, 9, 3, 8, 9, 7, 5, 9, 7, 2, 5, 9]
@@ -132,7 +132,7 @@ novomatic/columbus/reel
 # reels lengths [32, 28, 32, 28, 32], total reshuffles 25690112
 # symbols: 68.866(lined) + 0(scatter) = 68.865562%
 # free spins 7620480, q = 0.29663, sq = 1/(1-q) = 1.421729
-# free games frequency: 1/33.712
+# free games hit rate: 1/33.712
 # RTP = 68.866(sym) + 0.29663*251.43(fg) = 143.446853%
 143.446853:
   - [1, 5, 7, 10, 8, 2, 10, 6, 4, 10, 6, 3, 4, 8, 9, 10, 7, 8, 9, 7, 8, 9, 3, 8, 9, 7, 5, 9, 7, 2, 5, 9]

@@ -41,7 +41,7 @@ func CalcStatBon(ctx context.Context) float64 {
 		var rtp = sq * rtpsym
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount.Load(), q, sq)
-		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", s.FGF())
+		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "RTP = sq*rtp(sym) = %.5g*%.5g = %.6f%%\n", sq, rtpsym, rtp)
 		return rtp
 	}
@@ -77,9 +77,9 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		var rtp = rtpsym + rtpacbn + rtpdlbn + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount.Load(), q, sq)
-		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", s.FGF())
-		fmt.Fprintf(w, "acorn bonuses: frequency 1/%d, rtp = %.6f%%\n", len(reels.Reel(5)), rtpacbn)
-		fmt.Fprintf(w, "diamond lion bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(dlbn), rtpdlbn)
+		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
+		fmt.Fprintf(w, "acorn bonuses: hit rate 1/%d, rtp = %.6f%%\n", len(reels.Reel(5)), rtpacbn)
+		fmt.Fprintf(w, "diamond lion bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(dlbn), rtpdlbn)
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(acorn) + %.5g(dl) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, rtpacbn, rtpdlbn, q, rtpfs, rtp)
 		return rtp
 	}

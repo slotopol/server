@@ -48,7 +48,7 @@ agt/valkyrie/reel
 # reels lengths [32, 30, 31, 31, 31], total reshuffles 28599360
 # symbols: 50.111(lined) + 0(scatter) = 50.110982%
 # free spins 1409400, q = 0.049281
-# free games frequency: 1/304.38
+# free games hit rate: 1/304.38
 # RTP = 50.111(sym) + 0.049281*668.08(fg) = 83.034286%
 83.034286:
   - [9, 4, 11, 10, 7, 13, 12, 3, 8, 5, 13, 6, 12, 13, 2, 12, 6, 13, 10, 5, 11, 1, 10, 7, 11, 8, 4, 9, 10, 12, 3, 11] # 32
@@ -64,7 +64,7 @@ agt/valkyrie/reel
 # reels lengths [32, 30, 31, 31, 31], total reshuffles 28599360
 # symbols: 51.266(lined) + 0(scatter) = 51.265728%
 # free spins 1409400, q = 0.049281
-# free games frequency: 1/304.38
+# free games hit rate: 1/304.38
 # RTP = 51.266(sym) + 0.049281*684.05(fg) = 84.976241%
 84.976241:
   - [7, 9, 4, 12, 8, 4, 12, 11, 7, 8, 3, 13, 5, 11, 1, 9, 10, 2, 13, 6, 12, 9, 10, 5, 11, 10, 13, 12, 6, 13, 3, 8] # 32
@@ -80,7 +80,7 @@ agt/valkyrie/reel
 # reels lengths [32, 30, 31, 30, 31], total reshuffles 27676800
 # symbols: 51.541(lined) + 0(scatter) = 51.541219%
 # free spins 1397250, q = 0.050485
-# free games frequency: 1/297.12
+# free games hit rate: 1/297.12
 # RTP = 51.541(sym) + 0.050485*684.05(fg) = 86.075121%
 86.075121:
   - [7, 9, 4, 12, 8, 4, 12, 11, 7, 8, 3, 13, 5, 11, 1, 9, 10, 2, 13, 6, 12, 9, 10, 5, 11, 10, 13, 12, 6, 13, 3, 8] # 32
@@ -96,7 +96,7 @@ agt/valkyrie/reel
 # reels lengths [32, 30, 30, 30, 31], total reshuffles 26784000
 # symbols: 52.09(lined) + 0(scatter) = 52.089979%
 # free spins 1385100, q = 0.051714
-# free games frequency: 1/290.06
+# free games hit rate: 1/290.06
 # RTP = 52.09(sym) + 0.051714*684.05(fg) = 87.464707%
 87.464707:
   - [7, 9, 4, 12, 8, 4, 12, 11, 7, 8, 3, 13, 5, 11, 1, 9, 10, 2, 13, 6, 12, 9, 10, 5, 11, 10, 13, 12, 6, 13, 3, 8] # 32
@@ -112,7 +112,7 @@ agt/valkyrie/reel
 # reels lengths [32, 30, 30, 30, 30], total reshuffles 25920000
 # symbols: 52.144(lined) + 0(scatter) = 52.144483%
 # free spins 1372950, q = 0.052969
-# free games frequency: 1/283.19
+# free games hit rate: 1/283.19
 # RTP = 52.144(sym) + 0.052969*685.4(fg) = 88.449086%
 88.449086:
   - [7, 9, 4, 12, 8, 4, 12, 11, 7, 8, 3, 13, 5, 11, 1, 9, 10, 2, 13, 6, 12, 9, 10, 5, 11, 10, 13, 12, 6, 13, 3, 8] # 32
@@ -128,7 +128,7 @@ agt/valkyrie/reel
 # reels lengths [30, 30, 31, 31, 31], total reshuffles 26811900
 # symbols: 52.641(lined) + 0(scatter) = 52.641029%
 # free spins 1385100, q = 0.051660
-# free games frequency: 1/290.36
+# free games hit rate: 1/290.36
 # RTP = 52.641(sym) + 0.05166*716.91(fg) = 89.676774%
 89.676774:
   - [8, 6, 9, 11, 3, 12, 5, 8, 6, 13, 1, 12, 8, 4, 12, 5, 11, 13, 7, 10, 2, 13, 7, 11, 3, 9, 10, 4, 9, 10] # 30
@@ -144,7 +144,7 @@ agt/valkyrie/reel
 # reels lengths [30, 30, 30, 31, 31], total reshuffles 25947000
 # symbols: 53.146(lined) + 0(scatter) = 53.146121%
 # free spins 1372950, q = 0.052914
-# free games frequency: 1/283.48
+# free games hit rate: 1/283.48
 # RTP = 53.146(sym) + 0.052914*716.91(fg) = 91.080687%
 91.080687:
   - [8, 6, 9, 11, 3, 12, 5, 8, 6, 13, 1, 12, 8, 4, 12, 5, 11, 13, 7, 10, 2, 13, 7, 11, 3, 9, 10, 4, 9, 10] # 30
@@ -160,7 +160,7 @@ agt/valkyrie/reel
 # reels lengths [30, 29, 31, 31, 31], total reshuffles 25918170
 # symbols: 53.487(lined) + 0(scatter) = 53.487032%
 # free spins 1338930, q = 0.051660
-# free games frequency: 1/290.36
+# free games hit rate: 1/290.36
 # RTP = 53.487(sym) + 0.05166*716.91(fg) = 90.522778%
 90.522778:
   - [8, 6, 9, 11, 3, 12, 5, 8, 6, 13, 1, 12, 8, 4, 12, 5, 11, 13, 7, 10, 2, 13, 7, 11, 3, 9, 10, 4, 9, 10] # 30
@@ -176,7 +176,7 @@ agt/valkyrie/reel
 # reels lengths [30, 30, 31, 29, 31], total reshuffles 25082100
 # symbols: 53.234(lined) + 0(scatter) = 53.234219%
 # free spins 1360800, q = 0.054254
-# free games frequency: 1/276.48
+# free games hit rate: 1/276.48
 # RTP = 53.234(sym) + 0.054254*716.91(fg) = 92.129593%
 92.129593:
   - [8, 6, 9, 11, 3, 12, 5, 8, 6, 13, 1, 12, 8, 4, 12, 5, 11, 13, 7, 10, 2, 13, 7, 11, 3, 9, 10, 4, 9, 10] # 30
@@ -192,7 +192,7 @@ agt/valkyrie/reel
 # reels lengths [30, 30, 29, 31, 31], total reshuffles 25082100
 # symbols: 53.686(lined) + 0(scatter) = 53.686047%
 # free spins 1360800, q = 0.054254
-# free games frequency: 1/276.48
+# free games hit rate: 1/276.48
 # RTP = 53.686(sym) + 0.054254*716.91(fg) = 92.581421%
 92.581421:
   - [8, 6, 9, 11, 3, 12, 5, 8, 6, 13, 1, 12, 8, 4, 12, 5, 11, 13, 7, 10, 2, 13, 7, 11, 3, 9, 10, 4, 9, 10] # 30
@@ -208,7 +208,7 @@ agt/valkyrie/reel
 # reels lengths [29, 30, 31, 30, 31], total reshuffles 25082100
 # symbols: 53.591(lined) + 0(scatter) = 53.590648%
 # free spins 1360800, q = 0.054254
-# free games frequency: 1/276.48
+# free games hit rate: 1/276.48
 # RTP = 53.591(sym) + 0.054254*726.23(fg) = 92.991640%
 92.991640:
   - [7, 11, 12, 5, 9, 4, 10, 13, 6, 10, 12, 7, 11, 4, 9, 3, 11, 5, 13, 2, 8, 3, 12, 6, 13, 10, 1, 8, 9] # 29
@@ -224,7 +224,7 @@ agt/valkyrie/reel
 # reels lengths [28, 30, 31, 31, 31], total reshuffles 25024440
 # symbols: 53.892(lined) + 0(scatter) = 53.891556%
 # free spins 1360800, q = 0.054379
-# free games frequency: 1/275.84
+# free games hit rate: 1/275.84
 # RTP = 53.892(sym) + 0.054379*736.22(fg) = 93.926313%
 93.926313:
   - [9, 11, 1, 8, 4, 12, 7, 10, 12, 6, 13, 3, 12, 4, 13, 5, 10, 6, 11, 10, 2, 9, 5, 8, 7, 13, 11, 3] # 28
@@ -240,7 +240,7 @@ agt/valkyrie/reel
 # reels lengths [28, 29, 31, 31, 31], total reshuffles 24190292
 # symbols: 54.971(lined) + 0(scatter) = 54.971060%
 # free spins 1315440, q = 0.054379
-# free games frequency: 1/275.84
+# free games hit rate: 1/275.84
 # RTP = 54.971(sym) + 0.054379*736.22(fg) = 95.005818%
 95.005818:
   - [9, 11, 1, 8, 4, 12, 7, 10, 12, 6, 13, 3, 12, 4, 13, 5, 10, 6, 11, 10, 2, 9, 5, 8, 7, 13, 11, 3] # 28
@@ -256,7 +256,7 @@ agt/valkyrie/reel
 # reels lengths [28, 30, 31, 30, 31], total reshuffles 24217200
 # symbols: 54.24(lined) + 0(scatter) = 54.240003%
 # free spins 1348650, q = 0.055690
-# free games frequency: 1/269.35
+# free games hit rate: 1/269.35
 # RTP = 54.24(sym) + 0.05569*736.22(fg) = 95.239884%
 95.239884:
   - [9, 11, 1, 8, 4, 12, 7, 10, 12, 6, 13, 3, 12, 4, 13, 5, 10, 6, 11, 10, 2, 9, 5, 8, 7, 13, 11, 3] # 28
@@ -272,7 +272,7 @@ agt/valkyrie/reel
 # reels lengths [28, 30, 30, 31, 31], total reshuffles 24217200
 # symbols: 54.608(lined) + 0(scatter) = 54.608394%
 # free spins 1348650, q = 0.055690
-# free games frequency: 1/269.35
+# free games hit rate: 1/269.35
 # RTP = 54.608(sym) + 0.05569*736.22(fg) = 95.608275%
 95.608275:
   - [9, 11, 1, 8, 4, 12, 7, 10, 12, 6, 13, 3, 12, 4, 13, 5, 10, 6, 11, 10, 2, 9, 5, 8, 7, 13, 11, 3] # 28
@@ -288,7 +288,7 @@ agt/valkyrie/reel
 # reels lengths [28, 29, 31, 31, 30], total reshuffles 23409960
 # symbols: 55.029(lined) + 0(scatter) = 55.028821%
 # free spins 1303695, q = 0.055690
-# free games frequency: 1/269.35
+# free games hit rate: 1/269.35
 # RTP = 55.029(sym) + 0.05569*737.98(fg) = 96.126791%
 96.126791:
   - [9, 11, 1, 8, 4, 12, 7, 10, 12, 6, 13, 3, 12, 4, 13, 5, 10, 6, 11, 10, 2, 9, 5, 8, 7, 13, 11, 3] # 28
@@ -304,7 +304,7 @@ agt/valkyrie/reel
 # reels lengths [28, 28, 31, 31, 30], total reshuffles 22602720
 # symbols: 56.186(lined) + 0(scatter) = 56.186158%
 # free spins 1258740, q = 0.055690
-# free games frequency: 1/269.35
+# free games hit rate: 1/269.35
 # RTP = 56.186(sym) + 0.05569*737.98(fg) = 97.284128%
 97.284128:
   - [9, 11, 1, 8, 4, 12, 7, 10, 12, 6, 13, 3, 12, 4, 13, 5, 10, 6, 11, 10, 2, 9, 5, 8, 7, 13, 11, 3] # 28
@@ -320,7 +320,7 @@ agt/valkyrie/reel
 # reels lengths [28, 28, 30, 31, 31], total reshuffles 22602720
 # symbols: 57.009(lined) + 0(scatter) = 57.008643%
 # free spins 1258740, q = 0.055690
-# free games frequency: 1/269.35
+# free games hit rate: 1/269.35
 # RTP = 57.009(sym) + 0.05569*736.22(fg) = 98.008525%
 98.008525:
   - [9, 11, 1, 8, 4, 12, 7, 10, 12, 6, 13, 3, 12, 4, 13, 5, 10, 6, 11, 10, 2, 9, 5, 8, 7, 13, 11, 3] # 28
@@ -336,7 +336,7 @@ agt/valkyrie/reel
 # reels lengths [28, 28, 31, 31, 29], total reshuffles 21849296
 # symbols: 56.249(lined) + 0(scatter) = 56.248677%
 # free spins 1247400, q = 0.057091
-# free games frequency: 1/262.74
+# free games hit rate: 1/262.74
 # RTP = 56.249(sym) + 0.057091*739.86(fg) = 98.488292%
 98.488292:
   - [9, 11, 1, 8, 4, 12, 7, 10, 12, 6, 13, 3, 12, 4, 13, 5, 10, 6, 11, 10, 2, 9, 5, 8, 7, 13, 11, 3] # 28
@@ -352,7 +352,7 @@ agt/valkyrie/reel
 # reels lengths [28, 28, 31, 29, 31], total reshuffles 21849296
 # symbols: 56.955(lined) + 0(scatter) = 56.954970%
 # free spins 1247400, q = 0.057091
-# free games frequency: 1/262.74
+# free games hit rate: 1/262.74
 # RTP = 56.955(sym) + 0.057091*736.22(fg) = 98.986535%
 98.986535:
   - [9, 11, 1, 8, 4, 12, 7, 10, 12, 6, 13, 3, 12, 4, 13, 5, 10, 6, 11, 10, 2, 9, 5, 8, 7, 13, 11, 3] # 28
@@ -368,7 +368,7 @@ agt/valkyrie/reel
 # reels lengths [28, 28, 29, 31, 31], total reshuffles 21849296
 # symbols: 57.95(lined) + 0(scatter) = 57.950371%
 # free spins 1247400, q = 0.057091
-# free games frequency: 1/262.74
+# free games hit rate: 1/262.74
 # RTP = 57.95(sym) + 0.057091*736.22(fg) = 99.981936%
 99.981936:
   - [9, 11, 1, 8, 4, 12, 7, 10, 12, 6, 13, 3, 12, 4, 13, 5, 10, 6, 11, 10, 2, 9, 5, 8, 7, 13, 11, 3] # 28
@@ -384,7 +384,7 @@ agt/valkyrie/reel
 # reels lengths [28, 28, 29, 30, 31], total reshuffles 21144480
 # symbols: 58.4(lined) + 0(scatter) = 58.400490%
 # free spins 1236060, q = 0.058458
-# free games frequency: 1/256.6
+# free games hit rate: 1/256.6
 # RTP = 58.4(sym) + 0.058458*736.22(fg) = 101.438266%
 101.438266:
   - [9, 11, 1, 8, 4, 12, 7, 10, 12, 6, 13, 3, 12, 4, 13, 5, 10, 6, 11, 10, 2, 9, 5, 8, 7, 13, 11, 3] # 28
@@ -400,7 +400,7 @@ agt/valkyrie/reel
 # reels lengths [28, 28, 29, 29, 31], total reshuffles 20439664
 # symbols: 58.882(lined) + 0(scatter) = 58.881653%
 # free spins 1224720, q = 0.059919
-# free games frequency: 1/250.34
+# free games hit rate: 1/250.34
 # RTP = 58.882(sym) + 0.059919*736.22(fg) = 102.995032%
 102.995032:
   - [9, 11, 1, 8, 4, 12, 7, 10, 12, 6, 13, 3, 12, 4, 13, 5, 10, 6, 11, 10, 2, 9, 5, 8, 7, 13, 11, 3] # 28
@@ -416,7 +416,7 @@ agt/valkyrie/reel
 # reels lengths [28, 28, 29, 29, 29], total reshuffles 19120976
 # symbols: 59.038(lined) + 0(scatter) = 59.038346%
 # free spins 1202040, q = 0.062865
-# free games frequency: 1/238.61
+# free games hit rate: 1/238.61
 # RTP = 59.038(sym) + 0.062865*739.86(fg) = 105.549864%
 105.549864:
   - [13, 7, 11, 3, 10, 12, 2, 13, 5, 10, 4, 13, 6, 11, 5, 12, 3, 8, 1, 10, 6, 12, 9, 4, 11, 9, 7, 8] # 28
@@ -432,7 +432,7 @@ agt/valkyrie/reel
 # reels lengths [31, 30, 31, 31, 31], total reshuffles 27705630
 # symbols: 64.374(lined) + 0(scatter) = 64.374411%
 # free spins 1397250, q = 0.050432
-# free games frequency: 1/297.43
+# free games hit rate: 1/297.43
 # RTP = 64.374(sym) + 0.050432*890.98(fg) = 109.308250%
 109.308250:
   - [13, 5, 10, 4, 9, 8, 7, 10, 3, 8, 1, 9, 5, 12, 1, 9, 11, 2, 8, 6, 13, 3, 11, 13, 12, 6, 11, 4, 10, 7, 12] # 31

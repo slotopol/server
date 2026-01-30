@@ -27,12 +27,12 @@ aristocrat/redroo/reel
 # *free games calculations*
 # symbols: 152.01(lined) + 0.47439(scatter) = 152.485423%
 # free spins 162558160, q = 0.19894, sq = 1/(1-q) = 1.248342
-# free games frequency: 1/26.246
+# free games hit rate: 1/26.246
 # RTP = sq*rtp(sym) = 1.2483*152.49 = 190.353978%
 # *regular games calculations*
 # symbols: 87.917(lined) + 0.47439(scatter) = 88.391276%
 # free spins 17509120, q = 0.021428, sq = 1/(1-q) = 1.021897
-# free games frequency: 1/384.77
+# free games hit rate: 1/384.77
 # RTP = 88.391(sym) + 0.021428*190.35(fg) = 92.470094%
 92.470094:
   - [5, 10, 7, 12, 11, 13, 8, 10, 12, 4, 9, 6, 12, 5, 13, 11, 3, 12, 6, 13, 9, 5, 8, 7, 10, 3, 13, 12, 6, 11, 4, 8, 6, 11, 4, 9, 13, 12, 11, 4, 9, 7, 10, 3, 9, 5, 8, 2, 11, 6, 8, 7, 13, 10, 9, 7, 8, 10, 12, 13] # 60
@@ -45,12 +45,12 @@ aristocrat/redroo/reel
 # *free games calculations*
 # symbols: 153.81(lined) + 0.47439(scatter) = 154.288336%
 # free spins 162558160, q = 0.19894, sq = 1/(1-q) = 1.248342
-# free games frequency: 1/26.246
+# free games hit rate: 1/26.246
 # RTP = sq*rtp(sym) = 1.2483*154.29 = 192.604630%
 # *regular games calculations*
 # symbols: 89.286(lined) + 0.47439(scatter) = 89.760461%
 # free spins 17509120, q = 0.021428, sq = 1/(1-q) = 1.021897
-# free games frequency: 1/384.77
+# free games hit rate: 1/384.77
 # RTP = 89.76(sym) + 0.021428*192.6(fg) = 93.887505%
 93.887505:
   - [10, 11, 4, 12, 7, 13, 10, 6, 11, 4, 13, 9, 6, 11, 5, 12, 7, 8, 4, 13, 12, 8, 2, 10, 13, 5, 9, 6, 10, 3, 9, 5, 12, 7, 10, 6, 13, 3, 8, 11, 9, 12, 4, 11, 8, 7, 13, 5, 8, 9, 11, 6, 12, 3, 13, 11, 10, 12, 9, 7] # 60
@@ -63,12 +63,12 @@ aristocrat/redroo/reel
 # *free games calculations*
 # symbols: 155.29(lined) + 0.4989(scatter) = 155.788768%
 # free spins 154411136, q = 0.20536, sq = 1/(1-q) = 1.258435
-# free games frequency: 1/25.445
+# free games hit rate: 1/25.445
 # RTP = sq*rtp(sym) = 1.2584*155.79 = 196.050073%
 # *regular games calculations*
 # symbols: 89.185(lined) + 0.4989(scatter) = 89.683950%
 # free spins 16915456, q = 0.022497, sq = 1/(1-q) = 1.023015
-# free games frequency: 1/366.67
+# free games hit rate: 1/366.67
 # RTP = 89.684(sym) + 0.022497*196.05(fg) = 94.094502%
 94.094502:
   - [7, 10, 4, 12, 6, 13, 3, 9, 8, 11, 5, 12, 8, 10, 2, 13, 5, 8, 11, 7, 13, 4, 10, 11, 9, 12, 6, 13, 9, 7, 10, 5, 8, 4, 10, 12, 7, 11, 4, 13, 9, 7, 8, 6, 13, 12, 10, 9, 11, 3, 12, 6, 9, 3, 11, 6, 8, 5, 13] # 59
@@ -81,12 +81,12 @@ aristocrat/redroo/reel
 # *free games calculations*
 # symbols: 155.36(lined) + 0.47439(scatter) = 155.833149%
 # free spins 162558160, q = 0.19894, sq = 1/(1-q) = 1.248342
-# free games frequency: 1/26.246
+# free games hit rate: 1/26.246
 # RTP = sq*rtp(sym) = 1.2483*155.83 = 194.533084%
 # *regular games calculations*
 # symbols: 90.159(lined) + 0.47439(scatter) = 90.633845%
 # free spins 17509120, q = 0.021428, sq = 1/(1-q) = 1.021897
-# free games frequency: 1/384.77
+# free games hit rate: 1/384.77
 # RTP = 90.634(sym) + 0.021428*194.53(fg) = 94.802210%
 94.802210:
   - [13, 4, 10, 5, 11, 4, 10, 6, 11, 3, 9, 12, 8, 7, 9, 5, 8, 3, 12, 13, 6, 11, 2, 8, 13, 5, 12, 7, 10, 6, 13, 11, 4, 10, 6, 12, 7, 13, 4, 9, 8, 12, 5, 11, 7, 8, 10, 9, 7, 11, 13, 9, 3, 8, 6, 12, 13, 10, 7, 9] # 60
@@ -99,12 +99,12 @@ aristocrat/redroo/reel
 # *free games calculations*
 # symbols: 155.59(lined) + 0.47439(scatter) = 156.063251%
 # free spins 162558160, q = 0.19894, sq = 1/(1-q) = 1.248342
-# free games frequency: 1/26.246
+# free games hit rate: 1/26.246
 # RTP = sq*rtp(sym) = 1.2483*156.06 = 194.820330%
 # *regular games calculations*
 # symbols: 90.629(lined) + 0.47439(scatter) = 91.102945%
 # free spins 17509120, q = 0.021428, sq = 1/(1-q) = 1.021897
-# free games frequency: 1/384.77
+# free games hit rate: 1/384.77
 # RTP = 91.103(sym) + 0.021428*194.82(fg) = 95.277465%
 95.277465:
   - [12, 11, 4, 13, 10, 7, 12, 6, 8, 10, 9, 11, 12, 7, 10, 8, 11, 4, 9, 13, 11, 4, 10, 6, 9, 3, 8, 11, 12, 4, 13, 6, 12, 2, 13, 5, 12, 3, 8, 5, 13, 3, 12, 10, 6, 11, 7, 13, 5, 9, 7, 10, 11, 5, 9, 13, 8, 7, 10, 6] # 60
@@ -117,12 +117,12 @@ aristocrat/redroo/reel
 # *free games calculations*
 # symbols: 158.45(lined) + 0.52514(scatter) = 158.974074%
 # free spins 146541232, q = 0.2121, sq = 1/(1-q) = 1.269202
-# free games frequency: 1/24.657
+# free games hit rate: 1/24.657
 # RTP = sq*rtp(sym) = 1.2692*158.97 = 201.770248%
 # *regular games calculations*
 # symbols: 90.254(lined) + 0.52514(scatter) = 90.778963%
 # free spins 16332032, q = 0.023639, sq = 1/(1-q) = 1.024211
-# free games frequency: 1/349.15
+# free games hit rate: 1/349.15
 # RTP = 90.779(sym) + 0.023639*201.77(fg) = 95.548600%
 95.548600:
   - [5, 10, 11, 9, 13, 4, 8, 10, 11, 4, 12, 10, 11, 9, 12, 2, 13, 6, 8, 10, 12, 7, 13, 5, 11, 7, 8, 9, 5, 13, 8, 4, 9, 6, 13, 3, 12, 7, 11, 6, 10, 7, 9, 6, 8, 3, 12, 5, 13, 3, 10, 7, 9, 4, 12, 11, 6, 8] # 58
@@ -135,12 +135,12 @@ aristocrat/redroo/reel
 # *free games calculations*
 # symbols: 157.02(lined) + 0.4989(scatter) = 157.520816%
 # free spins 154411136, q = 0.20536, sq = 1/(1-q) = 1.258435
-# free games frequency: 1/25.445
+# free games hit rate: 1/25.445
 # RTP = sq*rtp(sym) = 1.2584*157.52 = 198.229744%
 # *regular games calculations*
 # symbols: 90.69(lined) + 0.4989(scatter) = 91.188933%
 # free spins 16915456, q = 0.022497, sq = 1/(1-q) = 1.023015
-# free games frequency: 1/366.67
+# free games hit rate: 1/366.67
 # RTP = 91.189(sym) + 0.022497*198.23(fg) = 95.648521%
 95.648521:
   - [11, 9, 4, 12, 7, 10, 3, 13, 8, 11, 12, 6, 9, 8, 12, 4, 10, 5, 13, 2, 11, 12, 13, 7, 8, 4, 13, 6, 9, 11, 7, 13, 5, 10, 7, 11, 3, 10, 6, 8, 4, 10, 6, 12, 5, 10, 8, 3, 13, 11, 12, 6, 9, 7, 13, 11, 9, 5, 12] # 59
@@ -153,12 +153,12 @@ aristocrat/redroo/reel
 # *free games calculations*
 # symbols: 158.44(lined) + 0.52514(scatter) = 158.963836%
 # free spins 146541232, q = 0.2121, sq = 1/(1-q) = 1.269202
-# free games frequency: 1/24.657
+# free games hit rate: 1/24.657
 # RTP = sq*rtp(sym) = 1.2692*158.96 = 201.757254%
 # *regular games calculations*
 # symbols: 90.672(lined) + 0.52514(scatter) = 91.196878%
 # free spins 16332032, q = 0.023639, sq = 1/(1-q) = 1.024211
-# free games frequency: 1/349.15
+# free games hit rate: 1/349.15
 # RTP = 91.197(sym) + 0.023639*201.76(fg) = 95.966208%
 95.966208:
   - [4, 11, 7, 13, 12, 4, 10, 6, 13, 9, 8, 7, 11, 5, 8, 3, 13, 12, 11, 4, 13, 6, 9, 4, 13, 11, 12, 10, 7, 9, 8, 5, 12, 3, 10, 6, 13, 12, 10, 3, 8, 6, 11, 7, 10, 5, 12, 6, 10, 9, 2, 13, 7, 11, 8, 5, 12, 9] # 58
@@ -171,12 +171,12 @@ aristocrat/redroo/reel
 # *free games calculations*
 # symbols: 161.36(lined) + 0.55324(scatter) = 161.912411%
 # free spins 138943648, q = 0.21918, sq = 1/(1-q) = 1.280708
-# free games frequency: 1/23.881
+# free games hit rate: 1/23.881
 # RTP = sq*rtp(sym) = 1.2807*161.91 = 207.362565%
 # *regular games calculations*
 # symbols: 91.581(lined) + 0.55324(scatter) = 92.134182%
 # free spins 15758848, q = 0.024859, sq = 1/(1-q) = 1.025493
-# free games frequency: 1/332.19
+# free games hit rate: 1/332.19
 # RTP = 92.134(sym) + 0.024859*207.36(fg) = 97.289093%
 97.289093:
   - [9, 7, 12, 3, 13, 5, 9, 6, 13, 12, 7, 9, 4, 10, 6, 11, 13, 8, 4, 10, 5, 9, 6, 11, 3, 10, 7, 12, 2, 13, 7, 11, 6, 12, 3, 11, 8, 9, 13, 5, 8, 7, 10, 12, 13, 11, 10, 5, 8, 12, 4, 11, 6, 13, 8, 4, 10] # 57
@@ -189,12 +189,12 @@ aristocrat/redroo/reel
 # *free games calculations*
 # symbols: 163.72(lined) + 0.58339(scatter) = 164.308042%
 # free spins 131613584, q = 0.22662, sq = 1/(1-q) = 1.293027
-# free games frequency: 1/23.117
+# free games hit rate: 1/23.117
 # RTP = sq*rtp(sym) = 1.293*164.31 = 212.454741%
 # *regular games calculations*
 # symbols: 91.985(lined) + 0.58339(scatter) = 92.568615%
 # free spins 15195904, q = 0.026165, sq = 1/(1-q) = 1.026868
-# free games frequency: 1/315.8
+# free games hit rate: 1/315.8
 # RTP = 92.569(sym) + 0.026165*212.45(fg) = 98.127560%
 98.127560:
   - [12, 2, 13, 5, 11, 3, 8, 6, 9, 10, 3, 13, 7, 12, 6, 9, 11, 13, 6, 10, 9, 8, 3, 13, 5, 12, 10, 7, 13, 11, 10, 4, 12, 9, 7, 8, 10, 4, 11, 7, 9, 8, 5, 11, 6, 12, 4, 13, 5, 10, 12, 7, 11, 4, 8, 6] # 56
@@ -207,12 +207,12 @@ aristocrat/redroo/reel
 # *free games calculations*
 # symbols: 163.96(lined) + 0.58339(scatter) = 164.547329%
 # free spins 131613584, q = 0.22662, sq = 1/(1-q) = 1.293027
-# free games frequency: 1/23.117
+# free games hit rate: 1/23.117
 # RTP = sq*rtp(sym) = 1.293*164.55 = 212.764146%
 # *regular games calculations*
 # symbols: 92.169(lined) + 0.58339(scatter) = 92.752640%
 # free spins 15195904, q = 0.026165, sq = 1/(1-q) = 1.026868
-# free games frequency: 1/315.8
+# free games hit rate: 1/315.8
 # RTP = 92.753(sym) + 0.026165*212.76(fg) = 98.319680%
 98.319680:
   - [13, 9, 10, 12, 7, 11, 4, 12, 9, 7, 11, 4, 10, 13, 6, 11, 9, 12, 4, 8, 6, 13, 3, 10, 12, 5, 8, 6, 9, 12, 7, 13, 2, 12, 6, 10, 3, 13, 6, 9, 5, 8, 3, 10, 5, 11, 7, 10, 4, 11, 8, 7, 13, 5, 8, 11] # 56
@@ -225,12 +225,12 @@ aristocrat/redroo/reel
 # *free games calculations*
 # symbols: 165.95(lined) + 0.61576(scatter) = 166.570653%
 # free spins 124546240, q = 0.23445, sq = 1/(1-q) = 1.306242
-# free games frequency: 1/22.366
+# free games hit rate: 1/22.366
 # RTP = sq*rtp(sym) = 1.3062*166.57 = 217.581591%
 # *regular games calculations*
 # symbols: 92.671(lined) + 0.61576(scatter) = 93.286348%
 # free spins 14643200, q = 0.027564, sq = 1/(1-q) = 1.028346
-# free games frequency: 1/299.95
+# free games hit rate: 1/299.95
 # RTP = 93.286(sym) + 0.027564*217.58(fg) = 99.283826%
 99.283826:
   - [6, 13, 2, 8, 11, 12, 13, 10, 11, 8, 5, 13, 6, 9, 5, 13, 3, 12, 7, 10, 9, 3, 12, 11, 13, 4, 8, 5, 10, 12, 7, 13, 4, 9, 8, 11, 5, 10, 6, 9, 11, 7, 10, 6, 12, 4, 8, 7, 12, 3, 10, 6, 9, 7, 11] # 55
@@ -243,12 +243,12 @@ aristocrat/redroo/reel
 # *free games calculations*
 # symbols: 167.55(lined) + 0.65058(scatter) = 168.201991%
 # free spins 117736816, q = 0.24268, sq = 1/(1-q) = 1.320448
-# free games frequency: 1/21.628
+# free games hit rate: 1/21.628
 # RTP = sq*rtp(sym) = 1.3204*168.2 = 222.102055%
 # *regular games calculations*
 # symbols: 92.924(lined) + 0.65058(scatter) = 93.574771%
 # free spins 14100736, q = 0.029065, sq = 1/(1-q) = 1.029935
-# free games frequency: 1/284.65
+# free games hit rate: 1/284.65
 # RTP = 93.575(sym) + 0.029065*222.1(fg) = 100.030106%
 100.030106:
   - [8, 2, 10, 7, 13, 6, 11, 5, 12, 3, 11, 6, 8, 4, 13, 6, 11, 7, 10, 12, 9, 13, 5, 10, 4, 12, 6, 13, 5, 8, 9, 12, 13, 3, 10, 9, 13, 3, 11, 7, 12, 4, 10, 8, 6, 9, 7, 8, 10, 11, 12, 7, 9, 11] # 54
@@ -261,12 +261,12 @@ aristocrat/redroo/reel
 # *free games calculations*
 # symbols: 171.5(lined) + 0.65058(scatter) = 172.148745%
 # free spins 117736816, q = 0.24268, sq = 1/(1-q) = 1.320448
-# free games frequency: 1/21.628
+# free games hit rate: 1/21.628
 # RTP = sq*rtp(sym) = 1.3204*172.15 = 227.313540%
 # *regular games calculations*
 # symbols: 95.066(lined) + 0.65058(scatter) = 95.716702%
 # free spins 14100736, q = 0.029065, sq = 1/(1-q) = 1.029935
-# free games frequency: 1/284.65
+# free games hit rate: 1/284.65
 # RTP = 95.717(sym) + 0.029065*227.31(fg) = 102.323507%
 102.323507:
   - [7, 11, 5, 13, 4, 12, 6, 10, 7, 11, 6, 12, 3, 13, 7, 10, 3, 9, 12, 13, 4, 11, 8, 6, 12, 9, 10, 13, 4, 9, 7, 12, 2, 8, 11, 13, 9, 6, 8, 12, 5, 9, 4, 13, 5, 8, 7, 10, 6, 11, 5, 8, 3, 10] # 54
@@ -279,12 +279,12 @@ aristocrat/redroo/reel
 # *free games calculations*
 # symbols: 174.46(lined) + 0.72849(scatter) = 175.186375%
 # free spins 104872528, q = 0.26051, sq = 1/(1-q) = 1.352287
-# free games frequency: 1/20.189
+# free games hit rate: 1/20.189
 # RTP = sq*rtp(sym) = 1.3523*175.19 = 236.902200%
 # *regular games calculations*
 # symbols: 95.182(lined) + 0.72849(scatter) = 95.910139%
 # free spins 13046528, q = 0.032409, sq = 1/(1-q) = 1.033494
-# free games frequency: 1/255.62
+# free games hit rate: 1/255.62
 # RTP = 95.91(sym) + 0.032409*236.9(fg) = 103.587814%
 103.587814:
   - [13, 7, 12, 5, 11, 3, 12, 7, 13, 6, 9, 8, 7, 13, 9, 12, 11, 3, 10, 5, 11, 12, 6, 9, 3, 11, 7, 8, 4, 13, 6, 10, 9, 11, 8, 4, 10, 6, 13, 8, 7, 10, 5, 12, 13, 4, 10, 12, 6, 9, 2, 8] # 52
@@ -297,12 +297,12 @@ aristocrat/redroo/reel
 # *free games calculations*
 # symbols: 183.88(lined) + 0.81935(scatter) = 184.696311%
 # free spins 92982320, q = 0.28038, sq = 1/(1-q) = 1.389626
-# free games frequency: 1/18.799
+# free games hit rate: 1/18.799
 # RTP = sq*rtp(sym) = 1.3896*184.7 = 256.658760%
 # *regular games calculations*
 # symbols: 98.566(lined) + 0.81935(scatter) = 99.385514%
 # free spins 12033280, q = 0.036286, sq = 1/(1-q) = 1.037652
-# free games frequency: 1/228.64
+# free games hit rate: 1/228.64
 # RTP = 99.386(sym) + 0.036286*256.66(fg) = 108.698514%
 108.698514:
   - [4, 8, 6, 12, 7, 8, 6, 13, 10, 9, 5, 11, 3, 9, 7, 12, 3, 11, 10, 7, 9, 2, 8, 7, 13, 6, 12, 5, 11, 3, 8, 13, 10, 4, 9, 7, 13, 5, 8, 10, 11, 4, 12, 6, 13, 11, 9, 12, 6, 10] # 50

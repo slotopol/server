@@ -32,7 +32,7 @@ novomatic/africansimba/reel
 # reels lengths [42, 41, 43, 41, 42], total reshuffles 127507212
 # symbols: 77.048(lined) + 0(scatter) = 77.047670%
 # free spins 4357152, q = 0.034172, sq = 1/(1-q) = 1.035381
-# free games frequency: 1/351.17
+# free games hit rate: 1/351.17
 # RTP = 77.048(sym) + 0.034172*239.32(fg) = 85.225703%
 85.225703:
   - [8, 9, 2, 12, 3, 7, 8, 11, 10, 6, 12, 9, 2, 12, 7, 6, 11, 3, 9, 12, 5, 9, 4, 11, 6, 10, 5, 7, 6, 10, 7, 3, 8, 4, 11, 10, 5, 11, 8, 5, 12, 4] # 42
@@ -44,7 +44,7 @@ novomatic/africansimba/reel
 # reels lengths [42, 41, 42, 41, 42], total reshuffles 124541928
 # symbols: 77.79(lined) + 0(scatter) = 77.790275%
 # free spins 4357152, q = 0.034985, sq = 1/(1-q) = 1.036254
-# free games frequency: 1/343
+# free games hit rate: 1/343
 # RTP = 77.79(sym) + 0.034985*241.83(fg) = 86.250848%
 86.250848:
   - [8, 9, 2, 12, 3, 7, 8, 11, 10, 6, 12, 9, 2, 12, 7, 6, 11, 3, 9, 12, 5, 9, 4, 11, 6, 10, 5, 7, 6, 10, 7, 3, 8, 4, 11, 10, 5, 11, 8, 5, 12, 4] # 42
@@ -56,7 +56,7 @@ novomatic/africansimba/reel
 # reels lengths [41, 41, 43, 40, 41], total reshuffles 118544120
 # symbols: 78.471(lined) + 0(scatter) = 78.470597%
 # free spins 4250880, q = 0.035859, sq = 1/(1-q) = 1.037193
-# free games frequency: 1/334.64
+# free games hit rate: 1/334.64
 # RTP = 78.471(sym) + 0.035859*244.17(fg) = 87.226210%
 87.226210:
   - [10, 6, 12, 8, 4, 11, 5, 9, 12, 7, 5, 9, 3, 11, 5, 8, 10, 6, 12, 9, 6, 11, 10, 3, 12, 10, 5, 12, 4, 7, 8, 3, 11, 2, 7, 9, 6, 7, 2, 8, 4] # 41
@@ -68,7 +68,7 @@ novomatic/africansimba/reel
 # reels lengths [42, 40, 42, 40, 42], total reshuffles 118540800
 # symbols: 79.507(lined) + 0(scatter) = 79.507243%
 # free spins 4147200, q = 0.034985, sq = 1/(1-q) = 1.036254
-# free games frequency: 1/343
+# free games hit rate: 1/343
 # RTP = 79.507(sym) + 0.034985*247.17(fg) = 88.154557%
 88.154557:
   - [8, 9, 2, 12, 3, 7, 8, 11, 10, 6, 12, 9, 2, 12, 7, 6, 11, 3, 9, 12, 5, 9, 4, 11, 6, 10, 5, 7, 6, 10, 7, 3, 8, 4, 11, 10, 5, 11, 8, 5, 12, 4] # 42
@@ -80,7 +80,7 @@ novomatic/africansimba/reel
 # reels lengths [41, 40, 42, 40, 41], total reshuffles 112963200
 # symbols: 80.991(lined) + 0(scatter) = 80.991395%
 # free spins 4147200, q = 0.036713, sq = 1/(1-q) = 1.038112
-# free games frequency: 1/326.86
+# free games hit rate: 1/326.86
 # RTP = 80.991(sym) + 0.036713*252.23(fg) = 90.251638%
 90.251638:
   - [10, 6, 12, 8, 4, 11, 5, 9, 12, 7, 5, 9, 3, 11, 5, 8, 10, 6, 12, 9, 6, 11, 10, 3, 12, 10, 5, 12, 4, 7, 8, 3, 11, 2, 7, 9, 6, 7, 2, 8, 4] # 41
@@ -92,7 +92,7 @@ novomatic/africansimba/reel
 # reels lengths [41, 40, 42, 40, 41], total reshuffles 112963200
 # symbols: 81.215(lined) + 0(scatter) = 81.214827%
 # free spins 4147200, q = 0.036713, sq = 1/(1-q) = 1.038112
-# free games frequency: 1/326.86
+# free games hit rate: 1/326.86
 # RTP = 81.215(sym) + 0.036713*252.93(fg) = 90.500616%
 90.500616:
   - [2, 12, 5, 9, 4, 11, 9, 7, 10, 11, 5, 8, 11, 6, 8, 4, 9, 5, 12, 3, 7, 11, 3, 10, 6, 8, 5, 10, 12, 6, 10, 3, 7, 6, 12, 2, 8, 12, 9, 4, 7] # 41
@@ -104,7 +104,7 @@ novomatic/africansimba/reel
 # reels lengths [41, 40, 42, 39, 40], total reshuffles 107452800
 # symbols: 81.552(lined) + 0(scatter) = 81.551595%
 # free spins 4043520, q = 0.037631, sq = 1/(1-q) = 1.039102
-# free games frequency: 1/318.89
+# free games hit rate: 1/318.89
 # RTP = 81.552(sym) + 0.037631*254.22(fg) = 91.118111%
 91.118111:
   - [2, 12, 5, 9, 4, 11, 9, 7, 10, 11, 5, 8, 11, 6, 8, 4, 9, 5, 12, 3, 7, 11, 3, 10, 6, 8, 5, 10, 12, 6, 10, 3, 7, 6, 12, 2, 8, 12, 9, 4, 7] # 41
@@ -116,7 +116,7 @@ novomatic/africansimba/reel
 # reels lengths [41, 40, 41, 40, 40], total reshuffles 107584000
 # symbols: 82.099(lined) + 0(scatter) = 82.098632%
 # free spins 4147200, q = 0.038548, sq = 1/(1-q) = 1.040094
-# free games frequency: 1/311.3
+# free games hit rate: 1/311.3
 # RTP = 82.099(sym) + 0.038548*256.17(fg) = 91.973631%
 91.973631:
   - [2, 12, 5, 9, 4, 11, 9, 7, 10, 11, 5, 8, 11, 6, 8, 4, 9, 5, 12, 3, 7, 11, 3, 10, 6, 8, 5, 10, 12, 6, 10, 3, 7, 6, 12, 2, 8, 12, 9, 4, 7] # 41
@@ -128,7 +128,7 @@ novomatic/africansimba/reel
 # reels lengths [40, 39, 42, 40, 40], total reshuffles 104832000
 # symbols: 83.126(lined) + 0(scatter) = 83.126374%
 # free spins 4043520, q = 0.038571, sq = 1/(1-q) = 1.040119
-# free games frequency: 1/311.11
+# free games hit rate: 1/311.11
 # RTP = 83.126(sym) + 0.038571*259.38(fg) = 93.131182%
 93.131182:
   - [3, 7, 5, 12, 8, 4, 12, 5, 10, 6, 11, 2, 9, 3, 7, 10, 5, 8, 4, 12, 9, 3, 8, 6, 7, 8, 12, 4, 10, 11, 5, 9, 11, 2, 7, 6, 10, 9, 6, 11] # 40
@@ -140,7 +140,7 @@ novomatic/africansimba/reel
 # reels lengths [40, 39, 41, 40, 41], total reshuffles 104894400
 # symbols: 84.062(lined) + 0(scatter) = 84.061948%
 # free spins 4043520, q = 0.038548, sq = 1/(1-q) = 1.040094
-# free games frequency: 1/311.3
+# free games hit rate: 1/311.3
 # RTP = 84.062(sym) + 0.038548*262.3(fg) = 94.173099%
 94.173099:
   - [3, 7, 5, 12, 8, 4, 12, 5, 10, 6, 11, 2, 9, 3, 7, 10, 5, 8, 4, 12, 9, 3, 8, 6, 7, 8, 12, 4, 10, 11, 5, 9, 11, 2, 7, 6, 10, 9, 6, 11] # 40
@@ -152,7 +152,7 @@ novomatic/africansimba/reel
 # reels lengths [40, 39, 41, 39, 40], total reshuffles 99777600
 # symbols: 85.088(lined) + 0(scatter) = 85.088469%
 # free spins 3942432, q = 0.039512, sq = 1/(1-q) = 1.041138
-# free games frequency: 1/303.7
+# free games hit rate: 1/303.7
 # RTP = 85.088(sym) + 0.039512*265.77(fg) = 95.589483%
 95.589483:
   - [3, 7, 5, 12, 8, 4, 12, 5, 10, 6, 11, 2, 9, 3, 7, 10, 5, 8, 4, 12, 9, 3, 8, 6, 7, 8, 12, 4, 10, 11, 5, 9, 11, 2, 7, 6, 10, 9, 6, 11] # 40
@@ -164,7 +164,7 @@ novomatic/africansimba/reel
 # reels lengths [40, 39, 41, 39, 40], total reshuffles 99777600
 # symbols: 85.482(lined) + 0(scatter) = 85.482465%
 # free spins 3942432, q = 0.039512, sq = 1/(1-q) = 1.041138
-# free games frequency: 1/303.7
+# free games hit rate: 1/303.7
 # RTP = 85.482(sym) + 0.039512*267(fg) = 96.032104%
 96.032104:
   - [9, 6, 11, 9, 10, 2, 12, 3, 10, 2, 8, 9, 11, 6, 9, 11, 4, 8, 5, 12, 10, 5, 7, 4, 8, 5, 7, 6, 11, 4, 10, 3, 12, 7, 6, 12, 3, 8, 5, 7] # 40
@@ -176,7 +176,7 @@ novomatic/africansimba/reel
 # reels lengths [40, 39, 40, 38, 40], total reshuffles 94848000
 # symbols: 85.733(lined) + 0(scatter) = 85.732743%
 # free spins 3841344, q = 0.0405, sq = 1/(1-q) = 1.042209
-# free games frequency: 1/296.3
+# free games hit rate: 1/296.3
 # RTP = 85.733(sym) + 0.0405*268.05(fg) = 96.588947%
 96.588947:
   - [3, 7, 5, 12, 8, 4, 12, 5, 10, 6, 11, 2, 9, 3, 7, 10, 5, 8, 4, 12, 9, 3, 8, 6, 7, 8, 12, 4, 10, 11, 5, 9, 11, 2, 7, 6, 10, 9, 6, 11] # 40
@@ -188,7 +188,7 @@ novomatic/africansimba/reel
 # reels lengths [40, 39, 40, 38, 39], total reshuffles 92476800
 # symbols: 85.972(lined) + 0(scatter) = 85.972283%
 # free spins 3841344, q = 0.041538, sq = 1/(1-q) = 1.043339
-# free games frequency: 1/288.89
+# free games hit rate: 1/288.89
 # RTP = 85.972(sym) + 0.041538*269.09(fg) = 97.150060%
 97.150060:
   - [9, 6, 11, 9, 10, 2, 12, 3, 10, 2, 8, 9, 11, 6, 9, 11, 4, 8, 5, 12, 10, 5, 7, 4, 8, 5, 7, 6, 11, 4, 10, 3, 12, 7, 6, 12, 3, 8, 5, 7] # 40
@@ -200,7 +200,7 @@ novomatic/africansimba/reel
 # reels lengths [39, 38, 40, 39, 39], total reshuffles 90164880
 # symbols: 86.509(lined) + 0(scatter) = 86.509355%
 # free spins 3841344, q = 0.042604, sq = 1/(1-q) = 1.044499
-# free games frequency: 1/281.67
+# free games hit rate: 1/281.67
 # RTP = 86.509(sym) + 0.042604*271.08(fg) = 98.058193%
 98.058193:
   - [9, 5, 11, 2, 8, 11, 6, 10, 4, 7, 5, 10, 8, 12, 3, 9, 6, 12, 9, 4, 7, 12, 6, 7, 3, 11, 6, 8, 4, 7, 3, 12, 10, 9, 8, 5, 10, 2, 11] # 39
@@ -212,7 +212,7 @@ novomatic/africansimba/reel
 # reels lengths [39, 38, 40, 38, 39], total reshuffles 87852960
 # symbols: 87.376(lined) + 0(scatter) = 87.375633%
 # free spins 3742848, q = 0.042604, sq = 1/(1-q) = 1.044499
-# free games frequency: 1/281.67
+# free games hit rate: 1/281.67
 # RTP = 87.376(sym) + 0.042604*273.79(fg) = 99.040118%
 99.040118:
   - [9, 5, 11, 2, 8, 11, 6, 10, 4, 7, 5, 10, 8, 12, 3, 9, 6, 12, 9, 4, 7, 12, 6, 7, 3, 11, 6, 8, 4, 7, 3, 12, 10, 9, 8, 5, 10, 2, 11] # 39
@@ -224,7 +224,7 @@ novomatic/africansimba/reel
 # reels lengths [38, 38, 39, 37, 39], total reshuffles 81263988
 # symbols: 87.214(lined) + 0(scatter) = 87.214159%
 # free spins 3644352, q = 0.044846, sq = 1/(1-q) = 1.046951
-# free games frequency: 1/267.58
+# free games hit rate: 1/267.58
 # RTP = 87.214(sym) + 0.044846*273.93(fg) = 99.498645%
 99.498645:
   - [11, 7, 10, 8, 6, 12, 4, 7, 3, 8, 10, 2, 12, 7, 9, 10, 3, 12, 4, 9, 6, 11, 10, 5, 11, 3, 9, 12, 5, 8, 6, 9, 5, 11, 8, 2, 7, 4] # 38
@@ -236,7 +236,7 @@ novomatic/africansimba/reel
 # reels lengths [39, 37, 39, 37, 39], total reshuffles 81207711
 # symbols: 87.725(lined) + 0(scatter) = 87.725044%
 # free spins 3548448, q = 0.043696, sq = 1/(1-q) = 1.045693
-# free games frequency: 1/274.62
+# free games hit rate: 1/274.62
 # RTP = 87.725(sym) + 0.043696*275.2(fg) = 99.750181%
 99.750181:
   - [9, 5, 11, 2, 8, 11, 6, 10, 4, 7, 5, 10, 8, 12, 3, 9, 6, 12, 9, 4, 7, 12, 6, 7, 3, 11, 6, 8, 4, 7, 3, 12, 10, 9, 8, 5, 10, 2, 11] # 39
@@ -248,7 +248,7 @@ novomatic/africansimba/reel
 # reels lengths [38, 37, 39, 37, 38], total reshuffles 77096604
 # symbols: 88.67(lined) + 0(scatter) = 88.670085%
 # free spins 3548448, q = 0.046026, sq = 1/(1-q) = 1.048247
-# free games frequency: 1/260.72
+# free games hit rate: 1/260.72
 # RTP = 88.67(sym) + 0.046026*278.84(fg) = 101.504173%
 101.504173:
   - [11, 7, 10, 8, 6, 12, 4, 7, 3, 8, 10, 2, 12, 7, 9, 10, 3, 12, 4, 9, 6, 11, 10, 5, 11, 3, 9, 12, 5, 8, 6, 9, 5, 11, 8, 2, 7, 4] # 38
@@ -260,7 +260,7 @@ novomatic/africansimba/reel
 # reels lengths [38, 37, 38, 37, 38], total reshuffles 75119768
 # symbols: 89.814(lined) + 0(scatter) = 89.813952%
 # free spins 3548448, q = 0.047237, sq = 1/(1-q) = 1.049579
-# free games frequency: 1/254.04
+# free games hit rate: 1/254.04
 # RTP = 89.814(sym) + 0.047237*282.8(fg) = 103.172660%
 103.172660:
   - [11, 7, 10, 8, 6, 12, 4, 7, 3, 8, 10, 2, 12, 7, 9, 10, 3, 12, 4, 9, 6, 11, 10, 5, 11, 3, 9, 12, 5, 8, 6, 9, 5, 11, 8, 2, 7, 4] # 38
@@ -272,7 +272,7 @@ novomatic/africansimba/reel
 # reels lengths [37, 36, 39, 36, 37], total reshuffles 69194736
 # symbols: 93.312(lined) + 0(scatter) = 93.311763%
 # free spins 3359232, q = 0.048548, sq = 1/(1-q) = 1.051025
-# free games frequency: 1/247.18
+# free games hit rate: 1/247.18
 # RTP = 93.312(sym) + 0.048548*294.22(fg) = 107.595356%
 107.595356:
   - [10, 11, 3, 7, 6, 12, 3, 10, 8, 4, 11, 10, 4, 11, 2, 9, 5, 8, 6, 10, 7, 5, 8, 3, 9, 12, 6, 9, 12, 4, 7, 12, 8, 5, 9, 11, 2] # 37
@@ -284,7 +284,7 @@ novomatic/africansimba/reel
 # reels lengths [37, 36, 38, 36, 37], total reshuffles 67420512
 # symbols: 95.176(lined) + 0(scatter) = 95.175663%
 # free spins 3359232, q = 0.049825, sq = 1/(1-q) = 1.052438
-# free games frequency: 1/240.84
+# free games hit rate: 1/240.84
 # RTP = 95.176(sym) + 0.049825*300.5(fg) = 110.148067%
 110.148067:
   - [10, 11, 3, 7, 6, 12, 3, 10, 8, 4, 11, 10, 4, 11, 2, 9, 5, 8, 6, 10, 7, 5, 8, 3, 9, 12, 6, 9, 12, 4, 7, 12, 8, 5, 9, 11, 2] # 37

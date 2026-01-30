@@ -26,12 +26,12 @@ netent/gonzosquest/reel
 # reels lengths [34, 37, 35, 36, 32], total reshuffles 50722560
 # symbols: 82.237(lined) + 0(scatter) = 82.237206%
 # free spins 979200, q = 0.019305, sq = 1/(1-q) = 1.019685
-# free games frequency: 1/518
-# fall[2] = 17159040, freq = 1/2.956
-# fall[3] = 3892608, freq = 1/13.03, freq2 = 1/4.4081
-# fall[4] = 768384, freq = 1/66.012, freq2 = 1/5.066
-# fall[5] = 162432, freq = 1/312.27, freq2 = 1/4.7305
-# Mcascade = 1.707, Kfading = 4.1724, Ncascmax = 8
+# free games hit rate: 1/518
+# fall[2] = 17159040, Ec2 = Kf2 = 1/2.956
+# fall[3] = 3892608, Ec3 = 1/13.03, Kf3 = 1/4.4081
+# fall[4] = 768384, Ec4 = 1/66.012, Kf4 = 1/5.066
+# fall[5] = 162432, Ec5 = 1/312.27, Kf5 = 1/4.7305
+# Mcascade = 1.707, Kfading = 1/4.1724, Ncascmax = 8
 # RTP = 82.237(sym) + 0.019305*251.57(fg) = 87.093734%
 87.093734:
   - [6, 5, 7, 6, 9, 5, 2, 6, 9, 8, 6, 7, 9, 6, 8, 4, 5, 7, 3, 9, 8, 3, 7, 9, 6, 7, 8, 5, 7, 2, 8, 9, 4, 8] # 34
@@ -43,12 +43,12 @@ netent/gonzosquest/reel
 # reels lengths [34, 37, 35, 36, 32], total reshuffles 50722560
 # symbols: 83.841(lined) + 0(scatter) = 83.841146%
 # free spins 840960, q = 0.01658, sq = 1/(1-q) = 1.016859
-# free games frequency: 1/603.15
-# fall[2] = 17177472, freq = 1/2.9529
-# fall[3] = 3636864, freq = 1/13.947, freq2 = 1/4.7232
-# fall[4] = 774144, freq = 1/65.521, freq2 = 1/4.6979
-# fall[5] = 165888, freq = 1/305.76, freq2 = 1/4.6667
-# Mcascade = 1.7403, Kfading = 3.9376, Ncascmax = 8
+# free games hit rate: 1/603.15
+# fall[2] = 17177472, Ec2 = Kf2 = 1/2.9529
+# fall[3] = 3636864, Ec3 = 1/13.947, Kf3 = 1/4.7232
+# fall[4] = 774144, Ec4 = 1/65.521, Kf4 = 1/4.6979
+# fall[5] = 165888, Ec5 = 1/305.76, Kf5 = 1/4.6667
+# Mcascade = 1.7403, Kfading = 1/3.9376, Ncascmax = 8
 # RTP = 83.841(sym) + 0.01658*255.76(fg) = 88.081611%
 88.081611:
   - [6, 5, 7, 6, 9, 5, 2, 6, 9, 8, 6, 7, 9, 6, 8, 4, 5, 7, 3, 9, 8, 3, 7, 9, 6, 7, 8, 5, 7, 2, 8, 9, 4, 8] # 34
@@ -60,12 +60,12 @@ netent/gonzosquest/reel
 # reels lengths [34, 37, 35, 36, 32], total reshuffles 50722560
 # symbols: 83.803(lined) + 0(scatter) = 83.803320%
 # free spins 1163520, q = 0.022939, sq = 1/(1-q) = 1.023477
-# free games frequency: 1/435.94
-# fall[2] = 17165952, freq = 1/2.9548
-# fall[3] = 4036608, freq = 1/12.566, freq2 = 1/4.2526
-# fall[4] = 905472, freq = 1/56.018, freq2 = 1/4.458
-# fall[5] = 165888, freq = 1/305.76, freq2 = 1/5.4583
-# Mcascade = 1.7395, Kfading = 4.7098, Ncascmax = 6
+# free games hit rate: 1/435.94
+# fall[2] = 17165952, Ec2 = Kf2 = 1/2.9548
+# fall[3] = 4036608, Ec3 = 1/12.566, Kf3 = 1/4.2526
+# fall[4] = 905472, Ec4 = 1/56.018, Kf4 = 1/4.458
+# fall[5] = 165888, Ec5 = 1/305.76, Kf5 = 1/5.4583
+# Mcascade = 1.7395, Kfading = 1/4.7098, Ncascmax = 6
 # RTP = 83.803(sym) + 0.022939*257.31(fg) = 89.705786%
 89.705786:
   - [6, 5, 7, 6, 9, 5, 2, 6, 9, 8, 6, 7, 9, 6, 8, 4, 5, 7, 3, 9, 8, 3, 7, 9, 6, 7, 8, 5, 7, 2, 8, 9, 4, 8] # 34
@@ -77,12 +77,12 @@ netent/gonzosquest/reel
 # reels lengths [34, 37, 34, 36, 32], total reshuffles 49273344
 # symbols: 85.38(lined) + 0(scatter) = 85.379771%
 # free spins 898560, q = 0.018236, sq = 1/(1-q) = 1.018575
-# free games frequency: 1/548.36
-# fall[2] = 16818048, freq = 1/2.9298
-# fall[3] = 3839616, freq = 1/12.833, freq2 = 1/4.3801
-# fall[4] = 823680, freq = 1/59.821, freq2 = 1/4.6615
-# fall[5] = 168192, freq = 1/292.96, freq2 = 1/4.8973
-# Mcascade = 1.6854, Kfading = 3.7922, Ncascmax = 9
+# free games hit rate: 1/548.36
+# fall[2] = 16818048, Ec2 = Kf2 = 1/2.9298
+# fall[3] = 3839616, Ec3 = 1/12.833, Kf3 = 1/4.3801
+# fall[4] = 823680, Ec4 = 1/59.821, Kf4 = 1/4.6615
+# fall[5] = 168192, Ec5 = 1/292.96, Kf5 = 1/4.8973
+# Mcascade = 1.6854, Kfading = 1/3.7922, Ncascmax = 9
 # RTP = 85.38(sym) + 0.018236*260.9(fg) = 90.137550%
 90.137550:
   - [6, 5, 7, 6, 9, 5, 2, 6, 9, 8, 6, 7, 9, 6, 8, 4, 5, 7, 3, 9, 8, 3, 7, 9, 6, 7, 8, 5, 7, 2, 8, 9, 4, 8] # 34
@@ -94,12 +94,12 @@ netent/gonzosquest/reel
 # reels lengths [34, 37, 34, 36, 32], total reshuffles 49273344
 # symbols: 87.564(lined) + 0(scatter) = 87.563937%
 # free spins 887040, q = 0.018002, sq = 1/(1-q) = 1.018332
-# free games frequency: 1/555.48
-# fall[2] = 16799616, freq = 1/2.933
-# fall[3] = 4025088, freq = 1/12.242, freq2 = 1/4.1737
-# fall[4] = 814464, freq = 1/60.498, freq2 = 1/4.942
-# fall[5] = 165888, freq = 1/297.03, freq2 = 1/4.9097
-# Mcascade = 1.7285, Kfading = 4.6937, Ncascmax = 7
+# free games hit rate: 1/555.48
+# fall[2] = 16799616, Ec2 = Kf2 = 1/2.933
+# fall[3] = 4025088, Ec3 = 1/12.242, Kf3 = 1/4.1737
+# fall[4] = 814464, Ec4 = 1/60.498, Kf4 = 1/4.942
+# fall[5] = 165888, Ec5 = 1/297.03, Kf5 = 1/4.9097
+# Mcascade = 1.7285, Kfading = 1/4.6937, Ncascmax = 7
 # RTP = 87.564(sym) + 0.018002*267.51(fg) = 92.379724%
 92.379724:
   - [6, 5, 7, 6, 9, 5, 2, 6, 9, 8, 6, 7, 9, 6, 8, 4, 5, 7, 3, 9, 8, 3, 7, 9, 6, 7, 8, 5, 7, 2, 8, 9, 4, 8] # 34
@@ -111,12 +111,12 @@ netent/gonzosquest/reel
 # reels lengths [34, 37, 34, 36, 32], total reshuffles 49273344
 # symbols: 89.108(lined) + 0(scatter) = 89.107532%
 # free spins 771840, q = 0.015664, sq = 1/(1-q) = 1.015914
-# free games frequency: 1/638.39
-# fall[2] = 16952832, freq = 1/2.9065
-# fall[3] = 3924864, freq = 1/12.554, freq2 = 1/4.3193
-# fall[4] = 837504, freq = 1/58.834, freq2 = 1/4.6864
-# fall[5] = 191232, freq = 1/257.66, freq2 = 1/4.3795
-# Mcascade = 1.759, Kfading = 4.1552, Ncascmax = 8
+# free games hit rate: 1/638.39
+# fall[2] = 16952832, Ec2 = Kf2 = 1/2.9065
+# fall[3] = 3924864, Ec3 = 1/12.554, Kf3 = 1/4.3193
+# fall[4] = 837504, Ec4 = 1/58.834, Kf4 = 1/4.6864
+# fall[5] = 191232, Ec5 = 1/257.66, Kf5 = 1/4.3795
+# Mcascade = 1.759, Kfading = 1/4.1552, Ncascmax = 8
 # RTP = 89.108(sym) + 0.015664*271.58(fg) = 93.361632%
 93.361632:
   - [6, 5, 7, 6, 9, 5, 2, 6, 9, 8, 6, 7, 9, 6, 8, 4, 5, 7, 3, 9, 8, 3, 7, 9, 6, 7, 8, 5, 7, 2, 8, 9, 4, 8] # 34
@@ -128,12 +128,12 @@ netent/gonzosquest/reel
 # reels lengths [34, 37, 34, 36, 32], total reshuffles 49273344
 # symbols: 86.564(lined) + 0(scatter) = 86.563622%
 # free spins 1393920, q = 0.02829, sq = 1/(1-q) = 1.029113
-# free games frequency: 1/353.49
-# fall[2] = 16739712, freq = 1/2.9435
-# fall[3] = 4111488, freq = 1/11.984, freq2 = 1/4.0714
-# fall[4] = 835200, freq = 1/58.996, freq2 = 1/4.9228
-# fall[5] = 183168, freq = 1/269.01, freq2 = 1/4.5597
-# Mcascade = 1.7087, Kfading = 2.9048, Ncascmax = 11
+# free games hit rate: 1/353.49
+# fall[2] = 16739712, Ec2 = Kf2 = 1/2.9435
+# fall[3] = 4111488, Ec3 = 1/11.984, Kf3 = 1/4.0714
+# fall[4] = 835200, Ec4 = 1/58.996, Kf4 = 1/4.9228
+# fall[5] = 183168, Ec5 = 1/269.01, Kf5 = 1/4.5597
+# Mcascade = 1.7087, Kfading = 1/2.9048, Ncascmax = 11
 # RTP = 86.564(sym) + 0.02829*267.25(fg) = 94.124036%
 94.124036:
   - [6, 5, 7, 6, 9, 5, 2, 6, 9, 8, 6, 7, 9, 6, 8, 4, 5, 7, 3, 9, 8, 3, 7, 9, 6, 7, 8, 5, 7, 2, 8, 9, 4, 8] # 34
@@ -145,12 +145,12 @@ netent/gonzosquest/reel
 # reels lengths [34, 37, 35, 36, 32], total reshuffles 50722560
 # symbols: 90.418(lined) + 0(scatter) = 90.418220%
 # free spins 898560, q = 0.017715, sq = 1/(1-q) = 1.018035
-# free games frequency: 1/564.49
-# fall[2] = 17002368, freq = 1/2.9833
-# fall[3] = 4022784, freq = 1/12.609, freq2 = 1/4.2265
-# fall[4] = 974592, freq = 1/52.045, freq2 = 1/4.1277
-# fall[5] = 284544, freq = 1/178.26, freq2 = 1/3.4251
-# Mcascade = 1.8768, Kfading = 3.9376, Ncascmax = 8
+# free games hit rate: 1/564.49
+# fall[2] = 17002368, Ec2 = Kf2 = 1/2.9833
+# fall[3] = 4022784, Ec3 = 1/12.609, Kf3 = 1/4.2265
+# fall[4] = 974592, Ec4 = 1/52.045, Kf4 = 1/4.1277
+# fall[5] = 284544, Ec5 = 1/178.26, Kf5 = 1/3.4251
+# Mcascade = 1.8768, Kfading = 1/3.9376, Ncascmax = 8
 # RTP = 90.418(sym) + 0.017715*276.15(fg) = 95.310212%
 95.310212:
   - [6, 5, 7, 6, 9, 5, 2, 6, 9, 8, 6, 7, 9, 6, 8, 4, 5, 7, 3, 9, 8, 3, 7, 9, 6, 7, 8, 5, 7, 2, 8, 9, 4, 8] # 34
@@ -162,12 +162,12 @@ netent/gonzosquest/reel
 # reels lengths [34, 37, 34, 36, 32], total reshuffles 49273344
 # symbols: 90.105(lined) + 0(scatter) = 90.105377%
 # free spins 1105920, q = 0.022445, sq = 1/(1-q) = 1.022960
-# free games frequency: 1/445.54
-# fall[2] = 17028864, freq = 1/2.8935
-# fall[3] = 4066560, freq = 1/12.117, freq2 = 1/4.1875
-# fall[4] = 989568, freq = 1/49.793, freq2 = 1/4.1094
-# fall[5] = 225792, freq = 1/218.22, freq2 = 1/4.3827
-# Mcascade = 1.7787, Kfading = 4.6937, Ncascmax = 7
+# free games hit rate: 1/445.54
+# fall[2] = 17028864, Ec2 = Kf2 = 1/2.8935
+# fall[3] = 4066560, Ec3 = 1/12.117, Kf3 = 1/4.1875
+# fall[4] = 989568, Ec4 = 1/49.793, Kf4 = 1/4.1094
+# fall[5] = 225792, Ec5 = 1/218.22, Kf5 = 1/4.3827
+# Mcascade = 1.7787, Kfading = 1/4.6937, Ncascmax = 7
 # RTP = 90.105(sym) + 0.022445*276.52(fg) = 96.311812%
 96.311812:
   - [6, 5, 7, 6, 9, 5, 2, 6, 9, 8, 6, 7, 9, 6, 8, 4, 5, 7, 3, 9, 8, 3, 7, 9, 6, 7, 8, 5, 7, 2, 8, 9, 4, 8] # 34
@@ -179,13 +179,12 @@ netent/gonzosquest/reel
 # reels lengths [34, 37, 34, 36, 32], total reshuffles 49273344
 # symbols: 92.14(lined) + 0(scatter) = 92.139533%
 # free spins 898560, q = 0.018236, sq = 1/(1-q) = 1.018575
-# free games frequency: 1/548.36
-# fall[2] = 16777728, freq = 1/2.9368
-# fall[3] = 4248576, freq = 1/11.598, freq2 = 1/3.949
-# fall[4] = 1001088, freq = 1/49.22, freq2 = 1/4.244
-# fall[5] = 218880, freq = 1/225.12, freq2 = 1/4.5737
-# Mcascade = 1.8189, Kfading = 5.9137
-# Mcascade = 1.8189, Kfading = 5.9137, Ncascmax = 7
+# free games hit rate: 1/548.36
+# fall[2] = 16777728, Ec2 = Kf2 = 1/2.9368
+# fall[3] = 4248576, Ec3 = 1/11.598, Kf3 = 1/3.949
+# fall[4] = 1001088, Ec4 = 1/49.22, Kf4 = 1/4.244
+# fall[5] = 218880, Ec5 = 1/225.12, Kf5 = 1/4.5737
+# Mcascade = 1.8189, Kfading = 1/5.9137, Ncascmax = 7
 # RTP = 92.14(sym) + 0.018236*281.55(fg) = 97.273999%
 97.273999:
   - [6, 5, 7, 6, 9, 5, 2, 6, 9, 8, 6, 7, 9, 6, 8, 4, 5, 7, 3, 9, 8, 3, 7, 9, 6, 7, 8, 5, 7, 2, 8, 9, 4, 8] # 34
@@ -197,12 +196,12 @@ netent/gonzosquest/reel
 # reels lengths [34, 37, 34, 36, 32], total reshuffles 49273344
 # symbols: 92.015(lined) + 0(scatter) = 92.015248%
 # free spins 1071360, q = 0.021743, sq = 1/(1-q) = 1.022226
-# free games frequency: 1/459.91
-# fall[2] = 16985088, freq = 1/2.901
-# fall[3] = 4156416, freq = 1/11.855, freq2 = 1/4.0865
-# fall[4] = 953856, freq = 1/51.657, freq2 = 1/4.3575
-# fall[5] = 260352, freq = 1/189.26, freq2 = 1/3.6637
-# Mcascade = 1.8164, Kfading = 4.5877, Ncascmax = 8
+# free games hit rate: 1/459.91
+# fall[2] = 16985088, Ec2 = Kf2 = 1/2.901
+# fall[3] = 4156416, Ec3 = 1/11.855, Kf3 = 1/4.0865
+# fall[4] = 953856, Ec4 = 1/51.657, Kf4 = 1/4.3575
+# fall[5] = 260352, Ec5 = 1/189.26, Kf5 = 1/3.6637
+# Mcascade = 1.8164, Kfading = 1/4.5877, Ncascmax = 8
 # RTP = 92.015(sym) + 0.021743*282.18(fg) = 98.150771%
 98.150771:
   - [6, 5, 7, 6, 9, 5, 2, 6, 9, 8, 6, 7, 9, 6, 8, 4, 5, 7, 3, 9, 8, 3, 7, 9, 6, 7, 8, 5, 7, 2, 8, 9, 4, 8] # 34
@@ -214,12 +213,12 @@ netent/gonzosquest/reel
 # reels lengths [34, 37, 34, 36, 32], total reshuffles 49273344
 # symbols: 93.074(lined) + 0(scatter) = 93.073849%
 # free spins 1036800, q = 0.021042, sq = 1/(1-q) = 1.021494
-# free games frequency: 1/475.24
-# fall[2] = 17672832, freq = 1/2.7881
-# fall[3] = 4504320, freq = 1/10.939, freq2 = 1/3.9235
-# fall[4] = 1020672, freq = 1/48.275, freq2 = 1/4.4131
-# fall[5] = 266112, freq = 1/185.16, freq2 = 1/3.8355
-# Mcascade = 1.8199, Kfading = 3.2702, Ncascmax = 10
+# free games hit rate: 1/475.24
+# fall[2] = 17672832, Ec2 = Kf2 = 1/2.7881
+# fall[3] = 4504320, Ec3 = 1/10.939, Kf3 = 1/3.9235
+# fall[4] = 1020672, Ec4 = 1/48.275, Kf4 = 1/4.4131
+# fall[5] = 266112, Ec5 = 1/185.16, Kf5 = 1/3.8355
+# Mcascade = 1.8199, Kfading = 1/3.2702, Ncascmax = 10
 # RTP = 93.074(sym) + 0.021042*285.22(fg) = 99.075458%
 99.075458:
   - [6, 5, 7, 6, 9, 5, 2, 6, 9, 8, 6, 7, 9, 6, 8, 4, 5, 7, 3, 9, 8, 3, 7, 9, 6, 7, 8, 5, 7, 2, 8, 9, 4, 8] # 34
@@ -231,12 +230,12 @@ netent/gonzosquest/reel
 # reels lengths [34, 37, 34, 36, 32], total reshuffles 49273344
 # symbols: 93.459(lined) + 0(scatter) = 93.459253%
 # free spins 1117440, q = 0.022678, sq = 1/(1-q) = 1.023205
-# free games frequency: 1/440.95
-# fall[2] = 17056512, freq = 1/2.8888
-# fall[3] = 4076928, freq = 1/12.086, freq2 = 1/4.1837
-# fall[4] = 997632, freq = 1/49.39, freq2 = 1/4.0866
-# fall[5] = 225792, freq = 1/218.22, freq2 = 1/4.4184
-# Mcascade = 1.8449, Kfading = 2.9048, Ncascmax = 11
+# free games hit rate: 1/440.95
+# fall[2] = 17056512, Ec2 = Kf2 = 1/2.8888
+# fall[3] = 4076928, Ec3 = 1/12.086, Kf3 = 1/4.1837
+# fall[4] = 997632, Ec4 = 1/49.39, Kf4 = 1/4.0866
+# fall[5] = 225792, Ec5 = 1/218.22, Kf5 = 1/4.4184
+# Mcascade = 1.8449, Kfading = 1/2.9048, Ncascmax = 11
 # RTP = 93.459(sym) + 0.022678*286.88(fg) = 99.965316%
 99.965316:
   - [6, 5, 7, 6, 9, 5, 2, 6, 9, 8, 6, 7, 9, 6, 8, 4, 5, 7, 3, 9, 8, 3, 7, 9, 6, 7, 8, 5, 7, 2, 8, 9, 4, 8] # 34
@@ -248,12 +247,12 @@ netent/gonzosquest/reel
 # reels lengths [34, 35, 34, 34, 32], total reshuffles 44020480
 # symbols: 95.702(lined) + 0(scatter) = 95.702100%
 # free spins 663680, q = 0.015077, sq = 1/(1-q) = 1.015307
-# free games frequency: 1/663.28
-# fall[2] = 16325440, freq = 1/2.6964
-# fall[3] = 4399872, freq = 1/10.005, freq2 = 1/3.7104
-# fall[4] = 1208768, freq = 1/36.418, freq2 = 1/3.64
-# fall[5] = 363392, freq = 1/121.14, freq2 = 1/3.3263
-# Mcascade = 1.8471, Kfading = 4.5514, Ncascmax = 8
+# free games hit rate: 1/663.28
+# fall[2] = 16325440, Ec2 = Kf2 = 1/2.6964
+# fall[3] = 4399872, Ec3 = 1/10.005, Kf3 = 1/3.7104
+# fall[4] = 1208768, Ec4 = 1/36.418, Kf4 = 1/3.64
+# fall[5] = 363392, Ec5 = 1/121.14, Kf5 = 1/3.3263
+# Mcascade = 1.8471, Kfading = 1/4.5514, Ncascmax = 8
 # RTP = 95.702(sym) + 0.015077*291.5(fg) = 100.096952%
 100.096952:
   - [6, 5, 7, 6, 9, 5, 2, 6, 9, 8, 6, 7, 9, 6, 8, 4, 5, 7, 3, 9, 8, 3, 7, 9, 6, 7, 8, 5, 7, 2, 8, 9, 4, 8] # 34
@@ -265,12 +264,12 @@ netent/gonzosquest/reel
 # reels lengths [34, 35, 34, 34, 32], total reshuffles 44020480
 # symbols: 95.893(lined) + 0(scatter) = 95.892675%
 # free spins 772480, q = 0.017548, sq = 1/(1-q) = 1.017862
-# free games frequency: 1/569.86
-# fall[2] = 16303680, freq = 1/2.7
-# fall[3] = 4382464, freq = 1/10.045, freq2 = 1/3.7202
-# fall[4] = 991168, freq = 1/44.413, freq2 = 1/4.4215
-# fall[5] = 201280, freq = 1/218.7, freq2 = 1/4.9243
-# Mcascade = 1.8508, Kfading = 3.4534, Ncascmax = 9
+# free games hit rate: 1/569.86
+# fall[2] = 16303680, Ec2 = Kf2 = 1/2.7
+# fall[3] = 4382464, Ec3 = 1/10.045, Kf3 = 1/3.7202
+# fall[4] = 991168, Ec4 = 1/44.413, Kf4 = 1/4.4215
+# fall[5] = 201280, Ec5 = 1/218.7, Kf5 = 1/4.9243
+# Mcascade = 1.8508, Kfading = 1/3.4534, Ncascmax = 9
 # RTP = 95.893(sym) + 0.017548*292.82(fg) = 101.031075%
 101.031075:
   - [6, 5, 7, 6, 9, 5, 2, 6, 9, 8, 6, 7, 9, 6, 8, 4, 5, 7, 3, 9, 8, 3, 7, 9, 6, 7, 8, 5, 7, 2, 8, 9, 4, 8] # 34
@@ -282,12 +281,12 @@ netent/gonzosquest/reel
 # reels lengths [34, 34, 34, 33, 32], total reshuffles 41505024
 # symbols: 107.09(lined) + 0(scatter) = 107.093972%
 # free spins 644160, q = 0.01552, sq = 1/(1-q) = 1.015765
-# free games frequency: 1/644.33
-# fall[2] = 16248672, freq = 1/2.5544
-# fall[3] = 5181792, freq = 1/8.0098, freq2 = 1/3.1357
-# fall[4] = 1610400, freq = 1/25.773, freq2 = 1/3.2177
-# fall[5] = 461472, freq = 1/89.941, freq2 = 1/3.4897
-# Mcascade = 2.2405, Kfading = 3.1782, Ncascmax = 8
+# free games hit rate: 1/644.33
+# fall[2] = 16248672, Ec2 = Kf2 = 1/2.5544
+# fall[3] = 5181792, Ec3 = 1/8.0098, Kf3 = 1/3.1357
+# fall[4] = 1610400, Ec4 = 1/25.773, Kf4 = 1/3.2177
+# fall[5] = 461472, Ec5 = 1/89.941, Kf5 = 1/3.4897
+# Mcascade = 2.2405, Kfading = 1/3.1782, Ncascmax = 8
 # RTP = 107.09(sym) + 0.01552*326.35(fg) = 112.158891%
 112.158891:
   - [6, 5, 7, 6, 9, 5, 2, 6, 9, 8, 6, 7, 9, 6, 8, 4, 5, 7, 3, 9, 8, 3, 7, 9, 6, 7, 8, 5, 7, 2, 8, 9, 4, 8] # 34

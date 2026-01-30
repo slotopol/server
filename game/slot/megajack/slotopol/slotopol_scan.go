@@ -99,8 +99,8 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var rtpmjm = Emjm * qmjm * 100
 		var rtp = rtpsym + rtpmje9 + rtpmjm
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "spin9 bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mje9), rtpmje9)
-		fmt.Fprintf(w, "monopoly bonuses: frequency 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mjm), rtpmjm)
+		fmt.Fprintf(w, "spin9 bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mje9), rtpmje9)
+		fmt.Fprintf(w, "monopoly bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mjm), rtpmjm)
 		if s.JackCountF(mjj) > 0 {
 			fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackCountF(mjj), reshuf/s.JackCountF(mjj))
 		}

@@ -52,7 +52,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		fmt.Fprintf(w, "average plain freespins at 1st iteration: %g\n", fsavr1)
 		fmt.Fprintf(w, "average multiplier at free games: %g\n", multavr)
 		fmt.Fprintf(w, "free games %g, q = %.5g, sq = %.5g\n", fghits, q, sq)
-		fmt.Fprintf(w, "free games frequency: 1/%.5g\n", reshuf/fghits)
+		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", reshuf/fghits)
 		fmt.Fprintf(w, "RTP = rtpsym + q*sq*rtpsym = %.5g + %.5g = %.6f%%\n", rtpsym, q*sq*rtpsym, rtp)
 		return rtp
 	}
