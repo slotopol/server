@@ -67,7 +67,7 @@ func BruteForceStars(ctx context.Context, s slot.Stater, g *Game, reels slot.Ree
 func CalcStatStars(ctx context.Context, wc2, wc3, wc4 bool) float64 {
 	var reels = Reels
 	var g = NewGame(1)
-	var s slot.Stat
+	var s slot.StatGeneric
 
 	var wcsym = func(wc bool) byte {
 		if wc {

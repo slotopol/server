@@ -12,7 +12,7 @@ func CalcStatBon(ctx context.Context) (rtp, num float64) {
 	var reels = ReelsBon
 	var g = NewGame(1)
 	g.FSR = -1 // set free spins mode
-	var s slot.Stat
+	var s slot.StatGeneric
 
 	var fgf float64
 	var calc = func(w io.Writer) float64 {
@@ -41,7 +41,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*regular reels calculations*\n")
 	var reels, _ = ReelsMap.FindClosest(mrtp)
 	var g = NewGame(1)
-	var s slot.Stat
+	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {
 		var reshuf = s.Count()

@@ -15,11 +15,11 @@ func CalcStatBon(ctx context.Context) float64 {
 	var s slot.StatCascade
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf1 = float64(s.Reshuf[0].Load())
-		var reshuf2 = float64(s.Reshuf[1].Load())
-		var reshuf3 = float64(s.Reshuf[2].Load())
-		var reshuf4 = float64(s.Reshuf[3].Load())
-		var reshuf5 = float64(s.Reshuf[4].Load())
+		var reshuf1 = float64(s.Casc[0].Reshuf.Load())
+		var reshuf2 = float64(s.Casc[1].Reshuf.Load())
+		var reshuf3 = float64(s.Casc[2].Reshuf.Load())
+		var reshuf4 = float64(s.Casc[3].Reshuf.Load())
+		var reshuf5 = float64(s.Casc[4].Reshuf.Load())
 		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
 		var q, sq = s.FSQ()
@@ -28,9 +28,9 @@ func CalcStatBon(ctx context.Context) float64 {
 		fmt.Fprintf(w, "fall[3] = %.10g, Ec3 = 1/%.5g, Kf3 = 1/%.5g\n", reshuf3, reshuf1/reshuf3, reshuf2/reshuf3)
 		fmt.Fprintf(w, "fall[4] = %.10g, Ec4 = 1/%.5g, Kf4 = 1/%.5g\n", reshuf4, reshuf1/reshuf4, reshuf3/reshuf4)
 		fmt.Fprintf(w, "fall[5] = %.10g, Ec5 = 1/%.5g, Kf5 = 1/%.5g\n", reshuf5, reshuf1/reshuf5, reshuf4/reshuf5)
-		fmt.Fprintf(w, "Mcascade = %.5g, Kfading = 1/%.5g, Ncascmax = %d\n", s.Mcascade(), s.Kfading(), s.Ncascmax())
+		fmt.Fprintf(w, "Mcascade = %.5g, ACL = %.5g, Kfading = 1/%.5g, Ncascmax = %d\n", s.Mcascade(), s.ACL(), s.Kfading(), s.Ncascmax())
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount.Load(), q, sq)
+		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.SumFreeCount(), q, sq)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "RTP = sq*rtp(sym) = %.5g*%.5g = %.6f%%\n", sq, rtpsym, rtp)
 		return rtp
@@ -51,11 +51,11 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var s slot.StatCascade
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf1 = float64(s.Reshuf[0].Load())
-		var reshuf2 = float64(s.Reshuf[1].Load())
-		var reshuf3 = float64(s.Reshuf[2].Load())
-		var reshuf4 = float64(s.Reshuf[3].Load())
-		var reshuf5 = float64(s.Reshuf[4].Load())
+		var reshuf1 = float64(s.Casc[0].Reshuf.Load())
+		var reshuf2 = float64(s.Casc[1].Reshuf.Load())
+		var reshuf3 = float64(s.Casc[2].Reshuf.Load())
+		var reshuf4 = float64(s.Casc[3].Reshuf.Load())
+		var reshuf5 = float64(s.Casc[4].Reshuf.Load())
 		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
 		var q, sq = s.FSQ()
@@ -64,9 +64,9 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		fmt.Fprintf(w, "fall[3] = %.10g, Ec3 = 1/%.5g, Kf3 = 1/%.5g\n", reshuf3, reshuf1/reshuf3, reshuf2/reshuf3)
 		fmt.Fprintf(w, "fall[4] = %.10g, Ec4 = 1/%.5g, Kf4 = 1/%.5g\n", reshuf4, reshuf1/reshuf4, reshuf3/reshuf4)
 		fmt.Fprintf(w, "fall[5] = %.10g, Ec5 = 1/%.5g, Kf5 = 1/%.5g\n", reshuf5, reshuf1/reshuf5, reshuf4/reshuf5)
-		fmt.Fprintf(w, "Mcascade = %.5g, Kfading = 1/%.5g, Ncascmax = %d\n", s.Mcascade(), s.Kfading(), s.Ncascmax())
+		fmt.Fprintf(w, "Mcascade = %.5g, ACL = %.5g, Kfading = 1/%.5g, Ncascmax = %d\n", s.Mcascade(), s.ACL(), s.Kfading(), s.Ncascmax())
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount.Load(), q, sq)
+		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.SumFreeCount(), q, sq)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, q, rtpfs, rtp)
 		return rtp

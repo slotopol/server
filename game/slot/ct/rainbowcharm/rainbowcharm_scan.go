@@ -12,7 +12,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	var reels, _ = ReelsMap.FindClosest(mrtp)
 	var g = NewGame()
 	g.M = [5]float64{4, 4, 4, 4, 4} // set multipliers to average value for RTP calculation
-	var s slot.Stat
+	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {
 		var lrtp, srtp = s.SymRTP(g.Cost())

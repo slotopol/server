@@ -11,7 +11,7 @@ import (
 func CalcStat(ctx context.Context, mrtp float64) float64 {
 	var reels, _ = ReelsMap.FindClosest(mrtp)
 	var g = NewGame(1)
-	var s slot.Stat
+	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {
 		var reshuf = s.Count()
@@ -20,9 +20,9 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 			panic("scatters have no pays")
 		}
 		var rtpsym = lrtp + srtp
-		fmt.Fprintf(w, "jackpots1: count %g, frequency 1/%.12g\n", s.JackCountF(ssj1), reshuf/s.JackCountF(ssj1))
-		fmt.Fprintf(w, "jackpots2: count %g, frequency 1/%.12g\n", s.JackCountF(ssj2), reshuf/s.JackCountF(ssj2))
-		fmt.Fprintf(w, "jackpots3: count %g, frequency 1/%.12g\n", s.JackCountF(ssj3), reshuf/s.JackCountF(ssj3))
+		fmt.Fprintf(w, "jackpots1: count %g, frequency 1/%.12g\n", s.JackHitsF(ssj1), reshuf/s.JackHitsF(ssj1))
+		fmt.Fprintf(w, "jackpots2: count %g, frequency 1/%.12g\n", s.JackHitsF(ssj2), reshuf/s.JackHitsF(ssj2))
+		fmt.Fprintf(w, "jackpots3: count %g, frequency 1/%.12g\n", s.JackHitsF(ssj3), reshuf/s.JackHitsF(ssj3))
 		fmt.Fprintf(w, "RTP = %.6f%%\n", rtpsym)
 		return rtpsym
 	}

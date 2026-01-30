@@ -13,7 +13,7 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 	var g = NewGame()
 	g.FSR = 12 // set free spins mode
 	g.MW = [3]float64{2.5, 2.5, 2.5}
-	var s slot.Stat
+	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {
 		var lrtp, srtp = s.SymRTP(g.Cost())
@@ -40,7 +40,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var reels, _ = ReelsMap.FindClosest(mrtp)
 	var g = NewGame()
 	g.MW = [3]float64{1, 1, 1}
-	var s slot.Stat
+	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {
 		var lrtp, srtp = s.SymRTP(g.Cost())

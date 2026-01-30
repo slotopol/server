@@ -87,22 +87,22 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("*reels calculations*\n")
 	var reels, _ = ReelsMap.FindClosest(mrtp)
 	var g = NewGame(1)
-	var s slot.Stat
+	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {
 		var reshuf = s.Count()
 		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
-		var qmje9 = s.BonCountF(mje9) / reshuf / float64(g.Sel)
+		var qmje9 = s.BonusHitsF(mje9) / reshuf / float64(g.Sel)
 		var rtpmje9 = Emje * 9 * qmje9 * 100
-		var qmjm = s.BonCountF(mjm) / reshuf / float64(g.Sel)
+		var qmjm = s.BonusHitsF(mjm) / reshuf / float64(g.Sel)
 		var rtpmjm = Emjm * qmjm * 100
 		var rtp = rtpsym + rtpmje9 + rtpmjm
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "spin9 bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mje9), rtpmje9)
-		fmt.Fprintf(w, "monopoly bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonCountF(mjm), rtpmjm)
-		if s.JackCountF(mjj) > 0 {
-			fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackCountF(mjj), reshuf/s.JackCountF(mjj))
+		fmt.Fprintf(w, "spin9 bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonusHitsF(mje9), rtpmje9)
+		fmt.Fprintf(w, "monopoly bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", reshuf/s.BonusHitsF(mjm), rtpmjm)
+		if s.JackHitsF(mjj) > 0 {
+			fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackHitsF(mjj), reshuf/s.JackHitsF(mjj))
 		}
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(mje9) + %.5g(mjm) = %.6f%%\n", rtpsym, rtpmje9, rtpmjm, rtp)
 		return rtp

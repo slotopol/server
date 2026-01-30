@@ -11,7 +11,7 @@ import (
 )
 
 type Stat struct {
-	slot.Stat
+	slot.StatGeneric
 	FreeCount [6]atomic.Uint64
 }
 
@@ -22,8 +22,8 @@ func (s *Stat) FreeCountF(n int) float64 {
 	return float64(s.FreeCount[n-1].Load())
 }
 
-// Returns (q, sq), where q = free spins quantifier, sq = 1/(1-q)
-// sum of a decreasing geometric progression for retriggered free spins.
+// Returns free spins quantifier, sum of a decreasing
+// geometric progression for retriggered free spins.
 func (s *Stat) FSQ(n int) (q float64) {
 	q = s.FreeCountF(n) / s.Count()
 	return
@@ -44,10 +44,10 @@ func (s *Stat) Update(wins slot.Wins, cfn int) {
 			s.FreeHits.Inc()
 		}
 		if wi.BID != 0 {
-			s.BonCount[wi.BID].Inc()
+			s.BonusHits[wi.BID].Inc()
 		}
 		if wi.JID != 0 {
-			s.JackCount[wi.JID].Inc()
+			s.JackHits[wi.JID].Inc()
 		}
 	}
 	if lpay != 0 {
@@ -56,15 +56,13 @@ func (s *Stat) Update(wins slot.Wins, cfn int) {
 	if spay != 0 {
 		s.ScatPay.Add(spay)
 	}
-	if cfn <= slot.FallLimit {
-		s.Falls[cfn-1].Inc()
-	}
+	s.Reshuf.Inc()
 }
 
 func CalcStatBon(ctx context.Context) float64 {
 	var reels = ReelsBon
 	var g = NewGame()
-	var s slot.Stat
+	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {
 		var lrtp, srtp = s.SymRTP(g.Cost())

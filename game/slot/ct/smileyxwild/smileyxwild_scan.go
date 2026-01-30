@@ -13,7 +13,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	var g = NewGame(1)
 	g.M2 = 3 // average wild multiplier on 2 reel
 	g.M4 = 3 // average wild multiplier on 4 reel
-	var s slot.Stat
+	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {
 		var lrtp, srtp = s.SymRTP(g.Cost())
