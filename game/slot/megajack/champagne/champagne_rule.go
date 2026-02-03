@@ -47,7 +47,7 @@ const (
 var BetLines = slot.BetLinesMgj[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 

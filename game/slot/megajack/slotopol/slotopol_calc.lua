@@ -33,7 +33,7 @@ local PAYTABLE_LINE = {
 local PAYTABLE_SCAT = {0, 5, 8, 20, 1000}
 
 -- 4. CONFIGURATION
-local sx, sy = 5, 3 -- screen width & height
+local sx, sy = 5, 3 -- grid width & height
 local wild, scat = 11, 1 -- wild & scatter symbol IDs
 local bon1, bon2 = 12, 13 -- bonus games symbol IDs
 local line_min = 2 -- minimum line symbols to win

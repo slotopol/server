@@ -26,7 +26,7 @@ var LinePay = [10][5]float64{
 var BetLines = slot.BetLinesNetEnt5x4[:]
 
 type Game struct {
-	slot.Screen5x4 `yaml:",inline"`
+	slot.Grid5x4 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -57,14 +57,14 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(wins *slot.Wins) {
-	var scrnwild = g.Screen5x4
+	var gridwild = g.Grid5x4
 	for x := 0; x < 5; x += 3 { // 1, 3 reels only
 		for y := range 4 {
-			if g.Scr[x][y] == wild {
+			if g.Grid[x][y] == wild {
 				for i := x; i < x+3; i++ { // 1, 2, 3 or 3, 4, 5 reels
 					for j := y; j < 4; j++ { // down only
-						if scrnwild.Scr[i][j] != scat {
-							scrnwild.Scr[i][j] = wild
+						if gridwild.Grid[i][j] != scat {
+							gridwild.Grid[i][j] = wild
 						}
 					}
 				}
@@ -78,7 +78,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
-			var sx = scrnwild.LX(x, line)
+			var sx = gridwild.LX(x, line)
 			if sx == wild {
 				continue
 			} else if syml == 0 {

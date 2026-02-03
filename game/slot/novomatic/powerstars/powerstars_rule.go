@@ -29,7 +29,7 @@ var LinePay = [9][5]float64{
 var BetLines = slot.BetLinesNvm10[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 	// Pinned reel wild
 	PRW [5]int `json:"prw" yaml:"prw" xml:"prw"`
@@ -67,7 +67,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		if g.PRW[x] > 0 {
 			reelwild[x] = true
 		} else {
-			for _, sy := range g.Scr[x] {
+			for _, sy := range g.Grid[x] {
 				if sy == wild {
 					reelwild[x] = true
 					fs = true

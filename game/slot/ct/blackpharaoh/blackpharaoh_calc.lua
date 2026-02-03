@@ -33,7 +33,7 @@ local scat_fs = 10 -- number of free spins awarded
 local scat_min = 3 -- minimum scatters to win
 
 -- 4. CONFIGURATION
-local sx, sy = 5, 3 -- screen width & height
+local sx, sy = 5, 3 -- grid width & height
 local wild, scat = 1, 2 -- wild & scatter symbol IDs
 
 -- Performs full RTP calculation for given reels

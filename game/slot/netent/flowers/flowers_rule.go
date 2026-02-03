@@ -93,7 +93,7 @@ var BetLines = []slot.Linex{
 }
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -187,7 +187,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 func (g *Game) ScatNumDbl() (n slot.Pos) {
 	for x := range 5 {
-		var r = g.Scr[x]
+		var r = g.Grid[x]
 		if r[0] == scat || r[1] == scat || r[2] == scat {
 			n++
 		} else if r[0] == scat2 || r[1] == scat2 || r[2] == scat2 {

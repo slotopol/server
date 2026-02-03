@@ -26,7 +26,7 @@ local PAYTABLE_LINE = {
 }
 
 -- 3. CONFIGURATION
-local sx, sy = 5, 4 -- screen width & height
+local sx, sy = 5, 4 -- grid width & height
 local wild, scat = 1, 2 -- wild & scatter symbol IDs
 local line_min = 2 -- minimum line symbols to win
 local scat_min = 1 -- minimum scatters to win

@@ -332,13 +332,13 @@ func GetScene(gid uint64) (scene *Scene, err error) {
 	Scenes.Set(gid, scene)
 
 	if !Cfg.UseSpinLog {
-		InitScreen(scene.Game)
+		InitGrid(scene.Game)
 		return
 	}
 
 	var rec Spinlog
 	if ok, _ = cfg.XormSpinlog.Where("gid = ?", gid).Desc("ctime").Get(&rec); !ok {
-		InitScreen(scene.Game)
+		InitGrid(scene.Game)
 		return
 	}
 	scene.SID = rec.SID

@@ -5,27 +5,27 @@ import (
 )
 
 const (
-	// Maximum size X*Y of Screenx data array.
+	// Maximum size X*Y of Gridx data array.
 	// Maximum possible value of this constant is 255 (for Pos type uint8).
-	ScrxSize = 40
+	GridSize = 40
 
-	// Maximum number of hits on Screenx.
+	// Maximum number of hits on Gridx.
 	// This array has +1 element to make it zero-terminated without extra check up.
 	// Zero at x-coordinate means the end of hits,
 	// zero at y-coordinate means whole reel.
-	HitxSize = ScrxSize + 1
+	HitxSize = GridSize + 1
 
 	// Maximum number of positions in Linex,
-	// it's maximum possible width of the Screenx.
+	// it's maximum possible width of the Gridx.
 	MaxSX = 8
 )
 
 type (
-	Sym uint8 // symbol type (screen content type)
-	Pos uint8 // screen or line position with 1-based index or offset
+	Sym uint8 // symbol type (grid content type)
+	Pos uint8 // grid or line position with 1-based index or offset
 )
 
-// Hitx is array of 1-based coordinates (X, Y) on game screen with hit symbols.
+// Hitx is array of 1-based coordinates (X, Y) on game grid with hit symbols.
 // Hitx has fixed size to avoid extra memory allocations.
 type Hitx [HitxSize][2]Pos
 

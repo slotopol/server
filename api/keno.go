@@ -340,7 +340,7 @@ func ApiKenoSpin(c *gin.Context) {
 	var wins keno.Wins
 	var debit float64
 	var n = 0
-	for { // repeat until get valid screen and spin will fit into bank
+	for { // repeat until get valid grid and spin will fit into bank
 		n++
 		if n > cfg.Cfg.MaxSpinAttempts {
 			Ret500(c, AEC_keno_spin_badbank, ErrBadBank)

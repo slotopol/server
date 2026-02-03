@@ -36,7 +36,7 @@ var ScatFreespin = [5]int{0, 0, 10, 10, 10} // 10 tomb
 var BetLines = slot.BetLinesNvm10[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 	// Expanding Symbol
 	ES slot.Sym `json:"es,omitempty" yaml:"es,omitempty" xml:"es,omitempty"`

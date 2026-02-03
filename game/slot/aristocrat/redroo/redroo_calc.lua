@@ -38,7 +38,7 @@ local FREESPIN_SCAT_REG = {0, 0, 8, 15, 20}
 local FREESPIN_SCAT_BON = {0, 5, 8, 15, 20}
 
 -- 5. CONFIGURATION
-local sx, sy = 5, 4 -- screen width & height
+local sx, sy = 5, 4 -- grid width & height
 local wild, scat = 1, 2 -- wild & scatter symbol IDs
 local cost = 50 -- cost of spin with bet=1
 local line_min = 2 -- minimum line symbols to win

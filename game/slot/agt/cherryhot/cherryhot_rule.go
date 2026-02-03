@@ -27,7 +27,7 @@ var ScatPay = [5]float64{0, 0, 2, 12, 60} // 8 scatter
 var BetLines = slot.BetLinesAgt5x3[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -57,14 +57,14 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 }
 
 func (g *Game) FillMult() float64 {
-	var sym = g.Scr[0][0]
+	var sym = g.Grid[0][0]
 	if sym < 3 || sym > 6 {
 		return 1
 	}
 	var r *[3]slot.Sym
 	var i int
 	for i = 0; i < 5; i++ {
-		if r = &g.Scr[i]; r[0] != sym || r[1] != sym || r[2] != sym {
+		if r = &g.Grid[i]; r[0] != sym || r[1] != sym || r[2] != sym {
 			break
 		}
 	}

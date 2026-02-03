@@ -31,7 +31,7 @@ var LinePay = [13][5]float64{
 var BetLines = slot.BetLinesAgt5x3[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -126,7 +126,7 @@ func (g *Game) Spin(mrtp float64) {
 	if g.FSR == 0 {
 		g.SpinReels(reels)
 	} else {
-		g.Screen5x3.SpinBig(reels.Reel(1), ReelBig, reels.Reel(5))
+		g.Grid5x3.SpinBig(reels.Reel(1), ReelBig, reels.Reel(5))
 	}
 }
 

@@ -34,7 +34,7 @@ var ScatFreespin = [5]int{0, 0, 10, 10, 10} // 12 katana
 var BetLines = slot.BetLinesNvm5x3v2[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -68,7 +68,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 	var reelwild [5]bool
 	if g.FSR > 0 {
 		for x := range 5 {
-			for _, sy := range g.Scr[x] {
+			for _, sy := range g.Grid[x] {
 				if sy == wild {
 					reelwild[x] = true
 					break

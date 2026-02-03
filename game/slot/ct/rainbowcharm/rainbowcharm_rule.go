@@ -25,7 +25,7 @@ var SymPay = [6][12]float64{
 }
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 	M              [5]float64 `json:"m" yaml:"m" xml:"m"` // multipliers for bonus symbol filled at reels
 }
@@ -55,7 +55,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 	var sn [6 + 1]slot.Pos
 	var x slot.Pos
 	for x = range 5 {
-		var r = g.Scr[x]
+		var r = g.Grid[x]
 		if r[0] == bon && r[1] == bon && r[2] == bon {
 			mb *= g.M[x]
 		}

@@ -5,62 +5,62 @@ import (
 	"math/rand/v2"
 )
 
-// Screen contains symbols rectangle of the slot game.
+// Grid contains symbols rectangle of the slot game.
 // It can be with dimensions 3x1, 3x3, 4x4, 5x3, 5x4 or others.
 // (1 ,1) symbol is on left top corner.
-type Screen interface {
-	Dim() (Pos, Pos)                   // returns screen dimensions
+type Grider interface {
+	Dim() (Pos, Pos)                   // returns grid dimensions
 	At(x, y Pos) Sym                   // returns symbol at position (x, y), starts from (1, 1)
 	LX(x Pos, line Linex) Sym          // returns symbol at position (x, line(x)), starts from (1, 1)
 	SetSym(x, y Pos, sym Sym)          // setup symbol at given position
-	SetCol(x Pos, reel []Sym, pos int) // setup column on screen with given reel at given position
-	SpinReels(reels Reelx)             // fill the screen with random hits on those reels
-	SymNum(sym Sym) (n Pos)            // returns number of symbols on the screen
-	SymPos(sym Sym) Hitx               // returns symbols positions on the screen
+	SetCol(x Pos, reel []Sym, pos int) // setup column on grid with given reel at given position
+	SpinReels(reels Reelx)             // fill the grid with random hits on those reels
+	SymNum(sym Sym) (n Pos)            // returns number of symbols on the grid
+	SymPos(sym Sym) Hitx               // returns symbols positions on the grid
 }
 
 type Bigger interface {
 	SetBig(big Sym)
 }
 
-// Screenx is a screen with dimensions defined during construction.
-// Screenx has fixed size to avoid extra memory allocations.
-type Screenx struct {
+// Gridx is a grid with dimensions defined during construction.
+// Gridx has fixed size to avoid extra memory allocations.
+type Gridx struct {
 	sx, sy Pos
-	data   [ScrxSize]Sym
+	data   [GridSize]Sym
 }
 
-// Declare conformity with Screen interface.
-var _ Screen = (*Screenx)(nil)
+// Declare conformity with Grider interface.
+var _ Grider = (*Gridx)(nil)
 
-// Construct screen with given dimensions. Maximum possible size is 8x5.
-func ScreenDim(sx, sy Pos) Screenx {
-	return Screenx{
+// Construct grid with given dimensions. Maximum possible size is cx*cy=GridSize.
+func GridDim(sx, sy Pos) Gridx {
+	return Gridx{
 		sx: sx, sy: sy,
 	}
 }
 
-func (s *Screenx) SetDim(sx, sy Pos) {
+func (s *Gridx) SetDim(sx, sy Pos) {
 	s.sx, s.sy = sx, sy
 }
 
-func (s *Screenx) Dim() (Pos, Pos) {
+func (s *Gridx) Dim() (Pos, Pos) {
 	return s.sx, s.sy
 }
 
-func (s *Screenx) At(x, y Pos) Sym {
+func (s *Gridx) At(x, y Pos) Sym {
 	return s.data[(x-1)*s.sy+y-1]
 }
 
-func (s *Screenx) LX(x Pos, line Linex) Sym {
+func (s *Gridx) LX(x Pos, line Linex) Sym {
 	return s.data[(x-1)*s.sy+line[x-1]-1]
 }
 
-func (s *Screenx) SetSym(x, y Pos, sym Sym) {
+func (s *Gridx) SetSym(x, y Pos, sym Sym) {
 	s.data[(x-1)*s.sy+y-1] = sym
 }
 
-func (s *Screenx) SetCol(x Pos, reel []Sym, pos int) {
+func (s *Gridx) SetCol(x Pos, reel []Sym, pos int) {
 	var sr = s.data[(x-1)*s.sy : x*s.sy]
 	var n = len(reel)
 	pos = (n + pos%n) % n // correct position
@@ -69,14 +69,14 @@ func (s *Screenx) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screenx) SpinReels(reels Reelx) {
+func (s *Gridx) SpinReels(reels Reelx) {
 	for x, reel := range reels {
 		var hit = rand.N(len(reel))
 		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
 
-func (s *Screenx) SymNum(sym Sym) (n Pos) {
+func (s *Gridx) SymNum(sym Sym) (n Pos) {
 	for _, si := range s.data[:s.sx*s.sy] {
 		if si == sym {
 			n++
@@ -85,7 +85,7 @@ func (s *Screenx) SymNum(sym Sym) (n Pos) {
 	return
 }
 
-func (s *Screenx) SymPos(sym Sym) (c Hitx) {
+func (s *Gridx) SymPos(sym Sym) (c Hitx) {
 	var j Pos
 	for i, si := range s.data[:s.sx*s.sy] {
 		if si == sym {
@@ -96,7 +96,7 @@ func (s *Screenx) SymPos(sym Sym) (c Hitx) {
 	return
 }
 
-func (s *Screenx) SymPos2(sym1, sym2 Sym) (c Hitx) {
+func (s *Gridx) SymPos2(sym1, sym2 Sym) (c Hitx) {
 	var j Pos
 	for i, si := range s.data[:s.sx*s.sy] {
 		if si == sym1 || si == sym2 {
@@ -107,7 +107,7 @@ func (s *Screenx) SymPos2(sym1, sym2 Sym) (c Hitx) {
 	return
 }
 
-func (s *Screenx) SymPosL(n Pos, sym Sym) (c Hitx) {
+func (s *Gridx) SymPosL(n Pos, sym Sym) (c Hitx) {
 	var j Pos
 	for i, si := range s.data[:n*s.sy] {
 		if si == sym {
@@ -118,7 +118,7 @@ func (s *Screenx) SymPosL(n Pos, sym Sym) (c Hitx) {
 	return
 }
 
-func (s *Screenx) SymPosL2(n Pos, sym1, sym2 Sym) (c Hitx) {
+func (s *Gridx) SymPosL2(n Pos, sym1, sym2 Sym) (c Hitx) {
 	var j Pos
 	for i, si := range s.data[:n*s.sy] {
 		if si == sym1 || si == sym2 {
@@ -129,57 +129,57 @@ func (s *Screenx) SymPosL2(n Pos, sym1, sym2 Sym) (c Hitx) {
 	return
 }
 
-type scrx struct {
-	Scr [][]Sym `json:"scr" yaml:"scr,flow" xml:"scr"`
+type gridx struct {
+	Grid [][]Sym `json:"grid" yaml:"grid,flow" xml:"grid"`
 }
 
-func (s *Screenx) MarshalJSON() ([]byte, error) {
-	var tmp scrx
-	tmp.Scr = make([][]Sym, s.sx)
+func (s *Gridx) MarshalJSON() ([]byte, error) {
+	var tmp gridx
+	tmp.Grid = make([][]Sym, s.sx)
 	for x := range s.sx {
-		tmp.Scr[x] = s.data[x*s.sy : (x+1)*s.sy]
+		tmp.Grid[x] = s.data[x*s.sy : (x+1)*s.sy]
 	}
 	return json.Marshal(tmp)
 }
 
-func (s *Screenx) UnmarshalJSON(b []byte) (err error) {
-	var tmp scrx
+func (s *Gridx) UnmarshalJSON(b []byte) (err error) {
+	var tmp gridx
 	if err = json.Unmarshal(b, &tmp); err != nil {
 		return
 	}
-	s.sx, s.sy = Pos(len(tmp.Scr)), Pos(len(tmp.Scr[0]))
+	s.sx, s.sy = Pos(len(tmp.Grid)), Pos(len(tmp.Grid[0]))
 	for x := range s.sx {
-		copy(s.data[x*s.sy:], tmp.Scr[x])
+		copy(s.data[x*s.sy:], tmp.Grid[x])
 	}
 	return
 }
 
-// Screen for 3x3 slots.
-type Screen3x3 struct {
-	Scr [3][3]Sym `json:"scr" yaml:"scr,flow" xml:"scr"`
+// Grid for 3x3 slots.
+type Grid3x3 struct {
+	Grid [3][3]Sym `json:"grid" yaml:"grid,flow" xml:"grid"`
 }
 
-// Declare conformity with Screen interface.
-var _ Screen = (*Screen3x3)(nil)
+// Declare conformity with Grider interface.
+var _ Grider = (*Grid3x3)(nil)
 
-func (s *Screen3x3) Dim() (Pos, Pos) {
+func (s *Grid3x3) Dim() (Pos, Pos) {
 	return 3, 3
 }
 
-func (s *Screen3x3) At(x, y Pos) Sym {
-	return s.Scr[x-1][y-1]
+func (s *Grid3x3) At(x, y Pos) Sym {
+	return s.Grid[x-1][y-1]
 }
 
-func (s *Screen3x3) LX(x Pos, line Linex) Sym {
-	return s.Scr[x-1][line[x-1]-1]
+func (s *Grid3x3) LX(x Pos, line Linex) Sym {
+	return s.Grid[x-1][line[x-1]-1]
 }
 
-func (s *Screen3x3) SetSym(x, y Pos, sym Sym) {
-	s.Scr[x-1][y-1] = sym
+func (s *Grid3x3) SetSym(x, y Pos, sym Sym) {
+	s.Grid[x-1][y-1] = sym
 }
 
-func (s *Screen3x3) SetCol(x Pos, reel []Sym, pos int) {
-	var sr = &s.Scr[x-1]
+func (s *Grid3x3) SetCol(x Pos, reel []Sym, pos int) {
+	var sr = &s.Grid[x-1]
 	var n = len(reel)
 	pos = (n + pos%n) % n // correct position
 	for y := range sr {
@@ -187,15 +187,15 @@ func (s *Screen3x3) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screen3x3) SpinReels(reels Reelx) {
+func (s *Grid3x3) SpinReels(reels Reelx) {
 	for x, reel := range reels {
 		var hit = rand.N(len(reel))
 		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
 
-func (s *Screen3x3) SymNum(sym Sym) (n Pos) {
-	for _, sr := range s.Scr {
+func (s *Grid3x3) SymNum(sym Sym) (n Pos) {
+	for _, sr := range s.Grid {
 		for _, sy := range sr {
 			if sy == sym {
 				n++
@@ -205,9 +205,9 @@ func (s *Screen3x3) SymNum(sym Sym) (n Pos) {
 	return
 }
 
-func (s *Screen3x3) SymPos(sym Sym) (c Hitx) {
+func (s *Grid3x3) SymPos(sym Sym) (c Hitx) {
 	var i Pos
-	for x, sr := range s.Scr {
+	for x, sr := range s.Grid {
 		for y, sy := range sr {
 			if sy == sym {
 				c[i][0], c[i][1] = Pos(x+1), Pos(y+1)
@@ -218,32 +218,32 @@ func (s *Screen3x3) SymPos(sym Sym) (c Hitx) {
 	return
 }
 
-// Screen for 4x4 slots.
-type Screen4x4 struct {
-	Scr [4][4]Sym `json:"scr" yaml:"scr,flow" xml:"scr"`
+// Grid for 4x4 slots.
+type Grid4x4 struct {
+	Grid [4][4]Sym `json:"grid" yaml:"grid,flow" xml:"grid"`
 }
 
-// Declare conformity with Screen interface.
-var _ Screen = (*Screen4x4)(nil)
+// Declare conformity with Grider interface.
+var _ Grider = (*Grid4x4)(nil)
 
-func (s *Screen4x4) Dim() (Pos, Pos) {
+func (s *Grid4x4) Dim() (Pos, Pos) {
 	return 4, 4
 }
 
-func (s *Screen4x4) At(x, y Pos) Sym {
-	return s.Scr[x-1][y-1]
+func (s *Grid4x4) At(x, y Pos) Sym {
+	return s.Grid[x-1][y-1]
 }
 
-func (s *Screen4x4) LX(x Pos, line Linex) Sym {
-	return s.Scr[x-1][line[x-1]-1]
+func (s *Grid4x4) LX(x Pos, line Linex) Sym {
+	return s.Grid[x-1][line[x-1]-1]
 }
 
-func (s *Screen4x4) SetSym(x, y Pos, sym Sym) {
-	s.Scr[x-1][y-1] = sym
+func (s *Grid4x4) SetSym(x, y Pos, sym Sym) {
+	s.Grid[x-1][y-1] = sym
 }
 
-func (s *Screen4x4) SetCol(x Pos, reel []Sym, pos int) {
-	var sr = &s.Scr[x-1]
+func (s *Grid4x4) SetCol(x Pos, reel []Sym, pos int) {
+	var sr = &s.Grid[x-1]
 	var n = len(reel)
 	pos = (n + pos%n) % n // correct position
 	for y := range sr {
@@ -251,15 +251,15 @@ func (s *Screen4x4) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screen4x4) SpinReels(reels Reelx) {
+func (s *Grid4x4) SpinReels(reels Reelx) {
 	for x, reel := range reels {
 		var hit = rand.N(len(reel))
 		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
 
-func (s *Screen4x4) SymNum(sym Sym) (n Pos) {
-	for _, sr := range s.Scr {
+func (s *Grid4x4) SymNum(sym Sym) (n Pos) {
+	for _, sr := range s.Grid {
 		for _, sy := range sr {
 			if sy == sym {
 				n++
@@ -269,9 +269,9 @@ func (s *Screen4x4) SymNum(sym Sym) (n Pos) {
 	return
 }
 
-func (s *Screen4x4) SymPos(sym Sym) (c Hitx) {
+func (s *Grid4x4) SymPos(sym Sym) (c Hitx) {
 	var i Pos
-	for x, sr := range s.Scr {
+	for x, sr := range s.Grid {
 		for y, sy := range sr {
 			if sy == sym {
 				c[i][0], c[i][1] = Pos(x+1), Pos(y+1)
@@ -282,33 +282,33 @@ func (s *Screen4x4) SymPos(sym Sym) (c Hitx) {
 	return
 }
 
-// Screen for 5x3 slots.
-type Screen5x3 struct {
-	Scr [5][3]Sym `json:"scr" yaml:"scr,flow" xml:"scr"`
+// Grid for 5x3 slots.
+type Grid5x3 struct {
+	Grid [5][3]Sym `json:"grid" yaml:"grid,flow" xml:"grid"`
 }
 
-// Declare conformity with Screen & Bigger interface.
-var _ Screen = (*Screen5x3)(nil)
-var _ Bigger = (*Screen5x3)(nil)
+// Declare conformity with Grider & Bigger interface.
+var _ Grider = (*Grid5x3)(nil)
+var _ Bigger = (*Grid5x3)(nil)
 
-func (s *Screen5x3) Dim() (Pos, Pos) {
+func (s *Grid5x3) Dim() (Pos, Pos) {
 	return 5, 3
 }
 
-func (s *Screen5x3) At(x, y Pos) Sym {
-	return s.Scr[x-1][y-1]
+func (s *Grid5x3) At(x, y Pos) Sym {
+	return s.Grid[x-1][y-1]
 }
 
-func (s *Screen5x3) LX(x Pos, line Linex) Sym {
-	return s.Scr[x-1][line[x-1]-1]
+func (s *Grid5x3) LX(x Pos, line Linex) Sym {
+	return s.Grid[x-1][line[x-1]-1]
 }
 
-func (s *Screen5x3) SetSym(x, y Pos, sym Sym) {
-	s.Scr[x-1][y-1] = sym
+func (s *Grid5x3) SetSym(x, y Pos, sym Sym) {
+	s.Grid[x-1][y-1] = sym
 }
 
-func (s *Screen5x3) SetCol(x Pos, reel []Sym, pos int) {
-	var sr = &s.Scr[x-1]
+func (s *Grid5x3) SetCol(x Pos, reel []Sym, pos int) {
+	var sr = &s.Grid[x-1]
 	var n = len(reel)
 	pos = (n + pos%n) % n // correct position
 	for y := range sr {
@@ -316,24 +316,24 @@ func (s *Screen5x3) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screen5x3) SetBig(big Sym) {
+func (s *Grid5x3) SetBig(big Sym) {
 	var x Pos
 	for x = 1; x <= 3; x++ {
-		var sr = &s.Scr[x]
+		var sr = &s.Grid[x]
 		for y := range sr {
 			sr[y] = big
 		}
 	}
 }
 
-func (s *Screen5x3) SpinReels(reels Reelx) {
+func (s *Grid5x3) SpinReels(reels Reelx) {
 	for x, reel := range reels {
 		var hit = rand.N(len(reel))
 		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
 
-func (s *Screen5x3) SpinBig(r1, rb, r5 []Sym) {
+func (s *Grid5x3) SpinBig(r1, rb, r5 []Sym) {
 	var hit int
 	// set 1 reel
 	hit = rand.N(len(r1))
@@ -346,8 +346,8 @@ func (s *Screen5x3) SpinBig(r1, rb, r5 []Sym) {
 	s.SetCol(5, r5, hit)
 }
 
-func (s *Screen5x3) SymNum(sym Sym) (n Pos) {
-	for _, sr := range s.Scr {
+func (s *Grid5x3) SymNum(sym Sym) (n Pos) {
+	for _, sr := range s.Grid {
 		for _, sy := range sr {
 			if sy == sym {
 				n++
@@ -356,13 +356,13 @@ func (s *Screen5x3) SymNum(sym Sym) (n Pos) {
 	}
 	return
 	// Other way:
-	// var b = unsafe.Slice((*byte)(unsafe.Pointer(&g.Scr[0][0])), 15)
+	// var b = unsafe.Slice((*byte)(unsafe.Pointer(&g.Grid[0][0])), 15)
 	// return Pos(bytes.Count(b, []byte{sym}))
 }
 
-func (s *Screen5x3) SymPos(sym Sym) (c Hitx) {
+func (s *Grid5x3) SymPos(sym Sym) (c Hitx) {
 	var i Pos
-	for x, sr := range s.Scr {
+	for x, sr := range s.Grid {
 		for y, sy := range sr {
 			if sy == sym {
 				c[i][0], c[i][1] = Pos(x+1), Pos(y+1)
@@ -373,8 +373,8 @@ func (s *Screen5x3) SymPos(sym Sym) (c Hitx) {
 	return
 }
 
-func (s *Screen5x3) SymNum2(sym1, sym2 Sym) (n1, n2 Pos) {
-	for _, sr := range s.Scr {
+func (s *Grid5x3) SymNum2(sym1, sym2 Sym) (n1, n2 Pos) {
+	for _, sr := range s.Grid {
 		for _, sy := range sr {
 			if sy == sym1 {
 				n1++
@@ -386,9 +386,9 @@ func (s *Screen5x3) SymNum2(sym1, sym2 Sym) (n1, n2 Pos) {
 	return
 }
 
-func (s *Screen5x3) SymPos2(sym1, sym2 Sym) (c Hitx) {
+func (s *Grid5x3) SymPos2(sym1, sym2 Sym) (c Hitx) {
 	var i Pos
-	for x, sr := range s.Scr {
+	for x, sr := range s.Grid {
 		for y, sy := range sr {
 			if sy == sym1 || sy == sym2 {
 				c[i][0], c[i][1] = Pos(x+1), Pos(y+1)
@@ -399,10 +399,10 @@ func (s *Screen5x3) SymPos2(sym1, sym2 Sym) (c Hitx) {
 	return
 }
 
-func (s *Screen5x3) SymPosL(n Pos, sym Sym) (c Hitx) {
+func (s *Grid5x3) SymPosL(n Pos, sym Sym) (c Hitx) {
 	var i Pos
 	for x := range n {
-		var sr = &s.Scr[x]
+		var sr = &s.Grid[x]
 		for y, sy := range sr {
 			if sy == sym {
 				c[i][0], c[i][1] = x+1, Pos(y+1)
@@ -413,10 +413,10 @@ func (s *Screen5x3) SymPosL(n Pos, sym Sym) (c Hitx) {
 	return
 }
 
-func (s *Screen5x3) SymPosL2(n Pos, sym1, sym2 Sym) (c Hitx) {
+func (s *Grid5x3) SymPosL2(n Pos, sym1, sym2 Sym) (c Hitx) {
 	var i Pos
 	for x := range n {
-		var sr = &s.Scr[x]
+		var sr = &s.Grid[x]
 		for y, sy := range sr {
 			if sy == sym1 || sy == sym2 {
 				c[i][0], c[i][1] = x+1, Pos(y+1)
@@ -427,32 +427,32 @@ func (s *Screen5x3) SymPosL2(n Pos, sym1, sym2 Sym) (c Hitx) {
 	return
 }
 
-// Screen for 5x4 slots.
-type Screen5x4 struct {
-	Scr [5][4]Sym `json:"scr" yaml:"scr,flow" xml:"scr"`
+// Grid for 5x4 slots.
+type Grid5x4 struct {
+	Grid [5][4]Sym `json:"grid" yaml:"grid,flow" xml:"grid"`
 }
 
-// Declare conformity with Screen interface.
-var _ Screen = (*Screen5x4)(nil)
+// Declare conformity with Grider interface.
+var _ Grider = (*Grid5x4)(nil)
 
-func (s *Screen5x4) Dim() (Pos, Pos) {
+func (s *Grid5x4) Dim() (Pos, Pos) {
 	return 5, 4
 }
 
-func (s *Screen5x4) At(x, y Pos) Sym {
-	return s.Scr[x-1][y-1]
+func (s *Grid5x4) At(x, y Pos) Sym {
+	return s.Grid[x-1][y-1]
 }
 
-func (s *Screen5x4) LX(x Pos, line Linex) Sym {
-	return s.Scr[x-1][line[x-1]-1]
+func (s *Grid5x4) LX(x Pos, line Linex) Sym {
+	return s.Grid[x-1][line[x-1]-1]
 }
 
-func (s *Screen5x4) SetSym(x, y Pos, sym Sym) {
-	s.Scr[x-1][y-1] = sym
+func (s *Grid5x4) SetSym(x, y Pos, sym Sym) {
+	s.Grid[x-1][y-1] = sym
 }
 
-func (s *Screen5x4) SetCol(x Pos, reel []Sym, pos int) {
-	var sr = &s.Scr[x-1]
+func (s *Grid5x4) SetCol(x Pos, reel []Sym, pos int) {
+	var sr = &s.Grid[x-1]
 	var n = len(reel)
 	pos = (n + pos%n) % n // correct position
 	for y := range sr {
@@ -460,15 +460,15 @@ func (s *Screen5x4) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screen5x4) SpinReels(reels Reelx) {
+func (s *Grid5x4) SpinReels(reels Reelx) {
 	for x, reel := range reels {
 		var hit = rand.N(len(reel))
 		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
 
-func (s *Screen5x4) SymNum(sym Sym) (n Pos) {
-	for _, sr := range s.Scr {
+func (s *Grid5x4) SymNum(sym Sym) (n Pos) {
+	for _, sr := range s.Grid {
 		for _, sy := range sr {
 			if sy == sym {
 				n++
@@ -478,9 +478,9 @@ func (s *Screen5x4) SymNum(sym Sym) (n Pos) {
 	return
 }
 
-func (s *Screen5x4) SymPos(sym Sym) (c Hitx) {
+func (s *Grid5x4) SymPos(sym Sym) (c Hitx) {
 	var i Pos
-	for x, sr := range s.Scr {
+	for x, sr := range s.Grid {
 		for y, sy := range sr {
 			if sy == sym {
 				c[i][0], c[i][1] = Pos(x+1), Pos(y+1)
@@ -491,8 +491,8 @@ func (s *Screen5x4) SymPos(sym Sym) (c Hitx) {
 	return
 }
 
-func (s *Screen5x4) SymNum2(sym1, sym2 Sym) (n1, n2 Pos) {
-	for _, sr := range s.Scr {
+func (s *Grid5x4) SymNum2(sym1, sym2 Sym) (n1, n2 Pos) {
+	for _, sr := range s.Grid {
 		for _, sy := range sr {
 			if sy == sym1 {
 				n1++
@@ -504,9 +504,9 @@ func (s *Screen5x4) SymNum2(sym1, sym2 Sym) (n1, n2 Pos) {
 	return
 }
 
-func (s *Screen5x4) SymPos2(sym1, sym2 Sym) (c Hitx) {
+func (s *Grid5x4) SymPos2(sym1, sym2 Sym) (c Hitx) {
 	var i Pos
-	for x, sr := range s.Scr {
+	for x, sr := range s.Grid {
 		for y, sy := range sr {
 			if sy == sym1 || sy == sym2 {
 				c[i][0], c[i][1] = Pos(x+1), Pos(y+1)
@@ -517,10 +517,10 @@ func (s *Screen5x4) SymPos2(sym1, sym2 Sym) (c Hitx) {
 	return
 }
 
-func (s *Screen5x4) SymPosL(n Pos, sym Sym) (c Hitx) {
+func (s *Grid5x4) SymPosL(n Pos, sym Sym) (c Hitx) {
 	var i Pos
 	for x := range n {
-		var sr = &s.Scr[x]
+		var sr = &s.Grid[x]
 		for y, sy := range sr {
 			if sy == sym {
 				c[i][0], c[i][1] = x+1, Pos(y+1)
@@ -531,10 +531,10 @@ func (s *Screen5x4) SymPosL(n Pos, sym Sym) (c Hitx) {
 	return
 }
 
-func (s *Screen5x4) SymPosL2(n Pos, sym1, sym2 Sym) (c Hitx) {
+func (s *Grid5x4) SymPosL2(n Pos, sym1, sym2 Sym) (c Hitx) {
 	var i Pos
 	for x := range n {
-		var sr = &s.Scr[x]
+		var sr = &s.Grid[x]
 		for y, sy := range sr {
 			if sy == sym1 || sy == sym2 {
 				c[i][0], c[i][1] = x+1, Pos(y+1)
@@ -545,32 +545,32 @@ func (s *Screen5x4) SymPosL2(n Pos, sym1, sym2 Sym) (c Hitx) {
 	return
 }
 
-// Screen for 6x3 slots.
-type Screen6x3 struct {
-	Scr [6][3]Sym `json:"scr" yaml:"scr,flow" xml:"scr"`
+// Grid for 6x3 slots.
+type Grid6x3 struct {
+	Grid [6][3]Sym `json:"grid" yaml:"grid,flow" xml:"grid"`
 }
 
-// Declare conformity with Screen interface.
-var _ Screen = (*Screen6x3)(nil)
+// Declare conformity with Grider interface.
+var _ Grider = (*Grid6x3)(nil)
 
-func (s *Screen6x3) Dim() (Pos, Pos) {
+func (s *Grid6x3) Dim() (Pos, Pos) {
 	return 6, 3
 }
 
-func (s *Screen6x3) At(x, y Pos) Sym {
-	return s.Scr[x-1][y-1]
+func (s *Grid6x3) At(x, y Pos) Sym {
+	return s.Grid[x-1][y-1]
 }
 
-func (s *Screen6x3) LX(x Pos, line Linex) Sym {
-	return s.Scr[x-1][line[x-1]-1]
+func (s *Grid6x3) LX(x Pos, line Linex) Sym {
+	return s.Grid[x-1][line[x-1]-1]
 }
 
-func (s *Screen6x3) SetSym(x, y Pos, sym Sym) {
-	s.Scr[x-1][y-1] = sym
+func (s *Grid6x3) SetSym(x, y Pos, sym Sym) {
+	s.Grid[x-1][y-1] = sym
 }
 
-func (s *Screen6x3) SetCol(x Pos, reel []Sym, pos int) {
-	var sr = &s.Scr[x-1]
+func (s *Grid6x3) SetCol(x Pos, reel []Sym, pos int) {
+	var sr = &s.Grid[x-1]
 	var n = len(reel)
 	pos = (n + pos%n) % n // correct position
 	for y := range sr {
@@ -578,15 +578,15 @@ func (s *Screen6x3) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screen6x3) SpinReels(reels Reelx) {
+func (s *Grid6x3) SpinReels(reels Reelx) {
 	for x, reel := range reels {
 		var hit = rand.N(len(reel))
 		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
 
-func (s *Screen6x3) SymNum(sym Sym) (n Pos) {
-	for _, sr := range s.Scr {
+func (s *Grid6x3) SymNum(sym Sym) (n Pos) {
+	for _, sr := range s.Grid {
 		for _, sy := range sr {
 			if sy == sym {
 				n++
@@ -596,9 +596,9 @@ func (s *Screen6x3) SymNum(sym Sym) (n Pos) {
 	return
 }
 
-func (s *Screen6x3) SymPos(sym Sym) (c Hitx) {
+func (s *Grid6x3) SymPos(sym Sym) (c Hitx) {
 	var i Pos
-	for x, sr := range s.Scr {
+	for x, sr := range s.Grid {
 		for y, sy := range sr {
 			if sy == sym {
 				c[i][0], c[i][1] = Pos(x+1), Pos(y+1)
@@ -609,32 +609,32 @@ func (s *Screen6x3) SymPos(sym Sym) (c Hitx) {
 	return
 }
 
-// Screen for 6x4 slots.
-type Screen6x4 struct {
-	Scr [6][4]Sym `json:"scr" yaml:"scr,flow" xml:"scr"`
+// Grid for 6x4 slots.
+type Grid6x4 struct {
+	Grid [6][4]Sym `json:"grid" yaml:"grid,flow" xml:"grid"`
 }
 
-// Declare conformity with Screen interface.
-var _ Screen = (*Screen6x4)(nil)
+// Declare conformity with Grider interface.
+var _ Grider = (*Grid6x4)(nil)
 
-func (s *Screen6x4) Dim() (Pos, Pos) {
+func (s *Grid6x4) Dim() (Pos, Pos) {
 	return 6, 4
 }
 
-func (s *Screen6x4) At(x, y Pos) Sym {
-	return s.Scr[x-1][y-1]
+func (s *Grid6x4) At(x, y Pos) Sym {
+	return s.Grid[x-1][y-1]
 }
 
-func (s *Screen6x4) LX(x Pos, line Linex) Sym {
-	return s.Scr[x-1][line[x-1]-1]
+func (s *Grid6x4) LX(x Pos, line Linex) Sym {
+	return s.Grid[x-1][line[x-1]-1]
 }
 
-func (s *Screen6x4) SetSym(x, y Pos, sym Sym) {
-	s.Scr[x-1][y-1] = sym
+func (s *Grid6x4) SetSym(x, y Pos, sym Sym) {
+	s.Grid[x-1][y-1] = sym
 }
 
-func (s *Screen6x4) SetCol(x Pos, reel []Sym, pos int) {
-	var sr = &s.Scr[x-1]
+func (s *Grid6x4) SetCol(x Pos, reel []Sym, pos int) {
+	var sr = &s.Grid[x-1]
 	var n = len(reel)
 	pos = (n + pos%n) % n // correct position
 	for y := range sr {
@@ -642,15 +642,15 @@ func (s *Screen6x4) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Screen6x4) SpinReels(reels Reelx) {
+func (s *Grid6x4) SpinReels(reels Reelx) {
 	for x, reel := range reels {
 		var hit = rand.N(len(reel))
 		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
 
-func (s *Screen6x4) SymNum(sym Sym) (n Pos) {
-	for _, sr := range s.Scr {
+func (s *Grid6x4) SymNum(sym Sym) (n Pos) {
+	for _, sr := range s.Grid {
 		for _, sy := range sr {
 			if sy == sym {
 				n++
@@ -660,9 +660,9 @@ func (s *Screen6x4) SymNum(sym Sym) (n Pos) {
 	return
 }
 
-func (s *Screen6x4) SymPos(sym Sym) (c Hitx) {
+func (s *Grid6x4) SymPos(sym Sym) (c Hitx) {
 	var i Pos
-	for x, sr := range s.Scr {
+	for x, sr := range s.Grid {
 		for y, sy := range sr {
 			if sy == sym {
 				c[i][0], c[i][1] = Pos(x+1), Pos(y+1)

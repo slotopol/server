@@ -11,7 +11,7 @@ import (
 )
 
 type preset struct {
-	Scr    [4][5]slot.Sym
+	Grid   [4][5]slot.Sym
 	MW     [3]float64
 	NumReg int
 	NumBon int
@@ -19,17 +19,17 @@ type preset struct {
 	WinBon float64
 }
 
-func (p *preset) Setup(s *slot.Screen5x4) {
+func (p *preset) Setup(s *slot.Grid5x4) {
 	for x := range 5 {
 		for y := range 4 {
-			s.Scr[x][y] = p.Scr[y][x]
+			s.Grid[x][y] = p.Grid[y][x]
 		}
 	}
 }
 
 var presets = []preset{
 	{ // #1: way on 4 symbols
-		Scr: [4][5]slot.Sym{
+		Grid: [4][5]slot.Sym{
 			{3, 7, 1, 3, 5},
 			{5, 4, 3, 8, 6},
 			{4, 6, 4, 4, 2},
@@ -43,7 +43,7 @@ var presets = []preset{
 		WinBon: 150*2 + 150 + 40*2,
 	},
 	{ // #2: way on 5 symbols
-		Scr: [4][5]slot.Sym{
+		Grid: [4][5]slot.Sym{
 			{5, 7, 4, 3, 5},
 			{8, 5, 8, 5, 8},
 			{4, 8, 5, 4, 2},
@@ -57,7 +57,7 @@ var presets = []preset{
 		WinBon: 200 + 200*3 + 40*3 + 10 + 10*3,
 	},
 	{ // #3: way compiled with wilds
-		Scr: [4][5]slot.Sym{
+		Grid: [4][5]slot.Sym{
 			{5, 7, 4, 3, 5},
 			{8, 5, 8, 5, 8},
 			{2, 4, 5, 1, 4},
@@ -71,7 +71,7 @@ var presets = []preset{
 		WinBon: 200 + 200*3 + 200*2 + 200*3*2 + 140*3*2,
 	},
 	{ // #4: wilded scatters (scatters by ways should be ignored)
-		Scr: [4][5]slot.Sym{
+		Grid: [4][5]slot.Sym{
 			{2, 7, 6, 3, 5},
 			{9, 5, 1, 5, 8},
 			{7, 3, 5, 9, 2},
@@ -85,7 +85,7 @@ var presets = []preset{
 		WinBon: 150*2*3*2 + 100*3*2 + 100*2*3*2 + 50*2*3 + 50*2*3*2 + 0,
 	},
 	{ // #5: no pays by ways
-		Scr: [4][5]slot.Sym{
+		Grid: [4][5]slot.Sym{
 			{6, 7, 7, 3, 5},
 			{3, 2, 4, 5, 8},
 			{5, 4, 1, 6, 4},
@@ -99,7 +99,7 @@ var presets = []preset{
 		WinBon: 0,
 	},
 	{ // #6: multiways for one symbol
-		Scr: [4][5]slot.Sym{
+		Grid: [4][5]slot.Sym{
 			{8, 4, 4, 3, 5},
 			{4, 5, 4, 4, 8},
 			{8, 3, 4, 1, 4},
@@ -112,8 +112,8 @@ var presets = []preset{
 		WinReg: 200 * 16,
 		WinBon: 200*4 + 200*4*3 + 200*4*3 + 200*4*3*3,
 	},
-	{ // #7: filled screen with wilds
-		Scr: [4][5]slot.Sym{
+	{ // #7: filled grid with wilds
+		Grid: [4][5]slot.Sym{
 			{3, 3, 3, 3, 3},
 			{3, 1, 3, 3, 3},
 			{3, 3, 3, 1, 3},
@@ -135,16 +135,16 @@ func TestScanner(t *testing.T) {
 	var wins slot.Wins
 	var gain float64
 	for i, p := range presets {
-		p.Setup(&g.Screen5x4)
+		p.Setup(&g.Grid5x4)
 		g.FSR = 0 // set regular spins mode
 		g.MW = [3]float64{1, 1, 1}
 		g.Scanner(&wins)
 		if len(wins) != p.NumReg {
-			t.Errorf("error at %d screen on regular spins, expected %d, gets %d wins", i+1, p.NumReg, len(wins))
+			t.Errorf("error at %d grid on regular spins, expected %d, gets %d wins", i+1, p.NumReg, len(wins))
 		}
 		gain = wins.Gain()
 		if gain != p.WinReg {
-			t.Errorf("error at %d screen on regular spins, expected %g, gets %g gain", i+1, p.WinReg, gain)
+			t.Errorf("error at %d grid on regular spins, expected %g, gets %g gain", i+1, p.WinReg, gain)
 		}
 		wins.Reset()
 		g.FSR = 12 // set free spins mode
@@ -152,10 +152,10 @@ func TestScanner(t *testing.T) {
 		g.Scanner(&wins)
 		gain = wins.Gain()
 		if len(wins) != p.NumBon {
-			t.Errorf("error at %d screen on free spins, expected %d, gets %d wins", i+1, p.NumBon, len(wins))
+			t.Errorf("error at %d grid on free spins, expected %d, gets %d wins", i+1, p.NumBon, len(wins))
 		}
 		if gain != p.WinBon {
-			t.Errorf("error at %d screen on free spins, expected %g, gets %g gain", i+1, p.WinBon, gain)
+			t.Errorf("error at %d grid on free spins, expected %g, gets %g gain", i+1, p.WinBon, gain)
 		}
 		wins.Reset()
 	}

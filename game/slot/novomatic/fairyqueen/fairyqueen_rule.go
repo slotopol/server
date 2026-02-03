@@ -58,7 +58,7 @@ var ScatFreespin = [5]int{0, 0, 10, 10, 10} // 13 light
 var BetLines = slot.BetLinesNvm10[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 	// Expanding Symbol
 	ES slot.Sym `json:"es,omitempty" yaml:"es,omitempty" xml:"es,omitempty"`
@@ -157,7 +157,7 @@ func (g *Game) SpinBon() {
 	var num = ReelNumBon[g.ES]
 	var x slot.Pos
 	for x = 1; x <= num; x++ {
-		var r = &g.Scr[x-1]
+		var r = &g.Grid[x-1]
 		if g.ES != scat {
 			r[0], r[1], r[2] = g.ES, g.ES, g.ES
 		} else {

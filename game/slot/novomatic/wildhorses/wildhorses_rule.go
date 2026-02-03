@@ -30,7 +30,7 @@ var LinePay = [12][5]float64{
 var BetLines = slot.BetLinesNvm5x4[:]
 
 type Game struct {
-	slot.Screen5x4 `yaml:",inline"`
+	slot.Grid5x4 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 
 	SS slot.Sym `json:"ss" yaml:"ss" xml:"ss"` // selected symbol

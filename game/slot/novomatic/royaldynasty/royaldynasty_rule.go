@@ -39,7 +39,7 @@ var Freegames = [...]int{25, 30, 35, 40, 45}
 var BetLines = slot.BetLinesNvm5x3v1[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 	// Scatter on freegames that triggers freegames
 	TS slot.Sym `json:"ts" yaml:"ts" xml:"ts"`

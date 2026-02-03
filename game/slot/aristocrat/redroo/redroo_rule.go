@@ -44,7 +44,7 @@ var ScatFreespinReg = [5]int{0, 0, 8, 15, 20} // scatter
 var ScatFreespinBon = [5]int{0, 5, 8, 15, 20} // scatter
 
 type Game struct {
-	slot.Screen5x4 `yaml:",inline"`
+	slot.Grid5x4 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 	// wild multipliers
 	MW [3]float64 `json:"mw" yaml:"mw" xml:"mw"`
@@ -73,11 +73,11 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 	var active [sn + 1]bool       // symbols present on 1st reel
 	for x := range 5 {
 		var cx = &counts[x]
-		for _, sym := range g.Scr[x] {
+		for _, sym := range g.Grid[x] {
 			cx[sym]++
 		}
 	}
-	for _, sym := range g.Scr[0] {
+	for _, sym := range g.Grid[0] {
 		active[sym] = true
 	}
 	// Ways calculation

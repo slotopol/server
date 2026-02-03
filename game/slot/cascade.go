@@ -4,8 +4,8 @@ import "math/rand/v2"
 
 type Cascade interface {
 	UntoFall()            // set fall number before scanner call
-	PushFall(reels Reelx) // fill screen on fall in avalanche chain
-	Strike(wins Wins)     // strike win symbols on the screen
+	PushFall(reels Reelx) // fill grid on fall in avalanche chain
+	Strike(wins Wins)     // strike win symbols on the grid
 }
 
 // Remark: On cascading slots, the reels must not to match, otherwise,
@@ -18,9 +18,9 @@ type SlotCascade interface {
 }
 
 type Cascade5x3 struct {
-	Screen5x3 `yaml:",inline"`
-	Hits      [5][3]Pos `json:"hits" yaml:"hits,flow" xml:"hits"` // hits to fall down
-	Seed      [5]int    `json:"seed" yaml:"seed,flow" xml:"seed"` // reels positions
+	Grid5x3 `yaml:",inline"`
+	Hits    [5][3]Pos `json:"hits" yaml:"hits,flow" xml:"hits"` // hits to fall down
+	Seed    [5]int    `json:"seed" yaml:"seed,flow" xml:"seed"` // reels positions
 	// cascade fall number
 	CFN int `json:"cfn,omitempty" yaml:"cfn,omitempty" xml:"cfn,omitempty"`
 }
@@ -29,7 +29,7 @@ type Cascade5x3 struct {
 var _ Cascade = (*Cascade5x3)(nil)
 
 func (s *Cascade5x3) SetCol(x Pos, reel []Sym, pos int) {
-	var sr = &s.Scr[x-1]
+	var sr = &s.Grid[x-1]
 	var n = len(reel)
 	pos = (n + pos%n) % n // correct position
 	for y := range sr {
@@ -55,7 +55,7 @@ func (s *Cascade5x3) TopFall(reels Reelx) {
 
 func (s *Cascade5x3) PushFall(reels Reelx) {
 	for x, hr := range s.Hits {
-		var sr = &s.Scr[x]
+		var sr = &s.Grid[x]
 		// fall old symbols
 		var n = 0
 		for y, h := range hr {
@@ -104,9 +104,9 @@ func (s *Cascade5x3) Strike(wins Wins) {
 }
 
 type Cascade5x4 struct {
-	Screen5x4 `yaml:",inline"`
-	Hits      [5][4]Pos `json:"hits" yaml:"hits,flow" xml:"hits"` // hits to fall down
-	Seed      [5]int    `json:"seed" yaml:"seed,flow" xml:"seed"` // reels positions
+	Grid5x4 `yaml:",inline"`
+	Hits    [5][4]Pos `json:"hits" yaml:"hits,flow" xml:"hits"` // hits to fall down
+	Seed    [5]int    `json:"seed" yaml:"seed,flow" xml:"seed"` // reels positions
 	// cascade fall number
 	CFN int `json:"cfn,omitempty" yaml:"cfn,omitempty" xml:"cfn,omitempty"`
 }
@@ -115,7 +115,7 @@ type Cascade5x4 struct {
 var _ Cascade = (*Cascade5x4)(nil)
 
 func (s *Cascade5x4) SetCol(x Pos, reel []Sym, pos int) {
-	var sr = &s.Scr[x-1]
+	var sr = &s.Grid[x-1]
 	var n = len(reel)
 	pos = (n + pos%n) % n // correct position
 	for y := range sr {
@@ -141,7 +141,7 @@ func (s *Cascade5x4) TopFall(reels Reelx) {
 
 func (s *Cascade5x4) PushFall(reels Reelx) {
 	for x, hr := range s.Hits {
-		var sr = &s.Scr[x]
+		var sr = &s.Grid[x]
 		// fall old symbols
 		var n = 0
 		for y, h := range hr {

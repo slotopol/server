@@ -32,7 +32,7 @@ var ScatFreespin = [15]int{0, 0, 0, 0, 0, 15, 17, 19, 21, 23, 25, 27, 29, 31, 33
 var BetLines = slot.BetLinesCT5x3[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 

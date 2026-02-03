@@ -44,7 +44,7 @@ var BetLines = []slot.Linex{
 }
 
 type Game struct {
-	slot.Screenx `yaml:",inline"`
+	slot.Gridx `yaml:",inline"`
 	slot.Slotx   `yaml:",inline"`
 }
 
@@ -53,7 +53,7 @@ var _ slot.SlotGame = (*Game)(nil)
 
 func NewGame(sel int) *Game {
 	return &Game{
-		Screenx: slot.ScreenDim(5, 6),
+		Gridx: slot.GridDim(5, 6),
 		Slotx: slot.Slotx{
 			Sel: sel,
 			Bet: 1,

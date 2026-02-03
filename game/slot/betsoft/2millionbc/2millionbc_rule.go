@@ -39,7 +39,7 @@ const (
 )
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 	AP             float64 `json:"ap" yaml:"ap" xml:"ap"` // acorns pay
 	AC             int     `json:"an" yaml:"an" xml:"an"` // acorns counter

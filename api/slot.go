@@ -307,7 +307,7 @@ func ApiSlotSpin(c *gin.Context) {
 	defer wins.Reset()
 	var n = 0
 	game.Prepare()
-	for { // repeat until get valid screen and spin will fit into bank
+	for { // repeat until get valid grid and spin will fit into bank
 		if n++; n > cfg.Cfg.MaxSpinAttempts {
 			Ret500(c, AEC_slot_spin_badbank, ErrBadBank)
 			return

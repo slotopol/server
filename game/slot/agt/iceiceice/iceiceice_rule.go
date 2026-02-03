@@ -34,7 +34,7 @@ var BetLines = []slot.Linex{
 }
 
 type Game struct {
-	slot.Screen3x3 `yaml:",inline"`
+	slot.Grid3x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 

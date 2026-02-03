@@ -27,7 +27,7 @@ var LinePay = [10][5]float64{
 var BetLines = slot.BetLinesCT5x3[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -55,7 +55,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 
 	var reelwild [5]bool
 	for x := 1; x < 4; x++ { // 2, 3, 4 reels only
-		for _, sy := range g.Scr[x] {
+		for _, sy := range g.Grid[x] {
 			if sy == wild {
 				reelwild[x] = true
 				break

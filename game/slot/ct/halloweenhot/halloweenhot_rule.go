@@ -28,7 +28,7 @@ var ScatPay = [5]float64{0, 0, 20, 50, 500} // 2 scatter
 var BetLines = slot.BetLinesCT5x3[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -58,21 +58,21 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 }
 
 func (g *Game) FillMult() float64 {
-	var sym = g.Scr[2][1] // center symbol
+	var sym = g.Grid[2][1] // center symbol
 	var r *[3]slot.Sym
-	if r = &g.Scr[2]; r[0] != sym || r[2] != sym {
+	if r = &g.Grid[2]; r[0] != sym || r[2] != sym {
 		return 1
 	}
 	var n = 1
-	if r = &g.Scr[1]; r[0] == sym && r[1] == sym && r[2] == sym {
+	if r = &g.Grid[1]; r[0] == sym && r[1] == sym && r[2] == sym {
 		n++
-		if r = &g.Scr[0]; r[0] == sym && r[1] == sym && r[2] == sym {
+		if r = &g.Grid[0]; r[0] == sym && r[1] == sym && r[2] == sym {
 			n++
 		}
 	}
-	if r = &g.Scr[3]; r[0] == sym && r[1] == sym && r[2] == sym {
+	if r = &g.Grid[3]; r[0] == sym && r[1] == sym && r[2] == sym {
 		n++
-		if r = &g.Scr[4]; r[0] == sym && r[1] == sym && r[2] == sym {
+		if r = &g.Grid[4]; r[0] == sym && r[1] == sym && r[2] == sym {
 			n++
 		}
 	}

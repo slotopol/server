@@ -24,13 +24,13 @@ func (kp *Paytable) HasSel(sel int) bool {
 	return false
 }
 
-func (kp *Paytable) Scanner(scrn *Screen, wins *Wins, bet float64) error {
+func (kp *Paytable) Scanner(grid *Grid, wins *Wins, bet float64) error {
 	wins.Sel = 0
 	wins.Num = 0
 	for i := range 80 {
-		if scrn[i]&KSsel > 0 {
+		if grid[i]&KSsel > 0 {
 			wins.Sel++
-			if scrn[i]&KShit > 0 {
+			if grid[i]&KShit > 0 {
 				wins.Num++
 			}
 		}
@@ -68,7 +68,7 @@ const (
 	KSselhit KS = KSsel | KShit // win cell, hit and selection
 )
 
-type Screen [80]KS
+type Grid [80]KS
 
 type Bitset = util.Bitset128
 
@@ -82,8 +82,8 @@ type Wins struct {
 
 // KenoGame is common keno interface. Any keno game should implement this interface.
 type KenoGame interface {
-	Scanner(*Wins) error  // scan given screen and append result to wins, constant function
-	Spin(float64)         // fill the screen with random hits on reels closest to given RTP, constant function
+	Scanner(*Wins) error  // scan given grid and append result to wins, constant function
+	Spin(float64)         // fill the grid with random hits on reels closest to given RTP, constant function
 	GetBet() float64      // returns current bet, constant function
 	SetBet(float64) error // set bet to given value
 	GetSel() Bitset       // returns current selected numbers, constant function
@@ -98,9 +98,9 @@ var (
 )
 
 type Keno80 struct {
-	Scr Screen  `json:"scr" yaml:"scr" xml:"scr"` // game screen
-	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value
-	Sel Bitset  `json:"sel" yaml:"sel" xml:"sel"` // selected numbers
+	Grid Grid    `json:"grid" yaml:"grid" xml:"grid"` // game grid
+	Bet  float64 `json:"bet" yaml:"bet" xml:"bet"`    // bet value
+	Sel  Bitset  `json:"sel" yaml:"sel" xml:"sel"`    // selected numbers
 }
 
 func (g *Keno80) Spin(_ float64) {
@@ -112,12 +112,12 @@ func (g *Keno80) Spin(_ float64) {
 		hits[i], hits[j] = hits[j], hits[i]
 	})
 
-	clear(g.Scr[:])
+	clear(g.Grid[:])
 	for n := range g.Sel.Bits() {
-		g.Scr[n-1] = KSsel
+		g.Grid[n-1] = KSsel
 	}
 	for i := range 20 {
-		g.Scr[hits[i]-1] |= KShit
+		g.Grid[hits[i]-1] |= KShit
 	}
 }
 

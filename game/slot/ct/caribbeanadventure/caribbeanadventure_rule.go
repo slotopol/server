@@ -43,7 +43,7 @@ var ScatFreespin = [5]int{0, 0, 10, 10, 10} // 2 scatter
 var BetLines = slot.BetLinesCT5x3[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -127,7 +127,7 @@ func (g *Game) ScanBonScat(wins *slot.Wins) {
 	// Count symbols
 	var counts [sn + 1]slot.Pos // symbol counts per reel
 	for x := range 5 {
-		for _, sym := range g.Scr[x] {
+		for _, sym := range g.Grid[x] {
 			counts[sym]++
 		}
 	}

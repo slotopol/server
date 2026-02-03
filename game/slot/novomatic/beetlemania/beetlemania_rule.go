@@ -34,7 +34,7 @@ const (
 var BetLines = slot.BetLinesNvm10[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -66,7 +66,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 
 func (g *Game) ScatNumCont() (n slot.Pos) {
 	for x := 0; x < 5; x++ {
-		var r = g.Scr[x]
+		var r = g.Grid[x]
 		if r[0] == scat || r[1] == scat || r[2] == scat {
 			n++
 		} else {
@@ -79,7 +79,7 @@ func (g *Game) ScatNumCont() (n slot.Pos) {
 func (g *Game) ScatPosCont() (c slot.Hitx) {
 	var x, i slot.Pos
 	for x = 0; x < 5; x++ {
-		var r = g.Scr[x]
+		var r = g.Grid[x]
 		if r[0] == scat {
 			c[i][0], c[i][1] = x+1, 1
 			i++

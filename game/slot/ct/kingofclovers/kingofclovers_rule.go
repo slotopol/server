@@ -79,13 +79,13 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 
 func (g *Game) FillMult() float64 {
 	var n int
-	if g.Scr[1][0] == wild && g.Scr[1][1] == wild && g.Scr[1][2] == wild {
+	if g.Grid[1][0] == wild && g.Grid[1][1] == wild && g.Grid[1][2] == wild {
 		n++
 	}
-	if g.Scr[2][0] == wild && g.Scr[2][1] == wild && g.Scr[2][2] == wild {
+	if g.Grid[2][0] == wild && g.Grid[2][1] == wild && g.Grid[2][2] == wild {
 		n++
 	}
-	if g.Scr[3][0] == wild && g.Scr[3][1] == wild && g.Scr[3][2] == wild {
+	if g.Grid[3][0] == wild && g.Grid[3][1] == wild && g.Grid[3][2] == wild {
 		n++
 	}
 	if n == 2 {

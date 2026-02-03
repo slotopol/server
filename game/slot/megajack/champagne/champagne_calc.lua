@@ -35,7 +35,7 @@ local PAYTABLE_SCAT = {0, 0, 0, 0, 1000}
 local FREESPIN_SCAT = {0, 0, 15, 15, 15}
 
 -- 5. CONFIGURATION
-local sx, sy = 5, 3 -- screen width & height
+local sx, sy = 5, 3 -- grid width & height
 local wild, scat, bon = 11, 1, 12 -- wild & scatter symbol IDs
 local line_min = 2 -- minimum line symbols to win
 local scat_min = 2 -- minimum scatters to win

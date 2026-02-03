@@ -24,7 +24,7 @@ local PAYTABLE_LINE = {
 }
 
 -- 3. CONFIGURATION
-local sx, sy = 3, 3 -- screen width & height
+local sx, sy = 3, 3 -- grid width & height
 local wild, scat = 1, 9 -- wild & scatter symbol IDs
 
 -- Performs full RTP calculation for given reels

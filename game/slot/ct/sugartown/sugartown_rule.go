@@ -53,7 +53,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 	var sn [10 + 1]slot.Pos
 	var x slot.Pos
 	for x = range 5 {
-		var r = g.Scr[x]
+		var r = g.Grid[x]
 		sn[r[0]]++
 		sn[r[1]]++
 		sn[r[2]]++

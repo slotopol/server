@@ -24,7 +24,7 @@ var LinePay = [8]float64{
 var BetLines = slot.BetLinesHot3x3[:]
 
 type Game struct {
-	slot.Screen3x3 `yaml:",inline"`
+	slot.Grid3x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -46,13 +46,13 @@ func (g *Game) Clone() slot.SlotGame {
 }
 
 func (g *Game) FillMult() float64 {
-	var sym = g.Scr[0][0]
+	var sym = g.Grid[0][0]
 	if sym < 4 || sym > 7 {
 		return 1
 	}
-	if g.Scr[1][0] != sym || g.Scr[2][0] != sym ||
-		g.Scr[0][1] != sym || g.Scr[1][1] != sym || g.Scr[2][1] != sym ||
-		g.Scr[0][2] != sym || g.Scr[1][2] != sym || g.Scr[2][2] != sym {
+	if g.Grid[1][0] != sym || g.Grid[2][0] != sym ||
+		g.Grid[0][1] != sym || g.Grid[1][1] != sym || g.Grid[2][1] != sym ||
+		g.Grid[0][2] != sym || g.Grid[1][2] != sym || g.Grid[2][2] != sym {
 		return 1
 	}
 	return 2

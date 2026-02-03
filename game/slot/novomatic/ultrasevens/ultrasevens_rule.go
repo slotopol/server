@@ -25,7 +25,7 @@ var LinePay = [7][5]float64{
 var BetLines = slot.BetLinesNvm5x4[:]
 
 type Game struct {
-	slot.Screen5x4 `yaml:",inline"`
+	slot.Grid5x4 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -53,10 +53,10 @@ const (
 )
 
 func (g *Game) Filled() slot.Sym {
-	var sym = g.Scr[4][3]
+	var sym = g.Grid[4][3]
 	for x := range 5 {
 		for y := range 4 {
-			if g.Scr[x][y] != sym {
+			if g.Grid[x][y] != sym {
 				return 0
 			}
 		}

@@ -31,7 +31,7 @@ var ScatPay = [5]float64{0, 0, 10, 20, 500} // 2 scatter
 var BetLines = slot.BetLinesAgt5x3[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -62,13 +62,13 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(wins *slot.Wins) {
-	var scrnwild = g.Screen5x3
+	var gridwild = g.Grid5x3
 	for y := range 3 {
-		if g.Scr[2][y] == chilli {
+		if g.Grid[2][y] == chilli {
 			for i := max(0, 1); i <= min(4, 3); i++ {
 				for j := max(0, y-1); j <= min(2, y+1); j++ {
-					if scrnwild.Scr[i][j] != scat {
-						scrnwild.Scr[i][j] = wild
+					if gridwild.Grid[i][j] != scat {
+						gridwild.Grid[i][j] = wild
 					}
 				}
 			}
@@ -80,7 +80,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		var syml slot.Sym
 		var x slot.Pos
 		for x = 1; x <= 5; x++ {
-			var sx = scrnwild.LX(x, line)
+			var sx = gridwild.LX(x, line)
 			if sx == wild {
 				if syml == 0 {
 					numw = x

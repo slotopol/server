@@ -31,7 +31,7 @@ var LinePay = [sn][5]float64{
 }
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -56,7 +56,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 	var counts [5 + 1][sn + 1]int // symbol counts per reel
 	for x := range 5 {
 		var cx = &counts[x]
-		for _, sym := range g.Scr[x] {
+		for _, sym := range g.Grid[x] {
 			cx[sym]++
 		}
 	}

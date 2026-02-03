@@ -33,7 +33,7 @@ var ScatFreespin = [5]int{0, 0, 10} // 8 bonus
 var BetLines = slot.BetLinesPlt5x3[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -118,7 +118,7 @@ func (g *Game) Spin(mrtp float64) {
 	if g.FSR == 0 {
 		g.SpinReels(reels)
 	} else {
-		g.Screen5x3.SpinBig(reels.Reel(1), BonusReel, reels.Reel(5))
+		g.Grid5x3.SpinBig(reels.Reel(1), BonusReel, reels.Reel(5))
 	}
 }
 

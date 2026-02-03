@@ -35,7 +35,7 @@ var ScatFreespin = [5]int{0, 0, 5, 10, 25} // 13 egg
 var BetLines = slot.BetLinesNvm5x3v3[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 

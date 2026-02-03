@@ -39,7 +39,7 @@ var ScatFreespin = [6]int{0, 0, 8, 12, 15, 20} // 2 scatter
 var FreeMult = [6]float64{0, 0, 2, 3, 4, 5}
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 	// multiplier on freespins
 	M float64 `json:"m,omitempty" yaml:"m,omitempty" xml:"m,omitempty"`
@@ -67,7 +67,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 	var counts [5 + 1][sn + 1]int // symbol counts per reel
 	for x := range 5 {
 		var cx = &counts[x]
-		for _, sym := range g.Scr[x] {
+		for _, sym := range g.Grid[x] {
 			cx[sym]++
 		}
 	}

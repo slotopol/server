@@ -24,7 +24,7 @@ Get the list of 'NetExt' and 'BetSoft' games:
   %[1]s list -i netent -i betsoft
 Get the list of Megajack games and any games with 3 reels:
   %[1]s list -i megajack -i 3x
-Get the list of 'AGT' games with screen 3x3 only:
+Get the list of 'AGT' games with grid 3x3 only:
   %[1]s list -i agt+3x3
 Get the list of 'AGT' games with big symbols and free games:
   %[1]s list -i agt+big+fg
@@ -79,7 +79,7 @@ func FormatGameInfo(gi *game.GameInfo) string {
 			b.WriteString(", has jackpot")
 		}
 		if gi.GP&game.GPfill > 0 {
-			b.WriteString(", has multiplier on filled screen")
+			b.WriteString(", has multiplier on filled grid")
 		}
 		if gi.GP&game.GPmix > 0 {
 			b.WriteString(", has pays by combinations with mixed symbols")
@@ -277,7 +277,7 @@ playngo - games of 'Play'n GO' provider
 playtech - games of 'Playtech' provider
 slotopol - games of this 'Slotopol' provider
 3x, 4x, 5x, ... - games with 3, 4, 5, ... reels
-3x3, 4x4, 5x3, ... - games with 3x3, 4x4, 5x3, ... screen dimension
+3x3, 4x4, 5x3, ... - games with 3x3, 4x4, 5x3, ... grid dimension
 lines - games with wins counted by lines
 ln=10, lneq10 - games with 10 bet lines (or some other pointed)
 ln<10, lnlt10 - games with less than 10 bet lines (or some other pointed)
@@ -292,7 +292,7 @@ rpay - pays left to right and right to left
 apay - pays for combination at any position
 cpay - pays by clusters
 jack - slots with jackpots
-fill - has multiplier on filled slot screen
+fill - has multiplier on filled slot grid
 mix - has pays by combinations with mixed symbols (non-wilds)
 bm - slots with non-reels bonus mode
 um - slots with mode depended on the user's choice

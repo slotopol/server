@@ -29,7 +29,7 @@ local PAYTABLE_LINE = {
 local scat_fs = 3 -- scatter pays and number of free spins awarded
 
 -- 4. CONFIGURATION
-local sx, sy = 4, 4 -- screen width & height
+local sx, sy = 4, 4 -- grid width & height
 local wild, scat = 2, 1 -- wild & scatter symbol IDs
 local line_min = 2 -- minimum line symbols to win
 local scat_min = 1 -- minimum scatters to win

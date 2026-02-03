@@ -26,7 +26,7 @@ var LinePay = [8][5]float64{
 var BetLines = slot.BetLinesNvm10[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -56,13 +56,13 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 
 // Lined symbols calculation.
 func (g *Game) ScanLined(wins *slot.Wins) {
-	var scrnwild slot.Screen5x3 = g.Screen5x3
+	var gridwild slot.Grid5x3 = g.Grid5x3
 	for x := range 5 {
 		for y := range 3 {
-			if g.Scr[x][y] == wild {
+			if g.Grid[x][y] == wild {
 				for i := max(0, x-1); i <= min(4, x+1); i++ {
 					for j := max(0, y-1); j <= min(2, y+1); j++ {
-						scrnwild.Scr[i][j] = wild
+						gridwild.Grid[i][j] = wild
 					}
 				}
 			}
@@ -71,16 +71,16 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 	for li, line := range BetLines[:g.Sel] {
 		var num slot.Pos = 1
-		var sym3 = scrnwild.LX(3, line)
+		var sym3 = gridwild.LX(3, line)
 		var xy slot.Linex
 		xy.Set(3, line.At(3))
-		if sym2 := scrnwild.LX(2, line); sym2 == sym3 || sym2 == wild || sym3 == wild {
+		if sym2 := gridwild.LX(2, line); sym2 == sym3 || sym2 == wild || sym3 == wild {
 			if sym3 == wild {
 				sym3 = sym2
 			}
 			xy.Set(2, line.At(2))
 			num++
-			if sym1 := scrnwild.LX(1, line); sym1 == sym3 || sym1 == wild || sym3 == wild {
+			if sym1 := gridwild.LX(1, line); sym1 == sym3 || sym1 == wild || sym3 == wild {
 				if sym3 == wild {
 					sym3 = sym1
 				}
@@ -88,13 +88,13 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				num++
 			}
 		}
-		if sym4 := scrnwild.LX(4, line); sym4 == sym3 || sym4 == wild || sym3 == wild {
+		if sym4 := gridwild.LX(4, line); sym4 == sym3 || sym4 == wild || sym3 == wild {
 			if sym3 == wild {
 				sym3 = sym4
 			}
 			xy.Set(4, line.At(4))
 			num++
-			if sym5 := scrnwild.LX(5, line); sym5 == sym3 || sym5 == wild || sym3 == wild {
+			if sym5 := gridwild.LX(5, line); sym5 == sym3 || sym5 == wild || sym3 == wild {
 				if sym3 == wild {
 					sym3 = sym5
 				}

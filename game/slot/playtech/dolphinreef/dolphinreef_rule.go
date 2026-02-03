@@ -31,7 +31,7 @@ var ScatPay = [5]float64{0, 0, 3, 10, 100} // 2 scatter
 var BetLines = slot.BetLinesPlt5x3[:]
 
 type Game struct {
-	slot.Screen5x3 `yaml:",inline"`
+	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx     `yaml:",inline"`
 }
 
@@ -127,7 +127,7 @@ func (g *Game) ScatNumFG() (n slot.Pos) {
 			n++
 			continue
 		}
-		var r = g.Scr[x]
+		var r = g.Grid[x]
 		for y := range 3 {
 			if r[y] == scat {
 				n++
@@ -145,7 +145,7 @@ func (g *Game) ScatPosFG() (c slot.Hitx) {
 			i++
 			continue
 		}
-		var r = g.Scr[x]
+		var r = g.Grid[x]
 		for y = range 3 {
 			if r[y] == scat {
 				c[i][0], c[i][1] = x+1, y+1

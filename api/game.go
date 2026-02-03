@@ -111,8 +111,8 @@ var (
 	JoinBuf = SqlStory{}
 )
 
-// Make game screen object.
-func InitScreen(g game.Gamble) {
+// Make game grid object.
+func InitGrid(g game.Gamble) {
 	g.Spin(cfg.DefMRTP)
 }
 
@@ -177,8 +177,8 @@ func ApiGameNew(c *gin.Context) {
 		Game: anygame,
 	}
 
-	// make game screen object
-	InitScreen(anygame)
+	// make game grid object
+	InitGrid(anygame)
 
 	// insert new story entry
 	if Cfg.ClubInsertBuffer > 1 {

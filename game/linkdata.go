@@ -11,7 +11,7 @@ import (
 )
 
 type Gamble interface {
-	Spin(float64)         // fill the screen with random hits on reels closest to given RTP, constant function
+	Spin(float64)         // fill the grid with random hits on reels closest to given RTP, constant function
 	GetBet() float64      // returns current bet, constant function
 	SetBet(float64) error // set bet to given value
 }
@@ -37,7 +37,7 @@ const (
 	_
 
 	GPjack  // cumulative jackpot is present
-	GPfill  // has multiplier on filled screen
+	GPfill  // has multiplier on filled grid
 	GPmix   // has pays by combinations with mixed symbols (non-wilds)
 	GPcumul // has cumulative pays (in this case spin can fails if bank have not enough money)
 
@@ -93,8 +93,8 @@ type (
 	AlgDescr struct {
 		GT  GT        `json:"gt,omitempty" yaml:"gt,omitempty" xml:"gt,omitempty"` // game type
 		GP  GP        `json:"gp,omitempty" yaml:"gp,omitempty" xml:"gp,omitempty"` // game properties
-		SX  int       `json:"sx,omitempty" yaml:"sx,omitempty" xml:"sx,omitempty"` // screen width
-		SY  int       `json:"sy,omitempty" yaml:"sy,omitempty" xml:"sy,omitempty"` // screen height
+		SX  int       `json:"sx,omitempty" yaml:"sx,omitempty" xml:"sx,omitempty"` // grid width
+		SY  int       `json:"sy,omitempty" yaml:"sy,omitempty" xml:"sy,omitempty"` // grid height
 		SN  int       `json:"sn,omitempty" yaml:"sn,omitempty" xml:"sn,omitempty"` // number of symbols
 		LN  int       `json:"ln,omitempty" yaml:"ln,omitempty" xml:"ln,omitempty"` // number of lines in bet lines set
 		WN  int       `json:"wn,omitempty" yaml:"wn,omitempty" xml:"wn,omitempty"` // number of ways

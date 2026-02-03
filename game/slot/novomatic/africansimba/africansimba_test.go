@@ -11,22 +11,22 @@ import (
 )
 
 type preset struct {
-	Scr [3][5]slot.Sym
-	Num int
-	Win float64
+	Grid [3][5]slot.Sym
+	Num  int
+	Win  float64
 }
 
-func (p *preset) Setup(s *slot.Screen5x3) {
+func (p *preset) Setup(s *slot.Grid5x3) {
 	for x := range 5 {
 		for y := range 3 {
-			s.Scr[x][y] = p.Scr[y][x]
+			s.Grid[x][y] = p.Grid[y][x]
 		}
 	}
 }
 
 var presets = []preset{
 	{ // #1: way on 4 symbols
-		Scr: [3][5]slot.Sym{
+		Grid: [3][5]slot.Sym{
 			{2, 7, 1, 3, 5},
 			{4, 4, 2, 8, 6},
 			{7, 6, 4, 4, 2},
@@ -36,7 +36,7 @@ var presets = []preset{
 		Win: 150*2 + 10,
 	},
 	{ // #2: way on 5 symbols
-		Scr: [3][5]slot.Sym{
+		Grid: [3][5]slot.Sym{
 			{5, 7, 1, 3, 5},
 			{8, 5, 8, 5, 8},
 			{7, 8, 5, 4, 2},
@@ -46,7 +46,7 @@ var presets = []preset{
 		Win: 250*2 + 10 + 10*2,
 	},
 	{ // #3: way compiled with wilds
-		Scr: [3][5]slot.Sym{
+		Grid: [3][5]slot.Sym{
 			{5, 7, 2, 3, 5},
 			{8, 5, 8, 5, 8},
 			{7, 1, 5, 1, 2},
@@ -56,7 +56,7 @@ var presets = []preset{
 		Win: 250*4 + 125,
 	},
 	{ // #4: wilded scatters (scatters by ways should be ignored)
-		Scr: [3][5]slot.Sym{
+		Grid: [3][5]slot.Sym{
 			{2, 7, 6, 3, 5},
 			{9, 5, 1, 5, 8},
 			{7, 1, 5, 1, 2},
@@ -66,7 +66,7 @@ var presets = []preset{
 		Win: 25*2 + 25,
 	},
 	{ // #5: no pays by ways
-		Scr: [3][5]slot.Sym{
+		Grid: [3][5]slot.Sym{
 			{6, 7, 7, 3, 5},
 			{3, 5, 4, 5, 8},
 			{5, 1, 2, 1, 2},
@@ -76,7 +76,7 @@ var presets = []preset{
 		Win: 0,
 	},
 	{ // #6: multiways for one symbol
-		Scr: [3][5]slot.Sym{
+		Grid: [3][5]slot.Sym{
 			{6, 4, 4, 3, 5},
 			{4, 5, 4, 4, 8},
 			{5, 1, 4, 1, 2},
@@ -85,8 +85,8 @@ var presets = []preset{
 		Num: 1,
 		Win: 150 * 12,
 	},
-	{ // #7: filled screen
-		Scr: [3][5]slot.Sym{
+	{ // #7: filled grid
+		Grid: [3][5]slot.Sym{
 			{3, 3, 1, 3, 3},
 			{3, 3, 3, 3, 3},
 			{3, 3, 3, 3, 3},
@@ -103,14 +103,14 @@ func TestScanner(t *testing.T) {
 	var g = africansimba.NewGame()
 	var wins slot.Wins
 	for i, p := range presets {
-		p.Setup(&g.Screen5x3)
+		p.Setup(&g.Grid5x3)
 		g.Scanner(&wins)
 		if len(wins) != p.Num {
-			t.Errorf("error at %d screen, expected %d, gets %d wins", i+1, p.Num, len(wins))
+			t.Errorf("error at %d grid, expected %d, gets %d wins", i+1, p.Num, len(wins))
 		}
 		var gain = wins.Gain()
 		if gain != p.Win {
-			t.Errorf("error at %d screen, expected %g, gets %g gain", i+1, p.Win, gain)
+			t.Errorf("error at %d grid, expected %g, gets %g gain", i+1, p.Win, gain)
 		}
 		wins.Reset()
 	}

@@ -11,7 +11,7 @@ type WinItem struct {
 	Sym Sym     `json:"sym,omitempty" yaml:"sym,omitempty" xml:"sym,omitempty,attr"` // win symbol
 	Num Pos     `json:"num,omitempty" yaml:"num,omitempty" xml:"num,omitempty,attr"` // number of win symbols
 	LI  int     `json:"li,omitempty" yaml:"li,omitempty" xml:"li,omitempty,attr"`    // line index (0 for scatters and not lined combinations)
-	XY  Hitx    `json:"xy,omitempty" yaml:"xy,omitempty,flow" xml:"xy,omitempty"`    // symbols (X, Y) positions on screen
+	XY  Hitx    `json:"xy,omitempty" yaml:"xy,omitempty,flow" xml:"xy,omitempty"`    // symbols (X, Y) positions on grid
 	FS  int     `json:"fs,omitempty" yaml:"fs,omitempty" xml:"fs,omitempty,attr"`    // number of free spins
 	BID int     `json:"bid,omitempty" yaml:"bid,omitempty" xml:"bid,omitempty,attr"` // bonus identifier
 	Bon any     `json:"bon,omitempty" yaml:"bon,omitempty" xml:"bon,omitempty"`      // bonus game data
@@ -53,14 +53,14 @@ func (wins Wins) Jackpot() float64 {
 // SlotGame is common slots interface. Any slot game should implement this interface.
 type SlotGame interface {
 	Clone() SlotGame              // returns full cloned copy of itself
-	Scanner(*Wins) error          // scan given screen and append result to wins, constant function
+	Scanner(*Wins) error          // scan given grid and append result to wins, constant function
 	Cost() float64                // cost of spin on current bet and lines, constant function
 	JackFreq(float64) []float64   // returns occurrence frequency set of progressive jackpots if it has, constant function
 	FreeMode() bool               // returns true on spins without pay, constant function
-	Spin(float64)                 // fill the screen with random hits on reels closest to given RTP, constant function
+	Spin(float64)                 // fill the grid with random hits on reels closest to given RTP, constant function
 	Spawn(Wins, float64, float64) // setup bonus games to wins results, constant function
-	Prepare()                     // update game state before new spin, screen is unknown yet
-	Apply(Wins)                   // update game state to spin results, screen is calculated
+	Prepare()                     // update game state before new spin, grid is unknown yet
+	Apply(Wins)                   // update game state to spin results, grid is calculated
 	GetGain() float64             // returns gain for double up games, constant function
 	SetGain(float64) error        // set gain to given value on double up games
 	GetBet() float64              // returns current bet per line, constant function
@@ -70,14 +70,14 @@ type SlotGame interface {
 	SetMode(int) error            // change game mode depending on the user's choice
 }
 
-// Remark: "Scanner" method should return error only if generated screen does not appear
-// to game rules, and can not be calculated. Screen combination with error will be
-// dropped out. If screen appear to rules it should be calculated in any case.
+// Remark: "Scanner" method should return error only if generated grid does not appear
+// to game rules, and can not be calculated. Grid combination with error will be
+// dropped out. If grid appear to rules it should be calculated in any case.
 // If scanner algorithm receives wrong data - its case for panic.
 // The scanning method should never change the game state.
 
 type SlotGeneric interface {
-	Screen
+	Grider
 	SlotGame
 }
 
@@ -88,7 +88,7 @@ var (
 	ErrDisabled  = errors.New("feature is disabled") // feature is currently can not be applicable
 )
 
-// Slotx is base struct for all slot games with subsequent screen.
+// Slotx is base struct for all slot games with subsequent grid.
 type Slotx struct {
 	Sel int     `json:"sel" yaml:"sel" xml:"sel"` // selected bet lines
 	Bet float64 `json:"bet" yaml:"bet" xml:"bet"` // bet value

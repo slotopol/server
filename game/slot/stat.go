@@ -25,7 +25,7 @@ type Stater interface {
 }
 
 type StatCounter struct {
-	Reshuf    atomic.Uint64    // number of processed screen reshuffles, including with no wins
+	Reshuf    atomic.Uint64    // number of processed grid reshuffles, including with no wins
 	LinePay   atomic.Float64   // sum of pays by all bet lines
 	ScatPay   atomic.Float64   // sum of pays by scatters
 	FreeCount atomic.Uint64    // count of free spins

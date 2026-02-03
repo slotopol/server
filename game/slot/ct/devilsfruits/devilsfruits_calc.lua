@@ -26,7 +26,7 @@ local PAYTABLE_LINE = {
 }
 
 -- 3. CONFIGURATION
-local sx = 3 -- screen width
+local sx = 3 -- grid width
 -- Symbols names
 local space = 0
 local wild  = 1

@@ -31,7 +31,7 @@ local PAYTABLE_SCAT = {0, 0, 2, 20, 500}
 local scat_min = 3 -- minimum scatters to win
 
 -- 4. CONFIGURATION
-local sx, sy = 5, 4 -- screen width & height
+local sx, sy = 5, 4 -- grid width & height
 local wild, scat = 1, 2 -- wild & scatter symbol IDs
 
 -- Performs full RTP calculation for given reels
