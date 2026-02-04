@@ -40,19 +40,19 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = s.Count()
+		var N = s.Count()
 		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
 		var fghits = float64(s.FreeHits.Load())
 		var fsavr1, multavr = FirstSreespins()
-		var q = fghits * fsavr1 / reshuf
-		var sq = 1 / (1 - fghits*multavr*15/reshuf)
+		var q = fghits * fsavr1 / N
+		var sq = 1 / (1 - fghits*multavr*15/N)
 		var rtp = rtpsym + q*sq*rtpsym
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "average plain freespins at 1st iteration: %g\n", fsavr1)
 		fmt.Fprintf(w, "average multiplier at free games: %g\n", multavr)
 		fmt.Fprintf(w, "free games %g, q = %.5g, sq = %.5g\n", fghits, q, sq)
-		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", reshuf/fghits)
+		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", N/fghits)
 		fmt.Fprintf(w, "RTP = rtpsym + q*sq*rtpsym = %.5g + %.5g = %.6f%%\n", rtpsym, q*sq*rtpsym, rtp)
 		return rtp
 	}

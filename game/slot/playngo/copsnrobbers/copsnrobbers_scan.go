@@ -41,10 +41,10 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		// Correct free spins count with math expectation value
 		var fc = float64(s.FreeHits.Load()) * Efs
 
-		var reshuf = s.Count()
+		var N = s.Count()
 		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
-		var q = fc / reshuf
+		var q = fc / N
 		var rtp = rtpsym + (1+Pfs)*q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "free spins %g, q = %.6f\n", fc, q)

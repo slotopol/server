@@ -18,14 +18,14 @@ func CalcStatBon(ctx context.Context) float64 {
 	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = s.Count()
+		var N = s.Count()
 		var lrtp = s.LineRTP(g.Cost())
-		var qjazz = s.BonusHitsF(jbonus) / reshuf
+		var qjazz = s.BonusHitsF(jbonus) / N
 		var jpow = math.Pow(2, 10*qjazz) // jazz power
 		var rtpjazz = lrtp*jpow - lrtp
 		var rtp = lrtp * jpow
 		fmt.Fprintf(w, "symbols: %.5g(lined) + 0(scatter) = %.6f%%\n", lrtp, lrtp)
-		fmt.Fprintf(w, "jazzbee bonuses: hit rate 1/%.5g, pow = %.5g, rtp = %.6f%%\n", reshuf/s.BonusHitsF(jbonus), jpow, rtpjazz)
+		fmt.Fprintf(w, "jazzbee bonuses: hit rate 1/%.5g, pow = %.5g, rtp = %.6f%%\n", N/s.BonusHitsF(jbonus), jpow, rtpjazz)
 		fmt.Fprintf(w, "RTP = rtp(sym) + rtp(jazz) = %.5g + %.5g = %.6f%%\n", lrtp, rtpjazz, rtp)
 		return rtp
 	}

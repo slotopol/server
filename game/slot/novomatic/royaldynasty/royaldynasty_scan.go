@@ -16,10 +16,10 @@ func CalcStatBon(ctx context.Context) float64 {
 	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = s.Count()
+		var N = s.Count()
 		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
-		var q = float64(s.FreeHits.Load()*35) / reshuf
+		var q = float64(s.FreeHits.Load()*35) / N
 		var sq = 1 / (1 - q)
 		var rtp = sq * rtpsym
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
@@ -44,10 +44,10 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = s.Count()
+		var N = s.Count()
 		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
-		var q = float64(s.FreeHits.Load()*35) / reshuf
+		var q = float64(s.FreeHits.Load()*35) / N
 		var sq = 1 / (1 - q)
 		var rtp = rtpsym + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)

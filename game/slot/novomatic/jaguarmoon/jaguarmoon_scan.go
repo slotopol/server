@@ -29,15 +29,17 @@ func (s *Stat) FSQ(n int) (q float64) {
 	return
 }
 
-func (s *Stat) Update(wins slot.Wins, cfn int) {
-	var lpay, spay float64
+func (s *Stat) Update(wins slot.Wins) {
+	var lpay1, spay1, lpay2, spay2 float64
 	for _, wi := range wins {
-		if wi.Pay != 0 {
-			if wi.LI != 0 { // line win
-				lpay += wi.Pay * wi.MP
-			} else { // scatter win
-				spay += wi.Pay * wi.MP
-			}
+		if wi.LI != 0 { // line win
+			var p = wi.Pay * wi.MP
+			lpay1 += p
+			lpay2 += p * p
+		} else { // scatter win
+			var p = wi.Pay * wi.MP
+			spay1 += p
+			spay2 += p * p
 		}
 		if wi.FS != 0 {
 			s.FreeCount[wi.Num-1].Add(uint64(wi.FS))
@@ -50,13 +52,23 @@ func (s *Stat) Update(wins slot.Wins, cfn int) {
 			s.JackHits[wi.JID].Inc()
 		}
 	}
-	if lpay != 0 {
-		s.LinePay.Add(lpay)
+	if lpay1 != 0 {
+		s.LinePay1.Add(lpay1)
+		s.LinePay2.Add(lpay2)
 	}
-	if spay != 0 {
-		s.ScatPay.Add(spay)
+	if spay1 != 0 {
+		s.ScatPay1.Add(spay1)
+		s.ScatPay2.Add(spay2)
 	}
 	s.Reshuf.Inc()
+}
+
+func (s *Stat) Simulate(g slot.SlotGame, reels slot.Reelx, wins *slot.Wins) {
+	if g.Scanner(wins) != nil {
+		s.ErrCount.Inc()
+		return
+	}
+	s.Update(*wins)
 }
 
 func CalcStatBon(ctx context.Context) float64 {

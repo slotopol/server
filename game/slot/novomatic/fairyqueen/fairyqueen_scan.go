@@ -20,7 +20,7 @@ func BruteForce5x3es2(ctx context.Context, s slot.Stater, g *Game, reels slot.Re
 	wg.Add(tn)
 	for ti := range tn64 {
 		var sg = g.Clone().(slot.SlotGeneric) // classic slot game
-		var reshuf uint64
+		var N uint64
 		go func() {
 			defer wg.Done()
 
@@ -43,15 +43,15 @@ func BruteForce5x3es2(ctx context.Context, s slot.Stater, g *Game, reels slot.Re
 				for i4 := range r4 {
 					sg.SetCol(4, r4, i4)
 					for i5 := range r5 {
-						reshuf++
-						if reshuf%slot.CtxGranulation == 0 {
+						N++
+						if N%slot.CtxGranulation == 0 {
 							select {
 							case <-ctx.Done():
 								return
 							default:
 							}
 						}
-						if reshuf%tn64 != ti {
+						if N%tn64 != ti {
 							continue
 						}
 						sg.SetCol(5, r5, i5)
@@ -74,7 +74,7 @@ func BruteForce5x3es3(ctx context.Context, s slot.Stater, g *Game, reels slot.Re
 	wg.Add(tn)
 	for ti := range tn64 {
 		var sg = g.Clone().(slot.SlotGeneric) // classic slot game
-		var reshuf uint64
+		var N uint64
 		go func() {
 			defer wg.Done()
 
@@ -95,15 +95,15 @@ func BruteForce5x3es3(ctx context.Context, s slot.Stater, g *Game, reels slot.Re
 			for i4 := range r4 {
 				sg.SetCol(4, r4, i4)
 				for i5 := range r5 {
-					reshuf++
-					if reshuf%slot.CtxGranulation == 0 {
+					N++
+					if N%slot.CtxGranulation == 0 {
 						select {
 						case <-ctx.Done():
 							return
 						default:
 						}
 					}
-					if reshuf%tn64 != ti {
+					if N%tn64 != ti {
 						continue
 					}
 					sg.SetCol(5, r5, i5)

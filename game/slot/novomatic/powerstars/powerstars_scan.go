@@ -23,7 +23,7 @@ func BruteForceStars(ctx context.Context, s slot.Stater, g *Game, reels slot.Ree
 	var r3 = reels.Reel(3)
 	var r4 = reels.Reel(4)
 	var r5 = reels.Reel(5)
-	var reshuf uint64
+	var N uint64
 	for i1 := range r1 {
 		g.SetCol(1, r1, i1)
 		for i2 := range r2 {
@@ -33,8 +33,8 @@ func BruteForceStars(ctx context.Context, s slot.Stater, g *Game, reels slot.Ree
 				for i4 := range r4 {
 					g.SetCol(4, r4, i4)
 					for i5 := range r5 {
-						reshuf++
-						if reshuf%slot.CtxGranulation == 0 {
+						N++
+						if N%slot.CtxGranulation == 0 {
 							select {
 							case <-ctx.Done():
 								return

@@ -16,13 +16,13 @@ func CalcStatBon(ctx context.Context) (rtp, num float64) {
 
 	var fgf float64
 	var calc = func(w io.Writer) float64 {
-		var reshuf = s.Count()
+		var N = s.Count()
 		var lrtp, srtp = s.SymRTP(g.Cost())
 		if srtp > 0 {
 			panic("scatters have no pays")
 		}
 		var rtpsym = lrtp + srtp
-		fgf = reshuf / float64(s.FreeHits.Load())
+		fgf = N / float64(s.FreeHits.Load())
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", fgf)
 		fmt.Fprintf(w, "RTP = rtp(sym) = %.6f%%\n", rtpsym)
@@ -44,13 +44,13 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {
-		var reshuf = s.Count()
+		var N = s.Count()
 		var lrtp, srtp = s.SymRTP(g.Cost())
 		if srtp > 0 {
 			panic("scatters have no pays")
 		}
 		var rtpsym = lrtp + srtp
-		var fgf = reshuf / float64(s.FreeHits.Load())
+		var fgf = N / float64(s.FreeHits.Load())
 		var rtp = rtpsym + rtpfs*numfs/fgf
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", fgf)

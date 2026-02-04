@@ -26,12 +26,50 @@ type Stater interface {
 
 type StatCounter struct {
 	Reshuf    atomic.Uint64    // number of processed grid reshuffles, including with no wins
-	LinePay   atomic.Float64   // sum of pays by all bet lines
-	ScatPay   atomic.Float64   // sum of pays by scatters
+	LinePay1  atomic.Float64   // sum of pays by all bet lines
+	ScatPay1  atomic.Float64   // sum of pays by scatters
+	LinePay2  atomic.Float64   // sum of squares of pays by all bet lines
+	ScatPay2  atomic.Float64   // sum of squares of pays by scatters
 	FreeCount atomic.Uint64    // count of free spins
 	FreeHits  atomic.Uint64    // count of free games hits
 	BonusHits [8]atomic.Uint64 // count of bonus hits
-	JackHits  [4]atomic.Uint64
+	JackHits  [4]atomic.Uint64 // count of jackpot hits
+}
+
+func (c *StatCounter) Update(wins Wins) {
+	var lpay1, spay1, lpay2, spay2 float64
+	for _, wi := range wins {
+		if wi.Pay != 0 {
+			if wi.LI != 0 { // line win
+				var p = wi.Pay * wi.MP
+				lpay1 += p
+				lpay2 += p * p
+			} else { // scatter win
+				var p = wi.Pay * wi.MP
+				spay1 += p
+				spay2 += p * p
+			}
+		}
+		if wi.FS != 0 {
+			c.FreeCount.Add(uint64(wi.FS))
+			c.FreeHits.Inc()
+		}
+		if wi.BID != 0 {
+			c.BonusHits[wi.BID].Inc()
+		}
+		if wi.JID != 0 {
+			c.JackHits[wi.JID].Inc()
+		}
+	}
+	if lpay1 != 0 {
+		c.LinePay1.Add(lpay1)
+		c.LinePay2.Add(lpay2)
+	}
+	if spay1 != 0 {
+		c.ScatPay1.Add(spay1)
+		c.ScatPay2.Add(spay2)
+	}
+	c.Reshuf.Inc()
 }
 
 type StatGeneric struct {
@@ -60,18 +98,34 @@ func (s *StatGeneric) Count() float64 {
 }
 
 func (s *StatGeneric) LineRTP(cost float64) float64 {
-	return s.LinePay.Load() / s.Count() / cost * 100
+	return s.LinePay1.Load() / s.Count() / cost * 100
 }
 
 func (s *StatGeneric) ScatRTP(cost float64) float64 {
-	return s.ScatPay.Load() / s.Count() / cost * 100
+	return s.ScatPay1.Load() / s.Count() / cost * 100
 }
 
 func (s *StatGeneric) SymRTP(cost float64) (lrtp, srtp float64) {
-	var reshuf = s.Count()
-	lrtp = s.LinePay.Load() / reshuf / cost * 100
-	srtp = s.ScatPay.Load() / reshuf / cost * 100
+	var N = s.Count()
+	lrtp = s.LinePay1.Load() / N / cost * 100
+	srtp = s.ScatPay1.Load() / N / cost * 100
 	return
+}
+
+func (s *StatGeneric) NSQ(cost float64) (float64, float64, float64) {
+	return s.Count(), (s.LinePay1.Load() + s.ScatPay1.Load()) / cost, (s.LinePay2.Load() + s.ScatPay2.Load()) / cost
+}
+
+func (s *StatGeneric) SymVariance(cost float64) float64 {
+	var N, S, Q = s.NSQ(cost)
+	// another way: math.Sqrt(Q/N - S*S/N/N)
+	return N*Q - S*S/N/N
+}
+
+func (s *StatGeneric) SymSigma(cost float64) float64 {
+	var N, S, Q = s.NSQ(cost)
+	// another way: math.Sqrt(Q/N - S*S/N/N)
+	return math.Sqrt(N*Q-S*S) / N
 }
 
 // Returns (q, sq), where q = free spins quantifier, sq = 1/(1-q)
@@ -98,36 +152,6 @@ func (s *StatGeneric) BonusHitsF(bid int) float64 {
 
 func (s *StatGeneric) JackHitsF(jid int) float64 {
 	return float64(s.JackHits[jid].Load())
-}
-
-func (s *StatGeneric) Update(wins Wins) {
-	var lpay, spay float64
-	for _, wi := range wins {
-		if wi.Pay != 0 {
-			if wi.LI != 0 { // line win
-				lpay += wi.Pay * wi.MP
-			} else { // scatter win
-				spay += wi.Pay * wi.MP
-			}
-		}
-		if wi.FS != 0 {
-			s.FreeCount.Add(uint64(wi.FS))
-			s.FreeHits.Inc()
-		}
-		if wi.BID != 0 {
-			s.BonusHits[wi.BID].Inc()
-		}
-		if wi.JID != 0 {
-			s.JackHits[wi.JID].Inc()
-		}
-	}
-	if lpay != 0 {
-		s.LinePay.Add(lpay)
-	}
-	if spay != 0 {
-		s.ScatPay.Add(spay)
-	}
-	s.Reshuf.Inc()
 }
 
 func (s *StatGeneric) Simulate(g SlotGame, reels Reelx, wins *Wins) {
@@ -166,7 +190,7 @@ func (s *StatCascade) Count() float64 {
 func (s *StatCascade) SumLinePay() float64 {
 	var sum float64
 	for i := range FallLimit {
-		sum += s.Casc[i].LinePay.Load()
+		sum += s.Casc[i].LinePay1.Load()
 	}
 	return sum
 }
@@ -174,7 +198,7 @@ func (s *StatCascade) SumLinePay() float64 {
 func (s *StatCascade) SumScatPay() float64 {
 	var sum float64
 	for i := range FallLimit {
-		sum += s.Casc[i].ScatPay.Load()
+		sum += s.Casc[i].ScatPay1.Load()
 	}
 	return sum
 }
@@ -222,12 +246,12 @@ func (s *StatCascade) ScatRTP(cost float64) float64 {
 func (s *StatCascade) SymRTP(cost float64) (lrtp, srtp float64) {
 	var lpay, spay float64
 	for i := range FallLimit {
-		lpay += s.Casc[i].LinePay.Load()
-		spay += s.Casc[i].ScatPay.Load()
+		lpay += s.Casc[i].LinePay1.Load()
+		spay += s.Casc[i].ScatPay1.Load()
 	}
-	var reshuf = s.Count()
-	lrtp = lpay / reshuf / cost * 100
-	srtp = spay / reshuf / cost * 100
+	var N = s.Count()
+	lrtp = lpay / N / cost * 100
+	srtp = spay / N / cost * 100
 	return
 }
 
@@ -251,10 +275,10 @@ func (s *StatCascade) FGF() float64 {
 
 // Cascade multiplier.
 func (s *StatCascade) Mcascade() float64 {
-	var pay1 = s.Casc[0].LinePay.Load() + s.Casc[0].ScatPay.Load()
+	var pay1 = s.Casc[0].LinePay1.Load() + s.Casc[0].ScatPay1.Load()
 	var pays float64
 	for i := range FallLimit {
-		var payi = s.Casc[i].LinePay.Load() + s.Casc[i].ScatPay.Load()
+		var payi = s.Casc[i].LinePay1.Load() + s.Casc[i].ScatPay1.Load()
 		pays += payi
 		if payi == 0 {
 			break
@@ -274,17 +298,17 @@ func (s *StatCascade) ACL() float64 {
 
 // Inverse coefficient of fading (C1/Cn)^(1/(n-1)).
 func (s *StatCascade) Kfading() float64 {
-	var reshuf1 = s.Casc[0].Reshuf.Load()
-	var reshufn uint64
+	var N1 = s.Casc[0].Reshuf.Load()
+	var Nn uint64
 	var i int
 	for i = range FallLimit {
-		var reshuf = s.Casc[i].Reshuf.Load()
-		if reshuf == 0 {
+		var Ni = s.Casc[i].Reshuf.Load()
+		if Ni == 0 {
 			break
 		}
-		reshufn = reshuf
+		Nn = Ni
 	}
-	return math.Pow(float64(reshuf1)/float64(reshufn), 1/(float64(i)-1))
+	return math.Pow(float64(N1)/float64(Nn), 1/(float64(i)-1))
 }
 
 // Maximum number of cascades in avalanche.
@@ -295,37 +319,6 @@ func (s *StatCascade) Ncascmax() int {
 		}
 	}
 	return FallLimit
-}
-
-func (s *StatCascade) Update(wins Wins, cfn int) {
-	var c = &s.Casc[cfn-1]
-	var lpay, spay float64
-	for _, wi := range wins {
-		if wi.Pay != 0 {
-			if wi.LI != 0 { // line win
-				lpay += wi.Pay * wi.MP
-			} else { // scatter win
-				spay += wi.Pay * wi.MP
-			}
-		}
-		if wi.FS != 0 {
-			c.FreeCount.Add(uint64(wi.FS))
-			c.FreeHits.Inc()
-		}
-		if wi.BID != 0 {
-			c.BonusHits[wi.BID].Inc()
-		}
-		if wi.JID != 0 {
-			c.JackHits[wi.JID].Inc()
-		}
-	}
-	if lpay != 0 {
-		c.ScatPay.Add(lpay)
-	}
-	if spay != 0 {
-		c.ScatPay.Add(spay)
-	}
-	c.Reshuf.Inc()
 }
 
 func (s *StatCascade) Simulate(g SlotGame, reels Reelx, wins *Wins) {
@@ -342,7 +335,7 @@ func (s *StatCascade) Simulate(g SlotGame, reels Reelx, wins *Wins) {
 		if err = sc.Scanner(wins); err != nil {
 			break
 		}
-		s.Update((*wins)[wp:], cfn)
+		s.Casc[cfn-1].Update((*wins)[wp:])
 		sc.Strike((*wins)[wp:])
 		if len(*wins) == wp {
 			break
@@ -365,19 +358,19 @@ func Progress(ctx context.Context, s Stater, calc func(io.Writer) float64) {
 		case <-ctx.Done():
 			return
 		case <-steps:
-			var reshuf = s.Count()
+			var N = s.Count()
 			var total = float64(s.GetPlan())
 			var rtp = calc(io.Discard)
 			var dur = time.Since(t0)
 			if total > 0 {
-				var exp = time.Duration(float64(dur) * total / reshuf)
+				var exp = time.Duration(float64(dur) * total / N)
 				fmt.Printf("processed %.1fm, ready %2.2f%% (%v / %v), RTP = %2.2f%%  \r",
-					reshuf/1e6, reshuf/total*100,
+					N/1e6, N/total*100,
 					dur.Truncate(stepdur), exp.Truncate(stepdur),
 					rtp)
 			} else {
 				fmt.Printf("processed %.1fm, spent %v, RTP = %2.2f%%  \r",
-					reshuf/1e6, dur.Truncate(stepdur), rtp)
+					N/1e6, dur.Truncate(stepdur), rtp)
 			}
 		}
 	}
@@ -480,7 +473,7 @@ func BruteForce5x3Big(ctx context.Context, s Stater, g SlotGame, r1, rb, r5 []Sy
 	for ti := range tn64 {
 		var gt = g.Clone().(SlotGeneric)
 		var cb = gt.(Bigger)
-		var reshuf uint64
+		var N uint64
 		go func() {
 			defer wg.Done()
 
@@ -490,15 +483,15 @@ func BruteForce5x3Big(ctx context.Context, s Stater, g SlotGame, r1, rb, r5 []Sy
 				for _, big := range rb {
 					cb.SetBig(big)
 					for i5 := range r5 {
-						reshuf++
-						if reshuf%CtxGranulation == 0 {
+						N++
+						if N%CtxGranulation == 0 {
 							select {
 							case <-ctx.Done():
 								return
 							default:
 							}
 						}
-						if reshuf%tn64 != ti {
+						if N%tn64 != ti {
 							continue
 						}
 						gt.SetCol(5, r5, i5)
@@ -521,14 +514,14 @@ func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reelx) {
 	wg.Add(tn)
 	for range tn64 {
 		var gt = g.Clone()
-		var reshuf uint64
+		var N uint64
 		go func() {
 			defer wg.Done()
 
 			var wins Wins
 			for range n / tn64 {
-				reshuf++
-				if reshuf%CtxGranulation == 0 {
+				N++
+				if N%CtxGranulation == 0 {
 					select {
 					case <-ctx.Done():
 						return
@@ -557,14 +550,14 @@ func MonteCarloPrec(ctx context.Context, s Stater, g SlotGame, reels Reelx, calc
 	wg.Add(tn)
 	for range tn {
 		var gt = g.Clone()
-		var reshuf uint64
+		var N uint64
 		go func() {
 			defer wg.Done()
 
 			var wins Wins
 			for rtpnum.Load() < mcc {
-				reshuf++
-				if reshuf%CtxGranulation == 0 {
+				N++
+				if N%CtxGranulation == 0 {
 					select {
 					case <-ctx.Done():
 						return
