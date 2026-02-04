@@ -241,27 +241,27 @@ local function calculate(reels)
 	end
 
 	-- Execute calculation
-	local rtp_line = calculate_line_ev() / reshuffles * 100
-	local rtp_scat = calculate_scat_ev() / reshuffles * 100
+	local rtp_line = calculate_line_ev() / reshuffles
+	local rtp_scat = calculate_scat_ev() / reshuffles
 	local rtp_sym = rtp_line + rtp_scat
 	local qmje1 = calculate_mje1_comb() / reshuffles
-	local rtp_mje1 = EVmje1 * qmje1 * 100
+	local rtp_mje1 = EVmje1 * qmje1
 	local qmje3 = calculate_mje3_comb() / reshuffles
-	local rtp_mje3 = EVmje3 * qmje3 * 100
+	local rtp_mje3 = EVmje3 * qmje3
 	local qmje6 = calculate_mje6_comb() / reshuffles
-	local rtp_mje6 = EVmje6 * qmje6 * 100
+	local rtp_mje6 = EVmje6 * qmje6
 	local comb_mjm = calculate_mjm_comb()
 	local qmjm = comb_mjm / reshuffles
-	local rtp_mjm = EVmjm * qmjm * 100
+	local rtp_mjm = EVmjm * qmjm
 	local rtp_total = rtp_sym + rtp_mje1 + rtp_mje3 + rtp_mje6 + rtp_mjm
 	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
-	print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
-	print(string.format("spin1 bonuses: hit rate 1/%.5g, rtp = %.6f%%", 1/qmje1, rtp_mje1))
-	print(string.format("spin3 bonuses: hit rate 1/%.5g, rtp = %.6f%%", 1/qmje3, rtp_mje3))
-	print(string.format("spin6 bonuses: hit rate 1/%.5g, rtp = %.6f%%", 1/qmje6, rtp_mje6))
-	print(string.format("monopoly bonuses: hit rate 1/%.5g, rtp = %.6f%%", reshuffles/comb_mjm, rtp_mjm))
+	print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line*100, rtp_scat*100, rtp_sym*100))
+	print(string.format("spin1 bonuses: hit rate 1/%.5g, rtp = %.6f%%", 1/qmje1, rtp_mje1*100))
+	print(string.format("spin3 bonuses: hit rate 1/%.5g, rtp = %.6f%%", 1/qmje3, rtp_mje3*100))
+	print(string.format("spin6 bonuses: hit rate 1/%.5g, rtp = %.6f%%", 1/qmje6, rtp_mje6*100))
+	print(string.format("monopoly bonuses: hit rate 1/%.5g, rtp = %.6f%%", reshuffles/comb_mjm, rtp_mjm*100))
 	print(string.format("RTP = %.5g(sym) + %.5g(mje) + %.5g(mjm) = %.6f%%",
-		rtp_sym, rtp_mje1 + rtp_mje3 + rtp_mje6, rtp_mjm, rtp_total))
+		rtp_sym*100, (rtp_mje1 + rtp_mje3 + rtp_mje6)*100, rtp_mjm*100, rtp_total*100))
 	return rtp_total
 end
 

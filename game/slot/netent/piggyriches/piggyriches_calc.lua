@@ -163,34 +163,34 @@ local function calculate(reels)
 
 	-- Execute calculation
 	local rtp_fs
-	local rtp_line = calculate_line_ev() / reshuffles * 100
+	local rtp_line = calculate_line_ev() / reshuffles
 	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
 	do
 		local ev_sum, fs_sum, fs_num = calculate_scat_ev(true)
-		local rtp_scat = ev_sum / reshuffles * 100
+		local rtp_scat = ev_sum / reshuffles
 		local rtp_sym = rtp_line + rtp_scat
 		local q = fs_sum / reshuffles
 		local sq = 1 / (1 - q)
 		rtp_fs = mfs * sq * rtp_sym
 		print(string.format("*free games calculations*"))
-		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", 5*rtp_line, 5*rtp_scat, 5*rtp_sym))
+		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", 5*rtp_line*100, 5*rtp_scat*100, 5*rtp_sym*100))
 		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
 		print(string.format("free games hit rate: 1/%.5g", reshuffles/fs_num))
-		print(string.format("RTP = %g*sq*rtp(sym) = %g*%.5g*%.5g = %.6f%%", mfs, mfs, sq, rtp_sym, rtp_fs))
+		print(string.format("RTP = %g*sq*rtp(sym) = %g*%.5g*%.5g = %.6f%%", mfs, mfs, sq, rtp_sym*100, rtp_fs*100))
 	end
 	local rtp_total
 	do
 		local ev_sum, fs_sum, fs_num = calculate_scat_ev(false)
-		local rtp_scat = ev_sum / reshuffles * 100
+		local rtp_scat = ev_sum / reshuffles
 		local rtp_sym = rtp_line + rtp_scat
 		local q = fs_sum / reshuffles
 		local sq = 1 / (1 - q)
 		rtp_total = rtp_sym + q * rtp_fs
 		print(string.format("*regular games calculations*"))
-		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
+		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line*100, rtp_scat*100, rtp_sym*100))
 		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
 		print(string.format("free games hit rate: 1/%.5g", reshuffles/fs_num))
-		print(string.format("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%", rtp_sym, q, rtp_fs, rtp_total))
+		print(string.format("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%", rtp_sym*100, q, rtp_fs*100, rtp_total*100))
 	end
 	return rtp_total
 end

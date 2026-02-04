@@ -212,33 +212,34 @@ local function calculate(reels_reg, reels_bon)
 	do
 		reels = reels_bon
 		precalculate_reels()
-		local rtp_line = calculate_line_ev() / reshuffles * 100
+		local rtp_line = calculate_line_ev() / reshuffles
 		local ev_sum, _, fs_num = calculate_scat_ev()
-		local rtp_scat = ev_sum / reshuffles * 100
+		local rtp_scat = ev_sum / reshuffles
 		local rtp_sym = rtp_line + rtp_scat
 		fgf_fs = reshuffles/fs_num
 		rtp_fs = rtp_sym
 		print(string.format("*bonus reels calculations*"))
 		print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
-		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
+		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line*100, rtp_scat*100, rtp_sym*100))
 		print(string.format("free games hit rate: 1/%.5g", reshuffles/fs_num))
-		print(string.format("RTP = rtp(sym) = %.6f%%", rtp_fs))
+		print(string.format("RTP = rtp(sym) = %.6f%%", rtp_fs*100))
 	end
 	local rtp_total
 	do
 		reels = reels_reg
 		precalculate_reels()
-		local rtp_line = calculate_line_ev() / reshuffles * 100
+		local rtp_line = calculate_line_ev() / reshuffles
 		local ev_sum, _, fs_num = calculate_scat_ev()
-		local rtp_scat = ev_sum / reshuffles * 100
+		local rtp_scat = ev_sum / reshuffles
 		local rtp_sym = rtp_line + rtp_scat
 		local fgf = reshuffles/fs_num
 		rtp_total = rtp_sym + rtp_fs*fgf_fs/fgf
 		print(string.format("*regular reels calculations*"))
 		print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
-		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
+		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line*100, rtp_scat*100, rtp_sym*100))
 		print(string.format("free games hit rate: 1/%.5g", reshuffles/fs_num))
-		print(string.format("RTP = %.5g(sym) + %.5g(fg)*%.5g/%.5g = %.6f%%", rtp_sym, rtp_fs, fgf_fs, fgf, rtp_total))
+		print(string.format("RTP = %.5g(sym) + %.5g(fg)*%.5g/%.5g = %.6f%%",
+			rtp_sym*100, rtp_fs*100, fgf_fs*100, fgf, rtp_total*100))
 	end
 	return rtp_total
 end

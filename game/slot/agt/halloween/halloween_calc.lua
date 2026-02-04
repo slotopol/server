@@ -63,9 +63,9 @@ local function calculate(reels)
 	end
 
 	-- Execute calculation
-	local rtp_total = calculate_line_ev() / reshuffles * 100
+	local rtp_total = calculate_line_ev() / reshuffles
 	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
-	print(string.format("RTP = %.6f%%", rtp_total))
+	print(string.format("RTP = %.6f%%", rtp_total*100))
 	return rtp_total
 end
 

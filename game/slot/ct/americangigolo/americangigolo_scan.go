@@ -29,7 +29,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", rtpsym, q, rtpfs, rtp)
 		fmt.Fprintf(w, "sigma = %.8g, VI[90%%] = %.8g (%s)\n", sigma, vi90, slot.VIname6[slot.VIclass6(vi90)])
-		fmt.Fprintf(w, "CI[90%%] = %d, CI[99%%] = %d\n", int(slot.CI(0.90, rtpsym/100, sigma)), int(slot.CI(0.99, rtpsym/100, sigma)))
+		fmt.Fprintf(w, "CI[90%%] = %d, CI[68.27%%] = %d, CI[95.45%%] = %d, CI[99.73%%] = %d\n", int(slot.CI(0.90, rtp/100, sigma)), int(slot.CI(slot.CP(1), rtp/100, sigma)), int(slot.CI(slot.CP(2), rtp/100, sigma)), int(slot.CI(slot.CP(3), rtp/100, sigma)))
 		return rtp
 	}
 

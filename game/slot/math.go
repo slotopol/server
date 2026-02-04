@@ -10,6 +10,11 @@ func GetZ(confidence float64) float64 {
 	return math.Sqrt(2) * math.Erfinv(2*p-1)
 }
 
+// Confidence probability (i.e. 1 sigma, 2 sigma, 3 sigma, etc.)
+func CP(k float64) float64 {
+	return math.Erf(k / math.Sqrt2)
+}
+
 // Volatility Index Class with 3 gradations
 func VIclass3(vi float64) int {
 	switch {
@@ -63,8 +68,8 @@ func CI(confidence, rtp, sigma float64) float64 {
 	return nh * nh
 }
 
-// Bankroll management formula to protect user against ruin for N spins.
-func BankrollUser(confidence, rtp, sigma, N float64) float64 {
+// Bankroll management formula to protect player against ruin for N spins.
+func BankrollPlayer(confidence, rtp, sigma, N float64) float64 {
 	return GetZ(confidence)*sigma*math.Sqrt(N) + N*(1-rtp)
 }
 
@@ -75,8 +80,8 @@ type GameGroup struct {
 }
 
 // Minimum bankroll requirement to ensure long-term
-// payment capabilities of the bank.
-func Bankroll(confidence float64, groups []GameGroup) float64 {
+// payment capabilities of the house.
+func BankrollHouse(confidence float64, groups []GameGroup) float64 {
 	var totalVariance float64
 	var totalHouseEdge float64
 	for _, g := range groups {

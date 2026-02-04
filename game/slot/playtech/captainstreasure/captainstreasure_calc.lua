@@ -134,11 +134,11 @@ local function calculate(reels)
 	end
 
 	-- Execute calculation
-	local rtp_line = calculate_line_ev() / reshuffles * 100
-	local rtp_scat = calculate_scat_ev() / reshuffles * 100
+	local rtp_line = calculate_line_ev() / reshuffles
+	local rtp_scat = calculate_scat_ev() / reshuffles
 	local rtp_total = rtp_line + rtp_scat
 	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
-	print(string.format("RTP = %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_total))
+	print(string.format("RTP = %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line*100, rtp_scat*100, rtp_total*100))
 	return rtp_total
 end
 
