@@ -45,10 +45,10 @@ local function calculate(reels)
 	assert(#reels == sx, "unexpected number of reels")
 
 	-- Get number of total reshuffles and lengths of each reel.
-	local reshuffles, lens = 1, {}
+	local N, L = 1, {}
 	for i, r in ipairs(reels) do
-		reshuffles = reshuffles * #r
-		lens[i] = #r
+		N = N * #r
+		L[i] = #r
 	end
 
 	-- Count symbols occurrences on each reel
@@ -85,9 +85,9 @@ local function calculate(reels)
 						if i <= n then
 							combs_total = combs_total * c[i]
 						elseif i == n + 1 then
-							combs_total = combs_total * (lens[i] - c[i])
+							combs_total = combs_total * (L[i] - c[i])
 						else
-							combs_total = combs_total * lens[i]
+							combs_total = combs_total * L[i]
 						end
 					end
 
@@ -97,9 +97,9 @@ local function calculate(reels)
 						if i <= n then
 							combs_no_wild = combs_no_wild * s[i]
 						elseif i == n + 1 then
-							combs_no_wild = combs_no_wild * (lens[i] - c[i])
+							combs_no_wild = combs_no_wild * (L[i] - c[i])
 						else
-							combs_no_wild = combs_no_wild * lens[i]
+							combs_no_wild = combs_no_wild * L[i]
 						end
 					end
 
@@ -108,9 +108,9 @@ local function calculate(reels)
 						if i <= n then
 							combs_only_wild = combs_only_wild * w[i]
 						elseif i == n + 1 then
-							combs_only_wild = combs_only_wild * (lens[i] - c[i])
+							combs_only_wild = combs_only_wild * (L[i] - c[i])
 						else
-							combs_only_wild = combs_only_wild * lens[i]
+							combs_only_wild = combs_only_wild * L[i]
 						end
 					end
 
@@ -154,7 +154,7 @@ local function calculate(reels)
 				current_comb * c[reel_index] * sy)
 			-- Step 2: NOT having a scatter on this reel
 			find_scatter_combs(reel_index + 1, scat_sum,
-				current_comb * (lens[reel_index] - c[reel_index] * sy))
+				current_comb * (L[reel_index] - c[reel_index] * sy))
 		end
 		find_scatter_combs(1, 0, 1) -- Start recursion
 
@@ -163,33 +163,33 @@ local function calculate(reels)
 
 	-- Execute calculation
 	local rtp_fs
-	local rtp_line = calculate_line_ev() / reshuffles
-	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
+	local rtp_line = calculate_line_ev() / N
+	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(L, ", "), N))
 	do
 		local ev_sum, fs_sum, fs_num = calculate_scat_ev(true)
-		local rtp_scat = ev_sum / reshuffles
+		local rtp_scat = ev_sum / N
 		local rtp_sym = rtp_line + rtp_scat
-		local q = fs_sum / reshuffles
+		local q = fs_sum / N
 		local sq = 1 / (1 - q)
 		rtp_fs = mfs * sq * rtp_sym
 		print(string.format("*free games calculations*"))
 		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", 5*rtp_line*100, 5*rtp_scat*100, 5*rtp_sym*100))
 		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
-		print(string.format("free games hit rate: 1/%.5g", reshuffles/fs_num))
+		print(string.format("free games hit rate: 1/%.5g", N/fs_num))
 		print(string.format("RTP = %g*sq*rtp(sym) = %g*%.5g*%.5g = %.6f%%", mfs, mfs, sq, rtp_sym*100, rtp_fs*100))
 	end
 	local rtp_total
 	do
 		local ev_sum, fs_sum, fs_num = calculate_scat_ev(false)
-		local rtp_scat = ev_sum / reshuffles
+		local rtp_scat = ev_sum / N
 		local rtp_sym = rtp_line + rtp_scat
-		local q = fs_sum / reshuffles
+		local q = fs_sum / N
 		local sq = 1 / (1 - q)
 		rtp_total = rtp_sym + q * rtp_fs
 		print(string.format("*regular games calculations*"))
 		print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line*100, rtp_scat*100, rtp_sym*100))
 		print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
-		print(string.format("free games hit rate: 1/%.5g", reshuffles/fs_num))
+		print(string.format("free games hit rate: 1/%.5g", N/fs_num))
 		print(string.format("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%", rtp_sym*100, q, rtp_fs*100, rtp_total*100))
 	end
 	return rtp_total

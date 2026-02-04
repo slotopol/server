@@ -30,5 +30,6 @@ go.work.sum
 # Visual Studio Code settings
 .vscode/
 
-# Reels development file
+# Temporary development files
 reeldev.yaml
+TODO

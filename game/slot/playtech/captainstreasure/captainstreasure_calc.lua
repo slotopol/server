@@ -40,10 +40,10 @@ local function calculate(reels)
 	assert(#reels == sx, "unexpected number of reels")
 
 	-- Get number of total reshuffles and lengths of each reel.
-	local reshuffles, lens = 1, {}
+	local N, L = 1, {}
 	for i, r in ipairs(reels) do
-		reshuffles = reshuffles * #r
-		lens[i] = #r
+		N = N * #r
+		L[i] = #r
 	end
 
 	-- Count symbols occurrences on each reel
@@ -85,11 +85,11 @@ local function calculate(reels)
 									combs_total = combs_total * c[idx]
 									combs_no_wild = combs_no_wild * s[idx]
 								elseif i == n + 1 then
-									combs_total = combs_total * (lens[idx] - c[idx])
-									combs_no_wild = combs_no_wild * (lens[idx] - c[idx])
+									combs_total = combs_total * (L[idx] - c[idx])
+									combs_no_wild = combs_no_wild * (L[idx] - c[idx])
 								else
-									combs_total = combs_total * lens[idx]
-									combs_no_wild = combs_no_wild * lens[idx]
+									combs_total = combs_total * L[idx]
+									combs_no_wild = combs_no_wild * L[idx]
 								end
 							end
 
@@ -126,7 +126,7 @@ local function calculate(reels)
 				current_comb * c[reel_index] * sy)
 			-- Step 2: NOT having a scatter on this reel
 			find_scatter_combs(reel_index + 1, scat_sum,
-				current_comb * (lens[reel_index] - c[reel_index] * sy))
+				current_comb * (L[reel_index] - c[reel_index] * sy))
 		end
 		find_scatter_combs(1, 0, 1) -- Start recursion
 
@@ -134,10 +134,10 @@ local function calculate(reels)
 	end
 
 	-- Execute calculation
-	local rtp_line = calculate_line_ev() / reshuffles
-	local rtp_scat = calculate_scat_ev() / reshuffles
+	local rtp_line = calculate_line_ev() / N
+	local rtp_scat = calculate_scat_ev() / N
 	local rtp_total = rtp_line + rtp_scat
-	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
+	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(L, ", "), N))
 	print(string.format("RTP = %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line*100, rtp_scat*100, rtp_total*100))
 	return rtp_total
 end

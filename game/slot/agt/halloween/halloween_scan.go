@@ -15,7 +15,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var lrtp = s.LineRTP(g.Cost())
-		fmt.Fprintf(w, "RTP = %.6f%%\n", lrtp)
+		fmt.Fprintf(w, "RTP = %.6f%%\n", lrtp*100)
 		return lrtp
 	}
 

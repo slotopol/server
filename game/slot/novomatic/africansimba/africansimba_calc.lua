@@ -44,10 +44,10 @@ local function calculate(reels)
 	assert(#reels == sx, "unexpected number of reels")
 
 	-- Get number of total reshuffles and lengths of each reel.
-	local reshuffles, lens = 1, {}
+	local N, L = 1, {}
 	for i, r in ipairs(reels) do
-		reshuffles = reshuffles * #r
-		lens[i] = #r
+		N = N * #r
+		L[i] = #r
 	end
 
 	-- Count symbols occurrences on each reel
@@ -70,7 +70,7 @@ local function calculate(reels)
 			if sym_id ~= wild and #pays > 0 then
 				local c, z = {}, {}
 				for x, r in ipairs(reels) do
-					local len = lens[x]
+					local len = L[x]
 					c[x], z[x] = 0, 0
 					for i = 1, len do
 						local n = 0 -- count in window
@@ -98,7 +98,7 @@ local function calculate(reels)
 							elseif i == x + 1 then
 								ways = ways * z[i] -- stops without sym_id on reel[x+1]
 							else
-								ways = ways * lens[i] -- anything on remaining reels
+								ways = ways * L[i] -- anything on remaining reels
 							end
 						end
 						ev_sum = ev_sum + ways*pay
@@ -129,7 +129,7 @@ local function calculate(reels)
 				current_comb * c[reel_index] * sy)
 			-- Step 2: NOT having a scatter on this reel
 			find_scatter_combs(reel_index + 1, scat_sum,
-				current_comb * (lens[reel_index] - c[reel_index] * sy))
+				current_comb * (L[reel_index] - c[reel_index] * sy))
 		end
 		find_scatter_combs(1, 0, 1) -- Start recursion
 
@@ -137,19 +137,19 @@ local function calculate(reels)
 	end
 
 	-- Execute calculation
-	local rtp_line = calculate_ways_ev() / reshuffles / cost * 100
+	local rtp_line = calculate_ways_ev() / N / cost
 	local ev_sum, fs_sum, fs_num = calculate_scat_ev()
-	local rtp_scat = ev_sum / reshuffles / cost * 100
+	local rtp_scat = ev_sum / N / cost
 	local rtp_sym = rtp_line + rtp_scat
-	local q = fs_sum / reshuffles
+	local q = fs_sum / N
 	local sq = 1 / (1 - q)
 	local rtp_fs = mfs * sq * rtp_sym
 	local rtp_total = rtp_sym + q * rtp_fs
-	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
-	print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line, rtp_scat, rtp_sym))
+	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(L, ", "), N))
+	print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line*100, rtp_scat*100, rtp_sym*100))
 	print(string.format("free spins %d, q = %.5g, sq = 1/(1-q) = %.6f", fs_sum, q, sq))
-	print(string.format("free games hit rate: 1/%.5g", reshuffles/fs_num))
-	print(string.format("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%", rtp_sym, q, rtp_fs, rtp_total))
+	print(string.format("free games hit rate: 1/%.5g", N/fs_num))
+	print(string.format("RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%", rtp_sym*100, q, rtp_fs*100, rtp_total*100))
 	return rtp_total
 end
 

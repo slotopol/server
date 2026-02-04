@@ -28,8 +28,8 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
 		var rtp = rtpsym * Em
-		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
-		fmt.Fprintf(w, "RTP = %.5g(sym) * %.5g(Em) = %.6f%%\n", rtpsym, Em, rtp)
+		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
+		fmt.Fprintf(w, "RTP = %.5g(sym) * %.5g(Em) = %.6f%%\n", rtpsym*100, Em, rtp*100)
 		return rtpsym
 	}
 

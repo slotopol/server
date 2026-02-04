@@ -98,17 +98,17 @@ func (s *StatGeneric) Count() float64 {
 }
 
 func (s *StatGeneric) LineRTP(cost float64) float64 {
-	return s.LinePay1.Load() / s.Count() / cost * 100
+	return s.LinePay1.Load() / s.Count() / cost
 }
 
 func (s *StatGeneric) ScatRTP(cost float64) float64 {
-	return s.ScatPay1.Load() / s.Count() / cost * 100
+	return s.ScatPay1.Load() / s.Count() / cost
 }
 
 func (s *StatGeneric) SymRTP(cost float64) (lrtp, srtp float64) {
 	var N = s.Count()
-	lrtp = s.LinePay1.Load() / N / cost * 100
-	srtp = s.ScatPay1.Load() / N / cost * 100
+	lrtp = s.LinePay1.Load() / N / cost
+	srtp = s.ScatPay1.Load() / N / cost
 	return
 }
 
@@ -236,11 +236,11 @@ func (s *StatCascade) SumJackHits(jid int) uint64 {
 }
 
 func (s *StatCascade) LineRTP(cost float64) float64 {
-	return s.SumLinePay() / s.Count() / cost * 100
+	return s.SumLinePay() / s.Count() / cost
 }
 
 func (s *StatCascade) ScatRTP(cost float64) float64 {
-	return s.SumScatPay() / s.Count() / cost * 100
+	return s.SumScatPay() / s.Count() / cost
 }
 
 func (s *StatCascade) SymRTP(cost float64) (lrtp, srtp float64) {
@@ -250,8 +250,8 @@ func (s *StatCascade) SymRTP(cost float64) (lrtp, srtp float64) {
 		spay += s.Casc[i].ScatPay1.Load()
 	}
 	var N = s.Count()
-	lrtp = lpay / N / cost * 100
-	srtp = spay / N / cost * 100
+	lrtp = lpay / N / cost
+	srtp = spay / N / cost
 	return
 }
 
@@ -367,10 +367,10 @@ func Progress(ctx context.Context, s Stater, calc func(io.Writer) float64) {
 				fmt.Printf("processed %.1fm, ready %2.2f%% (%v / %v), RTP = %2.2f%%  \r",
 					N/1e6, N/total*100,
 					dur.Truncate(stepdur), exp.Truncate(stepdur),
-					rtp)
+					rtp*100)
 			} else {
 				fmt.Printf("processed %.1fm, spent %v, RTP = %2.2f%%  \r",
-					N/1e6, dur.Truncate(stepdur), rtp)
+					N/1e6, dur.Truncate(stepdur), rtp*100)
 			}
 		}
 	}

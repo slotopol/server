@@ -32,10 +32,10 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		var lrtp, srtp = s.SymRTP(g.Cost())
 		var rtpsym = lrtp + srtp
 		var qgolfbn = s.BonusHitsF(golfbon) / N / float64(g.Sel)
-		var rtpgolfbn = Egolfbn * qgolfbn * 100
+		var rtpgolfbn = Egolfbn * qgolfbn
 		var rtp = rtpsym + rtpgolfbn
-		fmt.Fprintf(w, "golf bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", N/s.BonusHitsF(golfbon), rtpgolfbn)
-		fmt.Fprintf(w, "RTP = %.5g(lined) + %.5g(scatter) + %.5g(golf) = %.6f%%\n", lrtp, srtp, rtpgolfbn, rtp)
+		fmt.Fprintf(w, "golf bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", N/s.BonusHitsF(golfbon), rtpgolfbn*100)
+		fmt.Fprintf(w, "RTP = %.5g(lined) + %.5g(scatter) + %.5g(golf) = %.6f%%\n", lrtp*100, srtp*100, rtpgolfbn*100, rtp*100)
 		return rtp
 	}
 

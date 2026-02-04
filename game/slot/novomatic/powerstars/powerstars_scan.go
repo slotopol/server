@@ -79,7 +79,7 @@ func CalcStatStars(ctx context.Context, wc2, wc3, wc4 bool) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var lrtp = s.LineRTP(g.Cost())
-		fmt.Fprintf(w, "RTP[%c%c%c] = %.6f%%\n", wcsym(wc2), wcsym(wc3), wcsym(wc4), lrtp)
+		fmt.Fprintf(w, "RTP[%c%c%c] = %.6f%%\n", wcsym(wc2), wcsym(wc3), wcsym(wc4), lrtp*100)
 		return lrtp
 	}
 
@@ -113,7 +113,7 @@ func CalcStat(ctx context.Context, mrtp float64) (rtp float64) {
 	var rtpfs = ((rtp100+rtp010+rtp001)*(b-1)*(b-1) + (rtp110+rtp011+rtp101)*(b-1) + rtp111) / (b*b + (b-1)*b + (b-1)*(b-1))
 	rtp = (1-q)*rtp000 + q*rtpfs
 	fmt.Printf("wild chance: 1/%.5g\n", 1/wc)
-	fmt.Printf("free spins: q = %.5g, 1/q = %.5g, rtpfs = %.6f%%\n", q, 1/q, rtpfs)
-	fmt.Printf("RTP = (1-q)*%.5g(sym) + q*%.5g(fg) = %.6f%%\n", rtp000, rtpfs, rtp)
+	fmt.Printf("free spins: q = %.5g, 1/q = %.5g, rtpfs = %.6f%%\n", q, 1/q, rtpfs*100)
+	fmt.Printf("RTP = (1-q)*%.5g(sym) + q*%.5g(fg) = %.6f%%\n", rtp000*100, rtpfs*100, rtp*100)
 	return
 }

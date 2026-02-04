@@ -128,11 +128,11 @@ func CalcStatBon(ctx context.Context, es slot.Sym) (float64, float64) {
 		var rtpsym = lrtp + srtp
 		var q, sq = s.FSQ()
 		if q > 0 {
-			fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
+			fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
 			fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount.Load(), q, sq)
 			fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		}
-		fmt.Fprintf(w, "RTP[%d] = %.6f%%\n", es, rtpsym)
+		fmt.Fprintf(w, "RTP[%d] = %.6f%%\n", es, rtpsym*100)
 		return rtpsym
 	}
 
@@ -174,7 +174,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var rtpfs = sqfs * rtpsym
 	fmt.Printf("free spins: q = %.5g, sq = 1/(1-q) = %.6f\n", qfs, sqfs)
 	fmt.Printf("free games hit rate: 1/%.5g\n", 10/qfs)
-	fmt.Printf("RTPfs = sq*rtp(sym) = %.5g*%.5g = %.6f%%\n", sqfs, rtpsym, rtpfs)
+	fmt.Printf("RTPfs = sq*rtp(sym) = %.5g*%.5g = %.6f%%\n", sqfs, rtpsym*100, rtpfs*100)
 
 	fmt.Printf("*regular reels calculations*\n")
 	var reels, _ = ReelsMap.FindClosest(mrtp)
@@ -186,10 +186,10 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		var rtpsym = lrtp + srtp
 		var q, sq = s.FSQ()
 		var rtp = rtpsym + q*rtpfs
-		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
+		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount.Load(), q, sq)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
-		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, q, rtpfs, rtp)
+		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym*100, q, rtpfs*100, rtp*100)
 		return rtp
 	}
 

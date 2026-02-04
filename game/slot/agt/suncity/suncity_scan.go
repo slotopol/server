@@ -23,9 +23,9 @@ func CalcStatBon(ctx context.Context) (rtp, num float64) {
 		}
 		var rtpsym = lrtp + srtp
 		fgf = N / float64(s.FreeHits.Load())
-		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
+		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", fgf)
-		fmt.Fprintf(w, "RTP = rtp(sym) = %.6f%%\n", rtpsym)
+		fmt.Fprintf(w, "RTP = rtp(sym) = %.6f%%\n", rtpsym*100)
 		return rtpsym
 	}
 
@@ -52,9 +52,9 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		var rtpsym = lrtp + srtp
 		var fgf = N / float64(s.FreeHits.Load())
 		var rtp = rtpsym + rtpfs*numfs/fgf
-		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
+		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", fgf)
-		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(fg)*%.5g/%.5g = %.6f%%\n", rtpsym, rtpfs, numfs, fgf, rtp)
+		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(fg)*%.5g/%.5g = %.6f%%\n", rtpsym*100, rtpfs*100, numfs, fgf, rtp*100)
 		return rtp
 	}
 

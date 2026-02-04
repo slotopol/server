@@ -31,10 +31,10 @@ local function calculate(reels)
 	assert(#reels == sx, "unexpected number of reels")
 
 	-- Get number of total reshuffles and lengths of each reel.
-	local reshuffles, lens = 1, {}
+	local N, L = 1, {}
 	for i, r in ipairs(reels) do
-		reshuffles = reshuffles * #r
-		lens[i] = #r
+		N = N * #r
+		L[i] = #r
 	end
 
 	-- Count symbols occurrences on each reel
@@ -62,23 +62,23 @@ local function calculate(reels)
 			ev_sum = ev_sum + comb5 * pays[5]
 
 			-- 4-of-a-kind (XXXX-) EV on left side
-			local comb4l = c[1] * c[2] * c[3] * c[4] * (lens[5] - c[5])
+			local comb4l = c[1] * c[2] * c[3] * c[4] * (L[5] - c[5])
 			ev_sum = ev_sum + comb4l * pays[4]
 
 			-- 4-of-a-kind (-XXXX) EV on right side
-			local comb4r = (lens[1] - c[1]) * c[2] * c[3] * c[4] * c[5]
+			local comb4r = (L[1] - c[1]) * c[2] * c[3] * c[4] * c[5]
 			ev_sum = ev_sum + comb4r * pays[4]
 
 			-- 3-of-a-kind (XXX--) EV on left side
-			local comb3l = c[1] * c[2] * c[3] * (lens[4] - c[4]) * lens[5]
+			local comb3l = c[1] * c[2] * c[3] * (L[4] - c[4]) * L[5]
 			ev_sum = ev_sum + comb3l * pays[3]
 
 			-- 3-of-a-kind (-XXX-) EV in the middle
-			local comb3m = (lens[1] - c[1]) * c[2] * c[3] * c[4] * (lens[5] - c[5])
+			local comb3m = (L[1] - c[1]) * c[2] * c[3] * c[4] * (L[5] - c[5])
 			ev_sum = ev_sum + comb3m * pays[3]
 
 			-- 3-of-a-kind (--XXX) EV on right side
-			local comb3r = lens[1] * (lens[2] - c[2]) * c[3] * c[4] * c[5]
+			local comb3r = L[1] * (L[2] - c[2]) * c[3] * c[4] * c[5]
 			ev_sum = ev_sum + comb3r * pays[3]
 		end
 
@@ -86,10 +86,10 @@ local function calculate(reels)
 	end
 
 	-- Execute calculation
-	local rtp_line = calculate_line_ev() / reshuffles
+	local rtp_line = calculate_line_ev() / N
 	local rtp_scat = 0
 	local rtp_total = rtp_line + rtp_scat
-	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
+	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(L, ", "), N))
 	print(string.format("RTP = %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line*100, rtp_scat*100, rtp_total*100))
 	return rtp_total
 end

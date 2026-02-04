@@ -49,10 +49,10 @@ local function calculate(reels)
 	assert(#reels == sx, "unexpected number of reels")
 
 	-- Get number of total reshuffles and lengths of each reel.
-	local reshuffles, lens = 1, {}
+	local N, L = 1, {}
 	for i, r in ipairs(reels) do
-		reshuffles = reshuffles * #r
-		lens[i] = #r
+		N = N * #r
+		L[i] = #r
 	end
 
 	-- Count symbols occurrences on each reel
@@ -88,9 +88,9 @@ local function calculate(reels)
 							if i <= n then
 								combs_total = combs_total * c[i]
 							elseif i == n + 1 then
-								combs_total = combs_total * (lens[i] - c[i])
+								combs_total = combs_total * (L[i] - c[i])
 							else
-								combs_total = combs_total * lens[i]
+								combs_total = combs_total * L[i]
 							end
 						end
 
@@ -100,9 +100,9 @@ local function calculate(reels)
 							if i <= n then
 								combs_no_wild = combs_no_wild * s[i]
 							elseif i == n + 1 then
-								combs_no_wild = combs_no_wild * (lens[i] - c[i])
+								combs_no_wild = combs_no_wild * (L[i] - c[i])
 							else
-								combs_no_wild = combs_no_wild * lens[i]
+								combs_no_wild = combs_no_wild * L[i]
 							end
 						end
 
@@ -122,9 +122,9 @@ local function calculate(reels)
 								elseif i <= n then
 									bw = bw * c[i]
 								elseif i == n + 1 then
-									bw = bw * (lens[i] - c[i])
+									bw = bw * (L[i] - c[i])
 								else
-									bw = bw * lens[i]
+									bw = bw * L[i]
 								end
 							end
 							better_wilds = bw
@@ -145,8 +145,8 @@ local function calculate(reels)
 				local wc = 1
 				for i = 1, sx do
 					if i <= n then wc = wc * w[i]
-					elseif i == n + 1 then wc = wc * (lens[i] - w[i])
-					else wc = wc * lens[i] end
+					elseif i == n + 1 then wc = wc * (L[i] - w[i])
+					else wc = wc * L[i] end
 				end
 
 				-- 2. Subtract the cases where this line of wilds is intercepted by the S symbol.
@@ -169,9 +169,9 @@ local function calculate(reels)
 										elseif i <= sn then
 											loss = loss * c[i]
 										elseif i == sn + 1 then
-											loss = loss * (lens[i] - c[i])
+											loss = loss * (L[i] - c[i])
 										else
-											loss = loss * lens[i]
+											loss = loss * L[i]
 										end
 									end
 									losses = losses + loss
@@ -205,7 +205,7 @@ local function calculate(reels)
 				current_comb * c[reel_index] * sy)
 			-- Step 2: NOT having a scatter on this reel
 			find_scatter_combs(reel_index + 1, scat_sum,
-				current_comb * (lens[reel_index] - c[reel_index] * sy))
+				current_comb * (L[reel_index] - c[reel_index] * sy))
 		end
 		find_scatter_combs(1, 0, 1) -- Start recursion
 
@@ -215,14 +215,14 @@ local function calculate(reels)
 	-- Calculating Eldorado1 bonus symbols
 	local function calculate_mje1_comb()
 		local b = counts[bon1]
-		local comb5 = b[1] * b[2] * b[3] * (lens[4] - b[4]) * lens[5]
+		local comb5 = b[1] * b[2] * b[3] * (L[4] - b[4]) * L[5]
 		return comb5
 	end
 
 	-- Calculating Eldorado3 bonus symbols
 	local function calculate_mje3_comb()
 		local b = counts[bon1]
-		local comb5 = b[1] * b[2] * b[3] * b[4] * (lens[5] - b[5])
+		local comb5 = b[1] * b[2] * b[3] * b[4] * (L[5] - b[5])
 		return comb5
 	end
 
@@ -241,25 +241,25 @@ local function calculate(reels)
 	end
 
 	-- Execute calculation
-	local rtp_line = calculate_line_ev() / reshuffles
-	local rtp_scat = calculate_scat_ev() / reshuffles
+	local rtp_line = calculate_line_ev() / N
+	local rtp_scat = calculate_scat_ev() / N
 	local rtp_sym = rtp_line + rtp_scat
-	local qmje1 = calculate_mje1_comb() / reshuffles
+	local qmje1 = calculate_mje1_comb() / N
 	local rtp_mje1 = EVmje1 * qmje1
-	local qmje3 = calculate_mje3_comb() / reshuffles
+	local qmje3 = calculate_mje3_comb() / N
 	local rtp_mje3 = EVmje3 * qmje3
-	local qmje6 = calculate_mje6_comb() / reshuffles
+	local qmje6 = calculate_mje6_comb() / N
 	local rtp_mje6 = EVmje6 * qmje6
 	local comb_mjm = calculate_mjm_comb()
-	local qmjm = comb_mjm / reshuffles
+	local qmjm = comb_mjm / N
 	local rtp_mjm = EVmjm * qmjm
 	local rtp_total = rtp_sym + rtp_mje1 + rtp_mje3 + rtp_mje6 + rtp_mjm
-	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
+	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(L, ", "), N))
 	print(string.format("symbols: %.5g(lined) + %.5g(scatter) = %.6f%%", rtp_line*100, rtp_scat*100, rtp_sym*100))
 	print(string.format("spin1 bonuses: hit rate 1/%.5g, rtp = %.6f%%", 1/qmje1, rtp_mje1*100))
 	print(string.format("spin3 bonuses: hit rate 1/%.5g, rtp = %.6f%%", 1/qmje3, rtp_mje3*100))
 	print(string.format("spin6 bonuses: hit rate 1/%.5g, rtp = %.6f%%", 1/qmje6, rtp_mje6*100))
-	print(string.format("monopoly bonuses: hit rate 1/%.5g, rtp = %.6f%%", reshuffles/comb_mjm, rtp_mjm*100))
+	print(string.format("monopoly bonuses: hit rate 1/%.5g, rtp = %.6f%%", N/comb_mjm, rtp_mjm*100))
 	print(string.format("RTP = %.5g(sym) + %.5g(mje) + %.5g(mjm) = %.6f%%",
 		rtp_sym*100, (rtp_mje1 + rtp_mje3 + rtp_mje6)*100, rtp_mjm*100, rtp_total*100))
 	return rtp_total

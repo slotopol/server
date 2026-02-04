@@ -31,10 +31,10 @@ local function calculate(reels)
 	assert(#reels == sx, "unexpected number of reels")
 
 	-- Get number of total reshuffles and lengths of each reel.
-	local reshuffles, lens = 1, {}
+	local N, L = 1, {}
 	for i, r in ipairs(reels) do
-		reshuffles = reshuffles * #r
-		lens[i] = #r
+		N = N * #r
+		L[i] = #r
 	end
 
 	-- Count symbols occurrences on each reel
@@ -64,8 +64,8 @@ local function calculate(reels)
 	end
 
 	-- Execute calculation
-	local rtp_total = calculate_line_ev() / reshuffles
-	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(lens, ", "), reshuffles))
+	local rtp_total = calculate_line_ev() / N
+	print(string.format("reels lengths [%s], total reshuffles %d", table.concat(L, ", "), N))
 	print(string.format("RTP = %.6f%%", rtp_total*100))
 	return rtp_total
 end

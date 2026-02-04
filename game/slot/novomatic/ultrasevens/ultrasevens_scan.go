@@ -23,7 +23,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 		fmt.Fprintf(w, "jackpots1: count %g, frequency 1/%.12g\n", s.JackHitsF(ssj1), N/s.JackHitsF(ssj1))
 		fmt.Fprintf(w, "jackpots2: count %g, frequency 1/%.12g\n", s.JackHitsF(ssj2), N/s.JackHitsF(ssj2))
 		fmt.Fprintf(w, "jackpots3: count %g, frequency 1/%.12g\n", s.JackHitsF(ssj3), N/s.JackHitsF(ssj3))
-		fmt.Fprintf(w, "RTP = %.6f%%\n", rtpsym)
+		fmt.Fprintf(w, "RTP = %.6f%%\n", rtpsym*100)
 		return rtpsym
 	}
 

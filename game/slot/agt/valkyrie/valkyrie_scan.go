@@ -21,7 +21,7 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 			panic("scatters are presents on bonus games")
 		}
 		var rtp = lrtp + srtp
-		fmt.Fprintf(w, "RTP = %.6f%%\n", rtp)
+		fmt.Fprintf(w, "RTP = %.6f%%\n", rtp*100)
 		return rtp
 	}
 
@@ -49,10 +49,10 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		var rtpsym = lrtp + srtp
 		var q, _ = s.FSQ()
 		var rtp = rtpsym + q*rtpfs
-		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp, srtp, rtpsym)
+		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
 		fmt.Fprintf(w, "free spins %d, q = %.6f\n", s.FreeCount.Load(), q)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
-		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym, q, rtpfs, rtp)
+		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym*100, q, rtpfs*100, rtp*100)
 		return rtp
 	}
 

@@ -62,7 +62,7 @@ func CalcStatEuro(ctx context.Context, x, y slot.Pos) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var lrtp = s.LineRTP(g.Cost())
-		fmt.Fprintf(w, "RTP[%d,%d] = %.6f%%\n", x, y, lrtp)
+		fmt.Fprintf(w, "RTP[%d,%d] = %.6f%%\n", x, y, lrtp*100)
 		return lrtp
 	}
 
@@ -91,8 +91,8 @@ func CalcStat(ctx context.Context, mrtp float64) (rtp float64) {
 	}
 	rtpeu /= 15
 	rtp = (1-wc)*rtp00 + wc*rtpeu
-	fmt.Printf("euro avr: rtpeu = %.6f%%\n", rtpeu)
+	fmt.Printf("euro avr: rtpeu = %.6f%%\n", rtpeu*100)
 	fmt.Printf("wild chance: 1/%.5g\n", 1/wc)
-	fmt.Printf("RTP = (1-wc)*%.5g(sym) + wc*%.5g(eu) = %.6f%%\n", rtp00, rtpeu, rtp)
+	fmt.Printf("RTP = (1-wc)*%.5g(sym) + wc*%.5g(eu) = %.6f%%\n", rtp00*100, rtpeu*100, rtp*100)
 	return
 }
