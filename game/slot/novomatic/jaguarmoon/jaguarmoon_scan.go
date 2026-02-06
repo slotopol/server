@@ -29,38 +29,26 @@ func (s *Stat) FSQ(n int) (q float64) {
 	return
 }
 
-func (s *Stat) Update(wins slot.Wins) {
-	var lpay1, spay1, lpay2, spay2 float64
+func (s *Stat) Update(wins slot.Wins) (pay float64) {
 	for _, wi := range wins {
-		if wi.LI != 0 { // line win
+		if wi.Pay != 0 {
 			var p = wi.Pay * wi.MP
-			lpay1 += p
-			lpay2 += p * p
-		} else { // scatter win
-			var p = wi.Pay * wi.MP
-			spay1 += p
-			spay2 += p * p
+			s.S[wi.Sym].Add(p)
+			pay += p
 		}
 		if wi.FS != 0 {
 			s.FreeCount[wi.Num-1].Add(uint64(wi.FS))
-			s.FreeHits.Inc()
+			s.FHC.Inc()
 		}
 		if wi.BID != 0 {
-			s.BonusHits[wi.BID].Inc()
+			s.BHC[wi.BID].Inc()
 		}
 		if wi.JID != 0 {
-			s.JackHits[wi.JID].Inc()
+			s.JHC[wi.JID].Inc()
 		}
 	}
-	if lpay1 != 0 {
-		s.LinePay1.Add(lpay1)
-		s.LinePay2.Add(lpay2)
-	}
-	if spay1 != 0 {
-		s.ScatPay1.Add(spay1)
-		s.ScatPay2.Add(spay2)
-	}
-	s.Reshuf.Inc()
+	s.N.Inc()
+	return
 }
 
 func (s *Stat) Simulate(g slot.SlotGame, reels slot.Reelx, wins *slot.Wins) {
@@ -68,7 +56,9 @@ func (s *Stat) Simulate(g slot.SlotGame, reels slot.Reelx, wins *slot.Wins) {
 		s.ErrCount.Inc()
 		return
 	}
-	s.Update(*wins)
+	if pay := s.Update(*wins); pay != 0 {
+		s.Q.Add(pay * pay)
+	}
 }
 
 func CalcStatBon(ctx context.Context) float64 {
@@ -77,9 +67,9 @@ func CalcStatBon(ctx context.Context) float64 {
 	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {
-		var lrtp, srtp = s.SymRTP(g.Cost())
-		var rtpsym = lrtp + srtp
-		fmt.Fprintf(w, "RTP = %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
+		var N, S, _ = s.NSQ(g.Cost())
+		var rtpsym = S / N
+		fmt.Fprintf(w, "RTP = %.6f%%\n", rtpsym*100)
 		return rtpsym
 	}
 
@@ -98,15 +88,15 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var s Stat
 
 	var calc = func(w io.Writer) float64 {
-		var lrtp, srtp = s.SymRTP(g.Cost())
-		var rtpsym = lrtp + srtp
+		var N, S, _ = s.NSQ(g.Cost())
+		var rtpsym = S / N
 		var q3 = s.FSQ(3)
 		var q4 = s.FSQ(4)
 		var q5 = s.FSQ(5)
 		var q6 = s.FSQ(6)
 		var rtpqfs = q3*rtpfs*FreeMult[2] + q4*rtpfs*FreeMult[3] + q5*rtpfs*FreeMult[4] + q6*rtpfs*FreeMult[5]
 		var rtp = rtpsym + rtpqfs
-		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
+		fmt.Fprintf(w, "symbols: rtp(sym) = %.6f%%\n", rtpsym*100)
 		fmt.Fprintf(w, "free spins %d, q3 = %.5g, q4 = %.5g, q5 = %.5g, q6 = %.5g\n",
 			s.FreeCount[2].Load()+s.FreeCount[3].Load()+s.FreeCount[4].Load()+s.FreeCount[5].Load(),
 			q3, q4, q5, q6)

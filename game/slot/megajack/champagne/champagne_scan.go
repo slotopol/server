@@ -46,14 +46,14 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var N = s.Count()
-		var lrtp, srtp = s.SymRTP(g.Cost())
+		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
 		var q, sq = s.FSQ()
 		var qmjc = s.BonusHitsF(mjc) / N / float64(g.Sel)
 		var rtpmjc = EVmjc * qmjc
 		var rtp = sq * (rtpsym + rtpmjc)
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
-		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount.Load(), q, sq)
+		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "bottle bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", N/s.BonusHitsF(mjc), rtpmjc*100)
 		if s.JackHitsF(mjj) > 0 {
@@ -83,14 +83,14 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var N = s.Count()
-		var lrtp, srtp = s.SymRTP(g.Cost())
+		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
 		var q, _ = s.FSQ()
 		var qmjc = s.BonusHitsF(mjc) / N / float64(g.Sel)
 		var rtpmjc = EVmjc * qmjc
 		var rtp = rtpsym + rtpmjc + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
-		fmt.Fprintf(w, "free spins %d, q = %.6f\n", s.FreeCount.Load(), q)
+		fmt.Fprintf(w, "free spins %d, q = %.6f\n", s.FSC.Load(), q)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "champagne bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", N/s.BonusHitsF(mjc), rtpmjc*100)
 		if s.JackHitsF(mjj) > 0 {

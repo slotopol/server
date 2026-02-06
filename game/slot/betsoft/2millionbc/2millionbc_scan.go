@@ -35,12 +35,12 @@ func CalcStatBon(ctx context.Context) float64 {
 	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {
-		var lrtp, srtp = s.SymRTP(g.Cost())
+		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
 		var q, sq = s.FSQ()
 		var rtp = sq * rtpsym
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
-		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount.Load(), q, sq)
+		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "RTP = sq*rtp(sym) = %.5g*%.5g = %.6f%%\n", sq, rtpsym*100, rtp*100)
 		return rtp
@@ -67,7 +67,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var N = s.Count()
-		var lrtp, srtp = s.SymRTP(g.Cost())
+		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
 		var q, sq = s.FSQ()
 		var qacbn = 1 / float64(len(reels.Reel(5)))
@@ -76,7 +76,7 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 		var rtpdlbn = Edlbn * qdlbn
 		var rtp = rtpsym + rtpacbn + rtpdlbn + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
-		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FreeCount.Load(), q, sq)
+		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "acorn bonuses: hit rate 1/%d, rtp = %.6f%%\n", len(reels.Reel(5)), rtpacbn*100)
 		fmt.Fprintf(w, "diamond lion bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", N/s.BonusHitsF(dlbn), rtpdlbn*100)

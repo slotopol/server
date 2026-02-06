@@ -15,12 +15,12 @@ func CalcStatBon(ctx context.Context) float64 {
 	var s slot.StatCascade
 
 	var calc = func(w io.Writer) float64 {
-		var N1 = float64(s.Casc[0].Reshuf.Load())
-		var N2 = float64(s.Casc[1].Reshuf.Load())
-		var N3 = float64(s.Casc[2].Reshuf.Load())
-		var N4 = float64(s.Casc[3].Reshuf.Load())
-		var N5 = float64(s.Casc[4].Reshuf.Load())
-		var lrtp, srtp = s.SymRTP(g.Cost())
+		var N1 = float64(s.Casc[0].N.Load())
+		var N2 = float64(s.Casc[1].N.Load())
+		var N3 = float64(s.Casc[2].N.Load())
+		var N4 = float64(s.Casc[3].N.Load())
+		var N5 = float64(s.Casc[4].N.Load())
+		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
 		var q, sq = s.FSQ()
 		var rtp = sq * rtpsym
@@ -51,12 +51,12 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	var s slot.StatCascade
 
 	var calc = func(w io.Writer) float64 {
-		var N1 = float64(s.Casc[0].Reshuf.Load())
-		var N2 = float64(s.Casc[1].Reshuf.Load())
-		var N3 = float64(s.Casc[2].Reshuf.Load())
-		var N4 = float64(s.Casc[3].Reshuf.Load())
-		var N5 = float64(s.Casc[4].Reshuf.Load())
-		var lrtp, srtp = s.SymRTP(g.Cost())
+		var N1 = float64(s.Casc[0].N.Load())
+		var N2 = float64(s.Casc[1].N.Load())
+		var N3 = float64(s.Casc[2].N.Load())
+		var N4 = float64(s.Casc[3].N.Load())
+		var N5 = float64(s.Casc[4].N.Load())
+		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
 		var q, sq = s.FSQ()
 		var rtp = rtpsym + q*rtpfs

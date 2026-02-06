@@ -41,9 +41,9 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var N = s.Count()
-		var lrtp, srtp = s.SymRTP(g.Cost())
+		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
-		var fghits = float64(s.FreeHits.Load())
+		var fghits = float64(s.FHC.Load())
 		var fsavr1, multavr = FirstSreespins()
 		var q = fghits * fsavr1 / N
 		var sq = 1 / (1 - fghits*multavr*15/N)

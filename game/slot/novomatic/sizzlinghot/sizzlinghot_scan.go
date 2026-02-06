@@ -14,7 +14,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {
-		var lrtp, srtp = s.SymRTP(g.Cost())
+		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtp = lrtp + srtp
 		var sigma = s.SymSigma(g.Cost())
 		var vi90 = slot.GetZ(0.90) * sigma

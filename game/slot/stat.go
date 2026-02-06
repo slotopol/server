@@ -24,58 +24,52 @@ type Stater interface {
 	Simulate(SlotGame, Reelx, *Wins)
 }
 
+// Maximum possible number of symbols at any game
+const MaxSymNum = 20
+
 type StatCounter struct {
-	Reshuf    atomic.Uint64    // number of processed grid reshuffles, including with no wins
-	LinePay1  atomic.Float64   // sum of pays by all bet lines
-	ScatPay1  atomic.Float64   // sum of pays by scatters
-	LinePay2  atomic.Float64   // sum of squares of pays by all bet lines
-	ScatPay2  atomic.Float64   // sum of squares of pays by scatters
-	FreeCount atomic.Uint64    // count of free spins
-	FreeHits  atomic.Uint64    // count of free games hits
-	BonusHits [8]atomic.Uint64 // count of bonus hits
-	JackHits  [4]atomic.Uint64 // count of jackpot hits
+	N   atomic.Uint64             // number of processed grid reshuffles, including with no wins
+	S   [MaxSymNum]atomic.Float64 // sum of pays by symbols
+	FSC atomic.Uint64             // free spins count
+	FHC atomic.Uint64             // free games hits count
+	BHC [8]atomic.Uint64          // bonus hits count
+	JHC [4]atomic.Uint64          // jackpot hits count
 }
 
-func (c *StatCounter) Update(wins Wins) {
-	var lpay1, spay1, lpay2, spay2 float64
+func (c *StatCounter) Update(wins Wins) (pay float64) {
 	for _, wi := range wins {
 		if wi.Pay != 0 {
-			if wi.LI != 0 { // line win
-				var p = wi.Pay * wi.MP
-				lpay1 += p
-				lpay2 += p * p
-			} else { // scatter win
-				var p = wi.Pay * wi.MP
-				spay1 += p
-				spay2 += p * p
-			}
+			var p = wi.Pay * wi.MP
+			c.S[wi.Sym].Add(p)
+			pay += p
 		}
 		if wi.FS != 0 {
-			c.FreeCount.Add(uint64(wi.FS))
-			c.FreeHits.Inc()
+			c.FSC.Add(uint64(wi.FS))
+			c.FHC.Inc()
 		}
 		if wi.BID != 0 {
-			c.BonusHits[wi.BID].Inc()
+			c.BHC[wi.BID].Inc()
 		}
 		if wi.JID != 0 {
-			c.JackHits[wi.JID].Inc()
+			c.JHC[wi.JID].Inc()
 		}
 	}
-	if lpay1 != 0 {
-		c.LinePay1.Add(lpay1)
-		c.LinePay2.Add(lpay2)
+	c.N.Inc()
+	return
+}
+
+func (s *StatCounter) SumS() (S float64) {
+	for sym := range MaxSymNum {
+		S += s.S[sym].Load()
 	}
-	if spay1 != 0 {
-		c.ScatPay1.Add(spay1)
-		c.ScatPay2.Add(spay2)
-	}
-	c.Reshuf.Inc()
+	return
 }
 
 type StatGeneric struct {
 	Plan     atomic.Uint64
 	ErrCount atomic.Uint64
 	StatCounter
+	Q atomic.Float64 // sum of squares of pays by symbols
 }
 
 // Declare conformity with Stater interface.
@@ -94,31 +88,49 @@ func (s *StatGeneric) Errors() uint64 {
 }
 
 func (s *StatGeneric) Count() float64 {
-	return float64(s.Reshuf.Load())
+	return float64(s.N.Load())
 }
 
-func (s *StatGeneric) LineRTP(cost float64) float64 {
-	return s.LinePay1.Load() / s.Count() / cost
-}
-
-func (s *StatGeneric) ScatRTP(cost float64) float64 {
-	return s.ScatPay1.Load() / s.Count() / cost
-}
-
-func (s *StatGeneric) SymRTP(cost float64) (lrtp, srtp float64) {
+func (s *StatGeneric) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
+	var sym Sym
+	for sym = range MaxSymNum {
+		if sym != scat {
+			lrtp += s.S[sym].Load()
+		} else {
+			srtp += s.S[sym].Load()
+		}
+	}
 	var N = s.Count()
-	lrtp = s.LinePay1.Load() / N / cost
-	srtp = s.ScatPay1.Load() / N / cost
+	lrtp /= N * cost
+	srtp /= N * cost
 	return
 }
 
-func (s *StatGeneric) NSQ(cost float64) (float64, float64, float64) {
-	return s.Count(), (s.LinePay1.Load() + s.ScatPay1.Load()) / cost, (s.LinePay2.Load() + s.ScatPay2.Load()) / cost
+func (s *StatGeneric) RTPsym2(cost float64, scat1, scat2 Sym) (lrtp, srtp float64) {
+	var sym Sym
+	for sym = range MaxSymNum {
+		if sym != scat1 && sym != scat2 {
+			lrtp += s.S[sym].Load()
+		} else {
+			srtp += s.S[sym].Load()
+		}
+	}
+	var N = s.Count()
+	lrtp /= N * cost
+	srtp /= N * cost
+	return
+}
+
+func (s *StatGeneric) NSQ(cost float64) (N float64, S float64, Q float64) {
+	N = s.Count()
+	S = s.SumS() / cost
+	Q = s.Q.Load() / cost / cost
+	return
 }
 
 func (s *StatGeneric) SymVariance(cost float64) float64 {
 	var N, S, Q = s.NSQ(cost)
-	// another way: math.Sqrt(Q/N - S*S/N/N)
+	// another way: Q/N - S*S/N/N
 	return N*Q - S*S/N/N
 }
 
@@ -131,27 +143,27 @@ func (s *StatGeneric) SymSigma(cost float64) float64 {
 // Returns (q, sq), where q = free spins quantifier, sq = 1/(1-q)
 // sum of a decreasing geometric progression for retriggered free spins.
 func (s *StatGeneric) FSQ() (q float64, sq float64) {
-	q = float64(s.FreeCount.Load()) / s.Count()
+	q = float64(s.FSC.Load()) / s.Count()
 	sq = 1 / (1 - q)
 	return
 }
 
 // Quantifier of free games per reshuffles.
 func (s *StatGeneric) FGQ() float64 {
-	return float64(s.FreeHits.Load()) / s.Count()
+	return float64(s.FHC.Load()) / s.Count()
 }
 
 // Free Games Frequency: average number of reshuffles per free games hit.
 func (s *StatGeneric) FGF() float64 {
-	return s.Count() / float64(s.FreeHits.Load())
+	return s.Count() / float64(s.FHC.Load())
 }
 
 func (s *StatGeneric) BonusHitsF(bid int) float64 {
-	return float64(s.BonusHits[bid].Load())
+	return float64(s.BHC[bid].Load())
 }
 
 func (s *StatGeneric) JackHitsF(jid int) float64 {
-	return float64(s.JackHits[jid].Load())
+	return float64(s.JHC[jid].Load())
 }
 
 func (s *StatGeneric) Simulate(g SlotGame, reels Reelx, wins *Wins) {
@@ -159,13 +171,16 @@ func (s *StatGeneric) Simulate(g SlotGame, reels Reelx, wins *Wins) {
 		s.ErrCount.Inc()
 		return
 	}
-	s.Update(*wins)
+	if pay := s.Update(*wins); pay != 0 {
+		s.Q.Add(pay * pay)
+	}
 }
 
 type StatCascade struct {
 	Plan     atomic.Uint64
 	ErrCount atomic.Uint64
 	Casc     [FallLimit]StatCounter
+	Q        atomic.Float64 // sum of squares of pays by symbols
 }
 
 // Declare conformity with Stater interface.
@@ -184,29 +199,13 @@ func (s *StatCascade) Errors() uint64 {
 }
 
 func (s *StatCascade) Count() float64 {
-	return float64(s.Casc[0].Reshuf.Load())
-}
-
-func (s *StatCascade) SumLinePay() float64 {
-	var sum float64
-	for i := range FallLimit {
-		sum += s.Casc[i].LinePay1.Load()
-	}
-	return sum
-}
-
-func (s *StatCascade) SumScatPay() float64 {
-	var sum float64
-	for i := range FallLimit {
-		sum += s.Casc[i].ScatPay1.Load()
-	}
-	return sum
+	return float64(s.Casc[0].N.Load())
 }
 
 func (s *StatCascade) SumFreeCount() uint64 {
 	var sum uint64
 	for i := range FallLimit {
-		sum += s.Casc[i].FreeCount.Load()
+		sum += s.Casc[i].FSC.Load()
 	}
 	return sum
 }
@@ -214,7 +213,7 @@ func (s *StatCascade) SumFreeCount() uint64 {
 func (s *StatCascade) SumFreeHits() uint64 {
 	var sum uint64
 	for i := range FallLimit {
-		sum += s.Casc[i].FreeHits.Load()
+		sum += s.Casc[i].FHC.Load()
 	}
 	return sum
 }
@@ -222,7 +221,7 @@ func (s *StatCascade) SumFreeHits() uint64 {
 func (s *StatCascade) SumBonusHits(bid int) uint64 {
 	var sum uint64
 	for i := range FallLimit {
-		sum += s.Casc[i].BonusHits[bid].Load()
+		sum += s.Casc[i].BHC[bid].Load()
 	}
 	return sum
 }
@@ -230,28 +229,36 @@ func (s *StatCascade) SumBonusHits(bid int) uint64 {
 func (s *StatCascade) SumJackHits(jid int) uint64 {
 	var sum uint64
 	for i := range FallLimit {
-		sum += s.Casc[i].JackHits[jid].Load()
+		sum += s.Casc[i].JHC[jid].Load()
 	}
 	return sum
 }
 
-func (s *StatCascade) LineRTP(cost float64) float64 {
-	return s.SumLinePay() / s.Count() / cost
-}
-
-func (s *StatCascade) ScatRTP(cost float64) float64 {
-	return s.SumScatPay() / s.Count() / cost
-}
-
-func (s *StatCascade) SymRTP(cost float64) (lrtp, srtp float64) {
-	var lpay, spay float64
+func (s *StatCascade) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
+	var sym Sym
 	for i := range FallLimit {
-		lpay += s.Casc[i].LinePay1.Load()
-		spay += s.Casc[i].ScatPay1.Load()
+		var c = &s.Casc[i]
+		for sym = range MaxSymNum {
+			if sym != scat {
+				lrtp += c.S[sym].Load()
+			} else {
+				srtp += c.S[sym].Load()
+			}
+		}
 	}
 	var N = s.Count()
-	lrtp = lpay / N / cost
-	srtp = spay / N / cost
+	lrtp /= N * cost
+	srtp /= N * cost
+	return
+}
+
+func (s *StatCascade) NSQ(cost float64) (N float64, S float64, Q float64) {
+	N = s.Count()
+	for i := range FallLimit {
+		S += s.Casc[i].SumS()
+	}
+	S /= cost
+	Q = s.Q.Load() / cost / cost
 	return
 }
 
@@ -275,10 +282,10 @@ func (s *StatCascade) FGF() float64 {
 
 // Cascade multiplier.
 func (s *StatCascade) Mcascade() float64 {
-	var pay1 = s.Casc[0].LinePay1.Load() + s.Casc[0].ScatPay1.Load()
+	var pay1 = s.Casc[0].SumS()
 	var pays float64
 	for i := range FallLimit {
-		var payi = s.Casc[i].LinePay1.Load() + s.Casc[i].ScatPay1.Load()
+		var payi = s.Casc[i].SumS()
 		pays += payi
 		if payi == 0 {
 			break
@@ -291,18 +298,18 @@ func (s *StatCascade) Mcascade() float64 {
 func (s *StatCascade) ACL() float64 {
 	var sum uint64
 	for i := 1; i < FallLimit; i++ {
-		sum += s.Casc[i].Reshuf.Load()
+		sum += s.Casc[i].N.Load()
 	}
-	return float64(sum) / float64(s.Casc[1].Reshuf.Load())
+	return float64(sum) / float64(s.Casc[1].N.Load())
 }
 
 // Inverse coefficient of fading (C1/Cn)^(1/(n-1)).
 func (s *StatCascade) Kfading() float64 {
-	var N1 = s.Casc[0].Reshuf.Load()
+	var N1 = s.Casc[0].N.Load()
 	var Nn uint64
 	var i int
 	for i = range FallLimit {
-		var Ni = s.Casc[i].Reshuf.Load()
+		var Ni = s.Casc[i].N.Load()
 		if Ni == 0 {
 			break
 		}
@@ -314,7 +321,7 @@ func (s *StatCascade) Kfading() float64 {
 // Maximum number of cascades in avalanche.
 func (s *StatCascade) Ncascmax() int {
 	for i := range FallLimit {
-		if s.Casc[i].Reshuf.Load() == 0 {
+		if s.Casc[i].N.Load() == 0 {
 			return i
 		}
 	}
@@ -325,6 +332,7 @@ func (s *StatCascade) Simulate(g SlotGame, reels Reelx, wins *Wins) {
 	var sc = g.(SlotCascade)
 	var err error
 	var cfn int
+	var pay float64
 	for {
 		sc.UntoFall()
 		if cfn++; cfn > FallLimit {
@@ -335,12 +343,15 @@ func (s *StatCascade) Simulate(g SlotGame, reels Reelx, wins *Wins) {
 		if err = sc.Scanner(wins); err != nil {
 			break
 		}
-		s.Casc[cfn-1].Update((*wins)[wp:])
+		pay += s.Casc[cfn-1].Update((*wins)[wp:])
 		sc.Strike((*wins)[wp:])
 		if len(*wins) == wp {
 			break
 		}
 		sc.PushFall(reels)
+	}
+	if pay > 0 {
+		s.Q.Add(pay * pay)
 	}
 	if err != nil {
 		s.ErrCount.Inc()

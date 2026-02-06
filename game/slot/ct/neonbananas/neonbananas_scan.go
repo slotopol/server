@@ -17,7 +17,7 @@ func CalcStat(ctx context.Context, mrtp float64) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var N = s.Count()
-		var lrtp, srtp = s.SymRTP(g.Cost())
+		var lrtp, srtp = s.RTPsym(g.Cost(), scat1)
 		var rtpsym = lrtp + srtp
 		var qbb = s.BonusHitsF(bbid) / N
 		var rtpbb = Ebb * qbb

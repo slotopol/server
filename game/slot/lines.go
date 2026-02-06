@@ -7,7 +7,7 @@ import (
 const (
 	// Maximum size X*Y of Gridx data array.
 	// Maximum possible value of this constant is 255 (for Pos type uint8).
-	GridSize = 40
+	GridSize = 42
 
 	// Maximum number of hits on Gridx.
 	// This array has +1 element to make it zero-terminated without extra check up.
