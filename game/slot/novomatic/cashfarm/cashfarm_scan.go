@@ -12,8 +12,8 @@ import (
 // calculation see at generator/prov/novomatic/cashfarmbon.lua
 const Ebon = 50
 
-func CalcStat(ctx context.Context, mrtp float64) float64 {
-	var reels, _ = ReelsMap.FindClosest(mrtp)
+func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
+	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame()
 	var s slot.StatCascade
 

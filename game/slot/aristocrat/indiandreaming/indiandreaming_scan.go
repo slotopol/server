@@ -8,8 +8,8 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-func CalcStatBon(ctx context.Context, mrtp float64) float64 {
-	var reels, _ = ReelsMap.FindClosest(mrtp)
+func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
+	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame()
 	g.FSR = 12 // set free spins mode
 	var s slot.StatGeneric
@@ -29,14 +29,14 @@ func CalcStatBon(ctx context.Context, mrtp float64) float64 {
 	return slot.ScanReelsCommon(ctx, &s, g, reels, calc)
 }
 
-func CalcStatReg(ctx context.Context, mrtp float64) float64 {
+func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 	fmt.Printf("*free games calculations*\n")
-	var rtpfs = CalcStatBon(ctx, mrtp)
+	var rtpfs = CalcStatBon(ctx, sp)
 	if ctx.Err() != nil {
 		return 0
 	}
 	fmt.Printf("*regular games calculations*\n")
-	var reels, _ = ReelsMap.FindClosest(mrtp)
+	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame()
 	var s slot.StatGeneric
 

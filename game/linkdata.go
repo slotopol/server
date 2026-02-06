@@ -113,7 +113,13 @@ type (
 		*AlgDescr `yaml:",inline"`
 	}
 
-	Scanner func(context.Context, float64) float64
+	ScanPar struct {
+		MRTP       float64   // master RTP
+		Sel        int       // number of selected bet lines
+		Confidence []float64 // confidence level
+	}
+
+	Scanner func(context.Context, *ScanPar) float64
 )
 
 var (

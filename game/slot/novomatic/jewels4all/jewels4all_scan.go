@@ -53,9 +53,9 @@ func BruteForceEuro(ctx context.Context, s slot.Stater, g *Game, reels slot.Reel
 	}
 }
 
-func CalcStatEuro(ctx context.Context, x, y slot.Pos) float64 {
+func CalcStatEuro(ctx context.Context, sp *slot.ScanPar, x, y slot.Pos) float64 {
 	var reels = Reels
-	var g = NewGame(1)
+	var g = NewGame(sp.Sel)
 	var s slot.StatGeneric
 
 	fmt.Printf("calculations of euro at [%d,%d]\n", x, y)
@@ -79,15 +79,15 @@ func CalcStatEuro(ctx context.Context, x, y slot.Pos) float64 {
 	return calc(os.Stdout)
 }
 
-func CalcStat(ctx context.Context, mrtp float64) (rtp float64) {
-	var wc, _ = ChanceMap.FindClosest(mrtp) // wild chance
+func CalcStat(ctx context.Context, sp *slot.ScanPar) (rtp float64) {
+	var wc, _ = ChanceMap.FindClosest(sp.MRTP) // wild chance
 
-	var rtp00 = CalcStatEuro(ctx, 0, 0)
+	var rtp00 = CalcStatEuro(ctx, sp, 0, 0)
 	var rtpeu float64
 	var x, y slot.Pos
 	for x = 1; x <= 5; x++ {
 		for y = 1; y <= 3; y++ {
-			rtpeu += CalcStatEuro(ctx, x, y)
+			rtpeu += CalcStatEuro(ctx, sp, x, y)
 		}
 	}
 	rtpeu /= 15

@@ -57,13 +57,13 @@ func ExpBonus() {
 	Ebon = Epyr + Eroom*app[5]
 }
 
-func CalcStat(ctx context.Context, mrtp float64) float64 {
+func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 	fmt.Printf("*bonus games calculations*\n")
 	ExpBonus()
 	fmt.Printf("Ebon = Epyr + Eroom*app[6] = %.5g + %.5g * %.5g = %g\n", Epyr, Eroom, app[5], Ebon)
 	fmt.Printf("*reels calculations*\n")
-	var reels, _ = ReelsMap.FindClosest(mrtp)
-	var g = NewGame(1)
+	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
+	var g = NewGame(sp.Sel)
 	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {

@@ -116,9 +116,9 @@ func BruteForce5x3es3(ctx context.Context, s slot.Stater, g *Game, reels slot.Re
 	wg.Wait()
 }
 
-func CalcStatBon(ctx context.Context, es slot.Sym) (float64, float64) {
+func CalcStatBon(ctx context.Context, sp *slot.ScanPar, es slot.Sym) (float64, float64) {
 	var reels = ReelsBon
-	var g = NewGame(1)
+	var g = NewGame(sp.Sel)
 	g.FSR = 10 // set free spins mode
 	g.ES = es
 	var s slot.StatGeneric
@@ -151,14 +151,14 @@ func CalcStatBon(ctx context.Context, es slot.Sym) (float64, float64) {
 	return calc(os.Stdout), q
 }
 
-func CalcStatReg(ctx context.Context, mrtp float64) float64 {
+func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 	fmt.Printf("*bonus reels calculations*\n")
 	var rtpe = map[slot.Sym]float64{}
 	var qe = map[slot.Sym]float64{}
 	var es slot.Sym
 	for es = 2; es <= scat; es++ {
 		fmt.Printf("*calculations for expanding symbol [%d]*\n", es)
-		rtpe[es], qe[es] = CalcStatBon(ctx, es)
+		rtpe[es], qe[es] = CalcStatBon(ctx, sp, es)
 		if ctx.Err() != nil {
 			return 0
 		}
@@ -177,8 +177,8 @@ func CalcStatReg(ctx context.Context, mrtp float64) float64 {
 	fmt.Printf("RTPfs = sq*rtp(sym) = %.5g*%.5g = %.6f%%\n", sqfs, rtpsym*100, rtpfs*100)
 
 	fmt.Printf("*regular reels calculations*\n")
-	var reels, _ = ReelsMap.FindClosest(mrtp)
-	var g = NewGame(1)
+	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
+	var g = NewGame(sp.Sel)
 	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {

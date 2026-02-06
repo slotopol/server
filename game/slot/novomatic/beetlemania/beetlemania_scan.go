@@ -11,9 +11,9 @@ import (
 
 // Attention! On freespins can be calculated median only, not expectation.
 
-func CalcStatBon(ctx context.Context) float64 {
+func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 	var reels = ReelsBon
-	var g = NewGame(1)
+	var g = NewGame(sp.Sel)
 	g.FSR = 10 // set free spins mode
 	var s slot.StatGeneric
 
@@ -33,15 +33,15 @@ func CalcStatBon(ctx context.Context) float64 {
 	return slot.ScanReelsCommon(ctx, &s, g, reels, calc)
 }
 
-func CalcStatReg(ctx context.Context, mrtp float64) float64 {
+func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 	fmt.Printf("*bonus reels calculations*\n")
-	var rtpfs = CalcStatBon(ctx)
+	var rtpfs = CalcStatBon(ctx, sp)
 	if ctx.Err() != nil {
 		return 0
 	}
 	fmt.Printf("*regular reels calculations*\n")
-	var reels, _ = ReelsMap.FindClosest(mrtp)
-	var g = NewGame(1)
+	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
+	var g = NewGame(sp.Sel)
 	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {

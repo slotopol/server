@@ -61,7 +61,7 @@ func (s *Stat) Simulate(g slot.SlotGame, reels slot.Reelx, wins *slot.Wins) {
 	}
 }
 
-func CalcStatBon(ctx context.Context) float64 {
+func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 	var reels = ReelsBon
 	var g = NewGame()
 	var s slot.StatGeneric
@@ -76,14 +76,14 @@ func CalcStatBon(ctx context.Context) float64 {
 	return slot.ScanReelsCommon(ctx, &s, g, reels, calc)
 }
 
-func CalcStatReg(ctx context.Context, mrtp float64) float64 {
+func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 	fmt.Printf("*bonus reels calculations*\n")
-	var rtpfs = CalcStatBon(ctx)
+	var rtpfs = CalcStatBon(ctx, sp)
 	if ctx.Err() != nil {
 		return 0
 	}
 	fmt.Printf("*regular reels calculations*\n")
-	var reels, _ = ReelsMap.FindClosest(mrtp)
+	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame()
 	var s Stat
 

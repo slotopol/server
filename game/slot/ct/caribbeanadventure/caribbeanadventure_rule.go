@@ -44,7 +44,7 @@ var BetLines = slot.BetLinesCT5x3[:]
 
 type Game struct {
 	slot.Grid5x3 `yaml:",inline"`
-	slot.Slotx     `yaml:",inline"`
+	slot.Slotx   `yaml:",inline"`
 }
 
 // Declare conformity with SlotGame interface.
@@ -159,6 +159,14 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 			XY:  g.SymPos(scat),
 			FS:  fs,
 		})
+	}
+}
+
+func (g *Game) Cost() float64 {
+	if g.FSR == 0 {
+		return g.Bet * float64(g.Sel)
+	} else {
+		return g.Bet * 10
 	}
 }
 

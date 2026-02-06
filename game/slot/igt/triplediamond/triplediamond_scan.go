@@ -8,9 +8,9 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-func CalcStat(ctx context.Context, mrtp float64) float64 {
-	var reels, _ = ReelsMap.FindClosest(mrtp)
-	var g = NewGame(1)
+func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
+	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
+	var g = NewGame(sp.Sel)
 	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {

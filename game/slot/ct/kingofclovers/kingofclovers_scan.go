@@ -8,7 +8,7 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-func CalcStatBon(ctx context.Context) float64 {
+func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 	var reels = ReelsBon
 	var g = NewGame()
 	g.FSR = 14 // set free spins mode
@@ -39,14 +39,14 @@ func CalcStatBon(ctx context.Context) float64 {
 	return slot.ScanReelsCommon(ctx, &s, g, reels, calc)
 }
 
-func CalcStatReg(ctx context.Context, mrtp float64) float64 {
+func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 	fmt.Printf("*bonus reels calculations*\n")
-	var rtpfs = CalcStatBon(ctx) // 119.47281932232095869040%
+	var rtpfs = CalcStatBon(ctx, sp) // 119.47281932232095869040%
 	if ctx.Err() != nil {
 		return 0
 	}
 	fmt.Printf("*regular reels calculations*\n")
-	var reels, _ = ReelsMap.FindClosest(mrtp)
+	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame()
 	var s slot.StatCascade
 

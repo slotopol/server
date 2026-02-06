@@ -18,13 +18,13 @@ func ExpGolf() {
 	Egolfbn = sum / float64(len(Golf))
 }
 
-func CalcStat(ctx context.Context, mrtp float64) float64 {
+func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 	fmt.Printf("*bonus games calculations*\n")
 	ExpGolf()
 	fmt.Printf("len = %d, E = %g\n", len(Golf), Egolfbn)
 	fmt.Printf("*reels calculations*\n")
-	var reels, _ = ReelsMap.FindClosest(mrtp)
-	var g = NewGame(1)
+	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
+	var g = NewGame(sp.Sel)
 	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {

@@ -26,7 +26,7 @@ var Info = game.AlgInfo{
 }
 
 func init() {
-	Info.SetupFactory(func(sel int) game.Gamble { return NewGame() }, func(ctx context.Context, mrtp float64) float64 {
+	Info.SetupFactory(func(sel int) game.Gamble { return NewGame() }, func(ctx context.Context, sp *game.ScanPar) float64 {
 		return Paytable.CalcStat(ctx)
 	})
 }

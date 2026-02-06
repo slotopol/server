@@ -80,13 +80,13 @@ func ExpMonopoly() {
 	fmt.Printf("monopoly: variance = %.6g, sigma = %.6g, limits = %.6g ... %.6g\n", v, sigma, Emjm-sigma, Emjm+sigma)
 }
 
-func CalcStat(ctx context.Context, mrtp float64) float64 {
+func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 	fmt.Printf("*bonus games calculations*\n")
 	ExpEldorado()
 	ExpMonopoly()
 	fmt.Printf("*reels calculations*\n")
-	var reels, _ = ReelsMap.FindClosest(mrtp)
-	var g = NewGame(1)
+	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
+	var g = NewGame(sp.Sel)
 	var s slot.StatGeneric
 
 	var calc = func(w io.Writer) float64 {

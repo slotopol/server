@@ -14,6 +14,7 @@ import (
 	"go.uber.org/atomic"
 
 	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/game"
 )
 
 type Stater interface {
@@ -23,6 +24,8 @@ type Stater interface {
 	Count() float64
 	Simulate(SlotGame, Reelx, *Wins)
 }
+
+type ScanPar = game.ScanPar
 
 // Maximum possible number of symbols at any game
 const MaxSymNum = 20

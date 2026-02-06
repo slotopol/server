@@ -70,15 +70,16 @@ var scanCmd = &cobra.Command{
 		for i, rid := range list {
 			var rs = strings.Split(rid, "@")
 			var alias = strings.TrimSpace(rs[0])
-			var mrtp float64
+			var sp game.ScanPar
 			if len(rs) > 1 {
-				if mrtp, err = strconv.ParseFloat(strings.TrimSpace(rs[1]), 64); err != nil {
+				if sp.MRTP, err = strconv.ParseFloat(strings.TrimSpace(rs[1]), 64); err != nil {
 					log.Fatalf("can not parse master RTP for '%s': %s", alias, err.Error())
 					return
 				}
 			} else {
-				mrtp = cfg.DefMRTP
+				sp.MRTP = cfg.DefMRTP
 			}
+			sp.Sel = 1
 			var aid = util.ToID(alias)
 			if gi, ok = game.InfoMap[aid]; !ok {
 				log.Fatalf("game name \"%s\" does not recognized", alias)
@@ -98,7 +99,7 @@ var scanCmd = &cobra.Command{
 			}
 			if len(list) > 1 {
 				fmt.Println()
-				var msg = fmt.Sprintf("*** (%d/%d) scan '%s' game with master RTP %g ***", i+1, len(list), alias, mrtp)
+				var msg = fmt.Sprintf("*** (%d/%d) scan '%s' game with master RTP %g ***", i+1, len(list), alias, sp.MRTP)
 				if lstage {
 					log.Println(msg)
 				}
@@ -106,7 +107,7 @@ var scanCmd = &cobra.Command{
 					fmt.Println(msg)
 				}
 			}
-			scan(exitctx, mrtp)
+			scan(exitctx, &sp)
 			if exitctx.Err() != nil {
 				break
 			}

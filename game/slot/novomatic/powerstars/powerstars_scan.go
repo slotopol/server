@@ -64,9 +64,9 @@ func BruteForceStars(ctx context.Context, s slot.Stater, g *Game, reels slot.Ree
 	}
 }
 
-func CalcStatStars(ctx context.Context, wc2, wc3, wc4 bool) float64 {
+func CalcStatStars(ctx context.Context, sp *slot.ScanPar, wc2, wc3, wc4 bool) float64 {
 	var reels = Reels
-	var g = NewGame(1)
+	var g = NewGame(sp.Sel)
 	var s slot.StatGeneric
 
 	var wcsym = func(wc bool) byte {
@@ -98,18 +98,18 @@ func CalcStatStars(ctx context.Context, wc2, wc3, wc4 bool) float64 {
 	return calc(os.Stdout)
 }
 
-func CalcStat(ctx context.Context, mrtp float64) (rtp float64) {
-	var wc, _ = ChanceMap.FindClosest(mrtp) // wild chance
+func CalcStat(ctx context.Context, sp *slot.ScanPar) (rtp float64) {
+	var wc, _ = ChanceMap.FindClosest(sp.MRTP) // wild chance
 
 	var b = 1 / wc
-	var rtp000 = CalcStatStars(ctx, false, false, false)
-	var rtp100 = CalcStatStars(ctx, true, false, false)
-	var rtp010 = CalcStatStars(ctx, false, true, false)
-	var rtp001 = CalcStatStars(ctx, false, false, true)
-	var rtp110 = CalcStatStars(ctx, true, true, false)
-	var rtp011 = CalcStatStars(ctx, false, true, true)
-	var rtp101 = CalcStatStars(ctx, true, false, true)
-	var rtp111 = CalcStatStars(ctx, true, true, true)
+	var rtp000 = CalcStatStars(ctx, sp, false, false, false)
+	var rtp100 = CalcStatStars(ctx, sp, true, false, false)
+	var rtp010 = CalcStatStars(ctx, sp, false, true, false)
+	var rtp001 = CalcStatStars(ctx, sp, false, false, true)
+	var rtp110 = CalcStatStars(ctx, sp, true, true, false)
+	var rtp011 = CalcStatStars(ctx, sp, false, true, true)
+	var rtp101 = CalcStatStars(ctx, sp, true, false, true)
+	var rtp111 = CalcStatStars(ctx, sp, true, true, true)
 	var q = AnyStarProb(b)
 	var rtpfs = ((rtp100+rtp010+rtp001)*(b-1)*(b-1) + (rtp110+rtp011+rtp101)*(b-1) + rtp111) / (b*b + (b-1)*b + (b-1)*(b-1))
 	rtp = (1-q)*rtp000 + q*rtpfs
