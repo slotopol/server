@@ -139,7 +139,7 @@ See `slot_win_x64 list -h` with full list of available command line parameters f
 To calculate nearest precise RTP to given value for any game on embedded reels, you can use the command like
 
 ```cmd
-slot_win_x64 scan -g=ctinteractive/luckydollar@95.0
+slot_win_x64 scan -g=ctinteractive/luckydollar -r=95.0
 ```
 
 Some games algorithms contains Lua-scripts with mathematical RTP calculation without full reels brute force, and returns result on a fly.

@@ -3,19 +3,19 @@ dofile(scripts.."lib/makereel.lua")
 
 -- symbols set for 1-st reel
 local symset1 = {
-	2, --  1 seven
+	2, --  1 seven  10000
 	2, --  2 dollar
-	8, --  3 banana
+	7, --  3 banana
 	3, --  4 lucky slot
-	2, --  5 grapes
-	2, --  6 melon
-	2, --  7 apple
-	2, --  8 pear
-	2, --  9 peach
-	2, -- 10 orange
-	2, -- 11 lemon
-	2, -- 12 plum
-	2, -- 13 cherry
+	2, --  5 grapes 500
+	2, --  6 melon  500
+	2, --  7 apple  250
+	2, --  8 pear   250
+	2, --  9 peach  250
+	2, -- 10 orange 100
+	2, -- 11 lemon  100
+	2, -- 12 plum   100
+	2, -- 13 cherry 100
 }
 
 local neighbours1 = {
@@ -39,8 +39,8 @@ local neighbours1 = {
 local symset = {
 	2, --  1 seven
 	1, --  2 dollar
-	7, --  3 banana
-	5, --  4 lucky slot
+	6, --  3 banana
+	4, --  4 lucky slot
 	2, --  5 grapes
 	2, --  6 melon
 	2, --  7 apple

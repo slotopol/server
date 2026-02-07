@@ -9,7 +9,7 @@ Scripts in this section helps to build sets of reels. Typical workflow of reels 
 
 * Complete set of reels as it written at previous step, and place this set into external `/some/path/reeldev.yaml` file with some key percentage, 50 for example.
 
-* Run the scanner for this reels by command same as `slot_win_x64.exe -f=/some/path/reeldev.yaml scan --noembed -g=provider/gamename@50`. If reels in the set have a long length (60 symbols or more), you can quickly evaluate RTP of reels by Monte Carlo method. Run scanner with `--mc=20` parameter for example. If RTP is approximately suitable you can perform precise calculation.
+* Run the scanner for this reels by command same as `slot_win_x64.exe -f=/some/path/reeldev.yaml scan --noembed -g=provider/gamename -r=50`. If reels in the set have a long length (60 symbols or more), you can quickly evaluate RTP of reels by Monte Carlo method. Run scanner with `--mc=20` parameter for example. If RTP is approximately suitable you can perform precise calculation.
 
 * Insert onto final yaml-file calculated reels with calculated percentage.
 

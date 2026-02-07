@@ -3,8 +3,6 @@ package cmd
 import (
 	"fmt"
 	"log"
-	"strconv"
-	"strings"
 
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/game"
@@ -49,69 +47,53 @@ var scanCmd = &cobra.Command{
 		}
 		UpdateAlgList()
 
-		var list []string
-		if list, err = scanflags.GetStringArray("game"); err != nil {
+		var alias string
+		if alias, err = scanflags.GetString("game"); err != nil {
 			log.Fatalln(err.Error())
 			return
 		}
-		var lstage bool
-		if lstage, err = scanflags.GetBool("lstage"); err != nil {
-			log.Fatalln(err.Error())
-			return
-		}
-		var vstage bool
-		if vstage, err = scanflags.GetBool("vstage"); err != nil {
-			log.Fatalln(err.Error())
-			return
-		}
+		var aid = util.ToID(alias)
 		var gi *game.GameInfo
-		var scan game.Scanner
 		var ok bool
-		for i, rid := range list {
-			var rs = strings.Split(rid, "@")
-			var alias = strings.TrimSpace(rs[0])
-			var sp game.ScanPar
-			if len(rs) > 1 {
-				if sp.MRTP, err = strconv.ParseFloat(strings.TrimSpace(rs[1]), 64); err != nil {
-					log.Fatalf("can not parse master RTP for '%s': %s", alias, err.Error())
-					return
-				}
-			} else {
-				sp.MRTP = cfg.DefMRTP
-			}
-			sp.Sel = 1
-			var aid = util.ToID(alias)
-			if gi, ok = game.InfoMap[aid]; !ok {
-				log.Fatalf("game name \"%s\" does not recognized", alias)
-				return
-			}
-			if len(gi.RTP) == 0 {
-				log.Fatalf("RTP list does not complete for %s", alias)
-				return
-			}
-			if scan, ok = game.ScanFactory[aid]; !ok {
-				log.Fatalf("game name \"%s\" does not recognized", alias)
-				return
-			}
-			if scan == nil {
-				fmt.Println()
-				fmt.Printf("*** scanner for '%s' game does not provided ***\n", alias)
-			}
-			if len(list) > 1 {
-				fmt.Println()
-				var msg = fmt.Sprintf("*** (%d/%d) scan '%s' game with master RTP %g ***", i+1, len(list), alias, sp.MRTP)
-				if lstage {
-					log.Println(msg)
-				}
-				if vstage {
-					fmt.Println(msg)
-				}
-			}
-			scan(exitctx, &sp)
-			if exitctx.Err() != nil {
-				break
-			}
+		if gi, ok = game.InfoMap[aid]; !ok {
+			log.Fatalf("game name \"%s\" does not recognized", alias)
+			return
 		}
+		if len(gi.RTP) == 0 {
+			log.Fatalf("RTP list does not complete for %s", alias)
+			return
+		}
+
+		var scan game.Scanner
+		if scan, ok = game.ScanFactory[aid]; !ok {
+			log.Fatalf("game name \"%s\" does not recognized", alias)
+			return
+		}
+		if scan == nil {
+			fmt.Println()
+			fmt.Printf("*** scanner for '%s' game does not provided ***\n", alias)
+		}
+
+		var sp game.ScanPar
+		if sp.MRTP, err = scanflags.GetFloat64("rtp"); err != nil {
+			log.Fatalln(err.Error())
+			return
+		}
+		if sp.Sel, err = scanflags.GetInt("sel"); err != nil {
+			log.Fatalln(err.Error())
+			return
+		}
+		if sp.Sel == 0 {
+			sp.Sel = gi.LNum
+		} else if sp.Sel > gi.LNum {
+			log.Fatalf("number of selected bet lines is greater than maximum number %d in game %s", gi.LNum, alias)
+			return
+		}
+		if sp.Sel != gi.LNum && (gi.GP&game.GPcasc != 0) {
+			log.Fatalf("can not change number of selected lines %d on cascade slot %s", gi.LNum, alias)
+			return
+		}
+		scan(exitctx, &sp)
 	},
 }
 
@@ -119,10 +101,10 @@ func init() {
 	rootCmd.AddCommand(scanCmd)
 
 	scanflags = scanCmd.Flags()
-	scanflags.StringArrayP("game", "g", nil, "identifier of game to scan")
+	scanflags.StringP("game", "g", "", "identifier of game to scan")
+	scanflags.Float64P("rtp", "r", cfg.DefMRTP, "master RTP of game")
+	scanflags.IntP("sel", "l", 1, "number of selected bet lines, 0 for all")
 	scanflags.Bool("noembed", false, "do not load embedded yaml files, useful for development")
-	scanflags.Bool("lstage", false, "log verbose stage information during scanning")
-	scanflags.Bool("vstage", true, "print verbose stage information during scanning")
 	scanflags.Uint64Var(&cfg.MCCount, "mc", 0, "Monte Carlo method samples number, in millions")
 	scanflags.Float64Var(&cfg.MCPrec, "mcp", 0, "Precision of result for Monte Carlo method, in percents")
 	scanflags.IntVar(&cfg.MTCount, "mt", 0, "multithreaded scanning threads number")

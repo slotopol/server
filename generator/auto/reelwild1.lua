@@ -52,7 +52,7 @@ local function generate()
 	f:close()
 
 	-- run scanner
-	local cltpl = "%s -f=\"%s\" scan --noembed -g=\"%s@50\"" -- command line template
+	local cltpl = "%s -f=\"%s\" scan --noembed -g=\"%s\" -r=50" -- command line template
 	local cl = string.format(cltpl, slotpath, genfile, gamename) -- command line parameters
 	local h = io.popen(cl)
 	if not h then

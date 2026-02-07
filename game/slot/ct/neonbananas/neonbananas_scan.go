@@ -33,8 +33,8 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 		fmt.Fprintf(w, "lucky spin1 bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", N/s.BonusHitsF(lsb1), rtpls1*100)
 		fmt.Fprintf(w, "lucky spin3 bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", N/s.BonusHitsF(lsb3), rtpls3*100)
 		fmt.Fprintf(w, "lucky spin6 bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", N/s.BonusHitsF(lsb6), rtpls6*100)
-		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(bb) + %.5g(ls1) + %.5g(ls3) + %.5g(ls6) = %.6f%%\n",
-			rtpsym*100, rtpbb*100, rtpls1*100, rtpls3*100, rtpls6*100, rtp*100)
+		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(bb) + %.5g(ls) = %.6f%%\n",
+			rtpsym*100, rtpbb*100, (rtpls1+rtpls3+rtpls6)*100, rtp*100)
 		return rtp
 	}
 
