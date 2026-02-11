@@ -16,7 +16,7 @@ func AnyStarProb(b float64) float64 {
 	return (b*b + (b-1)*b + (b-1)*(b-1)) / b / b / b
 }
 
-func BruteForceStars(ctx context.Context, s slot.Stater, g *Game, reels slot.Reelx, wc2, wc3, wc4 bool) {
+func BruteForceStars(ctx context.Context, s slot.Simulator, g *Game, reels slot.Reelx, wc2, wc3, wc4 bool) {
 	var wins slot.Wins
 	var r1 = reels.Reel(1)
 	var r2 = reels.Reel(2)
@@ -88,12 +88,13 @@ func CalcStatStars(ctx context.Context, sp *slot.ScanPar, wc2, wc3, wc4 bool) fl
 		var t0 = time.Now()
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		s.SetPlan(reels.Reshuffles())
-		go slot.ProgressBF(ctx2, &s, calc)
+		var total = float64(reels.Reshuffles())
+		go slot.ProgressBF(ctx2, &s, calc, total)
 		BruteForceStars(ctx2, &s, g, reels, wc2, wc3, wc4)
 		var dur = time.Since(t0)
-		var comp = s.Count() / float64(s.GetPlan()) * 100
-		fmt.Printf("completed %.5g%%, selected %d lines, time spent %v\n", comp, g.GetSel(), dur)
+		var N = s.Count()
+		fmt.Printf("completed %.5g%% (%d), time spent %v                    \n",
+			N/total*100, int(N), dur)
 	}()
 	return calc(os.Stdout)
 }

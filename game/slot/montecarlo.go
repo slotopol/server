@@ -12,7 +12,7 @@ import (
 )
 
 // Function to report about progress of Monte Carlo calculation
-func ProgressMC(ctx context.Context, s Stater, calc func(io.Writer) float64, cost float64) {
+func ProgressMC(ctx context.Context, s Simulator, calc func(io.Writer) float64, cost float64) {
 	var confidence = 0.95
 	var totalmin float64 = 1e6
 	const stepdur = 1000 * time.Millisecond
@@ -57,12 +57,11 @@ loop:
 
 	// report results
 	param()
-	var comp = N / total * 100
 	fmt.Printf("completed %.5g%% (%d), time spent %v, precision Δ[%.2g%%] = %.4g%%                \n",
-		comp, int(total), dur, confidence*100, ΔRTP*100)
+		N/total*100, int(N), dur, confidence*100, ΔRTP*100)
 }
 
-func MonteCarlo(ctx context.Context, s Stater, g SlotGeneric, reels Reelx) {
+func MonteCarlo(ctx context.Context, s Simulator, g SlotGeneric, reels Reelx) {
 	var confidence = 0.95
 	var totalmin uint64 = 1e6 // let some space to get approximate sigma
 	var tn = CorrectThrNum()

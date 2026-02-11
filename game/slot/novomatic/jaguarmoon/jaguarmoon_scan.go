@@ -16,7 +16,7 @@ type Stat struct {
 }
 
 // Declare conformity with Stater interface.
-var _ slot.Stater = (*Stat)(nil)
+var _ slot.Simulator = (*Stat)(nil)
 
 func (s *Stat) FreeCountF(n int) float64 {
 	return float64(s.FreeCount[n-1].Load())
@@ -53,7 +53,7 @@ func (s *Stat) Update(wins slot.Wins) (pay float64) {
 
 func (s *Stat) Simulate(g slot.SlotGame, reels slot.Reelx, wins *slot.Wins) {
 	if g.Scanner(wins) != nil {
-		s.ErrCount.Inc()
+		s.EC.Inc()
 		return
 	}
 	if pay := s.Update(*wins); pay != 0 {

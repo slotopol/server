@@ -9,7 +9,6 @@ import (
 	"os"
 	"runtime"
 	"sync"
-	"time"
 
 	"go.uber.org/atomic"
 
@@ -17,12 +16,11 @@ import (
 	"github.com/slotopol/server/game"
 )
 
-type Stater interface {
-	GetPlan() uint64
-	SetPlan(n uint64)
-	Errors() uint64
-	Count() float64
+type Simulator interface {
+	// Returns number of spins, sum of pays, sum of squares of pays by spin,
+	// normalized by spin cost.
 	NSQ(float64) (float64, float64, float64)
+	// Performs spin simulation, calculates results, update statistics.
 	Simulate(SlotGame, Reelx, *Wins)
 }
 
@@ -70,25 +68,16 @@ func (c *StatCounter) SumS() (S float64) {
 }
 
 type StatGeneric struct {
-	Plan     atomic.Uint64
-	ErrCount atomic.Uint64
 	StatCounter
-	Q atomic.Float64 // sum of squares of pays by symbols
+	Q  atomic.Float64 // sum of squares of pays by symbols
+	EC atomic.Uint64  // errors count
 }
 
 // Declare conformity with Stater interface.
-var _ Stater = (*StatGeneric)(nil)
-
-func (s *StatGeneric) GetPlan() uint64 {
-	return s.Plan.Load()
-}
-
-func (s *StatGeneric) SetPlan(n uint64) {
-	s.Plan.Store(n)
-}
+var _ Simulator = (*StatGeneric)(nil)
 
 func (s *StatGeneric) Errors() uint64 {
-	return s.ErrCount.Load()
+	return s.EC.Load()
 }
 
 func (s *StatGeneric) Count() float64 {
@@ -172,7 +161,7 @@ func (s *StatGeneric) JackHitsF(jid int) float64 {
 
 func (s *StatGeneric) Simulate(g SlotGame, reels Reelx, wins *Wins) {
 	if g.Scanner(wins) != nil {
-		s.ErrCount.Inc()
+		s.EC.Inc()
 		return
 	}
 	if pay := s.Update(*wins); pay != 0 {
@@ -181,25 +170,16 @@ func (s *StatGeneric) Simulate(g SlotGame, reels Reelx, wins *Wins) {
 }
 
 type StatCascade struct {
-	Plan     atomic.Uint64
-	ErrCount atomic.Uint64
-	Casc     [FallLimit]StatCounter
-	Q        atomic.Float64 // sum of squares of pays by symbols
+	Casc [FallLimit]StatCounter
+	Q    atomic.Float64 // sum of squares of pays by symbols
+	EC   atomic.Uint64  // errors count
 }
 
 // Declare conformity with Stater interface.
-var _ Stater = (*StatCascade)(nil)
-
-func (s *StatCascade) GetPlan() uint64 {
-	return s.Plan.Load()
-}
-
-func (s *StatCascade) SetPlan(n uint64) {
-	s.Plan.Store(n)
-}
+var _ Simulator = (*StatCascade)(nil)
 
 func (s *StatCascade) Errors() uint64 {
-	return s.ErrCount.Load()
+	return s.EC.Load()
 }
 
 func (s *StatCascade) Count() float64 {
@@ -358,49 +338,12 @@ func (s *StatCascade) Simulate(g SlotGame, reels Reelx, wins *Wins) {
 		s.Q.Add(pay * pay)
 	}
 	if err != nil {
-		s.ErrCount.Inc()
+		s.EC.Inc()
 		return
 	}
 }
 
-func ProgressBF(ctx context.Context, s Stater, calc func(io.Writer) float64) {
-	const stepdur = 1000 * time.Millisecond
-	var t0 = time.Now()
-	var steps = time.Tick(stepdur)
-	fmt.Printf("calculation started...\r")
-loop:
-	for {
-		select {
-		case <-ctx.Done():
-			break loop
-		case <-steps:
-			var N = s.Count()
-			var total = float64(s.GetPlan())
-			var rtp = calc(io.Discard)
-			var dur = time.Since(t0)
-			if total > 0 {
-				var exp = time.Duration(float64(dur) * total / N)
-				fmt.Printf("processed %.1fm, ready %2.2f%% (%v / %v), RTP = %2.2f%%  \r",
-					N/1e6, N/total*100,
-					dur.Truncate(stepdur), exp.Truncate(stepdur),
-					rtp*100)
-			} else {
-				fmt.Printf("processed %.1fm, spent %v, RTP = %2.2f%%  \r",
-					N/1e6, dur.Truncate(stepdur), rtp*100)
-			}
-		}
-	}
-	var dur = time.Since(t0)
-
-	if s.GetPlan() > 0 {
-		var comp = s.Count() / float64(s.GetPlan()) * 100
-		fmt.Printf("completed %.5g%%, time spent %v                    \n", comp, dur)
-	} else {
-		fmt.Printf("produced %.1fm, time spent %v                    \n", s.Count()/1e6, dur)
-	}
-}
-
-type CalcAlg = func(ctx context.Context, s Stater, g SlotGeneric, reels Reelx)
+type CalcAlg = func(ctx context.Context, s Simulator, g SlotGeneric, reels Reelx)
 
 const (
 	CtxGranulation = 1000 // check context every N reshuffles
@@ -419,117 +362,7 @@ func CorrectThrNum() int {
 	return cfg.MTCount
 }
 
-func BruteForcex(ctx context.Context, s Stater, g SlotGeneric, reels Reelx) {
-	var plan = reels.Reshuffles()
-	s.SetPlan(plan)
-	var tn = CorrectThrNum()
-	var tn64 = uint64(tn)
-	if tn%len(reels[0]) == 0 {
-		panic("BruteForcex: thread number equals to 1-st reel length")
-	}
-	// Number of reels.
-	var rn = len(reels)
-	// Precompute reel lengths.
-	var rlen = make([]int, rn)
-	for x := range rn {
-		rlen[x] = len(reels[x])
-	}
-	// Precompute delimiters for position calculation.
-	var delim = make([]uint64, rn)
-	delim[0] = 1
-	for x := 1; x < rn; x++ {
-		delim[x] = delim[x-1] * uint64(rlen[x-1])
-	}
-
-	var wg sync.WaitGroup
-	wg.Add(tn)
-	for ti := range tn64 {
-		var gt = g.Clone().(SlotGeneric)
-		var _, iscascade = gt.(SlotCascade)
-		go func() {
-			defer wg.Done()
-			var wins Wins
-			var rpos = make([]int, rn)
-			for x := range rn {
-				rpos[x] = -1
-			}
-			var i uint64
-			var x int
-			var pos int
-			// Using one general loop instead of five nested loops
-			// gives ~30% performance increase.
-			for i = ti; i < plan; i += tn64 {
-				if (i/tn64)%CtxGranulation == 0 {
-					select {
-					case <-ctx.Done():
-						return
-					default:
-					}
-				}
-				for x = range rn {
-					pos = int(i/delim[x]) % rlen[x]
-					if rpos[x] != pos {
-						gt.SetCol(Pos(x+1), reels[x], pos)
-						rpos[x] = pos
-					} else {
-						break
-					}
-				}
-				s.Simulate(gt, reels, &wins)
-				if iscascade && len(wins) > 0 {
-					for x := range rn {
-						rpos[x] = -1
-					}
-				}
-				wins.Reset()
-			}
-		}()
-	}
-	wg.Wait()
-}
-
-func BruteForce5x3Big(ctx context.Context, s Stater, g SlotGame, r1, rb, r5 []Sym) {
-	s.SetPlan(uint64(len(r1)) * uint64(len(rb)) * uint64(len(r5)))
-	var tn = CorrectThrNum()
-	var tn64 = uint64(tn)
-	var wg sync.WaitGroup
-	wg.Add(tn)
-	for ti := range tn64 {
-		var gt = g.Clone().(SlotGeneric)
-		var cb = gt.(Bigger)
-		var N uint64
-		go func() {
-			defer wg.Done()
-
-			var wins Wins
-			for i1 := range r1 {
-				gt.SetCol(1, r1, i1)
-				for _, big := range rb {
-					cb.SetBig(big)
-					for i5 := range r5 {
-						N++
-						if N%CtxGranulation == 0 {
-							select {
-							case <-ctx.Done():
-								return
-							default:
-							}
-						}
-						if N%tn64 != ti {
-							continue
-						}
-						gt.SetCol(5, r5, i5)
-						s.Simulate(gt, nil, &wins)
-						wins.Reset()
-					}
-				}
-			}
-		}()
-	}
-	wg.Wait()
-}
-
-func ScanReels(ctx context.Context, s Stater, g SlotGeneric, reels Reelx,
+func ScanReels(ctx context.Context, s Simulator, g SlotGeneric, reels Reelx,
 	bruteforce, montecarlo CalcAlg,
 	calc func(io.Writer) float64) float64 {
 	if sx, sy := g.Dim(); len(reels) != int(sx) {
@@ -538,9 +371,9 @@ func ScanReels(ctx context.Context, s Stater, g SlotGeneric, reels Reelx,
 	fmt.Printf("selected %d lines\n", g.GetSel())
 	var wg sync.WaitGroup
 	wg.Add(2)
-	var ctx2, cancel2 = context.WithCancel(ctx)
 	go func() {
 		defer wg.Done()
+		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		if cfg.MCCount > 0 || cfg.MCPrec > 0 {
 			go func() {
@@ -551,22 +384,18 @@ func ScanReels(ctx context.Context, s Stater, g SlotGeneric, reels Reelx,
 		} else {
 			go func() {
 				defer wg.Done()
-				ProgressBF(ctx2, s, calc)
+				ProgressBF(ctx2, s, calc, float64(reels.Reshuffles()))
 			}()
 			bruteforce(ctx2, s, g, reels)
 		}
 	}()
 	wg.Wait()
 
-	if s.Errors() > 0 {
-		fmt.Printf("reels lengths %s, total reshuffles %d, errors %d\n", reels.String(), reels.Reshuffles(), s.Errors())
-	} else {
-		fmt.Printf("reels lengths %s, total reshuffles %d\n", reels.String(), reels.Reshuffles())
-	}
+	fmt.Printf("reels lengths %s, total reshuffles %d\n", reels.String(), reels.Reshuffles())
 	return calc(os.Stdout)
 }
 
-func ScanReelsCommon(ctx context.Context, s Stater, g SlotGeneric, reels Reelx,
+func ScanReelsCommon(ctx context.Context, s Simulator, g SlotGeneric, reels Reelx,
 	calc func(io.Writer) float64) float64 {
 	return ScanReels(ctx, s, g, reels, BruteForcex, MonteCarlo, calc)
 }
