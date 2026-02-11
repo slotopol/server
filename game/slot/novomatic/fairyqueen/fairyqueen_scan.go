@@ -19,7 +19,7 @@ func BruteForce5x3es2(ctx context.Context, s slot.Simulator, g *Game, reels slot
 	var wg sync.WaitGroup
 	wg.Add(tn)
 	for ti := range tn64 {
-		var sg = g.Clone().(slot.SlotGeneric) // classic slot game
+		var sg = g.Clone()
 		var N uint64
 		go func() {
 			defer wg.Done()
@@ -73,7 +73,7 @@ func BruteForce5x3es3(ctx context.Context, s slot.Simulator, g *Game, reels slot
 	var wg sync.WaitGroup
 	wg.Add(tn)
 	for ti := range tn64 {
-		var sg = g.Clone().(slot.SlotGeneric) // classic slot game
+		var sg = g.Clone()
 		var N uint64
 		go func() {
 			defer wg.Done()

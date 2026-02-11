@@ -50,8 +50,8 @@ type Game struct {
 	MW [3]float64 `json:"mw" yaml:"mw" xml:"mw"`
 }
 
-// Declare conformity with SlotGame interface.
-var _ slot.SlotGame = (*Game)(nil)
+// Declare conformity with SlotGeneric interface.
+var _ slot.SlotGeneric = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{
@@ -62,7 +62,7 @@ func NewGame() *Game {
 	}
 }
 
-func (g *Game) Clone() slot.SlotGame {
+func (g *Game) Clone() slot.SlotGeneric {
 	var clone = *g
 	return &clone
 }

@@ -52,7 +52,6 @@ func (wins Wins) Jackpot() float64 {
 
 // SlotGame is common slots interface. Any slot game should implement this interface.
 type SlotGame interface {
-	Clone() SlotGame              // returns full cloned copy of itself
 	Scanner(*Wins) error          // scan given grid and append result to wins, constant function
 	Cost() float64                // cost of spin on current bet and lines, constant function
 	JackFreq(float64) []float64   // returns occurrence frequency set of progressive jackpots if it has, constant function
@@ -79,6 +78,7 @@ type SlotGame interface {
 type SlotGeneric interface {
 	Grider
 	SlotGame
+	Clone() SlotGeneric // returns full cloned copy of itself
 }
 
 var (

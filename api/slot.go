@@ -224,12 +224,12 @@ func ApiSlotSpin(c *gin.Context) {
 		Sel     int      `json:"sel,omitempty" yaml:"sel,omitempty" xml:"sel,omitempty"`
 	}
 	var ret struct {
-		XMLName xml.Name      `json:"-" yaml:"-" xml:"ret"`
-		SID     uint64        `json:"sid" yaml:"sid" xml:"sid,attr"`
-		Game    slot.SlotGame `json:"game" yaml:"game" xml:"game"`
-		Wins    slot.Wins     `json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
-		Wallet  float64       `json:"wallet" yaml:"wallet" xml:"wallet"`
-		JpFund  float64       `json:"jpfund,omitempty" yaml:"jpfund,omitempty" xml:"jpfund,omitempty"`
+		XMLName xml.Name         `json:"-" yaml:"-" xml:"ret"`
+		SID     uint64           `json:"sid" yaml:"sid" xml:"sid,attr"`
+		Game    slot.SlotGeneric `json:"game" yaml:"game" xml:"game"`
+		Wins    slot.Wins        `json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
+		Wallet  float64          `json:"wallet" yaml:"wallet" xml:"wallet"`
+		JpFund  float64          `json:"jpfund,omitempty" yaml:"jpfund,omitempty" xml:"jpfund,omitempty"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -242,8 +242,8 @@ func ApiSlotSpin(c *gin.Context) {
 		Ret404(c, AEC_slot_spin_noscene, err)
 		return
 	}
-	var game slot.SlotGame
-	if game, ok = scene.Game.(slot.SlotGame); !ok {
+	var game slot.SlotGeneric
+	if game, ok = scene.Game.(slot.SlotGeneric); !ok {
 		Ret403(c, AEC_slot_spin_notslot, ErrNotSlot)
 		return
 	}

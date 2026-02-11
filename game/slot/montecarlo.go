@@ -75,7 +75,7 @@ func MonteCarlo(ctx context.Context, s Simulator, g SlotGeneric, reels Reelx) {
 	var wg sync.WaitGroup
 	wg.Add(tn)
 	for range tn64 {
-		var gt = g.Clone().(SlotGeneric)
+		var gt = g.Clone()
 		go func() {
 			defer wg.Done()
 

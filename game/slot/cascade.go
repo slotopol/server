@@ -190,7 +190,7 @@ func (s *Cascade5x4) Strike(wins Wins) {
 }
 
 // CascadeGain calculates total gain on avalanche chain for cascading slots.
-func CascadeGain(game SlotGame, wins Wins, fund, mrtp float64) (sumgain float64, err error) {
+func CascadeGain(game SlotGeneric, wins Wins, fund, mrtp float64) (sumgain float64, err error) {
 	if len(wins) == 0 {
 		return
 	}

@@ -35,8 +35,8 @@ type Game struct {
 	M4           float64 `json:"m4" yaml:"m4" xml:"m4"` // wild multiplier on 4 reel
 }
 
-// Declare conformity with SlotGame interface.
-var _ slot.SlotGame = (*Game)(nil)
+// Declare conformity with SlotGeneric interface.
+var _ slot.SlotGeneric = (*Game)(nil)
 
 func NewGame(sel int) *Game {
 	return &Game{
@@ -47,7 +47,7 @@ func NewGame(sel int) *Game {
 	}
 }
 
-func (g *Game) Clone() slot.SlotGame {
+func (g *Game) Clone() slot.SlotGeneric {
 	var clone = *g
 	return &clone
 }

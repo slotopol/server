@@ -30,8 +30,8 @@ type Game struct {
 	M            [5]float64 `json:"m" yaml:"m" xml:"m"` // multipliers for bonus symbol filled at reels
 }
 
-// Declare conformity with SlotGame interface.
-var _ slot.SlotGame = (*Game)(nil)
+// Declare conformity with SlotGeneric interface.
+var _ slot.SlotGeneric = (*Game)(nil)
 
 func NewGame() *Game {
 	return &Game{
@@ -41,7 +41,7 @@ func NewGame() *Game {
 	}
 }
 
-func (g *Game) Clone() slot.SlotGame {
+func (g *Game) Clone() slot.SlotGeneric {
 	var clone = *g
 	return &clone
 }

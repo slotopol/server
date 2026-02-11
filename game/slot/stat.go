@@ -313,7 +313,7 @@ func (s *StatCascade) Ncascmax() int {
 }
 
 func (s *StatCascade) Simulate(g SlotGame, reels Reelx, wins *Wins) {
-	var sc = g.(SlotCascade)
+	var sc = g.(Cascade)
 	var err error
 	var cfn int
 	var pay float64
@@ -324,7 +324,7 @@ func (s *StatCascade) Simulate(g SlotGame, reels Reelx, wins *Wins) {
 			break
 		}
 		var wp = len(*wins)
-		if err = sc.Scanner(wins); err != nil {
+		if err = g.Scanner(wins); err != nil {
 			break
 		}
 		pay += s.Casc[cfn-1].Update((*wins)[wp:])

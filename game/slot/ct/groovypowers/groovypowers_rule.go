@@ -40,8 +40,8 @@ type Game struct {
 	BM           bool `json:"bm" yaml:"bm" xml:"bm"` // bonus mode
 }
 
-// Declare conformity with SlotGame interface.
-var _ slot.SlotGame = (*Game)(nil)
+// Declare conformity with SlotGeneric interface.
+var _ slot.SlotGeneric = (*Game)(nil)
 
 func NewGame(sel int) *Game {
 	return &Game{
@@ -52,7 +52,7 @@ func NewGame(sel int) *Game {
 	}
 }
 
-func (g *Game) Clone() slot.SlotGame {
+func (g *Game) Clone() slot.SlotGeneric {
 	var clone = *g
 	return &clone
 }

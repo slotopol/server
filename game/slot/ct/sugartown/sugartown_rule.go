@@ -38,7 +38,7 @@ func NewGame() *Game {
 	}
 }
 
-func (g *Game) Clone() slot.SlotGame {
+func (g *Game) Clone() slot.SlotGeneric {
 	var clone = *g
 	return &clone
 }

@@ -62,7 +62,7 @@ func BruteForcex(ctx context.Context, s Simulator, g SlotGeneric, reels Reelx) {
 	var wg sync.WaitGroup
 	wg.Add(tn)
 	for ti := range tn64 {
-		var gt = g.Clone().(SlotGeneric)
+		var gt = g.Clone()
 		var _, iscascade = gt.(SlotCascade)
 		go func() {
 			defer wg.Done()
@@ -106,14 +106,14 @@ func BruteForcex(ctx context.Context, s Simulator, g SlotGeneric, reels Reelx) {
 	wg.Wait()
 }
 
-func BruteForce5x3Big(ctx context.Context, s Simulator, g SlotGame, r1, rb, r5 []Sym) {
+func BruteForce5x3Big(ctx context.Context, s Simulator, g SlotGeneric, r1, rb, r5 []Sym) {
 	// var total = uint64(len(r1)) * uint64(len(rb)) * uint64(len(r5))
 	var tn = CorrectThrNum()
 	var tn64 = uint64(tn)
 	var wg sync.WaitGroup
 	wg.Add(tn)
 	for ti := range tn64 {
-		var gt = g.Clone().(SlotGeneric)
+		var gt = g.Clone()
 		var cb = gt.(Bigger)
 		var N uint64
 		go func() {
