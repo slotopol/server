@@ -15,9 +15,9 @@ import (
 const scanShort = "Slots games reels scanning"
 const scanLong = `Calculate RTP (Return to Player) percentage for specified slot game reels.`
 const scanExmp = `Scan reels for "Slotopol" game for reels set nearest to 100%%:
-  %[1]s scan --game=megajack/slotopol@100
-Scan reels for "Dolphins Pearl" and "Katana" games for reels sets nearest to 92%% and 94.5%% respectively:
-  %[1]s scan -g="Novomatic / Dolphins Pearl @ 92" -g=novomatic/katana@94.5`
+  %[1]s scan --game=megajack/slotopol -rtp=100
+Scan reels for "Dolphins Pearl" game for reels sets nearest to 92%% with 10 selected lines:
+  %[1]s scan -g="Novomatic / Dolphins Pearl" -r=92 -l=10`
 
 var scanflags *pflag.FlagSet
 
@@ -75,6 +75,15 @@ var scanCmd = &cobra.Command{
 		}
 
 		var sp game.ScanPar
+		if sp.TN, err = scanflags.GetInt("mt"); err != nil {
+			log.Fatalln(err.Error())
+			return
+		}
+		if sp.Prec, err = scanflags.GetFloat64("prec"); err != nil {
+			log.Fatalln(err.Error())
+			return
+		}
+		sp.Prec /= 100
 		if sp.MRTP, err = scanflags.GetFloat64("rtp"); err != nil {
 			log.Fatalln(err.Error())
 			return
@@ -106,8 +115,8 @@ func init() {
 	scanflags.IntP("sel", "l", 1, "number of selected bet lines, 0 for all")
 	scanflags.Bool("noembed", false, "do not load embedded yaml files, useful for development")
 	scanflags.Uint64Var(&cfg.MCCount, "mc", 0, "Monte Carlo method iterations number, in millions")
-	scanflags.Float64VarP(&cfg.MCPrec, "prec", "p", 0, "Precision of result for Monte Carlo method, in percents")
-	scanflags.IntVar(&cfg.MTCount, "mt", 0, "multithreaded scanning threads number")
+	scanflags.Float64P("prec", "p", 0, "precision of result for Monte Carlo method, in percents")
+	scanflags.Int("mt", 0, "multithreaded scanning threads number")
 
 	scanCmd.MarkFlagRequired("game")
 }

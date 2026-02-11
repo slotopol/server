@@ -89,7 +89,7 @@ func CalcStatStars(ctx context.Context, sp *slot.ScanPar, wc2, wc3, wc4 bool) fl
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		var total = float64(reels.Reshuffles())
-		go slot.ProgressBF(ctx2, &s, calc, total)
+		go slot.ProgressBF(ctx2, sp, &s, calc, total)
 		BruteForceStars(ctx2, &s, g, reels, wc2, wc3, wc4)
 		var dur = time.Since(t0)
 		var N = s.Count()

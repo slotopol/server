@@ -9,7 +9,7 @@ import (
 )
 
 // Function to report about progress of calculation by brute force
-func ProgressBF(ctx context.Context, s Simulator, calc func(io.Writer) float64, total float64) {
+func ProgressBF(ctx context.Context, sp *ScanPar, s Simulator, calc func(io.Writer) float64, total float64) {
 	const stepdur = 1000 * time.Millisecond
 	var t0 = time.Now()
 	var steps = time.Tick(stepdur)
@@ -38,9 +38,9 @@ loop:
 		N/total*100, int(N), dur)
 }
 
-func BruteForcex(ctx context.Context, s Simulator, g SlotGeneric, reels Reelx) {
+func BruteForcex(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, reels Reelx) {
 	var total = reels.Reshuffles()
-	var tn = CorrectThrNum()
+	var tn = CorrectThrNum(sp.TN)
 	var tn64 = uint64(tn)
 	if tn%len(reels[0]) == 0 {
 		panic("BruteForcex: thread number equals to 1-st reel length")
@@ -106,9 +106,9 @@ func BruteForcex(ctx context.Context, s Simulator, g SlotGeneric, reels Reelx) {
 	wg.Wait()
 }
 
-func BruteForce5x3Big(ctx context.Context, s Simulator, g SlotGeneric, r1, rb, r5 []Sym) {
+func BruteForce5x3Big(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, r1, rb, r5 []Sym) {
 	// var total = uint64(len(r1)) * uint64(len(rb)) * uint64(len(r5))
-	var tn = CorrectThrNum()
+	var tn = CorrectThrNum(sp.TN)
 	var tn64 = uint64(tn)
 	var wg sync.WaitGroup
 	wg.Add(tn)

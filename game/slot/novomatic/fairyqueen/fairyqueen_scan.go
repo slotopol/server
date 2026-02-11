@@ -10,8 +10,8 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-func BruteForce5x3es2(ctx context.Context, s slot.Simulator, g *Game, reels slot.Reelx, es slot.Sym) {
-	var tn = slot.CorrectThrNum()
+func BruteForce5x3es2(ctx context.Context, sp *slot.ScanPar, s slot.Simulator, g *Game, reels slot.Reelx, es slot.Sym) {
+	var tn = slot.CorrectThrNum(sp.TN)
 	var tn64 = uint64(tn)
 	var r3 = reels.Reel(3)
 	var r4 = reels.Reel(4)
@@ -65,8 +65,8 @@ func BruteForce5x3es2(ctx context.Context, s slot.Simulator, g *Game, reels slot
 	wg.Wait()
 }
 
-func BruteForce5x3es3(ctx context.Context, s slot.Simulator, g *Game, reels slot.Reelx, es slot.Sym) {
-	var tn = slot.CorrectThrNum()
+func BruteForce5x3es3(ctx context.Context, sp *slot.ScanPar, s slot.Simulator, g *Game, reels slot.Reelx, es slot.Sym) {
+	var tn = slot.CorrectThrNum(sp.TN)
 	var tn64 = uint64(tn)
 	var r4 = reels.Reel(4)
 	var r5 = reels.Reel(5)
@@ -141,10 +141,10 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar, es slot.Sym) (float64, f
 		defer cancel2()
 		if ReelNumBon[g.ES-1] == 2 {
 			// var total = uint64(len(reels.Reel(3))) * uint64(len(reels.Reel(4))) * uint64(len(reels.Reel(5)))
-			BruteForce5x3es2(ctx2, &s, g, reels, g.ES)
+			BruteForce5x3es2(ctx2, sp, &s, g, reels, g.ES)
 		} else {
 			// var total = uint64(len(reels.Reel(4))) * uint64(len(reels.Reel(5)))
-			BruteForce5x3es3(ctx2, &s, g, reels, g.ES)
+			BruteForce5x3es3(ctx2, sp, &s, g, reels, g.ES)
 		}
 	}()
 	var q, _ = s.FSQ()
@@ -193,5 +193,5 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 		return rtp
 	}
 
-	return slot.ScanReelsCommon(ctx, &s, g, reels, calc)
+	return slot.ScanReelsCommon(ctx, sp, &s, g, reels, calc)
 }

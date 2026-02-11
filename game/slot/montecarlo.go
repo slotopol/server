@@ -12,7 +12,7 @@ import (
 )
 
 // Function to report about progress of Monte Carlo calculation
-func ProgressMC(ctx context.Context, s Simulator, calc func(io.Writer) float64, cost float64) {
+func ProgressMC(ctx context.Context, sp *ScanPar, s Simulator, calc func(io.Writer) float64, cost float64) {
 	var confidence = 0.95
 	var totalmin float64 = 1e6
 	const stepdur = 1000 * time.Millisecond
@@ -36,7 +36,7 @@ func ProgressMC(ctx context.Context, s Simulator, calc func(io.Writer) float64, 
 		if cfg.MCCount > 0 {
 			total = float64(cfg.MCCount) * 1e6
 		} else {
-			var t2 = VI / cfg.MCPrec * 100
+			var t2 = VI / sp.Prec
 			total = max(t2*t2, totalmin)
 		}
 	}
@@ -61,10 +61,10 @@ loop:
 		N/total*100, int(N), dur, confidence*100, ΔRTP*100)
 }
 
-func MonteCarlo(ctx context.Context, s Simulator, g SlotGeneric, reels Reelx) {
+func MonteCarlo(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, reels Reelx) {
 	var confidence = 0.95
 	var totalmin uint64 = 1e6 // let some space to get approximate sigma
-	var tn = CorrectThrNum()
+	var tn = CorrectThrNum(sp.TN)
 	var tn64 = uint64(tn)
 	var total uint64
 	if cfg.MCCount > 0 {
@@ -90,10 +90,10 @@ func MonteCarlo(ctx context.Context, s Simulator, g SlotGeneric, reels Reelx) {
 					default:
 					}
 					// recalculate total iterations number
-					if cfg.MCPrec > 0 {
+					if sp.Prec > 0 {
 						var N, S, Q = s.NSQ(gt.Cost())
 						var VI = GetZ(confidence) * math.Sqrt(N*Q-S*S) / N
-						var t2 = VI / cfg.MCPrec * 100
+						var t2 = VI / sp.Prec
 						total = max(uint64(t2*t2), totalmin)
 					}
 				}

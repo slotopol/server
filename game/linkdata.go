@@ -10,6 +10,14 @@ import (
 	"github.com/slotopol/server/util"
 )
 
+type CM uint // Calculations method
+
+const (
+	CMbruteforce CM = iota + 1
+	CMmontecarlo
+	CMcombinatorics
+)
+
 type Gamble interface {
 	Spin(float64)         // fill the grid with random hits on reels closest to given RTP, constant function
 	GetBet() float64      // returns current bet, constant function
@@ -114,9 +122,13 @@ type (
 	}
 
 	ScanPar struct {
-		MRTP       float64   // master RTP
-		Sel        int       // number of selected bet lines
-		Confidence []float64 // confidence level
+		Method CM      // calculations method ID
+		TN     int     // threads number (0 to use all hardware available cores)
+		Total  uint64  // number of total spins
+		Prec   float64 // expected precision for Monte Carlo method
+		Conf   float64 // confidence (for Z, VI, CI)
+		MRTP   float64 // master RTP
+		Sel    int     // number of selected bet lines
 	}
 
 	Scanner func(context.Context, *ScanPar) float64

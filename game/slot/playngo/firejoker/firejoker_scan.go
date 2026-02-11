@@ -25,7 +25,7 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 	func() {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		slot.BruteForce5x3Big(ctx2, &s, g, reels.Reel(1), BonusReel, reels.Reel(5))
+		slot.BruteForce5x3Big(ctx2, sp, &s, g, reels.Reel(1), BonusReel, reels.Reel(5))
 	}()
 	return calc(os.Stdout)
 }
@@ -53,5 +53,5 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 		return rtp
 	}
 
-	return slot.ScanReelsCommon(ctx, &s, g, reels, calc)
+	return slot.ScanReelsCommon(ctx, sp, &s, g, reels, calc)
 }

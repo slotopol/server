@@ -28,7 +28,7 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 		return rtp
 	}
 
-	return slot.ScanReelsCommon(ctx, &s, g, reels, calc)
+	return slot.ScanReelsCommon(ctx, sp, &s, g, reels, calc)
 }
 
 func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
@@ -58,5 +58,5 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 		return rtp
 	}
 
-	return slot.ScanReelsCommon(ctx, &s, g, reels, calc)
+	return slot.ScanReelsCommon(ctx, sp, &s, g, reels, calc)
 }

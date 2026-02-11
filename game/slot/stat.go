@@ -343,7 +343,7 @@ func (s *StatCascade) Simulate(g SlotGame, reels Reelx, wins *Wins) {
 	}
 }
 
-type CalcAlg = func(ctx context.Context, s Simulator, g SlotGeneric, reels Reelx)
+type CalcAlg = func(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, reels Reelx)
 
 const (
 	CtxGranulation = 1000 // check context every N reshuffles
@@ -355,14 +355,14 @@ var (
 	ErrReelCount = errors.New("unexpected number of reels")
 )
 
-func CorrectThrNum() int {
-	if cfg.MTCount < 1 {
+func CorrectThrNum(tn int) int {
+	if tn < 1 {
 		return runtime.GOMAXPROCS(0)
 	}
-	return cfg.MTCount
+	return tn
 }
 
-func ScanReels(ctx context.Context, s Simulator, g SlotGeneric, reels Reelx,
+func ScanReels(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, reels Reelx,
 	bruteforce, montecarlo CalcAlg,
 	calc func(io.Writer) float64) float64 {
 	if sx, sy := g.Dim(); len(reels) != int(sx) {
@@ -375,18 +375,18 @@ func ScanReels(ctx context.Context, s Simulator, g SlotGeneric, reels Reelx,
 		defer wg.Done()
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		if cfg.MCCount > 0 || cfg.MCPrec > 0 {
+		if cfg.MCCount > 0 || sp.Prec > 0 {
 			go func() {
 				defer wg.Done()
-				ProgressMC(ctx2, s, calc, g.Cost())
+				ProgressMC(ctx2, sp, s, calc, g.Cost())
 			}()
-			montecarlo(ctx2, s, g, reels)
+			montecarlo(ctx2, sp, s, g, reels)
 		} else {
 			go func() {
 				defer wg.Done()
-				ProgressBF(ctx2, s, calc, float64(reels.Reshuffles()))
+				ProgressBF(ctx2, sp, s, calc, float64(reels.Reshuffles()))
 			}()
-			bruteforce(ctx2, s, g, reels)
+			bruteforce(ctx2, sp, s, g, reels)
 		}
 	}()
 	wg.Wait()
@@ -395,7 +395,7 @@ func ScanReels(ctx context.Context, s Simulator, g SlotGeneric, reels Reelx,
 	return calc(os.Stdout)
 }
 
-func ScanReelsCommon(ctx context.Context, s Simulator, g SlotGeneric, reels Reelx,
+func ScanReelsCommon(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, reels Reelx,
 	calc func(io.Writer) float64) float64 {
-	return ScanReels(ctx, s, g, reels, BruteForcex, MonteCarlo, calc)
+	return ScanReels(ctx, sp, s, g, reels, BruteForcex, MonteCarlo, calc)
 }
