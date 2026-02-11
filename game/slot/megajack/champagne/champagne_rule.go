@@ -48,7 +48,7 @@ var BetLines = slot.BetLinesMgj[:]
 
 type Game struct {
 	slot.Grid5x3 `yaml:",inline"`
-	slot.Slotx     `yaml:",inline"`
+	slot.Slotx   `yaml:",inline"`
 }
 
 // Declare conformity with SlotGame interface.

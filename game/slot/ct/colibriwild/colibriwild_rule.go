@@ -27,7 +27,7 @@ var BetLines = slot.BetLinesNetEnt5x4[:]
 
 type Game struct {
 	slot.Grid5x4 `yaml:",inline"`
-	slot.Slotx     `yaml:",inline"`
+	slot.Slotx   `yaml:",inline"`
 }
 
 // Declare conformity with SlotGame interface.

@@ -30,7 +30,7 @@ var BetLines = slot.BetLinesNvm10[:]
 
 type Game struct {
 	slot.Grid5x3 `yaml:",inline"`
-	slot.Slotx     `yaml:",inline"`
+	slot.Slotx   `yaml:",inline"`
 	// Pinned reel wild
 	PRW [5]int `json:"prw" yaml:"prw" xml:"prw"`
 }

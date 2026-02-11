@@ -38,7 +38,7 @@ var ScatPay = [5]float64{0, 0, 5, 20, 100} // 2 scatter
 
 type Game struct {
 	slot.Grid5x3 `yaml:",inline"`
-	slot.Slotx     `yaml:",inline"`
+	slot.Slotx   `yaml:",inline"`
 }
 
 // Declare conformity with SlotGame interface.

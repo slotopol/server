@@ -34,8 +34,8 @@ var BetLines = slot.BetLinesAgt5x3[:]
 
 type Game struct {
 	slot.Grid5x3 `yaml:",inline"`
-	slot.Slotx     `yaml:",inline"`
-	Mini           [3]slot.Sym `json:"mini" yaml:"mini" xml:"mini"`
+	slot.Slotx   `yaml:",inline"`
+	Mini         [3]slot.Sym `json:"mini" yaml:"mini" xml:"mini"`
 }
 
 // Declare conformity with SlotGame interface.

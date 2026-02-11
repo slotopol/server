@@ -45,7 +45,7 @@ var ScatFreespinBon = [5]int{0, 5, 8, 15, 20} // scatter
 
 type Game struct {
 	slot.Grid5x4 `yaml:",inline"`
-	slot.Slotx     `yaml:",inline"`
+	slot.Slotx   `yaml:",inline"`
 	// wild multipliers
 	MW [3]float64 `json:"mw" yaml:"mw" xml:"mw"`
 }

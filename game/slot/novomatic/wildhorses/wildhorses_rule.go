@@ -31,7 +31,7 @@ var BetLines = slot.BetLinesNvm5x4[:]
 
 type Game struct {
 	slot.Grid5x4 `yaml:",inline"`
-	slot.Slotx     `yaml:",inline"`
+	slot.Slotx   `yaml:",inline"`
 
 	SS slot.Sym `json:"ss" yaml:"ss" xml:"ss"` // selected symbol
 	NW slot.Pos `json:"nw" yaml:"nw" xml:"nw"` // number of white horses

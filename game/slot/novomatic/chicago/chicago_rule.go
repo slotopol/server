@@ -38,7 +38,7 @@ var BetLines = slot.BetLinesNvm5x3v2[:]
 
 type Game struct {
 	slot.Grid5x3 `yaml:",inline"`
-	slot.Slotx     `yaml:",inline"`
+	slot.Slotx   `yaml:",inline"`
 	// multiplier on freespins
 	M float64 `json:"m,omitempty" yaml:"m,omitempty" xml:"m,omitempty"`
 }

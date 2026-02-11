@@ -45,7 +45,7 @@ var BetLines = []slot.Linex{
 
 type Game struct {
 	slot.Gridx `yaml:",inline"`
-	slot.Slotx   `yaml:",inline"`
+	slot.Slotx `yaml:",inline"`
 }
 
 // Declare conformity with SlotGame interface.

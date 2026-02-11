@@ -22,6 +22,7 @@ type Stater interface {
 	SetPlan(n uint64)
 	Errors() uint64
 	Count() float64
+	NSQ(float64) (float64, float64, float64)
 	Simulate(SlotGame, Reelx, *Wins)
 }
 
@@ -61,9 +62,9 @@ func (c *StatCounter) Update(wins Wins) (pay float64) {
 	return
 }
 
-func (s *StatCounter) SumS() (S float64) {
-	for sym := range MaxSymNum {
-		S += s.S[sym].Load()
+func (c *StatCounter) SumS() (S float64) {
+	for sym := range c.S {
+		S += c.S[sym].Load()
 	}
 	return
 }
@@ -362,15 +363,16 @@ func (s *StatCascade) Simulate(g SlotGame, reels Reelx, wins *Wins) {
 	}
 }
 
-func Progress(ctx context.Context, s Stater, calc func(io.Writer) float64) {
+func ProgressBF(ctx context.Context, s Stater, calc func(io.Writer) float64) {
 	const stepdur = 1000 * time.Millisecond
 	var t0 = time.Now()
 	var steps = time.Tick(stepdur)
 	fmt.Printf("calculation started...\r")
+loop:
 	for {
 		select {
 		case <-ctx.Done():
-			return
+			break loop
 		case <-steps:
 			var N = s.Count()
 			var total = float64(s.GetPlan())
@@ -388,9 +390,17 @@ func Progress(ctx context.Context, s Stater, calc func(io.Writer) float64) {
 			}
 		}
 	}
+	var dur = time.Since(t0)
+
+	if s.GetPlan() > 0 {
+		var comp = s.Count() / float64(s.GetPlan()) * 100
+		fmt.Printf("completed %.5g%%, time spent %v                    \n", comp, dur)
+	} else {
+		fmt.Printf("produced %.1fm, time spent %v                    \n", s.Count()/1e6, dur)
+	}
 }
 
-type CalcAlg = func(ctx context.Context, s Stater, g SlotGame, reels Reelx)
+type CalcAlg = func(ctx context.Context, s Stater, g SlotGeneric, reels Reelx)
 
 const (
 	CtxGranulation = 1000 // check context every N reshuffles
@@ -409,7 +419,7 @@ func CorrectThrNum() int {
 	return cfg.MTCount
 }
 
-func BruteForcex(ctx context.Context, s Stater, g SlotGame, reels Reelx) {
+func BruteForcex(ctx context.Context, s Stater, g SlotGeneric, reels Reelx) {
 	var plan = reels.Reshuffles()
 	s.SetPlan(plan)
 	var tn = CorrectThrNum()
@@ -519,122 +529,35 @@ func BruteForce5x3Big(ctx context.Context, s Stater, g SlotGame, r1, rb, r5 []Sy
 	wg.Wait()
 }
 
-func MonteCarlo(ctx context.Context, s Stater, g SlotGame, reels Reelx) {
-	s.SetPlan(cfg.MCCount * 1e6)
-	var tn = CorrectThrNum()
-	var tn64 = uint64(tn)
-	var n = s.GetPlan()
-	var wg sync.WaitGroup
-	wg.Add(tn)
-	for range tn64 {
-		var gt = g.Clone()
-		var N uint64
-		go func() {
-			defer wg.Done()
-
-			var wins Wins
-			for range n / tn64 {
-				N++
-				if N%CtxGranulation == 0 {
-					select {
-					case <-ctx.Done():
-						return
-					default:
-					}
-				}
-				s.Simulate(gt, reels, &wins)
-				wins.Reset()
-			}
-		}()
-	}
-	wg.Wait()
-}
-
-func MonteCarloPrec(ctx context.Context, s Stater, g SlotGame, reels Reelx, calc func(io.Writer) float64) {
-	s.SetPlan(0)
-	var tn = CorrectThrNum()
-	var rtpcmp float64
-	var rtpmux sync.Mutex
-	var rtpnum atomic.Uint64
-	var mcc = cfg.MCCount * 1e6 / CtxGranulation
-	if mcc == 0 {
-		mcc = 1e7 / CtxGranulation
-	}
-	var wg sync.WaitGroup
-	wg.Add(tn)
-	for range tn {
-		var gt = g.Clone()
-		var N uint64
-		go func() {
-			defer wg.Done()
-
-			var wins Wins
-			for rtpnum.Load() < mcc {
-				N++
-				if N%CtxGranulation == 0 {
-					select {
-					case <-ctx.Done():
-						return
-					default:
-					}
-					var rtp = calc(io.Discard)
-					rtpmux.Lock()
-					if diff := rtp - rtpcmp; diff < cfg.MCPrec && diff > -cfg.MCPrec {
-						rtpnum.Inc()
-					} else {
-						rtpnum.Store(0)
-						rtpcmp = rtp
-					}
-					rtpmux.Unlock()
-				}
-				s.Simulate(gt, reels, &wins)
-				wins.Reset()
-			}
-		}()
-	}
-	wg.Wait()
-}
-
-func MCCalcAlg(calc func(io.Writer) float64) CalcAlg {
-	return func(ctx context.Context, s Stater, g SlotGame, reels Reelx) {
-		MonteCarloPrec(ctx, s, g, reels, calc)
-	}
-}
-
 func ScanReels(ctx context.Context, s Stater, g SlotGeneric, reels Reelx,
-	bruteforce, montecarlo, montecarloprec CalcAlg,
+	bruteforce, montecarlo CalcAlg,
 	calc func(io.Writer) float64) float64 {
 	if sx, sy := g.Dim(); len(reels) != int(sx) {
 		panic(fmt.Errorf("%w: %d reels provided for %dx%d slot", ErrReelCount, len(reels), sx, sy))
 	}
-	var t0 = time.Now()
+	fmt.Printf("selected %d lines\n", g.GetSel())
 	var wg sync.WaitGroup
 	wg.Add(2)
 	var ctx2, cancel2 = context.WithCancel(ctx)
 	go func() {
 		defer wg.Done()
-		Progress(ctx2, s, calc)
-	}()
-	go func() {
-		defer wg.Done()
 		defer cancel2()
-		if cfg.MCPrec > 0 {
-			montecarloprec(ctx2, s, g, reels)
-		} else if cfg.MCCount > 0 {
+		if cfg.MCCount > 0 || cfg.MCPrec > 0 {
+			go func() {
+				defer wg.Done()
+				ProgressMC(ctx2, s, calc, g.Cost())
+			}()
 			montecarlo(ctx2, s, g, reels)
 		} else {
+			go func() {
+				defer wg.Done()
+				ProgressBF(ctx2, s, calc)
+			}()
 			bruteforce(ctx2, s, g, reels)
 		}
 	}()
 	wg.Wait()
-	var dur = time.Since(t0)
 
-	if s.GetPlan() > 0 {
-		var comp = s.Count() / float64(s.GetPlan()) * 100
-		fmt.Printf("completed %.5g%%, selected %d lines, time spent %v            \n", comp, g.GetSel(), dur)
-	} else {
-		fmt.Printf("produced %.1fm, selected %d lines, time spent %v            \n", s.Count()/1e6, g.GetSel(), dur)
-	}
 	if s.Errors() > 0 {
 		fmt.Printf("reels lengths %s, total reshuffles %d, errors %d\n", reels.String(), reels.Reshuffles(), s.Errors())
 	} else {
@@ -645,5 +568,5 @@ func ScanReels(ctx context.Context, s Stater, g SlotGeneric, reels Reelx,
 
 func ScanReelsCommon(ctx context.Context, s Stater, g SlotGeneric, reels Reelx,
 	calc func(io.Writer) float64) float64 {
-	return ScanReels(ctx, s, g, reels, BruteForcex, MonteCarlo, MCCalcAlg(calc), calc)
+	return ScanReels(ctx, s, g, reels, BruteForcex, MonteCarlo, calc)
 }

@@ -33,10 +33,10 @@ var BetLines = slot.BetLinesCT5x3[:]
 
 type Game struct {
 	slot.Grid5x3 `yaml:",inline"`
-	slot.Slotx     `yaml:",inline"`
-	BP             float64 `json:"bp" yaml:"bp" xml:"bp"` // bananas pay
-	BC             int     `json:"bc" yaml:"bc" xml:"bc"` // bananas counter
-	BN             int     `json:"bn" yaml:"bn" xml:"bn"` // bananas bonus number
+	slot.Slotx   `yaml:",inline"`
+	BP           float64 `json:"bp" yaml:"bp" xml:"bp"` // bananas pay
+	BC           int     `json:"bc" yaml:"bc" xml:"bc"` // bananas counter
+	BN           int     `json:"bn" yaml:"bn" xml:"bn"` // bananas bonus number
 }
 
 // Declare conformity with SlotGame interface.

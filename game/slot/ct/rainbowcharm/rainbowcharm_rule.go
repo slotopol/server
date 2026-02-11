@@ -26,8 +26,8 @@ var SymPay = [6][12]float64{
 
 type Game struct {
 	slot.Grid5x3 `yaml:",inline"`
-	slot.Slotx     `yaml:",inline"`
-	M              [5]float64 `json:"m" yaml:"m" xml:"m"` // multipliers for bonus symbol filled at reels
+	slot.Slotx   `yaml:",inline"`
+	M            [5]float64 `json:"m" yaml:"m" xml:"m"` // multipliers for bonus symbol filled at reels
 }
 
 // Declare conformity with SlotGame interface.

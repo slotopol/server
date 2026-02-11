@@ -36,8 +36,8 @@ var BetLines = slot.BetLinesCT5x3[:]
 
 type Game struct {
 	slot.Grid5x3 `yaml:",inline"`
-	slot.Slotx     `yaml:",inline"`
-	BM             bool `json:"bm" yaml:"bm" xml:"bm"` // bonus mode
+	slot.Slotx   `yaml:",inline"`
+	BM           bool `json:"bm" yaml:"bm" xml:"bm"` // bonus mode
 }
 
 // Declare conformity with SlotGame interface.

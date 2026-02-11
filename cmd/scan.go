@@ -105,8 +105,8 @@ func init() {
 	scanflags.Float64P("rtp", "r", cfg.DefMRTP, "master RTP of game")
 	scanflags.IntP("sel", "l", 1, "number of selected bet lines, 0 for all")
 	scanflags.Bool("noembed", false, "do not load embedded yaml files, useful for development")
-	scanflags.Uint64Var(&cfg.MCCount, "mc", 0, "Monte Carlo method samples number, in millions")
-	scanflags.Float64Var(&cfg.MCPrec, "mcp", 0, "Precision of result for Monte Carlo method, in percents")
+	scanflags.Uint64Var(&cfg.MCCount, "mc", 0, "Monte Carlo method iterations number, in millions")
+	scanflags.Float64VarP(&cfg.MCPrec, "prec", "p", 0, "Precision of result for Monte Carlo method, in percents")
 	scanflags.IntVar(&cfg.MTCount, "mt", 0, "multithreaded scanning threads number")
 
 	scanCmd.MarkFlagRequired("game")
