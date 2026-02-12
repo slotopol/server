@@ -27,8 +27,6 @@ var (
 	SqlPath string
 	// List of paths to yaml files with game specific data to load on start up.
 	ObjPath []string
-	// Monte Carlo method samples number, in millions
-	MCCount uint64
 )
 
 var (

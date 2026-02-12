@@ -12,8 +12,8 @@ import (
 	"github.com/spf13/pflag"
 )
 
-const scanShort = "Slots games reels scanning"
-const scanLong = `Calculate RTP (Return to Player) percentage for specified slot game reels.`
+const scanShort = "Slots games reels scanning by brute force"
+const scanLong = `Calculate RTP (Return to Player) percentage for specified slot game reels by brute force method.`
 const scanExmp = `Scan reels for "Slotopol" game for reels set nearest to 100%%:
   %[1]s scan --game=megajack/slotopol -rtp=100
 Scan reels for "Dolphins Pearl" game for reels sets nearest to 92%% with 10 selected lines:
@@ -21,10 +21,10 @@ Scan reels for "Dolphins Pearl" game for reels sets nearest to 92%% with 10 sele
 
 var scanflags *pflag.FlagSet
 
-// scanCmd represents the scan command
+// scanCmd represents the `scan` command
 var scanCmd = &cobra.Command{
 	Use:     "scan",
-	Aliases: []string{"calc"},
+	Aliases: []string{"bruteforce"},
 	Short:   scanShort,
 	Long:    scanLong,
 	Example: fmt.Sprintf(scanExmp, cfg.AppName),
@@ -75,15 +75,11 @@ var scanCmd = &cobra.Command{
 		}
 
 		var sp game.ScanPar
+		sp.Method = game.CMbruteforce
 		if sp.TN, err = scanflags.GetInt("mt"); err != nil {
 			log.Fatalln(err.Error())
 			return
 		}
-		if sp.Prec, err = scanflags.GetFloat64("prec"); err != nil {
-			log.Fatalln(err.Error())
-			return
-		}
-		sp.Prec /= 100
 		if sp.MRTP, err = scanflags.GetFloat64("rtp"); err != nil {
 			log.Fatalln(err.Error())
 			return
@@ -110,13 +106,11 @@ func init() {
 	rootCmd.AddCommand(scanCmd)
 
 	scanflags = scanCmd.Flags()
+	scanflags.Bool("noembed", false, "do not load embedded yaml files, useful for development")
+	scanflags.Int("mt", 0, "multithreaded scanning threads number")
 	scanflags.StringP("game", "g", "", "identifier of game to scan")
 	scanflags.Float64P("rtp", "r", cfg.DefMRTP, "master RTP of game")
 	scanflags.IntP("sel", "l", 1, "number of selected bet lines, 0 for all")
-	scanflags.Bool("noembed", false, "do not load embedded yaml files, useful for development")
-	scanflags.Uint64Var(&cfg.MCCount, "mc", 0, "Monte Carlo method iterations number, in millions")
-	scanflags.Float64P("prec", "p", 0, "precision of result for Monte Carlo method, in percents")
-	scanflags.Int("mt", 0, "multithreaded scanning threads number")
 
 	scanCmd.MarkFlagRequired("game")
 }

@@ -159,7 +159,7 @@ func FormatGameInfo(gi *game.GameInfo) string {
 	return b.String()
 }
 
-// listCmd represents the list command
+// listCmd represents the `list` command
 var listCmd = &cobra.Command{
 	Use:     "list",
 	Short:   listShort,

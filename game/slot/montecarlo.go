@@ -7,14 +7,12 @@ import (
 	"math"
 	"sync"
 	"time"
-
-	cfg "github.com/slotopol/server/config"
 )
+
+const lolim = 1e6 // lower limit, let some space to get approximate sigma
 
 // Function to report about progress of Monte Carlo calculation
 func ProgressMC(ctx context.Context, sp *ScanPar, s Simulator, calc func(io.Writer) float64, cost float64) {
-	var confidence = 0.95
-	var totalmin float64 = 1e6
 	const stepdur = 1000 * time.Millisecond
 	var t0 = time.Now()
 	var steps = time.Tick(stepdur)
@@ -31,14 +29,15 @@ func ProgressMC(ctx context.Context, sp *ScanPar, s Simulator, calc func(io.Writ
 		dur = time.Since(t0)
 		N, S, Q = s.NSQ(cost)
 		RTP = calc(io.Discard)
-		VI = GetZ(confidence) * math.Sqrt(N*Q-S*S) / N
+		VI = GetZ(sp.Conf) * math.Sqrt(N*Q-S*S) / N
 		ΔRTP = VI / math.Sqrt(N)
-		if cfg.MCCount > 0 {
-			total = float64(cfg.MCCount) * 1e6
-		} else {
+		var tc, tp float64
+		tc = max(float64(sp.Total), lolim)
+		if sp.Prec > 0 {
 			var t2 = VI / sp.Prec
-			total = max(t2*t2, totalmin)
+			tp = t2 * t2
 		}
+		total = max(tc, tp)
 	}
 loop:
 	for {
@@ -48,30 +47,23 @@ loop:
 		case <-steps:
 			param()
 			var exp = time.Duration(float64(dur) * total / N)
-			fmt.Printf("processed %.1fm/%.1fm, ready %2.2f%% (%v / %v), RTP = %2.2f%%, Δ[%.2g%%] = %2.2f%%  \r",
+			fmt.Printf("processed %.1fm/%.1fm, ready %2.2f%% (%v / %v), RTP = %2.2f%%, Δ[%.4g%%] = %.4g%%  \r",
 				N/1e6, total/1e6, N/total*100,
 				dur.Truncate(stepdur), exp.Truncate(stepdur),
-				RTP*100, confidence*100, ΔRTP*100)
+				RTP*100, sp.Conf*100, ΔRTP*100)
 		}
 	}
 
 	// report results
 	param()
-	fmt.Printf("completed %.5g%% (%d), time spent %v, precision Δ[%.2g%%] = %.4g%%                \n",
-		N/total*100, int(N), dur, confidence*100, ΔRTP*100)
+	fmt.Printf("completed %.5g%% (%d), time spent %v, precision Δ[%.4g%%] = %.4g%%                \n",
+		N/total*100, int(N), dur, sp.Conf*100, ΔRTP*100)
 }
 
 func MonteCarlo(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, reels Reelx) {
-	var confidence = 0.95
-	var totalmin uint64 = 1e6 // let some space to get approximate sigma
 	var tn = CorrectThrNum(sp.TN)
 	var tn64 = uint64(tn)
-	var total uint64
-	if cfg.MCCount > 0 {
-		total = cfg.MCCount * 1e6
-	} else {
-		total = totalmin
-	}
+	var total = max(sp.Total, lolim)
 	var wg sync.WaitGroup
 	wg.Add(tn)
 	for range tn64 {
@@ -90,12 +82,15 @@ func MonteCarlo(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, re
 					default:
 					}
 					// recalculate total iterations number
+					var tc, tp uint64
+					tc = max(sp.Total, lolim)
 					if sp.Prec > 0 {
 						var N, S, Q = s.NSQ(gt.Cost())
-						var VI = GetZ(confidence) * math.Sqrt(N*Q-S*S) / N
+						var VI = GetZ(sp.Conf) * math.Sqrt(N*Q-S*S) / N
 						var t2 = VI / sp.Prec
-						total = max(uint64(t2*t2), totalmin)
+						tp = uint64(t2 * t2)
 					}
+					total = max(tc, tp)
 				}
 				gt.SpinReels(reels)
 				s.Simulate(gt, reels, &wins)

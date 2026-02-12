@@ -22,7 +22,7 @@ const webExmp = `
 
 var webflags *pflag.FlagSet
 
-// webCmd represents the web command
+// webCmd represents the `web` command
 var webCmd = &cobra.Command{
 	Use:     "web",
 	Short:   webShort,

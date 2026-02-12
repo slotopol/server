@@ -10,10 +10,9 @@ import (
 	"runtime"
 	"sync"
 
-	"go.uber.org/atomic"
-
-	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/game"
+
+	"go.uber.org/atomic"
 )
 
 type Simulator interface {
@@ -375,18 +374,19 @@ func ScanReels(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, ree
 		defer wg.Done()
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		if cfg.MCCount > 0 || sp.Prec > 0 {
-			go func() {
-				defer wg.Done()
-				ProgressMC(ctx2, sp, s, calc, g.Cost())
-			}()
-			montecarlo(ctx2, sp, s, g, reels)
-		} else {
+		switch sp.Method {
+		case game.CMbruteforce:
 			go func() {
 				defer wg.Done()
 				ProgressBF(ctx2, sp, s, calc, float64(reels.Reshuffles()))
 			}()
 			bruteforce(ctx2, sp, s, g, reels)
+		case game.CMmontecarlo:
+			go func() {
+				defer wg.Done()
+				ProgressMC(ctx2, sp, s, calc, g.Cost())
+			}()
+			montecarlo(ctx2, sp, s, g, reels)
 		}
 	}()
 	wg.Wait()
