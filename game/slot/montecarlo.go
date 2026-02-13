@@ -61,11 +61,10 @@ loop:
 }
 
 func MonteCarlo(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, reels Reelx) {
-	var tn = CorrectThrNum(sp.TN)
-	var tn64 = uint64(tn)
+	var tn64 = uint64(sp.TN)
 	var total = max(sp.Total, lolim)
 	var wg sync.WaitGroup
-	wg.Add(tn)
+	wg.Add(sp.TN)
 	for range tn64 {
 		var gt = g.Clone()
 		go func() {

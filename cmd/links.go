@@ -84,6 +84,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/hellscherries"
 	_ "github.com/slotopol/server/game/slot/ct/hellshot7s"
 	_ "github.com/slotopol/server/game/slot/ct/hitthehot"
+	_ "github.com/slotopol/server/game/slot/ct/hypercuber"
 	_ "github.com/slotopol/server/game/slot/ct/islandvacation"
 	_ "github.com/slotopol/server/game/slot/ct/jollybelugawhales"
 	_ "github.com/slotopol/server/game/slot/ct/kingofclovers"

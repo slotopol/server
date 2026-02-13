@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"log"
+	"runtime"
 
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/game"
@@ -76,28 +77,41 @@ var scanCmd = &cobra.Command{
 
 		var sp game.ScanPar
 		sp.Method = game.CMbruteforce
-		if sp.TN, err = scanflags.GetInt("mt"); err != nil {
+
+		var tn int
+		if tn, err = scanflags.GetInt("mt"); err != nil {
 			log.Fatalln(err.Error())
 			return
 		}
+		if tn < 1 {
+			tn = runtime.GOMAXPROCS(0)
+		}
+		sp.TN = tn
+
 		if sp.MRTP, err = scanflags.GetFloat64("rtp"); err != nil {
 			log.Fatalln(err.Error())
 			return
 		}
-		if sp.Sel, err = scanflags.GetInt("sel"); err != nil {
-			log.Fatalln(err.Error())
-			return
+
+		if gi.LNum > 0 {
+			var sel int
+			if sel, err = scanflags.GetInt("sel"); err != nil {
+				log.Fatalln(err.Error())
+				return
+			}
+			if sel == 0 {
+				sel = gi.LNum
+			} else if sel > gi.LNum {
+				log.Fatalf("number of selected bet lines is greater than maximum number %d in game %s", gi.LNum, alias)
+				return
+			}
+			if sel != gi.LNum && (gi.GP&game.GPcasc != 0) {
+				log.Fatalf("can not change number of selected lines %d on cascade slot %s", gi.LNum, alias)
+				return
+			}
+			sp.Sel = sel
 		}
-		if sp.Sel == 0 {
-			sp.Sel = gi.LNum
-		} else if sp.Sel > gi.LNum {
-			log.Fatalf("number of selected bet lines is greater than maximum number %d in game %s", gi.LNum, alias)
-			return
-		}
-		if sp.Sel != gi.LNum && (gi.GP&game.GPcasc != 0) {
-			log.Fatalf("can not change number of selected lines %d on cascade slot %s", gi.LNum, alias)
-			return
-		}
+
 		scan(exitctx, &sp)
 	},
 }

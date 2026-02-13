@@ -16,11 +16,11 @@ Slots games server. Releases functionality a wide variety of games from differen
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 339 games, 171 algorithms, 11 providers
+total: 340 games, 172 algorithms, 11 providers
 AGT: 65 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 135 games
+CT Interactive: 136 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,7 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Hyper Cuber](https://www.livebet2.com/casino/slots/ct-interactive/hyper-cuber)' CT Interactive 5x3 cluster cascade videoslot
 * '[Ice Fruits 6 reels](https://agtsoftware.com/games/agt/6megaice)' AGT 6x3 videoslot
 * '[Tibetan Song](https://www.livebet2.com/casino/slots/ct-interactive/tibetan-song)' CT Interactive 5x3 videoslot
 * '[Black Pharaoh](https://www.livebet2.com/casino/slots/ct-interactive/black-pharaoh)' CT Interactive 5x3 videoslot
@@ -76,6 +77,7 @@ Slotopol: 2 games
 * 'Aztec Gold' Megajack 5x3 videoslot has unique 'Aztec Pyramid' bonus game
 * '[Book of Ra Deluxe](https://www.slotsmate.com/software/novomatic/book-of-ra-deluxe)' Novomatic 5x3 videoslot with special expanding symbol on free games
 * '[Gonzo's Quest](https://www.slotsmate.com/software/netent/gonzos-quest)' NetEnt 5x3 cascade videoslot
+* '[Hyper Cuber](https://www.livebet2.com/casino/slots/ct-interactive/hyper-cuber)' CT Interactive 5x3 cluster cascade videoslot with symbols-multipliers on free games
 * '[Fruit Shop](https://www.slotsmate.com/software/netent/fruit-shop)' NetEnt 5x3 videoslot with free spins on every win
 * '[Sun City](https://agtsoftware.com/games/agt/suncity)' AGT 5x3 videoslot with free games continous by the luck
 * '[Egypt](https://agtsoftware.com/games/agt/egypt)' AGT 5x3 videoslot with minislot for wilds multiplier

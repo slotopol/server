@@ -11,13 +11,12 @@ import (
 )
 
 func BruteForce5x3es2(ctx context.Context, sp *slot.ScanPar, s slot.Simulator, g *Game, reels slot.Reelx, es slot.Sym) {
-	var tn = slot.CorrectThrNum(sp.TN)
-	var tn64 = uint64(tn)
+	var tn64 = uint64(sp.TN)
 	var r3 = reels.Reel(3)
 	var r4 = reels.Reel(4)
 	var r5 = reels.Reel(5)
 	var wg sync.WaitGroup
-	wg.Add(tn)
+	wg.Add(sp.TN)
 	for ti := range tn64 {
 		var sg = g.Clone()
 		var N uint64
@@ -66,12 +65,11 @@ func BruteForce5x3es2(ctx context.Context, sp *slot.ScanPar, s slot.Simulator, g
 }
 
 func BruteForce5x3es3(ctx context.Context, sp *slot.ScanPar, s slot.Simulator, g *Game, reels slot.Reelx, es slot.Sym) {
-	var tn = slot.CorrectThrNum(sp.TN)
-	var tn64 = uint64(tn)
+	var tn64 = uint64(sp.TN)
 	var r4 = reels.Reel(4)
 	var r5 = reels.Reel(5)
 	var wg sync.WaitGroup
-	wg.Add(tn)
+	wg.Add(sp.TN)
 	for ti := range tn64 {
 		var sg = g.Clone()
 		var N uint64

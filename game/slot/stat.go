@@ -7,7 +7,6 @@ import (
 	"io"
 	"math"
 	"os"
-	"runtime"
 	"sync"
 
 	"github.com/slotopol/server/game"
@@ -354,20 +353,15 @@ var (
 	ErrReelCount = errors.New("unexpected number of reels")
 )
 
-func CorrectThrNum(tn int) int {
-	if tn < 1 {
-		return runtime.GOMAXPROCS(0)
-	}
-	return tn
-}
-
 func ScanReels(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, reels Reelx,
 	bruteforce, montecarlo CalcAlg,
 	calc func(io.Writer) float64) float64 {
 	if sx, sy := g.Dim(); len(reels) != int(sx) {
 		panic(fmt.Errorf("%w: %d reels provided for %dx%d slot", ErrReelCount, len(reels), sx, sy))
 	}
-	fmt.Printf("selected %d lines\n", g.GetSel())
+	if sel := g.GetSel(); sel > 0 {
+		fmt.Printf("selected %d lines\n", sel)
+	}
 	var wg sync.WaitGroup
 	wg.Add(2)
 	go func() {

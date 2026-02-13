@@ -1,35 +1,46 @@
-package sugartown
+package hypercuber
 
-// See: https://www.slotsmate.com/software/ct-interactive/sugar-town
+// See: https://www.livebet2.com/casino/slots/ct-interactive/hyper-cuber
 
 import (
+	"math/rand/v2"
+
 	"github.com/slotopol/server/game/slot"
 )
 
 const (
-	sn         = 10   // number of symbols
+	sn         = 11   // number of symbols
 	wild, scat = 2, 1 // wild & scatter symbol IDs
+	bon        = 11   // cuber symbol ID
+	Mavr       = 12   // average multiplier on cuber
 )
+
+var ReelsBon slot.Reelx
 
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Symbols payment.
 var SymPay = [sn][7]float64{
-	{0, 0, 800, 2000, 20000},        //  1 scatter
-	{0, 0, 0, 0, 2000, 4000, 15000}, //  2 wild (2, 3, 4 reels only)
-	{0, 0, 0, 0, 140, 200, 1500},    //  3 heart
-	{0, 0, 0, 0, 20, 50, 400},       //  4 blue
-	{0, 0, 0, 0, 20, 50, 400},       //  5 green
-	{0, 0, 0, 0, 20, 50, 400},       //  6 yellow
-	{0, 0, 0, 0, 10, 20, 100},       //  7 melon
-	{0, 0, 0, 0, 10, 20, 100},       //  8 jujube
-	{0, 0, 0, 0, 10, 20, 100},       //  9 plum
-	{0, 0, 0, 0, 10, 20, 100},       // 10 cherry
+	{0, 0, 15, 75, 300},       //  1 infinity
+	{0, 0, 0, 0, 10, 20, 100}, //  2 wild (2, 3, 4 reels only)
+	{0, 0, 0, 0, 10, 20, 65},  //  3 atom
+	{0, 0, 0, 0, 3, 5, 20},    //  4 red
+	{0, 0, 0, 0, 3, 5, 20},    //  5 yellow
+	{0, 0, 0, 0, 3, 5, 20},    //  6 gold
+	{0, 0, 0, 0, 1, 3, 10},    //  7 violet
+	{0, 0, 0, 0, 1, 3, 10},    //  8 lilac
+	{0, 0, 0, 0, 1, 3, 10},    //  9 green
+	{0, 0, 0, 0, 1, 3, 10},    // 10 blue
+	{},                        // 11 cuber
 }
+
+// Average multiplier = 12
+var CuberMult = [...]float64{2, 2, 2, 2, 3, 3, 3, 5, 5, 5, 10, 10, 10, 15, 15, 100}
 
 type Game struct {
 	slot.Cascade5x3 `yaml:",inline"`
 	slot.Slotx      `yaml:",inline"`
+	M               [5]float64 `json:"m" yaml:"m" xml:"m"` // multipliers for cuber symbols
 }
 
 // Declare conformity with SlotCascade interface.
@@ -53,28 +64,36 @@ func (g *Game) FreeMode() bool {
 }
 
 func (g *Game) Scanner(wins *slot.Wins) error {
+	var mc float64
 	var counts [sn + 1]slot.Pos
-	for _, sr := range g.Grid {
+	for x, sr := range g.Grid {
 		for _, sy := range sr {
 			counts[sy]++
+			if sy == bon {
+				mc += g.M[x]
+			}
 		}
+	}
+	if mc == 0 {
+		mc = 1
 	}
 
 	if count := counts[scat]; count >= 3 {
 		var pay = SymPay[scat-1][count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * pay,
-			MP:  1,
+			MP:  mc,
 			Sym: scat,
 			Num: count,
 			XY:  g.SymPos(scat),
+			FS:  15,
 		})
 	}
 	if count := counts[wild]; count >= 5 {
 		var pay = SymPay[wild-1][min(count, 7)-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * pay,
-			MP:  1,
+			MP:  mc,
 			Sym: wild,
 			Num: count,
 			XY:  g.SymPos(wild),
@@ -87,7 +106,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 			var pay = SymPay[sym-1][min(count, 7)-1]
 			*wins = append(*wins, slot.WinItem{
 				Pay: g.Bet * pay,
-				MP:  1,
+				MP:  mc,
 				Sym: sym,
 				Num: count,
 				XY:  g.SymPos2(sym, wild),
@@ -98,16 +117,27 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 }
 
 func (g *Game) Cost() float64 {
-	return g.Bet * 40
+	return g.Bet * 3
 }
 
 func (g *Game) Spin(mrtp float64) {
-	var reels, _ = ReelsMap.FindClosest(mrtp)
-	g.SpinReels(reels)
+	if g.FSR == 0 {
+		var reels, _ = ReelsMap.FindClosest(mrtp)
+		g.SpinReels(reels)
+	} else {
+		g.SpinReels(ReelsBon)
+	}
 }
 
 func (g *Game) Prepare() {
 	g.UntoFall()
+	if g.FSR != 0 {
+		for x := range 5 {
+			g.M[x] = CuberMult[rand.N(len(CuberMult))]
+		}
+	} else {
+		clear(g.M[:])
+	}
 }
 
 func (g *Game) Apply(wins slot.Wins) {

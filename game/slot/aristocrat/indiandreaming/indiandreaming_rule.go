@@ -57,10 +57,10 @@ func (g *Game) Clone() slot.SlotGeneric {
 func (g *Game) Scanner(wins *slot.Wins) error {
 	// Count symbols
 	var counts [5 + 1][sn + 1]int // symbol counts per reel
-	for x := range 5 {
+	for x, sr := range g.Grid {
 		var cx = &counts[x]
-		for _, sym := range g.Grid[x] {
-			cx[sym]++
+		for _, sy := range sr {
+			cx[sy]++
 		}
 	}
 	var nw = counts[0][wild] + counts[1][wild] + counts[2][wild] + counts[3][wild] + counts[4][wild]

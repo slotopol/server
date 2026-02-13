@@ -16,7 +16,7 @@ local symset15 = {
 
 local symset234 = {
 	 3, --  1 scatter
-	 0, --  2 wild    1500
+	 0, --  2 wild    1500 (2, 3, 4 reels only)
 	 8, --  3 heart   150
 	10, --  4 blue    40
 	10, --  5 green   40
@@ -30,7 +30,7 @@ local symset234 = {
 local neighbours = {
 	--1, 2, 3, 4, 5, 6, 7, 8, 9,10,
 	{ 2, 2, 0, 0, 0, 0, 0, 0, 0, 0,}, --  1 scatter
-	{ 2, 2, 0, 0, 0, 0, 0, 0, 0, 0,}, --  2 wild
+	{ 2, 2, 0, 0, 0, 0, 0, 0, 0, 0,}, --  2 wild (2, 3, 4 reels only)
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,}, --  3 heart
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,}, --  4 blue
 	{ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,}, --  5 green

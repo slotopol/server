@@ -12,10 +12,15 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
+const (
+	sn  = 6 // number of symbols
+	bon = 1 // bonus symbol ID
+)
+
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Symbols payment.
-var SymPay = [6][12]float64{
+var SymPay = [sn][12]float64{
 	{}, // 1 bonus
 	{0, 0, 0, 0, 0, 0, 30, 50, 100, 500, 1000, 5000}, // 2 leprechaun
 	{0, 0, 0, 0, 0, 0, 12, 15, 80, 100, 300, 1000},   // 3 clover
@@ -48,31 +53,28 @@ func (g *Game) Clone() slot.SlotGeneric {
 
 var MBon = [...]float64{2, 2, 4, 8} // multipliers for bonus symbol filled at reels, E = 4
 
-const bon = 1
-
 func (g *Game) Scanner(wins *slot.Wins) error {
 	var mb float64 = 1.0 // multiplier for bonus symbol filled at reels
-	var sn [6 + 1]slot.Pos
-	var x slot.Pos
-	for x = range 5 {
-		var r = g.Grid[x]
-		if r[0] == bon && r[1] == bon && r[2] == bon {
+	var counts [sn + 1]slot.Pos
+	for x, sr := range g.Grid {
+		if sr[0] == bon && sr[1] == bon && sr[2] == bon {
 			mb *= g.M[x]
 		}
-		sn[r[0]]++
-		sn[r[1]]++
-		sn[r[2]]++
+		counts[sr[0]]++
+		counts[sr[1]]++
+		counts[sr[2]]++
 	}
 	if mb > 1.0 {
 		var has bool
 		var sym slot.Sym
 		for sym = 2; sym <= 6; sym++ {
-			if sn[sym] >= 7 {
+			if counts[sym] >= 7 {
 				has = true
 				break
 			}
 		}
 		if has {
+			var x slot.Pos
 			for x = range 5 {
 				if g.M[x] > 1.0 {
 					*wins = append(*wins, slot.WinItem{
@@ -88,7 +90,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 
 	var sym slot.Sym
 	for sym = 2; sym <= 6; sym++ {
-		if count := sn[sym]; count >= 7 {
+		if count := counts[sym]; count >= 7 {
 			var pay = SymPay[sym-1][min(count, 12)-1]
 			*wins = append(*wins, slot.WinItem{
 				Pay: g.Bet * pay,

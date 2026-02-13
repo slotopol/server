@@ -40,9 +40,8 @@ loop:
 
 func BruteForcex(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, reels Reelx) {
 	var total = reels.Reshuffles()
-	var tn = CorrectThrNum(sp.TN)
-	var tn64 = uint64(tn)
-	if tn%len(reels[0]) == 0 {
+	var tn64 = uint64(sp.TN)
+	if sp.TN%len(reels[0]) == 0 {
 		panic("BruteForcex: thread number equals to 1-st reel length")
 	}
 	// Number of reels.
@@ -60,7 +59,7 @@ func BruteForcex(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, r
 	}
 
 	var wg sync.WaitGroup
-	wg.Add(tn)
+	wg.Add(sp.TN)
 	for ti := range tn64 {
 		var gt = g.Clone()
 		var _, iscascade = gt.(SlotCascade)
@@ -108,10 +107,9 @@ func BruteForcex(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, r
 
 func BruteForce5x3Big(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, r1, rb, r5 []Sym) {
 	// var total = uint64(len(r1)) * uint64(len(rb)) * uint64(len(r5))
-	var tn = CorrectThrNum(sp.TN)
-	var tn64 = uint64(tn)
+	var tn64 = uint64(sp.TN)
 	var wg sync.WaitGroup
-	wg.Add(tn)
+	wg.Add(sp.TN)
 	for ti := range tn64 {
 		var gt = g.Clone()
 		var cb = gt.(Bigger)

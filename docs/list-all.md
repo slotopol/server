@@ -183,6 +183,7 @@
 'Hot Clover' AGT 5x4 videoslot
 'Hot Cubes' Novomatic 5x3 videoslot
 'Hot Target' Novomatic 5x3 videoslot
+'Hyper Cuber' CT Interactive 5x3 cluster cascade videoslot
 'Ice Fruits' AGT 5x3 videoslot
 'Ice Fruits 6 reels' AGT 6x3 videoslot
 'Ice Ice Ice' AGT 3x3 videoslot
@@ -342,11 +343,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 339 games, 171 algorithms, 11 providers
+total: 340 games, 172 algorithms, 11 providers
 AGT: 65 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 135 games
+CT Interactive: 136 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
