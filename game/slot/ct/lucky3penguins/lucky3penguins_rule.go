@@ -8,6 +8,11 @@ import (
 	"github.com/slotopol/server/game/slot/ct/penguinparty"
 )
 
+const (
+	sn   = 10 // number of symbols
+	wild = 1  // wild & scatter symbol IDs
+)
+
 // Copy data from ct/penguinparty.
 var (
 	ReelsMap = &penguinparty.ReelsMap
@@ -38,8 +43,6 @@ func (g *Game) Clone() slot.SlotGeneric {
 	var clone = *g
 	return &clone
 }
-
-const wild = 1
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	// Lined symbols calculation.

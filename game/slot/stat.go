@@ -2,16 +2,19 @@ package slot
 
 import (
 	"context"
+	"encoding/xml"
 	"errors"
 	"fmt"
 	"io"
 	"math"
 	"os"
+	"strconv"
 	"sync"
 
 	"github.com/slotopol/server/game"
 
 	"go.uber.org/atomic"
+	"gopkg.in/yaml.v3"
 )
 
 type Simulator interface {
@@ -24,23 +27,138 @@ type Simulator interface {
 
 type ScanPar = game.ScanPar
 
-// Maximum possible number of symbols at any game
-const MaxSymNum = 20
+type Uint64 struct {
+	atomic.Uint64
+}
+
+func (x Uint64) String() string {
+	return strconv.FormatUint(x.Load(), 10)
+}
+
+// MarshalXML encodes the wrapped uint64 into XML.
+func (x *Uint64) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	return e.EncodeElement(x.Load(), start)
+}
+
+// UnmarshalXML decodes a uint64 from XML.
+func (x *Uint64) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	var v uint64
+	if err := d.DecodeElement(&v, &start); err != nil {
+		return err
+	}
+	x.Store(v)
+	return nil
+}
+
+// MarshalYAML encodes the wrapped uint64 into YAML.
+func (x Uint64) MarshalYAML() (any, error) {
+	return x.Load(), nil
+}
+
+// UnmarshalYAML decodes a uint64 from YAML.
+func (x *Uint64) UnmarshalYAML(value *yaml.Node) error {
+	var v uint64
+	if err := value.Decode(&v); err != nil {
+		return err
+	}
+	x.Store(v)
+	return nil
+}
+
+type Float64 struct {
+	atomic.Float64
+}
+
+func (x Float64) String() string {
+	return strconv.FormatFloat(x.Load(), 'f', -1, 64)
+}
+
+// MarshalXML encodes the wrapped float64 into XML.
+func (x *Float64) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
+	return e.EncodeElement(x.String(), start)
+}
+
+// UnmarshalXML decodes a float64 from XML.
+func (x *Float64) UnmarshalXML(d *xml.Decoder, start xml.StartElement) error {
+	var v float64
+	if err := d.DecodeElement(&v, &start); err != nil {
+		return err
+	}
+	x.Store(v)
+	return nil
+}
+
+// MarshalYAML encodes the wrapped float64 into YAML.
+func (x Float64) MarshalYAML() (any, error) {
+	return &yaml.Node{
+		Kind:  yaml.ScalarNode,
+		Value: x.String(),
+	}, nil
+}
+
+// UnmarshalYAML decodes a float64 from YAML.
+func (x *Float64) UnmarshalYAML(value *yaml.Node) error {
+	var v float64
+	if err := value.Decode(&v); err != nil {
+		return err
+	}
+	x.Store(v)
+	return nil
+}
+
+type Counts[T fmt.Stringer] [][]T
+
+func (c Counts[T]) MarshalYAML() (any, error) {
+	var node1 = &yaml.Node{
+		Kind:  yaml.SequenceNode,
+		Style: yaml.FoldedStyle,
+	}
+	for sym, line := range c {
+		var node2 = &yaml.Node{
+			Kind:  yaml.SequenceNode,
+			Style: yaml.FlowStyle,
+		}
+		if sym > 0 {
+			node2.LineComment = strconv.Itoa(sym)
+		}
+
+		for _, v := range line {
+			node2.Content = append(node2.Content, &yaml.Node{
+				Kind:  yaml.ScalarNode,
+				Value: v.String(),
+			})
+		}
+
+		node1.Content = append(node1.Content, node2)
+	}
+	return node1, nil
+}
 
 type StatCounter struct {
-	N   atomic.Uint64             // number of processed grid reshuffles, including with no wins
-	S   [MaxSymNum]atomic.Float64 // sum of pays by symbols
-	FSC atomic.Uint64             // free spins count
-	FHC atomic.Uint64             // free games hits count
-	BHC [8]atomic.Uint64          // bonus hits count
-	JHC [4]atomic.Uint64          // jackpot hits count
+	N   Uint64          // number of processed grid reshuffles, including with no wins
+	C   Counts[Uint64]  // hit counter
+	S   Counts[Float64] // sum of pays by symbols
+	FSC Uint64          // free spins count
+	FHC Uint64          // free games hits count
+	BHC [8]Uint64       `yaml:",flow"` // bonus hits count
+	JHC [4]Uint64       `yaml:",flow"` // jackpot hits count
+}
+
+func (c *StatCounter) SymPays(sn, pn int) {
+	c.C = make([][]Uint64, sn+1)
+	c.S = make([][]Float64, sn+1)
+	for i := range c.S {
+		c.C[i] = make([]Uint64, pn+1)
+		c.S[i] = make([]Float64, pn+1)
+	}
 }
 
 func (c *StatCounter) Update(wins Wins) (pay float64) {
 	for _, wi := range wins {
+		c.C[wi.Sym][wi.Num].Inc()
 		if wi.Pay != 0 {
 			var p = wi.Pay * wi.MP
-			c.S[wi.Sym].Add(p)
+			c.S[wi.Sym][wi.Num].Add(p)
 			pay += p
 		}
 		if wi.FS != 0 {
@@ -58,21 +176,37 @@ func (c *StatCounter) Update(wins Wins) (pay float64) {
 	return
 }
 
+func (c *StatCounter) SymS(sym Sym) (S float64) {
+	var pays = c.S[sym]
+	for sym := range pays {
+		S += pays[sym].Load()
+	}
+	return
+}
+
 func (c *StatCounter) SumS() (S float64) {
-	for sym := range c.S {
-		S += c.S[sym].Load()
+	for _, pays := range c.S {
+		for sym := range pays {
+			S += pays[sym].Load()
+		}
 	}
 	return
 }
 
 type StatGeneric struct {
 	StatCounter
-	Q  atomic.Float64 // sum of squares of pays by symbols
-	EC atomic.Uint64  // errors count
+	Q  Float64 // sum of squares of pays by symbols
+	EC Uint64  // errors count
 }
 
 // Declare conformity with Stater interface.
 var _ Simulator = (*StatGeneric)(nil)
+
+func NewStatGeneric(sn, pn int) *StatGeneric {
+	var s StatGeneric
+	s.SymPays(sn, pn)
+	return &s
+}
 
 func (s *StatGeneric) Errors() uint64 {
 	return s.EC.Load()
@@ -83,12 +217,13 @@ func (s *StatGeneric) Count() float64 {
 }
 
 func (s *StatGeneric) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
-	var sym Sym
-	for sym = range MaxSymNum {
-		if sym != scat {
-			lrtp += s.S[sym].Load()
-		} else {
-			srtp += s.S[sym].Load()
+	for _, pays := range s.S {
+		for sym := range pays {
+			if Sym(sym) != scat {
+				lrtp += pays[sym].Load()
+			} else {
+				srtp += pays[sym].Load()
+			}
 		}
 	}
 	var N = s.Count()
@@ -98,12 +233,13 @@ func (s *StatGeneric) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
 }
 
 func (s *StatGeneric) RTPsym2(cost float64, scat1, scat2 Sym) (lrtp, srtp float64) {
-	var sym Sym
-	for sym = range MaxSymNum {
-		if sym != scat1 && sym != scat2 {
-			lrtp += s.S[sym].Load()
-		} else {
-			srtp += s.S[sym].Load()
+	for _, pays := range s.S {
+		for sym := range pays {
+			if Sym(sym) != scat1 && Sym(sym) != scat2 {
+				lrtp += pays[sym].Load()
+			} else {
+				srtp += pays[sym].Load()
+			}
 		}
 	}
 	var N = s.Count()
@@ -169,12 +305,24 @@ func (s *StatGeneric) Simulate(g SlotGame, reels Reelx, wins *Wins) {
 
 type StatCascade struct {
 	Casc [FallLimit]StatCounter
-	Q    atomic.Float64 // sum of squares of pays by symbols
-	EC   atomic.Uint64  // errors count
+	Q    Float64 // sum of squares of pays by symbols
+	EC   Uint64  // errors count
 }
 
 // Declare conformity with Stater interface.
 var _ Simulator = (*StatCascade)(nil)
+
+func NewStatCascade(sn, pn int) *StatCascade {
+	var s StatCascade
+	s.SymPays(sn, pn)
+	return &s
+}
+
+func (s *StatCascade) SymPays(sn, pn int) {
+	for i := range FallLimit {
+		s.Casc[i].SymPays(sn, pn)
+	}
+}
 
 func (s *StatCascade) Errors() uint64 {
 	return s.EC.Load()
@@ -217,14 +365,15 @@ func (s *StatCascade) SumJackHits(jid int) uint64 {
 }
 
 func (s *StatCascade) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
-	var sym Sym
 	for i := range FallLimit {
 		var c = &s.Casc[i]
-		for sym = range MaxSymNum {
-			if sym != scat {
-				lrtp += c.S[sym].Load()
-			} else {
-				srtp += c.S[sym].Load()
+		for _, pays := range c.S {
+			for sym := range pays {
+				if Sym(sym) != scat {
+					lrtp += pays[sym].Load()
+				} else {
+					srtp += pays[sym].Load()
+				}
 			}
 		}
 	}

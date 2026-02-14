@@ -6,6 +6,11 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
+const (
+	sn         = 11   // number of symbols
+	wild, scat = 1, 2 // wild & scatter symbol IDs
+)
+
 // Remark: bonus reels are not specified in the game rules,
 // but are presented as is.
 var ReelsBon slot.Reelx
@@ -13,7 +18,7 @@ var ReelsBon slot.Reelx
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
-var LinePay = [11][5]float64{
+var LinePay = [sn][5]float64{
 	{},                     //  1 wild    (2, 3, 4, 5 reels only)
 	{},                     //  2 scatter (1, 3, 5 reels only)
 	{0, 10, 50, 200, 1000}, //  3 man
@@ -51,8 +56,6 @@ func (g *Game) Clone() slot.SlotGeneric {
 	var clone = *g
 	return &clone
 }
-
-const wild, scat = 1, 2
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	g.ScanLined(wins)

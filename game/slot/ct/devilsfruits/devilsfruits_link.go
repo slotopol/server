@@ -23,7 +23,7 @@ var Info = game.AlgInfo{
 			game.GPwmult,
 		SX: 3,
 		SY: 3,
-		SN: len(LinePay),
+		SN: sn,
 		LN: len(BetLines),
 		BN: 0,
 	},

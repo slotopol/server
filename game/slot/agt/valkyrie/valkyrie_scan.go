@@ -13,7 +13,7 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame(sp.Sel)
 	g.FSR = 15 // set free spins mode
-	var s slot.StatGeneric
+	var s = slot.NewStatGeneric(sn, 5)
 
 	var calc = func(w io.Writer) float64 {
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
@@ -28,7 +28,7 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 	func() {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		slot.BruteForce5x3Big(ctx2, sp, &s, g, reels.Reel(1), ReelBig, reels.Reel(5))
+		slot.BruteForce5x3Big(ctx2, sp, s, g, reels.Reel(1), ReelBig, reels.Reel(5))
 	}()
 	return calc(os.Stdout)
 }
@@ -42,7 +42,7 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 	fmt.Printf("*regular games calculations*\n")
 	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame(sp.Sel)
-	var s slot.StatGeneric
+	var s = slot.NewStatGeneric(sn, 5)
 
 	var calc = func(w io.Writer) float64 {
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
@@ -56,5 +56,5 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 		return rtp
 	}
 
-	return slot.ScanReelsCommon(ctx, sp, &s, g, reels, calc)
+	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
 }

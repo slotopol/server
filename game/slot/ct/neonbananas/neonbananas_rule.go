@@ -6,10 +6,20 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
+const (
+	sn                        = 13         // number of symbols
+	wild, scat1, scat2, lssym = 1, 2, 3, 4 // wild & scatter symbol IDs
+
+	bbid = 1 // bananas bonus id
+	lsb1 = 2 // lucky slot bonus id for 3 symbols
+	lsb3 = 3 // lucky slot bonus id for 4 symbols
+	lsb6 = 4 // lucky slot bonus id for 5 symbols
+)
+
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
-var LinePay = [13][5]float64{
+var LinePay = [sn][5]float64{
 	{0, 10, 200, 2000, 10000}, //  1 seven
 	{},                        //  2 dollar
 	{},                        //  3 banana
@@ -55,14 +65,6 @@ func (g *Game) Clone() slot.SlotGeneric {
 	var clone = *g
 	return &clone
 }
-
-const (
-	bbid = 1 // bananas bonus id
-	lsb1 = 2 // lucky slot bonus id for 3 symbols
-	lsb3 = 3 // lucky slot bonus id for 4 symbols
-	lsb6 = 4 // lucky slot bonus id for 5 symbols
-)
-const wild, scat1, scat2, lssym = 1, 2, 3, 4
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	g.ScanLined(wins)

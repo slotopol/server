@@ -33,7 +33,7 @@ func (s *Stat) Update(wins slot.Wins) (pay float64) {
 	for _, wi := range wins {
 		if wi.Pay != 0 {
 			var p = wi.Pay * wi.MP
-			s.S[wi.Sym].Add(p)
+			s.S[wi.Sym][wi.Num].Add(p)
 			pay += p
 		}
 		if wi.FS != 0 {

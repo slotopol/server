@@ -11,7 +11,9 @@ import (
 func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame(sp.Sel)
-	var s slot.StatGeneric
+	var s = slot.NewStatGeneric(sn, 5)
+	s.C[scat] = make([]slot.Uint64, 15+1)
+	s.S[scat] = make([]slot.Float64, 15+1)
 
 	var calc = func(w io.Writer) float64 {
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
@@ -26,5 +28,5 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 		return rtp
 	}
 
-	return slot.ScanReelsCommon(ctx, sp, &s, g, reels, calc)
+	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
 }

@@ -15,7 +15,7 @@ const Ebon = 50
 func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame()
-	var s slot.StatCascade
+	var s = slot.NewStatCascade(sn, 5)
 
 	var calc = func(w io.Writer) float64 {
 		var N1 = float64(s.Casc[0].N.Load())
@@ -39,5 +39,5 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 		return rtp
 	}
 
-	return slot.ScanReelsCommon(ctx, sp, &s, g, reels, calc)
+	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
 }

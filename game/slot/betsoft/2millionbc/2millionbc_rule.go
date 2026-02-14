@@ -6,12 +6,20 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
+const (
+	sn                   = 13         // number of symbols
+	scat, acorn, diamond = 11, 12, 13 // wild & scatter symbol IDs
+
+	acbn = 1 // acorn bonus
+	dlbn = 2 // diamond lion bonus
+)
+
 var ReelsBon slot.Reelx
 
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
-var LinePay = [13][5]float64{
+var LinePay = [sn][5]float64{
 	{0, 30, 100, 300, 500}, //  1 girl
 	{0, 15, 75, 200, 400},  //  2 lion
 	{0, 10, 60, 150, 300},  //  3 bee
@@ -32,11 +40,6 @@ var ScatFreespin = [5]int{0, 0, 4, 12, 20} // 11 fire
 
 // Bet lines
 var BetLines = slot.BetLinesNetEnt5x3[:]
-
-const (
-	acbn = 1 // acorn bonus
-	dlbn = 2 // diamond lion bonus
-)
 
 type Game struct {
 	slot.Grid5x3 `yaml:",inline"`
@@ -61,8 +64,6 @@ func (g *Game) Clone() slot.SlotGeneric {
 	var clone = *g
 	return &clone
 }
-
-const scat, acorn, diamond = 11, 12, 13
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	g.ScanLined(wins)
