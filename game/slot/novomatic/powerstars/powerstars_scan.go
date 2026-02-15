@@ -67,7 +67,7 @@ func BruteForceStars(ctx context.Context, s slot.Simulator, g *Game, reels slot.
 func CalcStatStars(ctx context.Context, sp *slot.ScanPar, wc2, wc3, wc4 bool) float64 {
 	var reels = Reels
 	var g = NewGame(sp.Sel)
-	var s slot.StatGeneric
+	var s = slot.NewStatGeneric(sn, 5)
 
 	var wcsym = func(wc bool) byte {
 		if wc {
@@ -89,8 +89,8 @@ func CalcStatStars(ctx context.Context, sp *slot.ScanPar, wc2, wc3, wc4 bool) fl
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		var total = float64(reels.Reshuffles())
-		go slot.ProgressBF(ctx2, sp, &s, calc, total)
-		BruteForceStars(ctx2, &s, g, reels, wc2, wc3, wc4)
+		go slot.ProgressBF(ctx2, sp, s, calc, total)
+		BruteForceStars(ctx2, s, g, reels, wc2, wc3, wc4)
 		var dur = time.Since(t0)
 		var N = s.Count()
 		fmt.Printf("completed %.5g%% (%d), time spent %v                    \n",

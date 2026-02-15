@@ -25,7 +25,7 @@ var Info = game.AlgInfo{
 			game.GPrwild,
 		SX: 5,
 		SY: 3,
-		SN: len(LinePay),
+		SN: sn,
 		LN: len(BetLines),
 		BN: 1,
 	},

@@ -22,7 +22,7 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) (rtp, num float64) {
 			panic("scatters have no pays")
 		}
 		var rtpsym = lrtp + srtp
-		fgf = N / float64(s.FHC.Load())
+		fgf = N / float64(s.FGH.Load())
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", fgf)
 		fmt.Fprintf(w, "RTP = rtp(sym) = %.6f%%\n", rtpsym*100)
@@ -50,7 +50,7 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 			panic("scatters have no pays")
 		}
 		var rtpsym = lrtp + srtp
-		var fgf = N / float64(s.FHC.Load())
+		var fgf = N / float64(s.FGH.Load())
 		var rtp = rtpsym + rtpfs*numfs/fgf
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", fgf)

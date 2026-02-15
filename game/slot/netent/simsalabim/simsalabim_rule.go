@@ -5,12 +5,18 @@ import (
 	"github.com/slotopol/server/game/slot/netent/diamonddogs"
 )
 
+const (
+	sn              = 11        // number of symbols
+	bon, wild, scat = 9, 10, 11 // wild & scatter symbol IDs
+	ne12            = 1         // bonus ID
+)
+
 var ReelsBon slot.Reelx
 
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
-var LinePay = [11][5]float64{
+var LinePay = [sn][5]float64{
 	{0, 0, 50, 150, 1000},   //  1 hat
 	{0, 0, 25, 100, 500},    //  2 chest
 	{0, 0, 15, 75, 300},     //  3 cell
@@ -33,10 +39,6 @@ var ScatFreespin = [5]int{0, 0, 10, 20, 30} // 11 scatter
 // Bet lines
 var BetLines = slot.BetLinesNetEnt5x3[:]
 
-const (
-	ne12 = 1 // bonus ID
-)
-
 type Game struct {
 	slot.Grid5x3 `yaml:",inline"`
 	slot.Slotx   `yaml:",inline"`
@@ -58,8 +60,6 @@ func (g *Game) Clone() slot.SlotGeneric {
 	var clone = *g
 	return &clone
 }
-
-const bon, wild, scat = 9, 10, 11
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	g.ScanLined(wins)

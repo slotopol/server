@@ -139,17 +139,21 @@ type StatCounter struct {
 	C   Counts[Uint64]  // hit counter
 	S   Counts[Float64] // sum of pays by symbols
 	FSC Uint64          // free spins count
-	FHC Uint64          // free games hits count
-	BHC [8]Uint64       `yaml:",flow"` // bonus hits count
-	JHC [4]Uint64       `yaml:",flow"` // jackpot hits count
+	FGH Uint64          // free games hits count
+	BH  [8]Uint64       `yaml:",flow"` // bonus hits count
+	JH  [4]Uint64       `yaml:",flow"` // jackpot hits count
 }
 
-func (c *StatCounter) SymPays(sn, pn int) {
+func (c *StatCounter) SymDim(sym Sym, pn int) {
+	c.C[sym] = make([]Uint64, pn+1)
+	c.S[sym] = make([]Float64, pn+1)
+}
+
+func (c *StatCounter) CntDim(sn, pn int) {
 	c.C = make([][]Uint64, sn+1)
 	c.S = make([][]Float64, sn+1)
-	for i := range c.S {
-		c.C[i] = make([]Uint64, pn+1)
-		c.S[i] = make([]Float64, pn+1)
+	for sym := range c.S {
+		c.SymDim(Sym(sym), pn)
 	}
 }
 
@@ -163,13 +167,13 @@ func (c *StatCounter) Update(wins Wins) (pay float64) {
 		}
 		if wi.FS != 0 {
 			c.FSC.Add(uint64(wi.FS))
-			c.FHC.Inc()
+			c.FGH.Inc()
 		}
 		if wi.BID != 0 {
-			c.BHC[wi.BID].Inc()
+			c.BH[wi.BID].Inc()
 		}
 		if wi.JID != 0 {
-			c.JHC[wi.JID].Inc()
+			c.JH[wi.JID].Inc()
 		}
 	}
 	c.N.Inc()
@@ -204,7 +208,7 @@ var _ Simulator = (*StatGeneric)(nil)
 
 func NewStatGeneric(sn, pn int) *StatGeneric {
 	var s StatGeneric
-	s.SymPays(sn, pn)
+	s.CntDim(sn, pn)
 	return &s
 }
 
@@ -277,20 +281,20 @@ func (s *StatGeneric) FSQ() (q float64, sq float64) {
 
 // Quantifier of free games per reshuffles.
 func (s *StatGeneric) FGQ() float64 {
-	return float64(s.FHC.Load()) / s.Count()
+	return float64(s.FGH.Load()) / s.Count()
 }
 
-// Free Games Frequency: average number of reshuffles per free games hit.
+// Free Games Frequency: average number of reshuffles per free games hits.
 func (s *StatGeneric) FGF() float64 {
-	return s.Count() / float64(s.FHC.Load())
+	return s.Count() / float64(s.FGH.Load())
 }
 
 func (s *StatGeneric) BonusHitsF(bid int) float64 {
-	return float64(s.BHC[bid].Load())
+	return float64(s.BH[bid].Load())
 }
 
 func (s *StatGeneric) JackHitsF(jid int) float64 {
-	return float64(s.JHC[jid].Load())
+	return float64(s.JH[jid].Load())
 }
 
 func (s *StatGeneric) Simulate(g SlotGame, reels Reelx, wins *Wins) {
@@ -314,13 +318,13 @@ var _ Simulator = (*StatCascade)(nil)
 
 func NewStatCascade(sn, pn int) *StatCascade {
 	var s StatCascade
-	s.SymPays(sn, pn)
+	s.CntDim(sn, pn)
 	return &s
 }
 
-func (s *StatCascade) SymPays(sn, pn int) {
+func (s *StatCascade) CntDim(sn, pn int) {
 	for i := range FallLimit {
-		s.Casc[i].SymPays(sn, pn)
+		s.Casc[i].CntDim(sn, pn)
 	}
 }
 
@@ -343,7 +347,7 @@ func (s *StatCascade) SumFreeCount() uint64 {
 func (s *StatCascade) SumFreeHits() uint64 {
 	var sum uint64
 	for i := range FallLimit {
-		sum += s.Casc[i].FHC.Load()
+		sum += s.Casc[i].FGH.Load()
 	}
 	return sum
 }
@@ -351,7 +355,7 @@ func (s *StatCascade) SumFreeHits() uint64 {
 func (s *StatCascade) SumBonusHits(bid int) uint64 {
 	var sum uint64
 	for i := range FallLimit {
-		sum += s.Casc[i].BHC[bid].Load()
+		sum += s.Casc[i].BH[bid].Load()
 	}
 	return sum
 }
@@ -359,7 +363,7 @@ func (s *StatCascade) SumBonusHits(bid int) uint64 {
 func (s *StatCascade) SumJackHits(jid int) uint64 {
 	var sum uint64
 	for i := range FallLimit {
-		sum += s.Casc[i].JHC[jid].Load()
+		sum += s.Casc[i].JH[jid].Load()
 	}
 	return sum
 }

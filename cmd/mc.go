@@ -145,7 +145,7 @@ func init() {
 	mcflags.Int("mt", 0, "multithreaded scanning threads number")
 	mcflags.StringP("game", "g", "", "identifier of game to scan")
 	mcflags.Float64P("rtp", "r", cfg.DefMRTP, "master RTP of game")
-	mcflags.IntP("sel", "l", 1, "number of selected bet lines, 0 for all")
+	mcflags.IntP("sel", "l", 0, "number of selected bet lines, 0 for all")
 	mcflags.Uint64P("total", "n", 1, "Monte Carlo method iterations number, in millions")
 	mcflags.Float64("prec", 0.1, "precision of result for Monte Carlo method, in percents")
 	mcflags.Float64("conf", 95, "confidence probability, in percents")

@@ -6,10 +6,14 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
+const (
+	sn = 13 // number of symbols
+)
+
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
-var LinePay = [7][5]float64{
+var LinePay = [sn][5]float64{
 	{0, 0, 100, 1000, 5000}, // 1 seven
 	{0, 0, 50, 200, 500},    // 2 bells
 	{0, 0, 50, 200, 500},    // 3 melon

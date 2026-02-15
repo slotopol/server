@@ -42,7 +42,7 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame(sp.Sel)
 	g.FSR = 15 // set free spins mode
-	var s slot.StatGeneric
+	var s = slot.NewStatGeneric(sn, 5)
 
 	var calc = func(w io.Writer) float64 {
 		var N = s.Count()
@@ -63,7 +63,7 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 		return rtp
 	}
 
-	return slot.ScanReelsCommon(ctx, sp, &s, g, reels, calc)
+	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
 }
 
 func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
@@ -79,7 +79,7 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame(sp.Sel)
 	g.FSR = 0 // no free spins
-	var s slot.StatGeneric
+	var s = slot.NewStatGeneric(sn, 5)
 
 	var calc = func(w io.Writer) float64 {
 		var N = s.Count()
@@ -100,5 +100,5 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 		return rtp
 	}
 
-	return slot.ScanReelsCommon(ctx, sp, &s, g, reels, calc)
+	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
 }

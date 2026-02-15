@@ -12,8 +12,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame(sp.Sel)
 	var s = slot.NewStatGeneric(sn, 5)
-	s.C[scat] = make([]slot.Uint64, 15+1)
-	s.S[scat] = make([]slot.Float64, 15+1)
+	s.SymDim(scat, 15)
 
 	var calc = func(w io.Writer) float64 {
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)

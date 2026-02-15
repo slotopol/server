@@ -56,7 +56,7 @@ func BruteForceEuro(ctx context.Context, s slot.Simulator, g *Game, reels slot.R
 func CalcStatEuro(ctx context.Context, sp *slot.ScanPar, x, y slot.Pos) float64 {
 	var reels = Reels
 	var g = NewGame(sp.Sel)
-	var s slot.StatGeneric
+	var s = slot.NewStatGeneric(sn, 5)
 
 	fmt.Printf("calculations of euro at [%d,%d]\n", x, y)
 
@@ -71,8 +71,8 @@ func CalcStatEuro(ctx context.Context, sp *slot.ScanPar, x, y slot.Pos) float64 
 		var t0 = time.Now()
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		go slot.ProgressBF(ctx2, sp, &s, calc, float64(reels.Reshuffles()))
-		BruteForceEuro(ctx2, &s, g, reels, x, y)
+		go slot.ProgressBF(ctx2, sp, s, calc, float64(reels.Reshuffles()))
+		BruteForceEuro(ctx2, s, g, reels, x, y)
 		return time.Since(t0)
 	}()
 	return calc(os.Stdout)

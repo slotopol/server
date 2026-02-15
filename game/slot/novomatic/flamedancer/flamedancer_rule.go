@@ -6,10 +6,16 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
+const (
+	sn         = 11    // number of symbols
+	wild, scat = 1, 11 // wild & scatter symbol IDs
+	wilds      = 5
+)
+
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
-var LinePay = [12][5]float64{
+var LinePay = [sn][5]float64{
 	{},                     //  1 wild
 	{0, 0, 100, 400, 2000}, //  2 volcano
 	{0, 0, 40, 100, 750},   //  3 drums
@@ -50,9 +56,6 @@ func (g *Game) Clone() slot.SlotGeneric {
 	var clone = *g
 	return &clone
 }
-
-const wild, scat = 1, 11
-const wilds = 5
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	if g.FSR == 0 {

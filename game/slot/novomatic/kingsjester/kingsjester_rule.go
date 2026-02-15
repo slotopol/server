@@ -6,6 +6,12 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
+const (
+	sn               = 14       // number of symbols
+	jest, wild, scat = 1, 2, 14 // wild & scatter symbol IDs
+	kjj1, kjj2       = 1, 2     // jackpot ID
+)
+
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 var JackMap slot.ReelsMap[[2]float64]
@@ -55,11 +61,6 @@ func (g *Game) Clone() slot.SlotGeneric {
 	var clone = *g
 	return &clone
 }
-
-const (
-	kjj1, kjj2       = 1, 2     // jackpot ID
-	jest, wild, scat = 1, 2, 14 // symbols
-)
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	g.ScanLined(wins)

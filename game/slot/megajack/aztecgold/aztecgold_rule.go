@@ -4,12 +4,26 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
+const (
+	sn              = 12         // number of symbols
+	wild, scat, bon = 11, 10, 12 // wild & scatter symbol IDs
+	mjj             = 1          // jackpot ID
+
+	mje1 = 1 // Eldorado1
+	mje3 = 2 // Eldorado3
+	mje6 = 3 // Eldorado6
+	mje9 = 4 // Eldorado9
+	mjm  = 5 // Monopoly
+	mjc  = 6 // Champagne
+	mjap = 7 // AztecPyramid
+)
+
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 var JackMap = slot.ReelsMap[float64]{}
 
 // Lined payment.
-var LinePay = [12][5]float64{
+var LinePay = [sn][5]float64{
 	{0, 0, 5, 10, 100},     //  1 tomat
 	{0, 0, 5, 10, 100},     //  2 corn
 	{0, 0, 5, 10, 100},     //  3 lama
@@ -26,16 +40,6 @@ var LinePay = [12][5]float64{
 
 // Scatters payment.
 var ScatPay = [5]float64{0, 0, 2, 10, 50} // 10 scatter
-
-const (
-	mje1 = 1 // Eldorado1
-	mje3 = 2 // Eldorado3
-	mje6 = 3 // Eldorado6
-	mje9 = 4 // Eldorado9
-	mjm  = 5 // Monopoly
-	mjc  = 6 // Champagne
-	mjap = 7 // AztecPyramid
-)
 
 // Bet lines
 var BetLines = slot.BetLinesMgj[:]
@@ -61,11 +65,6 @@ func (g *Game) Clone() slot.SlotGeneric {
 	var clone = *g
 	return &clone
 }
-
-const (
-	mjj             = 1 // jackpot ID
-	wild, scat, bon = 11, 10, 12
-)
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	g.ScanLined(wins)

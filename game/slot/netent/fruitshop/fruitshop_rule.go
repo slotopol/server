@@ -7,10 +7,15 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
+const (
+	sn   = 11 // number of symbols
+	wild = 1  // wild symbol IDs
+)
+
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
-var LinePay = [11][5]float64{
+var LinePay = [sn][5]float64{
 	{},                    //  1 wild (2, 3, 4 reels only)
 	{0, 5, 25, 300, 2000}, //  2 cherry
 	{0, 0, 25, 150, 1000}, //  3 plum
@@ -25,7 +30,7 @@ var LinePay = [11][5]float64{
 }
 
 // Line freespins table on regular games
-var LineFreespinReg = [11][5]int{
+var LineFreespinReg = [sn][5]int{
 	{},              //  1 wild (2, 3, 4 reels only)
 	{0, 1, 1, 2, 5}, //  2 cherry
 	{0, 0, 1, 2, 5}, //  3 plum
@@ -40,7 +45,7 @@ var LineFreespinReg = [11][5]int{
 }
 
 // Line freespins table on bonus games
-var LineFreespinBon = [11][5]int{
+var LineFreespinBon = [sn][5]int{
 	{},              //  1 wild (2, 3, 4 reels only)
 	{0, 1, 1, 2, 5}, //  2 cherry
 	{0, 0, 1, 2, 5}, //  3 plum
@@ -78,8 +83,6 @@ func (g *Game) Clone() slot.SlotGeneric {
 	var clone = *g
 	return &clone
 }
-
-const wild = 1
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	g.ScanLined(wins)

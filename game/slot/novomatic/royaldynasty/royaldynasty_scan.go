@@ -13,13 +13,13 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 	var g = NewGame(sp.Sel)
 	g.FSR = 35 // set free spins mode
 	g.TS = scat1
-	var s slot.StatGeneric
+	var s = slot.NewStatGeneric(sn, 5)
 
 	var calc = func(w io.Writer) float64 {
 		var N = s.Count()
 		var lrtp, srtp = s.RTPsym2(g.Cost(), scat1, scat2)
 		var rtpsym = lrtp + srtp
-		var q = float64(s.FHC.Load()*35) / N
+		var q = float64(s.FGH.Load()*35) / N
 		var sq = 1 / (1 - q)
 		var rtp = sq * rtpsym
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
@@ -29,7 +29,7 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 		return rtp
 	}
 
-	return slot.ScanReelsCommon(ctx, sp, &s, g, reels, calc)
+	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
 }
 
 func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
@@ -41,13 +41,13 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 	fmt.Printf("*regular reels calculations*\n")
 	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame(sp.Sel)
-	var s slot.StatGeneric
+	var s = slot.NewStatGeneric(sn, 5)
 
 	var calc = func(w io.Writer) float64 {
 		var N = s.Count()
 		var lrtp, srtp = s.RTPsym2(g.Cost(), scat1, scat2)
 		var rtpsym = lrtp + srtp
-		var q = float64(s.FHC.Load()*35) / N
+		var q = float64(s.FGH.Load()*35) / N
 		var sq = 1 / (1 - q)
 		var rtp = rtpsym + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
@@ -57,5 +57,5 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 		return rtp
 	}
 
-	return slot.ScanReelsCommon(ctx, sp, &s, g, reels, calc)
+	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
 }

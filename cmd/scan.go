@@ -124,7 +124,7 @@ func init() {
 	scanflags.Int("mt", 0, "multithreaded scanning threads number")
 	scanflags.StringP("game", "g", "", "identifier of game to scan")
 	scanflags.Float64P("rtp", "r", cfg.DefMRTP, "master RTP of game")
-	scanflags.IntP("sel", "l", 1, "number of selected bet lines, 0 for all")
+	scanflags.IntP("sel", "l", 0, "number of selected bet lines, 0 for all")
 
 	scanCmd.MarkFlagRequired("game")
 }

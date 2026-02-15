@@ -6,12 +6,19 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
+const (
+	sn   = 7 // number of symbols
+	ssj1 = 1
+	ssj2 = 2
+	ssj3 = 3
+)
+
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 var JackMap slot.ReelsMap[[3]float64]
 
 // Lined payment.
-var LinePay = [7][5]float64{
+var LinePay = [sn][5]float64{
 	{0, 10, 100, 1000, 10000}, // 1 seven
 	{0, 0, 40, 200, 500},      // 2 melon
 	{0, 0, 40, 200, 500},      // 3 grapes
@@ -45,12 +52,6 @@ func (g *Game) Clone() slot.SlotGeneric {
 	var clone = *g
 	return &clone
 }
-
-const (
-	ssj1 = 1
-	ssj2 = 2
-	ssj3 = 3
-)
 
 func (g *Game) Filled() slot.Sym {
 	var sym = g.Grid[4][3]

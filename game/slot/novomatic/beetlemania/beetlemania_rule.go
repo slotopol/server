@@ -4,12 +4,20 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
+const (
+	sn         = 11    // number of symbols
+	wild, scat = 1, 10 // wild & scatter symbol IDs
+	jazz       = 11
+
+	jbonus = 1 // jazzbee freespins bonus
+)
+
 var ReelsBon slot.Reelx
 
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
-var LinePay = [11][5]float64{
+var LinePay = [sn][5]float64{
 	{0, 10, 80, 1000, 5000}, //  1 bee
 	{0, 5, 30, 200, 1000},   //  2 snail
 	{0, 5, 25, 100, 500},    //  3 fly
@@ -25,10 +33,6 @@ var LinePay = [11][5]float64{
 
 // Scatters payment.
 var ScatPay = [5]float64{0, 0, 2, 15, 50} // 10 note
-
-const (
-	jbonus = 1 // jazzbee freespins bonus
-)
 
 // Bet lines
 var BetLines = slot.BetLinesNvm10[:]
@@ -54,9 +58,6 @@ func (g *Game) Clone() slot.SlotGeneric {
 	var clone = *g
 	return &clone
 }
-
-const wild, scat = 1, 10
-const jazz = 11
 
 func (g *Game) Scanner(wins *slot.Wins) error {
 	g.ScanLined(wins)
