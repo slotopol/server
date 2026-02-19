@@ -62,9 +62,9 @@ func CalcStatEuro(ctx context.Context, sp *slot.ScanPar, x, y slot.Pos) float64 
 
 	var calc = func(w io.Writer) float64 {
 		var N, S, _ = s.NSQ(g.Cost())
-		var rtp = S / N
-		fmt.Fprintf(w, "RTP[%d,%d] = %.6f%%\n", x, y, rtp*100)
-		return rtp
+		var µ = S / N
+		fmt.Fprintf(w, "RTP[%d,%d] = %.6f%%\n", x, y, µ*100)
+		return µ
 	}
 
 	func() time.Duration {

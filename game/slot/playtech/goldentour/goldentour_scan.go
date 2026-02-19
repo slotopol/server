@@ -29,12 +29,12 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 
 	var calc = func(w io.Writer) float64 {
 		var N, S, _ = s.NSQ(g.Cost())
-		var rtpsym = S / N
+		var µ = S / N
 		var qgolfbn = s.BonusHitsF(golfbon) / N / float64(g.Sel)
 		var rtpgolfbn = Egolfbn * qgolfbn
-		var rtp = rtpsym + rtpgolfbn
+		var rtp = µ + rtpgolfbn
 		fmt.Fprintf(w, "golf bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", N/s.BonusHitsF(golfbon), rtpgolfbn*100)
-		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(golf) = %.6f%%\n", rtpsym*100, rtpgolfbn*100, rtp*100)
+		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(golf) = %.6f%%\n", µ*100, rtpgolfbn*100, rtp*100)
 		return rtp
 	}
 

@@ -60,17 +60,25 @@ var VIname6 = map[int]string{
 	6: "Very High",
 }
 
+// Elbow point - point on the graph of the error versus the number of spins
+// where the curve has maximum curvature.
+func ElbowPoint(vi float64) (Nopt, Δopt float64) {
+	const Kelbow = 1.3076604860118305912292316943402 // math.Pow(5, 1/6)
+	Nopt, Δopt = math.Pow(vi*vi/5, 1.0/3.0), Kelbow*math.Pow(vi, 2.0/3.0)
+	return
+}
+
 // Index of Convergence. The number of spins after which,
 // with a given confidence, the player will not be in profit on
 // this particular slot machine.
-func CI(confidence, rtp, sigma float64) float64 {
-	var nh = GetZ(confidence) * sigma / (1 - rtp)
+func CI(confidence, µ, sigma float64) float64 {
+	var nh = GetZ(confidence) * sigma / (1 - µ)
 	return nh * nh
 }
 
 // Bankroll management formula to protect player against ruin for N spins.
-func BankrollPlayer(confidence, rtp, sigma, N float64) float64 {
-	return GetZ(confidence)*sigma*math.Sqrt(N) + N*(1-rtp)
+func BankrollPlayer(confidence, µ, sigma, N float64) float64 {
+	return GetZ(confidence)*sigma*math.Sqrt(N) + N*(1-µ)
 }
 
 type GameGroup struct {

@@ -38,4 +38,5 @@ EXPOSE 8080
 
 # Run application with full path representation.
 # Without shell to get signal for graceful shutdown.
-ENTRYPOINT ["/go/bin/app", "-v", "web"]
+ENTRYPOINT ["/go/bin/app"]
+CMD ["-v", "web"]

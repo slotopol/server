@@ -88,6 +88,13 @@ var scanCmd = &cobra.Command{
 		}
 		sp.TN = tn
 
+		var c float64
+		if c, err = scanflags.GetFloat64("conf"); err != nil {
+			log.Fatalln(err.Error())
+			return
+		}
+		sp.Conf = c / 100
+
 		if sp.MRTP, err = scanflags.GetFloat64("rtp"); err != nil {
 			log.Fatalln(err.Error())
 			return
@@ -125,6 +132,7 @@ func init() {
 	scanflags.StringP("game", "g", "", "identifier of game to scan")
 	scanflags.Float64P("rtp", "r", cfg.DefMRTP, "master RTP of game")
 	scanflags.IntP("sel", "l", 0, "number of selected bet lines, 0 for all")
+	scanflags.Float64("conf", 95, "confidence probability, in percents")
 
 	scanCmd.MarkFlagRequired("game")
 }

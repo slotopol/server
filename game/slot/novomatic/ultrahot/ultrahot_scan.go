@@ -2,7 +2,6 @@ package ultrahot
 
 import (
 	"context"
-	"fmt"
 	"io"
 
 	"github.com/slotopol/server/game/slot"
@@ -13,11 +12,9 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 	var g = NewGame(sp.Sel)
 	var s = slot.NewStatGeneric(sn, 3)
 
-	var calc = func(w io.Writer) float64 {
-		var N, S, _ = s.NSQ(g.Cost())
-		var rtp = S / N
-		fmt.Fprintf(w, "RTP = %.6f%%\n", rtp*100)
-		return rtp
+	var calc = func(w io.Writer) (rtp float64) {
+		rtp, _ = slot.Parsheet_generic_simple(w, sp, s, g.Cost())
+		return
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)

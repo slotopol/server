@@ -88,9 +88,13 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 		}
 
 		if pay := LinePay[syml-1][numl-1]; pay > 0 {
+			var mm float64 = 1 // mult mode
+			if g.FSR > 0 {
+				mm = 2
+			}
 			*wins = append(*wins, slot.WinItem{
 				Pay: g.Bet * pay,
-				MP:  1,
+				MP:  mm,
 				Sym: syml,
 				Num: numl,
 				LI:  li + 1,
@@ -103,10 +107,14 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
 	if count := g.SymNum(scat); count >= 3 {
+		var mm float64 = 1 // mult mode
+		if g.FSR > 0 {
+			mm = 2
+		}
 		var pay = ScatPay[count-1]
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * float64(g.Sel) * pay,
-			MP:  1,
+			MP:  mm,
 			Sym: scat,
 			Num: count,
 			XY:  g.SymPos(scat),

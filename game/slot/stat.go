@@ -182,16 +182,16 @@ func (c *StatCounter) Update(wins Wins) (pay float64) {
 
 func (c *StatCounter) SymS(sym Sym) (S float64) {
 	var pays = c.S[sym]
-	for sym := range pays {
-		S += pays[sym].Load()
+	for i := range pays {
+		S += pays[i].Load()
 	}
 	return
 }
 
 func (c *StatCounter) SumS() (S float64) {
 	for _, pays := range c.S {
-		for sym := range pays {
-			S += pays[sym].Load()
+		for i := range pays {
+			S += pays[i].Load()
 		}
 	}
 	return
@@ -221,12 +221,12 @@ func (s *StatGeneric) Count() float64 {
 }
 
 func (s *StatGeneric) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
-	for _, pays := range s.S {
-		for sym := range pays {
+	for sym, pays := range s.S {
+		for i := range pays {
 			if Sym(sym) != scat {
-				lrtp += pays[sym].Load()
+				lrtp += pays[i].Load()
 			} else {
-				srtp += pays[sym].Load()
+				srtp += pays[i].Load()
 			}
 		}
 	}
@@ -237,12 +237,12 @@ func (s *StatGeneric) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
 }
 
 func (s *StatGeneric) RTPsym2(cost float64, scat1, scat2 Sym) (lrtp, srtp float64) {
-	for _, pays := range s.S {
-		for sym := range pays {
+	for sym, pays := range s.S {
+		for i := range pays {
 			if Sym(sym) != scat1 && Sym(sym) != scat2 {
-				lrtp += pays[sym].Load()
+				lrtp += pays[i].Load()
 			} else {
-				srtp += pays[sym].Load()
+				srtp += pays[i].Load()
 			}
 		}
 	}
@@ -323,8 +323,8 @@ func NewStatCascade(sn, pn int) *StatCascade {
 }
 
 func (s *StatCascade) CntDim(sn, pn int) {
-	for i := range FallLimit {
-		s.Casc[i].CntDim(sn, pn)
+	for cfn := range FallLimit {
+		s.Casc[cfn].CntDim(sn, pn)
 	}
 }
 
@@ -338,45 +338,45 @@ func (s *StatCascade) Count() float64 {
 
 func (s *StatCascade) SumFreeCount() uint64 {
 	var sum uint64
-	for i := range FallLimit {
-		sum += s.Casc[i].FSC.Load()
+	for cfn := range FallLimit {
+		sum += s.Casc[cfn].FSC.Load()
 	}
 	return sum
 }
 
 func (s *StatCascade) SumFreeHits() uint64 {
 	var sum uint64
-	for i := range FallLimit {
-		sum += s.Casc[i].FGH.Load()
+	for cfn := range FallLimit {
+		sum += s.Casc[cfn].FGH.Load()
 	}
 	return sum
 }
 
 func (s *StatCascade) SumBonusHits(bid int) uint64 {
 	var sum uint64
-	for i := range FallLimit {
-		sum += s.Casc[i].BH[bid].Load()
+	for cfn := range FallLimit {
+		sum += s.Casc[cfn].BH[bid].Load()
 	}
 	return sum
 }
 
 func (s *StatCascade) SumJackHits(jid int) uint64 {
 	var sum uint64
-	for i := range FallLimit {
-		sum += s.Casc[i].JH[jid].Load()
+	for cfn := range FallLimit {
+		sum += s.Casc[cfn].JH[jid].Load()
 	}
 	return sum
 }
 
 func (s *StatCascade) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
-	for i := range FallLimit {
-		var c = &s.Casc[i]
-		for _, pays := range c.S {
-			for sym := range pays {
+	for cfn := range FallLimit {
+		var c = &s.Casc[cfn]
+		for sym, pays := range c.S {
+			for i := range pays {
 				if Sym(sym) != scat {
-					lrtp += pays[sym].Load()
+					lrtp += pays[i].Load()
 				} else {
-					srtp += pays[sym].Load()
+					srtp += pays[i].Load()
 				}
 			}
 		}
@@ -389,8 +389,8 @@ func (s *StatCascade) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
 
 func (s *StatCascade) NSQ(cost float64) (N float64, S float64, Q float64) {
 	N = s.Count()
-	for i := range FallLimit {
-		S += s.Casc[i].SumS()
+	for cfn := range FallLimit {
+		S += s.Casc[cfn].SumS()
 	}
 	S /= cost
 	Q = s.Q.Load() / cost / cost
@@ -419,8 +419,8 @@ func (s *StatCascade) FGF() float64 {
 func (s *StatCascade) Mcascade() float64 {
 	var pay1 = s.Casc[0].SumS()
 	var pays float64
-	for i := range FallLimit {
-		var payi = s.Casc[i].SumS()
+	for cfn := range FallLimit {
+		var payi = s.Casc[cfn].SumS()
 		pays += payi
 		if payi == 0 {
 			break
@@ -442,22 +442,22 @@ func (s *StatCascade) ACL() float64 {
 func (s *StatCascade) Kfading() float64 {
 	var N1 = s.Casc[0].N.Load()
 	var Nn uint64
-	var i int
-	for i = range FallLimit {
-		var Ni = s.Casc[i].N.Load()
+	var cfn int
+	for cfn = range FallLimit {
+		var Ni = s.Casc[cfn].N.Load()
 		if Ni == 0 {
 			break
 		}
 		Nn = Ni
 	}
-	return math.Pow(float64(N1)/float64(Nn), 1/(float64(i)-1))
+	return math.Pow(float64(N1)/float64(Nn), 1/(float64(cfn)-1))
 }
 
 // Maximum number of cascades in avalanche.
 func (s *StatCascade) Ncascmax() int {
-	for i := range FallLimit {
-		if s.Casc[i].N.Load() == 0 {
-			return i
+	for cfn := range FallLimit {
+		if s.Casc[cfn].N.Load() == 0 {
+			return cfn
 		}
 	}
 	return FallLimit

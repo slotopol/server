@@ -79,9 +79,9 @@ func CalcStatStars(ctx context.Context, sp *slot.ScanPar, wc2, wc3, wc4 bool) fl
 
 	var calc = func(w io.Writer) float64 {
 		var N, S, _ = s.NSQ(g.Cost())
-		var rtp = S / N
-		fmt.Fprintf(w, "RTP[%c%c%c] = %.6f%%\n", wcsym(wc2), wcsym(wc3), wcsym(wc4), rtp*100)
-		return rtp
+		var µ = S / N
+		fmt.Fprintf(w, "RTP[%c%c%c] = %.6f%%\n", wcsym(wc2), wcsym(wc3), wcsym(wc4), µ*100)
+		return µ
 	}
 
 	func() {

@@ -2,7 +2,6 @@ package chillibomb
 
 import (
 	"context"
-	"fmt"
 	"io"
 
 	"github.com/slotopol/server/game/slot"
@@ -13,11 +12,9 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 	var g = NewGame(sp.Sel)
 	var s = slot.NewStatGeneric(sn, 5)
 
-	var calc = func(w io.Writer) float64 {
-		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
-		var rtpsym = lrtp + srtp
-		fmt.Fprintf(w, "RTP = %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
-		return rtpsym
+	var calc = func(w io.Writer) (rtp float64) {
+		rtp, _ = slot.Parsheet_generic_simple(w, sp, s, g.Cost())
+		return
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
