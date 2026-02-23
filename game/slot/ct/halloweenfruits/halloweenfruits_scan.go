@@ -15,7 +15,7 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 	var s = slot.NewStatGeneric(sn, 5)
 
 	var calc = func(w io.Writer) (rtp float64) {
-		rtp, _ = slot.Parsheet_generic_freegames(w, sp, s, g.Cost(), 15)
+		rtp, _ = slot.Parsheet_generic_freegames(w, sp, s, g.Cost(), 1, 15)
 		return
 	}
 

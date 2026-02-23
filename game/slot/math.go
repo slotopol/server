@@ -15,33 +15,31 @@ func CP(k float64) float64 {
 	return math.Erf(k / math.Sqrt2)
 }
 
-// Volatility Index Class with 3 gradations
-func VIclass3(vi float64) int {
+// Volatility Index Class with 3 gradations (Bulgarian school)
+func VIclass3(sigma float64) int {
 	switch {
-	case vi < 10:
+	case sigma < 3.5:
 		return 1
-	case vi < 25:
+	case sigma < 6.5:
 		return 2
 	default:
 		return 3
 	}
 }
 
-// Volatility Index Class with 6 gradations
-func VIclass6(vi float64) int {
+// Volatility Index Class with 5 gradations (Swedish school)
+func VIclass5(sigma float64) int {
 	switch {
-	case vi < 7:
-		return 1
-	case vi < 12:
-		return 2
-	case vi < 18:
-		return 3
-	case vi < 25:
-		return 4
-	case vi < 45:
-		return 5
+	case sigma < 2.5:
+		return 1 // low
+	case sigma < 3.5:
+		return 2 // low-mid
+	case sigma < 5.0:
+		return 3 // medium
+	case sigma < 8.0:
+		return 4 // mid-high
 	default:
-		return 6
+		return 5 // high
 	}
 }
 
@@ -51,13 +49,12 @@ var VIname3 = map[int]string{
 	3: "High",
 }
 
-var VIname6 = map[int]string{
+var VIname5 = map[int]string{
 	1: "Low",
 	2: "Medium-Low",
 	3: "Medium",
 	4: "Medium-High",
 	5: "High",
-	6: "Very High",
 }
 
 // Elbow point - point on the graph of the error versus the number of spins
