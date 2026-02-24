@@ -22,7 +22,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
-		fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackHitsF(lmj), N/s.JackHitsF(lmj))
+		fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackHits(lmj), N/s.JackHits(lmj))
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g*%.5g(sym) = %.6f%%\n", rtpsym*100, q, sq, rtpsym*100, rtp*100)
 		return rtp
 	}

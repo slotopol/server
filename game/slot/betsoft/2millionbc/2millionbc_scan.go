@@ -72,14 +72,14 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 		var q, sq = s.FSQ()
 		var qacbn = 1 / float64(len(reels.Reel(5)))
 		var rtpacbn = Eacbn * qacbn
-		var qdlbn = s.BonusHitsF(dlbn) / N / float64(g.Sel)
+		var qdlbn = s.BonusHits(dlbn) / N / float64(g.Sel)
 		var rtpdlbn = Edlbn * qdlbn
 		var rtp = rtpsym + rtpacbn + rtpdlbn + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "acorn bonuses: hit rate 1/%d, rtp = %.6f%%\n", len(reels.Reel(5)), rtpacbn*100)
-		fmt.Fprintf(w, "diamond lion bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", N/s.BonusHitsF(dlbn), rtpdlbn*100)
+		fmt.Fprintf(w, "diamond lion bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", N/s.BonusHits(dlbn), rtpdlbn*100)
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(acorn) + %.5g(dl) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym*100, rtpacbn*100, rtpdlbn*100, q, rtpfs*100, rtp*100)
 		return rtp
 	}

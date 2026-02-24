@@ -32,11 +32,11 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 		var N = s.Count()
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
-		var qcbn = s.BonusHitsF(cbn) / N / float64(g.Sel)
+		var qcbn = s.BonusHits(cbn) / N / float64(g.Sel)
 		var rtpcbn = Ecards * qcbn
 		var rtp = rtpsym + rtpcbn
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
-		fmt.Fprintf(w, "cards bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", N/s.BonusHitsF(cbn), rtpcbn*100)
+		fmt.Fprintf(w, "cards bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", N/s.BonusHits(cbn), rtpcbn*100)
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(cards) = %.6f%%\n", rtpsym*100, rtpcbn*100, rtp*100)
 		return rtp
 	}
@@ -63,13 +63,13 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
 		var q, _ = s.FSQ()
-		var qcbn = s.BonusHitsF(cbn) / N / float64(g.Sel)
+		var qcbn = s.BonusHits(cbn) / N / float64(g.Sel)
 		var rtpcbn = Ecards * qcbn
 		var rtp = rtpsym + rtpcbn + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
 		fmt.Fprintf(w, "free spins %d, q = %.6f\n", s.FSC.Load(), q)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
-		fmt.Fprintf(w, "cards bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", N/s.BonusHitsF(cbn), rtpcbn*100)
+		fmt.Fprintf(w, "cards bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", N/s.BonusHits(cbn), rtpcbn*100)
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(cards) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym*100, rtpcbn*100, q, rtpfs*100, rtp*100)
 		return rtp
 	}

@@ -25,6 +25,7 @@ func print_ci(w io.Writer, sp *ScanPar, rtp, sigma float64) {
 }
 
 func print_ranges(w io.Writer, sp *ScanPar, rtp, sigma float64) {
+	fmt.Fprintln(w)
 	fmt.Fprintf(w, "RTP ranges for spins number with confidence %.4g%%:\n", sp.Conf*100)
 	var N = []int{1e3, 1e4, 1e5, 1e6, 1e7}
 	var vi = GetZ(sp.Conf) * sigma
@@ -39,6 +40,44 @@ func print_ranges(w io.Writer, sp *ScanPar, rtp, sigma float64) {
 	}
 }
 
+func print_contribution_generic(w io.Writer, sp *ScanPar, s *StatGeneric, rtp float64) {
+	fmt.Fprintln(w)
+	fmt.Fprintf(w, "symbols contribution to payouts:\n")
+	fmt.Fprintf(w, "sym   rate   rtp\n")
+	var sum = s.SumPays()
+	var sym Sym
+	for sym = 1; sym < Sym(len(s.S)); sym++ {
+		var c = s.SymPays(sym) / sum
+		fmt.Fprintf(w, "%2d: %5.2f%% %5.2f%%\n", sym, c*100, rtp*c*100)
+	}
+}
+
+func print_contribution_cascade(w io.Writer, sp *ScanPar, s *StatCascade, rtp float64) {
+	fmt.Fprintln(w)
+	fmt.Fprintf(w, "symbols contribution to payouts:\n")
+	fmt.Fprintf(w, "sym   rate   rtp\n")
+	var sum = s.SumPays()
+	var sym Sym
+	for sym = 1; sym < Sym(len(s.Casc[0].S)); sym++ {
+		var c = s.SymPays(sym) / sum
+		fmt.Fprintf(w, "%2d: %5.2f%% %5.2f%%\n", sym, c*100, rtp*c*100)
+	}
+}
+
+func print_contribution_falls(w io.Writer, sp *ScanPar, s *StatCascade, rtp float64) {
+	fmt.Fprintln(w)
+	fmt.Fprintf(w, "cascades contribution to payouts:\n")
+	fmt.Fprintf(w, "fall  rate   rtp\n")
+	var sum = s.SumPays()
+	for cfn := range FallLimit {
+		var c = s.Casc[cfn].SumPays() / sum
+		fmt.Fprintf(w, "%2d: %5.2f%% %5.2f%%\n", cfn+1, c*100, rtp*c*100)
+		if c == 0 {
+			break
+		}
+	}
+}
+
 // Parsheet for simple generic slot (without free games and bonuses).
 func Parsheet_generic_simple(w io.Writer, sp *ScanPar, s *StatGeneric, cost float64) (float64, float64) {
 	var N, S, Q = s.NSQ(cost)
@@ -48,13 +87,14 @@ func Parsheet_generic_simple(w io.Writer, sp *ScanPar, s *StatGeneric, cost floa
 	print_vi(w, sp, sigma)
 	print_ci(w, sp, µ, sigma)
 	print_ranges(w, sp, µ, sigma)
+	print_contribution_generic(w, sp, s, µ)
 	return µ, sigma
 }
 
 // Parsheet for generic slot with freegames
 // with `m` multiplier on freegames (m=1 if no multiplier).
 // Each hit of freegames series has `L` freespins.
-func Parsheet_generic_freegames(w io.Writer, sp *ScanPar, s *StatGeneric, cost, m, L float64) (float64, float64) {
+func Parsheet_generic_freegames(w io.Writer, sp *ScanPar, s *StatGeneric, cost, m float64, L int) (float64, float64) {
 	var N, S, Q = s.NSQ(cost)
 	var µ = S / N
 	var Dsym = Q/N - µ*µ
@@ -62,8 +102,8 @@ func Parsheet_generic_freegames(w io.Writer, sp *ScanPar, s *StatGeneric, cost, 
 	var q, sq = s.FSQ()
 	var rtpfs = m * sq * µ
 	var rtp = µ + q*rtpfs
-	var Eser, Dser = L * sq, L * q * sq * sq * sq              // Galton-Watson process
-	var sigma = math.Sqrt(Dsym + m*m*Pfg*(Eser*Dsym+µ*µ*Dser)) // Wald's equation
+	var Eser, Dser = float64(L) * sq, float64(L) * q * sq * sq * sq // Galton-Watson process
+	var sigma = math.Sqrt(Dsym + m*m*Pfg*(Eser*Dsym+µ*µ*Dser))      // Wald's equation
 	fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µ*100, math.Sqrt(Dsym))
 	fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)
 	fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
@@ -71,6 +111,35 @@ func Parsheet_generic_freegames(w io.Writer, sp *ScanPar, s *StatGeneric, cost, 
 	print_vi(w, sp, sigma)
 	print_ci(w, sp, rtp, sigma)
 	print_ranges(w, sp, rtp, sigma)
+	print_contribution_generic(w, sp, s, rtp)
+	return rtp, sigma
+}
+
+func Parsheet_generic_fgseries(w io.Writer, sp *ScanPar, s *StatGeneric, cost, m float64, L []int, scat Sym) (float64, float64) {
+	var N, S, Q = s.NSQ(cost)
+	var µ = S / N
+	var Dsym = Q/N - µ*µ
+	var Pfg = make([]float64, len(L))
+	for i := range L {
+		Pfg[i] = float64(s.C[scat][i+1].Load()) / N
+	}
+	var ΣPL float64
+	for i, Li := range L {
+		var Pfgi = float64(s.C[scat][i+1].Load()) / N
+		ΣPL += Pfgi * float64(Li)
+	}
+	var q, sq = s.FSQ()
+	var rtpfs = m * sq * µ
+	var rtp = µ + q*rtpfs
+	var sigma = math.Sqrt(Dsym + m*m*ΣPL*(Dsym*sq+µ*µ*q*sq*sq*sq))
+	fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µ*100, math.Sqrt(Dsym))
+	fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)
+	fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
+	fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µ*100, q, rtpfs*100, rtp*100)
+	print_vi(w, sp, sigma)
+	print_ci(w, sp, rtp, sigma)
+	print_ranges(w, sp, rtp, sigma)
+	print_contribution_generic(w, sp, s, µ)
 	return rtp, sigma
 }
 
@@ -92,5 +161,7 @@ func Parsheet_cascade_simple(w io.Writer, sp *ScanPar, s *StatCascade, cost floa
 	print_vi(w, sp, sigma)
 	print_ci(w, sp, µ, sigma)
 	print_ranges(w, sp, µ, sigma)
+	print_contribution_cascade(w, sp, s, µ)
+	print_contribution_falls(w, sp, s, µ)
 	return µ, sigma
 }

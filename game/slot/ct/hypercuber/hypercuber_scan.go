@@ -26,7 +26,7 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 		var rtpfs = sq * µ
 		var rtp = µ + q*rtpfs
 		fmt.Fprintf(w, "symbols: rtp(sym) = %.6f%%\n", µ*100)
-		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.SumFreeCount(), q, sq)
+		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.SumFSC(), q, sq)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "fall[2] = %.10g, Ec2 = Kf2 = 1/%.5g\n", N2, N/N2)
 		fmt.Fprintf(w, "fall[3] = %.10g, Ec3 = 1/%.5g, Kf3 = 1/%.5g\n", N3, N/N3, N2/N3)
@@ -61,7 +61,7 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 		var q, sq = s.FSQ()
 		var rtp = µ + q*rtpfs
 		fmt.Fprintf(w, "symbols: rtp(sym) = %.6f%%\n", µ*100)
-		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.SumFreeCount(), q, sq)
+		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.SumFSC(), q, sq)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "fall[2] = %.10g, Ec2 = Kf2 = 1/%.5g\n", N2, N/N2)
 		fmt.Fprintf(w, "fall[3] = %.10g, Ec3 = 1/%.5g, Kf3 = 1/%.5g\n", N3, N/N3, N2/N3)

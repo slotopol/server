@@ -20,12 +20,12 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 	var calc = func(w io.Writer) float64 {
 		var N, S, _ = s.NSQ(g.Cost())
 		var µ = S / N
-		var qjazz = s.BonusHitsF(jbonus) / N
+		var qjazz = s.BonusHits(jbonus) / N
 		var jpow = math.Pow(2, 10*qjazz) // jazz power
 		var rtpjazz = µ*jpow - µ
 		var rtp = µ * jpow
 		fmt.Fprintf(w, "rtp(sym) = %.6f%%\n", µ*100)
-		fmt.Fprintf(w, "jazzbee bonuses: hit rate 1/%.5g, pow = %.5g, rtp = %.6f%%\n", N/s.BonusHitsF(jbonus), jpow, rtpjazz)
+		fmt.Fprintf(w, "jazzbee bonuses: hit rate 1/%.5g, pow = %.5g, rtp = %.6f%%\n", N/s.BonusHits(jbonus), jpow, rtpjazz)
 		fmt.Fprintf(w, "RTP = rtp(sym) + rtp(jazz) = %.5g + %.5g = %.6f%%\n", µ*100, rtpjazz*100, rtp*100)
 		return rtp
 	}

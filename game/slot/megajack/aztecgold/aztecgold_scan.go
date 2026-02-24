@@ -70,13 +70,13 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 		var N = s.Count()
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
-		var qmjap = s.BonusHitsF(mjap) / N
+		var qmjap = s.BonusHits(mjap) / N
 		var rtpmjap = Ebon * qmjap
 		var rtp = rtpsym + rtpmjap
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
-		fmt.Fprintf(w, "pyramid bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", N/s.BonusHitsF(mjap), rtpmjap*100)
-		if s.JackHitsF(mjj) > 0 {
-			fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackHitsF(mjj), N/s.JackHitsF(mjj))
+		fmt.Fprintf(w, "pyramid bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", N/s.BonusHits(mjap), rtpmjap*100)
+		if s.JackHits(mjj) > 0 {
+			fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackHits(mjj), N/s.JackHits(mjj))
 		}
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(mjap) = %.6f%%\n", rtpsym*100, rtpmjap*100, rtp*100)
 		return rtp

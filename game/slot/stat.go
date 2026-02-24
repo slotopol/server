@@ -180,18 +180,18 @@ func (c *StatCounter) Update(wins Wins) (pay float64) {
 	return
 }
 
-func (c *StatCounter) SymS(sym Sym) (S float64) {
+func (c *StatCounter) SymPays(sym Sym) (sum float64) {
 	var pays = c.S[sym]
 	for i := range pays {
-		S += pays[i].Load()
+		sum += pays[i].Load()
 	}
 	return
 }
 
-func (c *StatCounter) SumS() (S float64) {
+func (c *StatCounter) SumPays() (sum float64) {
 	for _, pays := range c.S {
 		for i := range pays {
-			S += pays[i].Load()
+			sum += pays[i].Load()
 		}
 	}
 	return
@@ -254,21 +254,9 @@ func (s *StatGeneric) RTPsym2(cost float64, scat1, scat2 Sym) (lrtp, srtp float6
 
 func (s *StatGeneric) NSQ(cost float64) (N float64, S float64, Q float64) {
 	N = s.Count()
-	S = s.SumS() / cost
+	S = s.SumPays() / cost
 	Q = s.Q.Load() / cost / cost
 	return
-}
-
-func (s *StatGeneric) SymVariance(cost float64) float64 {
-	var N, S, Q = s.NSQ(cost)
-	// another way: Q/N - S*S/N/N
-	return N*Q - S*S/N/N
-}
-
-func (s *StatGeneric) SymSigma(cost float64) float64 {
-	var N, S, Q = s.NSQ(cost)
-	// another way: math.Sqrt(Q/N - S*S/N/N)
-	return math.Sqrt(N*Q-S*S) / N
 }
 
 // Returns (q, sq), where q = free spins quantifier, sq = 1/(1-q)
@@ -289,11 +277,11 @@ func (s *StatGeneric) FGF() float64 {
 	return s.Count() / float64(s.FGH.Load())
 }
 
-func (s *StatGeneric) BonusHitsF(bid int) float64 {
+func (s *StatGeneric) BonusHits(bid int) float64 {
 	return float64(s.BH[bid].Load())
 }
 
-func (s *StatGeneric) JackHitsF(jid int) float64 {
+func (s *StatGeneric) JackHits(jid int) float64 {
 	return float64(s.JH[jid].Load())
 }
 
@@ -336,36 +324,46 @@ func (s *StatCascade) Count() float64 {
 	return float64(s.Casc[0].N.Load())
 }
 
-func (s *StatCascade) SumFreeCount() uint64 {
-	var sum uint64
+func (s *StatCascade) SymPays(sym Sym) (sum float64) {
+	for cfn := range FallLimit {
+		sum += s.Casc[cfn].SymPays(sym)
+	}
+	return
+}
+
+func (s *StatCascade) SumPays() (sum float64) {
+	for cfn := range FallLimit {
+		sum += s.Casc[cfn].SumPays()
+	}
+	return
+}
+
+func (s *StatCascade) SumFSC() (sum uint64) {
 	for cfn := range FallLimit {
 		sum += s.Casc[cfn].FSC.Load()
 	}
-	return sum
+	return
 }
 
-func (s *StatCascade) SumFreeHits() uint64 {
-	var sum uint64
+func (s *StatCascade) SumFGH() (sum uint64) {
 	for cfn := range FallLimit {
 		sum += s.Casc[cfn].FGH.Load()
 	}
-	return sum
+	return
 }
 
-func (s *StatCascade) SumBonusHits(bid int) uint64 {
-	var sum uint64
+func (s *StatCascade) SumBH(bid int) (sum uint64) {
 	for cfn := range FallLimit {
 		sum += s.Casc[cfn].BH[bid].Load()
 	}
-	return sum
+	return
 }
 
-func (s *StatCascade) SumJackHits(jid int) uint64 {
-	var sum uint64
+func (s *StatCascade) SumJH(jid int) (sum uint64) {
 	for cfn := range FallLimit {
 		sum += s.Casc[cfn].JH[jid].Load()
 	}
-	return sum
+	return
 }
 
 func (s *StatCascade) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
@@ -390,7 +388,7 @@ func (s *StatCascade) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
 func (s *StatCascade) NSQ(cost float64) (N float64, S float64, Q float64) {
 	N = s.Count()
 	for cfn := range FallLimit {
-		S += s.Casc[cfn].SumS()
+		S += s.Casc[cfn].SumPays()
 	}
 	S /= cost
 	Q = s.Q.Load() / cost / cost
@@ -400,27 +398,27 @@ func (s *StatCascade) NSQ(cost float64) (N float64, S float64, Q float64) {
 // Returns (q, sq), where q = free spins quantifier, sq = 1/(1-q)
 // sum of a decreasing geometric progression for retriggered free spins.
 func (s *StatCascade) FSQ() (q float64, sq float64) {
-	q = float64(s.SumFreeCount()) / s.Count()
+	q = float64(s.SumFSC()) / s.Count()
 	sq = 1 / (1 - q)
 	return
 }
 
 // Quantifier of free games per reshuffles.
 func (s *StatCascade) FGQ() float64 {
-	return float64(s.SumFreeHits()) / s.Count()
+	return float64(s.SumFGH()) / s.Count()
 }
 
 // Free Games Frequency: average number of reshuffles per free games hit.
 func (s *StatCascade) FGF() float64 {
-	return s.Count() / float64(s.SumFreeHits())
+	return s.Count() / float64(s.SumFGH())
 }
 
 // Cascade multiplier.
 func (s *StatCascade) Mcascade() float64 {
-	var pay1 = s.Casc[0].SumS()
+	var pay1 = s.Casc[0].SumPays()
 	var pays float64
 	for cfn := range FallLimit {
-		var payi = s.Casc[cfn].SumS()
+		var payi = s.Casc[cfn].SumPays()
 		pays += payi
 		if payi == 0 {
 			break
@@ -538,6 +536,7 @@ func ScanReels(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, ree
 	}()
 	wg.Wait()
 
+	fmt.Println()
 	fmt.Printf("reels lengths %s, total reshuffles %d\n", reels.String(), reels.Reshuffles())
 	return calc(os.Stdout)
 }
