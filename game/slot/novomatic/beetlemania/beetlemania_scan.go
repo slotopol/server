@@ -16,6 +16,7 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 	var g = NewGame(sp.Sel)
 	g.FSR = 10 // set free spins mode
 	var s = slot.NewStatGeneric(sn, 5)
+	s.BonDim(jbonus)
 
 	var calc = func(w io.Writer) float64 {
 		var N, S, _ = s.NSQ(g.Cost())

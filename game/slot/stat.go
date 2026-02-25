@@ -35,6 +35,10 @@ func (x Uint64) String() string {
 	return strconv.FormatUint(x.Load(), 10)
 }
 
+func (x Uint64) IsZero() bool {
+	return x.Load() == 0
+}
+
 // MarshalXML encodes the wrapped uint64 into XML.
 func (x *Uint64) MarshalXML(e *xml.Encoder, start xml.StartElement) error {
 	return e.EncodeElement(x.Load(), start)
@@ -71,6 +75,10 @@ type Float64 struct {
 
 func (x Float64) String() string {
 	return strconv.FormatFloat(x.Load(), 'f', -1, 64)
+}
+
+func (x Float64) IsZero() bool {
+	return x.Load() == 0
 }
 
 // MarshalXML encodes the wrapped float64 into XML.
@@ -138,10 +146,14 @@ type StatCounter struct {
 	N   Uint64          // number of processed grid reshuffles, including with no wins
 	C   Counts[Uint64]  // hit counter
 	S   Counts[Float64] // sum of pays by symbols
-	FSC Uint64          // free spins count
-	FGH Uint64          // free games hits count
-	BH  [8]Uint64       `yaml:",flow"` // bonus hits count
-	JH  [4]Uint64       `yaml:",flow"` // jackpot hits count
+	FSC Uint64          `yaml:",omitempty"`      // free spins count
+	FGH Uint64          `yaml:",omitempty"`      // free games hits count
+	BH  []Uint64        `yaml:",flow,omitempty"` // bonus hits count
+	JH  []Uint64        `yaml:",flow,omitempty"` // jackpot hits count
+}
+
+func (c *StatCounter) IsZero() bool {
+	return c.N.Load() == 0 // N can not be zero for non-empty structure
 }
 
 func (c *StatCounter) SymDim(sym Sym, pn int) {
@@ -157,6 +169,14 @@ func (c *StatCounter) CntDim(sn, pn int) {
 	}
 }
 
+func (c *StatCounter) BonDim(n int) {
+	c.BH = make([]Uint64, n)
+}
+
+func (c *StatCounter) JackDim(n int) {
+	c.JH = make([]Uint64, n)
+}
+
 func (c *StatCounter) Update(wins Wins) (pay float64) {
 	for _, wi := range wins {
 		c.C[wi.Sym][wi.Num].Inc()
@@ -170,10 +190,10 @@ func (c *StatCounter) Update(wins Wins) (pay float64) {
 			c.FGH.Inc()
 		}
 		if wi.BID != 0 {
-			c.BH[wi.BID].Inc()
+			c.BH[wi.BID-1].Inc()
 		}
 		if wi.JID != 0 {
-			c.JH[wi.JID].Inc()
+			c.JH[wi.JID-1].Inc()
 		}
 	}
 	c.N.Inc()
@@ -198,9 +218,9 @@ func (c *StatCounter) SumPays() (sum float64) {
 }
 
 type StatGeneric struct {
-	StatCounter
-	Q  Float64 // sum of squares of pays by symbols
-	EC Uint64  // errors count
+	StatCounter `yaml:",inline"`
+	Q           Float64 // sum of squares of pays by symbols
+	EC          Uint64  `yaml:",omitempty"` // errors count
 }
 
 // Declare conformity with Stater interface.
@@ -272,17 +292,17 @@ func (s *StatGeneric) FGQ() float64 {
 	return float64(s.FGH.Load()) / s.Count()
 }
 
-// Free Games Frequency: average number of reshuffles per free games hits.
+// Free Games hit rate: average number of reshuffles per free games hits.
 func (s *StatGeneric) FGF() float64 {
 	return s.Count() / float64(s.FGH.Load())
 }
 
 func (s *StatGeneric) BonusHits(bid int) float64 {
-	return float64(s.BH[bid].Load())
+	return float64(s.BH[bid-1].Load())
 }
 
 func (s *StatGeneric) JackHits(jid int) float64 {
-	return float64(s.JH[jid].Load())
+	return float64(s.JH[jid-1].Load())
 }
 
 func (s *StatGeneric) Simulate(g SlotGame, reels Reelx, wins *Wins) {
@@ -298,7 +318,7 @@ func (s *StatGeneric) Simulate(g SlotGame, reels Reelx, wins *Wins) {
 type StatCascade struct {
 	Casc [FallLimit]StatCounter
 	Q    Float64 // sum of squares of pays by symbols
-	EC   Uint64  // errors count
+	EC   Uint64  `yaml:",omitempty"` // errors count
 }
 
 // Declare conformity with Stater interface.
@@ -310,9 +330,40 @@ func NewStatCascade(sn, pn int) *StatCascade {
 	return &s
 }
 
+func (s *StatCascade) MarshalYAML() (any, error) {
+	type stat struct {
+		Casc []StatCounter
+		Q    float64
+		EC   uint64 `yaml:",omitempty"`
+	}
+	return &stat{
+		Casc: s.Casc[:s.Ncascmax()],
+		Q:    s.Q.Load(),
+		EC:   s.EC.Load(),
+	}, nil
+}
+
+func (s *StatCascade) SymDim(sym Sym, pn int) {
+	for cfn := range s.Casc {
+		s.Casc[cfn].SymDim(sym, pn)
+	}
+}
+
 func (s *StatCascade) CntDim(sn, pn int) {
-	for cfn := range FallLimit {
+	for cfn := range s.Casc {
 		s.Casc[cfn].CntDim(sn, pn)
+	}
+}
+
+func (s *StatCascade) BonDim(n int) {
+	for cfn := range s.Casc {
+		s.Casc[cfn].BonDim(n)
+	}
+}
+
+func (s *StatCascade) JackDim(n int) {
+	for cfn := range s.Casc {
+		s.Casc[cfn].JackDim(n)
 	}
 }
 
@@ -325,49 +376,49 @@ func (s *StatCascade) Count() float64 {
 }
 
 func (s *StatCascade) SymPays(sym Sym) (sum float64) {
-	for cfn := range FallLimit {
+	for cfn := range s.Casc {
 		sum += s.Casc[cfn].SymPays(sym)
 	}
 	return
 }
 
 func (s *StatCascade) SumPays() (sum float64) {
-	for cfn := range FallLimit {
+	for cfn := range s.Casc {
 		sum += s.Casc[cfn].SumPays()
 	}
 	return
 }
 
 func (s *StatCascade) SumFSC() (sum uint64) {
-	for cfn := range FallLimit {
+	for cfn := range s.Casc {
 		sum += s.Casc[cfn].FSC.Load()
 	}
 	return
 }
 
 func (s *StatCascade) SumFGH() (sum uint64) {
-	for cfn := range FallLimit {
+	for cfn := range s.Casc {
 		sum += s.Casc[cfn].FGH.Load()
 	}
 	return
 }
 
 func (s *StatCascade) SumBH(bid int) (sum uint64) {
-	for cfn := range FallLimit {
-		sum += s.Casc[cfn].BH[bid].Load()
+	for cfn := range s.Casc {
+		sum += s.Casc[cfn].BH[bid-1].Load()
 	}
 	return
 }
 
 func (s *StatCascade) SumJH(jid int) (sum uint64) {
-	for cfn := range FallLimit {
-		sum += s.Casc[cfn].JH[jid].Load()
+	for cfn := range s.Casc {
+		sum += s.Casc[cfn].JH[jid-1].Load()
 	}
 	return
 }
 
 func (s *StatCascade) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
-	for cfn := range FallLimit {
+	for cfn := range s.Casc {
 		var c = &s.Casc[cfn]
 		for sym, pays := range c.S {
 			for i := range pays {
@@ -387,10 +438,7 @@ func (s *StatCascade) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
 
 func (s *StatCascade) NSQ(cost float64) (N float64, S float64, Q float64) {
 	N = s.Count()
-	for cfn := range FallLimit {
-		S += s.Casc[cfn].SumPays()
-	}
-	S /= cost
+	S = s.SumPays() / cost
 	Q = s.Q.Load() / cost / cost
 	return
 }
@@ -408,7 +456,7 @@ func (s *StatCascade) FGQ() float64 {
 	return float64(s.SumFGH()) / s.Count()
 }
 
-// Free Games Frequency: average number of reshuffles per free games hit.
+// Free Games hit rate: average number of reshuffles per free games hit.
 func (s *StatCascade) FGF() float64 {
 	return s.Count() / float64(s.SumFGH())
 }
@@ -417,7 +465,7 @@ func (s *StatCascade) FGF() float64 {
 func (s *StatCascade) Mcascade() float64 {
 	var pay1 = s.Casc[0].SumPays()
 	var pays float64
-	for cfn := range FallLimit {
+	for cfn := range s.Casc {
 		var payi = s.Casc[cfn].SumPays()
 		pays += payi
 		if payi == 0 {
@@ -430,7 +478,7 @@ func (s *StatCascade) Mcascade() float64 {
 // Average Cascade Length.
 func (s *StatCascade) ACL() float64 {
 	var sum uint64
-	for i := 1; i < FallLimit; i++ {
+	for i := 1; i < len(s.Casc); i++ {
 		sum += s.Casc[i].N.Load()
 	}
 	return float64(sum) / float64(s.Casc[1].N.Load())
@@ -441,7 +489,7 @@ func (s *StatCascade) Kfading() float64 {
 	var N1 = s.Casc[0].N.Load()
 	var Nn uint64
 	var cfn int
-	for cfn = range FallLimit {
+	for cfn = range s.Casc {
 		var Ni = s.Casc[cfn].N.Load()
 		if Ni == 0 {
 			break
@@ -453,12 +501,12 @@ func (s *StatCascade) Kfading() float64 {
 
 // Maximum number of cascades in avalanche.
 func (s *StatCascade) Ncascmax() int {
-	for cfn := range FallLimit {
+	for cfn := range s.Casc {
 		if s.Casc[cfn].N.Load() == 0 {
 			return cfn
 		}
 	}
-	return FallLimit
+	return len(s.Casc)
 }
 
 func (s *StatCascade) Simulate(g SlotGame, reels Reelx, wins *Wins) {

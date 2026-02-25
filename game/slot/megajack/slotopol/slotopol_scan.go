@@ -88,6 +88,8 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame(sp.Sel)
 	var s = slot.NewStatGeneric(sn, 5)
+	s.BonDim(mjap)
+	s.JackDim(mjj)
 
 	var calc = func(w io.Writer) float64 {
 		var N = s.Count()

@@ -69,7 +69,7 @@ func print_contribution_falls(w io.Writer, sp *ScanPar, s *StatCascade, rtp floa
 	fmt.Fprintf(w, "cascades contribution to payouts:\n")
 	fmt.Fprintf(w, "fall  rate   rtp\n")
 	var sum = s.SumPays()
-	for cfn := range FallLimit {
+	for cfn := range s.Casc {
 		var c = s.Casc[cfn].SumPays() / sum
 		fmt.Fprintf(w, "%2d: %5.2f%% %5.2f%%\n", cfn+1, c*100, rtp*c*100)
 		if c == 0 {

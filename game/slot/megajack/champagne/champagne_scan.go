@@ -43,6 +43,8 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 	var g = NewGame(sp.Sel)
 	g.FSR = 15 // set free spins mode
 	var s = slot.NewStatGeneric(sn, 5)
+	s.BonDim(mjap)
+	s.JackDim(mjj)
 
 	var calc = func(w io.Writer) float64 {
 		var N = s.Count()
@@ -80,6 +82,8 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 	var g = NewGame(sp.Sel)
 	g.FSR = 0 // no free spins
 	var s = slot.NewStatGeneric(sn, 5)
+	s.BonDim(mjap)
+	s.JackDim(mjj)
 
 	var calc = func(w io.Writer) float64 {
 		var N = s.Count()
