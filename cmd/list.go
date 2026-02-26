@@ -11,7 +11,6 @@ import (
 	"github.com/slotopol/server/game"
 
 	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
 )
 
 const listShort = "List of available games released on server"
@@ -33,8 +32,6 @@ Get the list of slots without scatters with more than 3 reels:
   %[1]s list -i slot+~scat+~3x
 Get the list of Megajack games with properties and RTP list for each:
   %[1]s list -i megajack --prop --rtp`
-
-var listflags *pflag.FlagSet
 
 var (
 	fSort            bool
@@ -168,6 +165,7 @@ var listCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var err error
 		var exitctx = context.Background()
+		var pf = cmd.Flags()
 
 		// Load yaml-files
 		if fRTP || fMrtp > 0 || fDiff > 0 {
@@ -226,7 +224,7 @@ var listCmd = &cobra.Command{
 			}
 		}
 
-		if is, _ := listflags.GetBool("name"); is {
+		if is, _ := pf.GetBool("name"); is {
 			fmt.Println()
 			sort.Slice(gamelist, func(i, j int) bool {
 				var gii, gij = gamelist[i], gamelist[j]
@@ -246,7 +244,7 @@ var listCmd = &cobra.Command{
 				fmt.Println(FormatGameInfo(gi))
 			}
 		}
-		if is, _ := listflags.GetBool("stat"); is {
+		if is, _ := pf.GetBool("stat"); is {
 			var provlist = make([]string, 0, len(prov))
 			for p, n := range prov {
 				provlist = append(provlist, fmt.Sprintf("%s: %d games", p, n))
@@ -324,18 +322,18 @@ all - all games`
 func init() {
 	rootCmd.AddCommand(listCmd)
 
-	listflags = listCmd.Flags()
-	listflags.BoolP("name", "n", true, "list of provided games names")
-	listflags.BoolP("stat", "s", true, "summary statistics of provided games")
+	var pf = listCmd.Flags()
+	pf.BoolP("name", "n", true, "list of provided games names")
+	pf.BoolP("stat", "s", true, "summary statistics of provided games")
 
-	listflags.BoolVar(&fSort, "sort", false, "sort by provider, else sort by names")
-	listflags.BoolVar(&fProp, "prop", false, "print properties for each game")
-	listflags.Float64Var(&fMrtp, "mrtp", 0, "RTP (Return to Player) of reels closest to given master RTP")
-	listflags.Float64Var(&fDiff, "diff", 0, "difference between master RTP and closest to it real reels RTP")
-	listflags.BoolVarP(&fRTP, "rtp", "r", false, "RTP (Return to Player) percents list of available reels for each game")
+	pf.BoolVar(&fSort, "sort", false, "sort by provider, else sort by names")
+	pf.BoolVar(&fProp, "prop", false, "print properties for each game")
+	pf.Float64Var(&fMrtp, "mrtp", 0, "RTP (Return to Player) of reels closest to given master RTP")
+	pf.Float64Var(&fDiff, "diff", 0, "difference between master RTP and closest to it real reels RTP")
+	pf.BoolVarP(&fRTP, "rtp", "r", false, "RTP (Return to Player) percents list of available reels for each game")
 
-	listflags.StringSliceVarP(&inclist, "include", "i", []string{"all"}, filtdescr)
-	listflags.StringSliceVarP(&exclist, "exclude", "e", nil, "filter(s) to exclude games, filters are same as for include option")
+	pf.StringSliceVarP(&inclist, "include", "i", []string{"all"}, filtdescr)
+	pf.StringSliceVarP(&exclist, "exclude", "e", nil, "filter(s) to exclude games, filters are same as for include option")
 
-	listflags.SortFlags = false
+	pf.SortFlags = false
 }

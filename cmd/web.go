@@ -12,15 +12,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
-	"github.com/spf13/pflag"
 )
 
 const webShort = "Starts web-server"
 const webLong = ``
 const webExmp = `
   %[1]s web`
-
-var webflags *pflag.FlagSet
 
 // webCmd represents the `web` command
 var webCmd = &cobra.Command{
@@ -31,7 +28,9 @@ var webCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		var debug bool
 		var err error
-		if debug, err = webflags.GetBool("debug"); err != nil {
+		var pf = cmd.Flags()
+
+		if debug, err = pf.GetBool("debug"); err != nil {
 			log.Fatalln(err.Error())
 			return
 		}
@@ -125,6 +124,6 @@ var webCmd = &cobra.Command{
 func init() {
 	rootCmd.AddCommand(webCmd)
 
-	webflags = webCmd.Flags()
-	webflags.Bool("debug", false, "run gin-gonic in debug mode")
+	var pf = webCmd.Flags()
+	pf.Bool("debug", false, "run gin-gonic in debug mode")
 }

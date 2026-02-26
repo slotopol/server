@@ -129,6 +129,7 @@ type (
 		Conf   float64 // confidence (for Z, VI, CI)
 		MRTP   float64 // master RTP
 		Sel    int     // number of selected bet lines
+		PF     uint    // print flags
 	}
 
 	Scanner func(context.Context, *ScanPar) float64
@@ -155,10 +156,14 @@ func MakeRtpList[T any](reelsmap map[float64]T) []float64 {
 	return list
 }
 
+func (ga *GameAlias) ID() string {
+	return util.ToID(ga.Prov + "/" + ga.Name)
+}
+
 func (ai *AlgInfo) SetupFactory(game func(int) Gamble, scan Scanner) {
 	AlgList = append(AlgList, ai)
 	for _, ga := range ai.Aliases {
-		var aid = util.ToID(ga.Prov + "/" + ga.Name)
+		var aid = ga.ID()
 		if _, ok := InfoMap[aid]; ok {
 			panic(fmt.Errorf("%s: %w", aid, ErrAidHas))
 		}

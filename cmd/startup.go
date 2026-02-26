@@ -137,7 +137,7 @@ func CheckAlgList() {
 		if len(ai.RTP) == 0 {
 			var id string
 			if len(ai.Aliases) > 0 {
-				id = util.ToID(ai.Aliases[0].Prov + "/" + ai.Aliases[0].Name)
+				id = ai.Aliases[0].ID()
 			}
 			panic(fmt.Errorf("RTP list does not complete for %s", id))
 		}
