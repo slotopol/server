@@ -80,7 +80,7 @@ func SetupParSheet(pf *pflag.FlagSet, sp *game.ScanPar, gi *game.GameInfo) (err 
 		"ci":      slot.PF_ci,
 		"ranges":  slot.PF_ranges,
 		"contrib": slot.PF_contrib,
-		"plain":   slot.PF_plain,
+		"raw":     slot.PF_raw,
 	}
 	for sf, uf := range pfm {
 		if ok, err = pf.GetBool(sf); err != nil {
@@ -185,7 +185,7 @@ func init() {
 	pf.Bool("ci", true, "print index of convergence")
 	pf.Bool("ranges", false, "print RTP ranges")
 	pf.Bool("contrib", false, "print symbols contribution to payouts")
-	pf.Bool("plain", false, "simulator plain data")
+	pf.Bool("raw", false, "simulator raw data")
 
 	pf.SortFlags = false
 

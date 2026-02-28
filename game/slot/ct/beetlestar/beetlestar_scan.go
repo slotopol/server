@@ -8,49 +8,36 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
-	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
-	var g = NewGame(sp.Sel)
-	g.FSR = 15 // set free spins mode
-	var s = slot.NewStatGeneric(sn, 5)
-
-	var calc = func(w io.Writer) float64 {
-		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
-		var rtpsym = lrtp + srtp
-		var q, sq = s.FSQ()
-		var rtp = sq * rtpsym
-		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
-		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)
-		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
-		fmt.Fprintf(w, "RTP = sq*rtp(sym) = %.5g*%.5g = %.6f%%\n", sq, rtpsym*100, rtp*100)
-		return rtp
+func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
+	var ok bool
+	var sb, sr *slot.StatGeneric
+	fmt.Printf("\n(1/2) bonus reels calculations\n")
+	var idb = fmt.Sprintf("ctinteractive/beetlestar/graw/bon/%d", sp.Sel)
+	if sb, ok = slot.FindStatGeneric(idb+"/%g", sp.MRTP, sn, 5); ok {
+		var reels, _ = ReelsMap.FindClosest(sp.MRTP)
+		var g = NewGame(sp.Sel)
+		g.FSR = 15 // set free spins mode
+		var calc = func(w io.Writer) (rtp float64) {
+			rtp, _ = slot.Parsheet_generic_freegames(w, sp, sb, g.Cost(), 1, 15)
+			return
+		}
+		slot.ScanReelsCommon(ctx, sp, sb, g, reels, calc)
 	}
 
-	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
-}
-
-func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
-	fmt.Printf("*free games calculations*\n")
-	var rtpfs = CalcStatBon(ctx, sp)
 	if ctx.Err() != nil {
 		return 0
 	}
-	fmt.Printf("*regular games calculations*\n")
-	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
-	var g = NewGame(sp.Sel)
-	var s = slot.NewStatGeneric(sn, 5)
 
-	var calc = func(w io.Writer) float64 {
-		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
-		var rtpsym = lrtp + srtp
-		var q, sq = s.FSQ()
-		var rtp = rtpsym + q*rtpfs
-		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
-		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)
-		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
-		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym*100, q, rtpfs*100, rtp*100)
-		return rtp
+	fmt.Printf("\n(2/2) regular reels calculations\n")
+	var idr = fmt.Sprintf("ctinteractive/beetlestar/graw/reg/%d", sp.Sel)
+	if sr, ok = slot.FindStatGeneric(idr+"/%g", sp.MRTP, sn, 5); ok {
+		var reels, _ = ReelsMap.FindClosest(sp.MRTP)
+		var g = NewGame(sp.Sel)
+		var calc = func(w io.Writer) (rtp float64) {
+			rtp, _ = slot.Parsheet_generic_freegames_split(w, sp, sr, sb, g.Cost(), 1, 15)
+			return
+		}
+		return slot.ScanReelsCommon(ctx, sp, sr, g, reels, calc)
 	}
-
-	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
+	return 0
 }

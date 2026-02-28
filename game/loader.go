@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"math"
 
 	"gopkg.in/yaml.v3"
 )
@@ -56,4 +57,28 @@ func MustReadChain(r io.Reader) {
 	if err := ReadChain(r); err != nil {
 		panic(err)
 	}
+}
+
+func FindClosest[T any](m map[float64]T, ref float64) (val T, key float64) {
+	key = -1000 // lets to get first reels from map in any case
+	for p, v := range m {
+		if math.Abs(ref-p) < math.Abs(ref-key) {
+			val, key = v, p
+		}
+	}
+	return
+}
+
+func ClosestRoute(pattern string, ref float64) (val any, key string) {
+	var m = map[float64]string{}
+	for k := range DataRouter {
+		var v float64
+		if _, err := fmt.Sscanf(k, pattern, &v); err == nil {
+			m[v] = k
+		}
+	}
+	if key, _ = FindClosest(m, ref); len(key) > 0 {
+		val = DataRouter[key]
+	}
+	return
 }

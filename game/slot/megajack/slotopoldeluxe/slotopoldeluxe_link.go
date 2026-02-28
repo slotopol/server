@@ -35,7 +35,7 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func(sel int) game.Gamble { return NewGame(sel) }, CalcStat)
-	game.DataRouter["megajack/slotopoldeluxe/reel"] = &ReelsMap
+	game.DataRouter["megajack/slotopoldeluxe/rmap"] = &ReelsMap
 	game.DataRouter["megajack/slotopoldeluxe/jack"] = &JackMap
 	game.LoadMap = append(game.LoadMap, data)
 }

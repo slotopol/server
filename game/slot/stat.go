@@ -593,3 +593,24 @@ func ScanReelsCommon(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneri
 	calc func(io.Writer) float64) float64 {
 	return ScanReels(ctx, sp, s, g, reels, BruteForcex, MonteCarlo, calc)
 }
+
+func GetStatGeneric(id string, sn, pn int) (s *StatGeneric, ok bool) {
+	var v any
+	if v, ok = game.DataRouter[id]; ok {
+		s, ok = v.(*StatGeneric)
+		return
+	}
+	s = NewStatGeneric(sn, pn)
+	return
+}
+
+func FindStatGeneric(pattern string, ref float64, sn, pn int) (s *StatGeneric, ok bool) {
+	var v any
+	var id string
+	if v, id = game.ClosestRoute(pattern, ref); len(id) > 0 {
+		s, ok = v.(*StatGeneric)
+		return
+	}
+	s = NewStatGeneric(sn, pn)
+	return
+}

@@ -33,6 +33,6 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func(sel int) game.Gamble { return NewGame(sel) }, CalcStatReg)
-	game.DataRouter["playngo/fortuneteller/reel"] = &ReelsMap
+	game.DataRouter["playngo/fortuneteller/rmap"] = &ReelsMap
 	game.LoadMap = append(game.LoadMap, data)
 }

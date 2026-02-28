@@ -36,6 +36,6 @@ func init() {
 	Info.SetupFactory(func(sel int) game.Gamble { return NewGame(sel) }, CalcStatReg)
 	game.DataRouter["novomatic/fairyqueen/es"] = &ReelExpSym
 	game.DataRouter["novomatic/fairyqueen/bon"] = &ReelsBon
-	game.DataRouter["novomatic/fairyqueen/reel"] = &ReelsMap
+	game.DataRouter["novomatic/fairyqueen/rmap"] = &ReelsMap
 	game.LoadMap = append(game.LoadMap, data)
 }

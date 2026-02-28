@@ -18,7 +18,7 @@ const ( // print flags for slots
 	PF_ci      // convergence index
 	PF_ranges  // RTP ranges
 	PF_contrib // symbols contribution to payouts
-	PF_plain   // simulator plain data
+	PF_raw     // simulator raw data
 )
 
 // Maximum RTP to get convergence point
@@ -63,12 +63,12 @@ func print_ranges(w io.Writer, sp *ScanPar, rtp, sigma float64) {
 	}
 }
 
-func print_contribution_generic(w io.Writer, sp *ScanPar, s *StatGeneric, rtp float64, msg string) {
+func print_contribution_generic(w io.Writer, sp *ScanPar, s *StatGeneric, rtp float64) {
 	if sp.PF&PF_contrib == 0 {
 		return
 	}
 	fmt.Fprintln(w)
-	fmt.Fprintf(w, "symbols contribution to payouts%s:\n", msg)
+	fmt.Fprintf(w, "symbols contribution to payouts:\n")
 	fmt.Fprintf(w, "sym   rate   rtp\n")
 	var sum = s.SumPays()
 	var sym Sym
@@ -110,12 +110,12 @@ func print_contribution_falls(w io.Writer, sp *ScanPar, s *StatCascade, rtp floa
 	}
 }
 
-func print_plain(w io.Writer, sp *ScanPar, s Simulator) {
-	if sp.PF&PF_plain == 0 {
+func print_raw(w io.Writer, sp *ScanPar, s Simulator) {
+	if sp.PF&PF_raw == 0 {
 		return
 	}
 	fmt.Fprintln(w)
-	fmt.Fprintf(w, "simulator plain data:\n")
+	fmt.Fprintf(w, "simulator raw data:\n")
 	var b, err = yaml.Marshal(s)
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
@@ -135,8 +135,8 @@ func Parsheet_generic_simple(w io.Writer, sp *ScanPar, s *StatGeneric, cost floa
 	print_vi(w, sp, sigma)
 	print_ci(w, sp, µ, sigma)
 	print_ranges(w, sp, µ, sigma)
-	print_contribution_generic(w, sp, s, µ, "")
-	print_plain(w, sp, s)
+	print_contribution_generic(w, sp, s, µ)
+	print_raw(w, sp, s)
 	return µ, sigma
 }
 
@@ -162,8 +162,8 @@ func Parsheet_generic_freegames(w io.Writer, sp *ScanPar, s *StatGeneric, cost, 
 	print_vi(w, sp, sigma)
 	print_ci(w, sp, rtp, sigma)
 	print_ranges(w, sp, rtp, sigma)
-	print_contribution_generic(w, sp, s, rtp, "")
-	print_plain(w, sp, s)
+	print_contribution_generic(w, sp, s, rtp)
+	print_raw(w, sp, s)
 	return rtp, sigma
 }
 
@@ -173,7 +173,7 @@ func Parsheet_generic_freegames(w io.Writer, sp *ScanPar, s *StatGeneric, cost, 
 // Each hit of freegames series has `L` freespins.
 func Parsheet_generic_freegames_split(w io.Writer, sp *ScanPar, sr, sb *StatGeneric, cost, m float64, L int) (float64, float64) {
 	// bonus reels parameters
-	var Nb, Sb, Qb = sr.NSQ(cost)
+	var Nb, Sb, Qb = sb.NSQ(cost)
 	var µb = Sb / Nb
 	var Dsymb = Qb/Nb - µb*µb
 	var qb, sqb = sb.FSQ()
@@ -205,11 +205,8 @@ func Parsheet_generic_freegames_split(w io.Writer, sp *ScanPar, sr, sb *StatGene
 	print_vi(w, sp, sigma)
 	print_ci(w, sp, rtp, sigma)
 	print_ranges(w, sp, rtp, sigma)
-	if sp.PF&PF_fg != 0 {
-		print_contribution_generic(w, sp, sb, rtpfs, " on bonus reels")
-	}
-	print_contribution_generic(w, sp, sr, rtp, " on regular reels")
-	print_plain(w, sp, sr)
+	print_contribution_generic(w, sp, sr, rtp)
+	print_raw(w, sp, sr)
 	return rtp, sigma
 }
 
@@ -239,8 +236,8 @@ func Parsheet_generic_fgseries(w io.Writer, sp *ScanPar, s *StatGeneric, cost, m
 	print_vi(w, sp, sigma)
 	print_ci(w, sp, rtp, sigma)
 	print_ranges(w, sp, rtp, sigma)
-	print_contribution_generic(w, sp, s, µ, "")
-	print_plain(w, sp, s)
+	print_contribution_generic(w, sp, s, µ)
+	print_raw(w, sp, s)
 	return rtp, sigma
 }
 
@@ -266,6 +263,6 @@ func Parsheet_cascade_simple(w io.Writer, sp *ScanPar, s *StatCascade, cost floa
 	print_ranges(w, sp, µ, sigma)
 	print_contribution_cascade(w, sp, s, µ)
 	print_contribution_falls(w, sp, s, µ)
-	print_plain(w, sp, s)
+	print_raw(w, sp, s)
 	return µ, sigma
 }

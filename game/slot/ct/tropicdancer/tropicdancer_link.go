@@ -33,6 +33,6 @@ var Info = game.AlgInfo{
 
 func init() {
 	Info.SetupFactory(func(sel int) game.Gamble { return NewGame(sel) }, CalcStat)
-	game.DataRouter["ctinteractive/tropicdancer/reel"] = &ReelsMap
+	game.DataRouter["ctinteractive/tropicdancer/rmap"] = &ReelsMap
 	game.LoadMap = append(game.LoadMap, data)
 }
