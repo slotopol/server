@@ -132,7 +132,7 @@ type (
 		PF     uint    // print flags
 	}
 
-	Scanner func(context.Context, *ScanPar) float64
+	Scanner func(context.Context, *ScanPar) (float64, float64)
 )
 
 var (

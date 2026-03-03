@@ -167,6 +167,37 @@ func Parsheet_generic_freegames(w io.Writer, sp *ScanPar, s *StatGeneric, cost, 
 	return rtp, sigma
 }
 
+func Parsheet_generic_fgseries(w io.Writer, sp *ScanPar, s *StatGeneric, cost, m float64, L []int, scat Sym) (float64, float64) {
+	var N, S, Q = s.NSQ(cost)
+	var µ = S / N
+	var Dsym = Q/N - µ*µ
+	var Pfg = make([]float64, len(L))
+	for i := range L {
+		Pfg[i] = float64(s.C[scat][i+1].Load()) / N
+	}
+	var ΣPL float64
+	for i, Li := range L {
+		var Pfgi = float64(s.C[scat][i+1].Load()) / N
+		ΣPL += Pfgi * float64(Li)
+	}
+	var q, sq = s.FSQ()
+	var rtpfs = m * sq * µ
+	var rtp = µ + q*rtpfs
+	var sigma = math.Sqrt(Dsym + m*m*ΣPL*(Dsym*sq+µ*µ*q*sq*sq*sq))
+	if sp.PF&PF_main != 0 {
+		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µ*100, math.Sqrt(Dsym))
+		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)
+		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
+		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µ*100, q, rtpfs*100, rtp*100)
+	}
+	print_vi(w, sp, sigma)
+	print_ci(w, sp, rtp, sigma)
+	print_ranges(w, sp, rtp, sigma)
+	print_contribution_generic(w, sp, s, µ)
+	print_raw(w, sp, s)
+	return rtp, sigma
+}
+
 // Parsheet for generic slot with splitted statistics for
 // regular games `sr` and statistics for bonus games `sb`.
 // with `m` multiplier on freegames (m=1 if no multiplier).
@@ -207,37 +238,6 @@ func Parsheet_generic_freegames_split(w io.Writer, sp *ScanPar, sr, sb *StatGene
 	print_ranges(w, sp, rtp, sigma)
 	print_contribution_generic(w, sp, sr, rtp)
 	print_raw(w, sp, sr)
-	return rtp, sigma
-}
-
-func Parsheet_generic_fgseries(w io.Writer, sp *ScanPar, s *StatGeneric, cost, m float64, L []int, scat Sym) (float64, float64) {
-	var N, S, Q = s.NSQ(cost)
-	var µ = S / N
-	var Dsym = Q/N - µ*µ
-	var Pfg = make([]float64, len(L))
-	for i := range L {
-		Pfg[i] = float64(s.C[scat][i+1].Load()) / N
-	}
-	var ΣPL float64
-	for i, Li := range L {
-		var Pfgi = float64(s.C[scat][i+1].Load()) / N
-		ΣPL += Pfgi * float64(Li)
-	}
-	var q, sq = s.FSQ()
-	var rtpfs = m * sq * µ
-	var rtp = µ + q*rtpfs
-	var sigma = math.Sqrt(Dsym + m*m*ΣPL*(Dsym*sq+µ*µ*q*sq*sq*sq))
-	if sp.PF&PF_main != 0 {
-		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µ*100, math.Sqrt(Dsym))
-		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)
-		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
-		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µ*100, q, rtpfs*100, rtp*100)
-	}
-	print_vi(w, sp, sigma)
-	print_ci(w, sp, rtp, sigma)
-	print_ranges(w, sp, rtp, sigma)
-	print_contribution_generic(w, sp, s, µ)
-	print_raw(w, sp, s)
 	return rtp, sigma
 }
 

@@ -540,7 +540,10 @@ func (s *StatCascade) Simulate(g SlotGame, reels Reelx, wins *Wins) {
 	}
 }
 
-type CalcAlg = func(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, reels Reelx)
+type (
+	CalcFunc = func(io.Writer) (float64, float64)
+	CalcAlg  = func(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, reels Reelx)
+)
 
 const (
 	CtxGranulation = 1000 // check context every N reshuffles
@@ -553,8 +556,7 @@ var (
 )
 
 func ScanReels(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, reels Reelx,
-	bruteforce, montecarlo CalcAlg,
-	calc func(io.Writer) float64) float64 {
+	bruteforce, montecarlo CalcAlg, calc CalcFunc) (float64, float64) {
 	if sx, sy := g.Dim(); len(reels) != int(sx) {
 		panic(fmt.Errorf("%w: %d reels provided for %dx%d slot", ErrReelCount, len(reels), sx, sy))
 	}
@@ -589,8 +591,8 @@ func ScanReels(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, ree
 	return calc(os.Stdout)
 }
 
-func ScanReelsCommon(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, reels Reelx,
-	calc func(io.Writer) float64) float64 {
+func ScanReelsCommon(ctx context.Context,
+	sp *ScanPar, s Simulator, g SlotGeneric, reels Reelx, calc CalcFunc) (float64, float64) {
 	return ScanReels(ctx, sp, s, g, reels, BruteForcex, MonteCarlo, calc)
 }
 

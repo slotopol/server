@@ -4,12 +4,13 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"math"
 
 	"github.com/slotopol/server/game/slot"
 	"github.com/slotopol/server/game/slot/megajack/slotopol"
 )
 
-func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
+func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	fmt.Printf("*bonus games calculations*\n")
 	slotopol.ExpEldorado()
 	slotopol.ExpMonopoly()
@@ -20,7 +21,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 	s.BonDim(mjap)
 	s.JackDim(mjj)
 
-	var calc = func(w io.Writer) float64 {
+	var calc = func(w io.Writer) (float64, float64) {
 		var N = s.Count()
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
@@ -42,7 +43,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 			fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackHits(mjj), N/s.JackHits(mjj))
 		}
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(mje) + %.5g(mjm) = %.6f%%\n", rtpsym*100, (rtpmje1+rtpmje3+rtpmje6)*100, rtpmjm*100, rtp*100)
-		return rtp
+		return rtp, math.NaN()
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)

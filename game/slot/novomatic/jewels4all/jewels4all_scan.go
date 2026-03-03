@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"math"
 	"os"
 	"time"
 
@@ -53,18 +54,19 @@ func BruteForceEuro(ctx context.Context, s slot.Simulator, g *Game, reels slot.R
 	}
 }
 
-func CalcStatEuro(ctx context.Context, sp *slot.ScanPar, x, y slot.Pos) float64 {
+func CalcStatEuro(ctx context.Context, sp *slot.ScanPar, x, y slot.Pos) (float64, float64) {
 	var reels = Reels
 	var g = NewGame(sp.Sel)
 	var s = slot.NewStatGeneric(sn, 5)
 
 	fmt.Printf("calculations of euro at [%d,%d]\n", x, y)
 
-	var calc = func(w io.Writer) float64 {
-		var N, S, _ = s.NSQ(g.Cost())
+	var calc = func(w io.Writer) (float64, float64) {
+		var N, S, Q = s.NSQ(g.Cost())
 		var µ = S / N
+		var sigma = math.Sqrt(Q/N - µ*µ)
 		fmt.Fprintf(w, "RTP[%d,%d] = %.6f%%\n", x, y, µ*100)
-		return µ
+		return µ, sigma
 	}
 
 	func() time.Duration {
@@ -78,19 +80,21 @@ func CalcStatEuro(ctx context.Context, sp *slot.ScanPar, x, y slot.Pos) float64 
 	return calc(os.Stdout)
 }
 
-func CalcStat(ctx context.Context, sp *slot.ScanPar) (rtp float64) {
+func CalcStat(ctx context.Context, sp *slot.ScanPar) (rtp, sigma float64) {
 	var wc, _ = ChanceMap.FindClosest(sp.MRTP) // wild chance
 
-	var rtp00 = CalcStatEuro(ctx, sp, 0, 0)
+	var rtp00, _ = CalcStatEuro(ctx, sp, 0, 0)
 	var rtpeu float64
 	var x, y slot.Pos
 	for x = 1; x <= 5; x++ {
 		for y = 1; y <= 3; y++ {
-			rtpeu += CalcStatEuro(ctx, sp, x, y)
+			var rtpxy, _ = CalcStatEuro(ctx, sp, x, y)
+			rtpeu += rtpxy
 		}
 	}
 	rtpeu /= 15
 	rtp = (1-wc)*rtp00 + wc*rtpeu
+	sigma = math.NaN()
 	fmt.Printf("euro avr: rtpeu = %.6f%%\n", rtpeu*100)
 	fmt.Printf("wild chance: 1/%.5g\n", 1/wc)
 	fmt.Printf("RTP = (1-wc)*%.5g(sym) + wc*%.5g(eu) = %.6f%%\n", rtp00*100, rtpeu*100, rtp*100)

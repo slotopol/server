@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"math"
 	"os"
 	"sync"
 
@@ -114,14 +115,14 @@ func BruteForce5x3es3(ctx context.Context, sp *slot.ScanPar, s slot.Simulator, g
 	wg.Wait()
 }
 
-func CalcStatBon(ctx context.Context, sp *slot.ScanPar, es slot.Sym) (float64, float64) {
+func CalcStatBon(ctx context.Context, sp *slot.ScanPar, es slot.Sym) (float64, float64, float64) {
 	var reels = ReelsBon
 	var g = NewGame(sp.Sel)
 	g.FSR = 10 // set free spins mode
 	g.ES = es
 	var s = slot.NewStatGeneric(sn, 5)
 
-	var calc = func(w io.Writer) float64 {
+	var calc = func(w io.Writer) (float64, float64) {
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
 		var q, sq = s.FSQ()
@@ -131,7 +132,7 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar, es slot.Sym) (float64, f
 			fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		}
 		fmt.Fprintf(w, "RTP[%d] = %.6f%%\n", es, rtpsym*100)
-		return rtpsym
+		return rtpsym, math.NaN()
 	}
 
 	func() {
@@ -145,20 +146,21 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar, es slot.Sym) (float64, f
 			BruteForce5x3es3(ctx2, sp, s, g, reels, g.ES)
 		}
 	}()
+	var erp, sigma = calc(os.Stdout)
 	var q, _ = s.FSQ()
-	return calc(os.Stdout), q
+	return erp, sigma, q
 }
 
-func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
+func CalcStatReg(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	fmt.Printf("*bonus reels calculations*\n")
 	var rtpe = map[slot.Sym]float64{}
 	var qe = map[slot.Sym]float64{}
 	var es slot.Sym
 	for es = 2; es <= scat; es++ {
 		fmt.Printf("*calculations for expanding symbol [%d]*\n", es)
-		rtpe[es], qe[es] = CalcStatBon(ctx, sp, es)
+		rtpe[es], _, qe[es] = CalcStatBon(ctx, sp, es)
 		if ctx.Err() != nil {
-			return 0
+			return 0, 0
 		}
 	}
 	var rtpsym, qfs float64
@@ -179,7 +181,7 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 	var g = NewGame(sp.Sel)
 	var s = slot.NewStatGeneric(sn, 5)
 
-	var calc = func(w io.Writer) float64 {
+	var calc = func(w io.Writer) (float64, float64) {
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
 		var q, sq = s.FSQ()
@@ -188,7 +190,7 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym*100, q, rtpfs*100, rtp*100)
-		return rtp
+		return rtp, math.NaN()
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)

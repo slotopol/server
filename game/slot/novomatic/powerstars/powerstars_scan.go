@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"math"
 	"os"
 	"time"
 
@@ -64,7 +65,7 @@ func BruteForceStars(ctx context.Context, s slot.Simulator, g *Game, reels slot.
 	}
 }
 
-func CalcStatStars(ctx context.Context, sp *slot.ScanPar, wc2, wc3, wc4 bool) float64 {
+func CalcStatStars(ctx context.Context, sp *slot.ScanPar, wc2, wc3, wc4 bool) (float64, float64) {
 	var reels = Reels
 	var g = NewGame(sp.Sel)
 	var s = slot.NewStatGeneric(sn, 5)
@@ -77,11 +78,12 @@ func CalcStatStars(ctx context.Context, sp *slot.ScanPar, wc2, wc3, wc4 bool) fl
 	}
 	fmt.Printf("calculations of star combinations [%c%c%c]\n", wcsym(wc2), wcsym(wc3), wcsym(wc4))
 
-	var calc = func(w io.Writer) float64 {
-		var N, S, _ = s.NSQ(g.Cost())
+	var calc = func(w io.Writer) (float64, float64) {
+		var N, S, Q = s.NSQ(g.Cost())
 		var µ = S / N
+		var sigma = math.Sqrt(Q/N - µ*µ)
 		fmt.Fprintf(w, "RTP[%c%c%c] = %.6f%%\n", wcsym(wc2), wcsym(wc3), wcsym(wc4), µ*100)
-		return µ
+		return µ, sigma
 	}
 
 	func() {
@@ -99,21 +101,22 @@ func CalcStatStars(ctx context.Context, sp *slot.ScanPar, wc2, wc3, wc4 bool) fl
 	return calc(os.Stdout)
 }
 
-func CalcStat(ctx context.Context, sp *slot.ScanPar) (rtp float64) {
+func CalcStat(ctx context.Context, sp *slot.ScanPar) (rtp, sigma float64) {
 	var wc, _ = ChanceMap.FindClosest(sp.MRTP) // wild chance
 
 	var b = 1 / wc
-	var rtp000 = CalcStatStars(ctx, sp, false, false, false)
-	var rtp100 = CalcStatStars(ctx, sp, true, false, false)
-	var rtp010 = CalcStatStars(ctx, sp, false, true, false)
-	var rtp001 = CalcStatStars(ctx, sp, false, false, true)
-	var rtp110 = CalcStatStars(ctx, sp, true, true, false)
-	var rtp011 = CalcStatStars(ctx, sp, false, true, true)
-	var rtp101 = CalcStatStars(ctx, sp, true, false, true)
-	var rtp111 = CalcStatStars(ctx, sp, true, true, true)
+	var rtp000, _ = CalcStatStars(ctx, sp, false, false, false)
+	var rtp100, _ = CalcStatStars(ctx, sp, true, false, false)
+	var rtp010, _ = CalcStatStars(ctx, sp, false, true, false)
+	var rtp001, _ = CalcStatStars(ctx, sp, false, false, true)
+	var rtp110, _ = CalcStatStars(ctx, sp, true, true, false)
+	var rtp011, _ = CalcStatStars(ctx, sp, false, true, true)
+	var rtp101, _ = CalcStatStars(ctx, sp, true, false, true)
+	var rtp111, _ = CalcStatStars(ctx, sp, true, true, true)
 	var q = AnyStarProb(b)
 	var rtpfs = ((rtp100+rtp010+rtp001)*(b-1)*(b-1) + (rtp110+rtp011+rtp101)*(b-1) + rtp111) / (b*b + (b-1)*b + (b-1)*(b-1))
 	rtp = (1-q)*rtp000 + q*rtpfs
+	sigma = math.NaN()
 	fmt.Printf("wild chance: 1/%.5g\n", 1/wc)
 	fmt.Printf("free spins: q = %.5g, 1/q = %.5g, rtpfs = %.6f%%\n", q, 1/q, rtpfs*100)
 	fmt.Printf("RTP = (1-q)*%.5g(sym) + q*%.5g(fg) = %.6f%%\n", rtp000*100, rtpfs*100, rtp*100)

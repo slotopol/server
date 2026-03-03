@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"math"
 	"math/rand/v2"
 
 	"github.com/slotopol/server/util"
@@ -39,7 +40,7 @@ func (kp *Paytable) Scanner(grid *Grid, wins *Wins, bet float64) error {
 	return nil
 }
 
-func (kp *Paytable) CalcStat(ctx context.Context) float64 {
+func (kp *Paytable) CalcStat(ctx context.Context) (float64, float64) {
 	var rtp, lines float64
 	for n := 1; n <= 10; n++ {
 		var nrtp float64
@@ -55,7 +56,7 @@ func (kp *Paytable) CalcStat(ctx context.Context) float64 {
 	}
 	rtp *= 100 / lines
 	fmt.Printf("RTP[game] = %.6f%%", rtp)
-	return rtp
+	return rtp, math.NaN()
 }
 
 // Keno spot type

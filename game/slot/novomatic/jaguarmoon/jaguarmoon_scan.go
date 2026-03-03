@@ -4,30 +4,28 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"math"
 
 	"github.com/slotopol/server/game/slot"
 )
 
-func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
+func CalcStatBon(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var reels = ReelsBon
 	var g = NewGame()
 	var s = slot.NewStatGeneric(sn, 5)
 
-	var calc = func(w io.Writer) float64 {
-		var N, S, _ = s.NSQ(g.Cost())
-		var µ = S / N
-		fmt.Fprintf(w, "RTP = %.6f%%\n", µ*100)
-		return µ
+	var calc = func(w io.Writer) (float64, float64) {
+		return slot.Parsheet_generic_simple(w, sp, s, g.Cost())
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
 }
 
-func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
+func CalcStatReg(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	fmt.Printf("*bonus reels calculations*\n")
-	var rtpfs = CalcStatBon(ctx, sp)
+	var rtpfs, _ = CalcStatBon(ctx, sp)
 	if ctx.Err() != nil {
-		return 0
+		return 0, 0
 	}
 	fmt.Printf("*regular reels calculations*\n")
 	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
@@ -35,7 +33,7 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 	var s = slot.NewStatGeneric(sn, 5)
 	s.SymDim(scat, 6)
 
-	var calc = func(w io.Writer) float64 {
+	var calc = func(w io.Writer) (float64, float64) {
 		var N, S, _ = s.NSQ(g.Cost())
 		var µ = S / N
 		var q3 = float64(s.C[scat][3].Load()) * float64(ScatFreespin[2]) / N
@@ -53,7 +51,7 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 			fgh, q3, q4, q5, q6)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", N/float64(fgh))
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(fg) = %.6f%%\n", µ*100, rtpqfs*100, rtp*100)
-		return rtp
+		return rtp, math.NaN()
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)

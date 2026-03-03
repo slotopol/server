@@ -4,17 +4,18 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"math"
 
 	"github.com/slotopol/server/game/slot"
 )
 
-func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
+func CalcStatBon(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var reels = ReelsBon
 	var g = NewGame()
 	g.FSR = 14 // set free spins mode
 	var s = slot.NewStatCascade(sn, 5)
 
-	var calc = func(w io.Writer) float64 {
+	var calc = func(w io.Writer) (float64, float64) {
 		var N1 = float64(s.Casc[0].N.Load())
 		var N2 = float64(s.Casc[1].N.Load())
 		var N3 = float64(s.Casc[2].N.Load())
@@ -33,24 +34,24 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.SumFSC(), q, sq)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "RTP = sq*rtp(sym) = %.5g*%.5g = %.6f%%\n", sq, rtpsym*100, rtp*100)
-		return rtp
+		return rtp, math.NaN()
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
 }
 
-func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
+func CalcStatReg(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	fmt.Printf("*bonus reels calculations*\n")
-	var rtpfs = CalcStatBon(ctx, sp) // 119.47281932232095869040%
+	var rtpfs, _ = CalcStatBon(ctx, sp) // 119.47281932232095869040%
 	if ctx.Err() != nil {
-		return 0
+		return 0, 0
 	}
 	fmt.Printf("*regular reels calculations*\n")
 	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame()
 	var s = slot.NewStatCascade(sn, 5)
 
-	var calc = func(w io.Writer) float64 {
+	var calc = func(w io.Writer) (float64, float64) {
 		var N1 = float64(s.Casc[0].N.Load())
 		var N2 = float64(s.Casc[1].N.Load())
 		var N3 = float64(s.Casc[2].N.Load())
@@ -69,7 +70,7 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.SumFSC(), q, sq)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym*100, q, rtpfs*100, rtp*100)
-		return rtp
+		return rtp, math.NaN()
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)

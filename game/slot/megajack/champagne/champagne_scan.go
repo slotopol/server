@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"math"
 
 	"github.com/slotopol/server/game/slot"
 )
@@ -38,7 +39,7 @@ func ExpBottle() {
 	EVmjc = E
 }
 
-func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
+func CalcStatBon(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame(sp.Sel)
 	g.FSR = 15 // set free spins mode
@@ -46,7 +47,7 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 	s.BonDim(mjap)
 	s.JackDim(mjj)
 
-	var calc = func(w io.Writer) float64 {
+	var calc = func(w io.Writer) (float64, float64) {
 		var N = s.Count()
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
@@ -62,20 +63,20 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 			fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackHits(mjj), N/s.JackHits(mjj))
 		}
 		fmt.Fprintf(w, "RTP = sq*(rtp(sym)+rtp(mjc)) = %.5g*(%.5g+%.5g) = %.6f%%\n", sq, rtpsym*100, rtpmjc*100, rtp*100)
-		return rtp
+		return rtp, math.NaN()
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
 }
 
-func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
+func CalcStatReg(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	fmt.Printf("*bonus games calculations*\n")
 	ExpBottle()
 	fmt.Printf("len = %d, avr bottle gain = %.5g, EV = %g\n", len(Bottles), EVbot, EVmjc)
 	fmt.Printf("*free games calculations*\n")
-	var rtpfs = CalcStatBon(ctx, sp)
+	var rtpfs, _ = CalcStatBon(ctx, sp)
 	if ctx.Err() != nil {
-		return 0
+		return 0, 0
 	}
 	fmt.Printf("*regular games calculations*\n")
 	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
@@ -85,7 +86,7 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 	s.BonDim(mjap)
 	s.JackDim(mjj)
 
-	var calc = func(w io.Writer) float64 {
+	var calc = func(w io.Writer) (float64, float64) {
 		var N = s.Count()
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
@@ -101,7 +102,7 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 			fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackHits(mjj), N/s.JackHits(mjj))
 		}
 		fmt.Fprintf(w, "RTP = rtp(sym) + rtp(mjc) + q*rtp(fg) = %.5g + %.5g + %.5g*%.5g = %.6f%%\n", rtpsym*100, rtpmjc*100, q, rtpfs*100, rtp*100)
-		return rtp
+		return rtp, math.NaN()
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)

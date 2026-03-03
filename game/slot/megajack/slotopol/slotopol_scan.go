@@ -80,7 +80,7 @@ func ExpMonopoly() {
 	fmt.Printf("monopoly: variance = %.6g, sigma = %.6g, limits = %.6g ... %.6g\n", v, sigma, Emjm-sigma, Emjm+sigma)
 }
 
-func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
+func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	fmt.Printf("*bonus games calculations*\n")
 	ExpEldorado()
 	ExpMonopoly()
@@ -91,7 +91,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 	s.BonDim(mjap)
 	s.JackDim(mjj)
 
-	var calc = func(w io.Writer) float64 {
+	var calc = func(w io.Writer) (float64, float64) {
 		var N = s.Count()
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
@@ -107,7 +107,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 			fmt.Fprintf(w, "jackpots: count %g, frequency 1/%.12g\n", s.JackHits(mjj), N/s.JackHits(mjj))
 		}
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(mje9) + %.5g(mjm) = %.6f%%\n", rtpsym*100, rtpmje9*100, rtpmjm*100, rtp*100)
-		return rtp
+		return rtp, math.NaN()
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"math"
 
 	"github.com/slotopol/server/game/slot"
 )
@@ -34,12 +35,12 @@ func FirstSreespins() (fsavr1 float64, multavr float64) {
 	return
 }
 
-func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
+func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame(sp.Sel)
 	var s = slot.NewStatGeneric(sn, 5)
 
-	var calc = func(w io.Writer) float64 {
+	var calc = func(w io.Writer) (float64, float64) {
 		var N = s.Count()
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
@@ -54,7 +55,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 		fmt.Fprintf(w, "free games %g, q = %.5g, sq = %.5g\n", fghits, q, sq)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", N/fghits)
 		fmt.Fprintf(w, "RTP = rtpsym + q*sq*rtpsym = %.5g + %.5g = %.6f%%\n", rtpsym*100, q*sq*rtpsym*100, rtp*100)
-		return rtp
+		return rtp, math.NaN()
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)

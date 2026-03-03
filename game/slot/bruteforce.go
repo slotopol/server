@@ -9,7 +9,7 @@ import (
 )
 
 // Function to report about progress of calculation by brute force
-func ProgressBF(ctx context.Context, sp *ScanPar, s Simulator, calc func(io.Writer) float64, total float64) {
+func ProgressBF(ctx context.Context, sp *ScanPar, s Simulator, calc func(io.Writer) (float64, float64), total float64) {
 	const stepdur = 1000 * time.Millisecond
 	var t0 = time.Now()
 	var steps = time.Tick(stepdur)
@@ -22,7 +22,7 @@ loop:
 		case <-steps:
 			var dur = time.Since(t0)
 			var N, _, _ = s.NSQ(1)
-			var RTP = calc(io.Discard)
+			var RTP, _ = calc(io.Discard)
 			var exp = time.Duration(float64(dur) * total / N)
 			fmt.Printf("processed %.1fm/%.1fm, ready %2.2f%% (%v / %v), RTP = %2.2f%%  \r",
 				N/1e6, total/1e6, N/total*100,

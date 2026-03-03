@@ -4,18 +4,19 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"math"
 
 	"github.com/slotopol/server/game/slot"
 )
 
-func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
+func CalcStatBon(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var reels = ReelsBon
 	var g = NewGame()
 	g.FSR = 15                                     // set free spins mode
 	g.M = [5]float64{Mavr, Mavr, Mavr, Mavr, Mavr} // set multipliers to average value for RTP calculation
 	var s = slot.NewStatCascade(sn, 15)
 
-	var calc = func(w io.Writer) float64 {
+	var calc = func(w io.Writer) (float64, float64) {
 		var N, S, _ = s.NSQ(g.Cost())
 		var N2 = float64(s.Casc[1].N.Load())
 		var N3 = float64(s.Casc[2].N.Load())
@@ -34,24 +35,24 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) float64 {
 		fmt.Fprintf(w, "fall[5] = %.10g, Ec5 = 1/%.5g, Kf5 = 1/%.5g\n", N5, N/N5, N4/N5)
 		fmt.Fprintf(w, "Mcascade = %.5g, ACL = %.5g, Kfading = 1/%.5g, Ncascmax = %d\n", s.Mcascade(), s.ACL(), s.Kfading(), s.Ncascmax())
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", µ*100, q, rtpfs*100, rtp*100)
-		return rtp
+		return rtp, math.NaN()
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
 }
 
-func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
+func CalcStatReg(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	fmt.Printf("*bonus reels calculations*\n")
-	var rtpfs = CalcStatBon(ctx, sp) // 365.032743%
+	var rtpfs, _ = CalcStatBon(ctx, sp) // 365.032743%
 	if ctx.Err() != nil {
-		return 0
+		return 0, 0
 	}
 	fmt.Printf("*regular reels calculations*\n")
 	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame()
 	var s = slot.NewStatCascade(sn, 15)
 
-	var calc = func(w io.Writer) float64 {
+	var calc = func(w io.Writer) (float64, float64) {
 		var N, S, _ = s.NSQ(g.Cost())
 		var N2 = float64(s.Casc[1].N.Load())
 		var N3 = float64(s.Casc[2].N.Load())
@@ -69,7 +70,7 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) float64 {
 		fmt.Fprintf(w, "fall[5] = %.10g, Ec5 = 1/%.5g, Kf5 = 1/%.5g\n", N5, N/N5, N4/N5)
 		fmt.Fprintf(w, "Mcascade = %.5g, ACL = %.5g, Kfading = 1/%.5g, Ncascmax = %d\n", s.Mcascade(), s.ACL(), s.Kfading(), s.Ncascmax())
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", µ*100, q, rtpfs*100, rtp*100)
-		return rtp
+		return rtp, math.NaN()
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"io"
+	"math"
 
 	"github.com/slotopol/server/game/slot"
 )
@@ -12,12 +13,12 @@ import (
 // calculation see at generator/prov/novomatic/cashfarmbon.lua
 const Ebon = 50
 
-func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
+func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame()
 	var s = slot.NewStatCascade(sn, 5)
 
-	var calc = func(w io.Writer) float64 {
+	var calc = func(w io.Writer) (float64, float64) {
 		var N1 = float64(s.Casc[0].N.Load())
 		var N2 = float64(s.Casc[1].N.Load())
 		var N3 = float64(s.Casc[2].N.Load())
@@ -36,7 +37,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) float64 {
 		fmt.Fprintf(w, "Mcascade = %.5g, ACL = %.5g, Kfading = 1/%.5g, Ncascmax = %d\n", s.Mcascade(), s.ACL(), s.Kfading(), s.Ncascmax())
 		fmt.Fprintf(w, "farm bonuses: hit rate 1/%.5g, rtp = %.6f%%\n", N1/float64(s.SumBH(farmbn)), rtpbon*100)
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g(farm) = %.6f%%\n", rtpsym*100, rtpbon*100, rtp*100)
-		return rtp
+		return rtp, math.NaN()
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)

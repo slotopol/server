@@ -12,7 +12,7 @@ import (
 const lolim = 1e6 // lower limit, let some space to get approximate sigma
 
 // Function to report about progress of Monte Carlo calculation
-func ProgressMC(ctx context.Context, sp *ScanPar, s Simulator, calc func(io.Writer) float64, cost float64) {
+func ProgressMC(ctx context.Context, sp *ScanPar, s Simulator, calc func(io.Writer) (float64, float64), cost float64) {
 	const stepdur = 1000 * time.Millisecond
 	var t0 = time.Now()
 	var steps = time.Tick(stepdur)
@@ -21,15 +21,19 @@ func ProgressMC(ctx context.Context, sp *ScanPar, s Simulator, calc func(io.Writ
 		dur     time.Duration
 		N, S, Q float64
 		RTP     float64
+		sigma   float64
 		VI      float64
 		ΔRTP    float64
 		total   float64
 	)
 	var param = func() {
 		dur = time.Since(t0)
-		N, S, Q = s.NSQ(cost)
-		RTP = calc(io.Discard)
-		VI = GetZ(sp.Conf) * math.Sqrt(N*Q-S*S) / N
+		RTP, sigma = calc(io.Discard)
+		if math.IsNaN(sigma) {
+			N, S, Q = s.NSQ(cost)
+			sigma = math.Sqrt(N*Q-S*S) / N
+		}
+		VI = GetZ(sp.Conf) * sigma
 		ΔRTP = VI / math.Sqrt(N)
 		var tc, tp float64
 		tc = max(float64(sp.Total), lolim)
