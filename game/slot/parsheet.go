@@ -24,7 +24,7 @@ const ( // print flags for slots
 // Maximum RTP to get convergence point
 const RTPconv = 0.995 // 99.5%
 
-func print_vi(w io.Writer, sp *ScanPar, sigma float64) {
+func Print_vi(w io.Writer, sp *ScanPar, sigma float64) {
 	if sp.PF&PF_vi == 0 {
 		return
 	}
@@ -32,7 +32,7 @@ func print_vi(w io.Writer, sp *ScanPar, sigma float64) {
 	fmt.Fprintf(w, "sigma = %.6g, VI[%.4g%%] = %.6g (%s)\n", sigma, sp.Conf*100, vi, VIname5[VIclass5(sigma)])
 }
 
-func print_ci(w io.Writer, sp *ScanPar, rtp, sigma float64) {
+func Print_ci(w io.Writer, sp *ScanPar, rtp, sigma float64) {
 	if sp.PF&PF_ci == 0 {
 		return
 	}
@@ -44,7 +44,7 @@ func print_ci(w io.Writer, sp *ScanPar, rtp, sigma float64) {
 	fmt.Fprintf(w, "CI[%.4g%%] = %d, bankroll[CI] = %.6g\n", sp.Conf*100, int(ci+0.5), BRci)
 }
 
-func print_ranges(w io.Writer, sp *ScanPar, rtp, sigma float64) {
+func Print_ranges(w io.Writer, sp *ScanPar, rtp, sigma float64) {
 	if sp.PF&PF_ranges == 0 {
 		return
 	}
@@ -63,7 +63,7 @@ func print_ranges(w io.Writer, sp *ScanPar, rtp, sigma float64) {
 	}
 }
 
-func print_contribution_generic(w io.Writer, sp *ScanPar, s *StatGeneric, rtp float64) {
+func Print_contribution_generic(w io.Writer, sp *ScanPar, s *StatGeneric, rtp float64) {
 	if sp.PF&PF_contrib == 0 {
 		return
 	}
@@ -78,7 +78,7 @@ func print_contribution_generic(w io.Writer, sp *ScanPar, s *StatGeneric, rtp fl
 	}
 }
 
-func print_contribution_cascade(w io.Writer, sp *ScanPar, s *StatCascade, rtp float64) {
+func Print_contribution_cascade(w io.Writer, sp *ScanPar, s *StatCascade, rtp float64) {
 	if sp.PF&PF_contrib == 0 {
 		return
 	}
@@ -93,7 +93,7 @@ func print_contribution_cascade(w io.Writer, sp *ScanPar, s *StatCascade, rtp fl
 	}
 }
 
-func print_contribution_falls(w io.Writer, sp *ScanPar, s *StatCascade, rtp float64) {
+func Print_contribution_falls(w io.Writer, sp *ScanPar, s *StatCascade, rtp float64) {
 	if sp.PF&PF_contrib == 0 {
 		return
 	}
@@ -110,7 +110,7 @@ func print_contribution_falls(w io.Writer, sp *ScanPar, s *StatCascade, rtp floa
 	}
 }
 
-func print_raw(w io.Writer, sp *ScanPar, s Simulator) {
+func Print_raw(w io.Writer, sp *ScanPar, s Simulator) {
 	if sp.PF&PF_raw == 0 {
 		return
 	}
@@ -124,6 +124,20 @@ func print_raw(w io.Writer, sp *ScanPar, s Simulator) {
 	fmt.Fprintf(w, util.B2S(b))
 }
 
+func Print_all(w io.Writer, sp *ScanPar, s Simulator, rtp, sigma float64) {
+	Print_vi(w, sp, sigma)
+	Print_ci(w, sp, rtp, sigma)
+	Print_ranges(w, sp, rtp, sigma)
+	switch stat := s.(type) {
+	case *StatGeneric:
+		Print_contribution_generic(w, sp, stat, rtp)
+	case *StatCascade:
+		Print_contribution_cascade(w, sp, stat, rtp)
+		Print_contribution_falls(w, sp, stat, rtp)
+	}
+	Print_raw(w, sp, s)
+}
+
 // Parsheet for simple generic slot (without free games and bonuses).
 func Parsheet_generic_simple(w io.Writer, sp *ScanPar, s *StatGeneric, cost float64) (float64, float64) {
 	var N, S, Q = s.NSQ(cost)
@@ -132,18 +146,14 @@ func Parsheet_generic_simple(w io.Writer, sp *ScanPar, s *StatGeneric, cost floa
 	if sp.PF&PF_main != 0 {
 		fmt.Fprintf(w, "RTP = %.8g%%\n", µ*100)
 	}
-	print_vi(w, sp, sigma)
-	print_ci(w, sp, µ, sigma)
-	print_ranges(w, sp, µ, sigma)
-	print_contribution_generic(w, sp, s, µ)
-	print_raw(w, sp, s)
+	Print_all(w, sp, s, µ, sigma)
 	return µ, sigma
 }
 
-// Parsheet for generic slot with freegames
+// Parsheet for generic slot with retriggerable freegames
 // with `m` multiplier on freegames (m=1 if no multiplier).
 // Each hit of freegames series has `L` freespins.
-func Parsheet_generic_freegames(w io.Writer, sp *ScanPar, s *StatGeneric, cost, m float64, L int) (float64, float64) {
+func Parsheet_generic_fgretrig(w io.Writer, sp *ScanPar, s *StatGeneric, cost, m float64, L int) (float64, float64) {
 	var N, S, Q = s.NSQ(cost)
 	var µ = S / N
 	var Dsym = Q/N - µ*µ
@@ -159,15 +169,11 @@ func Parsheet_generic_freegames(w io.Writer, sp *ScanPar, s *StatGeneric, cost, 
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µ*100, q, rtpfs*100, rtp*100)
 	}
-	print_vi(w, sp, sigma)
-	print_ci(w, sp, rtp, sigma)
-	print_ranges(w, sp, rtp, sigma)
-	print_contribution_generic(w, sp, s, rtp)
-	print_raw(w, sp, s)
+	Print_all(w, sp, s, rtp, sigma)
 	return rtp, sigma
 }
 
-func Parsheet_generic_fgseries(w io.Writer, sp *ScanPar, s *StatGeneric, cost, m float64, L []int, scat Sym) (float64, float64) {
+func Parsheet_generic_fgretrig_series(w io.Writer, sp *ScanPar, s *StatGeneric, cost, m float64, L []int, scat Sym) (float64, float64) {
 	var N, S, Q = s.NSQ(cost)
 	var µ = S / N
 	var Dsym = Q/N - µ*µ
@@ -190,19 +196,49 @@ func Parsheet_generic_fgseries(w io.Writer, sp *ScanPar, s *StatGeneric, cost, m
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µ*100, q, rtpfs*100, rtp*100)
 	}
-	print_vi(w, sp, sigma)
-	print_ci(w, sp, rtp, sigma)
-	print_ranges(w, sp, rtp, sigma)
-	print_contribution_generic(w, sp, s, µ)
-	print_raw(w, sp, s)
+	Print_all(w, sp, s, rtp, sigma)
 	return rtp, sigma
 }
 
-// Parsheet for generic slot with splitted statistics for
-// regular games `sr` and statistics for bonus games `sb`.
+// Parsheet for generic slot with splitted statistics for regular
+// games `sr` and statistics for NON-retriggerable bonus games `sb`.
 // with `m` multiplier on freegames (m=1 if no multiplier).
 // Each hit of freegames series has `L` freespins.
-func Parsheet_generic_freegames_split(w io.Writer, sp *ScanPar, sr, sb *StatGeneric, cost, m float64, L int) (float64, float64) {
+func Parsheet_generic_fgonce_split(w io.Writer, sp *ScanPar, sr, sb *StatGeneric, cost, m float64, L float64) (float64, float64) {
+	// bonus reels parameters
+	var Nb, Sb, Qb = sb.NSQ(cost)
+	var µb = Sb / Nb
+	var Dsymb = Qb/Nb - µb*µb
+	// regular reels parameters
+	var Nr, Sr, Qr = sr.NSQ(cost)
+	var µr = Sr / Nr
+	var Dsymr = Qr/Nr - µr*µr
+	var qr, sqr = sr.FSQ()
+	var Pfg = sr.FGQ()
+	// calculation
+	var rtpfs = m * µb
+	var rtp = µr + qr*rtpfs
+	var sigma = math.Sqrt(Dsymr + m*m*Pfg*(L*Dsymb+L*L*µb*µb))
+	if sp.PF&PF_fg != 0 {
+		fmt.Fprintf(w, "*bonus reels*\n")
+		fmt.Fprintf(w, "RTP(fg) = %.8g%%\n", rtpfs*100)
+	}
+	if sp.PF&PF_main != 0 {
+		fmt.Fprintf(w, "*regular reels*\n")
+		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µr*100, math.Sqrt(Dsymr))
+		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", sr.FSC.Load(), qr, sqr)
+		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", sr.FGF())
+		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µr*100, qr, rtpfs*100, rtp*100)
+	}
+	Print_all(w, sp, sr, rtp, sigma)
+	return rtp, sigma
+}
+
+// Parsheet for generic slot with splitted statistics for regular
+// games `sr` and statistics for retriggerable bonus games `sb`.
+// with `m` multiplier on freegames (m=1 if no multiplier).
+// Each hit of freegames series has `L` freespins.
+func Parsheet_generic_fgretrig_split(w io.Writer, sp *ScanPar, sr, sb *StatGeneric, cost, m, L float64) (float64, float64) {
 	// bonus reels parameters
 	var Nb, Sb, Qb = sb.NSQ(cost)
 	var µb = Sb / Nb
@@ -217,8 +253,8 @@ func Parsheet_generic_freegames_split(w io.Writer, sp *ScanPar, sr, sb *StatGene
 	// calculation
 	var rtpfs = m * sqb * µb
 	var rtp = µr + qr*rtpfs
-	var Eser, Dser = float64(L) * sqb, float64(L) * qb * sqb * sqb * sqb // Galton-Watson process
-	var sigma = math.Sqrt(Dsymr + m*m*Pfg*(Eser*Dsymb+µb*µb*Dser))       // Wald's equation
+	var Eser, Dser = L * sqb, L * qb * sqb * sqb * sqb             // Galton-Watson process
+	var sigma = math.Sqrt(Dsymr + m*m*Pfg*(Eser*Dsymb+µb*µb*Dser)) // Wald's equation
 	if sp.PF&PF_fg != 0 {
 		fmt.Fprintf(w, "*bonus reels*\n")
 		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µb*100, math.Sqrt(Dsymb))
@@ -233,11 +269,7 @@ func Parsheet_generic_freegames_split(w io.Writer, sp *ScanPar, sr, sb *StatGene
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", sr.FGF())
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µr*100, qr, rtpfs*100, rtp*100)
 	}
-	print_vi(w, sp, sigma)
-	print_ci(w, sp, rtp, sigma)
-	print_ranges(w, sp, rtp, sigma)
-	print_contribution_generic(w, sp, sr, rtp)
-	print_raw(w, sp, sr)
+	Print_all(w, sp, sr, rtp, sigma)
 	return rtp, sigma
 }
 
@@ -258,11 +290,6 @@ func Parsheet_cascade_simple(w io.Writer, sp *ScanPar, s *StatCascade, cost floa
 		fmt.Fprintf(w, "Mcascade = %.5g, ACL = %.5g, Kfading = 1/%.5g, Ncascmax = %d\n", s.Mcascade(), s.ACL(), s.Kfading(), s.Ncascmax())
 		fmt.Fprintf(w, "RTP = %.8g%%\n", µ*100)
 	}
-	print_vi(w, sp, sigma)
-	print_ci(w, sp, µ, sigma)
-	print_ranges(w, sp, µ, sigma)
-	print_contribution_cascade(w, sp, s, µ)
-	print_contribution_falls(w, sp, s, µ)
-	print_raw(w, sp, s)
+	Print_all(w, sp, s, µ, sigma)
 	return µ, sigma
 }

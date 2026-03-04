@@ -26,12 +26,16 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var s = slot.NewStatGeneric(sn, 5)
 
 	var calc = func(w io.Writer) (float64, float64) {
-		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
-		var rtpsym = lrtp + srtp
-		var rtp = rtpsym * Em
-		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
-		fmt.Fprintf(w, "RTP = %.5g(sym) * %.5g(Em) = %.6f%%\n", rtpsym*100, Em, rtp*100)
-		return rtpsym, math.NaN()
+		var N, S, Q = s.NSQ(g.Cost())
+		var µ = S / N
+		var rtp = Em * µ
+		var sigma = Em * math.Sqrt(Q/N-µ*µ)
+		if sp.PF&slot.PF_main != 0 {
+			fmt.Fprintf(w, "symbols: µ = %.8g%%\n", µ*100)
+			fmt.Fprintf(w, "RTP = %.5g(Em) * %.5g(sym) = %.8g%%\n", Em, µ*100, rtp*100)
+		}
+		slot.Print_all(w, sp, s, rtp, sigma)
+		return rtp, sigma
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)

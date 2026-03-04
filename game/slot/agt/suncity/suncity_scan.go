@@ -19,9 +19,6 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) (float64, float64, float
 	var calc = func(w io.Writer) (float64, float64) {
 		var N = s.Count()
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
-		if srtp > 0 {
-			panic("scatters have no pays")
-		}
 		var rtpsym = lrtp + srtp
 		fgf = N / float64(s.FGH.Load())
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
@@ -48,9 +45,6 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var calc = func(w io.Writer) (float64, float64) {
 		var N = s.Count()
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
-		if srtp > 0 {
-			panic("scatters have no pays")
-		}
 		var rtpsym = lrtp + srtp
 		var fgf = N / float64(s.FGH.Load())
 		var rtp = rtpsym + rtpfs*numfs/fgf
