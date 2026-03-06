@@ -9,7 +9,7 @@ import (
 )
 
 func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
-	fmt.Printf("\n(1/2) bonus reels calculations\n")
+	fmt.Printf("\n(1/2) free games calculations\n")
 	var sb = slot.NewStatGeneric(sn, 3)
 	{
 		var reels, _ = ReelsMap.FindClosest(sp.MRTP)
@@ -25,7 +25,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		return 0, 0
 	}
 
-	fmt.Printf("\n(2/2) regular reels calculations\n")
+	fmt.Printf("\n(2/2) regular games calculations\n")
 	var sr = slot.NewStatGeneric(sn, 3)
 	{
 		var reels, _ = ReelsMap.FindClosest(sp.MRTP)

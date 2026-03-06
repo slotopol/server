@@ -11,7 +11,7 @@ import (
 func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var ok bool
 	var sb, sr *slot.StatGeneric
-	fmt.Printf("\n(1/2) bonus reels calculations\n")
+	fmt.Printf("\n(1/2) free games calculations\n")
 	var idb = fmt.Sprintf("ctinteractive/beetlestar/graw/bon/%d", sp.Sel)
 	if sb, ok = slot.FindStatGeneric(idb+"/%g", sp.MRTP, sn, 5); ok {
 		var reels, _ = ReelsMap.FindClosest(sp.MRTP)
@@ -27,7 +27,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		return 0, 0
 	}
 
-	fmt.Printf("\n(2/2) regular reels calculations\n")
+	fmt.Printf("\n(2/2) regular games calculations\n")
 	var idr = fmt.Sprintf("ctinteractive/beetlestar/graw/reg/%d", sp.Sel)
 	if sr, ok = slot.FindStatGeneric(idr+"/%g", sp.MRTP, sn, 5); ok {
 		var reels, _ = ReelsMap.FindClosest(sp.MRTP)
