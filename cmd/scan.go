@@ -81,6 +81,7 @@ func SetupParSheet(pf *pflag.FlagSet, sp *game.ScanPar, gi *game.GameInfo) (err 
 		"ranges":  slot.PF_ranges,
 		"contrib": slot.PF_contrib,
 		"raw":     slot.PF_raw,
+		"full":    0xffff,
 	}
 	for sf, uf := range pfm {
 		if ok, err = pf.GetBool(sf); err != nil {
@@ -186,6 +187,7 @@ func init() {
 	pf.Bool("ranges", false, "print RTP ranges")
 	pf.Bool("contrib", false, "print symbols contribution to payouts")
 	pf.Bool("raw", false, "simulator raw data")
+	pf.Bool("full", false, "print full parsheet (switch on all print-flags)")
 
 	pf.SortFlags = false
 
