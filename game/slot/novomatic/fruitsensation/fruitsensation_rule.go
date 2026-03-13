@@ -7,7 +7,7 @@ import (
 )
 
 const (
-	sn = 13 // number of symbols
+	sn = 7 // number of symbols
 )
 
 var ReelsMap slot.ReelsMap[slot.Reelx]

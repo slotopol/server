@@ -69,9 +69,9 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 
 func (g *Game) Filled() slot.Sym {
 	var sym = g.Grid[4][3]
-	for x := range 5 {
-		for y := range 4 {
-			if g.Grid[x][y] != sym {
+	for _, sr := range g.Grid {
+		for _, sy := range sr {
+			if sy != sym {
 				return 0
 			}
 		}

@@ -74,14 +74,15 @@ func SetupParSheet(pf *pflag.FlagSet, sp *game.ScanPar, gi *game.GameInfo) (err 
 	sp.Prec = p / 100
 
 	var pfm = map[string]uint{
-		"main":    slot.PF_main,
-		"fg":      slot.PF_fg,
-		"vi":      slot.PF_vi,
-		"ci":      slot.PF_ci,
-		"ranges":  slot.PF_ranges,
-		"contrib": slot.PF_contrib,
-		"raw":     slot.PF_raw,
-		"full":    0xffff,
+		"main":   slot.PF_main,
+		"jack":   slot.PF_jack,
+		"fg":     slot.PF_fg,
+		"vi":     slot.PF_vi,
+		"ci":     slot.PF_ci,
+		"spread": slot.PF_spread,
+		"sym":    slot.PF_sym,
+		"raw":    slot.PF_raw,
+		"full":   0xffff,
 	}
 	for sf, uf := range pfm {
 		if ok, err = pf.GetBool(sf); err != nil {
@@ -181,11 +182,12 @@ func init() {
 	pf.Float64("prec", 0.1, "precision of result for Monte Carlo method, in percents")
 	// print flags
 	pf.Bool("main", true, "print RTP, sigma and other main information")
+	pf.Bool("jack", true, "print info about progressive jackpots")
 	pf.Bool("fg", true, "print info for bonus reels")
 	pf.Bool("vi", true, "print volatility index")
 	pf.Bool("ci", true, "print index of convergence")
-	pf.Bool("ranges", false, "print RTP ranges")
-	pf.Bool("contrib", false, "print symbols contribution to payouts")
+	pf.Bool("spread", false, "print RTP spread")
+	pf.Bool("sym", false, "print symbols contribution to payouts")
 	pf.Bool("raw", false, "simulator raw data")
 	pf.Bool("full", false, "print full parsheet (switch on all print-flags)")
 

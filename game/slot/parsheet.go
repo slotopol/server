@@ -13,12 +13,13 @@ import (
 const ( // print flags for slots
 	PF_main = 1 << iota // RTP, sigma and other main information
 
-	PF_fg      // info for bonus reels
-	PF_vi      // volatility index
-	PF_ci      // convergence index
-	PF_ranges  // RTP ranges
-	PF_contrib // symbols contribution to payouts
-	PF_raw     // simulator raw data
+	PF_jack   // info about progressive jackpots
+	PF_fg     // info for bonus reels
+	PF_vi     // volatility index
+	PF_ci     // convergence index
+	PF_spread // RTP spread
+	PF_sym    // symbols contribution to payouts
+	PF_raw    // simulator raw data
 )
 
 // Maximum RTP to get convergence point
@@ -45,11 +46,11 @@ func Print_ci(w io.Writer, sp *ScanPar, rtp, sigma float64) {
 }
 
 func Print_ranges(w io.Writer, sp *ScanPar, rtp, sigma float64) {
-	if sp.PF&PF_ranges == 0 {
+	if sp.PF&PF_spread == 0 {
 		return
 	}
 	fmt.Fprintln(w)
-	fmt.Fprintf(w, "RTP ranges for spins number with confidence %.4g%%:\n", sp.Conf*100)
+	fmt.Fprintf(w, "RTP spread for spins number with confidence %.4g%%:\n", sp.Conf*100)
 	var N = []int{1e3, 1e4, 1e5, 1e6, 1e7}
 	var vi = GetZ(sp.Conf) * sigma
 	var ci = CI(sp.Conf, rtp, sigma)
@@ -64,7 +65,7 @@ func Print_ranges(w io.Writer, sp *ScanPar, rtp, sigma float64) {
 }
 
 func Print_contribution_generic(w io.Writer, sp *ScanPar, s *StatGeneric, rtp float64) {
-	if sp.PF&PF_contrib == 0 {
+	if sp.PF&PF_sym == 0 {
 		return
 	}
 	fmt.Fprintln(w)
@@ -79,7 +80,7 @@ func Print_contribution_generic(w io.Writer, sp *ScanPar, s *StatGeneric, rtp fl
 }
 
 func Print_contribution_cascade(w io.Writer, sp *ScanPar, s *StatCascade, rtp float64) {
-	if sp.PF&PF_contrib == 0 {
+	if sp.PF&PF_sym == 0 {
 		return
 	}
 	fmt.Fprintln(w)
@@ -94,7 +95,7 @@ func Print_contribution_cascade(w io.Writer, sp *ScanPar, s *StatCascade, rtp fl
 }
 
 func Print_contribution_falls(w io.Writer, sp *ScanPar, s *StatCascade, rtp float64) {
-	if sp.PF&PF_contrib == 0 {
+	if sp.PF&PF_sym == 0 {
 		return
 	}
 	fmt.Fprintln(w)

@@ -4,7 +4,6 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"math"
 
 	"github.com/slotopol/server/game/slot"
 )
@@ -16,14 +15,15 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	s.JackDim(ssj3)
 
 	var calc = func(w io.Writer) (float64, float64) {
-		var N, S, Q = s.NSQ(g.Cost())
-		var µ = S / N
-		var sigma = math.Sqrt(Q/N - µ*µ)
-		fmt.Fprintf(w, "jackpots1: count %g, frequency 1/%.12g\n", s.JackHits(ssj1), N/s.JackHits(ssj1))
-		fmt.Fprintf(w, "jackpots2: count %g, frequency 1/%.12g\n", s.JackHits(ssj2), N/s.JackHits(ssj2))
-		fmt.Fprintf(w, "jackpots3: count %g, frequency 1/%.12g\n", s.JackHits(ssj3), N/s.JackHits(ssj3))
-		fmt.Fprintf(w, "RTP = %.6f%%\n", µ*100)
-		return µ, sigma
+		if sp.PF&slot.PF_jack != 0 {
+			var N = s.Count()
+			for idj := range s.JH {
+				var Cj = float64(s.JH[idj].Load())
+				var HRj = N / Cj
+				fmt.Fprintf(w, "jackpots%d: count %g, hit rate 1/%.12g\n", idj+1, Cj, HRj)
+			}
+		}
+		return slot.Parsheet_generic_simple(w, sp, s, g.Cost())
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
