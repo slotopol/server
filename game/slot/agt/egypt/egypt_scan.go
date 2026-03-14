@@ -30,7 +30,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		var µ = S / N
 		var rtp = Em * µ
 		var sigma = Em * math.Sqrt(Q/N-µ*µ)
-		if sp.PF&slot.PF_main != 0 {
+		if sp.IsMain() {
 			fmt.Fprintf(w, "symbols: µ = %.8g%%\n", µ*100)
 			fmt.Fprintf(w, "RTP = %.5g(Em) * %.5g(sym) = %.8g%%\n", Em, µ*100, rtp*100)
 		}

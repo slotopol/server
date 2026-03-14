@@ -84,6 +84,19 @@ const (
 	GPscany GP = GPwsc | GPscat | GPstscat
 )
 
+const ( // print flags for slots
+	PF_main = 1 << iota // RTP, sigma and other main information
+
+	PF_jack   // info about progressive jackpots
+	PF_fg     // info for bonus reels
+	PF_vi     // volatility index
+	PF_ci     // convergence index
+	PF_spread // RTP spread
+	PF_casc   // cascade metrics
+	PF_sym    // symbols contribution to payouts
+	PF_raw    // simulator raw data
+)
+
 type (
 	// GameAlias structure describes the game target of algorithm.
 	// Several games can shares single algorithm, and in this case
@@ -195,4 +208,40 @@ func (ad *AlgDescr) FindClosest(mrtp float64) (rtp float64) {
 		}
 	}
 	return
+}
+
+func (sp *ScanPar) IsMain() bool {
+	return sp.PF&PF_main != 0
+}
+
+func (sp *ScanPar) IsJack() bool {
+	return sp.PF&PF_jack != 0
+}
+
+func (sp *ScanPar) IsFG() bool {
+	return sp.PF&PF_fg != 0
+}
+
+func (sp *ScanPar) IsVI() bool {
+	return sp.PF&PF_vi != 0
+}
+
+func (sp *ScanPar) IsCI() bool {
+	return sp.PF&PF_ci != 0
+}
+
+func (sp *ScanPar) IsSpread() bool {
+	return sp.PF&PF_spread != 0
+}
+
+func (sp *ScanPar) IsCasc() bool {
+	return sp.PF&PF_casc != 0
+}
+
+func (sp *ScanPar) IsSym() bool {
+	return sp.PF&PF_sym != 0
+}
+
+func (sp *ScanPar) IsRaw() bool {
+	return sp.PF&PF_raw != 0
 }

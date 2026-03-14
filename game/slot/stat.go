@@ -126,9 +126,7 @@ func (c Counts[T]) MarshalYAML() (any, error) {
 			Kind:  yaml.SequenceNode,
 			Style: yaml.FlowStyle,
 		}
-		if sym > 0 {
-			node2.LineComment = strconv.Itoa(sym)
-		}
+		node2.LineComment = strconv.Itoa(sym + 1)
 
 		for _, v := range line {
 			node2.Content = append(node2.Content, &yaml.Node{
@@ -149,7 +147,8 @@ type StatCounter struct {
 	FSC Uint64          `yaml:",omitempty"`      // free spins count
 	FGH Uint64          `yaml:",omitempty"`      // free games hits count
 	BH  []Uint64        `yaml:",flow,omitempty"` // bonus hits count
-	JH  []Uint64        `yaml:",flow,omitempty"` // jackpot hits count
+	BS  []Float64       `yaml:",flow,omitempty"` // sum of bonuses pays
+	JH  []Uint64        `yaml:",flow,omitempty"` // progressive jackpot hits count
 }
 
 func (c *StatCounter) IsZero() bool {
@@ -157,13 +156,13 @@ func (c *StatCounter) IsZero() bool {
 }
 
 func (c *StatCounter) SymDim(sym Sym, pn int) {
-	c.C[sym] = make([]Uint64, pn+1)
-	c.S[sym] = make([]Float64, pn+1)
+	c.C[sym] = make([]Uint64, pn)
+	c.S[sym] = make([]Float64, pn)
 }
 
 func (c *StatCounter) CntDim(sn, pn int) {
-	c.C = make([][]Uint64, sn+1)
-	c.S = make([][]Float64, sn+1)
+	c.C = make([][]Uint64, sn)
+	c.S = make([][]Float64, sn)
 	for sym := range c.S {
 		c.SymDim(Sym(sym), pn)
 	}
@@ -171,6 +170,7 @@ func (c *StatCounter) CntDim(sn, pn int) {
 
 func (c *StatCounter) BonDim(n int) {
 	c.BH = make([]Uint64, n)
+	c.BS = make([]Float64, n)
 }
 
 func (c *StatCounter) JackDim(n int) {
@@ -179,10 +179,16 @@ func (c *StatCounter) JackDim(n int) {
 
 func (c *StatCounter) Update(wins Wins) (pay float64) {
 	for _, wi := range wins {
-		c.C[wi.Sym][wi.Num].Inc()
+		if wi.Sym > 0 && wi.Num > 0 {
+			c.C[wi.Sym-1][wi.Num-1].Inc()
+		}
 		if wi.Pay != 0 {
 			var p = wi.Pay * wi.MP
-			c.S[wi.Sym][wi.Num].Add(p)
+			if wi.Sym > 0 { // symbols pay
+				c.S[wi.Sym-1][wi.Num-1].Add(p)
+			} else { // bonus pay, only 2 cases can be
+				c.BS[wi.BID-1].Add(p)
+			}
 			pay += p
 		}
 		if wi.FS != 0 {
@@ -201,7 +207,7 @@ func (c *StatCounter) Update(wins Wins) (pay float64) {
 }
 
 func (c *StatCounter) SymPays(sym Sym) (sum float64) {
-	var pays = c.S[sym]
+	var pays = c.S[sym-1]
 	for i := range pays {
 		sum += pays[i].Load()
 	}
@@ -213,6 +219,9 @@ func (c *StatCounter) SumPays() (sum float64) {
 		for i := range pays {
 			sum += pays[i].Load()
 		}
+	}
+	for i := range c.BS {
+		sum += c.BS[i].Load()
 	}
 	return
 }

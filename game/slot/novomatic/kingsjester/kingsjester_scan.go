@@ -15,7 +15,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	s.JackDim(kjj2)
 
 	var calc = func(w io.Writer) (float64, float64) {
-		if sp.PF&slot.PF_jack != 0 {
+		if sp.IsJack() {
 			var N = s.Count()
 			var q, sq = s.FSQ()
 			for idj := range s.JH {

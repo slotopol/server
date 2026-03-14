@@ -7,7 +7,6 @@ import (
 
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/game"
-	"github.com/slotopol/server/game/slot"
 	"github.com/slotopol/server/util"
 
 	"github.com/spf13/cobra"
@@ -74,15 +73,16 @@ func SetupParSheet(pf *pflag.FlagSet, sp *game.ScanPar, gi *game.GameInfo) (err 
 	sp.Prec = p / 100
 
 	var pfm = map[string]uint{
-		"main":   slot.PF_main,
-		"jack":   slot.PF_jack,
-		"fg":     slot.PF_fg,
-		"vi":     slot.PF_vi,
-		"ci":     slot.PF_ci,
-		"spread": slot.PF_spread,
-		"sym":    slot.PF_sym,
-		"raw":    slot.PF_raw,
-		"full":   0xffff,
+		"main":   game.PF_main,
+		"jack":   game.PF_jack,
+		"fg":     game.PF_fg,
+		"vi":     game.PF_vi,
+		"ci":     game.PF_ci,
+		"spread": game.PF_spread,
+		"casc":   game.PF_casc,
+		"sym":    game.PF_sym,
+		"raw":    game.PF_raw,
+		"full":   0xffff &^ game.PF_raw,
 	}
 	for sf, uf := range pfm {
 		if ok, err = pf.GetBool(sf); err != nil {
@@ -187,9 +187,10 @@ func init() {
 	pf.Bool("vi", true, "print volatility index")
 	pf.Bool("ci", true, "print index of convergence")
 	pf.Bool("spread", false, "print RTP spread")
+	pf.Bool("casc", false, "print cascade metrics")
 	pf.Bool("sym", false, "print symbols contribution to payouts")
 	pf.Bool("raw", false, "simulator raw data")
-	pf.Bool("full", false, "print full parsheet (switch on all print-flags)")
+	pf.Bool("full", false, "print full parsheet (switch on all print-flags except raw data)")
 
 	pf.SortFlags = false
 

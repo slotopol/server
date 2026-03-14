@@ -10,23 +10,11 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-const ( // print flags for slots
-	PF_main = 1 << iota // RTP, sigma and other main information
-
-	PF_jack   // info about progressive jackpots
-	PF_fg     // info for bonus reels
-	PF_vi     // volatility index
-	PF_ci     // convergence index
-	PF_spread // RTP spread
-	PF_sym    // symbols contribution to payouts
-	PF_raw    // simulator raw data
-)
-
 // Maximum RTP to get convergence point
 const RTPconv = 0.995 // 99.5%
 
 func Print_vi(w io.Writer, sp *ScanPar, sigma float64) {
-	if sp.PF&PF_vi == 0 {
+	if !sp.IsVI() {
 		return
 	}
 	var vi = GetZ(sp.Conf) * sigma
@@ -34,7 +22,7 @@ func Print_vi(w io.Writer, sp *ScanPar, sigma float64) {
 }
 
 func Print_ci(w io.Writer, sp *ScanPar, rtp, sigma float64) {
-	if sp.PF&PF_ci == 0 {
+	if !sp.IsCI() {
 		return
 	}
 	if rtp > RTPconv {
@@ -45,8 +33,8 @@ func Print_ci(w io.Writer, sp *ScanPar, rtp, sigma float64) {
 	fmt.Fprintf(w, "CI[%.4g%%] = %d, bankroll[CI] = %.6g\n", sp.Conf*100, int(ci+0.5), BRci)
 }
 
-func Print_ranges(w io.Writer, sp *ScanPar, rtp, sigma float64) {
-	if sp.PF&PF_spread == 0 {
+func Print_spread(w io.Writer, sp *ScanPar, rtp, sigma float64) {
+	if !sp.IsSpread() {
 		return
 	}
 	fmt.Fprintln(w)
@@ -64,47 +52,75 @@ func Print_ranges(w io.Writer, sp *ScanPar, rtp, sigma float64) {
 	}
 }
 
-func Print_contribution_generic(w io.Writer, sp *ScanPar, s *StatGeneric, rtp float64) {
-	if sp.PF&PF_sym == 0 {
-		return
-	}
-	fmt.Fprintln(w)
-	fmt.Fprintf(w, "symbols contribution to payouts:\n")
-	fmt.Fprintf(w, "sym   rate   rtp\n")
-	var sum = s.SumPays()
-	var sym Sym
-	for sym = 1; sym < Sym(len(s.S)); sym++ {
-		var c = s.SymPays(sym) / sum
-		fmt.Fprintf(w, "%2d: %5.2f%% %5.2f%%\n", sym, c*100, rtp*c*100)
+func p5f(p float64) string {
+	if p != 0 {
+		return fmt.Sprintf("%5.2f", p)
+	} else {
+		return "    0"
 	}
 }
 
-func Print_contribution_cascade(w io.Writer, sp *ScanPar, s *StatCascade, rtp float64) {
-	if sp.PF&PF_sym == 0 {
+func Print_symbols_generic(w io.Writer, sp *ScanPar, s *StatGeneric, rtp float64) {
+	if !sp.IsSym() {
 		return
 	}
 	fmt.Fprintln(w)
 	fmt.Fprintf(w, "symbols contribution to payouts:\n")
-	fmt.Fprintf(w, "sym   rate   rtp\n")
+	fmt.Fprintf(w, "sym rate%%  rtp%% |")
+	for x := range s.S[0] {
+		fmt.Fprintf(w, " %5d", x+1)
+	}
+	fmt.Fprintf(w, "\n")
 	var sum = s.SumPays()
-	var sym Sym
-	for sym = 1; sym < Sym(len(s.Casc[0].S)); sym++ {
-		var c = s.SymPays(sym) / sum
-		fmt.Fprintf(w, "%2d: %5.2f%% %5.2f%%\n", sym, c*100, rtp*c*100)
+	for sym, pays := range s.S {
+		var cs = s.SymPays(Sym(sym+1)) / sum
+		fmt.Fprintf(w, "%2d: %s %s |", sym+1, p5f(cs*100), p5f(rtp*cs*100))
+		for x := range pays {
+			var cx = pays[x].Load() / sum
+			fmt.Fprintf(w, " %s", p5f(cx*100))
+		}
+		fmt.Fprintf(w, "\n")
+	}
+}
+
+func Print_symbols_cascade(w io.Writer, sp *ScanPar, s *StatCascade, rtp float64) {
+	if !sp.IsSym() {
+		return
+	}
+	fmt.Fprintln(w)
+	fmt.Fprintf(w, "symbols contribution to payouts:\n")
+	fmt.Fprintf(w, "sym rate%%  rtp%% |")
+	for x := range s.Casc[0].S[0] {
+		fmt.Fprintf(w, " %5d", x+1)
+	}
+	fmt.Fprintf(w, "\n")
+	var sum = s.SumPays()
+	for sym, pays := range s.Casc[0].S {
+		var cs = s.SymPays(Sym(sym+1)) / sum
+		fmt.Fprintf(w, "%2d: %s %s |", sym+1, p5f(cs*100), p5f(rtp*cs*100))
+		for x := range pays {
+			var cx float64
+			for cfn := range s.Casc {
+				cx += s.Casc[cfn].S[sym][x].Load()
+			}
+			cx /= sum
+			fmt.Fprintf(w, " %s", p5f(cx*100))
+		}
+		fmt.Fprintf(w, "\n")
 	}
 }
 
 func Print_contribution_falls(w io.Writer, sp *ScanPar, s *StatCascade, rtp float64) {
-	if sp.PF&PF_sym == 0 {
+	if !sp.IsSym() {
 		return
 	}
 	fmt.Fprintln(w)
 	fmt.Fprintf(w, "cascades contribution to payouts:\n")
-	fmt.Fprintf(w, "fall  rate   rtp\n")
+	fmt.Fprintf(w, "cfn rate%%  rtp%%\n")
 	var sum = s.SumPays()
 	for cfn := range s.Casc {
 		var c = s.Casc[cfn].SumPays() / sum
-		fmt.Fprintf(w, "%2d: %5.2f%% %5.2f%%\n", cfn+1, c*100, rtp*c*100)
+		fmt.Fprintf(w, "%2d: %s %s\n", cfn+1, p5f(c*100), p5f(rtp*c*100))
 		if c == 0 {
 			break
 		}
@@ -112,7 +128,7 @@ func Print_contribution_falls(w io.Writer, sp *ScanPar, s *StatCascade, rtp floa
 }
 
 func Print_raw(w io.Writer, sp *ScanPar, s Simulator) {
-	if sp.PF&PF_raw == 0 {
+	if !sp.IsRaw() {
 		return
 	}
 	fmt.Fprintln(w)
@@ -125,26 +141,45 @@ func Print_raw(w io.Writer, sp *ScanPar, s Simulator) {
 	fmt.Fprintf(w, util.B2S(b))
 }
 
+func Print_cascmetrics(w io.Writer, sp *ScanPar, s *StatCascade) {
+	if !sp.IsCasc() {
+		return
+	}
+	var N = s.Count()
+	var N2 = float64(s.Casc[1].N.Load())
+	var N3 = float64(s.Casc[2].N.Load())
+	var N4 = float64(s.Casc[3].N.Load())
+	var N5 = float64(s.Casc[4].N.Load())
+	fmt.Fprintln(w)
+	fmt.Fprintf(w, "cascade metrics:\n")
+	fmt.Fprintf(w, "fall[2] = %.10g, Ec2 = Kf2 = 1/%.5g\n", N2, N/N2)
+	fmt.Fprintf(w, "fall[3] = %.10g, Ec3 = 1/%.5g, Kf3 = 1/%.5g\n", N3, N/N3, N2/N3)
+	fmt.Fprintf(w, "fall[4] = %.10g, Ec4 = 1/%.5g, Kf4 = 1/%.5g\n", N4, N/N4, N3/N4)
+	fmt.Fprintf(w, "fall[5] = %.10g, Ec5 = 1/%.5g, Kf5 = 1/%.5g\n", N5, N/N5, N4/N5)
+	fmt.Fprintf(w, "Mcascade = %.5g, ACL = %.5g, Kfading = 1/%.5g, Ncascmax = %d\n", s.Mcascade(), s.ACL(), s.Kfading(), s.Ncascmax())
+}
+
 func Print_all(w io.Writer, sp *ScanPar, s Simulator, rtp, sigma float64) {
 	Print_vi(w, sp, sigma)
 	Print_ci(w, sp, rtp, sigma)
-	Print_ranges(w, sp, rtp, sigma)
+	Print_spread(w, sp, rtp, sigma)
 	switch stat := s.(type) {
 	case *StatGeneric:
-		Print_contribution_generic(w, sp, stat, rtp)
+		Print_symbols_generic(w, sp, stat, rtp)
 	case *StatCascade:
-		Print_contribution_cascade(w, sp, stat, rtp)
+		Print_cascmetrics(w, sp, stat)
+		Print_symbols_cascade(w, sp, stat, rtp)
 		Print_contribution_falls(w, sp, stat, rtp)
 	}
 	Print_raw(w, sp, s)
 }
 
-// Parsheet for simple generic slot (without free games and bonuses).
-func Parsheet_generic_simple(w io.Writer, sp *ScanPar, s *StatGeneric, cost float64) (float64, float64) {
+// Parsheet for simple slot (without free games and bonuses).
+func Parsheet_simple(w io.Writer, sp *ScanPar, s Simulator, cost float64) (float64, float64) {
 	var N, S, Q = s.NSQ(cost)
 	var µ = S / N
 	var sigma = math.Sqrt(Q/N - µ*µ)
-	if sp.PF&PF_main != 0 {
+	if sp.IsMain() {
 		fmt.Fprintf(w, "RTP = %.8g%%\n", µ*100)
 	}
 	Print_all(w, sp, s, µ, sigma)
@@ -164,7 +199,7 @@ func Parsheet_generic_fgretrig(w io.Writer, sp *ScanPar, s *StatGeneric, cost, m
 	var rtp = µ + q*rtpfs
 	var Eser, Dser = L * sq, L * q * sq * sq * sq              // Galton-Watson process
 	var sigma = math.Sqrt(Dsym + m*m*Pfg*(Eser*Dsym+µ*µ*Dser)) // Wald's equation
-	if sp.PF&PF_main != 0 {
+	if sp.IsMain() {
 		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µ*100, math.Sqrt(Dsym))
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
@@ -187,7 +222,7 @@ func Parsheet_generic_fgretrig_series(w io.Writer, sp *ScanPar, s *StatGeneric, 
 	var rtpfs = m * sq * µ
 	var rtp = µ + q*rtpfs
 	var sigma = math.Sqrt(Dsym + m*m*ΣPL*(sq*Dsym+µ*µ*q*sq*sq*sq))
-	if sp.PF&PF_main != 0 {
+	if sp.IsMain() {
 		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µ*100, math.Sqrt(Dsym))
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
@@ -216,11 +251,11 @@ func Parsheet_generic_fgonce_split(w io.Writer, sp *ScanPar, sr, sb *StatGeneric
 	var rtpfs = m * µb
 	var rtp = µr + qr*rtpfs
 	var sigma = math.Sqrt(Dsymr + m*m*Pfg*(L*Dsymb+L*L*µb*µb))
-	if sp.PF&PF_fg != 0 {
+	if sp.IsFG() {
 		fmt.Fprintf(w, "*bonus reels*\n")
 		fmt.Fprintf(w, "RTP(fg) = %.8g%%\n", rtpfs*100)
 	}
-	if sp.PF&PF_main != 0 {
+	if sp.IsMain() {
 		fmt.Fprintf(w, "*regular reels*\n")
 		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µr*100, math.Sqrt(Dsymr))
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", sr.FSC.Load(), qr, sqr)
@@ -252,14 +287,14 @@ func Parsheet_generic_fgretrig_split(w io.Writer, sp *ScanPar, sr, sb *StatGener
 	var rtp = µr + qr*rtpfs
 	var Eser, Dser = L * sqb, L * qb * sqb * sqb * sqb             // Galton-Watson process
 	var sigma = math.Sqrt(Dsymr + m*m*Pfg*(Eser*Dsymb+µb*µb*Dser)) // Wald's equation
-	if sp.PF&PF_fg != 0 {
+	if sp.IsFG() {
 		fmt.Fprintf(w, "*bonus reels*\n")
 		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µb*100, math.Sqrt(Dsymb))
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", sb.FSC.Load(), qb, sqb)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", sb.FGF())
 		fmt.Fprintf(w, "rtp(fg) = m*sq*rtp(sym) = %g*%.5g*%.5g = %.6f%%\n", m, sqb, µb*100, rtpfs*100)
 	}
-	if sp.PF&PF_main != 0 {
+	if sp.IsMain() {
 		fmt.Fprintf(w, "*regular reels*\n")
 		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µr*100, math.Sqrt(Dsymr))
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", sr.FSC.Load(), qr, sqr)
@@ -290,14 +325,14 @@ func Parsheet_generic_fgretrig_split_series(w io.Writer, sp *ScanPar, sr, sb *St
 	var rtpfs = m * sqb * µb
 	var rtp = µr + qr*rtpfs
 	var sigma = math.Sqrt(Dsymr + m*m*ΣPL*(sqb*Dsymb+µb*µb*qb*sqb*sqb*sqb))
-	if sp.PF&PF_fg != 0 {
+	if sp.IsFG() {
 		fmt.Fprintf(w, "*bonus reels*\n")
 		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µb*100, math.Sqrt(Dsymb))
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", sb.FSC.Load(), qb, sqb)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", sb.FGF())
 		fmt.Fprintf(w, "rtp(fg) = m*sq*rtp(sym) = %g*%.5g*%.5g = %.6f%%\n", m, sqb, µb*100, rtpfs*100)
 	}
-	if sp.PF&PF_main != 0 {
+	if sp.IsMain() {
 		fmt.Fprintf(w, "*regular reels*\n")
 		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µr*100, math.Sqrt(Dsymr))
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", sr.FSC.Load(), qr, sqr)
@@ -306,25 +341,4 @@ func Parsheet_generic_fgretrig_split_series(w io.Writer, sp *ScanPar, sr, sb *St
 	}
 	Print_all(w, sp, sr, rtp, sigma)
 	return rtp, sigma
-}
-
-// Parsheet for simple cascade slot (without free games and bonuses).
-func Parsheet_cascade_simple(w io.Writer, sp *ScanPar, s *StatCascade, cost float64) (float64, float64) {
-	var N, S, Q = s.NSQ(cost)
-	var N2 = float64(s.Casc[1].N.Load())
-	var N3 = float64(s.Casc[2].N.Load())
-	var N4 = float64(s.Casc[3].N.Load())
-	var N5 = float64(s.Casc[4].N.Load())
-	var µ = S / N
-	var sigma = math.Sqrt(Q/N - µ*µ)
-	if sp.PF&PF_main != 0 {
-		fmt.Fprintf(w, "fall[2] = %.10g, Ec2 = Kf2 = 1/%.5g\n", N2, N/N2)
-		fmt.Fprintf(w, "fall[3] = %.10g, Ec3 = 1/%.5g, Kf3 = 1/%.5g\n", N3, N/N3, N2/N3)
-		fmt.Fprintf(w, "fall[4] = %.10g, Ec4 = 1/%.5g, Kf4 = 1/%.5g\n", N4, N/N4, N3/N4)
-		fmt.Fprintf(w, "fall[5] = %.10g, Ec5 = 1/%.5g, Kf5 = 1/%.5g\n", N5, N/N5, N4/N5)
-		fmt.Fprintf(w, "Mcascade = %.5g, ACL = %.5g, Kfading = 1/%.5g, Ncascmax = %d\n", s.Mcascade(), s.ACL(), s.Kfading(), s.Ncascmax())
-		fmt.Fprintf(w, "RTP = %.8g%%\n", µ*100)
-	}
-	Print_all(w, sp, s, µ, sigma)
-	return µ, sigma
 }
