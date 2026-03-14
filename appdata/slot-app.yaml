@@ -1,102 +1,40 @@
-
-# Server configuration file. First of all you can change
-# "access-key" and "refresh-key" for tokens protection.
-# This file does not modified by server runtime.
-
 authentication:
-  # Access token time to live.
-  access-ttl: 24h # 1 day
-  # Refresh token time to live.
-  refresh-ttl: 72h # 3 days
-  # Key for access HS-256 JWT-tokens.
-  access-key: skJgM4NsbP3fs4k7vh0gfdkgGl8dJTszdLxZ1sQ9ksFnxbgvw2RsGH8xxddUV479
-  # Key for refresh HS-256 JWT-tokens.
-  refresh-key: zxK4dUnuq3Lhd1Gzhpr3usI5lAzgvy2t3fmxld2spzz7a5nfv0hsksm9cheyutie
-  # Validity timeout of the nonce with which the login hash is signed.
+  access-ttl: 24h
+  refresh-ttl: 72h
+  # Эти ключи тоже лучше вынести в секреты, если проект пойдет в паблик
+  access-key: ${JWT_ACCESS_KEY}
+  refresh-key: ${JWT_REFRESH_KEY}
   nonce-timeout: 2m30s
-activation: # User account activation and verification
-  # Expects accounts activation by code after accounts registration.
-  # Or registers accounts as is already activated if value is false.
+
+activation: 
   use-activation: false
-  # Brevo API-key, see https://app.brevo.com/settings/keys/api.
-  brevo-api-key: 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
-  # Brevo API endpoint to post request to send email,
-  # see https://developers.brevo.com/docs/send-a-transactional-email.
-  brevo-email-endpoint: https://api.brevo.com/v3/smtp/email
-  # Name of sender at email.
-  sender-name: Slotopol server
-  # Email address of sender.
-  sender-email: slotopol.dev@gmail.com
-  # Email address of reply to, 'noreply' email prevent responses from users.
-  replyto-email: noreply@gmail.com
-  # Email subject.
-  email-subject: Slotopol verification code
-  # HTML-formatted template for email.
-  # It should be with '%06d' to show verification code.
-  email-html-content: |
-    <html>
-      <head></head>
-      <body>
-        <p>Your Slotopol verification code is: <b>%06d</b></p>
-      </body>
-    </html>
-  # Verification code timeout for sign-up or sign-in.
   code-timeout: 15m
-web-server: # See https://golang.org/pkg/net/http/#Server for details.
-  # List of network origins (IPv4 addresses, IPv4 CIDRs, IPv6 addresses
-  # or IPv6 CIDRs) from which to trust request's headers that contain
-  # alternative client IP when `(*gin.Engine).ForwardedByClientIP` is `true`.
-  trusted-proxies: 127.0.0.0/8
-  # List of address:port values for non-encrypted connections.
-  # Address is skipped in most common cases, port only remains.
+
+web-server:
+  trusted-proxies: 0.0.0.0/0
   port-http:
   - :8080
-  # Maximum duration for reading the entire request, including the body.
   read-timeout: 15s
-  # Amount of time allowed to read request headers.
   read-header-timeout: 15s
-  # Maximum duration before timing out writes of the response.
   write-timeout: 15s
-  # Maximum amount of time to wait for the next request when keep-alives are enabled.
   idle-timeout: 60s
-  # Controls the maximum number of bytes the server will read parsing
-  # the request header's keys and values, including the request line, in bytes.
-  max-header-bytes: 1048576 # 1M
-  # Maximum duration to wait for graceful shutdown.
+  max-header-bytes: 1048576
   shutdown-timeout: 15s
+
 database:
-  # Provides driver name to create XORM engine.
-  # It can be "sqlite3", "mysql", "postgres".
-  # To place database in memory only, point driver name "sqlite3" and source names ":memory:".
-  driver-name: sqlite3
-  # Determines whether to write information about users spins to the log.
+  driver-name: postgres
   use-spin-log: true
-  # Data source name for 'club' database to create XORM engine.
-  # For sqlite3 it should be db file name:   slot-club.sqlite
-  # For mysql it should match to pattern:    user:password@tcp(addr:port)/slot_club
-  # For postgres it should match to pattern: user=postgres password=password dbname=slot_club sslmode=disable
-  club-source-name: slot-club.sqlite
-  # Data source name for 'spin' database to create XORM engine.
-  # For sqlite3 it should be db file name:   slot-spin.sqlite
-  # For mysql it should match to pattern:    user:password@tcp(addr:port)/slot_spin
-  # For postgres it should match to pattern: user=postgres password=password dbname=slot_spin sslmode=disable
-  # Can be empty to switch off logs, same as "use-spin-log: false"
-  spin-source-name: slot-spin.sqlite
-  # Duration between flushes of SQL batching buffers.
+  
+  # ЗАГЛУШКИ ДЛЯ СЕКРЕТОВ ХАГГИНГФЕЙСА
+  club-source-name: ${DB_URL}
+  spin-source-name: ${DB_URL}
+  
   sql-flush-tick: 2500ms
-  # Maximum size of buffer to group items to update across API-endpoints calls
-  # at club database. If it is 1, update will be sequential with error code expecting.
   club-update-buffer: 200
-  # Maximum size of buffer to insert new items grouped across
-  # API-endpoints calls at club database.
   club-insert-buffer: 150
-  # Maximum size of buffer to insert new items grouped across
-  # API-endpoints calls at spin database.
   spin-insert-buffer: 250
+
 gameplay:
-  # Maximum value to add to wallet by one transaction.
   adjunct-limit: 100000
-  # Jackpot fund minimum. If spin gets jackpot with less value, that spin will be skipped.
   min-jackpot: 10000
-  # Maximum number of spin attempts at bad bank balance.
   max-spin-attempts: 300
