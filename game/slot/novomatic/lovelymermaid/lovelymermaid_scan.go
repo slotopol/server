@@ -22,7 +22,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 			var HRj = N / Cj * (1 + q*sq)
 			fmt.Fprintf(w, "jackpots: count %g, hit rate 1/%.12g\n", Cj, HRj)
 		}
-		return slot.Parsheet_generic_fgretrig(w, sp, s, g.Cost(), 1, 25)
+		return slot.Parsheet_fgretrig(w, sp, s, g.Cost(), 1, 25)
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)

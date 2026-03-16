@@ -31,7 +31,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 		var g = NewGame(sp.Sel)
 		var calc = func(w io.Writer) (float64, float64) {
-			return slot.Parsheet_generic_fgonce_split(w, sp, sr, sb, g.Cost(), 1, 5)
+			return slot.Parsheet_fgonce_split(w, sp, sr, sb, g.Cost(), 1, 5)
 		}
 		return slot.ScanReelsCommon(ctx, sp, sr, g, reels, calc)
 	}

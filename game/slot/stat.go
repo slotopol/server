@@ -25,6 +25,15 @@ type Simulator interface {
 	Simulate(SlotGame, Reelx, *Wins)
 }
 
+type Counter interface {
+	Simulator
+	// Returns (q, sq), where q = free spins quantifier, sq = 1/(1-q)
+	// sum of a decreasing geometric progression for retriggered free spins.
+	FSQ() (float64, float64)
+	// Quantifier of free games per reshuffles.
+	FGQ() float64
+}
+
 type ScanPar = game.ScanPar
 
 type Uint64 struct {
@@ -232,8 +241,8 @@ type StatGeneric struct {
 	EC          Uint64  `yaml:",omitempty"` // errors count
 }
 
-// Declare conformity with Stater interface.
-var _ Simulator = (*StatGeneric)(nil)
+// Declare conformity with Counter interface.
+var _ Counter = (*StatGeneric)(nil)
 
 func NewStatGeneric(sn, pn int) *StatGeneric {
 	var s StatGeneric
@@ -330,8 +339,8 @@ type StatCascade struct {
 	EC   Uint64  `yaml:",omitempty"` // errors count
 }
 
-// Declare conformity with Stater interface.
-var _ Simulator = (*StatCascade)(nil)
+// Declare conformity with Counter interface.
+var _ Counter = (*StatCascade)(nil)
 
 func NewStatCascade(sn, pn int) *StatCascade {
 	var s StatCascade

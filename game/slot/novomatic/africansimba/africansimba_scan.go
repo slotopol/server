@@ -13,7 +13,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var s = slot.NewStatGeneric(sn, 5)
 
 	var calc = func(w io.Writer) (float64, float64) {
-		return slot.Parsheet_generic_fgretrig(w, sp, s, g.Cost(), 3, 12)
+		return slot.Parsheet_fgretrig(w, sp, s, g.Cost(), 3, 12)
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)

@@ -24,7 +24,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 				fmt.Fprintf(w, "jackpots%d: count per line %g, hit rate 1/%.12g\n", idj+1, Cj, HRj)
 			}
 		}
-		return slot.Parsheet_generic_fgretrig(w, sp, s, g.Cost(), 1, 15)
+		return slot.Parsheet_fgretrig(w, sp, s, g.Cost(), 1, 15)
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
