@@ -32,6 +32,9 @@ type Counter interface {
 	FSQ() (float64, float64)
 	// Quantifier of free games per reshuffles.
 	FGQ() float64
+	// The sum of the weights of free spins series occurrences
+	// used for dispersion calculation.
+	ΣPL(Sym, []int) float64
 }
 
 type ScanPar = game.ScanPar
@@ -149,7 +152,7 @@ func (c Counts[T]) MarshalYAML() (any, error) {
 	return node1, nil
 }
 
-type StatCounter struct {
+type SlotCounter struct {
 	N   Uint64          // number of processed grid reshuffles, including with no wins
 	C   Counts[Uint64]  // hit counter
 	S   Counts[Float64] // sum of pays by symbols
@@ -160,16 +163,16 @@ type StatCounter struct {
 	JH  []Uint64        `yaml:",flow,omitempty"` // progressive jackpot hits count
 }
 
-func (c *StatCounter) IsZero() bool {
+func (c *SlotCounter) IsZero() bool {
 	return c.N.Load() == 0 // N can not be zero for non-empty structure
 }
 
-func (c *StatCounter) SymDim(sym Sym, pn int) {
+func (c *SlotCounter) SymDim(sym Sym, pn int) {
 	c.C[sym] = make([]Uint64, pn)
 	c.S[sym] = make([]Float64, pn)
 }
 
-func (c *StatCounter) CntDim(sn, pn int) {
+func (c *SlotCounter) CntDim(sn, pn int) {
 	c.C = make([][]Uint64, sn)
 	c.S = make([][]Float64, sn)
 	for sym := range c.S {
@@ -177,16 +180,16 @@ func (c *StatCounter) CntDim(sn, pn int) {
 	}
 }
 
-func (c *StatCounter) BonDim(n int) {
+func (c *SlotCounter) BonDim(n int) {
 	c.BH = make([]Uint64, n)
 	c.BS = make([]Float64, n)
 }
 
-func (c *StatCounter) JackDim(n int) {
+func (c *SlotCounter) JackDim(n int) {
 	c.JH = make([]Uint64, n)
 }
 
-func (c *StatCounter) Update(wins Wins) (pay float64) {
+func (c *SlotCounter) Update(wins Wins) (pay float64) {
 	for _, wi := range wins {
 		if wi.Sym > 0 && wi.Num > 0 {
 			c.C[wi.Sym-1][wi.Num-1].Inc()
@@ -215,7 +218,7 @@ func (c *StatCounter) Update(wins Wins) (pay float64) {
 	return
 }
 
-func (c *StatCounter) SymPays(sym Sym) (sum float64) {
+func (c *SlotCounter) SymPays(sym Sym) (sum float64) {
 	var pays = c.S[sym-1]
 	for i := range pays {
 		sum += pays[i].Load()
@@ -223,7 +226,7 @@ func (c *StatCounter) SymPays(sym Sym) (sum float64) {
 	return
 }
 
-func (c *StatCounter) SumPays() (sum float64) {
+func (c *SlotCounter) SumPays() (sum float64) {
 	for _, pays := range c.S {
 		for i := range pays {
 			sum += pays[i].Load()
@@ -236,7 +239,7 @@ func (c *StatCounter) SumPays() (sum float64) {
 }
 
 type StatGeneric struct {
-	StatCounter `yaml:",inline"`
+	SlotCounter `yaml:",inline"`
 	Q           Float64 // sum of squares of pays by symbols
 	EC          Uint64  `yaml:",omitempty"` // errors count
 }
@@ -248,10 +251,6 @@ func NewStatGeneric(sn, pn int) *StatGeneric {
 	var s StatGeneric
 	s.CntDim(sn, pn)
 	return &s
-}
-
-func (s *StatGeneric) Errors() uint64 {
-	return s.EC.Load()
 }
 
 func (s *StatGeneric) Count() float64 {
@@ -310,8 +309,19 @@ func (s *StatGeneric) FGQ() float64 {
 	return float64(s.FGH.Load()) / s.Count()
 }
 
+// The sum of the weights of free spins series occurrences
+// used for dispersion calculation.
+func (s *StatGeneric) ΣPL(scat Sym, L []int) (sum float64) {
+	var N = s.Count()
+	for i, Li := range L {
+		var Pfgi = float64(s.C[scat][i].Load()) / N
+		sum += Pfgi * float64(Li)
+	}
+	return
+}
+
 // Free Games hit rate: average number of reshuffles per free games hits.
-func (s *StatGeneric) FGF() float64 {
+func (s *StatGeneric) HRfg() float64 {
 	return s.Count() / float64(s.FGH.Load())
 }
 
@@ -334,7 +344,7 @@ func (s *StatGeneric) Simulate(g SlotGame, reels Reelx, wins *Wins) {
 }
 
 type StatCascade struct {
-	Casc [FallLimit]StatCounter
+	Casc [FallLimit]SlotCounter
 	Q    Float64 // sum of squares of pays by symbols
 	EC   Uint64  `yaml:",omitempty"` // errors count
 }
@@ -350,7 +360,7 @@ func NewStatCascade(sn, pn int) *StatCascade {
 
 func (s *StatCascade) MarshalYAML() (any, error) {
 	type stat struct {
-		Casc []StatCounter
+		Casc []SlotCounter
 		Q    float64
 		EC   uint64 `yaml:",omitempty"`
 	}
@@ -383,10 +393,6 @@ func (s *StatCascade) JackDim(n int) {
 	for cfn := range s.Casc {
 		s.Casc[cfn].JackDim(n)
 	}
-}
-
-func (s *StatCascade) Errors() uint64 {
-	return s.EC.Load()
 }
 
 func (s *StatCascade) Count() float64 {
@@ -474,8 +480,23 @@ func (s *StatCascade) FGQ() float64 {
 	return float64(s.SumFGH()) / s.Count()
 }
 
+// The sum of the weights of free spins series occurrences
+// used for dispersion calculation.
+func (s *StatCascade) ΣPL(scat Sym, L []int) (sum float64) {
+	var N = s.Count()
+	for i, Li := range L {
+		var c float64
+		for cfn := range s.Casc {
+			c += float64(s.Casc[cfn].C[scat][i].Load())
+		}
+		var Pfgi = c / N
+		sum += Pfgi * float64(Li)
+	}
+	return
+}
+
 // Free Games hit rate: average number of reshuffles per free games hit.
-func (s *StatCascade) FGF() float64 {
+func (s *StatCascade) HRfg() float64 {
 	return s.Count() / float64(s.SumFGH())
 }
 

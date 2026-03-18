@@ -209,23 +209,19 @@ func Parsheet_fgretrig(w io.Writer, sp *ScanPar, s Counter, cost, m, L float64) 
 	return rtp, sigma
 }
 
-func Parsheet_generic_fgretrig_series(w io.Writer, sp *ScanPar, s *StatGeneric, cost, m float64, L []int, scat Sym) (float64, float64) {
+func Parsheet_fgretrig_series(w io.Writer, sp *ScanPar, s Counter, cost, m float64, L []int, scat Sym) (float64, float64) {
 	var N, S, Q = s.NSQ(cost)
 	var µ = S / N
 	var Dsym = Q/N - µ*µ
-	var ΣPL float64
-	for i, Li := range L {
-		var Pfgi = float64(s.C[scat][i+1].Load()) / N
-		ΣPL += Pfgi * float64(Li)
-	}
+	var ΣPL = s.ΣPL(scat, L)
 	var q, sq = s.FSQ()
 	var rtpfs = m * sq * µ
 	var rtp = µ + q*rtpfs
 	var sigma = math.Sqrt(Dsym + m*m*ΣPL*(sq*Dsym+µ*µ*q*sq*sq*sq))
 	if sp.IsMain() {
 		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µ*100, math.Sqrt(Dsym))
-		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)
-		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.FGF())
+		fmt.Fprintf(w, "free spins: q = %.5g, sq = 1/(1-q) = %.6f\n", q, sq)
+		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", 1/s.FGQ())
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µ*100, q, rtpfs*100, rtp*100)
 	}
 	Print_all(w, sp, s, rtp, sigma)
@@ -305,7 +301,7 @@ func Parsheet_fgretrig_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, 
 	return rtp, sigma
 }
 
-func Parsheet_generic_fgretrig_split_series(w io.Writer, sp *ScanPar, sr, sb *StatGeneric, cost, m float64, L []int, scat Sym) (float64, float64) {
+func Parsheet_fgretrig_split_series(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m float64, L []int, scat Sym) (float64, float64) {
 	// bonus reels parameters
 	var Nb, Sb, Qb = sb.NSQ(cost)
 	var µb = Sb / Nb
@@ -316,11 +312,7 @@ func Parsheet_generic_fgretrig_split_series(w io.Writer, sp *ScanPar, sr, sb *St
 	var µr = Sr / Nr
 	var Dsymr = Qr/Nr - µr*µr
 	var qr, sqr = sr.FSQ()
-	var ΣPL float64
-	for i, Li := range L {
-		var Pfgi = float64(sr.C[scat][i+1].Load()) / Nr
-		ΣPL += Pfgi * float64(Li)
-	}
+	var ΣPL = sr.ΣPL(scat, L)
 	// calculation
 	var rtpfs = m * sqb * µb
 	var rtp = µr + qr*rtpfs
@@ -328,15 +320,15 @@ func Parsheet_generic_fgretrig_split_series(w io.Writer, sp *ScanPar, sr, sb *St
 	if sp.IsFG() {
 		fmt.Fprintf(w, "*bonus reels*\n")
 		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µb*100, math.Sqrt(Dsymb))
-		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", sb.FSC.Load(), qb, sqb)
-		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", sb.FGF())
+		fmt.Fprintf(w, "free spins: q = %.5g, sq = 1/(1-q) = %.6f\n", qb, sqb)
+		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", 1/sb.FGQ())
 		fmt.Fprintf(w, "rtp(fg) = m*sq*rtp(sym) = %g*%.5g*%.5g = %.6f%%\n", m, sqb, µb*100, rtpfs*100)
 	}
 	if sp.IsMain() {
 		fmt.Fprintf(w, "*regular reels*\n")
 		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µr*100, math.Sqrt(Dsymr))
-		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", sr.FSC.Load(), qr, sqr)
-		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", sr.FGF())
+		fmt.Fprintf(w, "free spins: q = %.5g, sq = 1/(1-q) = %.6f\n", qr, sqr)
+		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", 1/sr.FGQ())
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µr*100, qr, rtpfs*100, rtp*100)
 	}
 	Print_all(w, sp, sr, rtp, sigma)
