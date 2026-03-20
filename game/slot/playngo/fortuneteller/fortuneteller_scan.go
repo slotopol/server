@@ -65,7 +65,7 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		var N = s.Count()
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
-		var q, _ = s.FSQ()
+		var q = s.FSQ()
 		var qcbn = s.BonusHits(cbn) / N / float64(g.Sel)
 		var rtpcbn = Ecards * qcbn
 		var rtp = rtpsym + rtpcbn + q*rtpfs

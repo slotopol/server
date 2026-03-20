@@ -48,7 +48,7 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var calc = func(w io.Writer) (float64, float64) {
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
-		var q, _ = s.FSQ()
+		var q = s.FSQ()
 		var rtp = rtpsym + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
 		fmt.Fprintf(w, "free spins %d, q = %.5g\n", s.FSC.Load(), q)

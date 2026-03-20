@@ -193,7 +193,8 @@ func Parsheet_fgretrig(w io.Writer, sp *ScanPar, s Counter, cost, m, L float64) 
 	var N, S, Q = s.NSQ(cost)
 	var µ = S / N
 	var Dsym = Q/N - µ*µ
-	var q, sq = s.FSQ()
+	var q = s.FSQ()
+	var sq = 1 / (1 - q)
 	var Pfg = s.FGQ()
 	var rtpfs = m * sq * µ
 	var rtp = µ + q*rtpfs
@@ -210,11 +211,15 @@ func Parsheet_fgretrig(w io.Writer, sp *ScanPar, s Counter, cost, m, L float64) 
 }
 
 func Parsheet_fgretrig_series(w io.Writer, sp *ScanPar, s Counter, cost, m float64, L []int, scat Sym) (float64, float64) {
+	return Parsheet_fgretrig_custom(w, sp, s, cost, m,
+		s.FSQ(), s.ΣPL(scat, L))
+}
+
+func Parsheet_fgretrig_custom(w io.Writer, sp *ScanPar, s Counter, cost, m float64, q, ΣPL float64) (float64, float64) {
 	var N, S, Q = s.NSQ(cost)
 	var µ = S / N
 	var Dsym = Q/N - µ*µ
-	var ΣPL = s.ΣPL(scat, L)
-	var q, sq = s.FSQ()
+	var sq = 1 / (1 - q)
 	var rtpfs = m * sq * µ
 	var rtp = µ + q*rtpfs
 	var sigma = math.Sqrt(Dsym + m*m*ΣPL*(sq*Dsym+µ*µ*q*sq*sq*sq))
@@ -241,7 +246,8 @@ func Parsheet_fgonce_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, L 
 	var Nr, Sr, Qr = sr.NSQ(cost)
 	var µr = Sr / Nr
 	var Dsymr = Qr/Nr - µr*µr
-	var qr, sqr = sr.FSQ()
+	var qr = sr.FSQ()
+	var sqr = 1 / (1 - qr)
 	var Pfg = sr.FGQ()
 	// calculation
 	var rtpfs = m * µb
@@ -271,12 +277,14 @@ func Parsheet_fgretrig_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, 
 	var Nb, Sb, Qb = sb.NSQ(cost)
 	var µb = Sb / Nb
 	var Dsymb = Qb/Nb - µb*µb
-	var qb, sqb = sb.FSQ()
+	var qb = sb.FSQ()
+	var sqb = 1 / (1 - qb)
 	// regular reels parameters
 	var Nr, Sr, Qr = sr.NSQ(cost)
 	var µr = Sr / Nr
 	var Dsymr = Qr/Nr - µr*µr
-	var qr, sqr = sr.FSQ()
+	var qr = sr.FSQ()
+	var sqr = 1 / (1 - qr)
 	var Pfg = sr.FGQ()
 	// calculation
 	var rtpfs = m * sqb * µb
@@ -302,17 +310,21 @@ func Parsheet_fgretrig_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, 
 }
 
 func Parsheet_fgretrig_split_series(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m float64, L []int, scat Sym) (float64, float64) {
+	return Parsheet_fgretrig_split_custom(w, sp, sr, sb, cost, m,
+		sr.FSQ(), sb.FSQ(), sr.ΣPL(scat, L))
+}
+
+func Parsheet_fgretrig_split_custom(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m float64, qr, qb, ΣPL float64) (float64, float64) {
 	// bonus reels parameters
 	var Nb, Sb, Qb = sb.NSQ(cost)
 	var µb = Sb / Nb
 	var Dsymb = Qb/Nb - µb*µb
-	var qb, sqb = sb.FSQ()
+	var sqb = 1 / (1 - qb)
 	// regular reels parameters
 	var Nr, Sr, Qr = sr.NSQ(cost)
 	var µr = Sr / Nr
 	var Dsymr = Qr/Nr - µr*µr
-	var qr, sqr = sr.FSQ()
-	var ΣPL = sr.ΣPL(scat, L)
+	var sqr = 1 / (1 - qr)
 	// calculation
 	var rtpfs = m * sqb * µb
 	var rtp = µr + qr*rtpfs

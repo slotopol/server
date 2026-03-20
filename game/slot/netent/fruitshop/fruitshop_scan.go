@@ -18,7 +18,8 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var calc = func(w io.Writer) (float64, float64) {
 		var N, S, _ = s.NSQ(g.Cost())
 		var µ = S / N
-		var q, sq = s.FSQ()
+		var q = s.FSQ()
+		var sq = 1 / (1 - q)
 		var rtp = sq * µ
 		fmt.Fprintf(w, "symbols: rtp(sym) = %.6f%%\n", µ*100)
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)
@@ -44,7 +45,8 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var calc = func(w io.Writer) (float64, float64) {
 		var N, S, _ = s.NSQ(g.Cost())
 		var µ = S / N
-		var q, sq = s.FSQ()
+		var q = s.FSQ()
+		var sq = 1 / (1 - q)
 		var rtp = µ + q*rtpfs
 		fmt.Fprintf(w, "symbols: rtp(sym) = %.6f%%\n", µ*100)
 		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)

@@ -4,59 +4,54 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"math"
 
 	"github.com/slotopol/server/game/slot"
 )
 
-func CalcStatBon(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
-	var reels = ReelsBon
-	var g = NewGame(sp.Sel)
-	g.FSR = 35 // set free spins mode
-	g.TS = scat1
-	var s = slot.NewStatGeneric(sn, 5)
-
-	var calc = func(w io.Writer) (float64, float64) {
-		var N = s.Count()
-		var lrtp, srtp = s.RTPsym2(g.Cost(), scat1, scat2)
-		var rtpsym = lrtp + srtp
-		var q = float64(s.FGH.Load()*35) / N
-		var sq = 1 / (1 - q)
-		var rtp = sq * rtpsym
-		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
-		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)
-		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.HRfg())
-		fmt.Fprintf(w, "RTP = sq*rtp(sym) = %.5g*%.5g = %.6f%%\n", sq, rtpsym*100, rtp*100)
-		return rtp, math.NaN()
+func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
+	fmt.Printf("\n(1/2) bonus reels calculations\n")
+	var sb = slot.NewStatGeneric(sn, 5)
+	{
+		var reels = ReelsBon
+		var g = NewGame(sp.Sel)
+		g.FSR = 35 // set free spins mode
+		g.TS = scat1
+		var calc = func(w io.Writer) (float64, float64) {
+			var N = sb.Count()
+			var q = float64(sb.FGH.Load()*35) / N
+			var Pfgi = float64(sb.FGH.Load()) / float64(len(Freegames)) / N
+			var ΣPL float64
+			for _, Li := range Freegames {
+				ΣPL += Pfgi * float64(Li)
+			}
+			return slot.Parsheet_fgretrig_custom(w, sp, sb, g.Cost(), 1, q, ΣPL)
+		}
+		slot.ScanReelsCommon(ctx, sp, sb, g, reels, calc)
 	}
 
-	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
-}
-
-func CalcStatReg(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
-	fmt.Printf("*bonus reels calculations*\n")
-	var rtpfs, _ = CalcStatBon(ctx, sp)
 	if ctx.Err() != nil {
 		return 0, 0
 	}
-	fmt.Printf("*regular reels calculations*\n")
-	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
-	var g = NewGame(sp.Sel)
-	var s = slot.NewStatGeneric(sn, 5)
 
-	var calc = func(w io.Writer) (float64, float64) {
-		var N = s.Count()
-		var lrtp, srtp = s.RTPsym2(g.Cost(), scat1, scat2)
-		var rtpsym = lrtp + srtp
-		var q = float64(s.FGH.Load()*35) / N
-		var sq = 1 / (1 - q)
-		var rtp = rtpsym + q*rtpfs
-		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
-		fmt.Fprintf(w, "free spins %d, q = %.5g, sq = 1/(1-q) = %.6f\n", s.FSC.Load(), q, sq)
-		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.HRfg())
-		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym*100, q, rtpfs*100, rtp*100)
-		return rtp, math.NaN()
+	fmt.Printf("\n(2/2) regular reels calculations\n")
+	var sr = slot.NewStatGeneric(sn, 5)
+	{
+		var reels, _ = ReelsMap.FindClosest(sp.MRTP)
+		var g = NewGame(sp.Sel)
+		var calc = func(w io.Writer) (float64, float64) {
+			// bonus reels parameters
+			var Nb = sb.Count()
+			var qb = float64(sb.FGH.Load()*35) / Nb
+			// regular reels parameters
+			var Nr = sr.Count()
+			var qr = float64(sr.FGH.Load()*35) / Nr
+			var Pfgi = float64(sr.FGH.Load()) / float64(len(Freegames)) / Nr
+			var ΣPL float64
+			for _, Li := range Freegames {
+				ΣPL += Pfgi * float64(Li)
+			}
+			return slot.Parsheet_fgretrig_split_custom(w, sp, sr, sb, g.Cost(), 1, qr, qb, ΣPL)
+		}
+		return slot.ScanReelsCommon(ctx, sp, sr, g, reels, calc)
 	}
-
-	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
 }

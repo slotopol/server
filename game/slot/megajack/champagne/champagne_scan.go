@@ -51,7 +51,8 @@ func CalcStatBon(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		var N = s.Count()
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
-		var q, sq = s.FSQ()
+		var q = s.FSQ()
+		var sq = 1 / (1 - q)
 		var qmjc = s.BonusHits(mjc) / N / float64(g.Sel)
 		var rtpmjc = EVmjc * qmjc
 		var rtp = sq * (rtpsym + rtpmjc)
@@ -90,7 +91,7 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		var N = s.Count()
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
-		var q, _ = s.FSQ()
+		var q = s.FSQ()
 		var qmjc = s.BonusHits(mjc) / N / float64(g.Sel)
 		var rtpmjc = EVmjc * qmjc
 		var rtp = rtpsym + rtpmjc + q*rtpfs

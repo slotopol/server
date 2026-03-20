@@ -27,9 +27,8 @@ type Simulator interface {
 
 type Counter interface {
 	Simulator
-	// Returns (q, sq), where q = free spins quantifier, sq = 1/(1-q)
-	// sum of a decreasing geometric progression for retriggered free spins.
-	FSQ() (float64, float64)
+	// Returns free spins quantifier.
+	FSQ() float64
 	// Quantifier of free games per reshuffles.
 	FGQ() float64
 	// The sum of the weights of free spins series occurrences
@@ -296,12 +295,9 @@ func (s *StatGeneric) NSQ(cost float64) (N float64, S float64, Q float64) {
 	return
 }
 
-// Returns (q, sq), where q = free spins quantifier, sq = 1/(1-q)
-// sum of a decreasing geometric progression for retriggered free spins.
-func (s *StatGeneric) FSQ() (q float64, sq float64) {
-	q = float64(s.FSC.Load()) / s.Count()
-	sq = 1 / (1 - q)
-	return
+// Returns free spins quantifier.
+func (s *StatGeneric) FSQ() float64 {
+	return float64(s.FSC.Load()) / s.Count()
 }
 
 // Quantifier of free games per reshuffles.
@@ -467,12 +463,9 @@ func (s *StatCascade) NSQ(cost float64) (N float64, S float64, Q float64) {
 	return
 }
 
-// Returns (q, sq), where q = free spins quantifier, sq = 1/(1-q)
-// sum of a decreasing geometric progression for retriggered free spins.
-func (s *StatCascade) FSQ() (q float64, sq float64) {
-	q = float64(s.SumFSC()) / s.Count()
-	sq = 1 / (1 - q)
-	return
+// Returns free spins quantifier.
+func (s *StatCascade) FSQ() float64 {
+	return float64(s.SumFSC()) / s.Count()
 }
 
 // Quantifier of free games per reshuffles.

@@ -17,7 +17,8 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var calc = func(w io.Writer) (float64, float64) {
 		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
 		var rtpsym = lrtp + srtp
-		var q, sq = s.FSQ()
+		var q = s.FSQ()
+		var sq = 1 / (1 - q)
 		var rtpfs = EVmc * sq * rtpsym
 		var rtp = rtpsym + q*rtpfs
 		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
