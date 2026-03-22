@@ -186,7 +186,7 @@ func Parsheet_simple(w io.Writer, sp *ScanPar, s Counter, cost float64) (float64
 	return µ, sigma
 }
 
-// Parsheet for generic slot with retriggerable freegames
+// Parsheet for slot with retriggerable freegames
 // with `m` multiplier on freegames (m=1 if no multiplier).
 // Each hit of freegames series has `L` freespins.
 func Parsheet_fgretrig(w io.Writer, sp *ScanPar, s Counter, cost, m, L float64) (float64, float64) {
@@ -205,6 +205,28 @@ func Parsheet_fgretrig(w io.Writer, sp *ScanPar, s Counter, cost, m, L float64) 
 		fmt.Fprintf(w, "free spins: q = %.5g, sq = 1/(1-q) = %.6f\n", q, sq)
 		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", 1/Pfg)
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µ*100, q, rtpfs*100, rtp*100)
+	}
+	Print_all(w, sp, s, rtp, sigma)
+	return rtp, sigma
+}
+
+// Parsheet for slot with games series of length L1 with
+// free spins series of length L2 that can be triggered only once.
+func Parsheet_fgone(w io.Writer, sp *ScanPar, s Counter, cost, m, L1, L2 float64) (float64, float64) {
+	var N, S, Q = s.NSQ(cost)
+	var µ = S / N
+	var Dsym = Q/N - µ*µ
+	var Pfg = s.FGQ()                 // P
+	var Pre = 1 - math.Pow(1-Pfg, L1) // P(A)=1−(1−P)^N
+	var rtp = m * µ * (1 + Pre*L2/L1)
+	var Etotal = L1 + L2*Pre
+	var Vlen = µ * µ * L2 * L2 * Pre * (1 - Pre)
+	var sigma = m * math.Sqrt(Etotal*Dsym+Vlen)
+	if sp.IsMain() {
+		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µ*100, math.Sqrt(Dsym))
+		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", 1/Pfg)
+		fmt.Fprintf(w, "probability of %g new spins: %.6f\n", L2, Pre)
+		fmt.Fprintf(w, "RTP = %.8g%%\n", rtp*100)
 	}
 	Print_all(w, sp, s, rtp, sigma)
 	return rtp, sigma
@@ -233,7 +255,7 @@ func Parsheet_fgretrig_custom(w io.Writer, sp *ScanPar, s Counter, cost, m float
 	return rtp, sigma
 }
 
-// Parsheet for generic slot with splitted statistics for regular
+// Parsheet for slot with splitted statistics for regular
 // games `sr` and statistics for NON-retriggerable bonus games `sb`.
 // with `m` multiplier on freegames (m=1 if no multiplier).
 // Each hit of freegames series has `L` freespins.
@@ -268,7 +290,46 @@ func Parsheet_fgonce_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, L 
 	return rtp, sigma
 }
 
-// Parsheet for generic slot with splitted statistics for regular
+// Parsheet for slot with splitted statistics for regular
+// games `sr` and statistics for bonus games `sb` in which new games
+// can be retriggered only once. Length of first series is `L1`, second is `L2`.
+func Parsheet_fgtwice_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, L1, L2 float64) (float64, float64) {
+	// bonus reels parameters
+	var Nb, Sb, Qb = sb.NSQ(cost)
+	var µb = Sb / Nb
+	var Dsymb = Qb/Nb - µb*µb
+	// regular reels parameters
+	var Nr, Sr, Qr = sr.NSQ(cost)
+	var µr = Sr / Nr
+	var Dsymr = Qr/Nr - µr*µr
+	// calculation
+	var Pfg = sb.FGQ()                // P
+	var Pre = 1 - math.Pow(1-Pfg, L1) // P(A)=1−(1−P)^N
+	var rtpfs = m * µb * (1 + Pre*L2/L1)
+	var qr = sr.FSQ()
+	var rtp = µr + qr*rtpfs
+	var Etotal = L1 + L2*Pre
+	var Vlen = µb * µb * L2 * L2 * Pre * (1 - Pre)
+	var Phitr = sr.FGQ()
+	var sigma = math.Sqrt(Dsymr + m*m*Phitr*(Etotal*Dsymb+Vlen)) // Wald's equation
+	if sp.IsFG() {
+		fmt.Fprintf(w, "*bonus reels*\n")
+		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µb*100, math.Sqrt(Dsymb))
+		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", 1/Pfg)
+		fmt.Fprintf(w, "probability of %g new spins: %.6f\n", L2, Pre)
+		fmt.Fprintf(w, "RTP = %.8g%%\n", rtpfs*100)
+	}
+	if sp.IsMain() {
+		fmt.Fprintf(w, "*regular reels*\n")
+		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µr*100, math.Sqrt(Dsymr))
+		fmt.Fprintf(w, "free spins: q = %.5g, HRfg = 1/%.5g\n", qr, 1/Phitr)
+		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µr*100, qr, rtpfs*100, rtp*100)
+	}
+	Print_all(w, sp, sr, rtp, sigma)
+	return rtp, sigma
+}
+
+// Parsheet for slot with splitted statistics for regular
 // games `sr` and statistics for retriggerable bonus games `sb`.
 // with `m` multiplier on freegames (m=1 if no multiplier).
 // Each hit of freegames series has `L` freespins.
