@@ -17,15 +17,15 @@ var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
 var LinePay = [sn][5]float64{
-	{0, 0, 20, 50, 100}, // 1 seven
-	{0, 0, 10, 25, 50},  // 2 bell
-	{0, 0, 10, 25, 50},  // 3 melon
-	{0, 0, 4, 10, 20},   // 4 plum
-	{0, 0, 4, 10, 20},   // 5 orange
-	{0, 0, 4, 10, 20},   // 6 lemon
-	{0, 0, 4, 10, 20},   // 7 cherry
-	{},                  // 8 bonus (1, 3, 5 reels only)
-	{},                  // 9 joker
+	{0, 0, 20, 50, 100},  // 1 seven
+	{0, 0, 10, 25, 50},   // 2 bell
+	{0, 0, 10, 25, 50},   // 3 melon
+	{0, 0, 4, 10, 20},    // 4 plum
+	{0, 0, 4, 10, 20},    // 5 orange
+	{0, 0, 4, 10, 20},    // 6 lemon
+	{0, 0, 4, 10, 20},    // 7 cherry
+	{},                   // 8 bonus (2, 3, 4 reels only)
+	{0, 0, 0, 0, 100000}, // 9 joker
 }
 
 // Scatters payment.
@@ -105,15 +105,15 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 			FS:  fs,
 		})
 	}
-	if count := g.SymNum(jack); count == 5 {
+	/*if count := g.SymNum(jack); count == 5 {
 		*wins = append(*wins, slot.WinItem{
-			Pay: g.Bet * float64(g.Sel) * 20000, // jackpot, 100000 bets for 5 fixed lines
+			Pay: g.Bet * float64(g.Sel) * 100000, // jackpot
 			MP:  1,
 			Sym: jack,
 			Num: 5,
 			XY:  g.SymPos(scat),
 		})
-	}
+	}*/
 }
 
 func (g *Game) Spin(mrtp float64) {

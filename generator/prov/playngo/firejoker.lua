@@ -2,15 +2,15 @@ local scripts = arg[0]:match("^(.*generator[/%\\])")
 dofile(scripts.."lib/makereel.lua")
 
 local symset = {
-	4, --  1 seven  100
+	3, --  1 seven  100
 	4, --  2 bell   50
-	5, --  3 melon  50
+	4, --  3 melon  50
 	4, --  4 plum   20
 	4, --  5 orange 20
 	5, --  6 lemon  20
 	5, --  7 cherry 20
-	2, --  8 bonus (1, 3, 5 reels only)
-	1, --  9 joker
+	2, --  8 bonus (2, 3, 4 reels only)
+	3, --  9 joker
 }
 
 local neighbours = {
@@ -28,7 +28,7 @@ local neighbours = {
 
 local function reelgen(n)
 	local ss = tcopy(symset)
-	if n == 2 or n == 4 then
+	if n == 1 or n == 5 then
 		ss[8] = 0
 	end
 	return makereel(ss, neighbours)
@@ -39,7 +39,7 @@ if autoscan then
 end
 
 math.randomseed(os.time())
-print "reel 1, 3, 5"
+print "reel 1, 5"
 printreel(reelgen(1))
-print "reel 2, 4"
+print "reel 2, 3, 4"
 printreel(reelgen(2))
