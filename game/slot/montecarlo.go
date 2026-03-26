@@ -20,20 +20,20 @@ func ProgressMC(ctx context.Context, sp *ScanPar, s Simulator, calc func(io.Writ
 	var (
 		dur     time.Duration
 		N, S, Q float64
-		RTP     float64
-		sigma   float64
+		RTP, D  float64
 		VI      float64
 		ΔRTP    float64
 		total   float64
 	)
 	var param = func() {
 		dur = time.Since(t0)
-		RTP, sigma = calc(io.Discard)
-		if math.IsNaN(sigma) {
+		RTP, D = calc(io.Discard)
+		if math.IsNaN(D) {
 			N, S, Q = s.NSQ(cost)
-			sigma = math.Sqrt(N*Q-S*S) / N
+			var µ = S / N
+			D = Q/N - µ*µ
 		}
-		VI = GetZ(sp.Conf) * sigma
+		VI = GetZ(sp.Conf) * math.Sqrt(D)
 		ΔRTP = VI / math.Sqrt(N)
 		var tc, tp float64
 		tc = max(float64(sp.Total), lolim)
@@ -89,7 +89,8 @@ func MonteCarlo(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, re
 					tc = max(sp.Total, lolim)
 					if sp.Prec > 0 {
 						var N, S, Q = s.NSQ(gt.Cost())
-						var VI = GetZ(sp.Conf) * math.Sqrt(N*Q-S*S) / N
+						var µ = S / N
+						var VI = GetZ(sp.Conf) * math.Sqrt(Q/N-µ*µ)
 						var t2 = VI / sp.Prec
 						tp = uint64(t2 * t2)
 					}

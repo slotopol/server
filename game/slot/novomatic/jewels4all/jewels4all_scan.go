@@ -4,9 +4,8 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"math"
 	"os"
-	"time"
+	"sync"
 
 	"github.com/slotopol/server/game/slot"
 )
@@ -54,49 +53,59 @@ func BruteForceEuro(ctx context.Context, s slot.Simulator, g *Game, reels slot.R
 	}
 }
 
-func CalcStatEuro(ctx context.Context, sp *slot.ScanPar, x, y slot.Pos) (float64, float64) {
+func CalcStatEuro(ctx context.Context, sp *slot.ScanPar, s *slot.StatGeneric, x, y slot.Pos) (float64, float64) {
 	var reels = Reels
 	var g = NewGame(sp.Sel)
-	var s = slot.NewStatGeneric(sn, 5)
-
-	fmt.Printf("calculations of euro at [%d,%d]\n", x, y)
 
 	var calc = func(w io.Writer) (float64, float64) {
-		var N, S, Q = s.NSQ(g.Cost())
-		var µ = S / N
-		var sigma = math.Sqrt(Q/N - µ*µ)
-		fmt.Fprintf(w, "RTP[%d,%d] = %.6f%%\n", x, y, µ*100)
-		return µ, sigma
+		return slot.Parsheet_simple(w, sp, s, g.Cost())
 	}
 
-	func() time.Duration {
-		var t0 = time.Now()
+	var wg sync.WaitGroup
+	wg.Add(2)
+	go func() {
+		defer wg.Done()
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		go slot.ProgressBF(ctx2, sp, s, calc, float64(reels.Reshuffles()))
+		go func() {
+			defer wg.Done()
+			slot.ProgressBF(ctx2, sp, s, calc, float64(reels.Reshuffles()))
+		}()
 		BruteForceEuro(ctx2, s, g, reels, x, y)
-		return time.Since(t0)
 	}()
+	wg.Wait()
 	return calc(os.Stdout)
 }
 
-func CalcStat(ctx context.Context, sp *slot.ScanPar) (rtp, sigma float64) {
-	var wc, _ = ChanceMap.FindClosest(sp.MRTP) // wild chance
+// custom parsheet
+func CalcStat(ctx context.Context, sp *slot.ScanPar) (rtp, D float64) {
+	var Pw, _ = ChanceMap.FindClosest(sp.MRTP) // wild chance
 
-	var rtp00, _ = CalcStatEuro(ctx, sp, 0, 0)
-	var rtpeu float64
-	var x, y slot.Pos
-	for x = 1; x <= 5; x++ {
-		for y = 1; y <= 3; y++ {
-			var rtpxy, _ = CalcStatEuro(ctx, sp, x, y)
-			rtpeu += rtpxy
-		}
+	var µw, µsum2, Dsum float64
+	for i := range 15 {
+		var x = slot.Pos(i/3 + 1)
+		var y = slot.Pos(i%3 + 1)
+		fmt.Printf("\n(%d/16) calculations of euro at [%d,%d]\n", i+1, x, y)
+		var s = slot.NewStatGeneric(sn, 5)
+		var µ, D = CalcStatEuro(ctx, sp, s, x, y)
+		µw += µ
+		µsum2 += µ * µ
+		Dsum += D
 	}
-	rtpeu /= 15
-	rtp = (1-wc)*rtp00 + wc*rtpeu
-	sigma = math.NaN()
-	fmt.Printf("euro avr: rtpeu = %.6f%%\n", rtpeu*100)
-	fmt.Printf("wild chance: 1/%.5g\n", 1/wc)
-	fmt.Printf("RTP = (1-wc)*%.5g(sym) + wc*%.5g(eu) = %.6f%%\n", rtp00*100, rtpeu*100, rtp*100)
+	µw /= 15
+	var Dw = Dsum/15 + µsum2/15 - µw*µw
+	fmt.Printf("\n(16/16) regular games calculations\n")
+	var sr = slot.NewStatGeneric(sn, 5)
+	var µr, Dr = CalcStatEuro(ctx, sp, sr, 0, 0)
+	rtp = (1-Pw)*µr + Pw*µw
+	D = (1-Pw)*Dr + Pw*Dw + Pw*(1-Pw)*(µw-µr)*(µw-µr)
+	if sp.IsMain() {
+		fmt.Printf("*final calculations*\n")
+		fmt.Printf("euro avr: rtp(eu) = %.6f%%\n", µw*100)
+		fmt.Printf("wild chance: 1/%.5g\n", 1/Pw)
+		fmt.Printf("RTP = (1-Pw)*%.5g(sym) + Pw*%.5g(eu) = %.6f%%\n", µr*100, µw*100, rtp*100)
+	}
+	var w = os.Stdout
+	slot.Print_all(w, sp, sr, rtp, D)
 	return
 }

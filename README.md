@@ -166,6 +166,104 @@ It can be used embedded *sqlite* database engine, or *MySQL*, or *PostgreSQL* da
 
 Each user can play several games at the same time. Each started game have game ID related to user ID and club ID. Any game actions ties to game ID.
 
+## Mathematics of Slots
+
+Built-in reels scanner helps to get parsheet with math description. There is two key parameters for reels: expectation value and standard deviation. Expectation value presented as RTP (Return To Player) value in percentages, and shows payout for unlimited long series of spins. Standard deviation helps to evaluate RTP spread for limited series, point of convergence, bankroll for user for any case, bankroll for house.
+
+Let's examine the scan output values ​​using an example.
+
+```txt
+$ slot_debug.exe scan -g=netent/gonzosquest -r=95 --full
+selected 20 lines
+completed 100% (50722560), time spent 7.2566161s
+
+reels lengths [34, 37, 35, 36, 32], total reshuffles 50722560
+symbols: µ = 90.41822%, sigma(sym) = 5.72795
+free spins: q = 0.017715, sq = 1/(1-q) = 1.018035
+free games hit rate: 1/564.49
+RTP = 90.418(sym) + 0.017715*276.15(fg) = 95.310212%
+sigma = 6.17553, VI[95%] = 12.1038 (Medium-High)
+CI[95%] = 66610, bankroll[CI] = 6247.72
+
+RTP spread for spins number with confidence 95%:
+    1000: 57.03% ... 133.59%
+   10000: 83.21% ... 107.41%
+   66610: 90.62% ... 100.00%
+  100000: 91.48% ... 99.14%
+ 1000000: 94.10% ... 96.52%
+10000000: 94.93% ... 95.69%
+
+cascade metrics:
+N[2] = 17002368, Ec2 = Kf2 = 1/2.9833
+N[3] = 4022784, Ec3 = 1/12.609, Kf3 = 1/4.2265
+N[4] = 974592, Ec4 = 1/52.045, Kf4 = 1/4.1277
+N[5] = 284544, Ec5 = 1/178.26, Kf5 = 1/3.4251
+Mcascade = 1.8768, ACL = 1.3153, Kfading = 1/3.9376, Ncascmax = 8
+
+symbols contribution to payouts:
+sym rate%  rtp% |     1     2     3     4     5
+ 1:     0     0 |     0     0     0     0     0
+ 2:     0     0 |     0     0     0     0     0
+ 3: 26.28 25.04 |     0     0  9.17 10.18  6.92
+ 4: 21.18 20.19 |     0     0  6.11  8.98  6.09
+ 5: 20.63 19.67 |     0     0  6.73  5.71  8.20
+ 6: 16.18 15.42 |     0     0  6.57  3.35  6.25
+ 7:  7.63  7.28 |     0     0  4.06  1.65  1.92
+ 8:  4.95  4.72 |     0     0  2.74  1.02  1.19
+ 9:  3.14  2.99 |     0     0  1.82  0.61  0.71
+
+cascades contribution to payouts:
+cfn rate%  rtp%
+ 1: 53.28 50.78
+ 2: 28.05 26.74
+ 3: 12.97 12.36
+ 4:  4.62  4.41
+ 5:  0.89  0.85
+ 6:  0.16  0.15
+ 7:  0.03  0.02
+ 8:     0     0
+```
+
+Here output means:
+
+* `µ` is expectation value on pays without any special cases, calculated as $S/N$, where $S$ - sum of all pays, $N$ - total number of reshuffles. This value is used to produce final RTP later.
+
+* `sigma(sym)` is stamdard deviation by plain pays, calculated as $Q/N - µ^2$, where $Q$ - sum of squares on all pays by every spin. This value shows standard deviation on a "clean" reels, it is not final value.
+
+* $q = P_{fs}/N$, where $P_{fs}$ is sum of all wined free spins.
+
+* $sq = \frac{1}{1-q}$ sum of an infinite decreasing geometric progression, multiplier to get RTP on recursive free spins.
+
+* `free games hit rate` shows mathematical expectation of free games hit, how many spins to wait before free games hit.
+
+* `RTP` and `sigma` - final key parameters of reels.
+
+* `VI[95%]` - volatility on one spin with confidence 95%, expression $\frac{VI}{\sqrt{N}}$ helps to get the spread for series of $N$ spins.
+
+* `CI[95%]` - index of convergence, the point at which variance does not cover the loss in expected value. Player will never been in profit after this point with confidence 95%.
+
+* `bankroll[CI]` - bankroll for player to get point of convergence. There is no for him mathematical reason to keep balance greater.
+
+* `RTP spread` is the table with RTP intervals for different $N$ values.
+
+* `N[2]`, `N[3]` ... - number of cascade falls #2, #3, etc in scanning pool.
+
+* `Ec2`, `Ec3` ... - expectation of cascade fall #2, #3, etc. Shows how many spins to wait to get cascade fall with this number.
+
+* `Kf2`, `Kf3` ... - expectation of "next" cascade fall. Fading coefficient for each cascade fall.
+
+* `Mcascade` - key parameter for cascade slots, $S_{Σ}/S_1$, where $S_{Σ}$ - sum of pays by all cascades, $S_1$ - pays by 1st cascade fall. It shows how many cascades pays.
+
+* `ACL` - Average Cascade Length.
+
+* `Kfading` - average coefficient of fading.
+
+* `Ncascmax` - maximum number of cascade falls by one spin on those reels. Including last fall with no wins.
+
+* `symbols contribution` - shows the average contribution of each symbol to the payouts. `rate` column is share of payout, `rtp` column is share of RTP. At right shares of symbols to payout by combinations lengths. This table shows how reels are balanced by payout.
+
+* `cascades contribution` - shows the average contribution of each cascade fall to the payout.
+
 ## How to use HTTP API
 
 Any API endpoints can receive data in JSON, XML, YAML, or TOML format, depended by `Content-Type` header. If `Content-Type` header not given, JSON will be used to decode as default. `Accept` header if it given, defines response data format. If it absent, same format as at request will be used.
