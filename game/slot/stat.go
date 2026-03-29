@@ -272,22 +272,6 @@ func (s *StatGeneric) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
 	return
 }
 
-func (s *StatGeneric) RTPsym2(cost float64, scat1, scat2 Sym) (lrtp, srtp float64) {
-	for sym, pays := range s.S {
-		for i := range pays {
-			if Sym(sym) != scat1 && Sym(sym) != scat2 {
-				lrtp += pays[i].Load()
-			} else {
-				srtp += pays[i].Load()
-			}
-		}
-	}
-	var N = s.Count()
-	lrtp /= N * cost
-	srtp /= N * cost
-	return
-}
-
 func (s *StatGeneric) NSQ(cost float64) (N float64, S float64, Q float64) {
 	N = s.Count()
 	S = s.SumPays() / cost

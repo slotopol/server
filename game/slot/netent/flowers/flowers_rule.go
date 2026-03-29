@@ -58,10 +58,10 @@ var DoubleSym = [sn]slot.Sym{
 }
 
 // Scatters payment.
-var ScatPay = [10]float64{0, 0, 2, 2, 2, 2, 4, 10} // 2 scatter
+var ScatPay = [8]float64{0, 0, 2, 2, 2, 2, 4, 10} // 2 scatter
 
 // Scatter freespins table
-var ScatFreespin = [10]int{0, 0, 0, 10, 15, 20, 25, 30} // 2 scatter
+var ScatFreespin = [8]int{0, 0, 0, 10, 15, 20, 25, 30} // 2 scatter
 
 // Bet lines
 var BetLines = []slot.Linex{

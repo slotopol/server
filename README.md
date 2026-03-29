@@ -170,7 +170,7 @@ Each user can play several games at the same time. Each started game have game I
 
 Built-in reels scanner helps to get parsheet with math description. There is two key parameters for reels: expectation value and standard deviation. Expectation value presented as RTP (Return To Player) value in percentages, and shows payout for unlimited long series of spins. Standard deviation helps to evaluate RTP spread for limited series, point of convergence, bankroll for user for any case, bankroll for house.
 
-Let's examine the scan output values ​​using an example.
+Let's examine the scan output values ​​using an example of `Gonzo's Quest` slot.
 
 ```txt
 $ slot_debug.exe scan -g=netent/gonzosquest -r=95 --full
@@ -228,9 +228,9 @@ Here output means:
 
 * `µ` is expectation value on pays without any special cases, calculated as $S/N$, where $S$ - sum of all pays, $N$ - total number of reshuffles. This value is used to produce final RTP later.
 
-* `sigma(sym)` is stamdard deviation by plain pays, calculated as $Q/N - µ^2$, where $Q$ - sum of squares on all pays by every spin. This value shows standard deviation on a "clean" reels, it is not final value.
+* `sigma(sym)` is standard deviation by plain pays, calculated as $Q/N - µ^2$, where $Q$ - sum of squares on all pays by every spin. This value shows standard deviation on a "clean" reels, it is not final value.
 
-* $q = P_{fs}/N$, where $P_{fs}$ is sum of all wined free spins.
+* $q = C_{fs}/N$, where $C_{fs}$ is sum of all wined free spins.
 
 * $sq = \frac{1}{1-q}$ sum of an infinite decreasing geometric progression, multiplier to get RTP on recursive free spins.
 
@@ -240,11 +240,11 @@ Here output means:
 
 * `VI[95%]` - volatility on one spin with confidence 95%, expression $\frac{VI}{\sqrt{N}}$ helps to get the spread for series of $N$ spins.
 
-* `CI[95%]` - index of convergence, the point at which variance does not cover the loss in expected value. Player will never been in profit after this point with confidence 95%.
+* `CI[95%]` - index of convergence, the point at which variance does not cover the loss in expected value. Player will never been in profit after this point with confidence 95%. After this point house gets clean yield.
 
-* `bankroll[CI]` - bankroll for player to get point of convergence. There is no for him mathematical reason to keep balance greater.
+* `bankroll[CI]` - bankroll for player to get point of convergence. There is no mathematical reason for him to keep balance greater.
 
-* `RTP spread` is the table with RTP intervals for different $N$ values.
+* `RTP spread` is the table with RTP intervals for different $N$ values. High volatility increases spread, and moves far away point of convergence.
 
 * `N[2]`, `N[3]` ... - number of cascade falls #2, #3, etc in scanning pool.
 
@@ -252,7 +252,7 @@ Here output means:
 
 * `Kf2`, `Kf3` ... - expectation of "next" cascade fall. Fading coefficient for each cascade fall.
 
-* `Mcascade` - key parameter for cascade slots, $S_{Σ}/S_1$, where $S_{Σ}$ - sum of pays by all cascades, $S_1$ - pays by 1st cascade fall. It shows how many cascades pays.
+* `Mcascade` - key parameter for cascade slots, $S_{Σ}/S_1$, where $S_{Σ}$ - sum of pays by all cascades, $S_1$ - pays by 1st cascade fall. It shows how many cascades pays. A high value indicates that the bulk of the payouts comes from cascades, while linear payments are insignificant.
 
 * `ACL` - Average Cascade Length.
 
@@ -260,7 +260,7 @@ Here output means:
 
 * `Ncascmax` - maximum number of cascade falls by one spin on those reels. Including last fall with no wins.
 
-* `symbols contribution` - shows the average contribution of each symbol to the payouts. `rate` column is share of payout, `rtp` column is share of RTP. At right shares of symbols to payout by combinations lengths. This table shows how reels are balanced by payout.
+* `symbols contribution` - shows the average contribution of each symbol to the payouts. `rate` column is share of payout, `rtp` column is share of RTP. At right side shares of symbols to payout by combinations lengths. This table shows how reels are balanced by payout.
 
 * `cascades contribution` - shows the average contribution of each cascade fall to the payout.
 
@@ -426,4 +426,4 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d
 ```
 
 ---
-(c) schwarzlichtbezirk, 2024-2025.
+(c) schwarzlichtbezirk, 2024-2026.

@@ -36,14 +36,14 @@ var LinePay = [sn][5]float64{
 // Scatters payment.
 var ScatPay = [5]float64{0, 2, 3, 25, 250} // 2 scatter
 
-var ScatRand = []int{10, 15, 15, 20, 25}
+var Freegames = []int{10, 15, 15, 20, 25}
 
 // Bet lines
 var BetLines = slot.BetLinesPlt5x3[:]
 
 const (
 	Efs = 17  // average free spins for ScatRand set
-	Pfs = 0.3 // probability of "got away" at free spins
+	Pmfs = 0.3 // probability of "got away" at free spins
 )
 
 type Game struct {
@@ -143,7 +143,7 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 	if count := g.SymNum(scat); count >= 2 {
 		var pay, fs = ScatPay[count-1], 0
 		if count >= 3 {
-			fs = ScatRand[rand.N(len(ScatRand))]
+			fs = Freegames[rand.N(len(Freegames))]
 		}
 		*wins = append(*wins, slot.WinItem{
 			Pay: g.Bet * float64(g.Sel) * pay,
@@ -186,7 +186,7 @@ func (g *Game) Apply(wins slot.Wins) {
 		for _, wi := range wins {
 			if wi.FS > 0 {
 				g.FSR = wi.FS
-				if rand.Float64() <= Pfs {
+				if rand.Float64() <= Pmfs {
 					g.M = 2
 				} else {
 					g.M = 1
