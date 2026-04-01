@@ -127,7 +127,7 @@ func BenchmarkSpin(b *testing.B) {
 	var wins = make(slot.Wins, 0, 10)
 
 	b.ResetTimer()
-	for range b.N {
+	for b.Loop() {
 		g.Spin(96)
 		g.Scanner(&wins)
 		wins.Reset()

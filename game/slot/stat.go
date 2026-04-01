@@ -167,15 +167,15 @@ func (c *SlotCounter) IsZero() bool {
 }
 
 func (c *SlotCounter) SymDim(sym Sym, pn int) {
-	c.C[sym] = make([]Uint64, pn)
-	c.S[sym] = make([]Float64, pn)
+	c.C[sym-1] = make([]Uint64, pn)
+	c.S[sym-1] = make([]Float64, pn)
 }
 
 func (c *SlotCounter) CntDim(sn, pn int) {
 	c.C = make([][]Uint64, sn)
 	c.S = make([][]Float64, sn)
 	for sym := range c.S {
-		c.SymDim(Sym(sym), pn)
+		c.SymDim(Sym(sym+1), pn)
 	}
 }
 
@@ -294,7 +294,7 @@ func (s *StatGeneric) FGQ() float64 {
 func (s *StatGeneric) ΣPL(scat Sym, L []int) (sum float64) {
 	var N = s.Count()
 	for i, Li := range L {
-		var Pfgi = float64(s.C[scat][i].Load()) / N
+		var Pfgi = float64(s.C[scat-1][i].Load()) / N
 		sum += Pfgi * float64(Li)
 	}
 	return
@@ -464,7 +464,7 @@ func (s *StatCascade) ΣPL(scat Sym, L []int) (sum float64) {
 	for i, Li := range L {
 		var c float64
 		for cfn := range s.Casc {
-			c += float64(s.Casc[cfn].C[scat][i].Load())
+			c += float64(s.Casc[cfn].C[scat-1][i].Load())
 		}
 		var Pfgi = c / N
 		sum += Pfgi * float64(Li)
