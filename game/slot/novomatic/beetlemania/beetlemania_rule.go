@@ -12,8 +12,6 @@ const (
 	jbonus = 1 // jazzbee freespins bonus
 )
 
-var ReelsBon slot.Reelx
-
 var ReelsMap slot.ReelsMap[slot.Reelx]
 
 // Lined payment.
@@ -172,25 +170,15 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 // Scatters calculation.
 func (g *Game) ScanScatters(wins *slot.Wins) {
 	if g.FSR > 0 {
-		var y slot.Pos
-		if g.At(3, 1) == jazz {
-			y = 1
-		} else if g.At(3, 2) == jazz {
-			y = 2
-		} else if g.At(3, 3) == jazz {
-			y = 3
-		} else {
-			return // ignore scatters on freespins
+		if r := g.Grid[2]; r[0] == jazz || r[1] == jazz || r[2] == jazz {
+			*wins = append(*wins, slot.WinItem{
+				MP:  1,
+				Sym: jazz,
+				Num: 1,
+				XY:  g.SymPos(jazz),
+				BID: jbonus,
+			})
 		}
-		var xy slot.Hitx
-		xy.Push(3, y)
-		*wins = append(*wins, slot.WinItem{
-			MP:  1,
-			Sym: jazz,
-			Num: 1,
-			XY:  xy,
-			BID: jbonus,
-		})
 		return
 	}
 
@@ -208,12 +196,8 @@ func (g *Game) ScanScatters(wins *slot.Wins) {
 }
 
 func (g *Game) Spin(mrtp float64) {
-	if g.FSR == 0 {
-		var reels, _ = ReelsMap.FindClosest(mrtp)
-		g.SpinReels(reels)
-	} else {
-		g.SpinReels(ReelsBon)
-	}
+	var reels, _ = ReelsMap.FindClosest(mrtp)
+	g.SpinReels(reels)
 }
 
 func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {

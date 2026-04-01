@@ -9,53 +9,41 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-// Attention! On freespins can be calculated median only, not expectation.
-
-func CalcStatBon(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
-	var reels = ReelsBon
-	var g = NewGame(sp.Sel)
-	g.FSR = 10 // set free spins mode
+func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var s = slot.NewStatGeneric(sn, 5)
-	s.BonDim(jbonus)
-
-	var calc = func(w io.Writer) (float64, float64) {
-		var N, S, _ = s.NSQ(g.Cost())
-		var µ = S / N
-		var qjazz = s.BonusHits(jbonus) / N
-		var jpow = math.Pow(2, 10*qjazz) // jazz power
-		var rtpjazz = µ*jpow - µ
-		var rtp = µ * jpow
-		fmt.Fprintf(w, "rtp(sym) = %.6f%%\n", µ*100)
-		fmt.Fprintf(w, "jazzbee bonuses: hit rate 1/%.5g, pow = %.5g, rtp = %.6f%%\n", N/s.BonusHits(jbonus), jpow, rtpjazz)
-		fmt.Fprintf(w, "RTP = rtp(sym) + rtp(jazz) = %.5g + %.5g = %.6f%%\n", µ*100, rtpjazz*100, rtp*100)
-		return rtp, math.NaN()
-	}
-
-	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
-}
-
-func CalcStatReg(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
-	fmt.Printf("*bonus reels calculations*\n")
-	var rtpfs, _ = CalcStatBon(ctx, sp)
-	if ctx.Err() != nil {
-		return 0, 0
-	}
-	fmt.Printf("*regular reels calculations*\n")
 	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame(sp.Sel)
-	var s = slot.NewStatGeneric(sn, 5)
-
-	var calc = func(w io.Writer) (float64, float64) {
-		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
-		var rtpsym = lrtp + srtp
-		var q = s.FSQ()
-		var rtp = rtpsym + q*rtpfs
-		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
-		fmt.Fprintf(w, "free spins %d, q = %.5g\n", s.FSC.Load(), q)
-		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", s.HRfg())
-		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.6f%%\n", rtpsym*100, q, rtpfs*100, rtp*100)
-		return rtp, math.NaN()
+	// custom parsheet
+	var njb float64
+	for _, sym := range reels[2] {
+		if sym == jazz {
+			njb++
+		}
 	}
-
+	var Pjb = njb * 3 / float64(len(reels[2]))
+	var cost = g.Cost()
+	const L = 10.0
+	var calc = func(w io.Writer) (float64, float64) {
+		var N, S, Q = s.NSQ(cost)
+		var µ = S / N
+		var Dsym = Q/N - µ*µ
+		var Pfg = s.FGQ()
+		var p = Pjb
+		var mjb = (math.Pow(1+p, L) - 1) / p
+		var md = math.Pow(1+3*p, L)
+		var Wavg = µ * mjb
+		var rtp = µ + Pfg*Wavg
+		var Vbon = L*L*µ*µ*(md-math.Pow(1+p, 2*L)) + md*L*Dsym
+		var D = Dsym + Pfg*(Vbon+(Wavg-µ)*(Wavg-µ))
+		if sp.IsMain() {
+			fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µ*100, math.Sqrt(Dsym))
+			fmt.Fprintf(w, "jazzbee: HRjb = 1/%.5g, mjb = %.5g\n", 1/p, mjb)
+			fmt.Fprintf(w, "free games: HRfg = 1/%.5g\n", 1/Pfg)
+			fmt.Fprintf(w, "average bonus win: Wavg = %.5g\n", Wavg)
+			fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µ*100, Pfg, Wavg*100, rtp*100)
+		}
+		slot.Print_all(w, sp, s, rtp, D)
+		return rtp, D
+	}
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
 }

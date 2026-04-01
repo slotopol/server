@@ -2,17 +2,17 @@ local scripts = arg[0]:match("^(.*generator[/%\\])")
 dofile(scripts.."lib/makereel.lua")
 
 local symset = {
-	2, --  1 bee
-	3, --  2 snail
-	3, --  3 fly
-	3, --  4 worm
-	4, --  5 ace
-	4, --  6 king
-	5, --  7 queen
-	5, --  8 jack
-	5, --  9 ten
-	1, -- 10 note
-	1, -- 11 jazzbee (3 reel only)
+	2, --  1 bee   5000
+	3, --  2 snail 1000
+	4, --  3 fly   500
+	4, --  4 worm  250
+	4, --  5 ace   200
+	4, --  6 king  200
+	6, --  7 queen 100
+	6, --  8 jack  100
+	6, --  9 ten   100
+	2, -- 10 note
+	3, -- 11 jazzbee (3 reel only)
 }
 
 local neighbours = {
@@ -34,6 +34,8 @@ local function reelgen(n)
 	local ss = tcopy(symset)
 	if n ~= 3 then
 		ss[11] = 0
+	else
+		ss[10] = ss[10]+1
 	end
 	return makereel(ss, neighbours)
 end
