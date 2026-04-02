@@ -67,8 +67,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		if sp.IsMain() {
 			fmt.Fprintf(w, "*regular reels*\n")
 			fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µr*100, math.Sqrt(Dsymr))
-			fmt.Fprintf(w, "free spins: q = %.5g\n", q)
-			fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", 1/Pfg)
+			fmt.Fprintf(w, "free: HRfg = 1/%.5g, q = %.5g\n", 1/Pfg, q)
 			fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µr*100, q, Em*µb*100, rtp*100)
 		}
 		slot.Print_all(w, sp, sr, rtp, D)

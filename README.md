@@ -179,8 +179,7 @@ completed 100% (50722560), time spent 7.2566161s
 
 reels lengths [34, 37, 35, 36, 32], total reshuffles 50722560
 symbols: µ = 90.41822%, sigma(sym) = 5.72795
-free spins: q = 0.017715, sq = 1/(1-q) = 1.018035
-free games hit rate: 1/564.49
+free: HRfg = 1/564.49, q = 0.017715, sq = 1/(1-q) = 1.018035
 RTP = 90.418(sym) + 0.017715*276.15(fg) = 95.310212%
 sigma = 6.17553, VI[95%] = 12.1038 (Medium-High)
 CI[95%] = 66610, bankroll[CI] = 6247.72
@@ -234,7 +233,7 @@ Here output means:
 
 * $sq = \frac{1}{1-q}$ sum of an infinite decreasing geometric progression, multiplier to get RTP on recursive free spins.
 
-* `free games hit rate` shows mathematical expectation of free games hit, how many spins to wait before free games hit.
+* `HRfg` is free games hit rate, shows mathematical expectation of hit that starts series of free spins. Means how many spins to wait before free games hit.
 
 * `RTP` and `sigma` - final key parameters of reels.
 

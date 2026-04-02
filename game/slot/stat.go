@@ -36,6 +36,14 @@ type Counter interface {
 	ΣPL(Sym, []int) float64
 }
 
+// Returns plain math expectation (µ = S/N) and plain dispersion (D = Q/N - µ*µ).
+func EvD(s Counter, cost float64) (float64, float64) {
+	var N, S, Q = s.NSQ(cost)
+	var µ = S / N
+	var D = Q/N - µ*µ
+	return µ, D
+}
+
 type ScanPar = game.ScanPar
 
 type Uint64 struct {

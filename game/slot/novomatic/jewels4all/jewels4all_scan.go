@@ -81,19 +81,19 @@ func CalcStatEuro(ctx context.Context, sp *slot.ScanPar, s *slot.StatGeneric, x,
 func CalcStat(ctx context.Context, sp *slot.ScanPar) (rtp, D float64) {
 	var Pw, _ = ChanceMap.FindClosest(sp.MRTP) // wild chance
 
-	var µw, µsum2, Dsum float64
+	var Σµ, Σµ2, ΣD float64
 	for i := range 15 {
 		var x = slot.Pos(i/3 + 1)
 		var y = slot.Pos(i%3 + 1)
 		fmt.Printf("\n(%d/16) calculations of euro at [%d,%d]\n", i+1, x, y)
 		var s = slot.NewStatGeneric(sn, 5)
 		var µ, D = CalcStatEuro(ctx, sp, s, x, y)
-		µw += µ
-		µsum2 += µ * µ
-		Dsum += D
+		Σµ += µ
+		Σµ2 += µ * µ
+		ΣD += D
 	}
-	µw /= 15
-	var Dw = Dsum/15 + µsum2/15 - µw*µw
+	var µw = Σµ / 15
+	var Dw = ΣD/15 + Σµ2/15 - µw*µw
 	fmt.Printf("\n(16/16) regular games calculations\n")
 	var sr = slot.NewStatGeneric(sn, 5)
 	var µr, Dr = CalcStatEuro(ctx, sp, sr, 0, 0)
