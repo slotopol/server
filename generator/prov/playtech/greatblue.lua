@@ -2,18 +2,18 @@ local scripts = arg[0]:match("^(.*generator[/%\\])")
 dofile(scripts.."lib/makereel.lua")
 
 local symset = {
-	1, --  1 wild
-	2, --  2 dolphin
-	2, --  3 turtle
-	4, --  4 fish
-	4, --  5 seahorse
-	4, --  6 starfish
-	4, --  7 ace
-	4, --  8 king
-	4, --  9 queen
-	4, -- 10 jack
-	4, -- 11 ten
-	4, -- 12 nine
+	1, --  1 wild     10000
+	3, --  2 dolphin  750
+	3, --  3 turtle   750
+	4, --  4 fish     400
+	4, --  5 seahorse 250
+	4, --  6 starfish 250
+	4, --  7 ace      150
+	4, --  8 king     150
+	5, --  9 queen    100
+	5, -- 10 jack     100
+	5, -- 11 ten      100
+	4, -- 12 nine     100
 	1, -- 13 scatter
 }
 
@@ -34,8 +34,12 @@ local neighbours = {
 	{ 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,}, -- 13
 }
 
-local function reelgen()
-	return makereel(symset, neighbours)
+local function reelgen(n)
+	local ss = tcopy(symset)
+	if n == 2 or n == 4 then
+		ss[1] = ss[1] + 1
+	end
+	return makereel(ss, neighbours)
 end
 
 if autoscan then
@@ -43,4 +47,7 @@ if autoscan then
 end
 
 math.randomseed(os.time())
-printreel(reelgen())
+print "reel 1, 3, 5"
+printreel(reelgen(1))
+print "reel 2, 4"
+printreel(reelgen(2))

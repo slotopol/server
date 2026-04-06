@@ -9,53 +9,55 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-func FirstSreespins() (fsavr1 float64, multavr float64) {
-	// combinations of multiplier & freespins number
-	// of two shells from set [x5, x8, 7, 10, 15]
-	var combs = []struct {
-		mult, fsnum float64
-	}{
-		{2 + 5 + 8, 8},
-		{2 + 5, 8 + 7},
-		{2 + 5, 8 + 10},
-		{2 + 5, 8 + 15},
-		{2 + 8, 8 + 7},
-		{2 + 8, 8 + 10},
-		{2 + 8, 8 + 15},
-		{2, 8 + 7 + 10},
-		{2, 8 + 7 + 15},
-		{2, 8 + 10 + 15},
-	}
-	for _, c := range combs {
-		fsavr1 += c.mult * c.fsnum
-		multavr += c.mult
-	}
-	fsavr1 /= float64(len(combs))
-	multavr /= float64(len(combs))
-	return
+// combinations of multiplier & freespins number
+// of two shells from set [x5, x8, 7, 10, 15]
+var combs = []struct {
+	m, L float64
+}{
+	{2 + 5 + 8, 8},
+	{2 + 5, 8 + 7},
+	{2 + 5, 8 + 10},
+	{2 + 5, 8 + 15},
+	{2 + 8, 8 + 7},
+	{2 + 8, 8 + 10},
+	{2 + 8, 8 + 15},
+	{2, 8 + 7 + 10},
+	{2, 8 + 7 + 15},
+	{2, 8 + 10 + 15},
 }
 
 func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
+	var s = slot.NewStatGeneric(sn, 5)
 	var reels, _ = ReelsMap.FindClosest(sp.MRTP)
 	var g = NewGame(sp.Sel)
-	var s = slot.NewStatGeneric(sn, 5)
 
+	// custom parsheet
+	var cost = g.Cost()
 	var calc = func(w io.Writer) (float64, float64) {
-		var N = s.Count()
-		var lrtp, srtp = s.RTPsym(g.Cost(), scat)
-		var rtpsym = lrtp + srtp
-		var fghits = float64(s.FGH.Load())
-		var fsavr1, multavr = FirstSreespins()
-		var q = fghits * fsavr1 / N
-		var sq = 1 / (1 - fghits*multavr*15/N)
-		var rtp = rtpsym + q*sq*rtpsym
-		fmt.Fprintf(w, "symbols: %.5g(lined) + %.5g(scatter) = %.6f%%\n", lrtp*100, srtp*100, rtpsym*100)
-		fmt.Fprintf(w, "average plain freespins at 1st iteration: %g\n", fsavr1)
-		fmt.Fprintf(w, "average multiplier at free games: %g\n", multavr)
-		fmt.Fprintf(w, "free games %g, q = %.5g, sq = %.5g\n", fghits, q, sq)
-		fmt.Fprintf(w, "free games hit rate: 1/%.5g\n", N/fghits)
-		fmt.Fprintf(w, "RTP = rtpsym + q*sq*rtpsym = %.5g + %.5g = %.6f%%\n", rtpsym*100, q*sq*rtpsym*100, rtp*100)
-		return rtp, math.NaN()
+		var µ, Dsym = slot.EvD(s, cost)
+		var Pfg = s.FGQ()
+		var q = Pfg * 15
+		var sq = 1 / (1 - q)
+		var ΣmN, Σm2N2, ΣV float64
+		for i := range 10 {
+			var mi, Li = combs[i].m, combs[i].L
+			var Ni = Li + 15*q*sq
+			ΣmN += mi * Ni
+			Σm2N2 += mi * Ni * mi * Ni
+			var Vi = mi * mi * (Ni*Dsym + 15*µ*15*µ*q*sq*sq*sq)
+			ΣV += Vi
+		}
+		var EWbon = µ * ΣmN / 10
+		var Vbon = ΣV/10 + µ*µ*Σm2N2/10 - EWbon*EWbon
+		var rtp = µ + Pfg*EWbon
+		var D = Dsym + Pfg*(Vbon+(EWbon-µ)*(EWbon-µ))
+		if sp.IsMain() {
+			fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µ*100, math.Sqrt(Dsym))
+			fmt.Fprintf(w, "free: HRfg = 1/%.5g, q = %.5g, sq = 1/(1-q) = %.5g\n", 1/Pfg, q, sq)
+			fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g = %.8g%%\n", µ*100, Pfg, EWbon*100, rtp*100)
+		}
+		slot.Print_all(w, sp, s, rtp, D)
+		return rtp, D
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, reels, calc)
