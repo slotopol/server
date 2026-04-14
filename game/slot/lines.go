@@ -29,6 +29,19 @@ type (
 // Hitx has fixed size to avoid extra memory allocations.
 type Hitx [HitxSize][2]Pos
 
+// Reels hits, returns Hitx that points to reels with positions defined by bitset.
+func RH(mask uint) (dst Hitx) {
+	var i, x Pos
+	for b := mask; b > 0; b >>= 1 {
+		if b&1 > 0 {
+			dst[i][0] = x + 1
+			i++
+		}
+		x++
+	}
+	return
+}
+
 func (c *Hitx) Push(x, y Pos) {
 	var i = c.Len()
 	c[i][0], c[i][1] = x, y

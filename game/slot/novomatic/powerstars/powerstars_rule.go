@@ -65,7 +65,7 @@ func (g *Game) Scanner(wins *slot.Wins) error {
 // Lined symbols calculation.
 func (g *Game) ScanLined(wins *slot.Wins) {
 	var reelwild [5]bool
-	var fs bool
+	var fsmask uint
 	for x := 1; x < 4; x++ { // 2, 3, 4 reels only
 		if g.PRW[x] > 0 {
 			reelwild[x] = true
@@ -73,7 +73,7 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 			for _, sy := range g.Grid[x] {
 				if sy == wild {
 					reelwild[x] = true
-					fs = true
+					fsmask |= 1 << x
 					break
 				}
 			}
@@ -127,10 +127,11 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 				XY:  line.HitxL(numr),
 			})
 		}
-		if fs {
+		if fsmask > 0 {
 			*wins = append(*wins, slot.WinItem{
 				Sym: wild,
 				FS:  1,
+				XY:  slot.RH(fsmask),
 			})
 		}
 	}
@@ -138,14 +139,12 @@ func (g *Game) ScanLined(wins *slot.Wins) {
 
 func (g *Game) Spin(mrtp float64) {
 	g.SpinReels(Reels)
-	if g.FSR == 0 {
-		var _, wc = ChanceMap.FindClosest(mrtp) // wild chance
-		var x, y slot.Pos
-		for x = 2; x <= 4; x++ {
-			if rand.Float64() < wc {
-				y = rand.N[slot.Pos](3) + 1
-				g.SetSym(x, y, wild)
-			}
+	var _, wc = ChanceMap.FindClosest(mrtp) // wild chance
+	var x, y slot.Pos
+	for x = 2; x <= 4; x++ {
+		if rand.Float64() < wc {
+			y = rand.N[slot.Pos](3) + 1
+			g.SetSym(x, y, wild)
 		}
 	}
 }
@@ -153,17 +152,13 @@ func (g *Game) Spin(mrtp float64) {
 func (g *Game) Apply(wins slot.Wins) {
 	g.Slotx.Apply(wins)
 
-	var x, y slot.Pos
-	for x = 2; x <= 4; x++ {
-		if g.PRW[x-1] > 0 {
-			g.PRW[x-1]--
-		} else {
-			for y = 1; y <= 3; y++ {
-				if g.At(x, y) == wild {
-					g.PRW[x-1] = 1
-					g.FSR = 1
-					break
-				}
+	if g.FSR == 0 {
+		clear(g.PRW[:])
+	}
+	for _, wi := range wins {
+		if wi.FS > 0 {
+			for i := 0; wi.XY[i][0] != 0; i++ {
+				g.PRW[wi.XY[i][0]-1] = 1
 			}
 		}
 	}

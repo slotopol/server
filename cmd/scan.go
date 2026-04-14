@@ -179,7 +179,7 @@ func init() {
 	pf.IntP("sel", "l", 0, "number of selected bet lines, 0 for all")
 	pf.Float64("conf", 95, "confidence probability, in percents")
 	pf.Uint64P("total", "n", 10, "Monte Carlo method iterations number, in millions")
-	pf.Float64("prec", 0.1, "precision of result for Monte Carlo method, in percents")
+	pf.Float64P("prec", "p", 0.1, "precision of result for Monte Carlo method, in percents")
 	// print flags
 	pf.Bool("main", true, "print RTP, sigma and other main information")
 	pf.Bool("jack", true, "print info about progressive jackpots")

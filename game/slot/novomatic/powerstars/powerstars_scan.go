@@ -4,121 +4,158 @@ import (
 	"context"
 	"fmt"
 	"io"
-	"math"
 	"os"
-	"time"
 
 	"github.com/slotopol/server/game/slot"
 )
 
-// Returns the probability of getting at least one star on the 3 reels,
-// including several stars at once.
-func AnyStarProb(b float64) float64 {
-	return (b*b + (b-1)*b + (b-1)*(b-1)) / b / b / b
+type futureResult struct {
+	expectedFuture     float64
+	secondMomentFuture float64
 }
 
-func BruteForceStars(ctx context.Context, s slot.Simulator, g *Game, reels slot.Reelx, wc2, wc3, wc4 bool) {
-	var wins slot.Wins
-	var r1 = reels.Reel(1)
-	var r2 = reels.Reel(2)
-	var r3 = reels.Reel(3)
-	var r4 = reels.Reel(4)
-	var r5 = reels.Reel(5)
-	var N uint64
-	for i1 := range r1 {
-		g.SetCol(1, r1, i1)
-		for i2 := range r2 {
-			g.SetCol(2, r2, i2)
-			for i3 := range r3 {
-				g.SetCol(3, r3, i3)
-				for i4 := range r4 {
-					g.SetCol(4, r4, i4)
-					for i5 := range r5 {
-						N++
-						if N%slot.CtxGranulation == 0 {
-							select {
-							case <-ctx.Done():
-								return
-							default:
-							}
-						}
-						g.SetCol(5, r5, i5)
-						var sym2, sym3, sym4 = g.At(2, 1), g.At(3, 1), g.At(4, 1)
-						if wc2 {
-							g.SetSym(2, 1, wild)
-						}
-						if wc3 {
-							g.SetSym(3, 1, wild)
-						}
-						if wc4 {
-							g.SetSym(4, 1, wild)
-						}
-						s.Simulate(g, reels, &wins)
-						g.SetSym(2, 1, sym2)
-						g.SetSym(3, 1, sym3)
-						g.SetSym(4, 1, sym4)
-						wins.Reset()
-					}
+// Calculates the probabilities of transitioning to new states containing wilds.
+func calculateTransitionProbs(currentMask int, p2, p3, p4 float64, E, G map[int]float64, muCurrent float64) futureResult {
+	res := futureResult{}
+
+	// Checking the free reels (2, 3, 4)
+	// For each free reel, the probability of a wild appearing is pi
+	// For each occupied slot: 1 (it is already recorded there).
+	for nextS := 1; nextS < 8; nextS++ {
+		if (nextS|currentMask) == nextS && nextS != currentMask {
+			prob := 1.0
+			if (currentMask & 1) == 0 {
+				if (nextS & 1) > 0 {
+					prob *= p2
+				} else {
+					prob *= (1 - p2)
 				}
 			}
+			if (currentMask & 2) == 0 {
+				if (nextS & 2) > 0 {
+					prob *= p3
+				} else {
+					prob *= (1 - p3)
+				}
+			}
+			if (currentMask & 4) == 0 {
+				if (nextS & 4) > 0 {
+					prob *= p4
+				} else {
+					prob *= (1 - p4)
+				}
+			}
+
+			res.expectedFuture += prob * E[nextS]
+			res.secondMomentFuture += prob * G[nextS]
 		}
 	}
+	return res
 }
 
-func CalcStatStars(ctx context.Context, sp *slot.ScanPar, wc2, wc3, wc4 bool) (float64, float64) {
-	var reels = Reels
-	var g = NewGame(sp.Sel)
-	var s = slot.NewStatGeneric(sn, 5)
+func calculateInitialSpin(mu0, d0, p2, p3, p4 float64, E, G map[int]float64) (float64, float64) {
+	exp := mu0
+	secMom := d0 + mu0*mu0
 
-	var wcsym = func(wc bool) byte {
-		if wc {
-			return '*'
+	for s := 1; s < 8; s++ {
+		prob := 1.0
+		if (s & 1) > 0 {
+			prob *= p2
+		} else {
+			prob *= (1 - p2)
 		}
-		return '-'
-	}
-	fmt.Printf("calculations of star combinations [%c%c%c]\n", wcsym(wc2), wcsym(wc3), wcsym(wc4))
+		if (s & 2) > 0 {
+			prob *= p3
+		} else {
+			prob *= (1 - p3)
+		}
+		if (s & 4) > 0 {
+			prob *= p4
+		} else {
+			prob *= (1 - p4)
+		}
 
-	var calc = func(w io.Writer) (float64, float64) {
-		var N, S, Q = s.NSQ(g.Cost())
-		var µ = S / N
-		var sigma = math.Sqrt(Q/N - µ*µ)
-		fmt.Fprintf(w, "RTP[%c%c%c] = %.6f%%\n", wcsym(wc2), wcsym(wc3), wcsym(wc4), µ*100)
-		return µ, sigma
+		exp += prob * E[s]
+		secMom += prob*G[s] + 2*mu0*prob*E[s]
 	}
-
-	func() {
-		var t0 = time.Now()
-		var ctx2, cancel2 = context.WithCancel(ctx)
-		defer cancel2()
-		var total = float64(reels.Reshuffles())
-		go slot.ProgressBF(ctx2, sp, s, calc, total)
-		BruteForceStars(ctx2, s, g, reels, wc2, wc3, wc4)
-		var dur = time.Since(t0)
-		var N = s.Count()
-		fmt.Printf("completed %.5g%% (%d), time spent %v                    \n",
-			N/total*100, int(N), dur)
-	}()
-	return calc(os.Stdout)
+	return exp, secMom
 }
 
-func CalcStat(ctx context.Context, sp *slot.ScanPar) (rtp, sigma float64) {
+func wcsym(wc bool) byte {
+	if wc {
+		return '*'
+	}
+	return '-'
+}
+
+// custom parsheet
+func CalcStat(ctx context.Context, sp *slot.ScanPar) (rtp, D float64) {
 	var wc, _ = ChanceMap.FindClosest(sp.MRTP) // wild chance
+	var p2, p3, p4 = wc, wc, wc
 
-	var b = 1 / wc
-	var rtp000, _ = CalcStatStars(ctx, sp, false, false, false)
-	var rtp100, _ = CalcStatStars(ctx, sp, true, false, false)
-	var rtp010, _ = CalcStatStars(ctx, sp, false, true, false)
-	var rtp001, _ = CalcStatStars(ctx, sp, false, false, true)
-	var rtp110, _ = CalcStatStars(ctx, sp, true, true, false)
-	var rtp011, _ = CalcStatStars(ctx, sp, false, true, true)
-	var rtp101, _ = CalcStatStars(ctx, sp, true, false, true)
-	var rtp111, _ = CalcStatStars(ctx, sp, true, true, true)
-	var q = AnyStarProb(b)
-	var rtpfs = ((rtp100+rtp010+rtp001)*(b-1)*(b-1) + (rtp110+rtp011+rtp101)*(b-1) + rtp111) / (b*b + (b-1)*b + (b-1)*(b-1))
-	rtp = (1-q)*rtp000 + q*rtpfs
-	sigma = math.NaN()
-	fmt.Printf("wild chance: 1/%.5g\n", 1/wc)
-	fmt.Printf("free spins: q = %.5g, 1/q = %.5g, rtpfs = %.6f%%\n", q, 1/q, rtpfs*100)
-	fmt.Printf("RTP = (1-q)*%.5g(sym) + q*%.5g(fg) = %.6f%%\n", rtp000*100, rtpfs*100, rtp*100)
-	return
+	var mu, d [8]float64
+	var sr *slot.StatGeneric
+	for mask := range mu {
+		var wc2, wc3, wc4 = mask&4 > 0, mask&2 > 0, mask&1 > 0
+
+		fmt.Printf("\n(%d/8) calculations of star combinations [%c%c%c]\n", mask+1, wcsym(wc2), wcsym(wc3), wcsym(wc4))
+		var s = slot.NewStatGeneric(sn, 5)
+		var g = NewGame(sp.Sel)
+		if wc2 {
+			g.PRW[1] = 1
+		}
+		if wc3 {
+			g.PRW[2] = 1
+		}
+		if wc4 {
+			g.PRW[3] = 1
+		}
+		var calc = func(w io.Writer) (float64, float64) {
+			var µ, D = slot.EvD(s, g.Cost())
+			if sp.IsFG() {
+				fmt.Fprintf(w, "RTP[%c%c%c] = %.8g%%\n", wcsym(wc2), wcsym(wc3), wcsym(wc4), µ*100)
+				slot.Print_all(w, sp, s, µ, D)
+			}
+			return µ, D
+		}
+		mu[mask], d[mask] = slot.ScanReelsCommon(ctx, sp, s, g, Reels, calc)
+		if mask == 0 {
+			sr = s
+			// break
+		}
+	}
+	// µ, D values sample:
+	// mu = [8]float64{0.6906290681685502, 3.799393045573862, 5.650865445506066, 32.61763641928931, 3.799393045573862, 15.98352672732838, 33.33277680385118, 93.66391184573003}
+	// d = [8]float64{3.653645637859768, 31.40956337151818, 48.65385656738518, 501.7239875904347, 32.092689819232646, 319.2589878905468, 462.4906731837034, 4202.498615000493}
+
+	// Calculation results for respin chains
+	// E[i] — Expected value of the entire chain of winnings, starting FROM a respin in state i
+	// G[i] — Second moment (E[W^2]) of this chain
+	var E = make(map[int]float64)
+	var G = make(map[int]float64)
+	// Iterate in reverse order: from the 3 wilds to the 1.
+	E[7] = 0
+	G[7] = 0
+
+	// Iterate through all states containing at least one wild symbol (respins sequences).
+	for s := 6; s >= 1; s-- {
+		currentMu := mu[s]
+		currentSecondMoment := d[s] + mu[s]*mu[s]
+		var pNew = calculateTransitionProbs(s, p2, p3, p4, E, G, currentMu)
+		E[s] = currentMu + pNew.expectedFuture
+		G[s] = currentSecondMoment + pNew.secondMomentFuture + 2*currentMu*pNew.expectedFuture
+	}
+
+	// Final calculation for the base game (state 0)
+	// Here, we calculate the probability of transitioning from state 0 to any state s > 0.
+	var totalE, totalG = calculateInitialSpin(mu[0], d[0], p2, p3, p4, E, G)
+	rtp = totalE
+	D = totalG - totalE*totalE
+	if sp.IsMain() {
+		fmt.Printf("wild chance: 1/%.5g\n", 1/wc)
+		fmt.Printf("RTP = %.8g%%\n", rtp*100)
+	}
+	var w = os.Stdout
+	slot.Print_all(w, sp, sr, rtp, D)
+	return rtp, D
 }
