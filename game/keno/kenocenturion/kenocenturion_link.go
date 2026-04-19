@@ -3,8 +3,6 @@
 package kenocenturion
 
 import (
-	"context"
-
 	"github.com/slotopol/server/game"
 )
 
@@ -25,7 +23,5 @@ var Info = game.AlgInfo{
 }
 
 func init() {
-	Info.SetupFactory(func(sel int) game.Gamble { return NewGame() }, func(ctx context.Context, sp *game.ScanPar) (float64, float64) {
-		return Paytable.CalcStat(ctx)
-	})
+	Info.SetupFactory(func(sel int) game.Gamble { return NewGame() }, Paytable.CalcStat)
 }

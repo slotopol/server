@@ -7,6 +7,8 @@ import (
 	"math"
 	"sync"
 	"time"
+
+	"github.com/slotopol/server/game"
 )
 
 const lolim = 1e6 // lower limit, let some space to get approximate sigma
@@ -33,7 +35,7 @@ func ProgressMC(ctx context.Context, sp *ScanPar, s Simulator, calc func(io.Writ
 			var µ = S / N
 			D = Q/N - µ*µ
 		}
-		VI = GetZ(sp.Conf) * math.Sqrt(D)
+		VI = game.GetZ(sp.Conf) * math.Sqrt(D)
 		ΔRTP = VI / math.Sqrt(N)
 		var tc, tp float64
 		tc = max(float64(sp.Total), lolim)
@@ -90,7 +92,7 @@ func MonteCarlo(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric, re
 					if sp.Prec > 0 {
 						var N, S, Q = s.NSQ(gt.Cost())
 						var µ = S / N
-						var VI = GetZ(sp.Conf) * math.Sqrt(Q/N-µ*µ)
+						var VI = game.GetZ(sp.Conf) * math.Sqrt(Q/N-µ*µ)
 						var t2 = VI / sp.Prec
 						tp = uint64(t2 * t2)
 					}

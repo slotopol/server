@@ -6,32 +6,30 @@ import (
 	"math"
 	"sort"
 
+	"github.com/slotopol/server/game"
 	"github.com/slotopol/server/util"
 	"gopkg.in/yaml.v3"
 )
-
-// Maximum RTP to get convergence point
-const RTPconv = 0.995 // 99.5%
 
 func Print_vi(w io.Writer, sp *ScanPar, D float64) {
 	if !sp.IsVI() {
 		return
 	}
 	var sigma = math.Sqrt(D)
-	var vi = GetZ(sp.Conf) * sigma
-	fmt.Fprintf(w, "sigma = %.6g, VI[%.4g%%] = %.6g (%s)\n", sigma, sp.Conf*100, vi, VIname5[VIclass5(sigma)])
+	var vi = game.GetZ(sp.Conf) * sigma
+	fmt.Fprintf(w, "sigma = %.6g, VI[%.4g%%] = %.6g (%s)\n", sigma, sp.Conf*100, vi, game.VIname5[game.VIclass5(sigma)])
 }
 
 func Print_ci(w io.Writer, sp *ScanPar, rtp, D float64) {
 	if !sp.IsCI() {
 		return
 	}
-	if rtp > RTPconv {
+	if rtp > game.RTPconv {
 		return
 	}
 	var sigma = math.Sqrt(D)
-	var ci = CI(sp.Conf, rtp, sigma)
-	var BRci = BankrollPlayer(sp.Conf, rtp, sigma, ci)
+	var ci = game.CI(sp.Conf, rtp, sigma)
+	var BRci = game.BankrollPlayer(sp.Conf, rtp, sigma, ci)
 	fmt.Fprintf(w, "CI[%.4g%%] = %d, bankroll[CI] = %.6g\n", sp.Conf*100, int(ci+0.5), BRci)
 }
 
@@ -43,8 +41,8 @@ func Print_spread(w io.Writer, sp *ScanPar, rtp, D float64) {
 	fmt.Fprintf(w, "RTP spread for spins number with confidence %.4g%%:\n", sp.Conf*100)
 	var N = []int{1e3, 1e4, 1e5, 1e6, 1e7}
 	var sigma = math.Sqrt(D)
-	var vi = GetZ(sp.Conf) * sigma
-	var ci = CI(sp.Conf, rtp, sigma)
+	var vi = game.GetZ(sp.Conf) * sigma
+	var ci = game.CI(sp.Conf, rtp, sigma)
 	if ci < 1e7 {
 		N = append(N, int(ci+0.5))
 		sort.Ints(N)

@@ -1,6 +1,28 @@
-package slot
+package game
 
 import "math"
+
+// Combination, where `n` is total number of objects in the set,
+// `k` is number of objects being chosen.
+func Combin(n, k int) float64 {
+	var mi, mj float64 = 1, 1
+	var i, j float64 = float64(n), 1
+	for range k {
+		mi *= i
+		mj *= j
+		i--
+		j++
+	}
+	return mi / mj
+}
+
+// Combination with n=80 & k=20.
+var C_80_20 = Combin(80, 20)
+
+// Probability of a cell at paytable win in keno game.
+func KenoProb(n, k int) float64 {
+	return Combin(n, k) * Combin(80-n, 20-k) / C_80_20
+}
 
 // Quantile (for Volatility Index)
 func GetZ(confidence float64) float64 {
@@ -64,6 +86,9 @@ func ElbowPoint(vi float64) (Nopt, Δopt float64) {
 	Nopt, Δopt = math.Pow(vi*vi/5, 1.0/3.0), Kelbow*math.Pow(vi, 2.0/3.0)
 	return
 }
+
+// Maximum RTP to get convergence point
+const RTPconv = 0.995 // 99.5%
 
 // Index of Convergence. The number of spins after which,
 // with a given confidence, the player will not be in profit on

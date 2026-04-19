@@ -131,17 +131,17 @@ var scanCmd = &cobra.Command{
 		var gi *game.GameInfo
 		var ok bool
 		if gi, ok = game.InfoMap[aid]; !ok {
-			log.Fatalf("game name \"%s\" does not recognized", gi.ID())
+			log.Fatalf("game name \"%s\" does not recognized", alias)
 			return
 		}
 		if len(gi.RTP) == 0 {
-			log.Fatalf("RTP list does not complete for %s", gi.ID())
+			log.Fatalf("RTP list does not complete for \"%s\"", alias)
 			return
 		}
 
 		var scan game.Scanner
 		if scan, ok = game.ScanFactory[aid]; !ok {
-			log.Fatalf("game name \"%s\" does not recognized", gi.ID())
+			log.Fatalf("game name \"%s\" does not recognized", alias)
 			return
 		}
 		if scan == nil {

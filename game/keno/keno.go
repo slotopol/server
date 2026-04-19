@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"math"
 	"math/rand/v2"
+	"sort"
 
+	"github.com/slotopol/server/game"
 	"github.com/slotopol/server/util"
 )
 
@@ -40,23 +42,58 @@ func (kp *Paytable) Scanner(grid *Grid, wins *Wins, bet float64) error {
 	return nil
 }
 
-func (kp *Paytable) CalcStat(ctx context.Context) (float64, float64) {
-	var rtp, lines float64
-	for n := 1; n <= 10; n++ {
-		var nrtp float64
-		for r := 0; r <= n; r++ {
-			var pay = kp[n][r]
-			nrtp += pay * Prob(n, r)
+func Print_all(sp *game.ScanPar, ev, D float64) {
+	if sp.IsMain() {
+		fmt.Printf("RTP = %.8g%%\n", ev*100)
+	}
+	if sp.IsVI() {
+		var sigma = math.Sqrt(D)
+		var vi = game.GetZ(sp.Conf) * sigma
+		fmt.Printf("sigma = %.6g, VI[%.4g%%] = %.6g (%s)\n", sigma, sp.Conf*100, vi, game.VIname5[game.VIclass5(sigma)])
+	}
+	if sp.IsCI() && ev < game.RTPconv {
+		var sigma = math.Sqrt(D)
+		var ci = game.CI(sp.Conf, ev, sigma)
+		var BRci = game.BankrollPlayer(sp.Conf, ev, sigma, ci)
+		fmt.Printf("CI[%.4g%%] = %d, bankroll[CI] = %.6g\n", sp.Conf*100, int(ci+0.5), BRci)
+	}
+	if sp.IsSpread() {
+		fmt.Println()
+		fmt.Printf("RTP spread for spins number with confidence %.4g%%:\n", sp.Conf*100)
+		var N = []int{1e3, 1e4, 1e5, 1e6, 1e7}
+		var sigma = math.Sqrt(D)
+		var vi = game.GetZ(sp.Conf) * sigma
+		var ci = game.CI(sp.Conf, ev, sigma)
+		if ci < 1e7 {
+			N = append(N, int(ci+0.5))
+			sort.Ints(N)
 		}
-		if nrtp > 0 {
-			fmt.Printf("RTP[%2d] = %.6f%%\n", n, nrtp*100)
-			rtp += nrtp
-			lines++
+		for _, n := range N {
+			var Δ = vi / math.Sqrt(float64(n))
+			fmt.Printf("%8d: %.2f%% ... %.2f%%\n", n, (ev-Δ)*100, (ev+Δ)*100)
 		}
 	}
-	rtp *= 100 / lines
-	fmt.Printf("RTP[game] = %.6f%%", rtp)
-	return rtp, math.NaN()
+}
+
+func (kp *Paytable) CalcStat(ctx context.Context, sp *game.ScanPar) (float64, float64) {
+	var ev5, D5 float64
+	for n := 1; n <= 10; n++ {
+		var ev, e2 float64
+		for k := 0; k <= n; k++ {
+			var pay = kp[n][k]
+			ev += game.KenoProb(n, k) * pay
+			e2 += game.KenoProb(n, k) * pay * pay
+		}
+		if ev > 0 {
+			var D = e2 - ev*ev
+			fmt.Printf("\n%d cells selected\n", n)
+			Print_all(sp, ev, D)
+			if n == 5 {
+				ev5, D5 = ev, D
+			}
+		}
+	}
+	return ev5, D5
 }
 
 // Keno spot type
@@ -152,22 +189,4 @@ func (g *Keno80) CheckSel(sel Bitset, kp *Paytable) error {
 	}
 	g.Sel = sel
 	return nil
-}
-
-func Combin(n, r int) float64 {
-	var mi, mj float64 = 1, 1
-	var i, j float64 = float64(n), 1
-	for range r {
-		mi *= i
-		mj *= j
-		i--
-		j++
-	}
-	return mi / mj
-}
-
-var C_80_20 = Combin(80, 20)
-
-func Prob(n, r int) float64 {
-	return Combin(n, r) * Combin(80-n, 20-r) / C_80_20
 }
