@@ -62,6 +62,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/blackpharaoh"
 	_ "github.com/slotopol/server/game/slot/ct/britania"
 	_ "github.com/slotopol/server/game/slot/ct/caribbeanadventure"
+	_ "github.com/slotopol/server/game/slot/ct/caveofclovers"
 	_ "github.com/slotopol/server/game/slot/ct/cherrycrown"
 	_ "github.com/slotopol/server/game/slot/ct/chillibomb"
 	_ "github.com/slotopol/server/game/slot/ct/cloverparty"

@@ -16,11 +16,11 @@ Slots games server. Releases functionality a wide variety of games from differen
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 340 games, 172 algorithms, 11 providers
+total: 341 games, 173 algorithms, 11 providers
 AGT: 65 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 136 games
+CT Interactive: 137 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,7 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Cave of Clovers](https://www.slotsmate.com/software/ct-interactive/cave-of-clovers)' CT Interactive 5x4 videoslot
 * '[Hyper Cuber](https://www.livebet2.com/casino/slots/ct-interactive/hyper-cuber)' CT Interactive 5x3 cluster cascade videoslot
 * '[Ice Fruits 6 reels](https://agtsoftware.com/games/agt/6megaice)' AGT 6x3 videoslot
 * '[Tibetan Song](https://www.livebet2.com/casino/slots/ct-interactive/tibetan-song)' CT Interactive 5x3 videoslot
@@ -51,26 +52,6 @@ Slotopol: 2 games
 * '[Banana Party](https://www.livebet2.com/casino/slots/ct-interactive/banana-party)' CT Interactive 5x3 videoslot
 * '[20 Dice Party](https://www.livebet2.com/casino/slots/ct-interactive/20-dice-party)' CT Interactive 5x3 videoslot
 * '[Easter Bonanza](https://www.livebet2.com/casino/slots/ct-interactive/easter-bonanza)' CT Interactive 5x4 videoslot
-* '[40 Diamond Treasures](https://www.livebet2.com/casino/slots/ct-interactive/40-diamond-treasures)' CT Interactive 5x4 videoslot
-* '[Clover Gems](https://www.livebet2.com/casino/slots/ct-interactive/clover-gems)' CT Interactive 5x3 videoslot
-* '[Caribbean Adventure](https://www.slotsmate.com/software/ct-interactive/caribbean-adventure)' CT Interactive 5x3 videoslot
-* '[Aztec Empress](https://www.slotsmate.com/software/ct-interactive/aztec-empress)' CT Interactive 5x3 videoslot
-* '[American Gigolo](https://www.slotsmate.com/software/ct-interactive/american-gigolo)' CT Interactive 5x3 videoslot
-* '[Alaska Wild](https://www.slotsmate.com/software/ct-interactive/alaska-wild)' CT Interactive 5x4 videoslot
-* '[50 Shining Jewels](https://www.slotsmate.com/software/ct-interactive/50-shining-jewels)' CT Interactive 5x4 videoslot
-* '[40 Mega Slot](https://www.slotsmate.com/software/ct-interactive/40-mega-slot)' CT Interactive 5x4 videoslot
-* '[40 Roosters](https://www.slotsmate.com/software/ct-interactive/40-roosters)' CT Interactive 5x4 videoslot
-* '[30 Treasures](https://www.slotsmate.com/software/ct-interactive/30-treasures)' CT Interactive 5x3 videoslot
-* '[Devil's Fruits](https://www.slotsmate.com/software/ct-interactive/devils-fruits)' CT Interactive 3x3 videoslot
-* '[Hell's Sevens](https://www.slotsmate.com/software/ct-interactive/hells-sevens)' CT Interactive 3x3 videoslot
-* '[Hell's Cherries](https://www.slotsmate.com/software/ct-interactive/hells-cherries)' CT Interactive 3x3 videoslot
-* '[Golden Acorn](https://www.slotsmate.com/software/ct-interactive/golden-acorn)' CT Interactive 5x4 videoslot
-* '[Roaring Wilds](https://www.slotsmate.com/software/novomatic/roaring-wilds)' Novomatic 5x4 videoslot
-* '[Dolphin Reef](https://www.slotsmate.com/software/playtech/dolphin-reef)' Playtech 5x3 videoslot
-* '[Rodeo Power](https://www.slotsmate.com/software/ct-interactive/rodeo-power)' CT Interactive 5x3 videoslot
-* '[20 Mega Star](https://www.slotsmate.com/software/ct-interactive/20-mega-star)' CT Interactive 5x3 cluster videoslot
-* '[Rainbow Charm](https://www.slotsmate.com/software/ct-interactive/rainbow-charm)' CT Interactive 5x3 cluster videoslot
-* '[The Magic Goblet](https://www.slotsmate.com/software/ct-interactive/the-magic-goblet)' CT Interactive 5x3 cluster videoslot
 
 *Games with most interesting algorithms released on server*:
 

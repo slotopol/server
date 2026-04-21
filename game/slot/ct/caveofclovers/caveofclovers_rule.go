@@ -1,7 +1,7 @@
-package fortymegaslot
+package caveofclovers
 
-// See: https://www.slotsmate.com/software/ct-interactive/40-mega-slot
-// similar: ct/caveofclovers (difference in bet lines set)
+// See: https://www.slotsmate.com/software/ct-interactive/cave-of-clovers
+// similar: ct/40megaslot (difference in bet lines set)
 
 import (
 	"github.com/slotopol/server/game/slot"
@@ -18,10 +18,10 @@ var ReelsMap slot.ReelsMap[slot.Reelx]
 var LinePay = [sn][5]float64{
 	{0, 0, 40, 400, 1000}, // 1 wild
 	{},                    // 2 scatter
-	{0, 0, 20, 80, 400},   // 3 seven
+	{0, 0, 20, 80, 400},   // 3 coin
 	{0, 0, 20, 40, 200},   // 4 horseshoe
 	{0, 0, 20, 40, 200},   // 5 bell
-	{0, 0, 10, 20, 100},   // 6 grape
+	{0, 0, 10, 20, 100},   // 6 peach
 	{0, 0, 10, 20, 100},   // 7 plum
 	{0, 0, 10, 20, 100},   // 8 cherry
 }
@@ -30,7 +30,7 @@ var LinePay = [sn][5]float64{
 var ScatPay = [5]float64{0, 0, 5, 20, 500} // 2 scatter
 
 // Bet lines
-var BetLines = slot.BetLinesNetEnt5x4[:]
+var BetLines = slot.BetLinesCT5x4v3[:]
 
 type Game struct {
 	slot.Grid5x4 `yaml:",inline"`

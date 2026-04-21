@@ -77,6 +77,7 @@
 'Caribbean Adventure' CT Interactive 5x3 cluster videoslot
 'Cash Farm' Novomatic 5x3 cascade videoslot
 'Casino' AGT 5x4 videoslot
+'Cave of Clovers' CT Interactive 5x4 videoslot
 'Celestial Ruler' CT Interactive 5x3 videoslot
 'Champagne' Megajack 5x3 videoslot
 'Champagne and Fruits' CT Interactive 5x3 videoslot
@@ -343,11 +344,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 340 games, 172 algorithms, 11 providers
+total: 341 games, 173 algorithms, 11 providers
 AGT: 65 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 136 games
+CT Interactive: 137 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
