@@ -45,7 +45,7 @@ local function generate()
 	if not f then
 		error("cannot create generator file: "..err)
 	end
-	f:write("\n", gamename.."/reel\n\n---\n\n50:\n")
+	f:write("\n", gamename.."/rmap\n\n---\n\n50:\n")
 	for _, reel in ipairs(reels) do
 		f:write("  - [" .. table.concat(reel, ", ") .. "] # "..rawlen(reel).."\n")
 	end
@@ -63,7 +63,7 @@ local function generate()
 
 	reels.comment = assert(output:match("(reels lengths.*)$"), "calculation output does not received")
 	reels.rtp = assert(
-		tonumber(string.match(output, " = (%d+%.?%d-)%%%s$")),
+		tonumber(string.match(reels.comment, "RTP =[^\\n\\r]* (%d+%.?%d-)%%\n")),
 		"result RTP does not found, comment is:\n"..reels.comment)
 
 	return reels
@@ -93,7 +93,7 @@ local f, err = io.open(devfile, "w")
 if not f then
 	error("cannot create results file: "..err)
 end
-f:write("\n", gamename.."/reel\n\n---\n")
+f:write("\n", gamename.."/rmap\n\n---\n")
 for _, reels in pairs(t) do
 	f:write("\n", reels.comment:gsub("(.-)\n", "# %1\n")..reels.rtp..":\n")
 	for _, reel in ipairs(reels) do

@@ -2,6 +2,7 @@
 # slot_win_x64 list -i=all
 
 ```text
+'100 Burning Brilliants' CT Interactive 5x4 cascade videoslot
 '100 Jokers' AGT 5x4 videoslot
 '100 Shining Stars' AGT 5x4 videoslot
 '2 Million B.C.' BetSoft 5x3 videoslot
@@ -344,11 +345,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 341 games, 173 algorithms, 11 providers
+total: 342 games, 174 algorithms, 11 providers
 AGT: 65 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 137 games
+CT Interactive: 138 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

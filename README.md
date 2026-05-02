@@ -32,6 +32,7 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[100 Burning Brilliants](https://www.slotsmate.com/software/ct-interactive/100-burning-brilliants)' CT Interactive 5x4 cascade videoslot
 * '[Cave of Clovers](https://www.slotsmate.com/software/ct-interactive/cave-of-clovers)' CT Interactive 5x4 videoslot
 * '[Hyper Cuber](https://www.livebet2.com/casino/slots/ct-interactive/hyper-cuber)' CT Interactive 5x3 cluster cascade videoslot
 * '[Ice Fruits 6 reels](https://agtsoftware.com/games/agt/6megaice)' AGT 6x3 videoslot
