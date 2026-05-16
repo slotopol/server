@@ -317,6 +317,7 @@
 'Tibetan Song' CT Interactive 5x3 videoslot
 'Tiki Wonders' NetEnt 5x3 videoslot
 'Time Machine II' AGT 5x3 videoslot
+'Treasure Chase' CT Interactive 5x3 cascade videoslot
 'Treasure Hill' CT Interactive 5x4 videoslot
 'Treasure Kingdom' CT Interactive 5x3 videoslot
 'Triple Diamond' IGT 3x3 videoslot
@@ -339,17 +340,18 @@
 'Wild Horses' Novomatic 5x4 videoslot
 'Wild West' AGT 5x4 videoslot
 'Wild Witches' NetEnt 5x3 videoslot
+'Win Feast' CT Interactive 5x3 cascade videoslot
 'Win Storm' CT Interactive 5x3 cascade videoslot
 'Wizard' AGT 5x4 videoslot
 'Wolf Run' IGT 5x4 videoslot
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 342 games, 174 algorithms, 11 providers
+total: 344 games, 175 algorithms, 11 providers
 AGT: 65 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 138 games
+CT Interactive: 140 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

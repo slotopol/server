@@ -116,6 +116,7 @@ import (
 	_ "github.com/slotopol/server/game/slot/ct/vikingsfun"
 	_ "github.com/slotopol/server/game/slot/ct/wildclover"
 	_ "github.com/slotopol/server/game/slot/ct/wildhills"
+	_ "github.com/slotopol/server/game/slot/ct/winfeast"
 	_ "github.com/slotopol/server/game/slot/ct/winstorm"
 
 	// IGT

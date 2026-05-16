@@ -146,17 +146,24 @@ func Print_cascmetrics(w io.Writer, sp *ScanPar, s *StatCascade) {
 	if !sp.IsCasc() {
 		return
 	}
-	var N = s.Count()
-	var N2 = float64(s.Casc[1].N.Load())
-	var N3 = float64(s.Casc[2].N.Load())
-	var N4 = float64(s.Casc[3].N.Load())
-	var N5 = float64(s.Casc[4].N.Load())
 	fmt.Fprintln(w)
 	fmt.Fprintf(w, "cascade metrics:\n")
-	fmt.Fprintf(w, "N[2] = %.10g, Ec2 = Kf2 = 1/%.5g\n", N2, N/N2)
-	fmt.Fprintf(w, "N[3] = %.10g, Ec3 = 1/%.5g, Kf3 = 1/%.5g\n", N3, N/N3, N2/N3)
-	fmt.Fprintf(w, "N[4] = %.10g, Ec4 = 1/%.5g, Kf4 = 1/%.5g\n", N4, N/N4, N3/N4)
-	fmt.Fprintf(w, "N[5] = %.10g, Ec5 = 1/%.5g, Kf5 = 1/%.5g\n", N5, N/N5, N4/N5)
+	var N = s.Count()
+	var Nc = float64(s.Casc[1].N.Load())
+	fmt.Fprintf(w, "N[2] = %.10g, Ec2 = Kf2 = 1/%.5g\n", Nc, N/Nc)
+	var Np float64
+	for cfn := 2; cfn < len(s.Casc); cfn++ {
+		Np = Nc
+		Nc = float64(s.Casc[cfn].N.Load())
+		if Nc == 0 {
+			break
+		}
+		if N/Nc < 1e5 {
+			fmt.Fprintf(w, "N[%d] = %.10g, Ec3 = 1/%.5g, Kf3 = 1/%.5g\n", cfn+1, Nc, N/Nc, Np/Nc)
+		} else {
+			fmt.Fprintf(w, "N[%d] = %.10g, Ec3 = 1/%d, Kf3 = 1/%.5g\n", cfn+1, Nc, int(N/Nc), Np/Nc)
+		}
+	}
 	fmt.Fprintf(w, "Mcascade = %.5g, ACL = %.5g, Kfading = 1/%.5g, Ncascmax = %d\n", s.Mcascade(), s.ACL(), s.Kfading(), s.Ncascmax())
 }
 
