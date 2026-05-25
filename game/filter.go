@@ -33,6 +33,8 @@ var FiltMap = map[string]Filter{
 	"rpay":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPrpay == GPrpay },
 	"apay":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPapay == GPapay },
 	"cpay":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPcpay == GPcpay },
+	"lsel":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPlsel == GPlsel },
+	"wsel":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPwsel == GPwsel },
 	"jack":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPjack > 0 },
 	"fill":   func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPfill > 0 },
 	"mix":    func(gi *GameInfo) bool { return gi.GT == GTslot && gi.GP&GPmix > 0 },

@@ -289,6 +289,8 @@ lpay - pays left to right
 rpay - pays left to right and right to left
 apay - pays for combination at any position
 cpay - pays by clusters
+lsel - user can select bet lines
+wsel - user can change ways set
 jack - slots with jackpots
 fill - has multiplier on filled slot grid
 mix - has pays by combinations with mixed symbols (non-wilds)

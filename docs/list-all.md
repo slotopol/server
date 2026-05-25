@@ -105,6 +105,7 @@
 'Devil's Fruits' CT Interactive 3x3 videoslot
 'Diamond 7' Novomatic 5x3 videoslot
 'Diamond Dogs' NetEnt 5x3 videoslot
+'Disco Babylon' CT Interactive 5x3 videoslot
 'Dolphin Reef' Playtech 5x3 videoslot
 'Dolphin Treasure' Aristocrat 5x3 videoslot
 'Dolphins Pearl' Novomatic 5x3 videoslot
@@ -347,11 +348,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 344 games, 175 algorithms, 11 providers
+total: 345 games, 176 algorithms, 11 providers
 AGT: 65 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 140 games
+CT Interactive: 141 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
