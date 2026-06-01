@@ -132,6 +132,7 @@
 'Fire Dozen' CT Interactive 5x4 videoslot
 'Fire Joker' Play'n GO 5x3 videoslot
 'Fire Keno' Slotopol 80 spots lottery
+'Fire King' CT Interactive 5x3 videoslot
 'Firefighters' AGT 5x3 videoslot
 'Flame Dancer' Novomatic 5x3 videoslot
 'Flowers' NetEnt 5x3 videoslot
@@ -244,6 +245,7 @@
 'Monkey Kingdom' CT Interactive 5x3 videoslot
 'More Dragons' CT Interactive 5x4 videoslot
 'Mountain Heroes' CT Interactive 5x4 videoslot
+'Mountain Song Quechua' CT Interactive 5x3 videoslot
 'Navy Girl' CT Interactive 5x3 videoslot
 'Neon Bananas' CT Interactive 5x3 videoslot
 'Nordic Song' CT Interactive 5x3 videoslot
@@ -348,11 +350,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 345 games, 176 algorithms, 11 providers
+total: 347 games, 176 algorithms, 11 providers
 AGT: 65 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 141 games
+CT Interactive: 143 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

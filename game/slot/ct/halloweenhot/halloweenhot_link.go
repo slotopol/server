@@ -14,10 +14,12 @@ var data []byte
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
 		{Prov: "CT Interactive", Name: "Halloween Hot", LNum: 5, Date: game.Date(2021, 10, 15)}, // see: https://www.slotsmate.com/software/ct-interactive/halloween-hot
+		{Prov: "CT Interactive", Name: "Fire King", LNum: 5, Date: game.Date(2021, 9, 1)},       // see: https://www.livebet.com/casino/slots/ct-interactive/fire-king
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,
 		GP: game.GPlpay |
+			game.GPlsel |
 			game.GPfill |
 			game.GPfgno |
 			game.GPscat |

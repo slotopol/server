@@ -123,5 +123,5 @@ func (g *Game) Prepare() {
 }
 
 func (g *Game) SetSel(sel int) error {
-	return slot.ErrDisabled
+	return g.SetSelNum(sel, len(BetLines))
 }
