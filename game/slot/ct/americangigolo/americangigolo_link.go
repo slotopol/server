@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "American Gigolo", LNum: 30, Date: game.Date(2018, 12, 31)}, // see: https://www.slotsmate.com/software/ct-interactive/american-gigolo
+		{Prov: "CT Interactive", Name: "American Gigolo", LNum: 30, Date: game.Date(2015, 11, 13)}, // see: https://www.slotsmate.com/software/ct-interactive/american-gigolo
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

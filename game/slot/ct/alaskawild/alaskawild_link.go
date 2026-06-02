@@ -13,8 +13,8 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Alaska Wild", LNum: 50, Date: game.Date(2018, 12, 31)},     // see: https://www.slotsmate.com/software/ct-interactive/alaska-wild
-		{Prov: "CT Interactive", Name: "Pyramid of Gold", LNum: 50, Date: game.Date(2020, 11, 25)}, // see: https://www.slotsmate.com/software/ct-interactive/pyramid-of-gold
+		{Prov: "CT Interactive", Name: "Alaska Wild", LNum: 50, Date: game.Date(2015, 8, 9)},      // see: https://www.slotsmate.com/software/ct-interactive/alaska-wild
+		{Prov: "CT Interactive", Name: "Pyramid of Gold", LNum: 50, Date: game.Date(2017, 10, 5)}, // see: https://www.slotsmate.com/software/ct-interactive/pyramid-of-gold
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

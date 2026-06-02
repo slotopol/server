@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Rodeo Power", Date: game.Date(2024, 10, 31)}, // see: https://www.slotsmate.com/software/ct-interactive/rodeo-power
+		{Prov: "CT Interactive", Name: "Rodeo Power", Date: game.Date(2024, 11, 1)}, // see: https://www.slotsmate.com/software/ct-interactive/rodeo-power
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

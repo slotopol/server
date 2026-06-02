@@ -13,8 +13,8 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Hell's Cherries", LNum: 5, Date: game.Date(2025, 9, 30)}, // see: https://www.slotsmate.com/software/ct-interactive/hells-cherries
-		{Prov: "CT Interactive", Name: "Hell's Sevens", LNum: 5, Date: game.Date(2020, 11, 25)},  // see: https://www.slotsmate.com/software/ct-interactive/hells-sevens
+		{Prov: "CT Interactive", Name: "Hell's Cherries", LNum: 5, Date: game.Date(2025, 10, 1)}, // see: https://www.slotsmate.com/software/ct-interactive/hells-cherries
+		{Prov: "CT Interactive", Name: "Hell's Sevens", LNum: 5, Date: game.Date(2020, 10, 19)},  // see: https://www.slotsmate.com/software/ct-interactive/hells-sevens
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

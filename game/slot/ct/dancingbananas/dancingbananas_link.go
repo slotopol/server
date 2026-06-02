@@ -13,13 +13,13 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Dancing Bananas", LNum: 10, Date: game.Date(2020, 11, 26)}, // see: https://www.slotsmate.com/software/ct-interactive/dancing-bananas
-		{Prov: "CT Interactive", Name: "Dancing Dragons", LNum: 10, Date: game.Date(2020, 12, 11)}, // see: https://www.slotsmate.com/software/ct-interactive/dancing-dragons
-		{Prov: "CT Interactive", Name: "Jaguar Warrior", LNum: 20, Date: game.Date(2020, 11, 26)},  // see: https://www.slotsmate.com/software/ct-interactive/jaguar-warrior
-		{Prov: "CT Interactive", Name: "Clover Joker", LNum: 5, Date: game.Date(2021, 8, 8)},       // see: https://www.slotsmate.com/software/ct-interactive/clover-joker
-		{Prov: "CT Interactive", Name: "Lord of Fortune", LNum: 5, Date: game.Date(2022, 1, 26)},   // see: https://www.slotsmate.com/software/ct-interactive/lord-of-fortune
-		{Prov: "CT Interactive", Name: "Lucky Clover 10", LNum: 10, Date: game.Date(2025, 6, 1)},   // see: https://www.slotsmate.com/software/ct-interactive/lucky-clover-10
-		{Prov: "CT Interactive", Name: "Lucky Clover 20", LNum: 20, Date: game.Date(2025, 8, 14)},  // see: https://www.slotsmate.com/software/ct-interactive/lucky-clover-20
+		{Prov: "CT Interactive", Name: "Dancing Bananas", LNum: 10, Date: game.Date(2019, 3, 20)}, // see: https://www.slotsmate.com/software/ct-interactive/dancing-bananas
+		{Prov: "CT Interactive", Name: "Dancing Dragons", LNum: 10, Date: game.Date(2017, 10, 5)}, // see: https://www.slotsmate.com/software/ct-interactive/dancing-dragons
+		{Prov: "CT Interactive", Name: "Jaguar Warrior", LNum: 20, Date: game.Date(2017, 10, 5)},  // see: https://www.slotsmate.com/software/ct-interactive/jaguar-warrior
+		{Prov: "CT Interactive", Name: "Clover Joker", LNum: 5, Date: game.Date(2021, 8, 6)},      // see: https://www.slotsmate.com/software/ct-interactive/clover-joker
+		{Prov: "CT Interactive", Name: "Lord of Fortune", LNum: 5, Date: game.Date(2021, 12, 1)},  // see: https://www.slotsmate.com/software/ct-interactive/lord-of-fortune
+		{Prov: "CT Interactive", Name: "Lucky Clover 10", LNum: 10, Date: game.Date(2025, 6, 2)},  // see: https://www.slotsmate.com/software/ct-interactive/lucky-clover-10
+		{Prov: "CT Interactive", Name: "Lucky Clover 20", LNum: 20, Date: game.Date(2025, 8, 14)}, // see: https://www.slotsmate.com/software/ct-interactive/lucky-clover-20
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Black Pharaoh", LNum: 20, Date: game.Date(2019, 1, 1)}, // see: https://www.livebet2.com/casino/slots/ct-interactive/black-pharaoh
+		{Prov: "CT Interactive", Name: "Black Pharaoh", LNum: 20, Date: game.Year(2019)}, // see: https://www.livebet2.com/casino/slots/ct-interactive/black-pharaoh
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

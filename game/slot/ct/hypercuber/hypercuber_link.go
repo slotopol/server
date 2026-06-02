@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Hyper Cuber", Date: game.Date(2022, 10, 10)}, // see: https://www.livebet2.com/casino/slots/ct-interactive/hyper-cuber
+		{Prov: "CT Interactive", Name: "Hyper Cuber", Date: game.Date(2022, 10, 7)}, // see: https://www.livebet2.com/casino/slots/ct-interactive/hyper-cuber
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Beetle Star", LNum: 10, Date: game.Date(2018, 12, 31)}, // see: https://www.livebet2.com/casino/slots/ct-interactive/beetle-star
+		{Prov: "CT Interactive", Name: "Beetle Star", LNum: 10, Date: game.Date(2016, 6, 17)}, // see: https://www.livebet2.com/casino/slots/ct-interactive/beetle-star
 	},
 	AlgDescr: game.AlgDescr{
 		GT: game.GTslot,

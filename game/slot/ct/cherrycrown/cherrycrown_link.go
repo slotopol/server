@@ -13,7 +13,7 @@ var data []byte
 
 var Info = game.AlgInfo{
 	Aliases: []game.GameAlias{
-		{Prov: "CT Interactive", Name: "Cherry Crown", LNum: 20, Date: game.Date(2020, 7, 1)},     // see: https://www.slotsmate.com/software/ct-interactive/cherry-crown
+		{Prov: "CT Interactive", Name: "Cherry Crown", LNum: 20, Date: game.Date(2018, 9, 10)},    // see: https://www.slotsmate.com/software/ct-interactive/cherry-crown
 		{Prov: "CT Interactive", Name: "Satyr and Nymph", LNum: 20, Date: game.Date(2020, 11, 1)}, // see: https://www.slotsmate.com/software/ct-interactive/satyr-and-nymph
 	},
 	AlgDescr: game.AlgDescr{
