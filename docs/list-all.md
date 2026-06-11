@@ -96,6 +96,7 @@
 'Colibri Wild' CT Interactive 5x4 videoslot
 'Columbus' Novomatic 5x3 videoslot
 'Columbus Deluxe' Novomatic 5x3 videoslot
+'Columbus Treasure' CT Interactive 5x3 videoslot
 'Cops'n'Robbers' Play'n GO 5x3 videoslot
 'Crown' AGT 5x4 videoslot
 'Dancing Bananas' CT Interactive 5x3 videoslot
@@ -334,8 +335,8 @@
 'Unicorn Magic' Novomatic 5x3 videoslot
 'Valentine's Day' AGT 5x3 videoslot
 'Valkyrie' AGT 5x3 videoslot
+'Viking's Fun' CT Interactive 5x3 videoslot
 'Viking's Treasure' NetEnt 5x3 videoslot
-'Vikings Fun' CT Interactive 5x3 videoslot
 'Voodoo Vibes' NetEnt 5x3 videoslot
 'Wet and Juicy' CT Interactive 5x4 videoslot
 'Wild Clover' CT Interactive 5x3 videoslot
@@ -350,11 +351,11 @@
 'Wonder 7's' CT Interactive 5x3 videoslot
 'Zeus' AGT 4x4 videoslot
 
-total: 347 games, 176 algorithms, 11 providers
+total: 348 games, 177 algorithms, 11 providers
 AGT: 65 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 143 games
+CT Interactive: 144 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games

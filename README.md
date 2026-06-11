@@ -16,11 +16,11 @@ Slots games server. Releases functionality a wide variety of games from differen
 Server provides HTTP-based API for popular slots and have well-optimized performance for thousands requests per second. Can be deployed on dedicated server or as portable application for Linux or Windows.
 
 ```text
-total: 347 games, 176 algorithms, 11 providers
+total: 348 games, 177 algorithms, 11 providers
 AGT: 65 games
 Aristocrat: 6 games
 BetSoft: 3 games
-CT Interactive: 143 games
+CT Interactive: 144 games
 IGT: 5 games
 Megajack: 4 games
 NetEnt: 22 games
@@ -32,6 +32,7 @@ Slotopol: 2 games
 
 *Last added games*:
 
+* '[Columbus Treasure](https://www.livebet2.com/casino/slots/ct-interactive/columbus-treasure)' CT Interactive 5x3 videoslot
 * '[Mountain Song Quechua](https://www.livebet.com/casino/slots/ct-interactive/mountain-song-quechua)' CT Interactive 5x3 videoslot
 * '[Fire King](https://www.livebet.com/casino/slots/ct-interactive/fire-king)' CT Interactive 5x3 videoslot
 * '[Disco Babylon](https://www.livebet.com/casino/slots/ct-interactive/disco-babylon)' CT Interactive 5x3 videoslot
@@ -56,8 +57,6 @@ Slotopol: 2 games
 * '[40 Shining jewels](https://www.livebet2.com/casino/slots/ct-interactive/40-shining-jewels)' CT Interactive 5x4 videoslot
 * '[Celestial Ruler](https://www.livebet2.com/casino/slots/ct-interactive/celestial-ruler)' CT Interactive 5x3 videoslot
 * '[Banana Party](https://www.livebet2.com/casino/slots/ct-interactive/banana-party)' CT Interactive 5x3 videoslot
-* '[20 Dice Party](https://www.livebet2.com/casino/slots/ct-interactive/20-dice-party)' CT Interactive 5x3 videoslot
-* '[Easter Bonanza](https://www.livebet2.com/casino/slots/ct-interactive/easter-bonanza)' CT Interactive 5x4 videoslot
 
 *Games with most interesting algorithms released on server*:
 
