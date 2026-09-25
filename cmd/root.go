@@ -3,8 +3,6 @@ package cmd
 import (
 	"errors"
 	"fmt"
-	"io"
-	"log"
 	"os"
 	"path/filepath"
 
@@ -27,9 +25,6 @@ var (
 		Short:   rootShort,
 		Long:    rootLong,
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-			if cfg.Silent {
-				log.SetOutput(io.Discard)
-			}
 			for _, pattern := range cfg.ObjPath {
 				var pattern = filepath.ToSlash(pattern)
 				pattern, err := util.ExpandHomePath(pattern)
@@ -49,9 +44,7 @@ var (
 					return fmt.Errorf("invalid pattern %q: %w", pattern, err)
 				}
 				FinalPaths = append(FinalPaths, matches...)
-				if cfg.Verbose >= cfg.V_INFO {
-					log.Printf("found %d files for pattern %q\n", len(matches), pattern)
-				}
+				cfg.Infof("found %d files for pattern %q", len(matches), pattern)
 			}
 			return nil
 		}}

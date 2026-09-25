@@ -3,14 +3,20 @@ name: Docker Image CI
 on:
   push:
     branches: [ "main" ]
+    tags: [ "v*" ]
   pull_request:
     branches: [ "main" ]
+
+env:
+  SHOULD_PUSH: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/')) }}
 
 jobs:
 
   build:
 
     runs-on: ubuntu-latest
+    # Prevents to run on forks
+    if: github.repository == 'slotopol/server'
 
     steps:
     - name: Checkout repository
@@ -26,7 +32,7 @@ jobs:
         echo "Current version tag: $VERSION"
 
     - name: Log in to Docker Hub
-      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      if: ${{ env.SHOULD_PUSH == 'true' }}
       uses: docker/login-action@v3
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -38,7 +44,11 @@ jobs:
       with:
         images: schwarzlichtbezirk/slotopol
         tags: |
-          type=raw,value=latest,enable=${{ github.event_name == 'push' }}
+          # 1. On push to main put the tag latest
+          type=raw,value=latest,enable=${{ github.ref == 'refs/heads/main' }}
+          # 2. Processing Git tags (for example, v1.2.3)
+          type=semver,pattern={{version}},value=latest,enable=true
+          # 3. Unique runner ID for each push
           type=raw,value=${{ github.run_id }},enable=${{ github.event_name == 'push' }}
 
     - name: Build and push Docker image
@@ -46,7 +56,7 @@ jobs:
       with:
         context: .
         file: ./Dockerfile
-        push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+        push: ${{ env.SHOULD_PUSH == 'true' }}
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
         build-args: |

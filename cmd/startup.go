@@ -6,7 +6,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"log"
 	"os"
 	"os/signal"
 	"path/filepath"
@@ -52,16 +51,16 @@ func Startup() (exitctx context.Context) {
 		select {
 		case <-exitctx.Done():
 			if errors.Is(exitctx.Err(), context.DeadlineExceeded) {
-				log.Println("shutting down by timeout")
+				cfg.Infof("shutting down by timeout")
 			} else if errors.Is(exitctx.Err(), context.Canceled) {
-				log.Println("shutting down by cancel")
+				cfg.Infof("shutting down by cancel")
 			} else {
-				log.Printf("shutting down by %s\n", exitctx.Err().Error())
+				cfg.Infof("shutting down by %s", exitctx.Err().Error())
 			}
 		case <-sigint:
-			log.Println("shutting down by break")
+			cfg.Infof("shutting down by break")
 		case <-sigterm:
-			log.Println("shutting down by process termination")
+			cfg.Infof("shutting down by process termination")
 		}
 		signal.Stop(sigint)
 		signal.Stop(sigterm)
@@ -95,9 +94,7 @@ func LoadInternalYaml(ctx context.Context) (count int, err error) {
 		count += n
 	}
 	var d = time.Since(t0)
-	if cfg.Verbose >= cfg.V_INFO {
-		log.Printf("loaded %d embedded yaml files in %s on %d bytes\n", len(game.LoadMap), d.String(), size)
-	}
+	cfg.Infof("loaded %d embedded yaml files in %s on %d bytes", len(game.LoadMap), d.String(), size)
 	return
 }
 
@@ -115,9 +112,7 @@ func LoadYamlFromFile(ctx context.Context, fpath string) (err error) {
 	if count, err = game.ReadChain(cr); err != nil {
 		return fmt.Errorf("can not read data from %s: %w", fpath, err)
 	}
-	if cfg.Verbose >= cfg.V_PATH {
-		log.Printf("loaded %d objects from: %s\n", count, fpath)
-	}
+	cfg.Infof("loaded %d objects from: %s", count, fpath)
 	return nil
 }
 
@@ -137,12 +132,10 @@ func UpdateAlgList() {
 			ai.Update(ai)
 		}
 	}
-	if cfg.Verbose >= cfg.V_INFO {
-		if len(game.DataLoaded) == len(game.DataRouter) {
-			log.Printf("all %d objects loaded\n", len(game.DataLoaded))
-		} else {
-			log.Printf("loaded %d objects of %d registered\n", len(game.DataLoaded), len(game.DataRouter))
-		}
+	if len(game.DataLoaded) == len(game.DataRouter) {
+		cfg.Infof("all %d objects loaded", len(game.DataLoaded))
+	} else {
+		cfg.Infof("loaded %d objects of %d registered", len(game.DataLoaded), len(game.DataRouter))
 	}
 }
 
@@ -171,16 +164,16 @@ func InitStorage() (err error) {
 			return
 		}
 		if Cfg.ClubSourceName != ":memory:" {
-			log.Println("club db: sqlite")
+			cfg.Infof("club db: sqlite")
 		} else {
-			log.Println("club db: memory")
+			cfg.Infof("club db: memory")
 		}
 
 	case "mysql", "postgres":
 		if cfg.XormStorage, err = xorm.NewEngine(Cfg.DriverName, Cfg.ClubSourceName); err != nil {
 			return
 		}
-		log.Printf("club db: %s\n", Cfg.DriverName)
+		cfg.Infof("club db: %s", Cfg.DriverName)
 	}
 	cfg.XormStorage.SetMapper(names.GonicMapper{})
 
@@ -201,7 +194,7 @@ func InitStorage() (err error) {
 	if ok {
 		var body []byte
 		if body, err = os.ReadFile(util.JoinFilePath(cfg.CfgPath, "slot-clubinit.sql")); err != nil {
-			log.Printf("can not open SQL-file with initial settings: %s", err.Error())
+			cfg.Errorf("can not open SQL-file with initial settings: %s", err.Error())
 			err = nil // remove error
 		}
 		var list = bytes.Split(body, []byte{';'})
@@ -217,10 +210,10 @@ func InitStorage() (err error) {
 	// Read properies master for new registered user
 	var body []byte
 	if body, err = os.ReadFile(util.JoinFilePath(cfg.CfgPath, "slot-newuser.yaml")); err != nil {
-		log.Printf("can not open YAML-file with properties initialization for new user: %s", err.Error())
+		cfg.Errorf("can not open YAML-file with properties initialization for new user: %s", err.Error())
 		err = nil // remove error
 	} else if err = yaml.Unmarshal(body, &api.PropMaster); err != nil {
-		log.Printf("can not unmarshal 'slot-newuser.yaml': %s", err.Error())
+		cfg.Errorf("can not unmarshal 'slot-newuser.yaml': %s", err.Error())
 		err = nil // remove error
 	}
 
@@ -243,7 +236,7 @@ func InitStorage() (err error) {
 			break
 		}
 	}
-	log.Printf("loaded %d clubs\n", api.Clubs.Len())
+	cfg.Infof("loaded %d clubs", api.Clubs.Len())
 
 	offset = 0
 	for {
@@ -260,7 +253,7 @@ func InitStorage() (err error) {
 			break
 		}
 	}
-	log.Printf("loaded %d users\n", api.Users.Len())
+	cfg.Infof("loaded %d users", api.Users.Len())
 
 	offset = 0
 	for {
@@ -307,16 +300,16 @@ func InitSpinlog() (err error) {
 			return
 		}
 		if Cfg.ClubSourceName != ":memory:" {
-			log.Println("spin db: sqlite")
+			cfg.Infof("spin db: sqlite")
 		} else {
-			log.Println("spin db: memory")
+			cfg.Infof("spin db: memory")
 		}
 
 	case "mysql", "postgres":
 		if cfg.XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, Cfg.SpinSourceName); err != nil {
 			return
 		}
-		log.Printf("spin db: %s\n", Cfg.DriverName)
+		cfg.Infof("spin db: %s", Cfg.DriverName)
 	}
 	cfg.XormSpinlog.SetMapper(names.GonicMapper{})
 
@@ -350,18 +343,18 @@ func SqlLoop(exitctx context.Context) {
 		case <-flush:
 			for cid, bat := range api.BankBat {
 				if err := bat.Flush(cfg.XormStorage, fd); err != nil {
-					log.Printf("can not update bank for cid=%d: %s", cid, err.Error())
+					cfg.Errorf("can not update bank for cid=%d: %s", cid, err.Error())
 				}
 			}
 			if err := api.JoinBuf.Flush(cfg.XormStorage, fd); err != nil {
-				log.Printf("can not write to story log: %s", err.Error())
+				cfg.Errorf("can not write to story log: %s", err.Error())
 			}
 			if Cfg.UseSpinLog {
 				if err := api.SpinBuf.Flush(cfg.XormSpinlog, fd); err != nil {
-					log.Printf("can not write to spin log: %s", err.Error())
+					cfg.Errorf("can not write to spin log: %s", err.Error())
 				}
 				if err := api.MultBuf.Flush(cfg.XormSpinlog, fd); err != nil {
-					log.Printf("can not write to mult log: %s", err.Error())
+					cfg.Errorf("can not write to mult log: %s", err.Error())
 				}
 			}
 		case <-passers:

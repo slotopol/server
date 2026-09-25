@@ -3,7 +3,6 @@ package api
 import (
 	"encoding/json"
 	"encoding/xml"
-	"log"
 	"math/rand/v2"
 
 	"github.com/gin-gonic/gin"
@@ -370,7 +369,7 @@ func ApiSlotSpin(c *gin.Context) {
 	if Cfg.UseSpinLog {
 		go func() {
 			if err = SpinBuf.Put(cfg.XormSpinlog, rec); err != nil {
-				log.Printf("can not write to spin log: %s", err.Error())
+				cfg.Errorf("can not write to spin log: %s", err.Error())
 			}
 		}()
 	}
@@ -501,7 +500,7 @@ func ApiSlotDoubleup(c *gin.Context) {
 				Wallet: props.Wallet,
 			}
 			if err = MultBuf.Put(cfg.XormSpinlog, rec); err != nil {
-				log.Printf("can not write to mult log: %s", err.Error())
+				cfg.Errorf("can not write to mult log: %s", err.Error())
 			}
 		}()
 	}

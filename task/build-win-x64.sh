@@ -22,5 +22,4 @@ go build -o "$GOPATH/bin/slot_win_x64.exe" -v\
  -trimpath -ldflags="-w -s -linkmode external -extldflags -static\
  -X 'github.com/slotopol/server/config.BuildVers=$BUILDVERS'\
  -X 'github.com/slotopol/server/config.BuildTime=$BUILDTIME'"\
-
  $wd

@@ -3,7 +3,6 @@ package api
 import (
 	"encoding/json"
 	"encoding/xml"
-	"log"
 
 	"github.com/gin-gonic/gin"
 
@@ -393,7 +392,7 @@ func ApiKenoSpin(c *gin.Context) {
 	if Cfg.UseSpinLog {
 		go func() {
 			if err = SpinBuf.Put(cfg.XormSpinlog, rec); err != nil {
-				log.Printf("can not write to spin log: %s", err.Error())
+				cfg.Errorf("can not write to spin log: %s", err.Error())
 			}
 		}()
 	}

@@ -3,10 +3,10 @@ package game
 import (
 	"context"
 	"fmt"
-	"log"
 	"math"
 	"sort"
 
+	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/util"
 )
 
@@ -51,7 +51,7 @@ const (
 
 	GPbmode // has non-reels bonus mode
 	GPpick  // has game mode depending on the user's choice
-	GPcas  // cascade falls present
+	GPcas   // cascade falls present
 	GPcfeat // has features on cascade avalanche levels (like multipliers, freespins, etc.)
 
 	GPfgonce // non-retriggered free games are present
@@ -94,7 +94,7 @@ const ( // print flags for slots
 	PF_spread // RTP spread
 	PF_cm     // cascade metrics
 	PF_sym    // symbols contribution to payouts
-	PF_cas   // cascades contribution to payouts
+	PF_cas    // cascades contribution to payouts
 	PF_raw    // simulator raw data
 )
 
@@ -186,10 +186,10 @@ func (ai *AlgInfo) SetupFactory(game func(int) Gamble, scan Scanner) {
 				panic(fmt.Errorf("%s: %w", aid, ErrLNumOut))
 			}
 			if ai.LN > 0 && ga.LNum == 0 {
-				log.Printf("%s: LNum is not set for game with lines set of %d lines", aid, ai.LN)
+				cfg.Warnf("%s: LNum is not set for game with lines set of %d lines", aid, ai.LN)
 			}
 			if ai.LN == 0 && ai.WN == 0 && ai.GP&GPcpay == 0 {
-				log.Printf("%s: both LN and WN are zero", aid)
+				cfg.Warnf("%s: both LN and WN are zero", aid)
 			}
 		}
 		InfoMap[aid] = &GameInfo{

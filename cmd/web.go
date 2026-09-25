@@ -76,7 +76,7 @@ var webCmd = &cobra.Command{
 		// Starts HTTP listeners
 		var wg errgroup.Group
 		for _, addr := range Cfg.PortHTTP {
-			log.Printf("start http on %s\n", addr)
+			cfg.Infof("start http on %s", addr)
 			var srv = http.Server{
 				Addr:              addr,
 				Handler:           r.Handler(),
@@ -99,7 +99,7 @@ var webCmd = &cobra.Command{
 						}
 						err = nil
 					}
-					log.Printf("stop http on %s\n", addr)
+					cfg.Infof("stop http on %s", addr)
 				}()
 
 				select {
@@ -118,7 +118,7 @@ var webCmd = &cobra.Command{
 			})
 		}
 		if err = wg.Wait(); err != nil {
-			log.Println(err.Error())
+			cfg.Errorf("error occurred while waiting for HTTP servers to shut down: %s", err.Error())
 			return
 		}
 	},

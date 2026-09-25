@@ -2,7 +2,6 @@ package cfg
 
 import (
 	"errors"
-	"log"
 	"os"
 	"path/filepath"
 
@@ -10,13 +9,6 @@ import (
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"xorm.io/xorm"
-)
-
-const ( // Verbose flags
-	V_NONE  = iota
-	V_INFO  // Prints more verbose information to log.
-	V_DEBUG // Prints debug information to log.
-	V_PATH  // Prints paths to yaml files to log.
 )
 
 var (
@@ -50,9 +42,9 @@ var (
 func InitConfig() {
 	var err error
 
-	if Verbose >= V_INFO {
-		log.Printf("version: %s, builton: %s\n", BuildVers, BuildTime)
-	}
+	InitLogger()
+
+	Infof("version: %s, builton: %s", BuildVers, BuildTime)
 
 	ExePath = func() string {
 		if str, err := os.Executable(); err == nil {
@@ -100,23 +92,19 @@ func InitConfig() {
 	viper.AutomaticEnv()
 
 	if err = viper.ReadInConfig(); err != nil {
-		log.Println("config file not found!")
+		Warnf("config file not found!")
 	} else {
 		cobra.CheckErr(viper.Unmarshal(&Cfg))
 		CfgFile = viper.ConfigFileUsed()
 		CfgPath = filepath.Dir(CfgFile)
-		if Verbose >= V_INFO {
-			log.Printf("config path: %s\n", CfgPath)
-		}
+		Infof("config path: %s", CfgPath)
 	}
 
 	// Detect SQLite path.
 	if SqlPath == "" {
 		SqlPath = LookupInLocations("SLOTOPOL_SQLPATH", "sqlite", "slot-club.sqlite")
 	}
-	if Verbose >= V_INFO {
-		log.Printf("sqlite path: %s\n", SqlPath)
-	}
+	Infof("sqlite path: %s", SqlPath)
 }
 
 // DirExists check up directory existence.
