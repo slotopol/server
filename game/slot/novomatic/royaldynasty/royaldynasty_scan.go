@@ -17,8 +17,8 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		g.TS = scat1
 		var calc = func(w io.Writer) (float64, float64) {
 			var N = sb.Count()
-			var q = float64(sb.FGH.Load()*35) / N
-			var Pfgi = float64(sb.FGH.Load()) / float64(len(Freegames)) / N
+			var q = float64(sb.CFG.Load()*35) / N
+			var Pfgi = float64(sb.CFG.Load()) / float64(len(Freegames)) / N
 			var ΣPL float64
 			for _, Li := range Freegames {
 				ΣPL += Pfgi * float64(Li)
@@ -39,11 +39,11 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		var calc = func(w io.Writer) (float64, float64) {
 			// bonus reels parameters
 			var Nb = sb.Count()
-			var qb = float64(sb.FGH.Load()*35) / Nb
+			var qb = float64(sb.CFG.Load()*35) / Nb
 			// regular reels parameters
 			var Nr = sr.Count()
-			var qr = float64(sr.FGH.Load()*35) / Nr
-			var Pfgi = float64(sr.FGH.Load()) / float64(len(Freegames)) / Nr
+			var qr = float64(sr.CFG.Load()*35) / Nr
+			var Pfgi = float64(sr.CFG.Load()) / float64(len(Freegames)) / Nr
 			var ΣPL float64
 			for _, Li := range Freegames {
 				ΣPL += Pfgi * float64(Li)

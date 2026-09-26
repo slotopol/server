@@ -16,8 +16,8 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var calc = func(w io.Writer) (float64, float64) {
 		if sp.IsJack() {
 			var N = s.Count()
-			for idj := range s.JH {
-				var Cj = float64(s.JH[idj].Load())
+			for idj := range s.CJ {
+				var Cj = float64(s.CJ[idj].Load())
 				var HRj = N / Cj
 				fmt.Fprintf(w, "jackpots%d: count %g, hit rate 1/%.12g\n", idj+1, Cj, HRj)
 			}

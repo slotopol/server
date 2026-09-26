@@ -18,9 +18,10 @@ import (
 )
 
 type Simulator interface {
-	// Returns number of spins, sum of pays, sum of squares of pays by spin,
-	// normalized by spin cost.
-	NSQ(float64) (float64, float64, float64)
+	// Count returns number of processed grid reshuffles, including with no wins.
+	Count() float64
+	// Returns math expectation and dispersion.
+	EvD(cost float64) (float64, float64)
 	// Performs spin simulation, calculates results, update statistics.
 	Simulate(SlotGame, *Wins, float64)
 }
@@ -34,14 +35,6 @@ type Counter interface {
 	// The sum of the weights of free spins series occurrences
 	// used for dispersion calculation.
 	ΣPL(Sym, []int) float64
-}
-
-// Returns plain math expectation (µ = S/N) and plain dispersion (D = Q/N - µ*µ).
-func EvD(s Counter, cost float64) (float64, float64) {
-	var N, S, Q = s.NSQ(cost)
-	var µ = S / N
-	var D = Q/N - µ*µ
-	return µ, D
 }
 
 type ScanPar = game.ScanPar
@@ -163,11 +156,12 @@ type SlotCounter struct {
 	N   Uint64          // number of processed grid reshuffles, including with no wins
 	C   Counts[Uint64]  // hit counter
 	S   Counts[Float64] // sum of pays by symbols
-	FSC Uint64          `yaml:",omitempty"`      // free spins count
-	FGH Uint64          `yaml:",omitempty"`      // free games hits count
-	BH  []Uint64        `yaml:",flow,omitempty"` // bonus hits count
-	BS  []Float64       `yaml:",flow,omitempty"` // sum of bonuses pays
-	JH  []Uint64        `yaml:",flow,omitempty"` // progressive jackpot hits count
+	CFG Uint64          `yaml:",omitempty"`      // free games hits count
+	CFS Uint64          `yaml:",omitempty"`      // free spins count
+	QFS Uint64          `yaml:",omitempty"`      // squares count of free spins
+	CB  []Uint64        `yaml:",flow,omitempty"` // bonus hits count
+	SB  []Float64       `yaml:",flow,omitempty"` // sum of bonuses pays
+	CJ  []Uint64        `yaml:",flow,omitempty"` // progressive jackpot hits count
 }
 
 func (c *SlotCounter) IsZero() bool {
@@ -193,13 +187,13 @@ func (c *SlotCounter) CntDim(sn, pn int) {
 
 // Reserves memory for bonus hits counters and sums.
 func (c *SlotCounter) BonDim(n int) {
-	c.BH = make([]Uint64, n)
-	c.BS = make([]Float64, n)
+	c.CB = make([]Uint64, n)
+	c.SB = make([]Float64, n)
 }
 
 // Reserves memory for progressive jackpot hits counters.
 func (c *SlotCounter) JackDim(n int) {
-	c.JH = make([]Uint64, n)
+	c.CJ = make([]Uint64, n)
 }
 
 func (c *SlotCounter) Update(wins Wins) (pay float64) {
@@ -212,19 +206,20 @@ func (c *SlotCounter) Update(wins Wins) (pay float64) {
 			if wi.Sym > 0 { // symbols pay
 				c.S[wi.Sym-1][wi.Num-1].Add(p)
 			} else { // bonus pay, only 2 cases can be
-				c.BS[wi.BID-1].Add(p)
+				c.SB[wi.BID-1].Add(p)
 			}
 			pay += p
 		}
 		if wi.FS != 0 {
-			c.FSC.Add(uint64(wi.FS))
-			c.FGH.Inc()
+			c.CFG.Inc()
+			c.CFS.Add(uint64(wi.FS))
+			c.QFS.Add(uint64(wi.FS * wi.FS))
 		}
 		if wi.BID != 0 {
-			c.BH[wi.BID-1].Inc()
+			c.CB[wi.BID-1].Inc()
 		}
 		if wi.JID != 0 {
-			c.JH[wi.JID-1].Inc()
+			c.CJ[wi.JID-1].Inc()
 		}
 	}
 	c.N.Inc()
@@ -247,8 +242,8 @@ func (c *SlotCounter) SumPays() (sum float64) {
 			sum += pays[i].Load()
 		}
 	}
-	for i := range c.BS {
-		sum += c.BS[i].Load()
+	for i := range c.SB {
+		sum += c.SB[i].Load()
 	}
 	return
 }
@@ -289,6 +284,14 @@ func (s *StatGeneric) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
 	return
 }
 
+// Returns plain math expectation (µ = S/N) and plain dispersion (D = Q/N - µ*µ).
+func (s *StatGeneric) EvD(cost float64) (float64, float64) {
+	var N, S, Q = s.NSQ(cost)
+	var µ = S / N
+	var D = Q/N - µ*µ
+	return µ, D
+}
+
 // NSQ returns number of spins, sum of pays, sum of squares of pays by spin,
 // normalized by spin cost.
 func (s *StatGeneric) NSQ(cost float64) (N float64, S float64, Q float64) {
@@ -300,12 +303,12 @@ func (s *StatGeneric) NSQ(cost float64) (N float64, S float64, Q float64) {
 
 // Returns free spins quantifier.
 func (s *StatGeneric) FSQ() float64 {
-	return float64(s.FSC.Load()) / s.Count()
+	return float64(s.CFS.Load()) / s.Count()
 }
 
 // Quantifier of free games per reshuffles.
 func (s *StatGeneric) FGQ() float64 {
-	return float64(s.FGH.Load()) / s.Count()
+	return float64(s.CFG.Load()) / s.Count()
 }
 
 // The sum of the weights of free spins series occurrences
@@ -321,15 +324,15 @@ func (s *StatGeneric) ΣPL(scat Sym, L []int) (sum float64) {
 
 // Free Games hit rate: average number of reshuffles per free games hits.
 func (s *StatGeneric) HRfg() float64 {
-	return s.Count() / float64(s.FGH.Load())
+	return s.Count() / float64(s.CFG.Load())
 }
 
 func (s *StatGeneric) BonusHits(bid int) float64 {
-	return float64(s.BH[bid-1].Load())
+	return float64(s.CB[bid-1].Load())
 }
 
 func (s *StatGeneric) JackHits(jid int) float64 {
-	return float64(s.JH[jid-1].Load())
+	return float64(s.CJ[jid-1].Load())
 }
 
 // Simulate performs spin simulation, calculates results, update statistics.
@@ -422,14 +425,14 @@ func (s *StatCascade) SumPays() (sum float64) {
 
 func (s *StatCascade) SumFSC() (sum uint64) {
 	for cfn := range s.Casc {
-		sum += s.Casc[cfn].FSC.Load()
+		sum += s.Casc[cfn].CFS.Load()
 	}
 	return
 }
 
 func (s *StatCascade) SumFGH() (sum uint64) {
 	for cfn := range s.Casc {
-		sum += s.Casc[cfn].FGH.Load()
+		sum += s.Casc[cfn].CFG.Load()
 	}
 	return
 }
@@ -438,7 +441,7 @@ func (s *StatCascade) SumFGH() (sum uint64) {
 // Bonus id is 1-based.
 func (s *StatCascade) SumBH(bid int) (sum uint64) {
 	for cfn := range s.Casc {
-		sum += s.Casc[cfn].BH[bid-1].Load()
+		sum += s.Casc[cfn].CB[bid-1].Load()
 	}
 	return
 }
@@ -447,7 +450,7 @@ func (s *StatCascade) SumBH(bid int) (sum uint64) {
 // Jackpot id is 1-based.
 func (s *StatCascade) SumJH(jid int) (sum uint64) {
 	for cfn := range s.Casc {
-		sum += s.Casc[cfn].JH[jid-1].Load()
+		sum += s.Casc[cfn].CJ[jid-1].Load()
 	}
 	return
 }
@@ -479,6 +482,14 @@ func (s *StatCascade) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
 	lrtp /= N * cost
 	srtp /= N * cost
 	return
+}
+
+// Returns plain math expectation (µ = S/N) and plain dispersion (D = Q/N - µ*µ).
+func (s *StatCascade) EvD(cost float64) (float64, float64) {
+	var N, S, Q = s.NSQ(cost)
+	var µ = S / N
+	var D = Q/N - µ*µ
+	return µ, D
 }
 
 // NSQ returns number of spins, sum of pays, sum of squares of pays by spin,

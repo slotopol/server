@@ -38,7 +38,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 			q = s.FSQ()
 			sq = 1 / (1 - q)
 		}
-		var µ, D = slot.EvD(s, cost)
+		var µ, D = s.EvD(cost)
 		Σrtp += rtpi
 		Σµ += µ
 		Σµ2 += µ * µ
@@ -53,7 +53,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	fmt.Printf("\n(10/10) regular reels calculations\n")
 	var sr = slot.NewStatGeneric(sn, 5)
 	var calc = func(w io.Writer) (float64, float64) {
-		var µr, Dsymr = slot.EvD(sr, cost)
+		var µr, Dsymr = sr.EvD(cost)
 		var qr = sr.FSQ()
 		var sqr = 1 / (1 - qr)
 		var Pfg = sr.FGQ()

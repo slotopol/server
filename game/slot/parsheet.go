@@ -185,7 +185,7 @@ func Print_all(w io.Writer, sp *ScanPar, s Counter, rtp, D float64) {
 
 // Parsheet for simple slot (without free games and bonuses).
 func Parsheet_simple(w io.Writer, sp *ScanPar, s Counter, cost float64) (float64, float64) {
-	var µ, D = EvD(s, cost)
+	var µ, D = s.EvD(cost)
 	if sp.IsMain() {
 		fmt.Fprintf(w, "RTP = %.8g%%\n", µ*100)
 	}
@@ -197,7 +197,7 @@ func Parsheet_simple(w io.Writer, sp *ScanPar, s Counter, cost float64) (float64
 // with `m` multiplier on freegames (m=1 if no multiplier).
 // Each hit of freegames series has `L` freespins.
 func Parsheet_fgretrig(w io.Writer, sp *ScanPar, s Counter, cost, m, L float64) (float64, float64) {
-	var µ, Dsym = EvD(s, cost)
+	var µ, Dsym = s.EvD(cost)
 	var q = s.FSQ()
 	var sq = 1 / (1 - q)
 	var Pfg = s.FGQ()
@@ -217,7 +217,7 @@ func Parsheet_fgretrig(w io.Writer, sp *ScanPar, s Counter, cost, m, L float64) 
 // Parsheet for slot with games series of length L1 with
 // free spins series of length L2 that can be triggered only once.
 func Parsheet_fgone(w io.Writer, sp *ScanPar, s Counter, cost, m, L1, L2 float64) (float64, float64) {
-	var µ, Dsym = EvD(s, cost)
+	var µ, Dsym = s.EvD(cost)
 	var Pfg = s.FGQ()                 // P
 	var Pre = 1 - math.Pow(1-Pfg, L1) // P(A)=1−(1−P)^N
 	var rtp = m * µ * (1 + Pre*L2/L1)
@@ -240,7 +240,7 @@ func Parsheet_fgretrig_series(w io.Writer, sp *ScanPar, s Counter, cost, m float
 }
 
 func Parsheet_fgretrig_custom(w io.Writer, sp *ScanPar, s Counter, cost, m float64, q, ΣPL float64) (float64, float64) {
-	var µ, Dsym = EvD(s, cost)
+	var µ, Dsym = s.EvD(cost)
 	var sq = 1 / (1 - q)
 	var rtpfs = m * sq * µ
 	var rtp = µ + q*rtpfs
@@ -260,9 +260,9 @@ func Parsheet_fgretrig_custom(w io.Writer, sp *ScanPar, s Counter, cost, m float
 // Each hit of freegames series has `L` freespins.
 func Parsheet_fgonce_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, L float64) (float64, float64) {
 	// bonus reels parameters
-	var µb, Dsymb = EvD(sb, cost)
+	var µb, Dsymb = sb.EvD(cost)
 	// regular reels parameters
-	var µr, Dsymr = EvD(sr, cost)
+	var µr, Dsymr = sr.EvD(cost)
 	var qr = sr.FSQ()
 	var sqr = 1 / (1 - qr)
 	var Pfg = sr.FGQ()
@@ -289,9 +289,9 @@ func Parsheet_fgonce_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, L 
 // can be retriggered only once. Length of first series is `L1`, second is `L2`.
 func Parsheet_fgtwice_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, L1, L2 float64) (float64, float64) {
 	// bonus reels parameters
-	var µb, Dsymb = EvD(sb, cost)
+	var µb, Dsymb = sb.EvD(cost)
 	// regular reels parameters
-	var µr, Dsymr = EvD(sr, cost)
+	var µr, Dsymr = sr.EvD(cost)
 	// calculation
 	var Pfgb = sb.FGQ()                // P
 	var Pre = 1 - math.Pow(1-Pfgb, L1) // P(A)=1−(1−P)^N
@@ -325,11 +325,11 @@ func Parsheet_fgtwice_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, L
 // Each hit of freegames series has `L` freespins.
 func Parsheet_fgretrig_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, L float64) (float64, float64) {
 	// bonus reels parameters
-	var µb, Dsymb = EvD(sb, cost)
+	var µb, Dsymb = sb.EvD(cost)
 	var qb = sb.FSQ()
 	var sqb = 1 / (1 - qb)
 	// regular reels parameters
-	var µr, Dsymr = EvD(sr, cost)
+	var µr, Dsymr = sr.EvD(cost)
 	var qr = sr.FSQ()
 	var sqr = 1 / (1 - qr)
 	var Pfg = sr.FGQ()
@@ -361,10 +361,10 @@ func Parsheet_fgretrig_split_series(w io.Writer, sp *ScanPar, sr, sb Counter, co
 
 func Parsheet_fgretrig_split_custom(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m float64, qr, qb, ΣPL float64) (float64, float64) {
 	// bonus reels parameters
-	var µb, Dsymb = EvD(sb, cost)
+	var µb, Dsymb = sb.EvD(cost)
 	var sqb = 1 / (1 - qb)
 	// regular reels parameters
-	var µr, Dsymr = EvD(sr, cost)
+	var µr, Dsymr = sr.EvD(cost)
 	var sqr = 1 / (1 - qr)
 	// calculation
 	var rtpfs = m * sqb * µb

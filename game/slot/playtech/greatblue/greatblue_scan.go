@@ -33,7 +33,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	// custom parsheet
 	var cost = g.Cost()
 	var calc = func(w io.Writer) (float64, float64) {
-		var µ, Dsym = slot.EvD(s, cost)
+		var µ, Dsym = s.EvD(cost)
 		var Pfg = s.FGQ()
 		var q = Pfg * 15
 		var sq = 1 / (1 - q)

@@ -10,7 +10,7 @@ import (
 
 // custom parsheet
 func Parsheet(w io.Writer, sp *slot.ScanPar, s *slot.StatGeneric, cost float64) (float64, float64) {
-	var µ, D = slot.EvD(s, cost)
+	var µ, D = s.EvD(cost)
 	var HRx2 = s.Count() / s.BonusHits(bonx2)
 	var HRx3 = s.Count() / s.BonusHits(bonx3)
 	var HRxx = s.Count() / (s.BonusHits(bonx2) + s.BonusHits(bonx3))

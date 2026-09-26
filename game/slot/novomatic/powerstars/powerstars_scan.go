@@ -111,7 +111,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (rtp, D float64) {
 			g.PRW[3] = 1
 		}
 		var calc = func(w io.Writer) (float64, float64) {
-			var µ, D = slot.EvD(s, g.Cost())
+			var µ, D = s.EvD(g.Cost())
 			if sp.IsFG() {
 				fmt.Fprintf(w, "RTP[%c%c%c] = %.8g%%\n", wcsym(wc2), wcsym(wc3), wcsym(wc4), µ*100)
 				slot.Print_all(w, sp, s, µ, D)

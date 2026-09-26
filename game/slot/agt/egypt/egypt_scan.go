@@ -24,10 +24,9 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var s = slot.NewStatGeneric(sn, 5)
 
 	var calc = func(w io.Writer) (float64, float64) {
-		var N, S, Q = s.NSQ(g.Cost())
-		var µ = S / N
+		var µ, Dsym = s.EvD(g.Cost())
 		var rtp = Em * µ
-		var D = Em * Em * (Q/N - µ*µ)
+		var D = Em * Em * Dsym
 		if sp.IsMain() {
 			fmt.Fprintf(w, "symbols: µ = %.8g%%\n", µ*100)
 			fmt.Fprintf(w, "RTP = %.5g(Em) * %.5g(sym) = %.8g%%\n", Em, µ*100, rtp*100)

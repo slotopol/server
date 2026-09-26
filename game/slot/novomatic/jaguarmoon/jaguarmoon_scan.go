@@ -35,13 +35,10 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		var cost = g.Cost()
 		var calc = func(w io.Writer) (float64, float64) {
 			// bonus reels parameters
-			var Nb, Sb, Qb = sb.NSQ(cost)
-			var µb = Sb / Nb
-			var Dsymb = Qb/Nb - µb*µb
+			var µb, Dsymb = sb.EvD(cost)
 			// regular reels parameters
-			var Nr, Sr, Qr = sr.NSQ(cost)
-			var µr = Sr / Nr
-			var Dsymr = Qr/Nr - µr*µr
+			var µr, Dsymr = sr.EvD(cost)
+			var Nr = sr.Count()
 			// calculation
 			var Pfg, PLm, PLm2, PL2m2 float64
 			for i := range 6 {

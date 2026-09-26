@@ -34,13 +34,10 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var cost = g.Cost()
 	var calc = func(w io.Writer) (float64, float64) {
 		// bonus reels parameters
-		var Nb, Sb, Qb = sb.NSQ(cost)
-		var µb = Sb / Nb
-		var Dsymb = Qb/Nb - µb*µb
+		var µb, Dsymb = sb.EvD(cost)
 		// regular reels parameters
-		var Nr, Sr, Qr = sr.NSQ(cost)
-		var µr = Sr / Nr
-		var Dsymr = Qr/Nr - µr*µr
+		var µr, Dsymr = sr.EvD(cost)
+		var Nr = sr.Count()
 		// calculation
 		var EL, EL2 float64
 		for _, m := range Freegames {
@@ -52,7 +49,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		EL2 /= float64(len(Freegames))
 		var Em = 2*Pmfs + 1*(1-Pmfs)
 		var Em2 = 2*2*Pmfs + 1*1*(1-Pmfs)
-		var Pfg = float64(sr.FGH.Load()) / Nr
+		var Pfg = float64(sr.CFG.Load()) / Nr
 		var q = Pfg * EL
 		var rtp = µr + q*Em*µb
 		var Vbon = Em2*EL*Dsymb + µb*µb*(Em2*EL2-Em*EL*Em*EL)

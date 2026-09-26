@@ -18,8 +18,8 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 			var N = s.Count()
 			var q = s.FSQ()
 			var sq = 1 / (1 - q)
-			for idj := range s.JH {
-				var Cj = float64(s.JH[idj].Load()) / float64(sp.Sel)
+			for idj := range s.CJ {
+				var Cj = float64(s.CJ[idj].Load()) / float64(sp.Sel)
 				var HRj = N / Cj * (1 + q*sq)
 				fmt.Fprintf(w, "jackpots%d: count per line %g, hit rate 1/%.12g\n", idj+1, Cj, HRj)
 			}

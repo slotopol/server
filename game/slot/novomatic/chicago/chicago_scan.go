@@ -17,9 +17,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	const L = 12
 	var cost = g.Cost()
 	var calc = func(w io.Writer) (float64, float64) {
-		var N, S, Q = s.NSQ(cost)
-		var µ = S / N
-		var Dsym = Q/N - µ*µ
+		var µ, Dsym = s.EvD(cost)
 		var q = s.FSQ()
 		var sq = 1 / (1 - q)
 		var Pfg = s.FGQ()
