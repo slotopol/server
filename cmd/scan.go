@@ -2,7 +2,6 @@ package cmd
 
 import (
 	"fmt"
-	"log"
 	"runtime"
 
 	cfg "github.com/slotopol/server/config"
@@ -111,41 +110,41 @@ var scanCmd = &cobra.Command{
 		// Load yaml-files
 		var noembed bool
 		if noembed, err = pf.GetBool("noembed"); err != nil {
-			log.Fatalln(err.Error())
+			cfg.Fatalf(err.Error())
 			return
 		}
 		if !noembed {
 			if _, err = LoadInternalYaml(exitctx); err != nil {
-				log.Fatalf("can not load internal yaml files: %s", err.Error())
+				cfg.Fatalf("can not load internal yaml files: %s", err.Error())
 				return
 			}
 		}
 		if err = LoadExternalYaml(exitctx); err != nil {
-			log.Fatalf("can not load external yaml files: %s", err.Error())
+			cfg.Fatalf("can not load external yaml files: %s", err.Error())
 			return
 		}
 		UpdateAlgList()
 
 		var alias string
 		if alias, err = pf.GetString("game"); err != nil {
-			log.Fatalln(err.Error())
+			cfg.Fatalf(err.Error())
 			return
 		}
 		var aid = util.ToID(alias)
 		var gi *game.GameInfo
 		var ok bool
 		if gi, ok = game.InfoMap[aid]; !ok {
-			log.Fatalf("game name \"%s\" does not recognized", alias)
+			cfg.Fatalf("game name \"%s\" does not recognized", alias)
 			return
 		}
 		if len(gi.RTP) == 0 {
-			log.Fatalf("RTP list does not complete for \"%s\"", alias)
+			cfg.Fatalf("RTP list does not complete for \"%s\"", alias)
 			return
 		}
 
 		var scan game.Scanner
 		if scan, ok = game.ScanFactory[aid]; !ok {
-			log.Fatalf("game name \"%s\" does not recognized", alias)
+			cfg.Fatalf("game name \"%s\" does not recognized", alias)
 			return
 		}
 		if scan == nil {
@@ -163,7 +162,7 @@ var scanCmd = &cobra.Command{
 		}
 
 		if err = SetupParSheet(pf, &sp, gi); err != nil {
-			log.Fatalln(err.Error())
+			cfg.Fatalf(err.Error())
 			return
 		}
 

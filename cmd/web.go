@@ -3,7 +3,6 @@ package cmd
 import (
 	"context"
 	"fmt"
-	"log"
 	"net/http"
 
 	"github.com/slotopol/server/api"
@@ -31,7 +30,7 @@ var webCmd = &cobra.Command{
 		var pf = cmd.Flags()
 
 		if debug, err = pf.GetBool("debug"); err != nil {
-			log.Fatalln(err.Error())
+			cfg.Fatalf(err.Error())
 			return
 		}
 		if debug {
@@ -44,11 +43,11 @@ var webCmd = &cobra.Command{
 
 		// Load yaml-files
 		if _, err = LoadInternalYaml(exitctx); err != nil {
-			log.Fatalf("can not load internal yaml files: %s", err.Error())
+			cfg.Fatalf("can not load internal yaml files: %s", err.Error())
 			return
 		}
 		if err = LoadExternalYaml(exitctx); err != nil {
-			log.Fatalf("can not load external yaml files: %s", err.Error())
+			cfg.Fatalf("can not load external yaml files: %s", err.Error())
 			return
 		}
 		UpdateAlgList()
@@ -56,12 +55,12 @@ var webCmd = &cobra.Command{
 
 		// Working with SQL
 		if err = InitSQL(); err != nil {
-			log.Fatalln(err.Error())
+			cfg.Fatalf("can not initialize SQL: %s", err.Error())
 			return
 		}
 		defer func() {
 			if err = DoneSQL(); err != nil {
-				log.Fatalln(err.Error())
+				cfg.Fatalf("can not done SQL: %s", err.Error())
 				return
 			}
 		}()

@@ -67,6 +67,15 @@ func InitLogger() {
 	slog.SetDefault(handler)
 }
 
+func Fatalf(format string, args ...any) {
+	if args == nil {
+		slog.Error(format)
+		os.Exit(1)
+	}
+	slog.Error(fmt.Sprintf(format, args...))
+	os.Exit(1)
+}
+
 func Errorf(format string, args ...any) {
 	if args == nil {
 		slog.Error(format)

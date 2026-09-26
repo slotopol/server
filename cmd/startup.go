@@ -112,7 +112,7 @@ func LoadYamlFromFile(ctx context.Context, fpath string) (err error) {
 	if count, err = game.ReadChain(cr); err != nil {
 		return fmt.Errorf("can not read data from %s: %w", fpath, err)
 	}
-	cfg.Infof("loaded %d objects from: %s", count, fpath)
+	cfg.Debugf("loaded %d objects from: %s", count, fpath)
 	return nil
 }
 
