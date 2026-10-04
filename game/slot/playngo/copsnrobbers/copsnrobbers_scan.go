@@ -49,7 +49,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		EL2 /= float64(len(Freegames))
 		var Em = 2*Pmfs + 1*(1-Pmfs)
 		var Em2 = 2*2*Pmfs + 1*1*(1-Pmfs)
-		var Pfg = float64(sr.CFG.Load()) / Nr
+		var Pfg = float64(sr.Cfg.Load()) / Nr
 		var q = Pfg * EL
 		var rtp = µr + q*Em*µb
 		var Vbon = Em2*EL*Dsymb + µb*µb*(Em2*EL2-Em*EL*Em*EL)

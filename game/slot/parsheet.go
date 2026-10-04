@@ -168,7 +168,7 @@ func Print_cascmetrics(w io.Writer, sp *ScanPar, s *StatCascade) {
 }
 
 // Print_all assembles all print functions of parsheets.
-func Print_all(w io.Writer, sp *ScanPar, s Counter, rtp, D float64) {
+func Print_all(w io.Writer, sp *ScanPar, s Simulator, rtp, D float64) {
 	Print_vi(w, sp, D)
 	Print_ci(w, sp, rtp, D)
 	Print_spread(w, sp, rtp, D)
@@ -193,25 +193,22 @@ func Parsheet_simple(w io.Writer, sp *ScanPar, s Counter, cost float64) (float64
 	return µ, D
 }
 
-// Parsheet for slot with retriggerable freegames
-// with `m` multiplier on freegames (m=1 if no multiplier).
-// Each hit of freegames series has `L` freespins.
-func Parsheet_fgretrig(w io.Writer, sp *ScanPar, s Counter, cost, m, L float64) (float64, float64) {
-	var µ, Dsym = s.EvD(cost)
-	var q = s.FSQ()
-	var sq = 1 / (1 - q)
-	var Pfg = s.FGQ()
-	var rtpfs = m * sq * µ
-	var rtp = µ + q*rtpfs
-	var Eser, Dser = L * sq, L * q * sq * sq * sq // Galton-Watson process
-	var D = Dsym + m*m*Pfg*(Eser*Dsym+µ*µ*Dser)   // Wald's equation
+func Parsheet_fgrecur(w io.Writer, sp *ScanPar, s Simulator, cost float64, m float64, Efs func() (float64, float64, float64)) (float64, float64) {
+	var EVbase, Dbase = s.EvD(cost)
+	var HRfg, EK, EK2 = Efs()
+	var VarK = EK2 - EK*EK
+	var SEK = 1 / (1 - EK)
+	var VarNfg = VarK * SEK * SEK * SEK
+	var q = EK / (1 - EK)
+	var EV = EVbase * (1 + m*q)
+	var D = Dbase*(1+q*m*m) + m*m*EVbase*EVbase*VarNfg
 	if sp.IsMain() {
-		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µ*100, math.Sqrt(Dsym))
-		fmt.Fprintf(w, "free: HRfg = 1/%.5g, q = %.5g, sq = 1/(1-q) = %.5g\n", 1/Pfg, q, sq)
-		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µ*100, q, rtpfs*100, rtp*100)
+		fmt.Fprintf(w, "base: µ = %.8g%%, sigma(base) = %.6g\n", EVbase*100, math.Sqrt(Dbase))
+		fmt.Fprintf(w, "free: HRfg = 1/%.5g, EK = %.5g, q = %.5g\n", 1/HRfg, EK, q)
+		fmt.Fprintf(w, "RTP = %.5g*(1 + %.5g) = %.8g%%\n", EVbase*100, q, EV*100)
 	}
-	Print_all(w, sp, s, rtp, D)
-	return rtp, D
+	Print_all(w, sp, s, EV, D)
+	return EV, D
 }
 
 // Parsheet for slot with games series of length L1 with
@@ -232,11 +229,6 @@ func Parsheet_fgone(w io.Writer, sp *ScanPar, s Counter, cost, m, L1, L2 float64
 	}
 	Print_all(w, sp, s, rtp, D)
 	return rtp, D
-}
-
-func Parsheet_fgretrig_series(w io.Writer, sp *ScanPar, s Counter, cost, m float64, L []int, scat Sym) (float64, float64) {
-	return Parsheet_fgretrig_custom(w, sp, s, cost, m,
-		s.FSQ(), s.ΣPL(scat, L))
 }
 
 func Parsheet_fgretrig_custom(w io.Writer, sp *ScanPar, s Counter, cost, m float64, q, ΣPL float64) (float64, float64) {

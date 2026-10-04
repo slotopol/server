@@ -12,7 +12,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var s = slot.NewStatCascade(sn, 5)
 
 	var calc = func(w io.Writer) (float64, float64) {
-		return slot.Parsheet_fgretrig(w, sp, s, g.Cost(), 3, 10)
+		return slot.Parsheet_fgrecur(w, sp, s, g.Cost(), 3, s.Efs)
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, calc)

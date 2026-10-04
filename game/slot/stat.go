@@ -21,11 +21,15 @@ type Simulator interface {
 	// Count returns number of processed grid reshuffles, including with no wins.
 	Count() float64
 	// Returns math expectation and dispersion.
-	EvD(cost float64) (float64, float64)
+	EvD(float64) (float64, float64)
+	// Returns free games hit rate, expectation of initial freespins,
+	// second moment of initial freespins calculated by dedicated counters.
+	Efs() (HRfg, EK, EK2 float64)
 	// Performs spin simulation, calculates results, update statistics.
 	Simulate(SlotGame, *Wins, float64)
 }
 
+// Deprecated: use Simulator interface instead.
 type Counter interface {
 	Simulator
 	// Returns free spins quantifier.
@@ -156,12 +160,12 @@ type SlotCounter struct {
 	N   Uint64          // number of processed grid reshuffles, including with no wins
 	C   Counts[Uint64]  // hit counter
 	S   Counts[Float64] // sum of pays by symbols
-	CFG Uint64          `yaml:",omitempty"`      // free games hits count
-	CFS Uint64          `yaml:",omitempty"`      // free spins count
-	QFS Uint64          `yaml:",omitempty"`      // squares count of free spins
-	CB  []Uint64        `yaml:",flow,omitempty"` // bonus hits count
-	SB  []Float64       `yaml:",flow,omitempty"` // sum of bonuses pays
-	CJ  []Uint64        `yaml:",flow,omitempty"` // progressive jackpot hits count
+	Cfg Uint64          `yaml:",omitempty"`      // free games hits count
+	Cfs Uint64          `yaml:",omitempty"`      // free spins count
+	Qfs Uint64          `yaml:",omitempty"`      // squares count of free spins
+	Cb  []Uint64        `yaml:",flow,omitempty"` // bonus hits count
+	Sb  []Float64       `yaml:",flow,omitempty"` // sum of bonuses pays
+	Cj  []Uint64        `yaml:",flow,omitempty"` // progressive jackpot hits count
 }
 
 func (c *SlotCounter) IsZero() bool {
@@ -187,13 +191,13 @@ func (c *SlotCounter) CntDim(sn, pn int) {
 
 // Reserves memory for bonus hits counters and sums.
 func (c *SlotCounter) BonDim(n int) {
-	c.CB = make([]Uint64, n)
-	c.SB = make([]Float64, n)
+	c.Cb = make([]Uint64, n)
+	c.Sb = make([]Float64, n)
 }
 
 // Reserves memory for progressive jackpot hits counters.
 func (c *SlotCounter) JackDim(n int) {
-	c.CJ = make([]Uint64, n)
+	c.Cj = make([]Uint64, n)
 }
 
 func (c *SlotCounter) Update(wins Wins) (pay float64) {
@@ -206,20 +210,20 @@ func (c *SlotCounter) Update(wins Wins) (pay float64) {
 			if wi.Sym > 0 { // symbols pay
 				c.S[wi.Sym-1][wi.Num-1].Add(p)
 			} else { // bonus pay, only 2 cases can be
-				c.SB[wi.BID-1].Add(p)
+				c.Sb[wi.BID-1].Add(p)
 			}
 			pay += p
 		}
 		if wi.FS != 0 {
-			c.CFG.Inc()
-			c.CFS.Add(uint64(wi.FS))
-			c.QFS.Add(uint64(wi.FS * wi.FS))
+			c.Cfg.Inc()
+			c.Cfs.Add(uint64(wi.FS))
+			c.Qfs.Add(uint64(wi.FS * wi.FS))
 		}
 		if wi.BID != 0 {
-			c.CB[wi.BID-1].Inc()
+			c.Cb[wi.BID-1].Inc()
 		}
 		if wi.JID != 0 {
-			c.CJ[wi.JID-1].Inc()
+			c.Cj[wi.JID-1].Inc()
 		}
 	}
 	c.N.Inc()
@@ -242,8 +246,8 @@ func (c *SlotCounter) SumPays() (sum float64) {
 			sum += pays[i].Load()
 		}
 	}
-	for i := range c.SB {
-		sum += c.SB[i].Load()
+	for i := range c.Sb {
+		sum += c.Sb[i].Load()
 	}
 	return
 }
@@ -284,14 +288,6 @@ func (s *StatGeneric) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
 	return
 }
 
-// Returns plain math expectation (µ = S/N) and plain dispersion (D = Q/N - µ*µ).
-func (s *StatGeneric) EvD(cost float64) (float64, float64) {
-	var N, S, Q = s.NSQ(cost)
-	var µ = S / N
-	var D = Q/N - µ*µ
-	return µ, D
-}
-
 // NSQ returns number of spins, sum of pays, sum of squares of pays by spin,
 // normalized by spin cost.
 func (s *StatGeneric) NSQ(cost float64) (N float64, S float64, Q float64) {
@@ -301,18 +297,39 @@ func (s *StatGeneric) NSQ(cost float64) (N float64, S float64, Q float64) {
 	return
 }
 
+// Returns plain math expectation (µ = S/N) and plain dispersion (D = Q/N - µ*µ).
+func (s *StatGeneric) EvD(cost float64) (float64, float64) {
+	var N, S, Q = s.NSQ(cost)
+	var µ = S / N
+	var D = Q/N - µ*µ
+	return µ, D
+}
+
+// Returns free games hit rate, expectation of initial freespins,
+// second moment of initial freespins calculated by dedicated counters.
+func (s *StatGeneric) Efs() (HRfg, EK, EK2 float64) {
+	var N = s.Count()
+	HRfg = float64(s.Cfg.Load()) / N
+	EK = float64(s.Cfs.Load()) / N
+	EK2 = float64(s.Qfs.Load()) / N
+	return
+}
+
 // Returns free spins quantifier.
+// Deprecated: does not usefull for parsheet calculations, use Efs() instead.
 func (s *StatGeneric) FSQ() float64 {
-	return float64(s.CFS.Load()) / s.Count()
+	return float64(s.Cfs.Load()) / s.Count()
 }
 
 // Quantifier of free games per reshuffles.
+// Deprecated: does not usefull for parsheet calculations, use Efs() instead.
 func (s *StatGeneric) FGQ() float64 {
-	return float64(s.CFG.Load()) / s.Count()
+	return float64(s.Cfg.Load()) / s.Count()
 }
 
 // The sum of the weights of free spins series occurrences
 // used for dispersion calculation.
+// Deprecated: does not usefull for parsheet calculations, use Efs() instead.
 func (s *StatGeneric) ΣPL(scat Sym, L []int) (sum float64) {
 	var N = s.Count()
 	for i, Li := range L {
@@ -324,15 +341,15 @@ func (s *StatGeneric) ΣPL(scat Sym, L []int) (sum float64) {
 
 // Free Games hit rate: average number of reshuffles per free games hits.
 func (s *StatGeneric) HRfg() float64 {
-	return s.Count() / float64(s.CFG.Load())
+	return s.Count() / float64(s.Cfg.Load())
 }
 
 func (s *StatGeneric) BonusHits(bid int) float64 {
-	return float64(s.CB[bid-1].Load())
+	return float64(s.Cb[bid-1].Load())
 }
 
 func (s *StatGeneric) JackHits(jid int) float64 {
-	return float64(s.CJ[jid-1].Load())
+	return float64(s.Cj[jid-1].Load())
 }
 
 // Simulate performs spin simulation, calculates results, update statistics.
@@ -425,14 +442,14 @@ func (s *StatCascade) SumPays() (sum float64) {
 
 func (s *StatCascade) SumFSC() (sum uint64) {
 	for cfn := range s.Casc {
-		sum += s.Casc[cfn].CFS.Load()
+		sum += s.Casc[cfn].Cfs.Load()
 	}
 	return
 }
 
 func (s *StatCascade) SumFGH() (sum uint64) {
 	for cfn := range s.Casc {
-		sum += s.Casc[cfn].CFG.Load()
+		sum += s.Casc[cfn].Cfg.Load()
 	}
 	return
 }
@@ -441,7 +458,7 @@ func (s *StatCascade) SumFGH() (sum uint64) {
 // Bonus id is 1-based.
 func (s *StatCascade) SumBH(bid int) (sum uint64) {
 	for cfn := range s.Casc {
-		sum += s.Casc[cfn].CB[bid-1].Load()
+		sum += s.Casc[cfn].Cb[bid-1].Load()
 	}
 	return
 }
@@ -450,7 +467,7 @@ func (s *StatCascade) SumBH(bid int) (sum uint64) {
 // Jackpot id is 1-based.
 func (s *StatCascade) SumJH(jid int) (sum uint64) {
 	for cfn := range s.Casc {
-		sum += s.Casc[cfn].CJ[jid-1].Load()
+		sum += s.Casc[cfn].Cj[jid-1].Load()
 	}
 	return
 }
@@ -492,6 +509,22 @@ func (s *StatCascade) EvD(cost float64) (float64, float64) {
 	return µ, D
 }
 
+// Returns free games hit rate, expectation of initial freespins,
+// second moment of initial freespins calculated by dedicated counters.
+func (s *StatCascade) Efs() (HRfg, EK, EK2 float64) {
+	var N = s.Count()
+	for cfn := range s.Casc {
+		var c = &s.Casc[cfn]
+		HRfg += float64(c.Cfg.Load())
+		EK += float64(c.Cfs.Load())
+		EK2 += float64(c.Qfs.Load())
+	}
+	HRfg /= N
+	EK /= N
+	EK2 /= N
+	return
+}
+
 // NSQ returns number of spins, sum of pays, sum of squares of pays by spin,
 // normalized by spin cost.
 func (s *StatCascade) NSQ(cost float64) (N float64, S float64, Q float64) {
@@ -502,17 +535,20 @@ func (s *StatCascade) NSQ(cost float64) (N float64, S float64, Q float64) {
 }
 
 // Returns free spins quantifier.
+// Deprecated: does not usefull for parsheet calculations, use Efs() instead.
 func (s *StatCascade) FSQ() float64 {
 	return float64(s.SumFSC()) / s.Count()
 }
 
 // Quantifier of free games per reshuffles.
+// Deprecated: does not usefull for parsheet calculations, use Efs() instead.
 func (s *StatCascade) FGQ() float64 {
 	return float64(s.SumFGH()) / s.Count()
 }
 
 // The sum of the weights of free spins series occurrences
 // used for dispersion calculation.
+// Deprecated: does not usefull for parsheet calculations, use Efs() instead.
 func (s *StatCascade) ΣPL(scat Sym, L []int) (sum float64) {
 	var N = s.Count()
 	for i, Li := range L {

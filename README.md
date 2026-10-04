@@ -65,46 +65,35 @@ Slotopol: 2 games
 
 *Note: you can download the compiled binaries for Windows at [release](https://github.com/slotopol/server/releases/latest) section, or build docker image by [dockerfile](https://github.com/slotopol/server/blob/main/Dockerfile), or use compiled image from [docker hub](https://hub.docker.com/r/schwarzlichtbezirk/slotopol): `docker pull schwarzlichtbezirk/slotopol` and start image [as it described](docs/docker-config.md).*
 
-1. Install [Golang](https://go.dev/dl/) of last version and GCC toolchain *(tip: for Windows it can be MinGW-w64 distribution from [WinLibs](https://winlibs.com/))*.
-2. Clone project and download dependencies.
-3. Build project with script at `task` directory.
-
 Project can be [built](.github/workflows/go.yml) for Windows/Linux/MacOS.
 
-For Windows command prompt:
+* Install the [Golang](https://go.dev/dl/) of last version and GCC toolchain *(tip: for Windows it can be MinGW-w64 distribution from [WinLibs](https://winlibs.com/))*.
 
-```cmd
-git clone https://github.com/slotopol/server.git
-cd server
-go mod download && go mod verify
-task\build-win-x64.cmd
-```
-
-or for Linux shell or git bash:
+* Download the source code and all dependencies:
 
 ```sh
 git clone https://github.com/slotopol/server.git
 cd server
-go mod download && go mod verify
-sudo chmod +x ./task/*.sh
-./task/build-linux-x64.sh
+go mod download
 ```
+
+* Next, build the project with some of build-script at `task` directory. If you are working on Windows, run the `task\build-win-x64.cmd` script in the command prompt or `task/build-win-x64.sh` in Git Bash. On Linux, use `./task/build-linux-x64.sh`.
 
 Then web-service can be started:
 
-```cmd
-slot_win_x64 -v web
+```sh
+slot_win_x64 -vv web
 ```
 
 The [list of all](docs/list-all.md) provided games can be obtained by command:
 
-```cmd
+```sh
 slot_win_x64 list
 ```
 
 To find out the list of available RTPs can be with command like this
 
-```cmd
+```sh
 slot_win_x64 list -i megajack --rtp
 ```
 
@@ -114,7 +103,7 @@ See `slot_win_x64 list -h` with full list of available command line parameters f
 
 To calculate nearest precise RTP to given value for any game on embedded reels, you can use the command like
 
-```cmd
+```sh
 slot_win_x64 scan -g=ctinteractive/luckydollar -r=95.0
 ```
 
@@ -122,7 +111,7 @@ Some games algorithms contains Lua-scripts with mathematical RTP calculation wit
 
 You can provide your own reels sets for any game at external yaml-file with same data structure as it in the sources by command
 
-```cmd
+```sh
 slot_win_x64 -f=/some/path/reeldev.yaml web
 ```
 

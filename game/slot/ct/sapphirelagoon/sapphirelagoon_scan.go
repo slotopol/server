@@ -13,7 +13,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	s.SymDim(scat, 15)
 
 	var calc = func(w io.Writer) (float64, float64) {
-		return slot.Parsheet_fgretrig_series(w, sp, s, g.Cost(), 2, ScatFreespin[:], scat)
+		return slot.Parsheet_fgrecur(w, sp, s, g.Cost(), 2, s.Efs)
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, calc)
