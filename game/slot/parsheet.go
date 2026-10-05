@@ -231,21 +231,6 @@ func Parsheet_fgone(w io.Writer, sp *ScanPar, s Counter, cost, m, L1, L2 float64
 	return rtp, D
 }
 
-func Parsheet_fgretrig_custom(w io.Writer, sp *ScanPar, s Counter, cost, m float64, q, ΣPL float64) (float64, float64) {
-	var µ, Dsym = s.EvD(cost)
-	var sq = 1 / (1 - q)
-	var rtpfs = m * sq * µ
-	var rtp = µ + q*rtpfs
-	var D = Dsym + m*m*ΣPL*(sq*Dsym+µ*µ*q*sq*sq*sq)
-	if sp.IsMain() {
-		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µ*100, math.Sqrt(Dsym))
-		fmt.Fprintf(w, "free: HRfg = 1/%.5g, q = %.5g, sq = 1/(1-q) = %.5g\n", 1/s.FGQ(), q, sq)
-		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µ*100, q, rtpfs*100, rtp*100)
-	}
-	Print_all(w, sp, s, rtp, D)
-	return rtp, D
-}
-
 // Parsheet for slot with splitted statistics for regular
 // games `sr` and statistics for NON-retriggerable bonus games `sb`.
 // with `m` multiplier on freegames (m=1 if no multiplier).

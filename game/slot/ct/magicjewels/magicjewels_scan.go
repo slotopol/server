@@ -7,26 +7,20 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-func FSQ(s *slot.StatCascade) float64 {
-	var N = float64(s.Count())
-	var sum uint64
-	sum += s.CascNum(4) * 12
-	sum += s.CascNum(5) * 20
-	sum += s.Casc[6].N.Load() * 38
-	return float64(sum) / N
-}
-
-func ΣPL(s *slot.StatCascade) (sum float64) {
-	var N = float64(s.Count())
-	var Pfg5 = float64(s.CascNum(4)) / N
-	sum += Pfg5 * 12
-	var Pfg6 = float64(s.CascNum(5)) / N
-	sum += Pfg6 * 20
-	var Pfg7 float64
+func Efs(s *slot.StatCascade) (HRfg, EK, EK2 float64) {
+	var N = s.Count()
+	var Cfg5 = float64(s.CascNum(4))
+	var Cfg6 = float64(s.CascNum(5))
+	var Cfg7 float64
+	const L5 = 12 // number of free spins for 5 cascades
+	const L6 = 20 // number of free spins for 6 cascades
+	const L7 = 38 // number of free spins for 7 or more cascades
 	for i := 6; i < slot.FallLimit; i++ {
-		Pfg7 += float64(s.CascNum(i)) / N
+		Cfg7 += float64(s.CascNum(i))
 	}
-	sum += Pfg7 * 38
+	HRfg = (Cfg5 + Cfg6 + Cfg7) / N
+	EK = (Cfg5*L5 + Cfg6*L6 + Cfg7*L7) / N
+	EK2 = (Cfg5*L5*L5 + Cfg6*L6*L6 + Cfg7*L7*L7) / N
 	return
 }
 
@@ -35,7 +29,9 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var s = slot.NewStatCascade(sn, 5)
 
 	var calc = func(w io.Writer) (float64, float64) {
-		return slot.Parsheet_fgretrig_custom(w, sp, s, g.Cost(), 2, FSQ(s), ΣPL(s))
+		return slot.Parsheet_fgrecur(w, sp, s, g.Cost(), 2, func() (float64, float64, float64) {
+			return Efs(s)
+		})
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, calc)
