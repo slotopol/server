@@ -13,6 +13,7 @@ import (
 	"io"
 	"math/rand/v2"
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -40,7 +41,9 @@ const (
 
 var (
 	ErrNoJwtID  = errors.New("jwt-token does not have user id")
-	ErrBadJwtID = errors.New("jwt-token id does not refer to registered user")
+	ErrBadUID   = errors.New("jwt-token id does not refer to registered user")
+	ErrBadEmail = errors.New("jwt-token id does not refer to registered user email")
+	ErrJwtOld   = errors.New("jwt-token is revocated by user password change or account update")
 	ErrNoAuth   = errors.New("authorization is required")
 	ErrNoScheme = errors.New("authorization does not have expected scheme")
 	ErrNoSecret = errors.New("expected password or SHA256 hash on it and current time as a nonce")
@@ -59,15 +62,43 @@ var (
 	Cfg = cfg.Cfg
 )
 
-// Claims of JWT-tokens. Contains additional profile identifier.
+// Claims of JWT-tokens. `Subject` field contains
+// profile identifier or user email.
 type Claims struct {
 	jwt.RegisteredClaims
-	UID uint64 `json:"uid,omitempty"`
+	//UID uint64 `json:"uid,omitempty"`
+}
+
+func (c *Claims) GetUser() (*User, error) {
+	if c.Subject == "" {
+		return nil, ErrNoJwtID
+	}
+	var uid, err = strconv.ParseUint(c.Subject, 10, 64)
+	if err == nil {
+		if u, ok := Users.Get(uid); ok {
+			return u, nil
+		}
+		return nil, ErrBadUID
+	}
+	for _, u := range Users.Items() {
+		if c.Subject == u.Email {
+			return u, nil
+		}
+	}
+	return nil, ErrBadEmail
 }
 
 func (c *Claims) Validate() error {
-	if c.UID == 0 {
-		return ErrNoJwtID
+	var user, err = c.GetUser()
+	if err != nil {
+		return err
+	}
+	// Its possible to revoke all tokens of user by changing
+	// his password or updating account.
+	// Before change the password it can get new refresh token,
+	// but after change the old tokens will be invalidated.
+	if c.NotBefore.Add(time.Minute).Before(user.UTime) {
+		return ErrJwtOld
 	}
 	return nil
 }
@@ -114,7 +145,7 @@ func UserFromHeader(c *gin.Context) (*User, int, error) {
 		if strings.HasPrefix(hdr, "Basic ") {
 			return GetBasicAuth(hdr[6:])
 		} else if strings.HasPrefix(hdr, "Bearer ") {
-			return GetBearerAuth(hdr[7:])
+			return GetBearerAuth(hdr[7:], false)
 		} else {
 			return nil, AEC_auth_scheme, ErrNoScheme
 		}
@@ -126,9 +157,9 @@ func UserFromQuery(c *gin.Context) (*User, int, error) {
 	if credentials := c.Query("cred"); credentials != "" {
 		return GetBasicAuth(credentials)
 	} else if tokenstr := c.Query("token"); tokenstr != "" {
-		return GetBearerAuth(tokenstr)
+		return GetBearerAuth(tokenstr, false)
 	} else if tokenstr := c.Query("jwt"); tokenstr != "" {
-		return GetBearerAuth(tokenstr)
+		return GetBearerAuth(tokenstr, false)
 	}
 	return nil, 0, nil
 }
@@ -137,9 +168,9 @@ func UserFromCookie(c *gin.Context) (*User, int, error) {
 	if credentials, _ := c.Cookie("cred"); credentials != "" {
 		return GetBasicAuth(credentials)
 	} else if tokenstr, _ := c.Cookie("token"); tokenstr != "" {
-		return GetBearerAuth(tokenstr)
+		return GetBearerAuth(tokenstr, false)
 	} else if tokenstr, _ := c.Cookie("jwt"); tokenstr != "" {
-		return GetBearerAuth(tokenstr)
+		return GetBearerAuth(tokenstr, false)
 	}
 	return nil, 0, nil
 }
@@ -148,9 +179,9 @@ func UserFromForm(c *gin.Context) (*User, int, error) {
 	if credentials := c.PostForm("cred"); credentials != "" {
 		return GetBasicAuth(credentials)
 	} else if tokenstr := c.PostForm("token"); tokenstr != "" {
-		return GetBearerAuth(tokenstr)
+		return GetBearerAuth(tokenstr, false)
 	} else if tokenstr := c.PostForm("jwt"); tokenstr != "" {
-		return GetBearerAuth(tokenstr)
+		return GetBearerAuth(tokenstr, false)
 	}
 	return nil, 0, nil
 }
@@ -180,40 +211,45 @@ func GetBasicAuth(credentials string) (user *User, code int, err error) {
 	return
 }
 
-func GetBearerAuth(tokenstr string) (user *User, code int, err error) {
+func GetBearerAuth(tokenstr string, refresh bool) (user *User, code int, err error) {
 	var claims Claims
 	_, err = jwt.ParseWithClaims(tokenstr, &claims, func(*jwt.Token) (any, error) {
-		var keys = jwt.VerificationKeySet{
-			Keys: []jwt.VerificationKey{
-				util.S2B(Cfg.AccessKey),
-				util.S2B(Cfg.RefreshKey),
-			},
+		if refresh {
+			return jwt.VerificationKeySet{
+				Keys: []jwt.VerificationKey{
+					util.S2B(Cfg.RefreshKey),
+				},
+			}, nil
+		} else {
+			return jwt.VerificationKeySet{
+				Keys: []jwt.VerificationKey{
+					util.S2B(Cfg.AccessKey),
+				},
+			}, nil
 		}
-		return keys, nil
 	}, jwt.WithExpirationRequired(), jwt.WithIssuer(jwtIssuer), jwt.WithLeeway(5*time.Second))
 
-	if err == nil {
-		var ok bool
-		if user, ok = Users.Get(claims.UID); !ok {
-			err, code = ErrBadJwtID, AEC_token_nouser
+	if err != nil {
+		switch {
+		case errors.Is(err, jwt.ErrTokenMalformed):
+			code = AEC_token_malform
+		case errors.Is(err, jwt.ErrTokenSignatureInvalid):
+			code = AEC_token_notsign
+		case errors.Is(err, jwt.ErrTokenInvalidClaims):
+			code = AEC_token_badclaims
+		case errors.Is(err, jwt.ErrTokenExpired):
+			code = AEC_token_expired
+		case errors.Is(err, jwt.ErrTokenNotValidYet):
+			code = AEC_token_notyet
+		case errors.Is(err, jwt.ErrTokenInvalidIssuer):
+			code = AEC_token_issuer
+		default:
+			code = AEC_token_error
 		}
 		return
 	}
-	switch {
-	case errors.Is(err, jwt.ErrTokenMalformed):
-		code = AEC_token_malform
-	case errors.Is(err, jwt.ErrTokenSignatureInvalid):
-		code = AEC_token_notsign
-	case errors.Is(err, jwt.ErrTokenInvalidClaims):
-		code = AEC_token_badclaims
-	case errors.Is(err, jwt.ErrTokenExpired):
-		code = AEC_token_expired
-	case errors.Is(err, jwt.ErrTokenNotValidYet):
-		code = AEC_token_notyet
-	case errors.Is(err, jwt.ErrTokenInvalidIssuer):
-		code = AEC_token_issuer
-	default:
-		code = AEC_token_error
+	if user, err = claims.GetUser(); err != nil {
+		code = AEC_token_nouser
 	}
 	return
 }
@@ -239,16 +275,16 @@ type AuthResp struct {
 func (r *AuthResp) Setup(user *User) {
 	var err error
 	var token *jwt.Token
-	var now = jwt.NewNumericDate(time.Now())
-	var exp = jwt.NewNumericDate(time.Now().Add(Cfg.AccessTTL))
-	var age = jwt.NewNumericDate(time.Now().Add(Cfg.RefreshTTL))
+	var now = time.Now()
+	var exp = now.Add(Cfg.AccessTTL)
+	var age = now.Add(Cfg.RefreshTTL)
 	token = jwt.NewWithClaims(jwt.SigningMethodHS256, &Claims{
 		RegisteredClaims: jwt.RegisteredClaims{
-			NotBefore: now,
-			ExpiresAt: exp,
+			NotBefore: jwt.NewNumericDate(now),
+			ExpiresAt: jwt.NewNumericDate(exp),
 			Issuer:    jwtIssuer,
+			Subject:   strconv.FormatUint(user.UID, 10),
 		},
-		UID: user.UID,
 	})
 	if r.Access, err = token.SignedString([]byte(Cfg.AccessKey)); err != nil {
 		panic(err)
@@ -256,13 +292,13 @@ func (r *AuthResp) Setup(user *User) {
 	r.Expire = exp.Format(time.RFC3339)
 	token = jwt.NewWithClaims(jwt.SigningMethodHS256, &Claims{
 		RegisteredClaims: jwt.RegisteredClaims{
-			NotBefore: now,
-			ExpiresAt: age,
+			NotBefore: jwt.NewNumericDate(now),
+			ExpiresAt: jwt.NewNumericDate(age),
 			Issuer:    jwtIssuer,
+			Subject:   strconv.FormatUint(user.UID, 10),
 		},
-		UID: user.UID,
 	})
-	if r.Refrsh, err = token.SignedString([]byte(Cfg.AccessKey)); err != nil {
+	if r.Refrsh, err = token.SignedString([]byte(Cfg.RefreshKey)); err != nil {
 		panic(err)
 	}
 	r.Living = age.Format(time.RFC3339)
@@ -663,10 +699,23 @@ func ApiSignin(c *gin.Context) {
 	RetOk(c, ret)
 }
 
-func ApiRefresh(c *gin.Context) {
+func ApiToken(c *gin.Context) {
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		Refrsh  string   `json:"refrsh" yaml:"refrsh" xml:"refrsh"`
+	}
 	var ret AuthResp
 
-	var user = c.MustGet(userKey).(*User)
+	if err := c.ShouldBind(&arg); err != nil {
+		Ret400(c, AEC_token_nobind, err)
+		return
+	}
+
+	var user, code, err = GetBearerAuth(arg.Refrsh, true)
+	if err != nil {
+		Ret401(c, code, err)
+		return
+	}
 	ret.Setup(user)
 	RetOk(c, ret)
 }

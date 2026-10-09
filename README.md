@@ -287,15 +287,25 @@ In second case it should be string in field `sigtime` with current time formatte
 * Sign-in, and use token from response with any followed calls.
 
 ```sh
-curl -H "Content-Type: application/json" -d '{"email":"player@example.org","secret":"iVI05M"}' -X POST localhost:8080/signin
+curl -X POST localhost:8080/signin \
+  -H "Content-Type: application/json" \
+  -d '{"email":"player@example.org","secret":"iVI05M"}'
 ```
 
-You can use token `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzbG90b3BvbCIsImV4cCI6NDg2NzQ0NzYxNywibmJmIjoxNzA2NjQ3NjE3LCJ1aWQiOjN9.6g2Hig9ErG8IbvzkPppry5F8HJsMunZPwuQzmetGh4c` for test purpose, it given for user with UID=3 on 100 years. Replace `{{token}}` at samples below to this value.
+You can use token
+
+```sh
+TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzbG90b3BvbCIsImV4cCI6NDg2NzQ0NzYxNywibmJmIjoxNzA2NjQ3NjE3LCJ1aWQiOjN9.6g2Hig9ErG8IbvzkPppry5F8HJsMunZPwuQzmetGh4c"
+```
+
+for test purpose, it given for user with UID=3 on 100 years.
 
 * When your access token expires (you can get response with 401 status code), use refresh-call with refresh-token to get new tokens pair.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -X GET localhost:8080/refresh
+curl -X GET localhost:8080/refresh \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 ### Create and play the game
@@ -303,7 +313,10 @@ curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -X
 * Create new game. GID received at response will be used at all calls for access to this game instance. Also you will get initial game state, and user balance at this club.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"cid":1,"uid":3,"alias":"Novomatic/Joker Dolphin"}' -X POST localhost:8080/game/new
+curl -X POST localhost:8080/game/new \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"cid":1,"uid":3,"alias":"Novomatic/Joker Dolphin"}'
 ```
 
 Endpoint receives `alias` identifier to game that represents as concatenation of provider name and game name with slash. For example, `NetEnt/Tiki Wonders`. Whole list of all supported games can be obtained by [list](docs/list-all.md) command. Identifier turns to lowercase without spaces.
@@ -311,13 +324,19 @@ Endpoint receives `alias` identifier to game that represents as concatenation of
 * Change number of selected bet lines.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1,"sel":5}' -X POST localhost:8080/slot/sel/set
+curl -X POST localhost:8080/slot/sel/set \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"gid":1,"sel":5}'
 ```
 
 * Make a spin. Spin returns `sid` - spin ID, by this ID it can be found at the log; `grid` with new symbols after spin; `wins` with list of win on each line if it was; `fs` - free spins remained; `gain` - total gain after spin, that can be gambled on double up; `wallet` - user balance after spin with won coins.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/slot/spin
+curl -X POST localhost:8080/slot/spin \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"gid":1}'
 ```
 
 At parameters can be also given new bet value and number of selected lines, if there is no free spins now. So, data at the query can be seen such as `{"gid":1,"bet":2,"sel":5}`. Its can be useful for conversations only by spin-queries.
@@ -325,19 +344,28 @@ At parameters can be also given new bet value and number of selected lines, if t
 * Double-up. If presents `gain` after spin, it can be multiplied by gamble. `mult` at argument is multiplier, and it will be `2` for red-black cards game. Returned `gain` will be multiplied on win, and zero on lose. `wallet` represents new balance of user.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1,"mult":2}' -X POST localhost:8080/slot/doubleup
+curl -X POST localhost:8080/slot/doubleup \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"gid":1,"mult":2}'
 ```
 
 * Collect the gain. After win on spin, or after double-up gain can be collected. In most cases it will be collected automatically on new spin.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/slot/collect
+curl -X POST localhost:8080/slot/collect \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"gid":1}'
 ```
 
 * Get information about opened game. Recivies GID. Response has game name, game state, last spin ID, user ID, club ID, and user balance at this club.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"gid":1}' -X POST localhost:8080/game/info
+curl -X POST localhost:8080/game/info \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"gid":1}'
 ```
 
 ### Work with user account
@@ -351,7 +379,9 @@ curl -X GET localhost:8080/signis?email=rob@example.org
 * Register new user. E-mail and secret key (password) are expected, name can be omitted. Receives user ID on success.
 
 ```sh
-curl -H "Content-Type: application/json" -d '{"email":"rob@example.org","secret":"LtpkAr","name":"rob"}' -X POST localhost:8080/signup
+curl -X POST localhost:8080/signup \
+  -H "Content-Type: application/json" \
+  -d '{"email":"rob@example.org","secret":"LtpkAr","name":"rob"}'
 ```
 
 After registration new user account expects account activation by code sent to user email. Activation can be done by `/activate` endpoint call. If registration of new user was done with admin token, this new user account does not expects activation.
@@ -375,19 +405,28 @@ Instead `uid` parameter with user identifier can be used user `email`.
 * Rename user.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"uid":3,"name":"erigone"}' -X POST localhost:8080/user/rename
+curl -X POST localhost:8080/user/rename \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"uid":3,"name":"erigone"}'
 ```
 
 * Change secret key.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"uid":3,"oldsecret":"iVI05M","newsecret":"pGjKsd"}' -X POST localhost:8080/user/secret
+curl -X POST localhost:8080/user/secret \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"uid":3,"oldsecret":"iVI05M","newsecret":"pGjKsd"}'
 ```
 
 * Delete user. Delete-call removes account from database, move all remained user's coins to deposit, and removes all users games from database.
 
 ```sh
-curl -H "Content-Type: application/json" -H "Authorization: Bearer {{token}}" -d '{"uid":3,"secret":"iVI05M"}' -X POST localhost:8080/user/delete
+curl -X POST localhost:8080/user/delete \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer $TOKEN" \
+  -d '{"uid":3,"secret":"iVI05M"}'
 ```
 
 ---

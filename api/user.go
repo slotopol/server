@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/xml"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	cfg "github.com/slotopol/server/config"
@@ -92,6 +93,7 @@ func ApiUserRename(c *gin.Context) {
 		return
 	}
 	user.Name = arg.Name
+	user.UTime = time.Now()
 
 	Ret204(c)
 }
@@ -137,6 +139,7 @@ func ApiUserSecret(c *gin.Context) {
 		return
 	}
 	user.Secret = arg.NewSecret
+	user.UTime = time.Now()
 
 	Ret204(c)
 }

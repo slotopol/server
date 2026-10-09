@@ -15,7 +15,6 @@ const (
 	AEC_basic_decode
 	AEC_basic_nouser
 	AEC_basic_deny
-	AEC_token_nouser
 	AEC_token_malform
 	AEC_token_notsign
 	AEC_token_badclaims
@@ -23,6 +22,7 @@ const (
 	AEC_token_notyet
 	AEC_token_issuer
 	AEC_token_error
+	AEC_token_nouser
 
 	// 404
 
@@ -78,6 +78,10 @@ const (
 	AEC_signin_timeout
 	AEC_signin_hs256
 	AEC_signin_denyhash
+
+	// Any /token
+
+	AEC_token_nobind
 
 	// POST /game/new
 

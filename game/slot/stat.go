@@ -272,6 +272,7 @@ func (s *StatGeneric) Count() float64 {
 	return float64(s.N.Load())
 }
 
+// Deprecated: does not usefull for parsheet calculations
 func (s *StatGeneric) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
 	for sym, pays := range s.S {
 		for i := range pays {
@@ -337,11 +338,6 @@ func (s *StatGeneric) ΣPL(scat Sym, L []int) (sum float64) {
 		sum += Pfgi * float64(Li)
 	}
 	return
-}
-
-// Free Games hit rate: average number of reshuffles per free games hits.
-func (s *StatGeneric) HRfg() float64 {
-	return s.Count() / float64(s.Cfg.Load())
 }
 
 func (s *StatGeneric) BonusHits(bid int) float64 {
@@ -482,6 +478,7 @@ func (s *StatCascade) CascNum(n int) (sum uint64) {
 	return
 }
 
+// Deprecated: does not usefull for parsheet calculations
 func (s *StatCascade) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
 	for cfn := range s.Casc {
 		var c = &s.Casc[cfn]
@@ -560,11 +557,6 @@ func (s *StatCascade) ΣPL(scat Sym, L []int) (sum float64) {
 		sum += Pfgi * float64(Li)
 	}
 	return
-}
-
-// Free Games hit rate: average number of reshuffles per free games hit.
-func (s *StatCascade) HRfg() float64 {
-	return s.Count() / float64(s.SumFGH())
 }
 
 // Cascade multiplier.
