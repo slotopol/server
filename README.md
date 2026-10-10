@@ -330,7 +330,7 @@ curl -X POST localhost:8080/slot/sel/set \
   -d '{"gid":1,"sel":5}'
 ```
 
-* Make a spin. Spin returns `sid` - spin ID, by this ID it can be found at the log; `grid` with new symbols after spin; `wins` with list of win on each line if it was; `fs` - free spins remained; `gain` - total gain after spin, that can be gambled on double up; `wallet` - user balance after spin with won coins.
+* Make a spin. Spin returns `slid` - spin log ID, by this ID it can be found at the log; `grid` with new symbols after spin; `wins` with list of win on each line if it was; `fs` - free spins remained; `gain` - total gain after spin, that can be gambled on double up; `wallet` - user balance after spin with won coins.
 
 ```sh
 curl -X POST localhost:8080/slot/spin \

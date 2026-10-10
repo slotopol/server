@@ -18,10 +18,17 @@ var (
 const DefMRTP = 95.0
 
 type CfgJwtAuth struct {
-	AccessTTL    time.Duration `json:"access-ttl" yaml:"access-ttl" mapstructure:"access-ttl"`
-	RefreshTTL   time.Duration `json:"refresh-ttl" yaml:"refresh-ttl" mapstructure:"refresh-ttl"`
-	AccessKey    string        `json:"access-key" yaml:"access-key" mapstructure:"access-key"`
-	RefreshKey   string        `json:"refresh-key" yaml:"refresh-key" mapstructure:"refresh-key"`
+	// Access token time to live. Time after which the access token is considered old and invalid.
+	AccessTTL time.Duration `json:"access-ttl" yaml:"access-ttl" mapstructure:"access-ttl"`
+	// Refresh token time to live. Time after which the refresh token is considered old and invalid.
+	RefreshTTL time.Duration `json:"refresh-ttl" yaml:"refresh-ttl" mapstructure:"refresh-ttl"`
+	// Key to sign access HS-256 JWT-tokens.
+	AccessKey string `json:"access-key" yaml:"access-key" mapstructure:"access-key"`
+	// Key to sign refresh HS-256 JWT-tokens.
+	RefreshKey string `json:"refresh-key" yaml:"refresh-key" mapstructure:"refresh-key"`
+	// Time after refresh is requested, during which the old JWT-token does not deviate.
+	GracePeriod time.Duration `json:"grace-period" yaml:"grace-period" mapstructure:"grace-period"`
+	// Validity timeout of the nonce with which the login hash is signed.
 	NonceTimeout time.Duration `json:"nonce-timeout" yaml:"nonce-timeout" mapstructure:"nonce-timeout"`
 }
 
@@ -106,10 +113,11 @@ type Config struct {
 // Inits default values if config is not found.
 var Cfg = &Config{
 	CfgJwtAuth: CfgJwtAuth{
-		AccessTTL:    1 * 24 * time.Hour,
-		RefreshTTL:   3 * 24 * time.Hour,
+		AccessTTL:    30 * time.Minute,
+		RefreshTTL:   14 * 24 * time.Hour,
 		AccessKey:    "skJgM4NsbP3fs4k7vh0gfdkgGl8dJTszdLxZ1sQ9ksFnxbgvw2RsGH8xxddUV479",
 		RefreshKey:   "zxK4dUnuq3Lhd1Gzhpr3usI5lAzgvy2t3fmxld2spzz7a5nfv0hsksm9cheyutie",
+		GracePeriod:  15 * time.Second,
 		NonceTimeout: 150 * time.Second,
 	},
 	CfgSendCode: CfgSendCode{

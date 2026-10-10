@@ -14,7 +14,7 @@ const (
 	sqlbank4 = `UPDATE props SET mrtp=?, utime=CURRENT_TIMESTAMP WHERE uid=? AND cid=?`
 )
 
-func SafeTransaction(engine *xorm.Engine, f func(*Session) error) (err error) {
+func SafeTransaction(engine *xorm.Engine, f func(*xorm.Session) error) (err error) {
 	var session = engine.NewSession()
 	defer session.Close()
 
@@ -70,7 +70,7 @@ func (sb *SqlBank) IsEmpty() bool {
 		len(sb.log) == 0
 }
 
-func (sb *SqlBank) transaction(session *Session) (err error) {
+func (sb *SqlBank) transaction(session *xorm.Session) (err error) {
 	if sb.banksum != 0 {
 		if _, err = session.Exec(sqlbank1, sb.banksum, sb.cid); err != nil {
 			return
@@ -197,7 +197,7 @@ func (ss *SqlStory) IsEmpty() bool {
 	return len(ss.log) == 0
 }
 
-func (ss *SqlStory) transaction(session *Session) (err error) {
+func (ss *SqlStory) transaction(session *xorm.Session) (err error) {
 	if len(ss.log) > 0 {
 		if _, err = session.InsertMulti(&ss.log); err != nil {
 			return

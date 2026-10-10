@@ -21,6 +21,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/util"
+	"xorm.io/xorm"
 )
 
 const (
@@ -66,7 +67,7 @@ var (
 // profile identifier or user email.
 type Claims struct {
 	jwt.RegisteredClaims
-	//UID uint64 `json:"uid,omitempty"`
+	SID uint64 `json:"sid,omitempty"`
 }
 
 func (c *Claims) GetUser() (*User, error) {
@@ -97,7 +98,7 @@ func (c *Claims) Validate() error {
 	// his password or updating account.
 	// Before change the password it can get new refresh token,
 	// but after change the old tokens will be invalidated.
-	if c.NotBefore.Add(time.Minute).Before(user.UTime) {
+	if c.NotBefore.Add(Cfg.GracePeriod).Before(user.UTime) {
 		return ErrJwtOld
 	}
 	return nil
@@ -564,7 +565,7 @@ func ApiSignup(c *gin.Context) {
 		Code:   code,
 		Status: status,
 	}
-	if err = SafeTransaction(cfg.XormStorage, func(session *Session) (err error) {
+	if err = SafeTransaction(cfg.XormStorage, func(session *xorm.Session) (err error) {
 		if _, err = session.Insert(user); err != nil {
 			return
 		}

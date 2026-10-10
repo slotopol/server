@@ -265,7 +265,7 @@ func ApiKenoSpin(c *gin.Context) {
 	}
 	var ret struct {
 		XMLName xml.Name      `json:"-" yaml:"-" xml:"ret"`
-		SID     uint64        `json:"sid" yaml:"sid" xml:"sid,attr"`
+		SLID    uint64        `json:"slid" yaml:"slid" xml:"slid,attr"`
 		Game    keno.KenoGame `json:"game" yaml:"game" xml:"game"`
 		Wins    keno.Wins     `json:"wins" yaml:"wins" xml:"wins"`
 		Wallet  float64       `json:"wallet" yaml:"wallet" xml:"wallet"`
@@ -368,10 +368,10 @@ func ApiKenoSpin(c *gin.Context) {
 	props.Wallet -= debit
 
 	// write spin result to log and get spin ID
-	var sid = SpinCounter.Inc()
-	scene.SID = sid
+	var slid = SpinCounter.Inc()
+	scene.SLID = slid
 	var rec = Spinlog{
-		SID:    sid,
+		SLID:   slid,
 		GID:    arg.GID,
 		MRTP:   mrtp,
 		Gain:   wins.Pay,
@@ -398,7 +398,7 @@ func ApiKenoSpin(c *gin.Context) {
 	}
 
 	// prepare result
-	ret.SID = sid
+	ret.SLID = slid
 	ret.Game = game
 	ret.Wins = wins
 	ret.Wallet = props.Wallet

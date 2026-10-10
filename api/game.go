@@ -250,7 +250,7 @@ func ApiGameInfo(c *gin.Context) {
 		Alias   string   `json:"alias" yaml:"alias" xml:"alias"`
 		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr"`
 		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr"`
-		SID     uint64   `json:"sid" yaml:"sid" xml:"sid,attr"`
+		SLID    uint64   `json:"slid" yaml:"slid" xml:"slid,attr"`
 		Game    any      `json:"game" yaml:"game" xml:"game"`
 		Wallet  float64  `json:"wallet" yaml:"wallet" xml:"wallet"`
 	}
@@ -288,7 +288,7 @@ func ApiGameInfo(c *gin.Context) {
 	ret.Alias = scene.Alias
 	ret.CID = scene.CID
 	ret.UID = scene.UID
-	ret.SID = scene.SID
+	ret.SLID = scene.SLID
 	ret.Game = scene.Game
 	ret.Wallet = props.Wallet
 

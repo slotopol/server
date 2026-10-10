@@ -10,6 +10,7 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/slotopol/server/api"
 	"github.com/slotopol/server/cmd"
@@ -86,6 +87,8 @@ func post(t *testing.T, r *gin.Engine, path string, token string, arg any) (ret 
 	return
 }
 
+// Simulate a player playing a game with random bets and lines selected,
+// and sometimes making double-ups on wins.
 func TestPlay(t *testing.T) {
 	const cid, uid uint64 = 1, 3
 	var arg, ret gin.H
@@ -109,7 +112,6 @@ func TestPlay(t *testing.T) {
 	if err := cmd.InitSQL(); err != nil {
 		t.Fatal(err)
 	}
-	defer cmd.DoneSQL()
 
 	gin.SetMode(gin.TestMode)
 	var r = gin.New()
@@ -197,7 +199,7 @@ func TestPlay(t *testing.T) {
 			fsr = 0
 		}
 		wallet = ret["wallet"].(float64)
-		t.Logf("[spin] gid: %d, sid: %d, fsr: %d, wallet: %.2f, gain: %g", gid, uint64(ret["sid"].(float64)), fsr, wallet, gain)
+		t.Logf("[spin] gid: %d, slid: %d, fsr: %d, wallet: %.2f, gain: %g", gid, uint64(ret["slid"].(float64)), fsr, wallet, gain)
 
 		// no any more actions on free spins
 		if fsr > 0 {
@@ -215,7 +217,7 @@ func TestPlay(t *testing.T) {
 				ret = post(t, r, "/slot/doubleup", usrtoken, arg)
 				var gain = ret["gain"].(float64)
 				wallet = ret["wallet"].(float64)
-				t.Logf("[doubleup] gid: %d, id: %d, wallet: %.2f, gain: %g", gid, uint64(ret["id"].(float64)), wallet, gain)
+				t.Logf("[doubleup] gid: %d, mlid: %d, wallet: %.2f, gain: %g", gid, uint64(ret["mlid"].(float64)), wallet, gain)
 				if gain == 0 {
 					break
 				}
@@ -251,5 +253,13 @@ func TestPlay(t *testing.T) {
 			post(t, r, "/slot/sel/set", usrtoken, arg)
 			t.Logf("[sel/set] gid: %d, sel: %d", gid, sel)
 		}
+	}
+
+	// Lets the server to finish writing logs to database
+	time.Sleep(0)
+
+	// Close database connection
+	if err := cmd.DoneSQL(); err != nil {
+		t.Fatal(err)
 	}
 }

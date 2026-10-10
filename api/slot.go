@@ -224,7 +224,7 @@ func ApiSlotSpin(c *gin.Context) {
 	}
 	var ret struct {
 		XMLName xml.Name         `json:"-" yaml:"-" xml:"ret"`
-		SID     uint64           `json:"sid" yaml:"sid" xml:"sid,attr"`
+		SLID    uint64           `json:"slid" yaml:"slid" xml:"slid,attr"`
 		Game    slot.SlotGeneric `json:"game" yaml:"game" xml:"game"`
 		Wins    slot.Wins        `json:"wins,omitempty" yaml:"wins,omitempty" xml:"wins,omitempty"`
 		Wallet  float64          `json:"wallet" yaml:"wallet" xml:"wallet"`
@@ -343,10 +343,10 @@ func ApiSlotSpin(c *gin.Context) {
 	game.Apply(wins)
 
 	// write spin result to log and get spin ID
-	var sid = SpinCounter.Inc()
-	scene.SID = sid
+	var slid = SpinCounter.Inc()
+	scene.SLID = slid
 	var rec = Spinlog{
-		SID:    sid,
+		SLID:   slid,
 		GID:    arg.GID,
 		MRTP:   mrtp,
 		Gain:   game.GetGain(),
@@ -375,7 +375,7 @@ func ApiSlotSpin(c *gin.Context) {
 	}
 
 	// prepare result
-	ret.SID = sid
+	ret.SLID = slid
 	ret.Game = game
 	ret.Wins = wins
 	ret.Wallet = props.Wallet
@@ -398,7 +398,7 @@ func ApiSlotDoubleup(c *gin.Context) {
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
-		ID      uint64   `json:"id" yaml:"id" xml:"id,attr"`
+		MLID    uint64   `json:"mlid" yaml:"mlid" xml:"mlid,attr"`
 		Win     bool     `json:"win" yaml:"win" xml:"win"`
 		Risk    float64  `json:"risk" yaml:"risk" xml:"risk"`
 		Gain    float64  `json:"gain" yaml:"gain" xml:"gain"`
@@ -486,11 +486,11 @@ func ApiSlotDoubleup(c *gin.Context) {
 	game.SetGain(newgain)
 
 	// write doubleup result to log and get spin ID
-	var id = MultCounter.Inc()
+	var mlid = MultCounter.Inc()
 	if Cfg.UseSpinLog {
 		go func() {
 			var rec = Multlog{
-				ID:     id,
+				MLID:   mlid,
 				GID:    arg.GID,
 				MRTP:   mrtp,
 				Mult:   arg.Mult,
@@ -506,7 +506,7 @@ func ApiSlotDoubleup(c *gin.Context) {
 	}
 
 	// prepare result
-	ret.ID = id
+	ret.MLID = mlid
 	ret.Win = win
 	ret.Risk = risk
 	ret.Gain = newgain

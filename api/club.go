@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	cfg "github.com/slotopol/server/config"
+	"xorm.io/xorm"
 )
 
 const (
@@ -244,7 +245,7 @@ func ApiClubCashin(c *gin.Context) {
 		FundSum: arg.FundSum,
 		LockSum: arg.LockSum,
 	}
-	if err = SafeTransaction(cfg.XormStorage, func(session *Session) (err error) {
+	if err = SafeTransaction(cfg.XormStorage, func(session *xorm.Session) (err error) {
 		if _, err = session.Exec(sqlclub, arg.BankSum, arg.FundSum, arg.LockSum, club.CID()); err != nil {
 			Ret500(c, AEC_club_cashin_sqlbank, err)
 			return
@@ -261,7 +262,7 @@ func ApiClubCashin(c *gin.Context) {
 	// make changes to memory data
 	club.AddCash(arg.BankSum, arg.FundSum, arg.LockSum)
 
-	ret.BID = rec.ID
+	ret.BID = rec.BID
 	ret.Bank = bank
 	ret.Fund = fund
 	ret.Lock = lock

@@ -183,6 +183,7 @@ func InitStorage() (err error) {
 	if err = session.Sync(
 		&api.ClubData{}, &api.User{}, &api.Props{},
 		&api.Story{}, api.Walletlog{}, api.Banklog{},
+		&api.Session{},
 	); err != nil {
 		return
 	}
@@ -277,11 +278,21 @@ func InitStorage() (err error) {
 		}
 	}
 
-	var i64 int64
-	if i64, err = session.Count(&api.Story{}); err != nil {
+	// Read last IDs from database to continue incrementing counters.
+	var has bool
+	var lastID int64
+	if has, err = session.Table("story").Desc("gid").Cols("gid").Get(&lastID); err != nil {
 		return
 	}
-	api.StoryCounter.Store(uint64(i64))
+	if has {
+		api.StoryCounter.Store(uint64(lastID))
+	}
+	if has, err = session.Table("session").Desc("sid").Cols("sid").Get(&lastID); err != nil {
+		return
+	}
+	if has {
+		api.SessCounter.Store(uint64(lastID))
+	}
 
 	api.JoinBuf.Init(Cfg.ClubInsertBuffer)
 	return
@@ -319,15 +330,23 @@ func InitSpinlog() (err error) {
 	if err = session.Sync(&api.Spinlog{}, &api.Multlog{}); err != nil {
 		return
 	}
+
+	// Read last IDs from database to continue incrementing counters.
+	var has bool
+	var lastID int64
+	if has, err = session.Table("spinlog").Desc("slid").Cols("slid").Get(&lastID); err != nil {
+		return
+	}
+	if has {
+		api.SpinCounter.Store(uint64(lastID))
+	}
 	var i64 int64
-	if i64, err = session.Count(&api.Spinlog{}); err != nil {
+	if has, err = session.Table("multlog").Desc("mlid").Cols("mlid").Get(&i64); err != nil {
 		return
 	}
-	api.SpinCounter.Store(uint64(i64))
-	if i64, err = session.Count(&api.Multlog{}); err != nil {
-		return
+	if has {
+		api.MultCounter.Store(uint64(i64))
 	}
-	api.MultCounter.Store(uint64(i64))
 
 	api.SpinBuf.Init(Cfg.SpinInsertBuffer)
 	api.MultBuf.Init(Cfg.SpinInsertBuffer)

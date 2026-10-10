@@ -4,14 +4,16 @@
 # This file does not modified by server runtime.
 
 authentication:
-  # Access token time to live.
-  access-ttl: 24h # 1 day
-  # Refresh token time to live.
-  refresh-ttl: 72h # 3 days
-  # Key for access HS-256 JWT-tokens.
+  # Access token time to live. Time after which the access token is considered old and invalid.
+  access-ttl: 30m # 30 minutes
+  # Refresh token time to live. Time after which the refresh token is considered old and invalid.
+  refresh-ttl: 336h # 2 weeks
+  # Key to sign access HS-256 JWT-tokens.
   access-key: skJgM4NsbP3fs4k7vh0gfdkgGl8dJTszdLxZ1sQ9ksFnxbgvw2RsGH8xxddUV479
-  # Key for refresh HS-256 JWT-tokens.
+  # Key to sign refresh HS-256 JWT-tokens.
   refresh-key: zxK4dUnuq3Lhd1Gzhpr3usI5lAzgvy2t3fmxld2spzz7a5nfv0hsksm9cheyutie
+  # Time after refresh is requested, during which the old JWT-token does not deviate.
+  grace-period: 15s # 15 seconds
   # Validity timeout of the nonce with which the login hash is signed.
   nonce-timeout: 2m30s
 activation: # User account activation and verification

@@ -9,12 +9,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
-	"xorm.io/xorm"
 
 	cfg "github.com/slotopol/server/config"
 )
-
-type Session = xorm.Session
 
 // "Server" field for HTTP headers.
 var serverhdr = fmt.Sprintf("slotopol/%s (%s; %s)", cfg.BuildVers, runtime.GOOS, runtime.GOARCH)
