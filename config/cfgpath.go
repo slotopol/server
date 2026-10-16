@@ -86,6 +86,9 @@ func InitConfig() {
 		}
 	}
 
+	viper.BindEnv("authentication.access-key", "SLOTOPOL_ACCESSKEY")
+	viper.BindEnv("authentication.refresh-key", "SLOTOPOL_REFRESHKEY")
+	viper.BindEnv("activation.brevo-api-key", "SLOTOPOL_BREVOAPIKEY")
 	viper.BindEnv("database.driver-name", "SLOTOPOL_DBDRIVER")
 	viper.BindEnv("database.club-source-name", "SLOTOPOL_CLUBDSN")
 	viper.BindEnv("database.spin-source-name", "SLOTOPOL_SPINDSN")
@@ -98,6 +101,23 @@ func InitConfig() {
 		CfgFile = viper.ConfigFileUsed()
 		CfgPath = filepath.Dir(CfgFile)
 		Infof("config path: %s", CfgPath)
+	}
+
+	// Check up signing keys existence and length.
+	if len(Cfg.AccessKey) == 0 {
+		cobra.CheckErr(errors.New("access-key for JWT-token signing does not given, please set SLOTOPOL_ACCESSKEY environment variable or set access-key in config file"))
+	}
+	if len(Cfg.AccessKey) < 32 {
+		cobra.CheckErr(errors.New("access-key for JWT-token signing is too short, it should be at least 32 bytes long"))
+	}
+	if len(Cfg.RefreshKey) == 0 {
+		cobra.CheckErr(errors.New("refresh-key for JWT-token signing does not given, please set SLOTOPOL_REFRESHKEY environment variable or set refresh-key in config file"))
+	}
+	if len(Cfg.RefreshKey) < 32 {
+		cobra.CheckErr(errors.New("refresh-key for JWT-token signing is too short, it should be at least 32 bytes long"))
+	}
+	if Cfg.UseActivation && len(Cfg.BrevoApiKey) == 0 {
+		cobra.CheckErr(errors.New("Brevo API-key for email sending does not given, please set SLOTOPOL_BREVOAPIKEY environment variable or set brevo-api-key in config file"))
 	}
 
 	// Detect SQLite path.

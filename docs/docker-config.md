@@ -17,32 +17,47 @@ To keep database files outside of container can by two ways. For example you hav
 
 In first way can be mounted volume with this path and replace default path:
 
-```sh
+```bat
 docker run -d -p 8080:8080 -v "D:/srv/sqlite":/go/bin/sqlite schwarzlichtbezirk/slotopol
 ```
 
-or in bash-like syntax:
+or in git-bash syntax:
 
 ```sh
-docker run -d -p 8080:8080 -v //d/srv/sqlite:/go/bin/sqlite schwarzlichtbezirk/slotopol
+docker run -d \
+  -p 8080:8080 \
+  -v /d/srv/sqlite:/go/bin/sqlite \
+  schwarzlichtbezirk/slotopol
 ```
 
 In second way volume with sqlite files can be pointed by environment variable `SLOTOPOL_SQLPATH`:
 
 ```sh
-docker run -d -p 8080:8080 -v "D:/srv":/cache -e SLOTOPOL_SQLPATH=/cache/sqlite schwarzlichtbezirk/slotopol
+docker run -d \
+  -p 8080:8080 \
+  -v /d/srv/:/cache \
+  -e SLOTOPOL_SQLPATH=/cache/sqlite \
+  schwarzlichtbezirk/slotopol
 ```
 
 Default settings file can also be replaced. To replace only one settings file can by command:
 
 ```sh
-docker run -d -p 8080:8080 -v "D:/srv/config/slot-app.yaml":/go/bin/config/slot-app.yaml:ro schwarzlichtbezirk/slotopol
+docker run -d \
+  -p 8080:8080 \
+  -v "/d/srv/config/slot-app.yaml":/go/bin/config/slot-app.yaml:ro \
+  schwarzlichtbezirk/slotopol
 ```
 
 If you mount folder volume with settings files, other configuration files also should be present there. In case of mounted folder with configuration files you can keep several settings files with different names in one folder, and provide specified file by `SLOTOPOL_CFGFILE` environment variable. I.e. you can make `slot-app-mysql.yaml` file with connection to MySQL, and `slot-app-postgres.yaml` file with PostgreSQL connection for example.
 
 ```sh
-docker run -d -p 8080:8080 -v //d/srv:/cache -e SLOTOPOL_CFGFILE=/cache/config/slot-app.yaml -e SLOTOPOL_SQLPATH=/cache/sqlite schwarzlichtbezirk/slotopol
+docker run -d \
+  -p 8080:8080 \
+  -v /d/srv:/cache \
+  -e SLOTOPOL_CFGFILE=/cache/config/slot-app.yaml \
+  -e SLOTOPOL_SQLPATH=/cache/sqlite \
+  schwarzlichtbezirk/slotopol
 ```
 
 ## Start container with database connection
@@ -113,3 +128,14 @@ networks:
     ipam:
       driver: default
 ```
+
+## Security
+
+Authorization is provided by two JWT-tokens:
+
+- Access token is signed by key provided by `authentication.access-key` field at configuration file (`slot-app.yaml`) or by `SLOTOPOL_ACCESSKEY` environment variable.
+- Refresh token is signed by key provided by `authentication.refresh-key` field at configuration file (`slot-app.yaml`) or by `SLOTOPOL_REFRESHKEY` environment variable.
+
+To get code for registration activation used [Brevo](brevo.com) service. The Brevo [API-key](https://app.brevo.com/settings/keys/api) can be changed by adjusting the configuration file at `activation.brevo-api-key` or by `SLOTOPOL_BREVOAPIKEY` environment variable.
+
+Those environment variables features could be used for server version > 0.14.0. For earlier versions use configuration file only.

@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
+	"fmt"
 	"io"
 	"math/rand/v2"
 	"net/http"
@@ -17,6 +19,20 @@ import (
 	cfg "github.com/slotopol/server/config"
 
 	"github.com/gin-gonic/gin"
+)
+
+const (
+	// JWT-token signing keys
+	testAccessKey  = "skJgM4NsbP3fs4k7vh0gfdkgGl8dJTszdLxZ1sQ9ksFnxbgvw2RsGH8xxddUV479"
+	testRefreshKey = "zxK4dUnuq3Lhd1Gzhpr3usI5lAzgvy2t3fmxld2spzz7a5nfv0hsksm9cheyutie"
+
+	// admin credentials
+	testAdminEmail  = "admin@example.org"
+	testAdminSecret = "0YBoaT"
+
+	// test user credentials
+	testUserEmail  = "player@example.org"
+	testUserSecret = "iVI05M"
 )
 
 // set of bets per line
@@ -40,21 +56,28 @@ var sumset = []float64{
 	10000,
 }
 
-func ping(t *testing.T, r *gin.Engine) {
+var (
+	ErrHttpNotOk   = errors.New("http response is not ok")
+	ErrAlienServer = errors.New("alien server")
+)
+
+func ping(t *testing.T, r *gin.Engine) (err error) {
 	var req = httptest.NewRequest("GET", "/ping", nil)
 	var w = httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	if w.Code != http.StatusOK {
-		t.Error("ping is not ok")
+		err = fmt.Errorf("%w, ping failed, code %d", ErrHttpNotOk, w.Code)
+		t.Error(err)
 	}
 	var resp = w.Result()
 	if !strings.HasPrefix(resp.Header.Get("Server"), "slotopol/") {
-		t.Error("alien server")
+		err = fmt.Errorf("%w, header: %s", ErrAlienServer, resp.Header.Get("Server"))
+		t.Error(err)
 	}
+	return
 }
 
-func post(t *testing.T, r *gin.Engine, path string, token string, arg any) (ret gin.H) {
-	var err error
+func post(t *testing.T, r *gin.Engine, path string, token string, arg any) (ret gin.H, err error) {
 	var b []byte
 
 	if b, err = json.Marshal(arg); err != nil {
@@ -72,14 +95,21 @@ func post(t *testing.T, r *gin.Engine, path string, token string, arg any) (ret 
 		return
 	}
 	if w.Code != http.StatusOK {
-		t.Errorf("'%s' is not ok, status %d", path, w.Code)
+		err = fmt.Errorf("%w, path '%s', code %d", ErrHttpNotOk, path, w.Code)
+		t.Error(err)
 	}
 	var resp = w.Result()
+	if !strings.HasPrefix(resp.Header.Get("Server"), "slotopol/") {
+		err = fmt.Errorf("%w, header: %s", ErrAlienServer, resp.Header.Get("Server"))
+		t.Error(err)
+	}
 	if b, err = io.ReadAll(resp.Body); err != nil {
 		t.Error(err)
+		return
 	}
 	if err = json.Unmarshal(b, &ret); err != nil {
 		t.Error(err)
+		return
 	}
 	if w.Code != http.StatusOK {
 		t.Logf("message: %v, code: %v", ret["what"], ret["code"])
@@ -91,6 +121,7 @@ func post(t *testing.T, r *gin.Engine, path string, token string, arg any) (ret 
 // and sometimes making double-ups on wins.
 func TestPlay(t *testing.T) {
 	const cid, uid uint64 = 1, 3
+	var err error
 	var arg, ret gin.H
 	var admtoken, usrtoken string
 	var gid uint64
@@ -118,24 +149,34 @@ func TestPlay(t *testing.T) {
 	r.HandleMethodNotAllowed = true
 	api.SetupRouter(r)
 
+	// Setup test JWT-token signing keys
+	cfg.Cfg.AccessKey = testAccessKey
+	cfg.Cfg.RefreshKey = testRefreshKey
+
 	// Send "ping" and check that server is our
-	ping(t, r)
+	if err = ping(t, r); err != nil {
+		return
+	}
 
 	// Sign-in admin in order to top up player account
 	arg = gin.H{
-		"email":  "admin@example.org",
-		"secret": "0YBoaT",
+		"email":  testAdminEmail,
+		"secret": testAdminSecret,
 	}
-	ret = post(t, r, "/signin", "", arg)
+	if ret, err = post(t, r, "/signin", "", arg); err != nil {
+		return
+	}
 	admtoken = ret["access"].(string)
 	t.Logf("[sign-in] %s", arg["email"])
 
 	// Sign-in player with predefined credentials
 	arg = gin.H{
-		"email":  "player@example.org",
-		"secret": "iVI05M",
+		"email":  testUserEmail,
+		"secret": testUserSecret,
 	}
-	ret = post(t, r, "/signin", "", arg)
+	if ret, err = post(t, r, "/signin", "", arg); err != nil {
+		return
+	}
 	usrtoken = ret["access"].(string)
 	t.Logf("[sign-in] %s", arg["email"])
 
@@ -145,7 +186,9 @@ func TestPlay(t *testing.T) {
 		"uid":   uid, // player ID
 		"alias": "Novomatic / Dolphins Pearl",
 	}
-	ret = post(t, r, "/game/new", usrtoken, arg)
+	if ret, err = post(t, r, "/game/new", usrtoken, arg); err != nil {
+		return
+	}
 	gid = uint64(ret["gid"].(float64))
 	wallet = ret["wallet"].(float64)
 	t.Logf("[new] gid: %d, wallet: %.2f", gid, wallet)
@@ -177,7 +220,9 @@ func TestPlay(t *testing.T) {
 				"uid": uid,
 				"sum": sum,
 			}
-			ret = post(t, r, "/prop/wallet/add", admtoken, arg)
+			if ret, err = post(t, r, "/prop/wallet/add", admtoken, arg); err != nil {
+				return
+			}
 			wallet = ret["wallet"].(float64)
 			t.Logf("[wallet/add] gid: %d, wallet: %.2f, sum: %g", gid, wallet, sum)
 		}
@@ -186,7 +231,9 @@ func TestPlay(t *testing.T) {
 		arg = gin.H{
 			"gid": gid,
 		}
-		ret = post(t, r, "/slot/spin", usrtoken, arg)
+		if ret, err = post(t, r, "/slot/spin", usrtoken, arg); err != nil {
+			return
+		}
 		var game = ret["game"].(map[string]any)
 		if v, ok := game["gain"]; ok {
 			gain = v.(float64)
@@ -214,7 +261,9 @@ func TestPlay(t *testing.T) {
 					"mult": 2,
 					"half": rand.Float64() < 0.25,
 				}
-				ret = post(t, r, "/slot/doubleup", usrtoken, arg)
+				if ret, err = post(t, r, "/slot/doubleup", usrtoken, arg); err != nil {
+					return
+				}
 				var gain = ret["gain"].(float64)
 				wallet = ret["wallet"].(float64)
 				t.Logf("[doubleup] gid: %d, mlid: %d, wallet: %.2f, gain: %g", gid, uint64(ret["mlid"].(float64)), wallet, gain)
@@ -256,7 +305,7 @@ func TestPlay(t *testing.T) {
 	}
 
 	// Lets the server to finish writing logs to database
-	time.Sleep(0)
+	time.Sleep(100 * time.Millisecond)
 
 	// Close database connection
 	if err := cmd.DoneSQL(); err != nil {

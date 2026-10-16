@@ -115,14 +115,14 @@ var Cfg = &Config{
 	CfgJwtAuth: CfgJwtAuth{
 		AccessTTL:    30 * time.Minute,
 		RefreshTTL:   14 * 24 * time.Hour,
-		AccessKey:    "skJgM4NsbP3fs4k7vh0gfdkgGl8dJTszdLxZ1sQ9ksFnxbgvw2RsGH8xxddUV479",
-		RefreshKey:   "zxK4dUnuq3Lhd1Gzhpr3usI5lAzgvy2t3fmxld2spzz7a5nfv0hsksm9cheyutie",
+		AccessKey:    "", // required to be set by environment variable or config file
+		RefreshKey:   "", // required to be set by environment variable or config file
 		GracePeriod:  15 * time.Second,
 		NonceTimeout: 150 * time.Second,
 	},
 	CfgSendCode: CfgSendCode{
 		UseActivation:      false,
-		BrevoApiKey:        "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",
+		BrevoApiKey:        "", // required to be set by environment variable or config file
 		BrevoEmailEndpoint: "https://api.brevo.com/v3/smtp/email",
 		SenderName:         "Slotopol server",
 		SenderEmail:        "slotopol.dev@gmail.com",
