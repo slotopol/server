@@ -12,7 +12,6 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/slotopol/server/api"
 	"github.com/slotopol/server/cmd"
@@ -140,8 +139,8 @@ func TestPlay(t *testing.T) {
 
 	// Prepare in-memory database
 	cfg.CfgPath = "../appdata"
-	if err := cmd.InitSQL(); err != nil {
-		t.Fatal(err)
+	if err := cmd.InitXORM(); err != nil {
+		t.Fatalf("can not initialize xorm: %s", err.Error())
 	}
 
 	gin.SetMode(gin.TestMode)
@@ -304,11 +303,8 @@ func TestPlay(t *testing.T) {
 		}
 	}
 
-	// Lets the server to finish writing logs to database
-	time.Sleep(100 * time.Millisecond)
-
 	// Close database connection
-	if err := cmd.DoneSQL(); err != nil {
+	if err := cmd.DoneXORM(); err != nil {
 		t.Fatal(err)
 	}
 }

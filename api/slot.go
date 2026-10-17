@@ -330,8 +330,10 @@ func ApiSlotSpin(c *gin.Context) {
 
 	// write gain and total bet as transaction
 	if Cfg.ClubUpdateBuffer > 1 {
-		go BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, debit)
-	} else if err = BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, debit); err != nil {
+		cfg.XormWG.Go(func() (err error) {
+			return BankBat[scene.CID].Put(scene.UID, debit)
+		})
+	} else if err = BankBat[scene.CID].Put(scene.UID, debit); err != nil {
 		Ret500(c, AEC_slot_spin_sqlbank, err)
 		return
 	}
@@ -367,11 +369,12 @@ func ApiSlotSpin(c *gin.Context) {
 	}
 
 	if Cfg.UseSpinLog {
-		go func() {
-			if err = SpinBuf.Put(cfg.XormSpinlog, rec); err != nil {
+		cfg.XormWG.Go(func() (err error) {
+			if err = SpinBuf.Put(rec); err != nil {
 				cfg.Errorf("can not write to spin log: %s", err.Error())
 			}
-		}()
+			return
+		})
 	}
 
 	// prepare result
@@ -473,8 +476,10 @@ func ApiSlotDoubleup(c *gin.Context) {
 
 	// write gain and total bet as transaction
 	if Cfg.ClubUpdateBuffer > 1 {
-		go BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, debit)
-	} else if err = BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, debit); err != nil {
+		cfg.XormWG.Go(func() (err error) {
+			return BankBat[scene.CID].Put(scene.UID, debit)
+		})
+	} else if err = BankBat[scene.CID].Put(scene.UID, debit); err != nil {
 		Ret500(c, AEC_slot_doubleup_sqlbank, err)
 		return
 	}
@@ -488,7 +493,7 @@ func ApiSlotDoubleup(c *gin.Context) {
 	// write doubleup result to log and get spin ID
 	var mlid = MultCounter.Inc()
 	if Cfg.UseSpinLog {
-		go func() {
+		cfg.XormWG.Go(func() (err error) {
 			var rec = Multlog{
 				MLID:   mlid,
 				GID:    arg.GID,
@@ -499,10 +504,11 @@ func ApiSlotDoubleup(c *gin.Context) {
 				Gain:   newgain,
 				Wallet: props.Wallet,
 			}
-			if err = MultBuf.Put(cfg.XormSpinlog, rec); err != nil {
+			if err = MultBuf.Put(rec); err != nil {
 				cfg.Errorf("can not write to mult log: %s", err.Error())
 			}
-		}()
+			return
+		})
 	}
 
 	// prepare result

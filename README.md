@@ -303,9 +303,9 @@ for test purpose, it given for user with UID=3 on 100 years.
 * When your access token expires (you can get response with 401 status code), use refresh-call with refresh-token to get new tokens pair.
 
 ```sh
-curl -X GET localhost:8080/refresh \
+curl -X POST localhost:8080/token \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $TOKEN"
+  -d '{"refrsh":"$REFRESH"}'
 ```
 
 ### Create and play the game

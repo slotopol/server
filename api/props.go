@@ -154,8 +154,10 @@ func ApiPropsWalletAdd(c *gin.Context) {
 
 	// update wallet as transaction
 	if Cfg.ClubInsertBuffer > 1 {
-		go BankBat[arg.CID].Add(cfg.XormStorage, arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum)
-	} else if err = BankBat[arg.CID].Add(cfg.XormStorage, arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum); err != nil {
+		cfg.XormWG.Go(func() (err error) {
+			return BankBat[arg.CID].Add(arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum)
+		})
+	} else if err = BankBat[arg.CID].Add(arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum); err != nil {
 		Ret500(c, AEC_prop_walletadd_sql, err)
 		return
 	}
@@ -263,8 +265,10 @@ func ApiPropsAlSet(c *gin.Context) {
 
 	// update access level as transaction
 	if Cfg.ClubInsertBuffer > 1 {
-		go BankBat[arg.CID].Access(cfg.XormStorage, arg.UID, arg.Access)
-	} else if err = BankBat[arg.CID].Access(cfg.XormStorage, arg.UID, arg.Access); err != nil {
+		cfg.XormWG.Go(func() (err error) {
+			return BankBat[arg.CID].Access(arg.UID, arg.Access)
+		})
+	} else if err = BankBat[arg.CID].Access(arg.UID, arg.Access); err != nil {
 		Ret500(c, AEC_prop_rtpset_sql, err)
 		return
 	}
@@ -368,8 +372,10 @@ func ApiPropsRtpSet(c *gin.Context) {
 
 	// update master RTP as transaction
 	if Cfg.ClubInsertBuffer > 1 {
-		go BankBat[arg.CID].MRTP(cfg.XormStorage, arg.UID, arg.MRTP)
-	} else if err = BankBat[arg.CID].MRTP(cfg.XormStorage, arg.UID, arg.MRTP); err != nil {
+		cfg.XormWG.Go(func() (err error) {
+			return BankBat[arg.CID].MRTP(arg.UID, arg.MRTP)
+		})
+	} else if err = BankBat[arg.CID].MRTP(arg.UID, arg.MRTP); err != nil {
 		Ret500(c, AEC_prop_rtpset_sql, err)
 		return
 	}

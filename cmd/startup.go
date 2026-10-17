@@ -230,7 +230,7 @@ func InitStorage() (err error) {
 		for _, cd := range chunk {
 			api.Clubs.Set(cd.CID, api.MakeClub(cd))
 			var bat = &api.SqlBank{}
-			bat.Init(cd.CID, Cfg.ClubUpdateBuffer, Cfg.ClubInsertBuffer)
+			bat.Init(cfg.XormStorage, cd.CID, Cfg.ClubUpdateBuffer, Cfg.ClubInsertBuffer)
 			api.BankBat[cd.CID] = bat
 		}
 		if limit > len(chunk) {
@@ -294,7 +294,7 @@ func InitStorage() (err error) {
 		api.SessCounter.Store(uint64(lastID))
 	}
 
-	api.JoinBuf.Init(Cfg.ClubInsertBuffer)
+	api.JoinBuf.Init(cfg.XormStorage, Cfg.ClubInsertBuffer)
 	return
 }
 
@@ -348,8 +348,8 @@ func InitSpinlog() (err error) {
 		api.MultCounter.Store(uint64(i64))
 	}
 
-	api.SpinBuf.Init(Cfg.SpinInsertBuffer)
-	api.MultBuf.Init(Cfg.SpinInsertBuffer)
+	api.SpinBuf.Init(cfg.XormSpinlog, Cfg.SpinInsertBuffer)
+	api.MultBuf.Init(cfg.XormSpinlog, Cfg.SpinInsertBuffer)
 	return
 }
 
@@ -361,18 +361,18 @@ func SqlLoop(exitctx context.Context) {
 		select {
 		case <-flush:
 			for cid, bat := range api.BankBat {
-				if err := bat.Flush(cfg.XormStorage, fd); err != nil {
+				if err := bat.Flush(fd); err != nil {
 					cfg.Errorf("can not update bank for cid=%d: %s", cid, err.Error())
 				}
 			}
-			if err := api.JoinBuf.Flush(cfg.XormStorage, fd); err != nil {
+			if err := api.JoinBuf.Flush(fd); err != nil {
 				cfg.Errorf("can not write to story log: %s", err.Error())
 			}
 			if Cfg.UseSpinLog {
-				if err := api.SpinBuf.Flush(cfg.XormSpinlog, fd); err != nil {
+				if err := api.SpinBuf.Flush(fd); err != nil {
 					cfg.Errorf("can not write to spin log: %s", err.Error())
 				}
-				if err := api.MultBuf.Flush(cfg.XormSpinlog, fd); err != nil {
+				if err := api.MultBuf.Flush(fd); err != nil {
 					cfg.Errorf("can not write to mult log: %s", err.Error())
 				}
 			}
@@ -384,9 +384,9 @@ func SqlLoop(exitctx context.Context) {
 	}
 }
 
-func InitSQL() (err error) {
+func InitXORM() (err error) {
 	if err = InitStorage(); err != nil {
-		err = fmt.Errorf("can not init XORM records storage: %w", err)
+		err = fmt.Errorf("can not init xorm records storage: %w", err)
 		return
 	}
 	if Cfg.SpinSourceName == "" {
@@ -394,25 +394,34 @@ func InitSQL() (err error) {
 	}
 	if Cfg.UseSpinLog {
 		if err = InitSpinlog(); err != nil {
-			err = fmt.Errorf("can not init XORM spins log storage: %w", err)
+			err = fmt.Errorf("can not init xorm spins log storage: %w", err)
 			return
 		}
 	}
+	cfg.Infof("xorm initialized, flush tick %s", Cfg.SqlFlushTick.String())
 	return
 }
 
-func DoneSQL() (err error) {
+func DoneXORM() (err error) {
 	var errs []error
 	for _, bat := range api.BankBat {
-		errs = append(errs, bat.Flush(cfg.XormStorage, 0))
+		errs = append(errs, bat.Flush(0))
 	}
-	errs = append(errs, api.JoinBuf.Flush(cfg.XormStorage, 0))
+	errs = append(errs, api.JoinBuf.Flush(0))
 	errs = append(errs, cfg.XormStorage.Close())
 
 	if Cfg.UseSpinLog {
-		errs = append(errs, api.SpinBuf.Flush(cfg.XormSpinlog, 0))
-		errs = append(errs, api.MultBuf.Flush(cfg.XormSpinlog, 0))
+		errs = append(errs, api.SpinBuf.Flush(0))
+		errs = append(errs, api.MultBuf.Flush(0))
 		errs = append(errs, cfg.XormSpinlog.Close())
 	}
-	return errors.Join(errs...)
+	if err = cfg.XormWG.Wait(); err != nil {
+		errs = append(errs, err)
+	}
+	if err = errors.Join(errs...); err != nil {
+		err = fmt.Errorf("errors occurred on xorm finalize: %w", err)
+	} else {
+		cfg.Infof("xorm done")
+	}
+	return
 }

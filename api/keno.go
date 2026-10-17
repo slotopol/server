@@ -357,8 +357,10 @@ func ApiKenoSpin(c *gin.Context) {
 
 	// write gain and total bet as transaction
 	if Cfg.ClubUpdateBuffer > 1 {
-		go BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, debit)
-	} else if err = BankBat[scene.CID].Put(cfg.XormStorage, scene.UID, debit); err != nil {
+		cfg.XormWG.Go(func() (err error) {
+			return BankBat[scene.CID].Put(scene.UID, debit)
+		})
+	} else if err = BankBat[scene.CID].Put(scene.UID, debit); err != nil {
 		Ret500(c, AEC_keno_spin_sqlbank, err)
 		return
 	}
@@ -390,11 +392,12 @@ func ApiKenoSpin(c *gin.Context) {
 	rec.Wins = util.B2S(b)
 
 	if Cfg.UseSpinLog {
-		go func() {
-			if err = SpinBuf.Put(cfg.XormSpinlog, rec); err != nil {
+		cfg.XormWG.Go(func() (err error) {
+			if err = SpinBuf.Put(rec); err != nil {
 				cfg.Errorf("can not write to spin log: %s", err.Error())
 			}
-		}()
+			return
+		})
 	}
 
 	// prepare result

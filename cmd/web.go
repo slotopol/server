@@ -54,13 +54,13 @@ var webCmd = &cobra.Command{
 		CheckAlgList()
 
 		// Working with SQL
-		if err = InitSQL(); err != nil {
-			cfg.Fatalf("can not initialize SQL: %s", err.Error())
+		if err = InitXORM(); err != nil {
+			cfg.Fatalf("can not initialize xorm: %s", err.Error())
 			return
 		}
 		defer func() {
-			if err = DoneSQL(); err != nil {
-				cfg.Fatalf("can not done SQL: %s", err.Error())
+			if err = DoneXORM(); err != nil {
+				cfg.Fatalf(err.Error())
 				return
 			}
 		}()

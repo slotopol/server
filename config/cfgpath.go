@@ -8,6 +8,7 @@ import (
 	"github.com/slotopol/server/util"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"golang.org/x/sync/errgroup"
 	"xorm.io/xorm"
 )
 
@@ -33,6 +34,7 @@ var (
 var (
 	XormStorage *xorm.Engine
 	XormSpinlog *xorm.Engine
+	XormWG      errgroup.Group
 )
 
 var (
