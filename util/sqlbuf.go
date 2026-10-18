@@ -8,10 +8,24 @@ import (
 )
 
 type SqlBuf[T any] struct {
-	buf    []T
-	lft    time.Time // last flush time
-	mux    sync.Mutex
 	engine *xorm.Engine
+	mux    sync.Mutex
+
+	buf []T
+	lft time.Time // last flush time
+}
+
+func (sb *SqlBuf[T]) clear() {
+	sb.buf = sb.buf[:0]
+	sb.lft = time.Now()
+}
+
+func (sb *SqlBuf[T]) isEmpty() bool {
+	return len(sb.buf) == 0
+}
+
+func (sb *SqlBuf[T]) isFull() bool {
+	return len(sb.buf) >= cap(sb.buf)
 }
 
 func (sb *SqlBuf[T]) Init(engine *xorm.Engine, capacity int) {
@@ -36,11 +50,12 @@ func (sb *SqlBuf[T]) Last() time.Time {
 func (sb *SqlBuf[T]) Put(val T) (err error) {
 	sb.mux.Lock()
 	defer sb.mux.Unlock()
+
 	sb.buf = append(sb.buf, val)
-	if len(sb.buf) == cap(sb.buf) {
+
+	if sb.isFull() {
 		_, err = sb.engine.Insert(&sb.buf)
-		sb.buf = sb.buf[:0]
-		sb.lft = time.Now()
+		sb.clear()
 	}
 	return
 }
@@ -48,13 +63,13 @@ func (sb *SqlBuf[T]) Put(val T) (err error) {
 func (sb *SqlBuf[T]) Flush(d time.Duration) (err error) {
 	sb.mux.Lock()
 	defer sb.mux.Unlock()
-	if len(sb.buf) == 0 {
+
+	if sb.isEmpty() {
 		return
 	}
 	if d == 0 || time.Since(sb.lft) >= d {
 		_, err = sb.engine.Insert(&sb.buf)
-		sb.buf = sb.buf[:0]
-		sb.lft = time.Now()
+		sb.clear()
 	}
 	return
 }

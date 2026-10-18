@@ -30,6 +30,9 @@ func SafeTransaction(engine *xorm.Engine, f func(*xorm.Session) error) (err erro
 }
 
 type SqlBank struct {
+	engine *xorm.Engine
+	mux    sync.Mutex
+
 	cid     uint64
 	banksum float64
 	usersum map[uint64]float64
@@ -39,22 +42,6 @@ type SqlBank struct {
 	usercap int
 	logsize int
 	lft     time.Time // last flush time
-	engine  *xorm.Engine
-	mux     sync.Mutex
-}
-
-func (sb *SqlBank) Init(engine *xorm.Engine, cid uint64, capacity, logsize int) {
-	sb.mux.Lock()
-	defer sb.mux.Unlock()
-	sb.engine = engine
-	sb.cid = cid
-	sb.banksum = 0
-	sb.usersum = make(map[uint64]float64, capacity)
-	sb.useral = make(map[uint64]AL, capacity)
-	sb.userrtp = make(map[uint64]float64, capacity)
-	sb.log = make([]Walletlog, 0, logsize)
-	sb.usercap = capacity
-	sb.logsize = logsize
 }
 
 func (sb *SqlBank) clear() {
@@ -66,10 +53,30 @@ func (sb *SqlBank) clear() {
 	sb.lft = time.Now()
 }
 
-func (sb *SqlBank) IsEmpty() bool {
+func (sb *SqlBank) isEmpty() bool {
 	return sb.banksum == 0 &&
-		len(sb.usersum) == 0 && len(sb.useral) == 0 && len(sb.userrtp) == 0 &&
+		len(sb.usersum) == 0 &&
+		len(sb.useral) == 0 &&
+		len(sb.userrtp) == 0 &&
 		len(sb.log) == 0
+}
+
+func (sb *SqlBank) isFull() bool {
+	return len(sb.usersum) >= sb.usercap ||
+		len(sb.useral) >= sb.usercap ||
+		len(sb.userrtp) >= sb.usercap ||
+		len(sb.log) >= sb.logsize
+}
+
+func (sb *SqlBank) safeTransaction() (err error) {
+	if sb.isEmpty() {
+		return
+	}
+	if err = SafeTransaction(sb.engine, sb.transaction); err != nil {
+		return
+	}
+	sb.clear()
+	return
 }
 
 func (sb *SqlBank) transaction(session *xorm.Session) (err error) {
@@ -101,16 +108,36 @@ func (sb *SqlBank) transaction(session *xorm.Session) (err error) {
 	return
 }
 
+func (sb *SqlBank) Init(engine *xorm.Engine, cid uint64, capacity, logsize int) {
+	sb.mux.Lock()
+	defer sb.mux.Unlock()
+
+	sb.engine = engine
+	sb.cid = cid
+	sb.banksum = 0
+	sb.usersum = make(map[uint64]float64, capacity)
+	sb.useral = make(map[uint64]AL, capacity)
+	sb.userrtp = make(map[uint64]float64, capacity)
+	sb.log = make([]Walletlog, 0, logsize)
+	sb.usercap = capacity
+	sb.logsize = logsize
+}
+
+func (sb *SqlBank) Last() time.Time {
+	sb.mux.Lock()
+	defer sb.mux.Unlock()
+	return sb.lft
+}
+
 func (sb *SqlBank) Put(uid uint64, sum float64) (err error) {
 	sb.mux.Lock()
 	defer sb.mux.Unlock()
+
 	sb.banksum += sum
 	sb.usersum[uid] -= sum
-	if len(sb.usersum) >= sb.usercap {
-		if err = SafeTransaction(sb.engine, sb.transaction); err != nil {
-			return
-		}
-		sb.clear()
+
+	if sb.isFull() {
+		return sb.safeTransaction()
 	}
 	return
 }
@@ -118,6 +145,7 @@ func (sb *SqlBank) Put(uid uint64, sum float64) (err error) {
 func (sb *SqlBank) Add(uid, aid uint64, wallet, sum float64) (err error) {
 	sb.mux.Lock()
 	defer sb.mux.Unlock()
+
 	sb.usersum[uid] += sum
 	sb.log = append(sb.log, Walletlog{
 		CID:    sb.cid,
@@ -126,11 +154,9 @@ func (sb *SqlBank) Add(uid, aid uint64, wallet, sum float64) (err error) {
 		Wallet: wallet,
 		Sum:    sum,
 	})
-	if len(sb.usersum) >= sb.usercap || len(sb.log) >= sb.logsize {
-		if err = SafeTransaction(sb.engine, sb.transaction); err != nil {
-			return
-		}
-		sb.clear()
+
+	if sb.isFull() {
+		return sb.safeTransaction()
 	}
 	return
 }
@@ -138,12 +164,11 @@ func (sb *SqlBank) Add(uid, aid uint64, wallet, sum float64) (err error) {
 func (sb *SqlBank) Access(uid uint64, access AL) (err error) {
 	sb.mux.Lock()
 	defer sb.mux.Unlock()
+
 	sb.useral[uid] = access
-	if len(sb.useral) >= sb.usercap {
-		if err = SafeTransaction(sb.engine, sb.transaction); err != nil {
-			return
-		}
-		sb.clear()
+
+	if sb.isFull() {
+		return sb.safeTransaction()
 	}
 	return
 }
@@ -151,12 +176,11 @@ func (sb *SqlBank) Access(uid uint64, access AL) (err error) {
 func (sb *SqlBank) MRTP(uid uint64, mrtp float64) (err error) {
 	sb.mux.Lock()
 	defer sb.mux.Unlock()
+
 	sb.userrtp[uid] = mrtp
-	if len(sb.userrtp) >= sb.usercap {
-		if err = SafeTransaction(sb.engine, sb.transaction); err != nil {
-			return
-		}
-		sb.clear()
+
+	if sb.isFull() {
+		return sb.safeTransaction()
 	}
 	return
 }
@@ -164,32 +188,20 @@ func (sb *SqlBank) MRTP(uid uint64, mrtp float64) (err error) {
 func (sb *SqlBank) Flush(d time.Duration) (err error) {
 	sb.mux.Lock()
 	defer sb.mux.Unlock()
-	if sb.IsEmpty() {
-		return
-	}
+
 	if d == 0 || time.Since(sb.lft) >= d {
-		if err = SafeTransaction(sb.engine, sb.transaction); err != nil {
-			return
-		}
-		sb.clear()
+		return sb.safeTransaction()
 	}
 	return
 }
 
 type SqlStory struct {
+	engine *xorm.Engine
+	mux    sync.Mutex
+
 	log     []*Story
 	logsize int
 	lft     time.Time // last flush time
-	mux     sync.Mutex
-	engine  *xorm.Engine
-}
-
-func (ss *SqlStory) Init(engine *xorm.Engine, logsize int) {
-	ss.mux.Lock()
-	defer ss.mux.Unlock()
-	ss.engine = engine
-	ss.log = make([]*Story, 0, logsize)
-	ss.logsize = logsize
 }
 
 func (ss *SqlStory) clear() {
@@ -197,8 +209,23 @@ func (ss *SqlStory) clear() {
 	ss.lft = time.Now()
 }
 
-func (ss *SqlStory) IsEmpty() bool {
+func (ss *SqlStory) isEmpty() bool {
 	return len(ss.log) == 0
+}
+
+func (ss *SqlStory) isFull() bool {
+	return len(ss.log) >= ss.logsize
+}
+
+func (ss *SqlStory) safeTransaction() (err error) {
+	if ss.isEmpty() {
+		return
+	}
+	if err = SafeTransaction(ss.engine, ss.transaction); err != nil {
+		return
+	}
+	ss.clear()
+	return
 }
 
 func (ss *SqlStory) transaction(session *xorm.Session) (err error) {
@@ -210,15 +237,28 @@ func (ss *SqlStory) transaction(session *xorm.Session) (err error) {
 	return
 }
 
+func (ss *SqlStory) Init(engine *xorm.Engine, logsize int) {
+	ss.mux.Lock()
+	defer ss.mux.Unlock()
+	ss.engine = engine
+	ss.log = make([]*Story, 0, logsize)
+	ss.logsize = logsize
+}
+
+func (ss *SqlStory) Last() time.Time {
+	ss.mux.Lock()
+	defer ss.mux.Unlock()
+	return ss.lft
+}
+
 func (ss *SqlStory) Join(s *Story) (err error) {
 	ss.mux.Lock()
 	defer ss.mux.Unlock()
+
 	ss.log = append(ss.log, s)
-	if len(ss.log) >= ss.logsize {
-		if err = SafeTransaction(ss.engine, ss.transaction); err != nil {
-			return
-		}
-		ss.clear()
+
+	if ss.isFull() {
+		return ss.safeTransaction()
 	}
 	return
 }
@@ -226,14 +266,9 @@ func (ss *SqlStory) Join(s *Story) (err error) {
 func (ss *SqlStory) Flush(d time.Duration) (err error) {
 	ss.mux.Lock()
 	defer ss.mux.Unlock()
-	if ss.IsEmpty() {
-		return
-	}
+
 	if d == 0 || time.Since(ss.lft) >= d {
-		if err = SafeTransaction(ss.engine, ss.transaction); err != nil {
-			return
-		}
-		ss.clear()
+		return ss.safeTransaction()
 	}
 	return
 }

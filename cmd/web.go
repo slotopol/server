@@ -58,13 +58,9 @@ var webCmd = &cobra.Command{
 			cfg.Fatalf("can not initialize xorm: %s", err.Error())
 			return
 		}
-		defer func() {
-			if err = DoneXORM(); err != nil {
-				cfg.Fatalf(err.Error())
-				return
-			}
-		}()
-		go SqlLoop(exitctx)
+		cfg.XormWG.Go(func() (err error) {
+			return FlushLoop(exitctx)
+		})
 
 		// Web router engine
 		var r = gin.New()
@@ -118,6 +114,12 @@ var webCmd = &cobra.Command{
 		}
 		if err = wg.Wait(); err != nil {
 			cfg.Errorf("error occurred while waiting for HTTP servers to shut down: %s", err.Error())
+			return
+		}
+
+		// Close database connection
+		if err = DoneXORM(); err != nil {
+			cfg.Fatalf(err.Error())
 			return
 		}
 	},
