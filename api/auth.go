@@ -266,7 +266,7 @@ type AuthResp struct {
 	Access  string   `json:"access" yaml:"access" xml:"access"`
 	Refrsh  string   `json:"refrsh" yaml:"refrsh" xml:"refrsh"`
 	Expire  string   `json:"expire" yaml:"expire" xml:"expire"`
-	Living  string   `json:"living" yaml:"living" xml:"living"`
+	Untill  string   `json:"untill" yaml:"untill" xml:"untill"`
 }
 
 func (r *AuthResp) Setup(user *core.User) {
@@ -298,7 +298,7 @@ func (r *AuthResp) Setup(user *core.User) {
 	if r.Refrsh, err = token.SignedString([]byte(Cfg.RefreshKey)); err != nil {
 		panic(err)
 	}
-	r.Living = age.Format(time.RFC3339)
+	r.Untill = age.Format(time.RFC3339)
 	r.UID = user.UID
 	r.Email = user.Email
 }

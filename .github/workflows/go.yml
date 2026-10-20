@@ -8,6 +8,12 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      commit_sha:
+        description: 'Commit hash to check (leave blank for the latest)'
+        required: false
+        default: ''
 
 jobs:
 
@@ -19,6 +25,8 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.inputs.commit_sha || github.sha }} 
 
     - name: Set up Go
       uses: actions/setup-go@v5

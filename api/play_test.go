@@ -3,6 +3,9 @@ package api_test
 import (
 	"bytes"
 	"context"
+	"crypto/hmac"
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -12,10 +15,12 @@ import (
 	"net/http/httptest"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/slotopol/server/api"
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/core"
+	"github.com/slotopol/server/util"
 
 	"github.com/gin-gonic/gin"
 )
@@ -76,18 +81,31 @@ func ping(t *testing.T, r *gin.Engine) (err error) {
 	return
 }
 
-func post(t *testing.T, r *gin.Engine, path string, token string, arg any) (ret gin.H, err error) {
+func pings(t *testing.T, r *gin.Engine, token string) (err error) {
+	var req = httptest.NewRequest("GET", "/pings", nil)
+	req.Header.Set("Authorization", "Bearer "+token)
+	var w = httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+	if w.Code != http.StatusOK {
+		err = fmt.Errorf("%w, pings failed, code %d", ErrHttpNotOk, w.Code)
+		t.Error(err)
+	}
+	var resp = w.Result()
+	if !strings.HasPrefix(resp.Header.Get("Server"), "slotopol/") {
+		err = fmt.Errorf("%w, header: %s", ErrAlienServer, resp.Header.Get("Server"))
+		t.Error(err)
+	}
+	return
+}
+
+func posthdr(t *testing.T, r *gin.Engine, path string, hdr http.Header, arg any) (ret gin.H, err error) {
 	var b []byte
 
 	if b, err = json.Marshal(arg); err != nil {
 		t.Error(err)
 	}
 	var req = httptest.NewRequest("POST", path, bytes.NewReader(b))
-	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("Accept", "application/json")
-	if token != "" {
-		req.Header.Set("Authorization", "Bearer "+token)
-	}
+	req.Header = hdr
 	var w = httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	if w.Code == http.StatusNoContent {
@@ -116,46 +134,98 @@ func post(t *testing.T, r *gin.Engine, path string, token string, arg any) (ret 
 	return
 }
 
+func post(t *testing.T, r *gin.Engine, path string, token string, arg any) (ret gin.H, err error) {
+	var hdr = http.Header{}
+	hdr.Set("Content-Type", "application/json")
+	hdr.Set("Accept", "application/json")
+	if token != "" {
+		hdr.Set("Authorization", "Bearer "+token)
+	}
+	return posthdr(t, r, path, hdr, arg)
+}
+
+// Sign-in by different ways.
+func testSignin(t *testing.T, r *gin.Engine) (err error) {
+	const uid = 3
+	var arg, ret gin.H
+	var usrauth gin.H
+
+	// Sign-in with credentials
+	arg = gin.H{
+		"email":  testUserEmail,
+		"secret": testUserSecret,
+	}
+	if ret, err = post(t, r, "/signin", "", arg); err != nil {
+		return
+	}
+	t.Logf("[sign-in] %s with credentials", ret["email"])
+
+	if err = pings(t, r, ret["access"].(string)); err != nil {
+		return
+	}
+	t.Logf("[pings]")
+
+	// Sign-in with UID and secret
+	arg = gin.H{
+		"uid":    uid,
+		"secret": testUserSecret,
+	}
+	if ret, err = post(t, r, "/signin", "", arg); err != nil {
+		return
+	}
+	t.Logf("[sign-in] %s with uid and secret", ret["email"])
+
+	if err = pings(t, r, ret["access"].(string)); err != nil {
+		return
+	}
+	t.Logf("[pings]")
+
+	// Sign-in with login and hash
+	var sigtime = time.Now().Format(time.RFC3339)
+	var h = hmac.New(sha256.New, util.S2B(sigtime))
+	h.Write(util.S2B(testUserSecret))
+	var hs256 = h.Sum(nil)
+	arg = gin.H{
+		"email":   testUserEmail,
+		"sigtime": sigtime,
+		"hs256":   hex.EncodeToString(hs256),
+	}
+	if ret, err = post(t, r, "/signin", "", arg); err != nil {
+		return
+	}
+	t.Logf("[sign-in] %s with login and hash", ret["email"])
+
+	if err = pings(t, r, ret["access"].(string)); err != nil {
+		return
+	}
+	t.Logf("[pings]")
+
+	usrauth = ret
+
+	arg = gin.H{
+		"refrsh": usrauth["refrsh"],
+	}
+	if ret, err = post(t, r, "/token", "", arg); err != nil {
+		return
+	}
+	t.Logf("[token] %s expire %s", ret["email"], ret["expire"])
+
+	if err = pings(t, r, ret["access"].(string)); err != nil {
+		return
+	}
+	t.Logf("[pings]")
+	return
+}
+
 // Simulate a player playing a game with random bets and lines selected,
 // and sometimes making double-ups on wins.
-func TestPlay(t *testing.T) {
+func testSinglePlay(t *testing.T, r *gin.Engine) (err error) {
 	const cid, uid uint64 = 1, 3
-	var err error
-	var arg, ret gin.H
 	var admtoken, usrtoken string
+	var arg, ret gin.H
 	var gid uint64
 	var wallet, gain float64
 	var fsr int
-
-	var exitctx = context.Background()
-
-	// Load yaml-files
-	if _, err := core.LoadInternalYaml(exitctx); err != nil {
-		t.Fatalf("can not load internal yaml files: %s", err.Error())
-		return
-	}
-	core.UpdateAlgList()
-	core.CheckAlgList()
-
-	// Prepare in-memory database
-	cfg.CfgPath = "../appdata"
-	if err := core.InitXORM(); err != nil {
-		t.Fatalf("can not initialize xorm: %s", err.Error())
-	}
-
-	gin.SetMode(gin.TestMode)
-	var r = gin.New()
-	r.HandleMethodNotAllowed = true
-	api.SetupRouter(r)
-
-	// Setup test JWT-token signing keys
-	cfg.Cfg.AccessKey = testAccessKey
-	cfg.Cfg.RefreshKey = testRefreshKey
-
-	// Send "ping" and check that server is our
-	if err = ping(t, r); err != nil {
-		return
-	}
 
 	// Sign-in admin in order to top up player account
 	arg = gin.H{
@@ -302,9 +372,58 @@ func TestPlay(t *testing.T) {
 			t.Logf("[sel/set] gid: %d, sel: %d", gid, sel)
 		}
 	}
+	return
+}
 
-	// Close database connection
-	if err := core.DoneXORM(); err != nil {
-		t.Fatal(err)
+func TestAPI(t *testing.T) {
+	var err error
+
+	// Set debug logger
+	cfg.Verbose = 3
+	cfg.InitLogger()
+
+	// Load yaml-files
+	if _, err = core.LoadInternalYaml(context.Background()); err != nil {
+		t.Fatalf("can not load internal yaml files: %s", err.Error())
+		return
 	}
+	core.UpdateAlgList()
+	core.CheckAlgList()
+
+	// Prepare in-memory database
+	cfg.CfgPath = "../appdata"
+	if err = core.InitXORM(); err != nil {
+		t.Fatalf("can not initialize xorm: %s", err.Error())
+	}
+	// Close database connection
+	defer func() {
+		if err = core.DoneXORM(); err != nil {
+			t.Fatal(err)
+		}
+	}()
+
+	gin.SetMode(gin.TestMode)
+	var r = gin.New()
+	r.HandleMethodNotAllowed = true
+	api.SetupRouter(r)
+
+	// Setup test JWT-token signing keys
+	cfg.Cfg.AccessKey = testAccessKey
+	cfg.Cfg.RefreshKey = testRefreshKey
+
+	// Send "ping" and check that server is our
+	t.Run("ping", func(t *testing.T) {
+		if err = ping(t, r); err != nil {
+			return
+		}
+		t.Log("[ping]")
+	})
+
+	t.Run("signin", func(t *testing.T) {
+		testSignin(t, r)
+	})
+
+	t.Run("play", func(t *testing.T) {
+		testSinglePlay(t, r)
+	})
 }

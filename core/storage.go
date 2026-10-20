@@ -6,6 +6,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"strings"
 	"time"
 
 	cfg "github.com/slotopol/server/config"
@@ -41,18 +42,22 @@ func InitStorage() (err error) {
 	switch Cfg.DriverName {
 	case "sqlite3":
 		var fpath string
-		if Cfg.ClubSourceName != ":memory:" {
-			fpath = util.JoinPath(cfg.SqlPath, Cfg.ClubSourceName)
-		} else {
+		var ismem = strings.Contains(Cfg.ClubSourceName, ":memory:")
+		if ismem {
 			fpath = Cfg.ClubSourceName
+		} else {
+			fpath = util.JoinPath(cfg.SqlPath, Cfg.ClubSourceName)
 		}
 		if XormStorage, err = xorm.NewEngine(Cfg.DriverName, fpath); err != nil {
 			return
 		}
-		if Cfg.ClubSourceName != ":memory:" {
-			cfg.Infof("club db: sqlite")
-		} else {
+		if ismem {
+			XormStorage.SetMaxOpenConns(1)
+			XormStorage.SetMaxIdleConns(1)
+			XormStorage.SetConnMaxLifetime(0)
 			cfg.Infof("club db: memory")
+		} else {
+			cfg.Infof("club db: sqlite")
 		}
 
 	case "mysql", "postgres":
@@ -188,18 +193,22 @@ func InitSpinlog() (err error) {
 	switch Cfg.DriverName {
 	case "sqlite3":
 		var fpath string
-		if Cfg.SpinSourceName != ":memory:" {
-			fpath = util.JoinPath(cfg.SqlPath, Cfg.SpinSourceName)
-		} else {
+		var ismem = strings.Contains(Cfg.SpinSourceName, ":memory:")
+		if ismem {
 			fpath = Cfg.SpinSourceName
+		} else {
+			fpath = util.JoinPath(cfg.SqlPath, Cfg.SpinSourceName)
 		}
 		if XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, fpath); err != nil {
 			return
 		}
-		if Cfg.ClubSourceName != ":memory:" {
-			cfg.Infof("spin db: sqlite")
-		} else {
+		if ismem {
+			XormSpinlog.SetMaxOpenConns(1)
+			XormSpinlog.SetMaxIdleConns(1)
+			XormSpinlog.SetConnMaxLifetime(0)
 			cfg.Infof("spin db: memory")
+		} else {
+			cfg.Infof("spin db: sqlite")
 		}
 
 	case "mysql", "postgres":
@@ -311,11 +320,11 @@ func DoneXORM() error {
 	}
 
 	if err := XormStorage.Close(); err != nil {
-		errs = append(errs, err)
+		errs = append(errs, fmt.Errorf("cannot close storage: %w", err))
 	}
 	if Cfg.UseSpinLog {
 		if err := XormSpinlog.Close(); err != nil {
-			errs = append(errs, err)
+			errs = append(errs, fmt.Errorf("cannot close spinlog: %w", err))
 		}
 	}
 

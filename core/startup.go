@@ -112,22 +112,17 @@ func LoadInternalYaml(ctx context.Context) (count int, err error) {
 	return
 }
 
-func LoadYamlFromFile(ctx context.Context, fpath string) (err error) {
-	if ext := util.ToLower(filepath.Ext(fpath)); ext != ".yaml" && ext != ".yml" {
-		return nil
-	}
+func LoadYamlFromFile(ctx context.Context, fpath string) (count int, err error) {
 	var r io.ReadCloser
 	if r, err = os.Open(fpath); err != nil {
-		return err
+		return
 	}
 	defer r.Close()
 	var cr = ctxReader{ctx: ctx, r: r}
-	var count int
 	if count, err = game.ReadChain(cr); err != nil {
-		return fmt.Errorf("can not read data from %s: %w", fpath, err)
+		return count, fmt.Errorf("can not read data from %s: %w", fpath, err)
 	}
-	cfg.Debugf("loaded %d objects from: %s", count, fpath)
-	return nil
+	return
 }
 
 // Load data from extermal yaml files.
@@ -136,11 +131,22 @@ func LoadExternalYaml(ctx context.Context) (err error) {
 	if final, err = MakeFinalPaths(cfg.ObjPath); err != nil {
 		return
 	}
+	if len(final) == 0 {
+		return
+	}
+
+	var t0 = time.Now()
+	var n int
 	for _, fpath := range final {
-		if err = LoadYamlFromFile(ctx, fpath); err != nil {
+		var count int
+		if n, err = LoadYamlFromFile(ctx, fpath); err != nil {
 			return
 		}
+		count += n
+		cfg.Debugf("loaded %d objects from: %s", n, fpath)
 	}
+	var d = time.Since(t0)
+	cfg.Infof("loaded %d external yaml files in %s", len(final), d.String())
 	return
 }
 

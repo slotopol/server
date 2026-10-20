@@ -129,6 +129,7 @@ func SetupRouter(r *gin.Engine) {
 	//r.Use(gzip.Gzip(gzip.DefaultCompression))
 
 	r.Any("/ping", ApiPing)
+	r.Any("/pings", Auth(true), ApiPing)
 	r.GET("/servinfo", ApiServInfo)
 	r.GET("/memusage", ApiMemUsage)
 	r.GET("/diskusage", ApiDiskUsage)
