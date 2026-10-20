@@ -6,7 +6,7 @@ import (
 	"io"
 	"math"
 
-	"gopkg.in/yaml.v3"
+	"go.yaml.in/yaml/v3"
 )
 
 var DataRouter = map[string]any{} // object router for data loading

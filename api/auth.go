@@ -19,7 +19,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
-	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/core"
 	"github.com/slotopol/server/util"
 	"xorm.io/xorm"
 )
@@ -59,10 +59,6 @@ var (
 	ErrBadHash  = errors.New("hash cannot be decoded in hexadecimal")
 )
 
-var (
-	Cfg = cfg.Cfg
-)
-
 // Claims of JWT-tokens. `Subject` field contains
 // profile identifier or user email.
 type Claims struct {
@@ -70,18 +66,18 @@ type Claims struct {
 	SID uint64 `json:"sid,omitempty"`
 }
 
-func (c *Claims) GetUser() (*User, error) {
+func (c *Claims) GetUser() (*core.User, error) {
 	if c.Subject == "" {
 		return nil, ErrNoJwtID
 	}
 	var uid, err = strconv.ParseUint(c.Subject, 10, 64)
 	if err == nil {
-		if u, ok := Users.Get(uid); ok {
+		if u, ok := core.Users.Get(uid); ok {
 			return u, nil
 		}
 		return nil, ErrBadUID
 	}
-	for _, u := range Users.Items() {
+	for _, u := range core.Users.Items() {
 		if c.Subject == u.Email {
 			return u, nil
 		}
@@ -104,7 +100,7 @@ func (c *Claims) Validate() error {
 	return nil
 }
 
-type AuthGetter func(c *gin.Context) (*User, int, error)
+type AuthGetter func(c *gin.Context) (*core.User, int, error)
 
 // AuthGetters is the list of functions to extract the authorization
 // data from the parts of request. List and order in it can be changed.
@@ -119,7 +115,7 @@ func Auth(required bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var err error
 		var code int
-		var user *User
+		var user *core.User
 		for _, getter := range AuthGetters {
 			if user, code, err = getter(c); err != nil {
 				Ret401(c, code, err)
@@ -141,7 +137,7 @@ func Auth(required bool) gin.HandlerFunc {
 	}
 }
 
-func UserFromHeader(c *gin.Context) (*User, int, error) {
+func UserFromHeader(c *gin.Context) (*core.User, int, error) {
 	if hdr := c.Request.Header.Get("Authorization"); hdr != "" {
 		if strings.HasPrefix(hdr, "Basic ") {
 			return GetBasicAuth(hdr[6:])
@@ -154,7 +150,7 @@ func UserFromHeader(c *gin.Context) (*User, int, error) {
 	return nil, 0, nil
 }
 
-func UserFromQuery(c *gin.Context) (*User, int, error) {
+func UserFromQuery(c *gin.Context) (*core.User, int, error) {
 	if credentials := c.Query("cred"); credentials != "" {
 		return GetBasicAuth(credentials)
 	} else if tokenstr := c.Query("token"); tokenstr != "" {
@@ -165,7 +161,7 @@ func UserFromQuery(c *gin.Context) (*User, int, error) {
 	return nil, 0, nil
 }
 
-func UserFromCookie(c *gin.Context) (*User, int, error) {
+func UserFromCookie(c *gin.Context) (*core.User, int, error) {
 	if credentials, _ := c.Cookie("cred"); credentials != "" {
 		return GetBasicAuth(credentials)
 	} else if tokenstr, _ := c.Cookie("token"); tokenstr != "" {
@@ -176,7 +172,7 @@ func UserFromCookie(c *gin.Context) (*User, int, error) {
 	return nil, 0, nil
 }
 
-func UserFromForm(c *gin.Context) (*User, int, error) {
+func UserFromForm(c *gin.Context) (*core.User, int, error) {
 	if credentials := c.PostForm("cred"); credentials != "" {
 		return GetBasicAuth(credentials)
 	} else if tokenstr := c.PostForm("token"); tokenstr != "" {
@@ -187,7 +183,7 @@ func UserFromForm(c *gin.Context) (*User, int, error) {
 	return nil, 0, nil
 }
 
-func GetBasicAuth(credentials string) (user *User, code int, err error) {
+func GetBasicAuth(credentials string) (user *core.User, code int, err error) {
 	var decoded []byte
 	if decoded, err = base64.RawURLEncoding.DecodeString(credentials); err != nil {
 		return nil, AEC_basic_decode, err
@@ -195,7 +191,7 @@ func GetBasicAuth(credentials string) (user *User, code int, err error) {
 	var parts = strings.Split(util.B2S(decoded), ":")
 
 	var email = util.ToLower(parts[0])
-	for _, u := range Users.Items() {
+	for _, u := range core.Users.Items() {
 		if u.Email == email {
 			user = u
 			break
@@ -212,7 +208,7 @@ func GetBasicAuth(credentials string) (user *User, code int, err error) {
 	return
 }
 
-func GetBearerAuth(tokenstr string, refresh bool) (user *User, code int, err error) {
+func GetBearerAuth(tokenstr string, refresh bool) (user *core.User, code int, err error) {
 	var claims Claims
 	_, err = jwt.ParseWithClaims(tokenstr, &claims, func(*jwt.Token) (any, error) {
 		if refresh {
@@ -273,7 +269,7 @@ type AuthResp struct {
 	Living  string   `json:"living" yaml:"living" xml:"living"`
 }
 
-func (r *AuthResp) Setup(user *User) {
+func (r *AuthResp) Setup(user *core.User) {
 	var err error
 	var token *jwt.Token
 	var now = time.Now()
@@ -393,7 +389,7 @@ func ApiSignis(c *gin.Context) {
 	}
 
 	if arg.UID != 0 {
-		if user, ok := Users.Get(arg.UID); ok {
+		if user, ok := core.Users.Get(arg.UID); ok {
 			ret.UID = user.UID
 			ret.Email = user.Email
 			ret.Name = user.Name
@@ -403,7 +399,7 @@ func ApiSignis(c *gin.Context) {
 		}
 	} else {
 		var email = util.ToLower(arg.Email)
-		for _, user := range Users.Items() {
+		for _, user := range core.Users.Items() {
 			if user.Email == email {
 				ret.UID = user.UID
 				ret.Email = user.Email
@@ -435,11 +431,11 @@ func ApiSendCode(c *gin.Context) {
 
 	var email = util.ToLower(arg.Email)
 
-	var user *User
+	var user *core.User
 	if arg.UID != 0 {
-		user, _ = Users.Get(arg.UID)
+		user, _ = core.Users.Get(arg.UID)
 	} else {
-		for _, u := range Users.Items() {
+		for _, u := range core.Users.Items() {
 			if u.Email == email {
 				user = u
 				break
@@ -453,7 +449,7 @@ func ApiSendCode(c *gin.Context) {
 
 	var code = rand.N[uint32](1000000) // 6 digits
 
-	if _, err = cfg.XormStorage.ID(user.UID).Cols("code").Update(&User{Code: code}); err != nil {
+	if _, err = core.XormStorage.ID(user.UID).Cols("code").Update(&core.User{Code: code}); err != nil {
 		Ret500(c, AEC_sendcode_update, err)
 		return
 	}
@@ -484,11 +480,11 @@ func ApiActivate(c *gin.Context) {
 
 	var email = util.ToLower(arg.Email)
 
-	var user *User
+	var user *core.User
 	if arg.UID != 0 {
-		user, _ = Users.Get(arg.UID)
+		user, _ = core.Users.Get(arg.UID)
 	} else {
-		for _, u := range Users.Items() {
+		for _, u := range core.Users.Items() {
 			if u.Email == email {
 				user = u
 				break
@@ -500,7 +496,7 @@ func ApiActivate(c *gin.Context) {
 		return
 	}
 
-	if _, al := GetAdmin(c, 0); al&ALadmin == 0 {
+	if _, al := core.GetAdmin(c, 0); al&core.ALadmin == 0 {
 		if time.Since(user.UTime) > Cfg.CodeTimeout {
 			Ret403(c, AEC_activate_oldcode, ErrOldCode)
 			return
@@ -511,12 +507,12 @@ func ApiActivate(c *gin.Context) {
 		}
 	}
 
-	if _, err = cfg.XormStorage.ID(user.UID).Cols("status").Update(&User{Status: user.Status | UFactivated}); err != nil {
+	if _, err = core.XormStorage.ID(user.UID).Cols("status").Update(&core.User{Status: user.Status | core.UFactivated}); err != nil {
 		Ret500(c, AEC_activate_update, err)
 		return
 	}
 
-	user.Status |= UFactivated
+	user.Status |= core.UFactivated
 
 	Ret204(c)
 }
@@ -547,9 +543,9 @@ func ApiSignup(c *gin.Context) {
 	var email = util.ToLower(arg.Email)
 
 	var code uint32
-	var status UF
-	if _, al := GetAdmin(c, 0); al&ALadmin != 0 || !Cfg.UseActivation {
-		status = UFactivated
+	var status core.UF
+	if _, al := core.GetAdmin(c, 0); al&core.ALadmin != 0 || !Cfg.UseActivation {
+		status = core.UFactivated
 	} else {
 		code = rand.N[uint32](1000000) // 6 digits
 		if err = sendcode(arg.Name, email, code); err != nil {
@@ -558,14 +554,14 @@ func ApiSignup(c *gin.Context) {
 		}
 	}
 
-	var user = &User{
+	var user = &core.User{
 		Email:  email,
 		Secret: arg.Secret,
 		Name:   arg.Name,
 		Code:   code,
 		Status: status,
 	}
-	if err = SafeTransaction(cfg.XormStorage, func(session *xorm.Session) (err error) {
+	if err = core.SafeTransaction(core.XormStorage, func(session *xorm.Session) (err error) {
 		if _, err = session.Insert(user); err != nil {
 			return
 		}
@@ -574,8 +570,8 @@ func ApiSignup(c *gin.Context) {
 			return
 		}
 
-		var props = make([]Props, len(PropMaster))
-		copy(props, PropMaster)
+		var props = make([]core.Props, len(core.PropMaster))
+		copy(props, core.PropMaster)
 		for i := range props {
 			props[i].UID = user.UID
 			if _, err = session.Where("cid=? AND uid=?", props[i].CID, user.UID).Update(&props[i]); err != nil {
@@ -584,8 +580,8 @@ func ApiSignup(c *gin.Context) {
 		}
 
 		user.Init()
-		for cid := range Clubs.Items() {
-			user.InsertProps(&Props{
+		for cid := range core.Clubs.Items() {
+			user.InsertProps(&core.Props{
 				CID: cid,
 				UID: user.UID,
 			})
@@ -593,7 +589,7 @@ func ApiSignup(c *gin.Context) {
 		for i := range props {
 			user.InsertProps(&props[i])
 		}
-		Users.Set(user.UID, user)
+		core.Users.Set(user.UID, user)
 		return
 	}); err != nil {
 		Ret500(c, AEC_signup_sql, err)
@@ -633,11 +629,11 @@ func ApiSignin(c *gin.Context) {
 
 	var email = util.ToLower(arg.Email)
 
-	var user *User
+	var user *core.User
 	if arg.UID != 0 {
-		user, _ = Users.Get(arg.UID)
+		user, _ = core.Users.Get(arg.UID)
 	} else {
-		for _, u := range Users.Items() {
+		for _, u := range core.Users.Items() {
 			if u.Email == email {
 				user = u
 				break
@@ -649,12 +645,12 @@ func ApiSignin(c *gin.Context) {
 		return
 	}
 
-	if user.Status&UFactivated == 0 {
+	if user.Status&core.UFactivated == 0 {
 		Ret403(c, AEC_signin_activate, ErrActivate)
 		return
 	}
 
-	if user.Status&UFsigncode != 0 {
+	if user.Status&core.UFsigncode != 0 {
 		if time.Since(user.UTime) > Cfg.CodeTimeout {
 			Ret403(c, AEC_signin_oldcode, ErrOldCode)
 			return

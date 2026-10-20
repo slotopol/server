@@ -5,7 +5,7 @@ import (
 	"encoding/xml"
 	"time"
 
-	"gopkg.in/yaml.v3"
+	"go.yaml.in/yaml/v3"
 )
 
 type Unix int64 // UNIX time in seconds.

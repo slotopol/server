@@ -11,6 +11,7 @@ import (
 	"github.com/gin-gonic/gin/binding"
 
 	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/core"
 )
 
 // "Server" field for HTTP headers.
@@ -91,7 +92,7 @@ func (err ajaxerr) Unwrap() error {
 func RetErr(c *gin.Context, status, code int, err error) {
 	var uid uint64
 	if uv, ok := c.Get(userKey); ok {
-		uid = uv.(*User).UID
+		uid = uv.(*core.User).UID
 	}
 	Negotiate(c, status, ajaxerr{
 		What: jerr{err},

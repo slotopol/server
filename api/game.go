@@ -8,7 +8,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/core"
 	"github.com/slotopol/server/game"
 	"github.com/slotopol/server/util"
 )
@@ -104,13 +104,6 @@ func ApiGameList(c *gin.Context) {
 	RetOk(c, ret)
 }
 
-var (
-	SpinBuf util.SqlBuf[Spinlog]
-	MultBuf util.SqlBuf[Multlog]
-	BankBat = map[uint64]*SqlBank{}
-	JoinBuf = SqlStory{}
-)
-
 // Creates new instance of game.
 func ApiGameNew(c *gin.Context) {
 	var err error
@@ -133,37 +126,37 @@ func ApiGameNew(c *gin.Context) {
 		return
 	}
 
-	var club *Club
-	if club, ok = Clubs.Get(arg.CID); !ok {
+	var club *core.Club
+	if club, ok = core.Clubs.Get(arg.CID); !ok {
 		Ret404(c, AEC_game_new_noclub, ErrNoClub)
 		return
 	}
 	_ = club
 
-	var user *User
-	if user, ok = Users.Get(arg.UID); !ok {
+	var user *core.User
+	if user, ok = core.Users.Get(arg.UID); !ok {
 		Ret404(c, AEC_game_new_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = MustAdmin(c, arg.CID)
-	if (al&ALmember == 0) || (admin != user && al&ALdealer == 0) {
+	var admin, al = core.MustAdmin(c, arg.CID)
+	if (al&core.ALmember == 0) || (admin != user && al&core.ALdealer == 0) {
 		Ret403(c, AEC_game_new_noaccess, ErrNoAccess)
 		return
 	}
 
-	var scene *Scene
+	var scene *core.Scene
 	var alias = util.ToID(arg.Alias)
 	var maker, has = game.GameFactory[alias]
 	if !has {
-		Ret400(c, AEC_game_new_noalias, ErrNoAliase)
+		Ret400(c, AEC_game_new_noalias, ErrNoAlias)
 		return
 	}
 
 	var anygame = maker()
-	var gid = StoryCounter.Inc()
-	scene = &Scene{
-		Story: Story{
+	var gid = core.StoryCounter.Inc()
+	scene = &core.Scene{
+		Story: core.Story{
 			GID:   gid,
 			CID:   arg.CID,
 			UID:   arg.UID,
@@ -174,15 +167,15 @@ func ApiGameNew(c *gin.Context) {
 
 	// insert new story entry
 	if Cfg.ClubInsertBuffer > 1 {
-		cfg.XormWG.Go(func() (err error) {
-			return JoinBuf.Join(&scene.Story)
+		core.XormWG.Go(func() (err error) {
+			return core.JoinBuf.Join(&scene.Story)
 		})
-	} else if err = JoinBuf.Join(&scene.Story); err != nil {
+	} else if err = core.JoinBuf.Join(&scene.Story); err != nil {
 		Ret500(c, AEC_game_new_sql, err)
 		return
 	}
 
-	Scenes.Set(scene.GID, scene)
+	core.Scenes.Set(scene.GID, scene)
 
 	ret.GID = scene.GID
 	ret.Game = scene.Game
@@ -213,20 +206,20 @@ func ApiGameJoin(c *gin.Context) {
 		return
 	}
 
-	var user *User
-	if user, ok = Users.Get(arg.UID); !ok {
+	var user *core.User
+	if user, ok = core.Users.Get(arg.UID); !ok {
 		Ret404(c, AEC_game_join_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = MustAdmin(c, arg.CID)
-	if (al&ALmember == 0) || (admin != user && al&ALdealer == 0) {
+	var admin, al = core.MustAdmin(c, arg.CID)
+	if (al&core.ALmember == 0) || (admin != user && al&core.ALdealer == 0) {
 		Ret403(c, AEC_game_join_noaccess, ErrNoAccess)
 		return
 	}
 
-	var scene *Scene
-	if scene, err = GetScene(arg.GID); err != nil {
+	var scene *core.Scene
+	if scene, err = core.GetScene(arg.GID); err != nil {
 		Ret404(c, AEC_game_join_noscene, err)
 		return
 	}
@@ -262,26 +255,26 @@ func ApiGameInfo(c *gin.Context) {
 		return
 	}
 
-	var scene *Scene
-	if scene, err = GetScene(arg.GID); err != nil {
+	var scene *core.Scene
+	if scene, err = core.GetScene(arg.GID); err != nil {
 		Ret404(c, AEC_game_info_noscene, err)
 		return
 	}
 
-	var user *User
-	if user, ok = Users.Get(scene.UID); !ok {
+	var user *core.User
+	if user, ok = core.Users.Get(scene.UID); !ok {
 		Ret500(c, AEC_game_info_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin != user && al&ALdealer == 0 {
+	var admin, al = core.MustAdmin(c, scene.CID)
+	if admin != user && al&core.ALdealer == 0 {
 		Ret403(c, AEC_game_info_noaccess, ErrNoAccess)
 		return
 	}
 
-	var props *Props
-	if props, ok = user.props.Get(scene.CID); !ok {
+	var props *core.Props
+	if props, ok = user.GetProps(scene.CID); !ok {
 		Ret500(c, AEC_game_info_noprops, ErrNoProps)
 		return
 	}
@@ -316,37 +309,37 @@ func ApiGameRtpGet(c *gin.Context) {
 		return
 	}
 
-	var scene *Scene
-	if scene, err = GetScene(arg.GID); err != nil {
+	var scene *core.Scene
+	if scene, err = core.GetScene(arg.GID); err != nil {
 		Ret404(c, AEC_game_rtpget_noscene, err)
 		return
 	}
 
 	var gi *game.GameInfo
 	if gi, ok = game.InfoMap[scene.Alias]; !ok {
-		Ret500(c, AEC_game_rtpget_noinfo, ErrNoAliase)
+		Ret500(c, AEC_game_rtpget_noinfo, ErrBadAlias)
 		return
 	}
 
-	var club *Club
-	if club, ok = Clubs.Get(scene.CID); !ok {
+	var club *core.Club
+	if club, ok = core.Clubs.Get(scene.CID); !ok {
 		Ret500(c, AEC_game_rtpget_noclub, ErrNoClub)
 		return
 	}
 
-	var user *User
-	if user, ok = Users.Get(scene.UID); !ok {
+	var user *core.User
+	if user, ok = core.Users.Get(scene.UID); !ok {
 		Ret500(c, AEC_game_rtpget_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin != user && al&ALdealer == 0 {
+	var admin, al = core.MustAdmin(c, scene.CID)
+	if admin != user && al&core.ALdealer == 0 {
 		Ret403(c, AEC_game_rtpget_noaccess, ErrNoAccess)
 		return
 	}
 
-	ret.MRTP = GetRTP(user, club)
+	ret.MRTP = core.GetRTP(user, club)
 	ret.RTP = gi.FindClosest(ret.MRTP)
 
 	RetOk(c, ret)

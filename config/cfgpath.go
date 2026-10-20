@@ -8,8 +8,6 @@ import (
 	"github.com/slotopol/server/util"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	"golang.org/x/sync/errgroup"
-	"xorm.io/xorm"
 )
 
 var (
@@ -29,12 +27,6 @@ var (
 	SqlPath string
 	// List of paths to yaml files with game specific data to load on start up.
 	ObjPath []string
-)
-
-var (
-	XormStorage *xorm.Engine
-	XormSpinlog *xorm.Engine
-	XormWG      errgroup.Group
 )
 
 var (

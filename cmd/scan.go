@@ -4,12 +4,13 @@ import (
 	"fmt"
 	"runtime"
 
-	cfg "github.com/slotopol/server/config"
-	"github.com/slotopol/server/game"
-	"github.com/slotopol/server/util"
-
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
+
+	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/core"
+	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/util"
 )
 
 const scanShort = "Slots games reels scanning by brute force or by Monte Carlo"
@@ -104,7 +105,7 @@ var scanCmd = &cobra.Command{
 	Example: fmt.Sprintf(scanExmp, cfg.AppName),
 	Run: func(cmd *cobra.Command, args []string) {
 		var err error
-		var exitctx = Startup()
+		var exitctx = core.Startup()
 		var pf = cmd.Flags()
 
 		// Load yaml-files
@@ -114,16 +115,16 @@ var scanCmd = &cobra.Command{
 			return
 		}
 		if !noembed {
-			if _, err = LoadInternalYaml(exitctx); err != nil {
+			if _, err = core.LoadInternalYaml(exitctx); err != nil {
 				cfg.Fatalf("can not load internal yaml files: %s", err.Error())
 				return
 			}
 		}
-		if err = LoadExternalYaml(exitctx); err != nil {
+		if err = core.LoadExternalYaml(exitctx); err != nil {
 			cfg.Fatalf("can not load external yaml files: %s", err.Error())
 			return
 		}
-		UpdateAlgList()
+		core.UpdateAlgList()
 
 		var alias string
 		if alias, err = pf.GetString("game"); err != nil {

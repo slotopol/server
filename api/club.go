@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 
 	"github.com/gin-gonic/gin"
-	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/core"
 	"xorm.io/xorm"
 )
 
@@ -23,8 +23,8 @@ func ApiClubList(c *gin.Context) {
 		List    []item   `json:"list" yaml:"list" xml:"list>club" form:"list"`
 	}
 
-	ret.List = make([]item, 0, Clubs.Len())
-	for cid, club := range Clubs.Items() {
+	ret.List = make([]item, 0, core.Clubs.Len())
+	for cid, club := range core.Clubs.Items() {
 		ret.List = append(ret.List, item{CID: cid, Name: club.Name()})
 	}
 
@@ -58,13 +58,13 @@ func ApiClubIs(c *gin.Context) {
 	for i, ai := range arg.List {
 		var ri item
 		if ai.CID != 0 {
-			var club *Club
-			if club, ok = Clubs.Get(ai.CID); ok {
+			var club *core.Club
+			if club, ok = core.Clubs.Get(ai.CID); ok {
 				ri.CID = club.CID()
 				ri.Name = club.Name()
 			}
 		} else {
-			for _, club := range Clubs.Items() {
+			for _, club := range core.Clubs.Items() {
 				if name := club.Name(); name == ai.Name {
 					ri.CID = club.CID()
 					ri.Name = name
@@ -87,8 +87,8 @@ func ApiClubInfo(c *gin.Context) {
 		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required"`
 	}
 	var ret struct {
-		XMLName  xml.Name `json:"-" yaml:"-" xml:"ret"`
-		ClubData `yaml:",inline"`
+		XMLName       xml.Name `json:"-" yaml:"-" xml:"ret"`
+		core.ClubData `yaml:",inline"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -96,14 +96,14 @@ func ApiClubInfo(c *gin.Context) {
 		return
 	}
 
-	var club *Club
-	if club, ok = Clubs.Get(arg.CID); !ok {
+	var club *core.Club
+	if club, ok = core.Clubs.Get(arg.CID); !ok {
 		Ret500(c, AEC_club_info_noclub, ErrNoClub)
 		return
 	}
 
-	var _, al = MustAdmin(c, arg.CID)
-	if al&ALmaster == 0 {
+	var _, al = core.MustAdmin(c, arg.CID)
+	if al&core.ALmaster == 0 {
 		Ret403(c, AEC_club_info_noaccess, ErrNoAccess)
 		return
 	}
@@ -131,8 +131,8 @@ func ApiClubJpfund(c *gin.Context) {
 		return
 	}
 
-	var club *Club
-	if club, ok = Clubs.Get(arg.CID); !ok {
+	var club *core.Club
+	if club, ok = core.Clubs.Get(arg.CID); !ok {
 		Ret500(c, AEC_club_jpfund_noclub, ErrNoClub)
 		return
 	}
@@ -157,19 +157,19 @@ func ApiClubRename(c *gin.Context) {
 		return
 	}
 
-	var club *Club
-	if club, ok = Clubs.Get(arg.CID); !ok {
+	var club *core.Club
+	if club, ok = core.Clubs.Get(arg.CID); !ok {
 		Ret500(c, AEC_club_rename_noclub, ErrNoClub)
 		return
 	}
 
-	var _, al = MustAdmin(c, arg.CID)
-	if al&ALmaster == 0 {
+	var _, al = core.MustAdmin(c, arg.CID)
+	if al&core.ALmaster == 0 {
 		Ret403(c, AEC_club_rename_noaccess, ErrNoAccess)
 		return
 	}
 
-	if _, err = cfg.XormStorage.ID(club.CID()).Cols("name").Update(&ClubData{Name: arg.Name}); err != nil {
+	if _, err = core.XormStorage.ID(club.CID()).Cols("name").Update(&core.ClubData{Name: arg.Name}); err != nil {
 		Ret500(c, AEC_club_rename_update, err)
 		return
 	}
@@ -207,14 +207,14 @@ func ApiClubCashin(c *gin.Context) {
 		return
 	}
 
-	var club *Club
-	if club, ok = Clubs.Get(arg.CID); !ok {
+	var club *core.Club
+	if club, ok = core.Clubs.Get(arg.CID); !ok {
 		Ret500(c, AEC_club_cashin_noclub, ErrNoClub)
 		return
 	}
 
-	var _, al = MustAdmin(c, arg.CID)
-	if al&ALmaster == 0 {
+	var _, al = core.MustAdmin(c, arg.CID)
+	if al&core.ALmaster == 0 {
 		Ret403(c, AEC_club_cashin_noaccess, ErrNoAccess)
 		return
 	}
@@ -237,7 +237,7 @@ func ApiClubCashin(c *gin.Context) {
 		return
 	}
 
-	var rec = Banklog{
+	var rec = core.Banklog{
 		Bank:    bank,
 		Fund:    fund,
 		Lock:    lock,
@@ -245,7 +245,7 @@ func ApiClubCashin(c *gin.Context) {
 		FundSum: arg.FundSum,
 		LockSum: arg.LockSum,
 	}
-	if err = SafeTransaction(cfg.XormStorage, func(session *xorm.Session) (err error) {
+	if err = core.SafeTransaction(core.XormStorage, func(session *xorm.Session) (err error) {
 		if _, err = session.Exec(sqlclub, arg.BankSum, arg.FundSum, arg.LockSum, club.CID()); err != nil {
 			Ret500(c, AEC_club_cashin_sqlbank, err)
 			return

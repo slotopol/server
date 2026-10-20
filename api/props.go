@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 
 	"github.com/gin-gonic/gin"
-	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/core"
 )
 
 // Returns all properties for pointed user at pointed club.
@@ -19,7 +19,7 @@ func ApiPropsGet(c *gin.Context) {
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
 		Wallet  float64  `json:"wallet" yaml:"wallet" xml:"wallet"`
-		Access  AL       `json:"access" yaml:"access" xml:"access"`
+		Access  core.AL  `json:"access" yaml:"access" xml:"access"`
 		MRTP    float64  `json:"mrtp" yaml:"mrtp" xml:"mrtp"`
 	}
 
@@ -28,26 +28,26 @@ func ApiPropsGet(c *gin.Context) {
 		return
 	}
 
-	var club *Club
-	if club, ok = Clubs.Get(arg.CID); !ok {
+	var club *core.Club
+	if club, ok = core.Clubs.Get(arg.CID); !ok {
 		Ret404(c, AEC_prop_get_noclub, ErrNoClub)
 		return
 	}
 	_ = club
 
-	var user *User
-	if user, ok = Users.Get(arg.UID); !ok {
+	var user *core.User
+	if user, ok = core.Users.Get(arg.UID); !ok {
 		Ret404(c, AEC_prop_get_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = MustAdmin(c, arg.CID)
-	if admin != user && al&ALbooker == 0 {
+	var admin, al = core.MustAdmin(c, arg.CID)
+	if admin != user && al&core.ALbooker == 0 {
 		Ret403(c, AEC_prop_get_noaccess, ErrNoAccess)
 		return
 	}
 
-	if props, ok := user.props.Get(arg.CID); ok {
+	if props, ok := user.GetProps(arg.CID); ok {
 		ret.Wallet = props.Wallet
 		ret.Access = props.Access
 		ret.MRTP = props.MRTP
@@ -75,21 +75,21 @@ func ApiPropsWalletGet(c *gin.Context) {
 		return
 	}
 
-	var club *Club
-	if club, ok = Clubs.Get(arg.CID); !ok {
+	var club *core.Club
+	if club, ok = core.Clubs.Get(arg.CID); !ok {
 		Ret404(c, AEC_prop_walletget_noclub, ErrNoClub)
 		return
 	}
 	_ = club
 
-	var user *User
-	if user, ok = Users.Get(arg.UID); !ok {
+	var user *core.User
+	if user, ok = core.Users.Get(arg.UID); !ok {
 		Ret404(c, AEC_prop_walletget_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = MustAdmin(c, arg.CID)
-	if admin != user && al&ALbooker == 0 {
+	var admin, al = core.MustAdmin(c, arg.CID)
+	if admin != user && al&core.ALbooker == 0 {
 		Ret403(c, AEC_prop_walletget_noaccess, ErrNoAccess)
 		return
 	}
@@ -118,32 +118,32 @@ func ApiPropsWalletAdd(c *gin.Context) {
 		Ret400(c, AEC_prop_walletadd_nobind, err)
 		return
 	}
-	if arg.Sum > cfg.Cfg.AdjunctLimit || arg.Sum < -cfg.Cfg.AdjunctLimit {
+	if arg.Sum > Cfg.AdjunctLimit || arg.Sum < -Cfg.AdjunctLimit {
 		Ret400(c, AEC_prop_walletadd_limit, ErrTooBig)
 		return
 	}
 
-	var club *Club
-	if club, ok = Clubs.Get(arg.CID); !ok {
+	var club *core.Club
+	if club, ok = core.Clubs.Get(arg.CID); !ok {
 		Ret404(c, AEC_prop_walletadd_noclub, ErrNoClub)
 		return
 	}
 	_ = club
 
-	var user *User
-	if user, ok = Users.Get(arg.UID); !ok {
+	var user *core.User
+	if user, ok = core.Users.Get(arg.UID); !ok {
 		Ret404(c, AEC_prop_walletadd_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = MustAdmin(c, arg.CID)
-	if al&ALbooker == 0 {
+	var admin, al = core.MustAdmin(c, arg.CID)
+	if al&core.ALbooker == 0 {
 		Ret403(c, AEC_prop_walletadd_noaccess, ErrNoAccess)
 		return
 	}
 
-	var props *Props
-	if props, ok = user.props.Get(arg.CID); !ok {
+	var props *core.Props
+	if props, ok = user.GetProps(arg.CID); !ok {
 		Ret500(c, AEC_prop_walletadd_noprops, ErrNoProps)
 		return
 	}
@@ -154,10 +154,10 @@ func ApiPropsWalletAdd(c *gin.Context) {
 
 	// update wallet as transaction
 	if Cfg.ClubInsertBuffer > 1 {
-		cfg.XormWG.Go(func() (err error) {
-			return BankBat[arg.CID].Add(arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum)
+		core.XormWG.Go(func() (err error) {
+			return core.BankBat[arg.CID].Add(arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum)
 		})
-	} else if err = BankBat[arg.CID].Add(arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum); err != nil {
+	} else if err = core.BankBat[arg.CID].Add(arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum); err != nil {
 		Ret500(c, AEC_prop_walletadd_sql, err)
 		return
 	}
@@ -182,7 +182,7 @@ func ApiPropsAlGet(c *gin.Context) {
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
-		Access  AL       `json:"access" yaml:"access" xml:"access"`
+		Access  core.AL  `json:"access" yaml:"access" xml:"access"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -190,21 +190,21 @@ func ApiPropsAlGet(c *gin.Context) {
 		return
 	}
 
-	var club *Club
-	if club, ok = Clubs.Get(arg.CID); !ok && !arg.All {
+	var club *core.Club
+	if club, ok = core.Clubs.Get(arg.CID); !ok && !arg.All {
 		Ret404(c, AEC_prop_alget_noclub, ErrNoClub)
 		return
 	}
 	_ = club
 
-	var user *User
-	if user, ok = Users.Get(arg.UID); !ok {
+	var user *core.User
+	if user, ok = core.Users.Get(arg.UID); !ok {
 		Ret404(c, AEC_prop_alget_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = MustAdmin(c, arg.CID)
-	if admin != user && al&(ALbooker+ALadmin) == 0 {
+	var admin, al = core.MustAdmin(c, arg.CID)
+	if admin != user && al&(core.ALbooker+core.ALadmin) == 0 {
 		Ret403(c, AEC_prop_alget_noaccess, ErrNoAccess)
 		return
 	}
@@ -225,7 +225,7 @@ func ApiPropsAlSet(c *gin.Context) {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
 		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required"`
 		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid" binding:"required"`
-		Access  AL       `json:"access" yaml:"access" xml:"access"`
+		Access  core.AL  `json:"access" yaml:"access" xml:"access"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
@@ -233,28 +233,28 @@ func ApiPropsAlSet(c *gin.Context) {
 		return
 	}
 
-	var club *Club
-	if club, ok = Clubs.Get(arg.CID); !ok {
+	var club *core.Club
+	if club, ok = core.Clubs.Get(arg.CID); !ok {
 		Ret404(c, AEC_prop_alset_noclub, ErrNoClub)
 		return
 	}
 	_ = club
 
-	var user *User
-	if user, ok = Users.Get(arg.UID); !ok {
+	var user *core.User
+	if user, ok = core.Users.Get(arg.UID); !ok {
 		Ret404(c, AEC_prop_alset_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = MustAdmin(c, arg.CID)
-	if al&ALadmin == 0 {
+	var admin, al = core.MustAdmin(c, arg.CID)
+	if al&core.ALadmin == 0 {
 		Ret403(c, AEC_prop_alset_noaccess, ErrNoAccess)
 		return
 	}
 	_ = admin
 
-	var props *Props
-	if props, ok = user.props.Get(arg.CID); !ok {
+	var props *core.Props
+	if props, ok = user.GetProps(arg.CID); !ok {
 		Ret500(c, AEC_prop_alset_noprops, ErrNoProps)
 		return
 	}
@@ -265,10 +265,10 @@ func ApiPropsAlSet(c *gin.Context) {
 
 	// update access level as transaction
 	if Cfg.ClubInsertBuffer > 1 {
-		cfg.XormWG.Go(func() (err error) {
-			return BankBat[arg.CID].Access(arg.UID, arg.Access)
+		core.XormWG.Go(func() (err error) {
+			return core.BankBat[arg.CID].Access(arg.UID, arg.Access)
 		})
-	} else if err = BankBat[arg.CID].Access(arg.UID, arg.Access); err != nil {
+	} else if err = core.BankBat[arg.CID].Access(arg.UID, arg.Access); err != nil {
 		Ret500(c, AEC_prop_rtpset_sql, err)
 		return
 	}
@@ -300,27 +300,27 @@ func ApiPropsRtpGet(c *gin.Context) {
 		return
 	}
 
-	var club *Club
-	if club, ok = Clubs.Get(arg.CID); !ok {
+	var club *core.Club
+	if club, ok = core.Clubs.Get(arg.CID); !ok {
 		Ret404(c, AEC_prop_rtpget_noclub, ErrNoClub)
 		return
 	}
 	_ = club
 
-	var user *User
-	if user, ok = Users.Get(arg.UID); !ok && !arg.All {
+	var user *core.User
+	if user, ok = core.Users.Get(arg.UID); !ok && !arg.All {
 		Ret404(c, AEC_prop_rtpget_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = MustAdmin(c, arg.CID)
-	if admin != user && al&ALbooker == 0 {
+	var admin, al = core.MustAdmin(c, arg.CID)
+	if admin != user && al&core.ALbooker == 0 {
 		Ret403(c, AEC_prop_rtpget_noaccess, ErrNoAccess)
 		return
 	}
 
 	if arg.All {
-		ret.MRTP = GetRTP(user, club)
+		ret.MRTP = core.GetRTP(user, club)
 	} else {
 		ret.MRTP = user.GetRTP(arg.CID)
 	}
@@ -344,38 +344,38 @@ func ApiPropsRtpSet(c *gin.Context) {
 		return
 	}
 
-	var club *Club
-	if club, ok = Clubs.Get(arg.CID); !ok {
+	var club *core.Club
+	if club, ok = core.Clubs.Get(arg.CID); !ok {
 		Ret404(c, AEC_prop_rtpset_noclub, ErrNoClub)
 		return
 	}
 	_ = club
 
-	var user *User
-	if user, ok = Users.Get(arg.UID); !ok {
+	var user *core.User
+	if user, ok = core.Users.Get(arg.UID); !ok {
 		Ret404(c, AEC_prop_rtpset_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = MustAdmin(c, arg.CID)
-	if al&ALbooker == 0 {
+	var admin, al = core.MustAdmin(c, arg.CID)
+	if al&core.ALbooker == 0 {
 		Ret403(c, AEC_prop_rtpset_noaccess, ErrNoAccess)
 		return
 	}
 	_ = admin
 
-	var props *Props
-	if props, ok = user.props.Get(arg.CID); !ok {
+	var props *core.Props
+	if props, ok = user.GetProps(arg.CID); !ok {
 		Ret500(c, AEC_prop_rtpset_noprops, ErrNoProps)
 		return
 	}
 
 	// update master RTP as transaction
 	if Cfg.ClubInsertBuffer > 1 {
-		cfg.XormWG.Go(func() (err error) {
-			return BankBat[arg.CID].MRTP(arg.UID, arg.MRTP)
+		core.XormWG.Go(func() (err error) {
+			return core.BankBat[arg.CID].MRTP(arg.UID, arg.MRTP)
 		})
-	} else if err = BankBat[arg.CID].MRTP(arg.UID, arg.MRTP); err != nil {
+	} else if err = core.BankBat[arg.CID].MRTP(arg.UID, arg.MRTP); err != nil {
 		Ret500(c, AEC_prop_rtpset_sql, err)
 		return
 	}

@@ -5,12 +5,13 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/slotopol/server/api"
-	cfg "github.com/slotopol/server/config"
-	"golang.org/x/sync/errgroup"
-
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
+	"golang.org/x/sync/errgroup"
+
+	"github.com/slotopol/server/api"
+	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/core"
 )
 
 const webShort = "Starts web-server"
@@ -39,47 +40,47 @@ var webCmd = &cobra.Command{
 			gin.SetMode(gin.ReleaseMode)
 		}
 
-		var exitctx = Startup()
+		var exitctx = core.Startup()
 
 		// Load yaml-files
-		if _, err = LoadInternalYaml(exitctx); err != nil {
+		if _, err = core.LoadInternalYaml(exitctx); err != nil {
 			cfg.Fatalf("can not load internal yaml files: %s", err.Error())
 			return
 		}
-		if err = LoadExternalYaml(exitctx); err != nil {
+		if err = core.LoadExternalYaml(exitctx); err != nil {
 			cfg.Fatalf("can not load external yaml files: %s", err.Error())
 			return
 		}
-		UpdateAlgList()
-		CheckAlgList()
+		core.UpdateAlgList()
+		core.CheckAlgList()
 
 		// Working with SQL
-		if err = InitXORM(); err != nil {
+		if err = core.InitXORM(); err != nil {
 			cfg.Fatalf("can not initialize xorm: %s", err.Error())
 			return
 		}
-		cfg.XormWG.Go(func() (err error) {
-			return FlushLoop(exitctx)
+		core.XormWG.Go(func() (err error) {
+			return core.FlushLoop(exitctx)
 		})
 
 		// Web router engine
 		var r = gin.New()
-		r.SetTrustedProxies(Cfg.TrustedProxies)
+		r.SetTrustedProxies(core.Cfg.TrustedProxies)
 		r.HandleMethodNotAllowed = true
 		api.SetupRouter(r)
 
 		// Starts HTTP listeners
 		var wg errgroup.Group
-		for _, addr := range Cfg.PortHTTP {
+		for _, addr := range core.Cfg.PortHTTP {
 			cfg.Infof("start http on %s", addr)
 			var srv = http.Server{
 				Addr:              addr,
 				Handler:           r.Handler(),
-				ReadTimeout:       Cfg.ReadTimeout,
-				ReadHeaderTimeout: Cfg.ReadHeaderTimeout,
-				WriteTimeout:      Cfg.WriteTimeout,
-				IdleTimeout:       Cfg.IdleTimeout,
-				MaxHeaderBytes:    Cfg.MaxHeaderBytes,
+				ReadTimeout:       core.Cfg.ReadTimeout,
+				ReadHeaderTimeout: core.Cfg.ReadHeaderTimeout,
+				WriteTimeout:      core.Cfg.WriteTimeout,
+				IdleTimeout:       core.Cfg.IdleTimeout,
+				MaxHeaderBytes:    core.Cfg.MaxHeaderBytes,
 			}
 
 			wg.Go(func() (err error) {
@@ -101,7 +102,7 @@ var webCmd = &cobra.Command{
 				case <-ctx.Done():
 				case <-exitctx.Done():
 					// create a deadline to wait for.
-					var ctx, cancel = context.WithTimeout(context.Background(), Cfg.ShutdownTimeout)
+					var ctx, cancel = context.WithTimeout(context.Background(), core.Cfg.ShutdownTimeout)
 					defer cancel()
 
 					if err = srv.Shutdown(ctx); err != nil {
@@ -118,7 +119,7 @@ var webCmd = &cobra.Command{
 		}
 
 		// Close database connection
-		if err = DoneXORM(); err != nil {
+		if err = core.DoneXORM(); err != nil {
 			cfg.Fatalf(err.Error())
 			return
 		}

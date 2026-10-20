@@ -1,22 +1,16 @@
 package cmd
 
 import (
-	"errors"
 	"fmt"
 	"os"
-	"path/filepath"
+
+	"github.com/spf13/cobra"
 
 	cfg "github.com/slotopol/server/config"
-	"github.com/slotopol/server/util"
-
-	"github.com/bmatcuk/doublestar/v4"
-	"github.com/spf13/cobra"
 )
 
 const rootShort = "Slots games backend"
 const rootLong = `This application implements web server and reels scanner for slots games.`
-
-var FinalPaths []string
 
 var (
 	rootCmd = &cobra.Command{
@@ -24,30 +18,7 @@ var (
 		Version: cfg.BuildVers,
 		Short:   rootShort,
 		Long:    rootLong,
-		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-			for _, pattern := range cfg.ObjPath {
-				var pattern = filepath.ToSlash(pattern)
-				pattern, err := util.ExpandHomePath(pattern)
-				if err != nil {
-					return fmt.Errorf("failed to expand home path for %q: %w", pattern, err)
-				}
-				pattern = util.Envfmt(pattern, nil)
-				matches, err := doublestar.FilepathGlob(pattern,
-					doublestar.WithCaseInsensitive(),
-					doublestar.WithFilesOnly(),
-					doublestar.WithNoHidden(),
-				)
-				if err != nil {
-					if errors.Is(err, doublestar.ErrPatternNotExist) {
-						return fmt.Errorf("path or its base directory does not exist: %q", pattern)
-					}
-					return fmt.Errorf("invalid pattern %q: %w", pattern, err)
-				}
-				FinalPaths = append(FinalPaths, matches...)
-				cfg.Infof("found %d files for pattern %q", len(matches), pattern)
-			}
-			return nil
-		}}
+	}
 )
 
 func init() {

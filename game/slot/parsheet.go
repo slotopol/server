@@ -8,7 +8,7 @@ import (
 
 	"github.com/slotopol/server/game"
 	"github.com/slotopol/server/util"
-	"gopkg.in/yaml.v3"
+	"go.yaml.in/yaml/v3"
 )
 
 func Print_vi(w io.Writer, sp *ScanPar, D float64) {

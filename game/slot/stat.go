@@ -14,7 +14,7 @@ import (
 	"github.com/slotopol/server/game"
 
 	"go.uber.org/atomic"
-	"gopkg.in/yaml.v3"
+	"go.yaml.in/yaml/v3"
 )
 
 type Simulator interface {

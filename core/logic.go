@@ -1,7 +1,9 @@
-package api
+package core
 
 import (
 	"encoding/json"
+	"errors"
+	"iter"
 	"sync"
 	"time"
 
@@ -11,6 +13,17 @@ import (
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/game"
 	"github.com/slotopol/server/util"
+)
+
+const (
+	// Pointer to User object stored at gin context
+	// after successful authorization.
+	userKey = "user"
+)
+
+var (
+	ErrNotOpened = errors.New("game with given ID is not opened")
+	ErrNoAlias   = errors.New("no game alias")
 )
 
 type ClubData struct {
@@ -265,6 +278,14 @@ func (user *User) Init() {
 	user.props.Init(0)
 }
 
+func (user *User) GetProps(cid uint64) (*Props, bool) {
+	return user.props.Get(cid)
+}
+
+func (user *User) Items() iter.Seq2[uint64, *Props] {
+	return user.props.Items()
+}
+
 func (user *User) GetWallet(cid uint64) float64 {
 	if props, ok := user.props.Get(cid); ok {
 		return props.Wallet
@@ -328,13 +349,13 @@ func GetScene(gid uint64) (scene *Scene, err error) {
 	}
 
 	var tmp Scene
-	if ok, _ = cfg.XormStorage.ID(gid).Get(&tmp.Story); !ok {
+	if ok, _ = XormStorage.ID(gid).Get(&tmp.Story); !ok {
 		err = ErrNotOpened
 		return
 	}
 	var maker func() game.Gamble
 	if maker, ok = game.GameFactory[tmp.Alias]; !ok {
-		err = ErrNoAliase
+		err = ErrNoAlias
 		return
 	}
 	tmp.Game = maker()
@@ -347,7 +368,7 @@ func GetScene(gid uint64) (scene *Scene, err error) {
 	}
 
 	var rec Spinlog
-	if ok, _ = cfg.XormSpinlog.Where("gid = ?", gid).Desc("ctime").Get(&rec); !ok {
+	if ok, _ = XormSpinlog.Where("gid = ?", gid).Desc("ctime").Get(&rec); !ok {
 		return
 	}
 	scene.SLID = rec.SLID

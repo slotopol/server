@@ -1,4 +1,4 @@
-package cmd
+package core
 
 import (
 	"bytes"
@@ -8,16 +8,33 @@ import (
 	"os"
 	"time"
 
-	"github.com/slotopol/server/api"
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/util"
 	"go.yaml.in/yaml/v3"
+	"golang.org/x/sync/errgroup"
 	"xorm.io/xorm"
 	"xorm.io/xorm/names"
 
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
+)
+
+var (
+	Cfg = cfg.Cfg // shortcut
+)
+
+var (
+	XormStorage *xorm.Engine
+	XormSpinlog *xorm.Engine
+	XormWG      errgroup.Group
+)
+
+var (
+	SpinBuf util.SqlBuf[Spinlog]
+	MultBuf util.SqlBuf[Multlog]
+	BankBat = map[uint64]*SqlBank{}
+	JoinBuf = SqlStory{}
 )
 
 func InitStorage() (err error) {
@@ -29,7 +46,7 @@ func InitStorage() (err error) {
 		} else {
 			fpath = Cfg.ClubSourceName
 		}
-		if cfg.XormStorage, err = xorm.NewEngine(Cfg.DriverName, fpath); err != nil {
+		if XormStorage, err = xorm.NewEngine(Cfg.DriverName, fpath); err != nil {
 			return
 		}
 		if Cfg.ClubSourceName != ":memory:" {
@@ -39,26 +56,26 @@ func InitStorage() (err error) {
 		}
 
 	case "mysql", "postgres":
-		if cfg.XormStorage, err = xorm.NewEngine(Cfg.DriverName, Cfg.ClubSourceName); err != nil {
+		if XormStorage, err = xorm.NewEngine(Cfg.DriverName, Cfg.ClubSourceName); err != nil {
 			return
 		}
 		cfg.Infof("club db: %s", Cfg.DriverName)
 	}
-	cfg.XormStorage.SetMapper(names.GonicMapper{})
+	XormStorage.SetMapper(names.GonicMapper{})
 
-	var session = cfg.XormStorage.NewSession()
+	var session = XormStorage.NewSession()
 	defer session.Close()
 
 	if err = session.Sync(
-		&api.ClubData{}, &api.User{}, &api.Props{},
-		&api.Story{}, api.Walletlog{}, api.Banklog{},
-		&api.Session{},
+		&ClubData{}, &User{}, &Props{},
+		&Story{}, Walletlog{}, Banklog{},
+		&Session{},
 	); err != nil {
 		return
 	}
 
 	var ok bool
-	if ok, err = session.IsTableEmpty(&api.ClubData{}); err != nil {
+	if ok, err = session.IsTableEmpty(&ClubData{}); err != nil {
 		return
 	}
 	if ok {
@@ -82,7 +99,7 @@ func InitStorage() (err error) {
 	if body, err = os.ReadFile(util.JoinFilePath(cfg.CfgPath, "slot-newuser.yaml")); err != nil {
 		cfg.Errorf("can not open YAML-file with properties initialization for new user: %s", err.Error())
 		err = nil // remove error
-	} else if err = yaml.Unmarshal(body, &api.PropMaster); err != nil {
+	} else if err = yaml.Unmarshal(body, &PropMaster); err != nil {
 		cfg.Errorf("can not unmarshal 'slot-newuser.yaml': %s", err.Error())
 		err = nil // remove error
 	}
@@ -91,52 +108,52 @@ func InitStorage() (err error) {
 
 	var offset = 0
 	for {
-		var chunk []api.ClubData
+		var chunk []ClubData
 		if err = session.Limit(limit, offset).Find(&chunk); err != nil {
 			return
 		}
 		offset += limit
 		for _, cd := range chunk {
-			api.Clubs.Set(cd.CID, api.MakeClub(cd))
-			var bat = &api.SqlBank{}
-			bat.Init(cfg.XormStorage, cd.CID, Cfg.ClubUpdateBuffer, Cfg.ClubInsertBuffer)
-			api.BankBat[cd.CID] = bat
+			Clubs.Set(cd.CID, MakeClub(cd))
+			var bat = &SqlBank{}
+			bat.Init(XormStorage, cd.CID, Cfg.ClubUpdateBuffer, Cfg.ClubInsertBuffer)
+			BankBat[cd.CID] = bat
 		}
 		if limit > len(chunk) {
 			break
 		}
 	}
-	cfg.Infof("loaded %d clubs", api.Clubs.Len())
+	cfg.Infof("loaded %d clubs", Clubs.Len())
 
 	offset = 0
 	for {
-		var chunk []*api.User
+		var chunk []*User
 		if err = session.Limit(limit, offset).Find(&chunk); err != nil {
 			return
 		}
 		offset += limit
 		for _, user := range chunk {
 			user.Init()
-			api.Users.Set(user.UID, user)
+			Users.Set(user.UID, user)
 		}
 		if limit > len(chunk) {
 			break
 		}
 	}
-	cfg.Infof("loaded %d users", api.Users.Len())
+	cfg.Infof("loaded %d users", Users.Len())
 
 	offset = 0
 	for {
-		var chunk []*api.Props
+		var chunk []*Props
 		if err = session.Limit(limit, offset).Find(&chunk); err != nil {
 			return
 		}
 		offset += limit
 		for _, props := range chunk {
-			if !api.Clubs.Has(props.CID) {
+			if !Clubs.Has(props.CID) {
 				return fmt.Errorf("found props without club linkage, UID=%d, CID=%d, value=%g", props.UID, props.CID, props.Wallet)
 			}
-			var user, ok = api.Users.Get(props.UID)
+			var user, ok = Users.Get(props.UID)
 			if !ok {
 				return fmt.Errorf("found props without user linkage, UID=%d, CID=%d, value=%g", props.UID, props.CID, props.Wallet)
 			}
@@ -154,16 +171,16 @@ func InitStorage() (err error) {
 		return
 	}
 	if has {
-		api.StoryCounter.Store(uint64(lastID))
+		StoryCounter.Store(uint64(lastID))
 	}
 	if has, err = session.Table("session").Desc("sid").Cols("sid").Get(&lastID); err != nil {
 		return
 	}
 	if has {
-		api.SessCounter.Store(uint64(lastID))
+		SessCounter.Store(uint64(lastID))
 	}
 
-	api.JoinBuf.Init(cfg.XormStorage, Cfg.ClubInsertBuffer)
+	JoinBuf.Init(XormStorage, Cfg.ClubInsertBuffer)
 	return
 }
 
@@ -176,7 +193,7 @@ func InitSpinlog() (err error) {
 		} else {
 			fpath = Cfg.SpinSourceName
 		}
-		if cfg.XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, fpath); err != nil {
+		if XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, fpath); err != nil {
 			return
 		}
 		if Cfg.ClubSourceName != ":memory:" {
@@ -186,17 +203,17 @@ func InitSpinlog() (err error) {
 		}
 
 	case "mysql", "postgres":
-		if cfg.XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, Cfg.SpinSourceName); err != nil {
+		if XormSpinlog, err = xorm.NewEngine(Cfg.DriverName, Cfg.SpinSourceName); err != nil {
 			return
 		}
 		cfg.Infof("spin db: %s", Cfg.DriverName)
 	}
-	cfg.XormSpinlog.SetMapper(names.GonicMapper{})
+	XormSpinlog.SetMapper(names.GonicMapper{})
 
-	var session = cfg.XormSpinlog.NewSession()
+	var session = XormSpinlog.NewSession()
 	defer session.Close()
 
-	if err = session.Sync(&api.Spinlog{}, &api.Multlog{}); err != nil {
+	if err = session.Sync(&Spinlog{}, &Multlog{}); err != nil {
 		return
 	}
 
@@ -207,36 +224,36 @@ func InitSpinlog() (err error) {
 		return
 	}
 	if has {
-		api.SpinCounter.Store(uint64(lastID))
+		SpinCounter.Store(uint64(lastID))
 	}
 	var i64 int64
 	if has, err = session.Table("multlog").Desc("mlid").Cols("mlid").Get(&i64); err != nil {
 		return
 	}
 	if has {
-		api.MultCounter.Store(uint64(i64))
+		MultCounter.Store(uint64(i64))
 	}
 
-	api.SpinBuf.Init(cfg.XormSpinlog, Cfg.SpinInsertBuffer)
-	api.MultBuf.Init(cfg.XormSpinlog, Cfg.SpinInsertBuffer)
+	SpinBuf.Init(XormSpinlog, Cfg.SpinInsertBuffer)
+	MultBuf.Init(XormSpinlog, Cfg.SpinInsertBuffer)
 	return
 }
 
 func FlushAll(fd time.Duration) (err error) {
 	var errs []error
-	for cid, bat := range api.BankBat {
+	for cid, bat := range BankBat {
 		if err := bat.Flush(fd); err != nil {
 			errs = append(errs, fmt.Errorf("can not update bank for cid=%d: %w", cid, err))
 		}
 	}
-	if err := api.JoinBuf.Flush(fd); err != nil {
+	if err := JoinBuf.Flush(fd); err != nil {
 		errs = append(errs, fmt.Errorf("can not write to story log: %w", err))
 	}
 	if Cfg.UseSpinLog {
-		if err := api.SpinBuf.Flush(fd); err != nil {
+		if err := SpinBuf.Flush(fd); err != nil {
 			errs = append(errs, fmt.Errorf("can not write to spin log: %w", err))
 		}
-		if err := api.MultBuf.Flush(fd); err != nil {
+		if err := MultBuf.Flush(fd); err != nil {
 			errs = append(errs, fmt.Errorf("can not write to mult log: %w", err))
 		}
 	}
@@ -257,7 +274,7 @@ func FlushLoop(exitctx context.Context) (err error) {
 				cfg.Fatalf(err.Error())
 			}
 		case <-passers:
-			cfg.XormStorage.Where("ctime<? AND status=0", time.Now().Add(-time.Hour*3*24).Format(time.DateTime)).Delete(&api.User{})
+			XormStorage.Where("ctime<? AND status=0", time.Now().Add(-time.Hour*3*24).Format(time.DateTime)).Delete(&User{})
 		case <-exitctx.Done():
 			return
 		}
@@ -285,7 +302,7 @@ func InitXORM() (err error) {
 func DoneXORM() error {
 	var errs []error
 
-	if err := cfg.XormWG.Wait(); err != nil {
+	if err := XormWG.Wait(); err != nil {
 		errs = append(errs, err)
 	}
 
@@ -293,11 +310,11 @@ func DoneXORM() error {
 		errs = append(errs, err)
 	}
 
-	if err := cfg.XormStorage.Close(); err != nil {
+	if err := XormStorage.Close(); err != nil {
 		errs = append(errs, err)
 	}
 	if Cfg.UseSpinLog {
-		if err := cfg.XormSpinlog.Close(); err != nil {
+		if err := XormSpinlog.Close(); err != nil {
 			errs = append(errs, err)
 		}
 	}

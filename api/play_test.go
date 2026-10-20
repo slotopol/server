@@ -14,8 +14,8 @@ import (
 	"testing"
 
 	"github.com/slotopol/server/api"
-	"github.com/slotopol/server/cmd"
 	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/core"
 
 	"github.com/gin-gonic/gin"
 )
@@ -130,16 +130,16 @@ func TestPlay(t *testing.T) {
 	var exitctx = context.Background()
 
 	// Load yaml-files
-	if _, err := cmd.LoadInternalYaml(exitctx); err != nil {
+	if _, err := core.LoadInternalYaml(exitctx); err != nil {
 		t.Fatalf("can not load internal yaml files: %s", err.Error())
 		return
 	}
-	cmd.UpdateAlgList()
-	cmd.CheckAlgList()
+	core.UpdateAlgList()
+	core.CheckAlgList()
 
 	// Prepare in-memory database
 	cfg.CfgPath = "../appdata"
-	if err := cmd.InitXORM(); err != nil {
+	if err := core.InitXORM(); err != nil {
 		t.Fatalf("can not initialize xorm: %s", err.Error())
 	}
 
@@ -304,7 +304,7 @@ func TestPlay(t *testing.T) {
 	}
 
 	// Close database connection
-	if err := cmd.DoneXORM(); err != nil {
+	if err := core.DoneXORM(); err != nil {
 		t.Fatal(err)
 	}
 }

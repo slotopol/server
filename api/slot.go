@@ -8,6 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/core"
 	"github.com/slotopol/server/game/slot"
 	"github.com/slotopol/server/util"
 )
@@ -30,8 +31,8 @@ func ApiSlotBetGet(c *gin.Context) {
 		return
 	}
 
-	var scene *Scene
-	if scene, err = GetScene(arg.GID); err != nil {
+	var scene *core.Scene
+	if scene, err = core.GetScene(arg.GID); err != nil {
 		Ret404(c, AEC_slot_betget_noscene, err)
 		return
 	}
@@ -41,8 +42,8 @@ func ApiSlotBetGet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALdealer == 0 {
+	var admin, al = core.MustAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&core.ALdealer == 0 {
 		Ret403(c, AEC_slot_betget_noaccess, ErrNoAccess)
 		return
 	}
@@ -67,8 +68,8 @@ func ApiSlotBetSet(c *gin.Context) {
 		return
 	}
 
-	var scene *Scene
-	if scene, err = GetScene(arg.GID); err != nil {
+	var scene *core.Scene
+	if scene, err = core.GetScene(arg.GID); err != nil {
 		Ret404(c, AEC_slot_betset_noscene, err)
 		return
 	}
@@ -78,8 +79,8 @@ func ApiSlotBetSet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALdealer == 0 {
+	var admin, al = core.MustAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&core.ALdealer == 0 {
 		Ret403(c, AEC_slot_betset_noaccess, ErrNoAccess)
 		return
 	}
@@ -110,8 +111,8 @@ func ApiSlotSelGet(c *gin.Context) {
 		return
 	}
 
-	var scene *Scene
-	if scene, err = GetScene(arg.GID); err != nil {
+	var scene *core.Scene
+	if scene, err = core.GetScene(arg.GID); err != nil {
 		Ret404(c, AEC_slot_selget_noscene, err)
 		return
 	}
@@ -121,8 +122,8 @@ func ApiSlotSelGet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALdealer == 0 {
+	var admin, al = core.MustAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&core.ALdealer == 0 {
 		Ret403(c, AEC_slot_selget_noaccess, ErrNoAccess)
 		return
 	}
@@ -147,8 +148,8 @@ func ApiSlotSelSet(c *gin.Context) {
 		return
 	}
 
-	var scene *Scene
-	if scene, err = GetScene(arg.GID); err != nil {
+	var scene *core.Scene
+	if scene, err = core.GetScene(arg.GID); err != nil {
 		Ret404(c, AEC_slot_selset_noscene, err)
 		return
 	}
@@ -158,8 +159,8 @@ func ApiSlotSelSet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALdealer == 0 {
+	var admin, al = core.MustAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&core.ALdealer == 0 {
 		Ret403(c, AEC_slot_selset_noaccess, ErrNoAccess)
 		return
 	}
@@ -187,8 +188,8 @@ func ApiSlotModeSet(c *gin.Context) {
 		return
 	}
 
-	var scene *Scene
-	if scene, err = GetScene(arg.GID); err != nil {
+	var scene *core.Scene
+	if scene, err = core.GetScene(arg.GID); err != nil {
 		Ret404(c, AEC_slot_modeset_noscene, err)
 		return
 	}
@@ -198,8 +199,8 @@ func ApiSlotModeSet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALdealer == 0 {
+	var admin, al = core.MustAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&core.ALdealer == 0 {
 		Ret403(c, AEC_slot_modeset_noaccess, ErrNoAccess)
 		return
 	}
@@ -236,8 +237,8 @@ func ApiSlotSpin(c *gin.Context) {
 		return
 	}
 
-	var scene *Scene
-	if scene, err = GetScene(arg.GID); err != nil {
+	var scene *core.Scene
+	if scene, err = core.GetScene(arg.GID); err != nil {
 		Ret404(c, AEC_slot_spin_noscene, err)
 		return
 	}
@@ -247,26 +248,26 @@ func ApiSlotSpin(c *gin.Context) {
 		return
 	}
 
-	var club *Club
-	if club, ok = Clubs.Get(scene.CID); !ok {
+	var club *core.Club
+	if club, ok = core.Clubs.Get(scene.CID); !ok {
 		Ret500(c, AEC_slot_spin_noclub, ErrNoClub)
 		return
 	}
 
-	var user *User
-	if user, ok = Users.Get(scene.UID); !ok {
+	var user *core.User
+	if user, ok = core.Users.Get(scene.UID); !ok {
 		Ret500(c, AEC_slot_spin_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALdealer == 0 {
+	var admin, al = core.MustAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&core.ALdealer == 0 {
 		Ret403(c, AEC_slot_spin_noaccess, ErrNoAccess)
 		return
 	}
 
-	var props *Props
-	if props, ok = user.props.Get(scene.CID); !ok {
+	var props *core.Props
+	if props, ok = user.GetProps(scene.CID); !ok {
 		Ret500(c, AEC_slot_spin_noprops, ErrNoProps)
 		return
 	}
@@ -292,7 +293,7 @@ func ApiSlotSpin(c *gin.Context) {
 			return
 		}
 	}
-	var mrtp = GetRTP(user, club)
+	var mrtp = core.GetRTP(user, club)
 	var isjp = len(game.JackFreq(mrtp)) > 0
 	var jprate float64
 	if isjp {
@@ -307,7 +308,7 @@ func ApiSlotSpin(c *gin.Context) {
 	var n = 0
 	game.Prepare()
 	for { // repeat until get valid grid and spin will fit into bank
-		if n++; n > cfg.Cfg.MaxSpinAttempts {
+		if n++; n > Cfg.MaxSpinAttempts {
 			Ret500(c, AEC_slot_spin_badbank, ErrBadBank)
 			return
 		}
@@ -330,10 +331,10 @@ func ApiSlotSpin(c *gin.Context) {
 
 	// write gain and total bet as transaction
 	if Cfg.ClubUpdateBuffer > 1 {
-		cfg.XormWG.Go(func() (err error) {
-			return BankBat[scene.CID].Put(scene.UID, debit)
+		core.XormWG.Go(func() (err error) {
+			return core.BankBat[scene.CID].Put(scene.UID, debit)
 		})
-	} else if err = BankBat[scene.CID].Put(scene.UID, debit); err != nil {
+	} else if err = core.BankBat[scene.CID].Put(scene.UID, debit); err != nil {
 		Ret500(c, AEC_slot_spin_sqlbank, err)
 		return
 	}
@@ -345,9 +346,9 @@ func ApiSlotSpin(c *gin.Context) {
 	game.Apply(wins)
 
 	// write spin result to log and get spin ID
-	var slid = SpinCounter.Inc()
+	var slid = core.SpinCounter.Inc()
 	scene.SLID = slid
-	var rec = Spinlog{
+	var rec = core.Spinlog{
 		SLID:   slid,
 		GID:    arg.GID,
 		MRTP:   mrtp,
@@ -369,8 +370,8 @@ func ApiSlotSpin(c *gin.Context) {
 	}
 
 	if Cfg.UseSpinLog {
-		cfg.XormWG.Go(func() (err error) {
-			if err = SpinBuf.Put(rec); err != nil {
+		core.XormWG.Go(func() (err error) {
+			if err = core.SpinBuf.Put(rec); err != nil {
 				cfg.Errorf("can not write to spin log: %s", err.Error())
 			}
 			return
@@ -413,8 +414,8 @@ func ApiSlotDoubleup(c *gin.Context) {
 		return
 	}
 
-	var scene *Scene
-	if scene, err = GetScene(arg.GID); err != nil {
+	var scene *core.Scene
+	if scene, err = core.GetScene(arg.GID); err != nil {
 		Ret404(c, AEC_slot_doubleup_noscene, err)
 		return
 	}
@@ -424,26 +425,26 @@ func ApiSlotDoubleup(c *gin.Context) {
 		return
 	}
 
-	var club *Club
-	if club, ok = Clubs.Get(scene.CID); !ok {
+	var club *core.Club
+	if club, ok = core.Clubs.Get(scene.CID); !ok {
 		Ret500(c, AEC_slot_doubleup_noclub, ErrNoClub)
 		return
 	}
 
-	var user *User
-	if user, ok = Users.Get(scene.UID); !ok {
+	var user *core.User
+	if user, ok = core.Users.Get(scene.UID); !ok {
 		Ret500(c, AEC_slot_doubleup_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALdealer == 0 {
+	var admin, al = core.MustAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&core.ALdealer == 0 {
 		Ret403(c, AEC_slot_doubleup_noaccess, ErrNoAccess)
 		return
 	}
 
-	var props *Props
-	if props, ok = user.props.Get(scene.CID); !ok {
+	var props *core.Props
+	if props, ok = user.GetProps(scene.CID); !ok {
 		Ret500(c, AEC_slot_doubleup_noprops, ErrNoProps)
 		return
 	}
@@ -459,7 +460,7 @@ func ApiSlotDoubleup(c *gin.Context) {
 	}
 
 	var bank = club.Bank()
-	var mrtp = GetRTP(user, club)
+	var mrtp = core.GetRTP(user, club)
 
 	var win bool       // true on double up is win
 	var upgain float64 // gain by double up
@@ -476,10 +477,10 @@ func ApiSlotDoubleup(c *gin.Context) {
 
 	// write gain and total bet as transaction
 	if Cfg.ClubUpdateBuffer > 1 {
-		cfg.XormWG.Go(func() (err error) {
-			return BankBat[scene.CID].Put(scene.UID, debit)
+		core.XormWG.Go(func() (err error) {
+			return core.BankBat[scene.CID].Put(scene.UID, debit)
 		})
-	} else if err = BankBat[scene.CID].Put(scene.UID, debit); err != nil {
+	} else if err = core.BankBat[scene.CID].Put(scene.UID, debit); err != nil {
 		Ret500(c, AEC_slot_doubleup_sqlbank, err)
 		return
 	}
@@ -491,10 +492,10 @@ func ApiSlotDoubleup(c *gin.Context) {
 	game.SetGain(newgain)
 
 	// write doubleup result to log and get spin ID
-	var mlid = MultCounter.Inc()
+	var mlid = core.MultCounter.Inc()
 	if Cfg.UseSpinLog {
-		cfg.XormWG.Go(func() (err error) {
-			var rec = Multlog{
+		core.XormWG.Go(func() (err error) {
+			var rec = core.Multlog{
 				MLID:   mlid,
 				GID:    arg.GID,
 				MRTP:   mrtp,
@@ -504,7 +505,7 @@ func ApiSlotDoubleup(c *gin.Context) {
 				Gain:   newgain,
 				Wallet: props.Wallet,
 			}
-			if err = MultBuf.Put(rec); err != nil {
+			if err = core.MultBuf.Put(rec); err != nil {
 				cfg.Errorf("can not write to mult log: %s", err.Error())
 			}
 			return
@@ -534,8 +535,8 @@ func ApiSlotCollect(c *gin.Context) {
 		return
 	}
 
-	var scene *Scene
-	if scene, err = GetScene(arg.GID); err != nil {
+	var scene *core.Scene
+	if scene, err = core.GetScene(arg.GID); err != nil {
 		Ret404(c, AEC_slot_collect_noscene, err)
 		return
 	}
@@ -545,8 +546,8 @@ func ApiSlotCollect(c *gin.Context) {
 		return
 	}
 
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALdealer == 0 {
+	var admin, al = core.MustAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&core.ALdealer == 0 {
 		Ret403(c, AEC_slot_collect_noaccess, ErrNoAccess)
 		return
 	}

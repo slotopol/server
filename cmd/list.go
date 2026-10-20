@@ -6,10 +6,11 @@ import (
 	"sort"
 	"strings"
 
-	cfg "github.com/slotopol/server/config"
-	"github.com/slotopol/server/game"
-
 	"github.com/spf13/cobra"
+
+	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/core"
+	"github.com/slotopol/server/game"
 )
 
 const listShort = "List of available games released on server"
@@ -168,16 +169,16 @@ var listCmd = &cobra.Command{
 
 		// Load yaml-files
 		if fRTP || fMrtp > 0 || fDiff > 0 {
-			if _, err = LoadInternalYaml(exitctx); err != nil {
+			if _, err = core.LoadInternalYaml(exitctx); err != nil {
 				cfg.Fatalf("can not load internal yaml files: %s", err.Error())
 				return
 			}
-			if err = LoadExternalYaml(exitctx); err != nil {
+			if err = core.LoadExternalYaml(exitctx); err != nil {
 				cfg.Fatalf("can not load external yaml files: %s", err.Error())
 				return
 			}
-			UpdateAlgList()
-			CheckAlgList()
+			core.UpdateAlgList()
+			core.CheckAlgList()
 		}
 
 		var finclist, fexclist [][]game.Filter

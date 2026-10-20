@@ -1,6 +1,14 @@
 package api
 
-import "errors"
+import (
+	"errors"
+
+	cfg "github.com/slotopol/server/config"
+)
+
+var (
+	Cfg = cfg.Cfg
+)
 
 // API error codes.
 // Each error code have unique source code point,
@@ -380,25 +388,25 @@ const (
 )
 
 var (
-	Err404       = errors.New("page not found")
-	Err405       = errors.New("method not allowed")
-	ErrNoClub    = errors.New("club with given ID does not found")
-	ErrNoUser    = errors.New("user with given ID does not found")
-	ErrNoProps   = errors.New("properties for given user and club does not found")
-	ErrNoAddSum  = errors.New("no sum to change balance of bank or fund or deposit")
-	ErrNoMoney   = errors.New("not enough money on balance")
-	ErrNoGain    = errors.New("no money won")
-	ErrBankOut   = errors.New("not enough money at bank")
-	ErrFundOut   = errors.New("not enough money at jackpot fund")
-	ErrLockOut   = errors.New("not enough money at deposit")
-	ErrNotSlot   = errors.New("specified GID refers to non-slot game")
-	ErrNotKeno   = errors.New("specified GID refers to non-keno game")
-	ErrNoAccess  = errors.New("no access rights for this feature")
-	ErrNoLevel   = errors.New("admin have no privilege to modify specified access level to user")
-	ErrNotConf   = errors.New("password confirmation does not pass")
-	ErrZero      = errors.New("given value is zero")
-	ErrTooBig    = errors.New("given value exceeds the limit")
-	ErrNoAliase  = errors.New("no game alias")
-	ErrNotOpened = errors.New("game with given ID is not opened")
-	ErrBadBank   = errors.New("can not generate spin with current bank balance")
+	Err404      = errors.New("page not found")
+	Err405      = errors.New("method not allowed")
+	ErrNoClub   = errors.New("club with given ID does not found")
+	ErrNoUser   = errors.New("user with given ID does not found")
+	ErrNoProps  = errors.New("properties for given user and club does not found")
+	ErrNoAddSum = errors.New("no sum to change balance of bank or fund or deposit")
+	ErrNoMoney  = errors.New("not enough money on balance")
+	ErrNoGain   = errors.New("no money won")
+	ErrBankOut  = errors.New("not enough money at bank")
+	ErrFundOut  = errors.New("not enough money at jackpot fund")
+	ErrLockOut  = errors.New("not enough money at deposit")
+	ErrNotSlot  = errors.New("specified GID refers to non-slot game")
+	ErrNotKeno  = errors.New("specified GID refers to non-keno game")
+	ErrNoAccess = errors.New("no access rights for this feature")
+	ErrNoLevel  = errors.New("admin have no privilege to modify specified access level to user")
+	ErrNotConf  = errors.New("password confirmation does not pass")
+	ErrZero     = errors.New("given value is zero")
+	ErrTooBig   = errors.New("given value exceeds the limit")
+	ErrNoAlias  = errors.New("game with given alias does not found")
+	ErrBadAlias = errors.New("game alias does not found in info map")
+	ErrBadBank  = errors.New("can not generate spin with current bank balance")
 )

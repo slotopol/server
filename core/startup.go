@@ -1,4 +1,4 @@
-package cmd
+package core
 
 import (
 	"bytes"
@@ -12,13 +12,10 @@ import (
 	"syscall"
 	"time"
 
+	"github.com/bmatcuk/doublestar/v4"
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/game"
 	"github.com/slotopol/server/util"
-)
-
-var (
-	Cfg = cfg.Cfg // shortcut
 )
 
 var (
@@ -57,6 +54,31 @@ func Startup() (exitctx context.Context) {
 		signal.Stop(sigint)
 		signal.Stop(sigterm)
 	}()
+	return
+}
+
+func MakeFinalPaths(patterns []string) (final []string, err error) {
+	for _, pattern := range cfg.ObjPath {
+		var pattern = filepath.ToSlash(pattern)
+		pattern, err = util.ExpandHomePath(pattern)
+		if err != nil {
+			return nil, fmt.Errorf("failed to expand home path for %q: %w", pattern, err)
+		}
+		pattern = util.Envfmt(pattern, nil)
+		matches, err := doublestar.FilepathGlob(pattern,
+			doublestar.WithCaseInsensitive(),
+			doublestar.WithFilesOnly(),
+			doublestar.WithNoHidden(),
+		)
+		if err != nil {
+			if errors.Is(err, doublestar.ErrPatternNotExist) {
+				return nil, fmt.Errorf("path or its base directory does not exist: %q", pattern)
+			}
+			return nil, fmt.Errorf("invalid pattern %q: %w", pattern, err)
+		}
+		final = append(final, matches...)
+		cfg.Infof("found %d files for pattern %q", len(matches), pattern)
+	}
 	return
 }
 
@@ -110,7 +132,11 @@ func LoadYamlFromFile(ctx context.Context, fpath string) (err error) {
 
 // Load data from extermal yaml files.
 func LoadExternalYaml(ctx context.Context) (err error) {
-	for _, fpath := range FinalPaths {
+	var final []string
+	if final, err = MakeFinalPaths(cfg.ObjPath); err != nil {
+		return
+	}
+	for _, fpath := range final {
 		if err = LoadYamlFromFile(ctx, fpath); err != nil {
 			return
 		}

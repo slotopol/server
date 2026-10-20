@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"sort"
 
-	cfg "github.com/slotopol/server/config"
-	"github.com/slotopol/server/game"
-
 	"github.com/spf13/cobra"
+
+	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/core"
+	"github.com/slotopol/server/game"
 )
 
 const dataShort = "List of data routes for available games"
@@ -31,7 +32,7 @@ var dataCmd = &cobra.Command{
 	Example: fmt.Sprintf(dataExmp, cfg.AppName),
 	Run: func(cmd *cobra.Command, args []string) {
 		var err error
-		var exitctx = Startup()
+		var exitctx = core.Startup()
 		var pf = cmd.Flags()
 
 		// Load yaml-files
@@ -41,16 +42,16 @@ var dataCmd = &cobra.Command{
 			return
 		}
 		if !noembed {
-			if _, err = LoadInternalYaml(exitctx); err != nil {
+			if _, err = core.LoadInternalYaml(exitctx); err != nil {
 				cfg.Fatalf("can not load internal yaml files: %s", err.Error())
 				return
 			}
 		}
-		if err = LoadExternalYaml(exitctx); err != nil {
+		if err = core.LoadExternalYaml(exitctx); err != nil {
 			cfg.Fatalf("can not load external yaml files: %s", err.Error())
 			return
 		}
-		UpdateAlgList()
+		core.UpdateAlgList()
 
 		type item struct {
 			has   bool

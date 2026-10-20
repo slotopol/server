@@ -7,6 +7,7 @@ import (
 	"github.com/gin-gonic/gin"
 
 	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/core"
 	"github.com/slotopol/server/game/keno"
 	"github.com/slotopol/server/util"
 )
@@ -29,8 +30,8 @@ func ApiKenoBetGet(c *gin.Context) {
 		return
 	}
 
-	var scene *Scene
-	if scene, err = GetScene(arg.GID); err != nil {
+	var scene *core.Scene
+	if scene, err = core.GetScene(arg.GID); err != nil {
 		Ret404(c, AEC_keno_betget_noscene, err)
 		return
 	}
@@ -40,8 +41,8 @@ func ApiKenoBetGet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALdealer == 0 {
+	var admin, al = core.MustAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&core.ALdealer == 0 {
 		Ret403(c, AEC_keno_betget_noaccess, ErrNoAccess)
 		return
 	}
@@ -66,8 +67,8 @@ func ApiKenoBetSet(c *gin.Context) {
 		return
 	}
 
-	var scene *Scene
-	if scene, err = GetScene(arg.GID); err != nil {
+	var scene *core.Scene
+	if scene, err = core.GetScene(arg.GID); err != nil {
 		Ret404(c, AEC_keno_betset_noscene, err)
 		return
 	}
@@ -77,8 +78,8 @@ func ApiKenoBetSet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALdealer == 0 {
+	var admin, al = core.MustAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&core.ALdealer == 0 {
 		Ret403(c, AEC_keno_betset_noaccess, ErrNoAccess)
 		return
 	}
@@ -109,8 +110,8 @@ func ApiKenoSelGet(c *gin.Context) {
 		return
 	}
 
-	var scene *Scene
-	if scene, err = GetScene(arg.GID); err != nil {
+	var scene *core.Scene
+	if scene, err = core.GetScene(arg.GID); err != nil {
 		Ret404(c, AEC_keno_selget_noscene, err)
 		return
 	}
@@ -120,8 +121,8 @@ func ApiKenoSelGet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALdealer == 0 {
+	var admin, al = core.MustAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&core.ALdealer == 0 {
 		Ret403(c, AEC_keno_selget_noaccess, ErrNoAccess)
 		return
 	}
@@ -146,8 +147,8 @@ func ApiKenoSelSet(c *gin.Context) {
 		return
 	}
 
-	var scene *Scene
-	if scene, err = GetScene(arg.GID); err != nil {
+	var scene *core.Scene
+	if scene, err = core.GetScene(arg.GID); err != nil {
 		Ret404(c, AEC_keno_selset_noscene, err)
 		return
 	}
@@ -157,8 +158,8 @@ func ApiKenoSelSet(c *gin.Context) {
 		return
 	}
 
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALdealer == 0 {
+	var admin, al = core.MustAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&core.ALdealer == 0 {
 		Ret403(c, AEC_keno_selset_noaccess, ErrNoAccess)
 		return
 	}
@@ -189,8 +190,8 @@ func ApiKenoSelGetSlice(c *gin.Context) {
 		return
 	}
 
-	var scene *Scene
-	if scene, err = GetScene(arg.GID); err != nil {
+	var scene *core.Scene
+	if scene, err = core.GetScene(arg.GID); err != nil {
 		Ret404(c, AEC_keno_selgetslice_noscene, err)
 		return
 	}
@@ -200,8 +201,8 @@ func ApiKenoSelGetSlice(c *gin.Context) {
 		return
 	}
 
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALdealer == 0 {
+	var admin, al = core.MustAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&core.ALdealer == 0 {
 		Ret403(c, AEC_keno_selgetslice_noaccess, ErrNoAccess)
 		return
 	}
@@ -227,8 +228,8 @@ func ApiKenoSelSetSlice(c *gin.Context) {
 		return
 	}
 
-	var scene *Scene
-	if scene, err = GetScene(arg.GID); err != nil {
+	var scene *core.Scene
+	if scene, err = core.GetScene(arg.GID); err != nil {
 		Ret404(c, AEC_keno_selsetslice_noscene, err)
 		return
 	}
@@ -238,8 +239,8 @@ func ApiKenoSelSetSlice(c *gin.Context) {
 		return
 	}
 
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALdealer == 0 {
+	var admin, al = core.MustAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&core.ALdealer == 0 {
 		Ret403(c, AEC_keno_selsetslice_noaccess, ErrNoAccess)
 		return
 	}
@@ -276,8 +277,8 @@ func ApiKenoSpin(c *gin.Context) {
 		return
 	}
 
-	var scene *Scene
-	if scene, err = GetScene(arg.GID); err != nil {
+	var scene *core.Scene
+	if scene, err = core.GetScene(arg.GID); err != nil {
 		Ret404(c, AEC_keno_spin_noscene, err)
 		return
 	}
@@ -287,20 +288,20 @@ func ApiKenoSpin(c *gin.Context) {
 		return
 	}
 
-	var club *Club
-	if club, ok = Clubs.Get(scene.CID); !ok {
+	var club *core.Club
+	if club, ok = core.Clubs.Get(scene.CID); !ok {
 		Ret500(c, AEC_keno_spin_noclub, ErrNoClub)
 		return
 	}
 
-	var user *User
-	if user, ok = Users.Get(scene.UID); !ok {
+	var user *core.User
+	if user, ok = core.Users.Get(scene.UID); !ok {
 		Ret500(c, AEC_keno_spin_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = MustAdmin(c, scene.CID)
-	if admin.UID != scene.UID && al&ALdealer == 0 {
+	var admin, al = core.MustAdmin(c, scene.CID)
+	if admin.UID != scene.UID && al&core.ALdealer == 0 {
 		Ret403(c, AEC_keno_spin_noaccess, ErrNoAccess)
 		return
 	}
@@ -322,8 +323,8 @@ func ApiKenoSpin(c *gin.Context) {
 
 	var cost = game.GetBet()
 
-	var props *Props
-	if props, ok = user.props.Get(scene.CID); !ok {
+	var props *core.Props
+	if props, ok = user.GetProps(scene.CID); !ok {
 		Ret500(c, AEC_keno_spin_noprops, ErrNoProps)
 		return
 	}
@@ -333,7 +334,7 @@ func ApiKenoSpin(c *gin.Context) {
 	}
 
 	var bank = club.Bank()
-	var mrtp = GetRTP(user, club)
+	var mrtp = core.GetRTP(user, club)
 
 	// spin until gain less than bank value
 	var wins keno.Wins
@@ -357,10 +358,10 @@ func ApiKenoSpin(c *gin.Context) {
 
 	// write gain and total bet as transaction
 	if Cfg.ClubUpdateBuffer > 1 {
-		cfg.XormWG.Go(func() (err error) {
-			return BankBat[scene.CID].Put(scene.UID, debit)
+		core.XormWG.Go(func() (err error) {
+			return core.BankBat[scene.CID].Put(scene.UID, debit)
 		})
-	} else if err = BankBat[scene.CID].Put(scene.UID, debit); err != nil {
+	} else if err = core.BankBat[scene.CID].Put(scene.UID, debit); err != nil {
 		Ret500(c, AEC_keno_spin_sqlbank, err)
 		return
 	}
@@ -370,9 +371,9 @@ func ApiKenoSpin(c *gin.Context) {
 	props.Wallet -= debit
 
 	// write spin result to log and get spin ID
-	var slid = SpinCounter.Inc()
+	var slid = core.SpinCounter.Inc()
 	scene.SLID = slid
-	var rec = Spinlog{
+	var rec = core.Spinlog{
 		SLID:   slid,
 		GID:    arg.GID,
 		MRTP:   mrtp,
@@ -392,8 +393,8 @@ func ApiKenoSpin(c *gin.Context) {
 	rec.Wins = util.B2S(b)
 
 	if Cfg.UseSpinLog {
-		cfg.XormWG.Go(func() (err error) {
-			if err = SpinBuf.Put(rec); err != nil {
+		core.XormWG.Go(func() (err error) {
+			if err = core.SpinBuf.Put(rec); err != nil {
 				cfg.Errorf("can not write to spin log: %s", err.Error())
 			}
 			return

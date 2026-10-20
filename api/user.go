@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/core"
 	"github.com/slotopol/server/util"
 	"xorm.io/xorm"
 )
@@ -40,14 +40,14 @@ func ApiUserIs(c *gin.Context) {
 	for i, ai := range arg.List {
 		var ri item
 		if ai.UID != 0 {
-			if user, ok := Users.Get(ai.UID); ok {
+			if user, ok := core.Users.Get(ai.UID); ok {
 				ri.UID = user.UID
 				ri.Email = user.Email
 				ri.Name = user.Name
 			}
 		} else {
 			var email = util.ToLower(ai.Email)
-			for _, user := range Users.Items() {
+			for _, user := range core.Users.Items() {
 				if user.Email == email {
 					ri.UID = user.UID
 					ri.Email = user.Email
@@ -77,19 +77,19 @@ func ApiUserRename(c *gin.Context) {
 		return
 	}
 
-	var user *User
-	if user, ok = Users.Get(arg.UID); !ok {
+	var user *core.User
+	if user, ok = core.Users.Get(arg.UID); !ok {
 		Ret404(c, AEC_user_rename_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = MustAdmin(c, 0)
-	if admin != user && al&ALbooker == 0 {
+	var admin, al = core.MustAdmin(c, 0)
+	if admin != user && al&core.ALbooker == 0 {
 		Ret403(c, AEC_user_rename_noaccess, ErrNoAccess)
 		return
 	}
 
-	if _, err = cfg.XormStorage.ID(user.UID).Cols("name").Update(&User{Name: arg.Name}); err != nil {
+	if _, err = core.XormStorage.ID(user.UID).Cols("name").Update(&core.User{Name: arg.Name}); err != nil {
 		Ret500(c, AEC_user_rename_update, err)
 		return
 	}
@@ -118,24 +118,24 @@ func ApiUserSecret(c *gin.Context) {
 		return
 	}
 
-	var user *User
-	if user, ok = Users.Get(arg.UID); !ok {
+	var user *core.User
+	if user, ok = core.Users.Get(arg.UID); !ok {
 		Ret404(c, AEC_user_secret_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = MustAdmin(c, 0)
-	if admin != user && al&(ALbooker+ALadmin) == 0 {
+	var admin, al = core.MustAdmin(c, 0)
+	if admin != user && al&(core.ALbooker+core.ALadmin) == 0 {
 		Ret403(c, AEC_user_secret_noaccess, ErrNoAccess)
 		return
 	}
 
-	if arg.OldSecret != user.Secret && al&ALadmin == 0 {
+	if arg.OldSecret != user.Secret && al&core.ALadmin == 0 {
 		Ret403(c, AEC_user_secret_notequ, ErrNotConf)
 		return
 	}
 
-	if _, err = cfg.XormStorage.ID(user.UID).Cols("secret").Update(&User{Secret: arg.NewSecret}); err != nil {
+	if _, err = core.XormStorage.ID(user.UID).Cols("secret").Update(&core.User{Secret: arg.NewSecret}); err != nil {
 		Ret500(c, AEC_user_secret_update, err)
 		return
 	}
@@ -166,31 +166,31 @@ func ApiUserDelete(c *gin.Context) {
 		return
 	}
 
-	var user *User
-	if user, ok = Users.Get(arg.UID); !ok {
+	var user *core.User
+	if user, ok = core.Users.Get(arg.UID); !ok {
 		Ret404(c, AEC_user_delete_nouser, ErrNoUser)
 		return
 	}
 
-	var admin, al = MustAdmin(c, 0)
-	if admin != user && al&ALbooker == 0 {
+	var admin, al = core.MustAdmin(c, 0)
+	if admin != user && al&core.ALbooker == 0 {
 		Ret403(c, AEC_user_delete_noaccess, ErrNoAccess)
 		return
 	}
 
-	if arg.Secret != user.Secret && al&ALadmin == 0 {
+	if arg.Secret != user.Secret && al&core.ALadmin == 0 {
 		Ret403(c, AEC_user_delete_nosecret, ErrNotConf)
 		return
 	}
 
 	// write gain and total bet as transaction
-	if err = SafeTransaction(cfg.XormStorage, func(session *xorm.Session) (err error) {
+	if err = core.SafeTransaction(core.XormStorage, func(session *xorm.Session) (err error) {
 		if _, err = session.ID(arg.UID).Delete(user); err != nil {
 			Ret500(c, AEC_user_delete_sqluser, err)
 			return
 		}
 
-		for cid, props := range user.props.Items() {
+		for cid, props := range user.Items() {
 			if props.Wallet != 0 {
 				if _, err = session.Exec(sqllock, props.Wallet, cid); err != nil {
 					Ret500(c, AEC_user_delete_sqllock, err)
@@ -199,12 +199,12 @@ func ApiUserDelete(c *gin.Context) {
 			}
 		}
 
-		if _, err = session.Where("uid=?", arg.UID).Delete(&Props{}); err != nil {
+		if _, err = session.Where("uid=?", arg.UID).Delete(&core.Props{}); err != nil {
 			Ret500(c, AEC_user_delete_sqlprops, err)
 			return
 		}
 
-		if _, err = session.Where("uid=?", arg.UID).Delete(&Scene{}); err != nil {
+		if _, err = session.Where("uid=?", arg.UID).Delete(&core.Scene{}); err != nil {
 			Ret500(c, AEC_user_delete_sqlgames, err)
 			return
 		}
@@ -214,17 +214,17 @@ func ApiUserDelete(c *gin.Context) {
 		return
 	}
 
-	Users.Delete(arg.UID)
-	for cid, props := range user.props.Items() {
+	core.Users.Delete(arg.UID)
+	for cid, props := range user.Items() {
 		ret.Wallets[cid] = props.Wallet
-		if club, ok := Clubs.Get(cid); ok && props.Wallet != 0 {
+		if club, ok := core.Clubs.Get(cid); ok && props.Wallet != 0 {
 			club.AddDeposit(props.Wallet)
 			ret.Wallets[cid] = props.Wallet
 		}
 	}
-	for gid, scene := range Scenes.Items() {
+	for gid, scene := range core.Scenes.Items() {
 		if scene.UID == arg.UID {
-			Scenes.Delete(gid)
+			core.Scenes.Delete(gid)
 		}
 	}
 
