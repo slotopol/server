@@ -16,10 +16,10 @@ if [[ -z "${BUILDTIME:-}" ]]; then
 fi
 
 go env -w GOOS=windows GOARCH=amd64 CGO_ENABLED=1
-go build -o "$GOPATH/bin/slot_win_x64.exe" -v\
- -tags="jsoniter prod full"\
- -buildvcs=false\
- -trimpath -ldflags="-w -s -linkmode external -extldflags -static\
- -X 'github.com/slotopol/server/config.BuildVers=$BUILDVERS'\
- -X 'github.com/slotopol/server/config.BuildTime=$BUILDTIME'"\
- $wd
+go build -o "$GOPATH/bin/slot_win_x64.exe" -v \
+  -tags="jsoniter prod full" \
+  -buildvcs=false \
+  -trimpath -ldflags="-w -s -linkmode external -extldflags -static \
+  -X 'github.com/slotopol/server/config.BuildVers=$BUILDVERS' \
+  -X 'github.com/slotopol/server/config.BuildTime=$BUILDTIME'" \
+  $wd

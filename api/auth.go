@@ -212,17 +212,9 @@ func GetBearerAuth(tokenstr string, refresh bool) (user *core.User, code int, er
 	var claims Claims
 	_, err = jwt.ParseWithClaims(tokenstr, &claims, func(*jwt.Token) (any, error) {
 		if refresh {
-			return jwt.VerificationKeySet{
-				Keys: []jwt.VerificationKey{
-					util.S2B(Cfg.RefreshKey),
-				},
-			}, nil
+			return util.S2B(Cfg.RefreshKey), nil
 		} else {
-			return jwt.VerificationKeySet{
-				Keys: []jwt.VerificationKey{
-					util.S2B(Cfg.AccessKey),
-				},
-			}, nil
+			return util.S2B(Cfg.AccessKey), nil
 		}
 	}, jwt.WithExpirationRequired(), jwt.WithIssuer(jwtIssuer), jwt.WithLeeway(5*time.Second))
 
@@ -369,11 +361,12 @@ func sendcode(name, email string, code uint32) (err error) {
 	return
 }
 
+// Check whether email address is available for registration.
+// Returns status 200, or 404.
 func ApiSignis(c *gin.Context) {
 	var err error
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		UID     uint64   `json:"uid" yaml:"uid" xml:"uid" form:"uid" binding:"required_without=Email"`
 		Email   string   `json:"email" yaml:"email" xml:"email" form:"email" binding:"omitempty,email"`
 	}
 	var ret struct {
@@ -388,29 +381,18 @@ func ApiSignis(c *gin.Context) {
 		return
 	}
 
-	if arg.UID != 0 {
-		if user, ok := core.Users.Get(arg.UID); ok {
+	var email = util.ToLower(arg.Email)
+	for _, user := range core.Users.Items() {
+		if user.Email == email {
 			ret.UID = user.UID
-			ret.Email = user.Email
+			ret.Email = email
 			ret.Name = user.Name
-		} else {
-			Ret404(c, AEC_signis_nouid, ErrNoCred)
-			return
+			break
 		}
-	} else {
-		var email = util.ToLower(arg.Email)
-		for _, user := range core.Users.Items() {
-			if user.Email == email {
-				ret.UID = user.UID
-				ret.Email = user.Email
-				ret.Name = user.Name
-				break
-			}
-		}
-		if ret.UID == 0 {
-			Ret404(c, AEC_signis_noemail, ErrNoCred)
-			return
-		}
+	}
+	if ret.UID == 0 {
+		Ret404(c, AEC_signis_noemail, ErrNoCred)
+		return
 	}
 
 	RetOk(c, ret)

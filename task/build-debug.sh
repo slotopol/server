@@ -2,19 +2,18 @@
 # This script compiles project for default platform with debug information.
 # It produces static C-libraries linkage.
 
-wd=$(realpath -s "$(dirname "$0")/..")
-mkdir -p "$GOPATH/bin/config" "$GOPATH/bin/sqlite"
-cp -ruv "$wd/appdata/"* "$GOPATH/bin/config"
-
 need() {
   if ! command -v "$1" >/dev/null 2>&1; then
     echo "missing required command: $1" >&2
     exit 1
   fi
 }
-
 need go
 need git
+
+wd=$(realpath -s "$(dirname "$0")/..")
+mkdir -p "$GOPATH/bin/config" "$GOPATH/bin/sqlite"
+cp -ruv "$wd/appdata/"* "$GOPATH/bin/config"
 
 if [[ -z "${BUILDVERS:-}" ]]; then
   BUILDVERS=$(git describe --tags --always)
@@ -31,10 +30,10 @@ if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
 else
   appext=""
 fi
-go build -o "${GOPATH}/bin/slot_debug${appext}" -v\
- -tags="jsoniter"\
- -buildvcs=false\
- -ldflags="-linkmode external -extldflags -static\
- -X 'github.com/slotopol/server/config.BuildVers=$BUILDVERS'\
- -X 'github.com/slotopol/server/config.BuildTime=$BUILDTIME'"\
- $wd
+go build -o "${GOPATH}/bin/slot_debug${appext}" -v \
+  -tags="jsoniter" \
+  -buildvcs=false \
+  -ldflags="-linkmode external -extldflags -static \
+  -X 'github.com/slotopol/server/config.BuildVers=$BUILDVERS' \
+  -X 'github.com/slotopol/server/config.BuildTime=$BUILDTIME'" \
+  $wd

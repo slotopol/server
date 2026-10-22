@@ -47,7 +47,6 @@ const (
 	// GET /signis
 
 	AEC_signis_nobind
-	AEC_signis_nouid
 	AEC_signis_noemail
 
 	// GET /sendcode

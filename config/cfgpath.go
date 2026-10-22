@@ -110,8 +110,10 @@ func InitConfig() {
 	if len(Cfg.RefreshKey) < 32 {
 		cobra.CheckErr(errors.New("refresh-key for JWT-token signing is too short, it should be at least 32 bytes long"))
 	}
-	if Cfg.UseActivation && len(Cfg.BrevoApiKey) == 0 {
-		cobra.CheckErr(errors.New("Brevo API-key for email sending does not given, please set SLOTOPOL_BREVOAPIKEY environment variable or set brevo-api-key in config file"))
+	if Cfg.UseActivation {
+		if len(Cfg.BrevoApiKey) == 0 {
+			cobra.CheckErr(errors.New("Brevo API-key for email sending does not given, please set SLOTOPOL_BREVOAPIKEY environment variable or set brevo-api-key in config file"))
+		}
 	}
 
 	// Detect SQLite path.

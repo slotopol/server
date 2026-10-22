@@ -26,10 +26,10 @@ else
   appext=""
 fi
 go env -w CGO_ENABLED=1
-go build -o "${GOPATH}/bin/slot_${goos}_${goarch}_megajack${appext}" -v\
- -tags="jsoniter prod megajack"\
- -buildvcs=false\
- -trimpath -ldflags="-w -s -linkmode external -extldflags -static\
- -X 'github.com/slotopol/server/config.BuildVers=$BUILDVERS'\
- -X 'github.com/slotopol/server/config.BuildTime=$BUILDTIME'"\
- $wd
+go build -o "${GOPATH}/bin/slot_${goos}_${goarch}_megajack${appext}" -v \
+  -tags="jsoniter prod megajack" \
+  -buildvcs=false \
+  -trimpath -ldflags="-w -s -linkmode external -extldflags -static \
+  -X 'github.com/slotopol/server/config.BuildVers=$BUILDVERS' \
+  -X 'github.com/slotopol/server/config.BuildTime=$BUILDTIME'" \
+  $wd
