@@ -139,8 +139,8 @@ func SetupRouter(r *gin.Engine) {
 	r.GET("/sendcode", ApiSendCode)
 	r.GET("/activate", Auth(false), ApiActivate)
 	r.POST("/signup", Auth(false), ApiSignup)
-	r.POST("/signin", ApiSignin)
-	r.POST("/token", ApiToken)
+	r.POST("/signin", AuthHints(), ApiSignin)
+	r.POST("/token", AuthHints(), ApiToken)
 
 	var ra = r.Group("/", Auth(true))
 

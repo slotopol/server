@@ -85,7 +85,7 @@ func ApiMemUsage(c *gin.Context) {
 	runtime.ReadMemStats(&mem)
 
 	var ret = gin.H{
-		"running":       time.Since(starttime) / time.Millisecond,
+		"running":       time.Since(starttime).String(),
 		"heapalloc":     mem.HeapAlloc,
 		"heapsys":       mem.HeapSys,
 		"totalalloc":    mem.TotalAlloc,

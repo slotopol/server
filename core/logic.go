@@ -166,17 +166,6 @@ type Banklog struct {
 	LockSum float64   `xorm:"notnull 'locksum'" json:"locksum" yaml:"locksum" xml:"locksum" form:"locksum"`
 }
 
-var SessCounter atomic.Uint64 // last session ID
-
-type Session struct {
-	SID    uint64    `xorm:"pk" json:"sid" yaml:"sid" xml:"sid,attr"`
-	CTime  time.Time `xorm:"created 'ctime' notnull default CURRENT_TIMESTAMP" json:"ctime" yaml:"ctime" xml:"ctime,attr"`
-	UTime  time.Time `xorm:"updated 'utime' notnull default CURRENT_TIMESTAMP" json:"utime" yaml:"utime" xml:"utime,attr"`
-	Access string    `xorm:"notnull unique index" json:"access" yaml:"access" xml:"access"`
-	Refrsh string    `xorm:"notnull unique index" json:"refrsh" yaml:"refrsh" xml:"refrsh"`
-	UAgent string    `xorm:"notnull" json:"uagent" yaml:"uagent" xml:"uagent"`
-}
-
 // All created clubs, by CID.
 var Clubs util.RWMap[uint64, *Club]
 

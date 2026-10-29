@@ -85,10 +85,17 @@ const (
 	AEC_signin_timeout
 	AEC_signin_hs256
 	AEC_signin_denyhash
+	AEC_signin_session
 
 	// Any /token
 
 	AEC_token_nobind
+	AEC_token_session
+	AEC_token_nosess
+	AEC_token_alien
+	AEC_token_revoked
+	AEC_token_device
+	AEC_token_update
 
 	// POST /game/new
 

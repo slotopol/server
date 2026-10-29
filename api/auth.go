@@ -13,6 +13,7 @@ import (
 	"io"
 	"math/rand/v2"
 	"net/http"
+	"net/netip"
 	"strconv"
 	"strings"
 	"time"
@@ -57,6 +58,10 @@ var (
 	ErrSigTime  = errors.New("signing time can not been recognized (time in RFC3339 expected)")
 	ErrSigOut   = errors.New("nonce is expired")
 	ErrBadHash  = errors.New("hash cannot be decoded in hexadecimal")
+	ErrNoSess   = errors.New("session to refresh does not found")
+	ErrTokAlien = errors.New("session to refresh is belongs to another user")
+	ErrTokRevok = errors.New("token is revoked")
+	ErrTokTheft = errors.New("session to refresh required from not congruent device")
 )
 
 // Claims of JWT-tokens. `Subject` field contains
@@ -108,6 +113,22 @@ var AuthGetters = []AuthGetter{
 	UserFromHeader, UserFromQuery, UserFromCookie,
 }
 
+var hints = strings.Join([]string{
+	"Sec-CH-UA-Form-Factors",     // "Desktop", "Automotive", "Mobile", "Tablet", "XR", "EInk", "Watch"
+	"Sec-CH-UA-Platform",         // "Android", "Chrome OS", "Chromium OS", "iOS", "Linux", "macOS", "Windows", or "Unknown"
+	"Sec-CH-UA-Platform-Version", // "11.0.0"
+	"Sec-CH-UA-Model",            // "Pixel 3"
+	"Sec-CH-UA-Mobile",           // "?1" or "?0"
+}, ", ")
+
+func AuthHints() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		c.Header("Accept-CH", hints)
+		c.Header("Critical-CH", hints)
+		c.Next()
+	}
+}
+
 // Auth is authorization middleware, sets User object associated
 // with authorization to gin context. `required` parameter tells
 // to continue if authorization is absent.
@@ -142,7 +163,7 @@ func UserFromHeader(c *gin.Context) (*core.User, int, error) {
 		if strings.HasPrefix(hdr, "Basic ") {
 			return GetBasicAuth(hdr[6:])
 		} else if strings.HasPrefix(hdr, "Bearer ") {
-			return GetBearerAuth(hdr[7:], false)
+			return GetBearerAuth(hdr[7:])
 		} else {
 			return nil, AEC_auth_scheme, ErrNoScheme
 		}
@@ -154,9 +175,9 @@ func UserFromQuery(c *gin.Context) (*core.User, int, error) {
 	if credentials := c.Query("cred"); credentials != "" {
 		return GetBasicAuth(credentials)
 	} else if tokenstr := c.Query("token"); tokenstr != "" {
-		return GetBearerAuth(tokenstr, false)
+		return GetBearerAuth(tokenstr)
 	} else if tokenstr := c.Query("jwt"); tokenstr != "" {
-		return GetBearerAuth(tokenstr, false)
+		return GetBearerAuth(tokenstr)
 	}
 	return nil, 0, nil
 }
@@ -165,9 +186,9 @@ func UserFromCookie(c *gin.Context) (*core.User, int, error) {
 	if credentials, _ := c.Cookie("cred"); credentials != "" {
 		return GetBasicAuth(credentials)
 	} else if tokenstr, _ := c.Cookie("token"); tokenstr != "" {
-		return GetBearerAuth(tokenstr, false)
+		return GetBearerAuth(tokenstr)
 	} else if tokenstr, _ := c.Cookie("jwt"); tokenstr != "" {
-		return GetBearerAuth(tokenstr, false)
+		return GetBearerAuth(tokenstr)
 	}
 	return nil, 0, nil
 }
@@ -176,9 +197,9 @@ func UserFromForm(c *gin.Context) (*core.User, int, error) {
 	if credentials := c.PostForm("cred"); credentials != "" {
 		return GetBasicAuth(credentials)
 	} else if tokenstr := c.PostForm("token"); tokenstr != "" {
-		return GetBearerAuth(tokenstr, false)
+		return GetBearerAuth(tokenstr)
 	} else if tokenstr := c.PostForm("jwt"); tokenstr != "" {
-		return GetBearerAuth(tokenstr, false)
+		return GetBearerAuth(tokenstr)
 	}
 	return nil, 0, nil
 }
@@ -208,15 +229,18 @@ func GetBasicAuth(credentials string) (user *core.User, code int, err error) {
 	return
 }
 
-func GetBearerAuth(tokenstr string, refresh bool) (user *core.User, code int, err error) {
-	var claims Claims
+func GetBearerClaims(tokenstr string, refresh bool) (claims Claims, user *core.User, code int, err error) {
 	_, err = jwt.ParseWithClaims(tokenstr, &claims, func(*jwt.Token) (any, error) {
 		if refresh {
 			return util.S2B(Cfg.RefreshKey), nil
 		} else {
 			return util.S2B(Cfg.AccessKey), nil
 		}
-	}, jwt.WithExpirationRequired(), jwt.WithIssuer(jwtIssuer), jwt.WithLeeway(5*time.Second))
+	},
+		jwt.WithNotBeforeRequired(),
+		jwt.WithExpirationRequired(),
+		jwt.WithIssuer(jwtIssuer),
+		jwt.WithLeeway(5*time.Second))
 
 	if err != nil {
 		switch {
@@ -243,6 +267,11 @@ func GetBearerAuth(tokenstr string, refresh bool) (user *core.User, code int, er
 	return
 }
 
+func GetBearerAuth(tokenstr string) (user *core.User, code int, err error) {
+	_, user, code, err = GetBearerClaims(tokenstr, false)
+	return
+}
+
 func Handle404(c *gin.Context) {
 	Ret404(c, AEC_nourl, Err404)
 }
@@ -253,18 +282,17 @@ func Handle405(c *gin.Context) {
 
 type AuthResp struct {
 	XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
-	UID     uint64   `json:"uid" yaml:"uid" xml:"uid"`
-	Email   string   `json:"email" yaml:"email" xml:"email"`
-	Access  string   `json:"access" yaml:"access" xml:"access"`
-	Refrsh  string   `json:"refrsh" yaml:"refrsh" xml:"refrsh"`
-	Expire  string   `json:"expire" yaml:"expire" xml:"expire"`
-	Untill  string   `json:"untill" yaml:"untill" xml:"untill"`
+	UID     uint64   `json:"uid" yaml:"uid" xml:"uid"`          // user identifier
+	Email   string   `json:"email" yaml:"email" xml:"email"`    // user email
+	Access  string   `json:"access" yaml:"access" xml:"access"` // access token
+	Refrsh  string   `json:"refrsh" yaml:"refrsh" xml:"refrsh"` // refresh token
+	Expire  string   `json:"expire" yaml:"expire" xml:"expire"` // access token expiration time
+	Period  string   `json:"period" yaml:"period" xml:"period"` // period until new tokens pair can be get
 }
 
-func (r *AuthResp) Setup(user *core.User) {
+func (r *AuthResp) Setup(user *core.User, sid uint64, now time.Time) {
 	var err error
 	var token *jwt.Token
-	var now = time.Now()
 	var exp = now.Add(Cfg.AccessTTL)
 	var age = now.Add(Cfg.RefreshTTL)
 	token = jwt.NewWithClaims(jwt.SigningMethodHS256, &Claims{
@@ -274,6 +302,7 @@ func (r *AuthResp) Setup(user *core.User) {
 			Issuer:    jwtIssuer,
 			Subject:   strconv.FormatUint(user.UID, 10),
 		},
+		SID: sid,
 	})
 	if r.Access, err = token.SignedString([]byte(Cfg.AccessKey)); err != nil {
 		panic(err)
@@ -286,11 +315,12 @@ func (r *AuthResp) Setup(user *core.User) {
 			Issuer:    jwtIssuer,
 			Subject:   strconv.FormatUint(user.UID, 10),
 		},
+		SID: sid,
 	})
 	if r.Refrsh, err = token.SignedString([]byte(Cfg.RefreshKey)); err != nil {
 		panic(err)
 	}
-	r.Untill = age.Format(time.RFC3339)
+	r.Period = age.Format(time.RFC3339)
 	r.UID = user.UID
 	r.Email = user.Email
 }
@@ -674,7 +704,18 @@ func ApiSignin(c *gin.Context) {
 		}
 	}
 
-	ret.Setup(user)
+	var sess core.Session
+	sess.UID = user.UID
+	sess.Status = 1
+	sess.Device.Setup(c)
+	var ip, _ = netip.ParseAddr(c.ClientIP()) // skip error if any
+	sess.LastIP = ip.AsSlice()
+	if _, err = core.XormStorage.Table("session").Insert(&sess); err != nil {
+		Ret500(c, AEC_signin_session, err)
+		return
+	}
+
+	ret.Setup(user, sess.SID, sess.CTime)
 	RetOk(c, ret)
 }
 
@@ -690,11 +731,51 @@ func ApiToken(c *gin.Context) {
 		return
 	}
 
-	var user, code, err = GetBearerAuth(arg.Refrsh, true)
+	var claims, user, code, err = GetBearerClaims(arg.Refrsh, true)
 	if err != nil {
 		Ret401(c, code, err)
 		return
 	}
-	ret.Setup(user)
+
+	var sess core.Session
+	var ok bool
+	sess.SID = claims.SID
+	if ok, err = core.XormStorage.Get(&sess); err != nil {
+		Ret500(c, AEC_token_session, err)
+		return
+	}
+	if !ok {
+		Ret401(c, AEC_token_nosess, ErrNoSess)
+		return
+	}
+	if sess.UID != user.UID {
+		Ret401(c, AEC_token_alien, ErrTokAlien)
+		return
+	}
+	if sess.Status == 0 {
+		Ret401(c, AEC_token_revoked, ErrTokRevok)
+		return
+	}
+
+	var d2 core.Device
+	d2.Setup(c)
+	if !sess.Device.IsCongruent(&d2) {
+		Ret401(c, AEC_token_device, ErrTokTheft)
+		return
+	}
+
+	var now = time.Now()
+	var addr, _ = netip.ParseAddr(c.ClientIP()) // skip error if any
+	var lastip = addr.AsSlice()
+	if !bytes.Equal(sess.LastIP, lastip) {
+		sess.LastIP = lastip
+	}
+	sess.UTime = now
+	if _, err = core.XormStorage.Table("session").Update(&sess); err != nil {
+		Ret500(c, AEC_token_update, err)
+		return
+	}
+
+	ret.Setup(user, sess.SID, sess.UTime)
 	RetOk(c, ret)
 }

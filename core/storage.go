@@ -178,12 +178,6 @@ func InitStorage() (err error) {
 	if has {
 		StoryCounter.Store(uint64(lastID))
 	}
-	if has, err = session.Table("session").Desc("sid").Cols("sid").Get(&lastID); err != nil {
-		return
-	}
-	if has {
-		SessCounter.Store(uint64(lastID))
-	}
 
 	JoinBuf.Init(XormStorage, Cfg.ClubInsertBuffer)
 	return

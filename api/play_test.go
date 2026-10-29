@@ -30,6 +30,10 @@ const (
 	testAccessKey  = "skJgM4NsbP3fs4k7vh0gfdkgGl8dJTszdLxZ1sQ9ksFnxbgvw2RsGH8xxddUV479"
 	testRefreshKey = "zxK4dUnuq3Lhd1Gzhpr3usI5lAzgvy2t3fmxld2spzz7a5nfv0hsksm9cheyutie"
 
+	// client emulation, device Pixel 8
+	testUserAgentNew = "Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/155.0.8059.88 Mobile Safari/537.36"
+	testUserAgentOld = "Mozilla/5.0 (Linux; Android 14; Pixel 8 Build/UQ1A.240205.002) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.60 Mobile Safari/537.36"
+
 	// admin credentials
 	testAdminEmail  = "admin@example.org"
 	testAdminSecret = "0YBoaT"
@@ -65,8 +69,18 @@ var (
 	ErrAlienServer = errors.New("alien server")
 )
 
+func setuphints(req *http.Request) {
+	req.Header.Set("User-Agent", testUserAgentNew)
+	req.Header.Set("Sec-CH-UA", `"Google Chrome";v="155", "Chromium";v="155", "Not=A?Brand";v="24"`)
+	req.Header.Set("Sec-CH-UA-Mobile", "?1")
+	req.Header.Set("Sec-CH-UA-Platform", `"Android"`)
+	req.Header.Set("Sec-CH-UA-Platform-Version", `"14.0.0"`)
+	req.Header.Set("Sec-CH-UA-Model", `"Pixel 8"`)
+}
+
 func ping(t *testing.T, r *gin.Engine) (err error) {
 	var req = httptest.NewRequest("GET", "/ping", nil)
+	req.Header.Set("User-Agent", testUserAgentOld)
 	var w = httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	if w.Code != http.StatusOK {
@@ -83,6 +97,7 @@ func ping(t *testing.T, r *gin.Engine) (err error) {
 
 func pings(t *testing.T, r *gin.Engine, token string) (err error) {
 	var req = httptest.NewRequest("GET", "/pings", nil)
+	setuphints(req)
 	req.Header.Set("Authorization", "Bearer "+token)
 	var w = httptest.NewRecorder()
 	r.ServeHTTP(w, req)
@@ -106,6 +121,7 @@ func posthdr(t *testing.T, r *gin.Engine, path string, hdr http.Header, arg any)
 	}
 	var req = httptest.NewRequest("POST", path, bytes.NewReader(b))
 	req.Header = hdr
+	setuphints(req)
 	var w = httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	if w.Code == http.StatusNoContent {
