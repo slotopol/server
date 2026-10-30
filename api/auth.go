@@ -13,7 +13,6 @@ import (
 	"io"
 	"math/rand/v2"
 	"net/http"
-	"net/netip"
 	"strconv"
 	"strings"
 	"time"
@@ -62,6 +61,7 @@ var (
 	ErrTokAlien = errors.New("session to refresh is belongs to another user")
 	ErrTokRevok = errors.New("token is revoked")
 	ErrTokTheft = errors.New("session to refresh required from not congruent device")
+	ErrTokTwice = errors.New("this token is already used to refresh")
 )
 
 // Claims of JWT-tokens. `Subject` field contains
@@ -272,17 +272,10 @@ func GetBearerAuth(tokenstr string) (user *core.User, code int, err error) {
 	return
 }
 
-func Handle404(c *gin.Context) {
-	Ret404(c, AEC_nourl, Err404)
-}
-
-func Handle405(c *gin.Context) {
-	RetErr(c, http.StatusMethodNotAllowed, AEC_nomethod, Err405)
-}
-
 type AuthResp struct {
 	XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
 	UID     uint64   `json:"uid" yaml:"uid" xml:"uid"`          // user identifier
+	SID     uint64   `json:"sid" yaml:"sid" xml:"sid"`          // session identifier
 	Email   string   `json:"email" yaml:"email" xml:"email"`    // user email
 	Access  string   `json:"access" yaml:"access" xml:"access"` // access token
 	Refrsh  string   `json:"refrsh" yaml:"refrsh" xml:"refrsh"` // refresh token
@@ -322,6 +315,7 @@ func (r *AuthResp) Setup(user *core.User, sid uint64, now time.Time) {
 	}
 	r.Period = age.Format(time.RFC3339)
 	r.UID = user.UID
+	r.SID = sid
 	r.Email = user.Email
 }
 
@@ -461,7 +455,11 @@ func ApiSendCode(c *gin.Context) {
 
 	var code = rand.N[uint32](1000000) // 6 digits
 
-	if _, err = core.XormStorage.ID(user.UID).Cols("code").Update(&core.User{Code: code}); err != nil {
+	var u = map[string]interface{}{
+		"code":  code,
+		"utime": time.Now(),
+	}
+	if _, err = core.XormStorage.Table("user").Where("uid=?", user.UID).Update(u); err != nil {
 		Ret500(c, AEC_sendcode_update, err)
 		return
 	}
@@ -519,7 +517,11 @@ func ApiActivate(c *gin.Context) {
 		}
 	}
 
-	if _, err = core.XormStorage.ID(user.UID).Cols("status").Update(&core.User{Status: user.Status | core.UFactivated}); err != nil {
+	var u = map[string]interface{}{
+		"status": user.Status | core.UFactivated,
+		"utime":  time.Now(),
+	}
+	if _, err = core.XormStorage.Table("user").Where("uid=?", user.UID).Update(u); err != nil {
 		Ret500(c, AEC_activate_update, err)
 		return
 	}
@@ -708,8 +710,6 @@ func ApiSignin(c *gin.Context) {
 	sess.UID = user.UID
 	sess.Status = 1
 	sess.Device.Setup(c)
-	var ip, _ = netip.ParseAddr(c.ClientIP()) // skip error if any
-	sess.LastIP = ip.AsSlice()
 	if _, err = core.XormStorage.Table("session").Insert(&sess); err != nil {
 		Ret500(c, AEC_signin_session, err)
 		return
@@ -764,18 +764,73 @@ func ApiToken(c *gin.Context) {
 		return
 	}
 
-	var now = time.Now()
-	var addr, _ = netip.ParseAddr(c.ClientIP()) // skip error if any
-	var lastip = addr.AsSlice()
-	if !bytes.Equal(sess.LastIP, lastip) {
-		sess.LastIP = lastip
-	}
-	sess.UTime = now
-	if _, err = core.XormStorage.Table("session").Update(&sess); err != nil {
-		Ret500(c, AEC_token_update, err)
+	if sess.UTime.Sub(claims.NotBefore.Time) > Cfg.GracePeriod {
+		Ret401(c, AEC_token_already, ErrTokTwice)
 		return
+	}
+
+	var now = time.Now()
+	if now.Sub(sess.UTime) > Cfg.GracePeriod { // prevent refresh race between browser tabs
+		sess.UTime = now
+		if _, err = core.XormStorage.ID(sess.SID).Cols("utime").Update(&sess); err != nil {
+			Ret500(c, AEC_token_update, err)
+			return
+		}
 	}
 
 	ret.Setup(user, sess.SID, sess.UTime)
 	RetOk(c, ret)
+}
+
+// Sign-out session. Revocation could be done by the user
+// for any own session, or by admin for any session at all.
+func ApiSignout(c *gin.Context) {
+	var err error
+	var ok bool
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		SID     uint64   `json:"sid" yaml:"sid" xml:"sid,attr" form:"sid" binding:"required"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, AEC_signout_nobind, err)
+		return
+	}
+
+	var sess core.Session
+	sess.SID = arg.SID
+	if ok, err = core.XormStorage.Get(&sess); err != nil {
+		Ret500(c, AEC_signout_session, err)
+		return
+	}
+	if !ok {
+		Ret401(c, AEC_signout_nosess, ErrNoSess)
+		return
+	}
+	if sess.Status == 0 {
+		Ret401(c, AEC_signout_revoked, ErrTokRevok)
+		return
+	}
+
+	var user *core.User
+	if user, ok = core.Users.Get(sess.UID); !ok {
+		Ret404(c, AEC_signout_nouser, ErrNoUser)
+		return
+	}
+
+	var admin, al = core.MustAdmin(c, 0)
+	if admin != user && al&core.ALadmin == 0 {
+		Ret403(c, AEC_signout_noaccess, ErrNoAccess)
+		return
+	}
+
+	var now = time.Now()
+	sess.Status = 0
+	sess.UTime = now
+	if _, err = core.XormStorage.ID(sess.SID).Cols("status", "utime").Update(&sess); err != nil {
+		Ret500(c, AEC_signout_update, err)
+		return
+	}
+
+	Ret204(c)
 }

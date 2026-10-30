@@ -35,10 +35,12 @@ const (
 	testUserAgentOld = "Mozilla/5.0 (Linux; Android 14; Pixel 8 Build/UQ1A.240205.002) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.60 Mobile Safari/537.36"
 
 	// admin credentials
+	testAdminID     = 1
 	testAdminEmail  = "admin@example.org"
 	testAdminSecret = "0YBoaT"
 
 	// test user credentials
+	testUserID     = 3
 	testUserEmail  = "player@example.org"
 	testUserSecret = "iVI05M"
 )
@@ -127,7 +129,7 @@ func posthdr(t *testing.T, r *gin.Engine, path string, hdr http.Header, arg any)
 	if w.Code == http.StatusNoContent {
 		return
 	}
-	if w.Code != http.StatusOK {
+	if w.Code >= http.StatusBadRequest {
 		err = fmt.Errorf("%w, path '%s', code %d", ErrHttpNotOk, path, w.Code)
 		t.Error(err)
 	}
@@ -135,6 +137,7 @@ func posthdr(t *testing.T, r *gin.Engine, path string, hdr http.Header, arg any)
 	if !strings.HasPrefix(resp.Header.Get("Server"), "slotopol/") {
 		err = fmt.Errorf("%w, header: %s", ErrAlienServer, resp.Header.Get("Server"))
 		t.Error(err)
+		return
 	}
 	if b, err = io.ReadAll(resp.Body); err != nil {
 		t.Error(err)
@@ -144,7 +147,7 @@ func posthdr(t *testing.T, r *gin.Engine, path string, hdr http.Header, arg any)
 		t.Error(err)
 		return
 	}
-	if w.Code != http.StatusOK {
+	if w.Code >= http.StatusBadRequest {
 		t.Logf("message: %v, code: %v", ret["what"], ret["code"])
 	}
 	return
@@ -160,11 +163,9 @@ func post(t *testing.T, r *gin.Engine, path string, token string, arg any) (ret 
 	return posthdr(t, r, path, hdr, arg)
 }
 
-// Sign-in by different ways.
+// Sign-in and sign-out by different ways.
 func testSignin(t *testing.T, r *gin.Engine) (err error) {
-	const uid = 3
 	var arg, ret gin.H
-	var usrauth gin.H
 
 	// Sign-in with credentials
 	arg = gin.H{
@@ -174,62 +175,84 @@ func testSignin(t *testing.T, r *gin.Engine) (err error) {
 	if ret, err = post(t, r, "/signin", "", arg); err != nil {
 		return
 	}
-	t.Logf("[sign-in] %s with credentials", ret["email"])
+	var tok1 = ret["access"].(string)
+	var sid1 = ret["sid"]
+	t.Logf("[sign-in] %s with credentials, sid=%g", ret["email"], sid1)
 
-	if err = pings(t, r, ret["access"].(string)); err != nil {
+	if err = pings(t, r, tok1); err != nil {
 		return
 	}
 	t.Logf("[pings]")
 
 	// Sign-in with UID and secret
 	arg = gin.H{
-		"uid":    uid,
+		"uid":    testUserID,
 		"secret": testUserSecret,
 	}
 	if ret, err = post(t, r, "/signin", "", arg); err != nil {
 		return
 	}
-	t.Logf("[sign-in] %s with uid and secret", ret["email"])
+	var tok2 = ret["access"].(string)
+	var sid2 = ret["sid"]
+	t.Logf("[sign-in] %s with uid and secret, sid=%g", ret["email"], ret["sid"])
 
-	if err = pings(t, r, ret["access"].(string)); err != nil {
+	if err = pings(t, r, tok2); err != nil {
 		return
 	}
 	t.Logf("[pings]")
 
+	arg = gin.H{"sid": sid1}
+	if ret, err = post(t, r, "/signout", tok2, arg); err != nil {
+		return
+	}
+	t.Logf("[signout] sid=%g, by another session", sid1)
+
 	// Sign-in with login and hash
 	var sigtime = time.Now().Format(time.RFC3339)
 	var h = hmac.New(sha256.New, util.S2B(sigtime))
-	h.Write(util.S2B(testUserSecret))
+	h.Write(util.S2B(testAdminSecret))
 	var hs256 = h.Sum(nil)
 	arg = gin.H{
-		"email":   testUserEmail,
+		"email":   testAdminEmail,
 		"sigtime": sigtime,
 		"hs256":   hex.EncodeToString(hs256),
 	}
 	if ret, err = post(t, r, "/signin", "", arg); err != nil {
 		return
 	}
-	t.Logf("[sign-in] %s with login and hash", ret["email"])
+	var tok3 = ret["access"].(string)
+	var ref3 = ret["refrsh"]
+	var sid3 = ret["sid"]
+	t.Logf("[sign-in] %s with login and hash, sid=%g", ret["email"], ret["sid"])
 
-	if err = pings(t, r, ret["access"].(string)); err != nil {
+	if err = pings(t, r, tok3); err != nil {
 		return
 	}
 	t.Logf("[pings]")
 
-	usrauth = ret
-
-	arg = gin.H{
-		"refrsh": usrauth["refrsh"],
-	}
+	arg = gin.H{"refrsh": ref3}
 	if ret, err = post(t, r, "/token", "", arg); err != nil {
 		return
 	}
-	t.Logf("[token] %s expire %s", ret["email"], ret["expire"])
+	tok3 = ret["access"].(string)
+	t.Logf("[token] %s expire %s, sid=%g", ret["email"], ret["expire"], ret["sid"])
 
-	if err = pings(t, r, ret["access"].(string)); err != nil {
+	if err = pings(t, r, tok3); err != nil {
 		return
 	}
 	t.Logf("[pings]")
+
+	arg = gin.H{"sid": sid2}
+	if ret, err = post(t, r, "/signout", tok3, arg); err != nil {
+		return
+	}
+	t.Logf("[signout] sid=%g, by admin session", sid2)
+
+	arg = gin.H{"sid": sid3}
+	if ret, err = post(t, r, "/signout", tok3, arg); err != nil {
+		return
+	}
+	t.Logf("[signout] sid=%g, own session", sid3)
 	return
 }
 
@@ -267,8 +290,8 @@ func testSinglePlay(t *testing.T, r *gin.Engine) (err error) {
 
 	// Join game
 	arg = gin.H{
-		"cid":   cid, // 'virtual' club
-		"uid":   uid, // player ID
+		"cid":   cid,        // 'virtual' club
+		"uid":   testUserID, // player ID
 		"alias": "Novomatic / Dolphins Pearl",
 	}
 	if ret, err = post(t, r, "/game/new", usrtoken, arg); err != nil {
@@ -302,7 +325,7 @@ func testSinglePlay(t *testing.T, r *gin.Engine) (err error) {
 			}
 			arg = gin.H{
 				"cid": cid,
-				"uid": uid,
+				"uid": testUserID,
 				"sum": sum,
 			}
 			if ret, err = post(t, r, "/prop/wallet/add", admtoken, arg); err != nil {
@@ -435,10 +458,12 @@ func TestAPI(t *testing.T) {
 		t.Log("[ping]")
 	})
 
+	// go test -v -run ^TestAPI$/^signin$ ./api
 	t.Run("signin", func(t *testing.T) {
 		testSignin(t, r)
 	})
 
+	// go test -v -timeout 30s -run ^TestAPI$/^play$ ./api
 	t.Run("play", func(t *testing.T) {
 		testSinglePlay(t, r)
 	})

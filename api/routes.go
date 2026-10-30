@@ -123,6 +123,14 @@ func Ret500(c *gin.Context, code int, err error) {
 	RetErr(c, http.StatusInternalServerError, code, err)
 }
 
+func Handle404(c *gin.Context) {
+	Ret404(c, AEC_nourl, Err404)
+}
+
+func Handle405(c *gin.Context) {
+	RetErr(c, http.StatusMethodNotAllowed, AEC_nomethod, Err405)
+}
+
 func SetupRouter(r *gin.Engine) {
 	r.NoRoute(Handle404)
 	r.NoMethod(Handle405)
@@ -141,13 +149,14 @@ func SetupRouter(r *gin.Engine) {
 	r.POST("/signup", Auth(false), ApiSignup)
 	r.POST("/signin", AuthHints(), ApiSignin)
 	r.POST("/token", AuthHints(), ApiToken)
+	r.POST("/signout", Auth(true), ApiSignout)
 
 	var ra = r.Group("/", Auth(true))
 
 	// common game group
-	r.GET("/game/algs", ApiGameAlgs)
-	r.GET("/game/list", ApiGameList)
 	var rg = ra.Group("/game")
+	rg.GET("/algs", ApiGameAlgs)
+	rg.GET("/list", ApiGameList)
 	rg.POST("/new", ApiGameNew)
 	rg.POST("/join", ApiGameJoin)
 	rg.POST("/info", ApiGameInfo)

@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/xml"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/slotopol/server/core"
@@ -169,12 +170,17 @@ func ApiClubRename(c *gin.Context) {
 		return
 	}
 
-	if _, err = core.XormStorage.ID(club.CID()).Cols("name").Update(&core.ClubData{Name: arg.Name}); err != nil {
+	var now = time.Now()
+	var u = map[string]interface{}{
+		"name":  arg.Name,
+		"utime": now,
+	}
+	if _, err = core.XormStorage.Table("club").Where("cid=?", club.CID()).Update(u); err != nil {
 		Ret500(c, AEC_club_rename_update, err)
 		return
 	}
 
-	club.SetName(arg.Name)
+	club.SetName(arg.Name, now)
 
 	Ret204(c)
 }

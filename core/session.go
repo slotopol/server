@@ -23,19 +23,29 @@ func (d *Device) IsZero() bool {
 }
 
 func (d *Device) IsCongruent(d2 *Device) bool {
-	if d.FormFactor != d2.FormFactor && d.FormFactor != "" && d2.FormFactor != "" {
+	if d.FormFactor != d2.FormFactor &&
+		d.FormFactor != "" && d.FormFactor != "Unknown" &&
+		d2.FormFactor != "" && d2.FormFactor != "Unknown" {
 		return false
 	}
-	if d.DeviceModel != d2.DeviceModel && d.DeviceModel != "" && d2.DeviceModel != "" {
+	if d.DeviceModel != d2.DeviceModel &&
+		d.DeviceModel != "" && d.DeviceModel != "Unknown" &&
+		d2.DeviceModel != "" && d2.DeviceModel != "Unknown" {
 		return false
 	}
-	if d.OSName != d2.OSName && d.OSName != "" && d2.OSName != "" {
+	if d.OSName != d2.OSName &&
+		d.OSName != "" && d.OSName != "Unknown" &&
+		d2.OSName != "" && d2.OSName != "Unknown" {
 		return false
 	}
-	if d.OSVersion != d2.OSVersion && d.OSVersion != "" && d2.OSVersion != "" {
+	if d.OSVersion != d2.OSVersion &&
+		d.OSVersion != "" && d.OSVersion != "Unknown" && d.OSVersion != "0" &&
+		d2.OSVersion != "" && d2.OSVersion != "Unknown" && d2.OSVersion != "0" {
 		return false
 	}
-	if d.Browser != d2.Browser && d.Browser != "" && d2.Browser != "" {
+	if d.Browser != d2.Browser &&
+		d.Browser != "" && d.Browser != "Unknown" &&
+		d2.Browser != "" && d2.Browser != "Unknown" {
 		return false
 	}
 	return true
@@ -69,7 +79,6 @@ type Session struct {
 	UTime  time.Time `xorm:"updated 'utime' notnull default CURRENT_TIMESTAMP" json:"utime" yaml:"utime" xml:"utime,attr"`
 	Status byte      `xorm:"notnull default 1" json:"status" yaml:"status" xml:"status"`
 	Device `xorm:"extends" yaml:",inline"`
-	LastIP []byte `xorm:"'ip' blob(16) notnull" json:"ip" yaml:"ip" xml:"ip"`
 }
 
 func (Session) TableName() string {

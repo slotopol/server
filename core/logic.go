@@ -195,10 +195,11 @@ func (club *Club) Name() string {
 	return club.data.Name
 }
 
-func (club *Club) SetName(name string) {
+func (club *Club) SetName(name string, now time.Time) {
 	club.mux.Lock()
 	defer club.mux.Unlock()
 	club.data.Name = name
+	club.data.UTime = now
 }
 
 func (club *Club) Bank() float64 {

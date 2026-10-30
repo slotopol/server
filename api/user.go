@@ -89,12 +89,17 @@ func ApiUserRename(c *gin.Context) {
 		return
 	}
 
-	if _, err = core.XormStorage.ID(user.UID).Cols("name").Update(&core.User{Name: arg.Name}); err != nil {
+	var now = time.Now()
+	var u = map[string]interface{}{
+		"name":  arg.Name,
+		"utime": now,
+	}
+	if _, err = core.XormStorage.Table("user").Where("uid=?", user.UID).Update(u); err != nil {
 		Ret500(c, AEC_user_rename_update, err)
 		return
 	}
 	user.Name = arg.Name
-	user.UTime = time.Now()
+	user.UTime = now
 
 	Ret204(c)
 }
@@ -135,12 +140,17 @@ func ApiUserSecret(c *gin.Context) {
 		return
 	}
 
-	if _, err = core.XormStorage.ID(user.UID).Cols("secret").Update(&core.User{Secret: arg.NewSecret}); err != nil {
+	var now = time.Now()
+	var u = map[string]interface{}{
+		"secret": arg.NewSecret,
+		"utime":  now,
+	}
+	if _, err = core.XormStorage.Table("user").Where("uid=?", user.UID).Update(u); err != nil {
 		Ret500(c, AEC_user_secret_update, err)
 		return
 	}
 	user.Secret = arg.NewSecret
-	user.UTime = time.Now()
+	user.UTime = now
 
 	Ret204(c)
 }
