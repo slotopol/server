@@ -160,7 +160,7 @@ func Auth(required bool) gin.HandlerFunc {
 
 func UserFromHeader(c *gin.Context) (*core.User, int, error) {
 	if hdr := c.Request.Header.Get("Authorization"); hdr != "" {
-		if strings.HasPrefix(hdr, "Basic ") {
+		if Cfg.UseBasic && strings.HasPrefix(hdr, "Basic ") {
 			return GetBasicAuth(hdr[6:])
 		} else if strings.HasPrefix(hdr, "Bearer ") {
 			return GetBearerAuth(hdr[7:])
@@ -172,7 +172,8 @@ func UserFromHeader(c *gin.Context) (*core.User, int, error) {
 }
 
 func UserFromQuery(c *gin.Context) (*core.User, int, error) {
-	if credentials := c.Query("cred"); credentials != "" {
+	var credentials = c.Query("cred")
+	if Cfg.UseBasic && credentials != "" {
 		return GetBasicAuth(credentials)
 	} else if tokenstr := c.Query("token"); tokenstr != "" {
 		return GetBearerAuth(tokenstr)
@@ -183,7 +184,8 @@ func UserFromQuery(c *gin.Context) (*core.User, int, error) {
 }
 
 func UserFromCookie(c *gin.Context) (*core.User, int, error) {
-	if credentials, _ := c.Cookie("cred"); credentials != "" {
+	var credentials, _ = c.Cookie("cred")
+	if Cfg.UseBasic && credentials != "" {
 		return GetBasicAuth(credentials)
 	} else if tokenstr, _ := c.Cookie("token"); tokenstr != "" {
 		return GetBearerAuth(tokenstr)
@@ -194,7 +196,8 @@ func UserFromCookie(c *gin.Context) (*core.User, int, error) {
 }
 
 func UserFromForm(c *gin.Context) (*core.User, int, error) {
-	if credentials := c.PostForm("cred"); credentials != "" {
+	var credentials = c.PostForm("cred")
+	if Cfg.UseBasic && credentials != "" {
 		return GetBasicAuth(credentials)
 	} else if tokenstr := c.PostForm("token"); tokenstr != "" {
 		return GetBearerAuth(tokenstr)

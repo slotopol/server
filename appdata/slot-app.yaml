@@ -16,6 +16,8 @@ authentication:
   grace-period: 15s # 15 seconds
   # Validity timeout of the nonce with which the login hash is signed.
   nonce-timeout: 2m30s
+  # Allows to use Basic authorization (without sessions).
+  use-basic: false
 activation: # User account activation and verification
   # Expects accounts activation by code after accounts registration.
   # Or registers accounts as is already activated if value is false.

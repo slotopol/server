@@ -97,14 +97,14 @@ func ping(t *testing.T, r *gin.Engine) (err error) {
 	return
 }
 
-func pings(t *testing.T, r *gin.Engine, token string) (err error) {
-	var req = httptest.NewRequest("GET", "/pings", nil)
+func authping(t *testing.T, r *gin.Engine, token string) (err error) {
+	var req = httptest.NewRequest("GET", "/authping", nil)
 	setuphints(req)
 	req.Header.Set("Authorization", "Bearer "+token)
 	var w = httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	if w.Code != http.StatusOK {
-		err = fmt.Errorf("%w, pings failed, code %d", ErrHttpNotOk, w.Code)
+		err = fmt.Errorf("%w, authping failed, code %d", ErrHttpNotOk, w.Code)
 		t.Error(err)
 	}
 	var resp = w.Result()
@@ -179,10 +179,10 @@ func testSignin(t *testing.T, r *gin.Engine) (err error) {
 	var sid1 = ret["sid"]
 	t.Logf("[sign-in] %s with credentials, sid=%g", ret["email"], sid1)
 
-	if err = pings(t, r, tok1); err != nil {
+	if err = authping(t, r, tok1); err != nil {
 		return
 	}
-	t.Logf("[pings]")
+	t.Logf("[authping]")
 
 	// Sign-in with UID and secret
 	arg = gin.H{
@@ -196,10 +196,10 @@ func testSignin(t *testing.T, r *gin.Engine) (err error) {
 	var sid2 = ret["sid"]
 	t.Logf("[sign-in] %s with uid and secret, sid=%g", ret["email"], ret["sid"])
 
-	if err = pings(t, r, tok2); err != nil {
+	if err = authping(t, r, tok2); err != nil {
 		return
 	}
-	t.Logf("[pings]")
+	t.Logf("[authping]")
 
 	arg = gin.H{"sid": sid1}
 	if ret, err = post(t, r, "/signout", tok2, arg); err != nil {
@@ -225,10 +225,10 @@ func testSignin(t *testing.T, r *gin.Engine) (err error) {
 	var sid3 = ret["sid"]
 	t.Logf("[sign-in] %s with login and hash, sid=%g", ret["email"], ret["sid"])
 
-	if err = pings(t, r, tok3); err != nil {
+	if err = authping(t, r, tok3); err != nil {
 		return
 	}
-	t.Logf("[pings]")
+	t.Logf("[authping]")
 
 	arg = gin.H{"refrsh": ref3}
 	if ret, err = post(t, r, "/token", "", arg); err != nil {
@@ -237,10 +237,10 @@ func testSignin(t *testing.T, r *gin.Engine) (err error) {
 	tok3 = ret["access"].(string)
 	t.Logf("[token] %s expire %s, sid=%g", ret["email"], ret["expire"], ret["sid"])
 
-	if err = pings(t, r, tok3); err != nil {
+	if err = authping(t, r, tok3); err != nil {
 		return
 	}
-	t.Logf("[pings]")
+	t.Logf("[authping]")
 
 	arg = gin.H{"sid": sid2}
 	if ret, err = post(t, r, "/signout", tok3, arg); err != nil {
@@ -261,6 +261,7 @@ func testSignin(t *testing.T, r *gin.Engine) (err error) {
 func testSinglePlay(t *testing.T, r *gin.Engine) (err error) {
 	const cid, uid uint64 = 1, 3
 	var admtoken, usrtoken string
+	var admsid, usrsid any
 	var arg, ret gin.H
 	var gid uint64
 	var wallet, gain float64
@@ -275,7 +276,8 @@ func testSinglePlay(t *testing.T, r *gin.Engine) (err error) {
 		return
 	}
 	admtoken = ret["access"].(string)
-	t.Logf("[sign-in] %s", arg["email"])
+	admsid = ret["sid"]
+	t.Logf("[sign-in] %s, sid=%g", arg["email"], admsid)
 
 	// Sign-in player with predefined credentials
 	arg = gin.H{
@@ -286,7 +288,8 @@ func testSinglePlay(t *testing.T, r *gin.Engine) (err error) {
 		return
 	}
 	usrtoken = ret["access"].(string)
-	t.Logf("[sign-in] %s", arg["email"])
+	usrsid = ret["sid"]
+	t.Logf("[sign-in] %s, sid=%g", arg["email"], usrsid)
 
 	// Join game
 	arg = gin.H{
@@ -411,6 +414,18 @@ func testSinglePlay(t *testing.T, r *gin.Engine) (err error) {
 			t.Logf("[sel/set] gid: %d, sel: %d", gid, sel)
 		}
 	}
+
+	arg = gin.H{"sid": usrsid}
+	if ret, err = post(t, r, "/signout", usrtoken, arg); err != nil {
+		return
+	}
+	t.Logf("[signout] sid=%g, own session", usrsid)
+
+	arg = gin.H{"sid": admsid}
+	if ret, err = post(t, r, "/signout", admtoken, arg); err != nil {
+		return
+	}
+	t.Logf("[signout] sid=%g, own session", admsid)
 	return
 }
 
@@ -463,7 +478,7 @@ func TestAPI(t *testing.T) {
 		testSignin(t, r)
 	})
 
-	// go test -v -timeout 30s -run ^TestAPI$/^play$ ./api
+	// go test -v -count=1 -run ^TestAPI$/^play$ ./api
 	t.Run("play", func(t *testing.T) {
 		testSinglePlay(t, r)
 	})

@@ -295,10 +295,14 @@ curl -X POST localhost:8080/signin \
 You can use token
 
 ```sh
-TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzbG90b3BvbCIsImV4cCI6NDg2NzQ0NzYxNywibmJmIjoxNzA2NjQ3NjE3LCJ1aWQiOjN9.6g2Hig9ErG8IbvzkPppry5F8HJsMunZPwuQzmetGh4c"
+TOKEN="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzbG90b3BvbCIsInN1YiI6IjMiLCJleHAiOjQ5NDg5NTk2MDAsIm5iZiI6MTc5MzE5OTYwMCwic2lkIjoxfQ.SBj9zW4nSzC7mwqx7PrG5n1nf1HwJqnYxq1-80NdZ0Y"
 ```
 
-for test purpose, it given for user with UID=3 on 100 years.
+for test purpose, it given for user with UID=3 on 100 years. Tip: you can generate same token by call
+
+```sh
+go run ./task/jwtgen -s=1 -u=3 -n="2026-10-28 15:00:00" -t=876600h
+```
 
 * When your access token expires (you can get response with 401 status code), use refresh-call with refresh-token to get new tokens pair.
 
@@ -306,6 +310,13 @@ for test purpose, it given for user with UID=3 on 100 years.
 curl -X POST localhost:8080/token \
   -H "Content-Type: application/json" \
   -d '{"refrsh":"$REFRESH"}'
+```
+
+To test authorization you can use special authorized ping:
+
+```sh
+curl -i localhost:8080/authping \
+  -H "Authorization: Bearer $TOKEN"
 ```
 
 ### Create and play the game

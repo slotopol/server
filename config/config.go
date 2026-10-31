@@ -30,6 +30,8 @@ type CfgJwtAuth struct {
 	GracePeriod time.Duration `json:"grace-period" yaml:"grace-period" mapstructure:"grace-period"`
 	// Validity timeout of the nonce with which the login hash is signed.
 	NonceTimeout time.Duration `json:"nonce-timeout" yaml:"nonce-timeout" mapstructure:"nonce-timeout"`
+	// Allows to use Basic authorization (without sessions).
+	UseBasic bool `json:"use-basic" yaml:"use-basic" mapstructure:"use-basic"`
 }
 
 type CfgSendCode struct {
@@ -119,6 +121,7 @@ var Cfg = &Config{
 		RefreshKey:   "", // required to be set by environment variable or config file
 		GracePeriod:  15 * time.Second,
 		NonceTimeout: 150 * time.Second,
+		UseBasic:     false,
 	},
 	CfgSendCode: CfgSendCode{
 		UseActivation:      false,
