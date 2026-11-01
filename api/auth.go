@@ -96,10 +96,10 @@ func (c *Claims) Validate() error {
 		return err
 	}
 	// Its possible to revoke all tokens of user by changing
-	// his password or updating account.
+	// his password or by change vtime only.
 	// Before change the password it can get new refresh token,
 	// but after change the old tokens will be invalidated.
-	if c.NotBefore.Add(Cfg.GracePeriod).Before(user.UTime) {
+	if c.NotBefore.Add(Cfg.GracePeriod).Before(user.VTime) {
 		return ErrJwtOld
 	}
 	return nil
@@ -300,7 +300,7 @@ func (r *AuthResp) Setup(user *core.User, sid uint64, now time.Time) {
 		},
 		SID: sid,
 	})
-	if r.Access, err = token.SignedString([]byte(Cfg.AccessKey)); err != nil {
+	if r.Access, err = token.SignedString(util.S2B(Cfg.AccessKey)); err != nil {
 		panic(err)
 	}
 	r.Expire = exp.Format(time.RFC3339)
@@ -313,7 +313,7 @@ func (r *AuthResp) Setup(user *core.User, sid uint64, now time.Time) {
 		},
 		SID: sid,
 	})
-	if r.Refrsh, err = token.SignedString([]byte(Cfg.RefreshKey)); err != nil {
+	if r.Refrsh, err = token.SignedString(util.S2B(Cfg.RefreshKey)); err != nil {
 		panic(err)
 	}
 	r.Period = age.Format(time.RFC3339)
@@ -572,6 +572,7 @@ func ApiSignup(c *gin.Context) {
 	}
 
 	var user = &core.User{
+		VTime:  time.Now(),
 		Email:  email,
 		Secret: arg.Secret,
 		Name:   arg.Name,

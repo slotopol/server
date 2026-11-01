@@ -198,6 +198,7 @@ func SetupRouter(r *gin.Engine) {
 	ru.POST("/is", ApiUserIs)
 	ru.POST("/rename", ApiUserRename)
 	ru.POST("/secret", ApiUserSecret)
+	ru.POST("/vtime", ApiUserVtime)
 	ru.POST("/delete", ApiUserDelete)
 
 	// club group

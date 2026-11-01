@@ -63,6 +63,7 @@ type User struct {
 	UID    uint64    `xorm:"pk autoincr" json:"uid" yaml:"uid" xml:"uid,attr"`                                             // user ID
 	CTime  time.Time `xorm:"created 'ctime' notnull default CURRENT_TIMESTAMP" json:"ctime" yaml:"ctime" xml:"ctime,attr"` // creation time
 	UTime  time.Time `xorm:"updated 'utime' notnull default CURRENT_TIMESTAMP" json:"utime" yaml:"utime" xml:"utime,attr"` // update time
+	VTime  time.Time `xorm:"'vtime'" json:"vtime" yaml:"vtime" xml:"vtime,attr"`                                           // tokens validate time
 	Email  string    `xorm:"notnull unique index" json:"email" yaml:"email" xml:"email"`                                   // unique user email
 	Secret string    `xorm:"notnull" json:"secret" yaml:"secret" xml:"secret"`                                             // auth password
 	Name   string    `xorm:"notnull" json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`                     // user name

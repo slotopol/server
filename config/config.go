@@ -30,7 +30,7 @@ type CfgJwtAuth struct {
 	GracePeriod time.Duration `json:"grace-period" yaml:"grace-period" mapstructure:"grace-period"`
 	// Validity timeout of the nonce with which the login hash is signed.
 	NonceTimeout time.Duration `json:"nonce-timeout" yaml:"nonce-timeout" mapstructure:"nonce-timeout"`
-	// Allows to use Basic authorization (without sessions).
+	// Allows to use Basic authorization (without sessions and revocation).
 	UseBasic bool `json:"use-basic" yaml:"use-basic" mapstructure:"use-basic"`
 }
 

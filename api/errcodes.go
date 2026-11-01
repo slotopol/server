@@ -358,6 +358,15 @@ const (
 	AEC_user_secret_notequ
 	AEC_user_secret_update
 
+	// POST /user/vtime
+
+	AEC_user_vtime_nobind
+	AEC_user_vtime_parse
+	AEC_user_vtime_future
+	AEC_user_vtime_nouser
+	AEC_user_vtime_noaccess
+	AEC_user_vtime_update
+
 	// POST /user/delete
 
 	AEC_user_delete_nobind
@@ -421,6 +430,7 @@ var (
 	ErrNoAccess = errors.New("no access rights for this feature")
 	ErrNoLevel  = errors.New("admin have no privilege to modify specified access level to user")
 	ErrNotConf  = errors.New("password confirmation does not pass")
+	ErrVtimeBig = errors.New("time to reset tokens can not be in future")
 	ErrZero     = errors.New("given value is zero")
 	ErrTooBig   = errors.New("given value exceeds the limit")
 	ErrNoAlias  = errors.New("game with given alias does not found")

@@ -101,13 +101,13 @@ func InitConfig() {
 	if len(Cfg.AccessKey) == 0 {
 		cobra.CheckErr(errors.New("access-key for JWT-token signing does not given, please set SLOTOPOL_ACCESSKEY environment variable or set access-key in config file"))
 	}
-	if len(Cfg.AccessKey) < 32 {
+	if len(util.S2B(Cfg.AccessKey)) < 32 {
 		cobra.CheckErr(errors.New("access-key for JWT-token signing is too short, it should be at least 32 bytes long"))
 	}
 	if len(Cfg.RefreshKey) == 0 {
 		cobra.CheckErr(errors.New("refresh-key for JWT-token signing does not given, please set SLOTOPOL_REFRESHKEY environment variable or set refresh-key in config file"))
 	}
-	if len(Cfg.RefreshKey) < 32 {
+	if len(util.S2B(Cfg.RefreshKey)) < 32 {
 		cobra.CheckErr(errors.New("refresh-key for JWT-token signing is too short, it should be at least 32 bytes long"))
 	}
 	if Cfg.UseActivation {

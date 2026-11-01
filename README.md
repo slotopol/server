@@ -229,6 +229,16 @@ Here output means:
 
 * `cascades contribution` - shows the average contribution of each cascade fall to the payout.
 
+## Security ensuring
+
+For using server on open Internet it is highly recommended to change default security keys at the configuration file [slot-app.yaml](appdata/slot-app.yaml) (or by environment variables):
+
+* *Access* and *Refresh* keys to sign authorization tokens, they could be found at `authentication` section of config file, or it could be set by `SLOTOPOL_ACCESSKEY` and `SLOTOPOL_REFRESHKEY` environment variables. It can be any random UTF8-string not less than 32 bytes.
+
+* *[Brevo API key](https://app.brevo.com/settings/keys/api)* for user account activation by activation-code sent to user email, set it at `activation.brevo-api-key` config point, or by `SLOTOPOL_BREVOAPIKEY` environment variable. You can switch off activation ability by `use-activation` field of config.
+
+* Change passwords for initial accounts at [slot-clubinit.sql](appdata/slot-clubinit.sql), `user.secret` fields. You can remove those accounts at all, but remember that there is should be at less than 1 admin to manage server by API.
+
 ## How to use HTTP API
 
 Any API endpoints can receive data in JSON, XML, YAML, or TOML format, depended by `Content-Type` header. If `Content-Type` header not given, JSON will be used to decode as default. `Accept` header if it given, defines response data format. If it absent, same format as at request will be used.

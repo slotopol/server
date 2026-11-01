@@ -151,6 +151,67 @@ func ApiUserSecret(c *gin.Context) {
 	}
 	user.Secret = arg.NewSecret
 	user.UTime = now
+	user.VTime = now
+
+	Ret204(c)
+}
+
+func ApiUserVtime(c *gin.Context) {
+	var err error
+	var ok bool
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		UID     uint64   `json:"uid" yaml:"uid" xml:"uid,attr" form:"uid" binding:"required"`
+		VTime   string   `json:"vtime,omitempty" yaml:"vtime,omitempty" xml:"vtime,omitempty" form:"vtime"`
+		Format  string   `json:"format,omitempty" yaml:"format,omitempty" xml:"format,omitempty" form:"format"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, AEC_user_vtime_nobind, err)
+		return
+	}
+
+	var vtime time.Time
+	var now = time.Now()
+	if arg.VTime != "" {
+		var layout = arg.Format
+		if layout == "" {
+			layout = time.RFC3339
+		}
+		if vtime, err = time.Parse(layout, arg.VTime); err != nil {
+			Ret400(c, AEC_user_vtime_parse, err)
+			return
+		}
+		if now.Add(Cfg.GracePeriod).Before(vtime) {
+			Ret400(c, AEC_user_vtime_future, ErrVtimeBig)
+			return
+		}
+	} else {
+		vtime = now
+	}
+
+	var user *core.User
+	if user, ok = core.Users.Get(arg.UID); !ok {
+		Ret404(c, AEC_user_vtime_nouser, ErrNoUser)
+		return
+	}
+
+	var admin, al = core.MustAdmin(c, 0)
+	if admin != user && al&(core.ALbooker+core.ALadmin) == 0 {
+		Ret403(c, AEC_user_vtime_noaccess, ErrNoAccess)
+		return
+	}
+
+	var u = map[string]interface{}{
+		"utime": now,
+		"vtime": vtime,
+	}
+	if _, err = core.XormStorage.Table("user").Where("uid=?", user.UID).Update(u); err != nil {
+		Ret500(c, AEC_user_vtime_update, err)
+		return
+	}
+	user.UTime = now
+	user.VTime = vtime
 
 	Ret204(c)
 }
