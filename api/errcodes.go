@@ -101,12 +101,22 @@ const (
 	// POST /signout
 
 	AEC_signout_nobind
+	AEC_signout_notoken
 	AEC_signout_session
 	AEC_signout_nosess
 	AEC_signout_revoked
 	AEC_signout_nouser
 	AEC_signout_noaccess
 	AEC_signout_update
+
+	// POST /sessions
+
+	AEC_sessions_nobind
+	AEC_sessions_notoken
+	AEC_sessions_claims
+	AEC_sessions_nouser
+	AEC_sessions_noaccess
+	AEC_sessions_get
 
 	// POST /game/new
 

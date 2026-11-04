@@ -18,7 +18,7 @@ To keep database files outside of container can by two ways. For example you hav
 In first way can be mounted volume with this path and replace default path:
 
 ```bat
-docker run -d -p 8080:8080 -v "D:/srv/sqlite":/go/bin/sqlite schwarzlichtbezirk/slotopol
+docker run -d -p 8080:8080 -v "D:/srv/sqlite":/go/bin/sqlite schwarzlichtbezirk/slotopol --sqlite=/go/bin/sqlite
 ```
 
 or in git-bash syntax:
@@ -27,7 +27,7 @@ or in git-bash syntax:
 docker run -d \
   -p 8080:8080 \
   -v /d/srv/sqlite:/go/bin/sqlite \
-  schwarzlichtbezirk/slotopol
+  schwarzlichtbezirk/slotopol --sqlite=/go/bin/sqlite
 ```
 
 In second way volume with sqlite files can be pointed by environment variable `SLOTOPOL_SQLPATH`:
