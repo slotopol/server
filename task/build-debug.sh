@@ -12,8 +12,8 @@ need go
 need git
 
 wd=$(realpath -s "$(dirname "$0")/..")
-mkdir -p "$GOPATH/bin/config" "$GOPATH/bin/sqlite"
-cp -ruv "$wd/appdata/"* "$GOPATH/bin/config"
+mkdir -p "$GOPATH/bin/appdata"
+cp -ruv "$wd/appdata/"* "$GOPATH/bin/appdata"
 
 if [[ -z "${BUILDVERS:-}" ]]; then
   BUILDVERS=$(git describe --tags --always)

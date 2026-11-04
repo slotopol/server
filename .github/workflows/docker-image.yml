@@ -61,3 +61,5 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
         build-args: |
           BUILDVERS=${{ steps.get_version.outputs.VERSION }}
+        provenance: false
+        sbom: false
