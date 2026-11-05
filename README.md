@@ -283,9 +283,9 @@ Where `inc` contains space separated list of filters like in `list` command line
 
 There is supported basic authorization and bearer authorization (with JWT-tokens and sessions). Basic authorization is switched off at settings by default. Authorization data can be provided by 4 ways: in header `Authorization`, at query parameters, at cookies, and at post form.
 
-**Basic** expects credentials pair `email:password` encoded in unpadded base64 encoding for URL (see RFC 4648).
-
 **Bearer** works with two HS256 JWT tokens - access token and refresh token. Access token should be provided in all cases except `/token` endpoint call. When access-token expires, it should be renovated by this call with provided refresh token.
+
+**Basic** expects credentials pair `email:password` encoded in unpadded base64 encoding for URL (see RFC 4648). Optional method, switched off at settings by default.
 
 In `/signin` call password can be given by two ways:
 

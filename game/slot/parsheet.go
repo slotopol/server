@@ -205,9 +205,44 @@ func Parsheet_fgrecur(w io.Writer, sp *ScanPar, s Simulator, cost float64, m flo
 	if sp.IsMain() {
 		fmt.Fprintf(w, "base: µ = %.8g%%, sigma(base) = %.6g\n", EVbase*100, math.Sqrt(Dbase))
 		fmt.Fprintf(w, "free: HRfg = 1/%.5g, EK = %.5g, q = %.5g\n", 1/HRfg, EK, q)
-		fmt.Fprintf(w, "RTP = %.5g*(1 + %.5g) = %.8g%%\n", EVbase*100, q, EV*100)
+		if m > 1 {
+			fmt.Fprintf(w, "RTP = %.5g*(1 + %.5g*%.5g) = %.8g%%\n", EVbase*100, q, m, EV*100)
+		} else {
+			fmt.Fprintf(w, "RTP = %.5g*(1 + %.5g) = %.8g%%\n", EVbase*100, q, EV*100)
+		}
 	}
 	Print_all(w, sp, s, EV, D)
+	return EV, D
+}
+
+func Parsheet_dualreelset(w io.Writer, sp *ScanPar, sr Simulator, sb Simulator, cost float64, Efsr, Efsb func() (float64, float64, float64)) (float64, float64) {
+	const m = 1
+	// regular reels parameters
+	var EVr, Dr = sr.EvD(cost)
+	var HRfgr, EKr, EK2r = Efsr()
+	var VarKr = EK2r - EKr*EKr
+	// bonus reels parameters
+	var EVb, Db = sb.EvD(cost)
+	var HRfgb, EKb, EK2b = Efsb()
+	var VarKb = EK2b - EKb*EKb
+	// aggregate parameters
+	var a = 1 / (1 - EKb)
+	var q = EKr * a
+	var VarNfg = VarKr*a*a + VarKb*EKr*a*a*a
+	var EV = EVr + q*m*EVb
+	var D = Dr + m*m*(EVb*EVb*VarNfg+q*Db)
+	if sp.IsFG() {
+		fmt.Fprintf(w, "*bonus reels*\n")
+		fmt.Fprintf(w, "µ = %.8g%%, sigma(base) = %.6g\n", EVb*100, math.Sqrt(Db))
+		fmt.Fprintf(w, "free: HRfg = 1/%.5g, EK = %.5g\n", 1/HRfgb, EKb)
+	}
+	if sp.IsMain() {
+		fmt.Fprintf(w, "*regular reels*\n")
+		fmt.Fprintf(w, "µ = %.8g%%, sigma(base) = %.6g\n", EVr*100, math.Sqrt(Dr))
+		fmt.Fprintf(w, "free: HRfg = 1/%.5g, EK = %.5g, q = %.5g\n", 1/HRfgr, EKr, q)
+		fmt.Fprintf(w, "RTP = %.5g(r) + %.5g*%.5g(b) = %.8g%%\n", EVr*100, q, EVb*100, EV*100)
+	}
+	Print_all(w, sp, sr, EV, D)
 	return EV, D
 }
 
@@ -290,41 +325,6 @@ func Parsheet_fgtwice_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, L
 		fmt.Fprintf(w, "*regular reels*\n")
 		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µr*100, math.Sqrt(Dsymr))
 		fmt.Fprintf(w, "free: HRfg = 1/%.5g, q = %.5g\n", 1/Pfgr, qr)
-		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µr*100, qr, rtpfs*100, rtp*100)
-	}
-	Print_all(w, sp, sr, rtp, D)
-	return rtp, D
-}
-
-// Parsheet for slot with splitted statistics for regular
-// games `sr` and statistics for retriggerable bonus games `sb`.
-// with `m` multiplier on freegames (m=1 if no multiplier).
-// Each hit of freegames series has `L` freespins.
-func Parsheet_fgretrig_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, L float64) (float64, float64) {
-	// bonus reels parameters
-	var µb, Dsymb = sb.EvD(cost)
-	var qb = sb.FSQ()
-	var sqb = 1 / (1 - qb)
-	// regular reels parameters
-	var µr, Dsymr = sr.EvD(cost)
-	var qr = sr.FSQ()
-	var sqr = 1 / (1 - qr)
-	var Pfg = sr.FGQ()
-	// calculation
-	var rtpfs = m * sqb * µb
-	var rtp = µr + qr*rtpfs
-	var Eser, Dser = L * sqb, L * qb * sqb * sqb * sqb // Galton-Watson process
-	var D = Dsymr + m*m*Pfg*(Eser*Dsymb+µb*µb*Dser)    // Wald's equation
-	if sp.IsFG() {
-		fmt.Fprintf(w, "*bonus reels*\n")
-		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µb*100, math.Sqrt(Dsymb))
-		fmt.Fprintf(w, "free: HRfg = 1/%.5g, q = %.5g, sq = 1/(1-q) = %.5g\n", 1/sb.FGQ(), qb, sqb)
-		fmt.Fprintf(w, "rtp(fg) = m*sq*rtp(sym) = %g*%.5g*%.5g = %.6f%%\n", m, sqb, µb*100, rtpfs*100)
-	}
-	if sp.IsMain() {
-		fmt.Fprintf(w, "*regular reels*\n")
-		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µr*100, math.Sqrt(Dsymr))
-		fmt.Fprintf(w, "free: HRfg = 1/%.5g, q = %.5g, sq = 1/(1-q) = %.5g\n", 1/Pfg, qr, sqr)
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µr*100, qr, rtpfs*100, rtp*100)
 	}
 	Print_all(w, sp, sr, rtp, D)
