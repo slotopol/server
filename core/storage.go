@@ -85,7 +85,7 @@ func InitStorage() (err error) {
 	}
 	if ok {
 		var body []byte
-		if body, err = os.ReadFile(util.JoinFilePath(cfg.CfgPath, "slot-clubinit.sql")); err != nil {
+		if body, err = os.ReadFile(util.JoinFilePath(cfg.CfgPath, "slot-dbinit.sql")); err != nil {
 			cfg.Errorf("can not open SQL-file with initial settings: %s", err.Error())
 			err = nil // remove error
 		}

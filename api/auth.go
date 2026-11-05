@@ -105,14 +105,6 @@ func (c *Claims) Validate() error {
 	return nil
 }
 
-type AuthGetter func(c *gin.Context) (*core.User, int, error)
-
-// AuthGetters is the list of functions to extract the authorization
-// data from the parts of request. List and order in it can be changed.
-var AuthGetters = []AuthGetter{
-	UserFromHeader, UserFromQuery, UserFromCookie,
-}
-
 var hints = strings.Join([]string{
 	"Sec-CH-UA-Form-Factors",     // "Desktop", "Automotive", "Mobile", "Tablet", "XR", "EInk", "Watch"
 	"Sec-CH-UA-Platform",         // "Android", "Chrome OS", "Chromium OS", "iOS", "Linux", "macOS", "Windows", or "Unknown"
@@ -137,13 +129,18 @@ func Auth(required bool) gin.HandlerFunc {
 		var err error
 		var code int
 		var user *core.User
-		for _, getter := range AuthGetters {
-			if user, code, err = getter(c); err != nil {
+		if tokenstr, _ := GetTokenstr(c); tokenstr != "" {
+			if user, code, err = GetBearerAuth(tokenstr); err != nil {
 				Ret401(c, code, err)
 				return
 			}
-			if user != nil {
-				break
+		}
+		if user == nil && Cfg.UseBasic {
+			if credentials, _ := GetCredentials(c); credentials != "" {
+				if user, code, err = GetBasicAuth(credentials); err != nil {
+					Ret401(c, code, err)
+					return
+				}
 			}
 		}
 
@@ -158,53 +155,51 @@ func Auth(required bool) gin.HandlerFunc {
 	}
 }
 
-func UserFromHeader(c *gin.Context) (*core.User, int, error) {
-	if hdr := c.Request.Header.Get("Authorization"); hdr != "" {
-		if Cfg.UseBasic && strings.HasPrefix(hdr, "Basic ") {
-			return GetBasicAuth(hdr[6:])
-		} else if strings.HasPrefix(hdr, "Bearer ") {
-			return GetBearerAuth(hdr[7:])
-		} else {
-			return nil, AEC_auth_scheme, ErrNoScheme
+func GetTokenstr(c *gin.Context) (tokenstr string, err error) {
+	if tokenstr = c.GetHeader("Authorization"); tokenstr != "" {
+		if strings.HasPrefix(tokenstr, "Bearer ") {
+			tokenstr = tokenstr[7:]
+			return
 		}
 	}
-	return nil, 0, nil
+	if tokenstr = c.Query("token"); tokenstr != "" {
+		return
+	}
+	if tokenstr = c.Query("jwt"); tokenstr != "" {
+		return
+	}
+	if tokenstr, _ = c.Cookie("token"); tokenstr != "" {
+		return
+	}
+	if tokenstr, _ = c.Cookie("jwt"); tokenstr != "" {
+		return
+	}
+	if tokenstr = c.PostForm("token"); tokenstr != "" {
+		return
+	}
+	if tokenstr = c.PostForm("jwt"); tokenstr != "" {
+		return
+	}
+	return "", io.EOF
 }
 
-func UserFromQuery(c *gin.Context) (*core.User, int, error) {
-	var credentials = c.Query("cred")
-	if Cfg.UseBasic && credentials != "" {
-		return GetBasicAuth(credentials)
-	} else if tokenstr := c.Query("token"); tokenstr != "" {
-		return GetBearerAuth(tokenstr)
-	} else if tokenstr := c.Query("jwt"); tokenstr != "" {
-		return GetBearerAuth(tokenstr)
+func GetCredentials(c *gin.Context) (credentials string, err error) {
+	if credentials = c.GetHeader("Authorization"); credentials != "" {
+		if strings.HasPrefix(credentials, "Basic ") {
+			credentials = credentials[6:]
+			return
+		}
 	}
-	return nil, 0, nil
-}
-
-func UserFromCookie(c *gin.Context) (*core.User, int, error) {
-	var credentials, _ = c.Cookie("cred")
-	if Cfg.UseBasic && credentials != "" {
-		return GetBasicAuth(credentials)
-	} else if tokenstr, _ := c.Cookie("token"); tokenstr != "" {
-		return GetBearerAuth(tokenstr)
-	} else if tokenstr, _ := c.Cookie("jwt"); tokenstr != "" {
-		return GetBearerAuth(tokenstr)
+	if credentials = c.Query("cred"); credentials != "" {
+		return
 	}
-	return nil, 0, nil
-}
-
-func UserFromForm(c *gin.Context) (*core.User, int, error) {
-	var credentials = c.PostForm("cred")
-	if Cfg.UseBasic && credentials != "" {
-		return GetBasicAuth(credentials)
-	} else if tokenstr := c.PostForm("token"); tokenstr != "" {
-		return GetBearerAuth(tokenstr)
-	} else if tokenstr := c.PostForm("jwt"); tokenstr != "" {
-		return GetBearerAuth(tokenstr)
+	if credentials, _ = c.Cookie("cred"); credentials != "" {
+		return
 	}
-	return nil, 0, nil
+	if credentials = c.PostForm("cred"); credentials != "" {
+		return
+	}
+	return "", io.EOF
 }
 
 func GetBasicAuth(credentials string) (user *core.User, code int, err error) {
@@ -793,12 +788,26 @@ func ApiSignout(c *gin.Context) {
 	var ok bool
 	var arg struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
-		SID     uint64   `json:"sid" yaml:"sid" xml:"sid,attr" form:"sid" binding:"required"`
+		SID     uint64   `json:"sid,omitempty" yaml:"sid,omitempty" xml:"sid,omitempty,attr" form:"sid"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, AEC_signout_nobind, err)
 		return
+	}
+
+	if arg.SID == 0 {
+		var tokenstr string
+		if tokenstr, err = GetTokenstr(c); err != nil {
+			Ret401(c, AEC_signout_notoken, err)
+			return
+		}
+		var claims, _, code, err = GetBearerClaims(tokenstr, false)
+		if err != nil {
+			Ret401(c, code, err)
+			return
+		}
+		arg.SID = claims.SID
 	}
 
 	var sess core.Session
@@ -837,4 +846,56 @@ func ApiSignout(c *gin.Context) {
 	}
 
 	Ret204(c)
+}
+
+func ApiSessions(c *gin.Context) {
+	var err error
+	var ok bool
+	var arg struct {
+		XMLName xml.Name `json:"-" yaml:"-" xml:"arg"`
+		UID     uint64   `json:"uid,omitempty" yaml:"uid,omitempty" xml:"uid,omitempty,attr" form:"uid"`
+	}
+	var ret struct {
+		Sessions []core.Session `json:"sessions" yaml:"sessions" xml:"sessions"`
+	}
+
+	if err = c.ShouldBind(&arg); err != nil {
+		Ret400(c, AEC_sessions_nobind, err)
+		return
+	}
+
+	var user *core.User
+	if arg.UID == 0 {
+		var tokenstr string
+		if tokenstr, err = GetTokenstr(c); err != nil {
+			Ret401(c, AEC_sessions_notoken, err)
+			return
+		}
+		var claims, _, code, err = GetBearerClaims(tokenstr, false)
+		if err != nil {
+			Ret401(c, code, err)
+			return
+		}
+		if user, err = claims.GetUser(); err != nil {
+			Ret401(c, AEC_sessions_claims, err)
+			return
+		}
+	} else if user, ok = core.Users.Get(arg.UID); !ok {
+		Ret404(c, AEC_sessions_nouser, ErrNoUser)
+		return
+	}
+
+	var admin, al = core.MustAdmin(c, 0)
+	if admin != user && al&core.ALadmin == 0 {
+		Ret403(c, AEC_sessions_noaccess, ErrNoAccess)
+		return
+	}
+
+	var from = time.Now().Add(-Cfg.RefreshTTL)
+	if err = core.XormStorage.Where("uid=? AND utime>? AND status>0", arg.UID, from.Format(time.DateTime)).Find(&ret.Sessions); err != nil {
+		Ret500(c, AEC_sessions_get, err)
+		return
+	}
+
+	RetOk(c, ret)
 }

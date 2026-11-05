@@ -121,7 +121,7 @@ To test gameplay workflow, build [bot](https://github.com/slotopol/bot) as it de
 
 **Database.** Service instance oriented on monopoly usage of it's database. It reads necessary database tables on start and avoids any `select` requests at all. Then it stores to database only changes and new data (`update` & `insert`). Those queries are buffered across API endpoints calls to increase performance with database conversations.
 
-It can be used embedded *sqlite* database engine, or *MySQL*, or *PostgreSQL* databases, its configured at `slot-app.yaml` settings file, and by default sqlite is used. Embedded sqlite engine useful for instance started on portable storage, such as flash drive or external SSD, and can serve small sets of players, 50-500 players at the same time. For big number of players it can be used dedicated server with MySQL or PostgreSQL on fast hosted disk.
+It can be used embedded *sqlite* database engine, or *MySQL*, or *PostgreSQL* databases, its configured at `slot-config.yaml` settings file, and by default sqlite is used. Embedded sqlite engine useful for instance started on portable storage, such as flash drive or external SSD, and can serve small sets of players, 50-500 players at the same time. For big number of players it can be used dedicated server with MySQL or PostgreSQL on fast hosted disk.
 
 **Clubs.** There is can be served several clubs. Each club have its own undepended bank, jackpot fund with rate to this fund from spins, and deposit. Bank of club is current balance of club to which arrives coins from users spins, and from which they gets a wins. There is exist linkage of users wins to bank: if bank have not enough coins to pay the win during users spins, this win combination will be skipped. Deposit of club does not used in games, it can be useful to transfer the coins from bank to fix the yield.
 
@@ -231,13 +231,13 @@ Here output means:
 
 ## Security ensuring
 
-For using server on open Internet it is highly recommended to change default security keys at the configuration file [slot-app.yaml](appdata/slot-app.yaml) (or by environment variables):
+For using server on open Internet it is highly recommended to change default security keys at the configuration file [slot-config.yaml](appdata/slot-config.yaml) (or by environment variables):
 
 * *Access* and *Refresh* keys to sign authorization tokens, they could be found at `authentication` section of config file, or it could be set by `SLOTOPOL_ACCESSKEY` and `SLOTOPOL_REFRESHKEY` environment variables. It can be any random UTF8-string not less than 32 bytes.
 
 * *[Brevo API key](https://app.brevo.com/settings/keys/api)* for user account activation by activation-code sent to user email, set it at `activation.brevo-api-key` config point, or by `SLOTOPOL_BREVOAPIKEY` environment variable. You can switch off activation ability by `use-activation` field of config.
 
-* Change passwords for initial accounts at [slot-clubinit.sql](appdata/slot-clubinit.sql), `user.secret` fields. You can remove those accounts at all, but remember that there is should be at less than 1 admin to manage server by API.
+* Change passwords for initial accounts at [slot-dbinit.sql](appdata/slot-dbinit.sql), `user.secret` fields. You can remove those accounts at all, but remember that there is should be at less than 1 admin to manage server by API.
 
 ## How to use HTTP API
 
@@ -281,11 +281,11 @@ Where `inc` contains space separated list of filters like in `list` command line
 
 ### Authorization
 
-There is supported basic authorization and bearer authorization (with JWT-tokens). Authorization data can be provided by 4 ways: in header `Authorization`, at query parameters, at cookies, and at post form.
+There is supported basic authorization and bearer authorization (with JWT-tokens and sessions). Basic authorization is switched off at settings by default. Authorization data can be provided by 4 ways: in header `Authorization`, at query parameters, at cookies, and at post form.
 
 **Basic** expects credentials pair `email:password` encoded in unpadded base64 encoding for URL (see RFC 4648).
 
-**Bearer** works with two HS256 JWT tokens - access token and refresh token. Access token should be provided in all cases except `refresh` call. When access-token expires, it should be replaced to refresh-token for refresh-call.
+**Bearer** works with two HS256 JWT tokens - access token and refresh token. Access token should be provided in all cases except `/token` endpoint call. When access-token expires, it should be renovated by this call with provided refresh token.
 
 In `/signin` call password can be given by two ways:
 
@@ -314,7 +314,7 @@ for test purpose, it given for user with UID=3 on 100 years. Tip: you can genera
 go run ./task/jwtgen -s=1 -u=3 -n="2026-10-28 15:00:00" -t=876600h
 ```
 
-* When your access token expires (you can get response with 401 status code), use refresh-call with refresh-token to get new tokens pair.
+* When your access token expires (you can get response with 401 status code), use refresh-call with refresh-token to get new tokens pair. This call can be not authorized.
 
 ```sh
 curl -X POST localhost:8080/token \

@@ -242,17 +242,23 @@ func testSignin(t *testing.T, r *gin.Engine) (err error) {
 	}
 	t.Logf("[authping]")
 
+	arg = gin.H{"uid": testUserID}
+	if ret, err = post(t, r, "/sessions", tok3, arg); err != nil {
+		return
+	}
+	t.Logf("[sessions] uid=%d, %d sessions", testUserID, len(ret["sessions"].([]interface{})))
+
 	arg = gin.H{"sid": sid2}
 	if ret, err = post(t, r, "/signout", tok3, arg); err != nil {
 		return
 	}
 	t.Logf("[signout] sid=%g, by admin session", sid2)
 
-	arg = gin.H{"sid": sid3}
+	arg = gin.H{}
 	if ret, err = post(t, r, "/signout", tok3, arg); err != nil {
 		return
 	}
-	t.Logf("[signout] sid=%g, own session", sid3)
+	t.Logf("[signout] sid=%g, own session, by token", sid3)
 	return
 }
 

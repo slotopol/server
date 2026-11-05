@@ -59,14 +59,13 @@ func InitConfig() {
 		// Use config file from the flag.
 		viper.SetConfigFile(CfgFile)
 	} else {
-		const sub = "config"
-		// Search config in home directory with name "slot-app" (without extension).
-		viper.SetConfigName("slot-app")
+		const sub = "appdata"
+		// Search config in home directory with name "slot-config" (without extension).
+		viper.SetConfigName("slot-config")
 		viper.SetConfigType("yaml")
 		viper.AddConfigPath(filepath.Join(ExePath, sub))
 		viper.AddConfigPath(ExePath)
 		viper.AddConfigPath(sub)
-		viper.AddConfigPath("appdata")
 		viper.AddConfigPath(".")
 		if appdata, err := os.UserConfigDir(); err == nil {
 			viper.AddConfigPath(filepath.Join(appdata, "slotopol", "server"))
@@ -110,6 +109,9 @@ func InitConfig() {
 	if len(util.S2B(Cfg.RefreshKey)) < 32 {
 		cobra.CheckErr(errors.New("refresh-key for JWT-token signing is too short, it should be at least 32 bytes long"))
 	}
+	if Cfg.AccessKey == Cfg.RefreshKey {
+		cobra.CheckErr(errors.New("access-key can not be equal to refresh-key"))
+	}
 	if Cfg.UseActivation {
 		if len(Cfg.BrevoApiKey) == 0 {
 			cobra.CheckErr(errors.New("Brevo API-key for email sending does not given, please set SLOTOPOL_BREVOAPIKEY environment variable or set brevo-api-key in config file"))
@@ -117,8 +119,12 @@ func InitConfig() {
 	}
 
 	// Detect SQLite path.
+	if val := os.Getenv("SLOTOPOL_SQLPATH"); val != "" {
+		SqlPath, _ = util.ExpandHomePath(val)
+		cobra.CheckErr(os.MkdirAll(SqlPath, os.ModePerm))
+	}
 	if SqlPath == "" {
-		SqlPath = LookupInLocations("SLOTOPOL_SQLPATH", "sqlite", "slot-club.sqlite")
+		SqlPath = CfgPath
 	}
 	Infof("sqlite path: %s", SqlPath)
 }
@@ -145,81 +151,4 @@ func FileExists(fpath string) (bool, error) {
 		return false, nil
 	}
 	return false, err
-}
-
-func LookupInLocations(env, sub, fname string) (fpath string) {
-	var list []string
-	if val := os.Getenv(env); val != "" {
-		fpath, _ = util.ExpandHomePath(val)
-		cobra.CheckErr(os.MkdirAll(fpath, os.ModePerm))
-		return
-	}
-	list, _ = AddDir(list,
-		filepath.Join(ExePath, sub),
-		ExePath,
-		sub,
-		"appdata",
-		".",
-	)
-	if appdata, err := os.UserCacheDir(); err == nil {
-		list, _ = AddDir(list, filepath.Join(appdata, "slotopol", "server"))
-	}
-	if env, ok := os.LookupEnv("GOBIN"); ok {
-		list, _ = AddDir(list, filepath.Join(env, sub))
-		list, _ = AddDir(list, env)
-	} else if env, ok := os.LookupEnv("GOPATH"); ok {
-		list, _ = AddDir(list, filepath.Join(env, "bin", sub))
-		list, _ = AddDir(list, filepath.Join(env, "bin"))
-	}
-	if fpath = LookupDir(list, fname); fpath == "" {
-		fpath = filepath.Join(ExePath, sub)
-		cobra.CheckErr(os.MkdirAll(fpath, os.ModePerm))
-	}
-	return
-}
-
-func LookupDir(list []string, fname string) string {
-	for _, fpath := range list {
-		if ok, _ := FileExists(filepath.Join(fpath, fname)); ok {
-			return fpath
-		}
-	}
-	return ""
-}
-
-func AbsDir(dir string) (string, error) {
-	dir = os.ExpandEnv(dir)
-	if filepath.IsAbs(dir) {
-		return filepath.Clean(dir), nil
-	}
-	dir, err := filepath.Abs(dir)
-	if err != nil {
-		return dir, err
-	}
-	return filepath.Clean(dir), nil
-}
-
-func StringInSlice(a string, list []string) bool {
-	for _, b := range list {
-		if b == a {
-			return true
-		}
-	}
-	return false
-}
-
-func AddDir(list []string, dirs ...string) ([]string, error) {
-	var errs []error
-	var err error
-	for _, dir := range dirs {
-		if dir, err = AbsDir(dir); err != nil {
-			errs = append(errs, err)
-			continue
-		}
-		if StringInSlice(dir, list) {
-			continue
-		}
-		list = append(list, dir)
-	}
-	return list, errors.Join(errs...)
 }
