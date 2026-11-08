@@ -8,10 +8,10 @@ local symset = {
 	4, --  4 coin      5/15/100
 	4, --  5 bell      5/15/100
 	4, --  6 horseshoe 5/15/100
-	4, --  7 apple     5/10/50
-	4, --  8 lemon     5/10/50
-	5, --  9 plum      5/10/50
-	5, -- 10 cherry    5/10/50
+	5, --  7 apple     5/10/50
+	5, --  8 lemon     5/10/50
+	6, --  9 plum      5/10/50
+	6, -- 10 cherry    5/10/50
 }
 
 local chunklen = {
@@ -40,7 +40,8 @@ if autoscan then
 end
 
 math.randomseed(os.time())
-print "reel 1, 5"
 printreel(reelgen(1))
-print "reel 2, 3, 4"
 printreel(reelgen(2))
+printreel(reelgen(3))
+printreel(reelgen(4))
+printreel(reelgen(5))

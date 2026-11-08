@@ -77,34 +77,34 @@ cd server
 go mod download
 ```
 
-* Next, build the project with some of build-script at `task` directory. If you are working on Windows, run the `task\build-win-x64.cmd` script in the command prompt or `task/build-win-x64.sh` in Git Bash. On Linux, use `./task/build-linux-x64.sh`.
+* Next, build the project with some of build-script at `task` directory. If you are working on Windows, run the `task\build-win-x64.cmd` script in the command prompt or `task/build-win-x64.sh` in Git Bash. On Linux, use `./task/build-linux-x64.sh`. To build app with debug information for current platform use `task/build-debug.sh`.
 
 Then web-service can be started:
 
 ```sh
-slot_win_x64 -vv web
+slot_debug -vv web
 ```
 
 The [list of all](docs/list-all.md) provided games can be obtained by command:
 
 ```sh
-slot_win_x64 list
+slot_debug list
 ```
 
 To find out the list of available RTPs can be with command like this
 
 ```sh
-slot_win_x64 list -i megajack --rtp
+slot_debug list -i megajack --rtp
 ```
 
-See `slot_win_x64 list -h` with full list of available command line parameters for list-command with filters.
+See `slot_debug list -h` with full list of available command line parameters for list-command with filters.
 
 ## How to test
 
 To calculate nearest precise RTP to given value for any game on embedded reels, you can use the command like
 
 ```sh
-slot_win_x64 scan -g=ctinteractive/luckydollar -r=95.0
+slot_debug scan -g=ctinteractive/luckydollar -r=95.0
 ```
 
 Some games algorithms contains Lua-scripts with mathematical RTP calculation without full reels brute force, and returns result on a fly.
@@ -112,7 +112,7 @@ Some games algorithms contains Lua-scripts with mathematical RTP calculation wit
 You can provide your own reels sets for any game at external yaml-file with same data structure as it in the sources by command
 
 ```sh
-slot_win_x64 -f=/some/path/reeldev.yaml web
+slot_debug -f=/some/path/reeldev.yaml web
 ```
 
 To test gameplay workflow, build [bot](https://github.com/slotopol/bot) as it described, and run some scripts at `script` folder of project. See [readme](https://github.com/slotopol/bot/blob/main/README.md) for details.
@@ -136,24 +136,24 @@ Built-in reels scanner helps to get parsheet with math description. There is two
 Let's examine the scan output values ​​using an example of `Gonzo's Quest` slot.
 
 ```txt
-$ slot_debug.exe scan -g=netent/gonzosquest -r=95 --full
+$ slot_debug scan -g=netent/gonzosquest -r=95 --full
 selected 20 lines
-completed 100% (50722560), time spent 6.586422175s
+completed 100% (50722560), time spent 9.38886s
 
 reels lengths [34, 37, 35, 36, 32], total reshuffles 50722560
-symbols: µ = 90.41822%, sigma(sym) = 5.72795
-free: HRfg = 1/564.49, q = 0.017715, sq = 1/(1-q) = 1.018
-RTP = 90.418(sym) + 0.017715*276.15(fg) = 95.310212%
-sigma = 6.17553, VI[95%] = 12.1038 (Medium-High)
-CI[95%] = 66610, bankroll[CI] = 6247.72
+base: µ = 90.41822%, sigma(base) = 5.72795
+free: HRfg = 1/564.49, E[K] = 0.017715, q = 0.018035
+RTP = 90.418*(1 + 0.018035*3) = 95.310212%
+sigma = 6.28551, VI[95%] = 12.3194 (Medium-High)
+CI[95%] = 69003, bankroll[CI] = 6472.22
 
 RTP spread for spins number with confidence 95%:
-    1000: 57.03% ... 133.59%
-   10000: 83.21% ... 107.41%
-   66610: 90.62% ... 100.00%
-  100000: 91.48% ... 99.14%
- 1000000: 94.10% ... 96.52%
-10000000: 94.93% ... 95.69%
+    1000: 56.35% ... 134.27%
+   10000: 82.99% ... 107.63%
+   69003: 90.62% ... 100.00%
+  100000: 91.41% ... 99.21%
+ 1000000: 94.08% ... 96.54%
+10000000: 94.92% ... 95.70%
 
 cascade metrics:
 N[1] = 17002368, Ec1 = Kf1 = 1/2.9833
@@ -195,11 +195,11 @@ Here output means:
 
 * `sigma(sym)` is standard deviation by plain pays, calculated as $Q/N - µ^2$, where $Q$ - sum of squares on all pays by every spin. This value shows standard deviation on a "clean" reels, it is not final value.
 
-* $q = C_{fs}/N$, where $C_{fs}$ is sum of all wined free spins.
+* `HRfg` = $C_{fg} / N$ is free games hit rate, shows mathematical expectation of hit that starts series of free spins. Means how many spins to wait before free games hit.
 
-* $sq = \frac{1}{1-q}$ sum of an infinite decreasing geometric progression, multiplier to get RTP on recursive free spins.
+* `E[K]` = $C_{fs} / N$ - expected initial free spins per spin, where $C_{fs}$ is sum of all wined free spins.
 
-* `HRfg` is free games hit rate, shows mathematical expectation of hit that starts series of free spins. Means how many spins to wait before free games hit.
+* `q` = $E[K] / (1 - E[K])$, - ratio of total free spins to paid spins (sum of an infinite decreasing geometric progression, converging under E[K] < 1).
 
 * `RTP` and `sigma` - final key parameters of reels.
 
@@ -275,7 +275,7 @@ To get filtered list of games can be used call like
 curl -X GET localhost:8080/game/list?inc=megajack+ct
 ```
 
-Where `inc` contains space separated list of filters like in `list` command line parameters, see `slot_win_x64 list -h` for details.
+Where `inc` contains space separated list of filters like in `list` command line parameters, see `slot_debug list -h` for details.
 
 `/servinfo` and `/memusage`, `/signis`, `/sendcode`, `/activate`, `/signup` and `/signin` endpoints also does not expects authorization.
 

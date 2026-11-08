@@ -163,8 +163,12 @@ func (g *Game) ScanScattersBon(wins *slot.Wins) {
 }
 
 func (g *Game) GetReels(mrtp float64) slot.Reelx {
-	var reels, _ = ReelsMap.FindClosest(mrtp)
-	return reels
+	if g.FSR == 0 {
+		var reels, _ = ReelsMap.FindClosest(mrtp)
+		return reels
+	} else {
+		return ReelsBon
+	}
 }
 
 func (g *Game) Spin(mrtp float64) {

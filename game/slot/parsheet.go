@@ -204,7 +204,7 @@ func Parsheet_fgrecur(w io.Writer, sp *ScanPar, s Simulator, cost float64, m flo
 	var D = Dbase*(1+q*m*m) + m*m*EVbase*EVbase*VarNfg
 	if sp.IsMain() {
 		fmt.Fprintf(w, "base: µ = %.8g%%, sigma(base) = %.6g\n", EVbase*100, math.Sqrt(Dbase))
-		fmt.Fprintf(w, "free: HRfg = 1/%.5g, EK = %.5g, q = %.5g\n", 1/HRfg, EK, q)
+		fmt.Fprintf(w, "free: HRfg = 1/%.5g, E[K] = %.5g, q = %.5g\n", 1/HRfg, EK, q)
 		if m > 1 {
 			fmt.Fprintf(w, "RTP = %.5g*(1 + %.5g*%.5g) = %.8g%%\n", EVbase*100, q, m, EV*100)
 		} else {
@@ -234,12 +234,12 @@ func Parsheet_dualreelset(w io.Writer, sp *ScanPar, sr Simulator, sb Simulator, 
 	if sp.IsFG() {
 		fmt.Fprintf(w, "*bonus reels*\n")
 		fmt.Fprintf(w, "µ = %.8g%%, sigma(base) = %.6g\n", EVb*100, math.Sqrt(Db))
-		fmt.Fprintf(w, "free: HRfg = 1/%.5g, EK = %.5g\n", 1/HRfgb, EKb)
+		fmt.Fprintf(w, "free: HRfg = 1/%.5g, E[K] = %.5g\n", 1/HRfgb, EKb)
 	}
 	if sp.IsMain() {
 		fmt.Fprintf(w, "*regular reels*\n")
 		fmt.Fprintf(w, "µ = %.8g%%, sigma(base) = %.6g\n", EVr*100, math.Sqrt(Dr))
-		fmt.Fprintf(w, "free: HRfg = 1/%.5g, EK = %.5g, q = %.5g\n", 1/HRfgr, EKr, q)
+		fmt.Fprintf(w, "free: HRfg = 1/%.5g, E[K] = %.5g, q = %.5g\n", 1/HRfgr, EKr, q)
 		fmt.Fprintf(w, "RTP = %.5g(r) + %.5g*%.5g(b) = %.8g%%\n", EVr*100, q, EVb*100, EV*100)
 	}
 	Print_all(w, sp, sr, EV, D)
@@ -329,11 +329,6 @@ func Parsheet_fgtwice_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, L
 	}
 	Print_all(w, sp, sr, rtp, D)
 	return rtp, D
-}
-
-func Parsheet_fgretrig_split_series(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m float64, L []int, scat Sym) (float64, float64) {
-	return Parsheet_fgretrig_split_custom(w, sp, sr, sb, cost, m,
-		sr.FSQ(), sb.FSQ(), sr.ΣPL(scat, L))
 }
 
 func Parsheet_fgretrig_split_custom(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m float64, qr, qb, ΣPL float64) (float64, float64) {

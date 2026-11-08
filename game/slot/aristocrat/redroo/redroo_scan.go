@@ -31,7 +31,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		var g = NewGame()
 		g.MW = [3]float64{1, 1, 1}
 		var calc = func(w io.Writer) (float64, float64) {
-			return slot.Parsheet_fgretrig_split_series(w, sp, sr, sb, g.Cost(), 1, ScatFreespinReg[:], scat)
+			return slot.Parsheet_dualreelset(w, sp, sr, sb, g.Cost(), sr.Efs, sb.Efs)
 		}
 		return slot.ScanReelsCommon(ctx, sp, sr, g, calc)
 	}
