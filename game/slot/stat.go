@@ -36,9 +36,6 @@ type Counter interface {
 	FSQ() float64
 	// Quantifier of free games per reshuffles.
 	FGQ() float64
-	// The sum of the weights of free spins series occurrences
-	// used for dispersion calculation.
-	ΣPL(Sym, []int) float64
 }
 
 type ScanPar = game.ScanPar
@@ -316,28 +313,16 @@ func (s *StatGeneric) Efs() (HRfg, EK, EK2 float64) {
 	return
 }
 
-// Returns free spins quantifier.
 // Deprecated: does not usefull for parsheet calculations, use Efs() instead.
+// Returns free spins quantifier.
 func (s *StatGeneric) FSQ() float64 {
 	return float64(s.Cfs.Load()) / s.Count()
 }
 
-// Quantifier of free games per reshuffles.
 // Deprecated: does not usefull for parsheet calculations, use Efs() instead.
+// Quantifier of free games per reshuffles.
 func (s *StatGeneric) FGQ() float64 {
 	return float64(s.Cfg.Load()) / s.Count()
-}
-
-// The sum of the weights of free spins series occurrences
-// used for dispersion calculation.
-// Deprecated: does not usefull for parsheet calculations, use Efs() instead.
-func (s *StatGeneric) ΣPL(scat Sym, L []int) (sum float64) {
-	var N = s.Count()
-	for i, Li := range L {
-		var Pfgi = float64(s.C[scat-1][i].Load()) / N
-		sum += Pfgi * float64(Li)
-	}
-	return
 }
 
 func (s *StatGeneric) BonusHits(bid int) float64 {
@@ -531,32 +516,16 @@ func (s *StatCascade) NSQ(cost float64) (N float64, S float64, Q float64) {
 	return
 }
 
-// Returns free spins quantifier.
 // Deprecated: does not usefull for parsheet calculations, use Efs() instead.
+// Returns free spins quantifier.
 func (s *StatCascade) FSQ() float64 {
 	return float64(s.SumFSC()) / s.Count()
 }
 
-// Quantifier of free games per reshuffles.
 // Deprecated: does not usefull for parsheet calculations, use Efs() instead.
+// Quantifier of free games per reshuffles.
 func (s *StatCascade) FGQ() float64 {
 	return float64(s.SumFGH()) / s.Count()
-}
-
-// The sum of the weights of free spins series occurrences
-// used for dispersion calculation.
-// Deprecated: does not usefull for parsheet calculations, use Efs() instead.
-func (s *StatCascade) ΣPL(scat Sym, L []int) (sum float64) {
-	var N = s.Count()
-	for i, Li := range L {
-		var c uint64
-		for cfn := range s.Casc {
-			c += s.Casc[cfn].C[scat-1][i].Load()
-		}
-		var Pfgi = float64(c) / N
-		sum += Pfgi * float64(Li)
-	}
-	return
 }
 
 // Cascade multiplier.

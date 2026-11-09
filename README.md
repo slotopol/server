@@ -129,6 +129,12 @@ It can be used embedded *sqlite* database engine, or *MySQL*, or *PostgreSQL* da
 
 Each user can play several games at the same time. Each started game have game ID related to user ID and club ID. Any game actions ties to game ID.
 
+Key libraries used in the project:
+
+* [Gin](https://gin-gonic.com/) web framework.
+* [XORM](https://xorm.io/) to connect MySQL or PostgreSQL database.
+* [cobra](github.com/spf13/cobra) & [viper](github.com/spf13/viper) for CLI and configuration.
+
 ## Mathematics of Slots
 
 Built-in reels scanner helps to get parsheet with math description. There is two key parameters for reels: expectation value and standard deviation. Expectation value presented as RTP (Return To Player) value in percentages, and shows payout for unlimited long series of spins. Standard deviation helps to evaluate RTP spread for limited series, point of convergence, bankroll for user for any case, bankroll for house.

@@ -18,9 +18,8 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var cost = g.Cost()
 	var calc = func(w io.Writer) (float64, float64) {
 		var µ, Dsym = s.EvD(cost)
-		var q = s.FSQ()
+		var Pfg, q, _ = s.Efs()
 		var sq = 1 / (1 - q)
-		var Pfg = s.FGQ()
 		var Em1, Em2 float64
 		for _, m := range MultChoose {
 			Em1 += m

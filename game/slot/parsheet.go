@@ -250,7 +250,7 @@ func Parsheet_dualreelset(w io.Writer, sp *ScanPar, sr Simulator, sb Simulator, 
 // free spins series of length L2 that can be triggered only once.
 func Parsheet_fgone(w io.Writer, sp *ScanPar, s Counter, cost, m, L1, L2 float64) (float64, float64) {
 	var µ, Dsym = s.EvD(cost)
-	var Pfg = s.FGQ()                 // P
+	var Pfg, _, _ = s.Efs()           // P
 	var Pre = 1 - math.Pow(1-Pfg, L1) // P(A)=1−(1−P)^N
 	var rtp = m * µ * (1 + Pre*L2/L1)
 	var Etotal = L1 + L2*Pre
@@ -275,9 +275,8 @@ func Parsheet_fgonce_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, L 
 	var µb, Dsymb = sb.EvD(cost)
 	// regular reels parameters
 	var µr, Dsymr = sr.EvD(cost)
-	var qr = sr.FSQ()
+	var Pfg, qr, _ = sr.Efs()
 	var sqr = 1 / (1 - qr)
-	var Pfg = sr.FGQ()
 	// calculation
 	var rtpfs = m * µb
 	var rtp = µr + qr*rtpfs
@@ -305,14 +304,13 @@ func Parsheet_fgtwice_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, L
 	// regular reels parameters
 	var µr, Dsymr = sr.EvD(cost)
 	// calculation
-	var Pfgb = sb.FGQ()                // P
+	var Pfgb, _, _ = sb.Efs()          // P
 	var Pre = 1 - math.Pow(1-Pfgb, L1) // P(A)=1−(1−P)^N
 	var rtpfs = m * µb * (1 + Pre*L2/L1)
-	var qr = sr.FSQ()
+	var Pfgr, qr, _ = sr.Efs()
 	var rtp = µr + qr*rtpfs
 	var Etotal = L1 + L2*Pre
 	var Vlen = µb * µb * L2 * L2 * Pre * (1 - Pre)
-	var Pfgr = sr.FGQ()
 	var D = Dsymr + m*m*Pfgr*(Etotal*Dsymb+Vlen) // Wald's equation
 	if sp.IsFG() {
 		fmt.Fprintf(w, "*bonus reels*\n")
@@ -325,33 +323,6 @@ func Parsheet_fgtwice_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, L
 		fmt.Fprintf(w, "*regular reels*\n")
 		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µr*100, math.Sqrt(Dsymr))
 		fmt.Fprintf(w, "free: HRfg = 1/%.5g, q = %.5g\n", 1/Pfgr, qr)
-		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µr*100, qr, rtpfs*100, rtp*100)
-	}
-	Print_all(w, sp, sr, rtp, D)
-	return rtp, D
-}
-
-func Parsheet_fgretrig_split_custom(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m float64, qr, qb, ΣPL float64) (float64, float64) {
-	// bonus reels parameters
-	var µb, Dsymb = sb.EvD(cost)
-	var sqb = 1 / (1 - qb)
-	// regular reels parameters
-	var µr, Dsymr = sr.EvD(cost)
-	var sqr = 1 / (1 - qr)
-	// calculation
-	var rtpfs = m * sqb * µb
-	var rtp = µr + qr*rtpfs
-	var D = Dsymr + m*m*ΣPL*(sqb*Dsymb+µb*µb*qb*sqb*sqb*sqb)
-	if sp.IsFG() {
-		fmt.Fprintf(w, "*bonus reels*\n")
-		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µb*100, math.Sqrt(Dsymb))
-		fmt.Fprintf(w, "free: HRfg = 1/%.5g, q = %.5g, sq = 1/(1-q) = %.5g\n", 1/sb.FGQ(), qb, sqb)
-		fmt.Fprintf(w, "rtp(fg) = m*sq*rtp(sym) = %g*%.5g*%.5g = %.6f%%\n", m, sqb, µb*100, rtpfs*100)
-	}
-	if sp.IsMain() {
-		fmt.Fprintf(w, "*regular reels*\n")
-		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µr*100, math.Sqrt(Dsymr))
-		fmt.Fprintf(w, "free: HRfg = 1/%.5g, q = %.5g, sq = 1/(1-q) = %.5g\n", 1/sr.FGQ(), qr, sqr)
 		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µr*100, qr, rtpfs*100, rtp*100)
 	}
 	Print_all(w, sp, sr, rtp, D)

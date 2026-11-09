@@ -8,27 +8,35 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-func Efs(s *slot.StatGeneric) (HRfg, EK, EK2 float64) {
-	var N = s.Count()
-	var c = float64(s.Cfg.Load())
+type StatBon struct {
+	slot.StatGeneric
+}
+
+func NewStatBon() *StatBon {
+	var s StatBon
+	s.CntDim(sn, 5)
+	return &s
+}
+
+func (s *StatBon) Efs() (HRfg, EK, EK2 float64) {
 	const p = 0.5 // probability of getting or not getting free spins is equal
 	const L = 10  // number of free spins
-	HRfg = p * c / N
-	EK = p * c * L / N
-	EK2 = p * c * L * L / N
+	var N = s.Count()
+	var c = p * N / L
+	HRfg = c / N
+	EK = c * L / N
+	EK2 = c * L * L / N
 	return
 }
 
 func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	fmt.Printf("\n(1/2) bonus reels calculations\n")
-	var sb = slot.NewStatGeneric(sn, 5)
+	var sb = NewStatBon()
 	{
 		var g = NewGame(sp.Sel)
 		g.FSR = 10 // set free spins mode
 		var calc = func(w io.Writer) (float64, float64) {
-			return slot.Parsheet_fgrecur(w, sp, sb, g.Cost(), 1, func() (float64, float64, float64) {
-				return Efs(sb)
-			})
+			return slot.Parsheet_fgrecur(w, sp, sb, g.Cost(), 1, sb.Efs)
 		}
 		slot.ScanReelsCommon(ctx, sp, sb, g, calc)
 	}
@@ -42,10 +50,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	{
 		var g = NewGame(sp.Sel)
 		var calc = func(w io.Writer) (float64, float64) {
-			var qr = sr.FSQ()
-			var qb = 0.5 // probability of getting or not getting free spins is equal
-			var ΣPL = sb.FGQ() * 10
-			return slot.Parsheet_fgretrig_split_custom(w, sp, sr, sb, g.Cost(), 1, qr, qb, ΣPL)
+			return slot.Parsheet_dualreelset(w, sp, sr, sb, g.Cost(), sr.Efs, sb.Efs)
 		}
 		return slot.ScanReelsCommon(ctx, sp, sr, g, calc)
 	}

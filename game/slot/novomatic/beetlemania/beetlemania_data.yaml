@@ -6,6 +6,7 @@ novomatic/beetlemania/rmap
 ---
 
 # RTP list of available reels:
+# (selected 10 lines)
 # 87.286136
 # 89.279074
 # 90.851777
@@ -22,8 +23,6 @@ novomatic/beetlemania/rmap
 # 100.05319
 # 102.05993
 # 105.48611
-
-# selected 10 lines
 
 # reels lengths [44, 44, 48, 44, 44], total reshuffles 179908608
 # symbols: µ = 80.441074%, sigma(sym) = 2.85905
