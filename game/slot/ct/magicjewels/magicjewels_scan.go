@@ -7,7 +7,17 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-func Efs(s *slot.StatCascade) (HRfg, EK, EK2 float64) {
+type Stat struct {
+	slot.StatCascade
+}
+
+func NewStat() *Stat {
+	var s Stat
+	s.CntDim(sn, 5)
+	return &s
+}
+
+func (s *Stat) Efs() (HRfg, EK, EK2 float64) {
 	var N = s.Count()
 	var Cfg5 = float64(s.CascNum(4))
 	var Cfg6 = float64(s.CascNum(5))
@@ -26,12 +36,10 @@ func Efs(s *slot.StatCascade) (HRfg, EK, EK2 float64) {
 
 func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var g = NewGame()
-	var s = slot.NewStatCascade(sn, 5)
+	var s = NewStat()
 
 	var calc = func(w io.Writer) (float64, float64) {
-		return slot.Parsheet_fgrecur(w, sp, s, g.Cost(), 2, func() (float64, float64, float64) {
-			return Efs(s)
-		})
+		return slot.Parsheet_fgrecur(w, sp, s, g.Cost(), 2)
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, calc)

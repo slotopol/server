@@ -15,7 +15,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		var g = NewGame(sp.Sel)
 		g.FSR = 45 // set free spins mode
 		var calc = func(w io.Writer) (float64, float64) {
-			return slot.Parsheet_fgrecur(w, sp, sb, g.Cost(), 1, sb.Efs)
+			return slot.Parsheet_fgrecur(w, sp, sb, g.Cost(), 1)
 		}
 		slot.ScanReelsCommon(ctx, sp, sb, g, calc)
 	}
@@ -29,7 +29,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	{
 		var g = NewGame(sp.Sel)
 		var calc = func(w io.Writer) (float64, float64) {
-			return slot.Parsheet_dualreelset(w, sp, sr, sb, g.Cost(), sr.Efs, sb.Efs)
+			return slot.Parsheet_dualreelset(w, sp, sr, sb, g.Cost())
 		}
 		return slot.ScanReelsCommon(ctx, sp, sr, g, calc)
 	}

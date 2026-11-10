@@ -193,9 +193,9 @@ func Parsheet_simple(w io.Writer, sp *ScanPar, s Counter, cost float64) (float64
 	return µ, D
 }
 
-func Parsheet_fgrecur(w io.Writer, sp *ScanPar, s Simulator, cost float64, m float64, Efs func() (float64, float64, float64)) (float64, float64) {
+func Parsheet_fgrecur(w io.Writer, sp *ScanPar, s Simulator, cost float64, m float64) (float64, float64) {
 	var EVbase, Dbase = s.EvD(cost)
-	var HRfg, EK, EK2 = Efs()
+	var HRfg, EK, EK2 = s.Efs()
 	var VarK = EK2 - EK*EK
 	var SEK = 1 / (1 - EK)
 	var VarNfg = VarK * SEK * SEK * SEK
@@ -215,15 +215,15 @@ func Parsheet_fgrecur(w io.Writer, sp *ScanPar, s Simulator, cost float64, m flo
 	return EV, D
 }
 
-func Parsheet_dualreelset(w io.Writer, sp *ScanPar, sr Simulator, sb Simulator, cost float64, Efsr, Efsb func() (float64, float64, float64)) (float64, float64) {
+func Parsheet_dualreelset(w io.Writer, sp *ScanPar, sr Simulator, sb Simulator, cost float64) (float64, float64) {
 	const m = 1
 	// regular reels parameters
 	var EVr, Dr = sr.EvD(cost)
-	var HRfgr, EKr, EK2r = Efsr()
+	var HRfgr, EKr, EK2r = sr.Efs()
 	var VarKr = EK2r - EKr*EKr
 	// bonus reels parameters
 	var EVb, Db = sb.EvD(cost)
-	var HRfgb, EKb, EK2b = Efsb()
+	var HRfgb, EKb, EK2b = sb.Efs()
 	var VarKb = EK2b - EKb*EKb
 	// aggregate parameters
 	var a = 1 / (1 - EKb)
@@ -234,7 +234,9 @@ func Parsheet_dualreelset(w io.Writer, sp *ScanPar, sr Simulator, sb Simulator, 
 	if sp.IsFG() {
 		fmt.Fprintf(w, "*bonus reels*\n")
 		fmt.Fprintf(w, "µ = %.8g%%, sigma(base) = %.6g\n", EVb*100, math.Sqrt(Db))
-		fmt.Fprintf(w, "free: HRfg = 1/%.5g, E[K] = %.5g\n", 1/HRfgb, EKb)
+		if EKb > 0 {
+			fmt.Fprintf(w, "free: HRfg = 1/%.5g, E[K] = %.5g\n", 1/HRfgb, EKb)
+		}
 	}
 	if sp.IsMain() {
 		fmt.Fprintf(w, "*regular reels*\n")
@@ -263,35 +265,6 @@ func Parsheet_fgone(w io.Writer, sp *ScanPar, s Counter, cost, m, L1, L2 float64
 		fmt.Fprintf(w, "RTP = %.8g%%\n", rtp*100)
 	}
 	Print_all(w, sp, s, rtp, D)
-	return rtp, D
-}
-
-// Parsheet for slot with splitted statistics for regular
-// games `sr` and statistics for NON-retriggerable bonus games `sb`.
-// with `m` multiplier on freegames (m=1 if no multiplier).
-// Each hit of freegames series has `L` freespins.
-func Parsheet_fgonce_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, L float64) (float64, float64) {
-	// bonus reels parameters
-	var µb, Dsymb = sb.EvD(cost)
-	// regular reels parameters
-	var µr, Dsymr = sr.EvD(cost)
-	var Pfg, qr, _ = sr.Efs()
-	var sqr = 1 / (1 - qr)
-	// calculation
-	var rtpfs = m * µb
-	var rtp = µr + qr*rtpfs
-	var D = Dsymr + m*m*Pfg*(L*Dsymb+L*L*µb*µb)
-	if sp.IsFG() {
-		fmt.Fprintf(w, "*bonus reels*\n")
-		fmt.Fprintf(w, "RTP(fg) = %.8g%%\n", rtpfs*100)
-	}
-	if sp.IsMain() {
-		fmt.Fprintf(w, "*regular reels*\n")
-		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µr*100, math.Sqrt(Dsymr))
-		fmt.Fprintf(w, "free: HRfg = 1/%.5g, q = %.5g, sq = 1/(1-q) = %.5g\n", 1/Pfg, qr, sqr)
-		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µr*100, qr, rtpfs*100, rtp*100)
-	}
-	Print_all(w, sp, sr, rtp, D)
 	return rtp, D
 }
 
