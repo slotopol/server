@@ -184,7 +184,7 @@ func Print_all(w io.Writer, sp *ScanPar, s Simulator, µ, D float64) {
 }
 
 // Parsheet for simple slot model (without free games and bonuses).
-func Parsheet_simple(w io.Writer, sp *ScanPar, s Counter, cost float64) (float64, float64) {
+func Parsheet_simple(w io.Writer, sp *ScanPar, s Simulator, cost float64) (float64, float64) {
 	var µ, D = s.EvD(cost)
 	if sp.IsMain() {
 		fmt.Fprintf(w, "RTP = %.8g%%\n", µ*100)
@@ -216,6 +216,17 @@ func Parsheet_solereelrecur(w io.Writer, sp *ScanPar, s Simulator, cost float64,
 	}
 	Print_all(w, sp, s, EV, D)
 	return EV, D
+}
+
+// Parsheet to calculate bonus reel in dual-reel set model on simple case.
+func Parsheet_affixsimple(w io.Writer, sp *ScanPar, s Simulator, cost float64) (float64, float64) {
+	var µ, D = s.EvD(cost)
+	if sp.IsFG() {
+		fmt.Fprintf(w, "RTP = %.8g%%\n", µ*100)
+	}
+	Print_vi(w, sp, D)
+	Print_ci(w, sp, µ, D)
+	return µ, D
 }
 
 // Parsheet to calculate bonus reel in dual-reel set model with recursive re-triggers.

@@ -29,15 +29,6 @@ type Simulator interface {
 	Simulate(SlotGame, *Wins, float64)
 }
 
-// Deprecated: use Simulator interface instead.
-type Counter interface {
-	Simulator
-	// Returns free spins quantifier.
-	FSQ() float64
-	// Quantifier of free games per reshuffles.
-	FGQ() float64
-}
-
 type ScanPar = game.ScanPar
 
 type Uint64 struct {
@@ -255,8 +246,8 @@ type StatGeneric struct {
 	EC          Uint64  `yaml:",omitempty"` // errors count
 }
 
-// Declare conformity with Counter interface.
-var _ Counter = (*StatGeneric)(nil)
+// Declare conformity with Simulator interface.
+var _ Simulator = (*StatGeneric)(nil)
 
 func NewStatGeneric(sn, pn int) *StatGeneric {
 	var s StatGeneric
@@ -350,8 +341,8 @@ type StatCascade struct {
 	EC   Uint64  `yaml:",omitempty"` // errors count
 }
 
-// Declare conformity with Counter interface.
-var _ Counter = (*StatCascade)(nil)
+// Declare conformity with Simulator interface.
+var _ Simulator = (*StatCascade)(nil)
 
 func NewStatCascade(sn, pn int) *StatCascade {
 	var s StatCascade

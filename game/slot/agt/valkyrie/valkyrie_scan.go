@@ -17,7 +17,7 @@ func CalcStatReg(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		g.FSR = 15 // set free spins mode
 		var reels = g.GetReels(sp.MRTP)
 		var calc = func(w io.Writer) (float64, float64) {
-			return slot.Parsheet_simple(w, sp, sb, g.Cost())
+			return slot.Parsheet_affixsimple(w, sp, sb, g.Cost())
 		}
 		func() {
 			var ctx2, cancel2 = context.WithCancel(ctx)
