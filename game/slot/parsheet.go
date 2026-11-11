@@ -20,20 +20,20 @@ func Print_vi(w io.Writer, sp *ScanPar, D float64) {
 	fmt.Fprintf(w, "sigma = %.6g, VI[%.4g%%] = %.6g (%s)\n", sigma, sp.Conf*100, vi, game.VIname5[game.VIclass5(sigma)])
 }
 
-func Print_ci(w io.Writer, sp *ScanPar, rtp, D float64) {
+func Print_ci(w io.Writer, sp *ScanPar, µ, D float64) {
 	if !sp.IsCI() {
 		return
 	}
-	if rtp > game.RTPconv {
+	if µ > game.RTPconv {
 		return
 	}
 	var sigma = math.Sqrt(D)
-	var ci = game.CI(sp.Conf, rtp, sigma)
-	var BRci = game.BankrollPlayer(sp.Conf, rtp, sigma, ci)
+	var ci = game.CI(sp.Conf, µ, sigma)
+	var BRci = game.BankrollPlayer(sp.Conf, µ, sigma, ci)
 	fmt.Fprintf(w, "CI[%.4g%%] = %d, bankroll[CI] = %.6g\n", sp.Conf*100, int(ci+0.5), BRci)
 }
 
-func Print_spread(w io.Writer, sp *ScanPar, rtp, D float64) {
+func Print_spread(w io.Writer, sp *ScanPar, µ, D float64) {
 	if !sp.IsSpread() {
 		return
 	}
@@ -42,14 +42,14 @@ func Print_spread(w io.Writer, sp *ScanPar, rtp, D float64) {
 	var N = []int{1e3, 1e4, 1e5, 1e6, 1e7}
 	var sigma = math.Sqrt(D)
 	var vi = game.GetZ(sp.Conf) * sigma
-	var ci = game.CI(sp.Conf, rtp, sigma)
+	var ci = game.CI(sp.Conf, µ, sigma)
 	if ci < 1e7 {
 		N = append(N, int(ci+0.5))
 		sort.Ints(N)
 	}
 	for _, n := range N {
 		var Δ = vi / math.Sqrt(float64(n))
-		fmt.Fprintf(w, "%8d: %.2f%% ... %.2f%%\n", n, (rtp-Δ)*100, (rtp+Δ)*100)
+		fmt.Fprintf(w, "%8d: %.2f%% ... %.2f%%\n", n, (µ-Δ)*100, (µ+Δ)*100)
 	}
 }
 
@@ -61,7 +61,7 @@ func p5f(p float64) string {
 	}
 }
 
-func Print_symbols_generic(w io.Writer, sp *ScanPar, s *StatGeneric, rtp float64) {
+func Print_symbols_generic(w io.Writer, sp *ScanPar, s *StatGeneric, µ float64) {
 	if !sp.IsSym() {
 		return
 	}
@@ -75,7 +75,7 @@ func Print_symbols_generic(w io.Writer, sp *ScanPar, s *StatGeneric, rtp float64
 	var sum = s.SumPays()
 	for sym, pays := range s.S {
 		var cs = s.SymPays(Sym(sym+1)) / sum
-		fmt.Fprintf(w, "%2d: %s %s |", sym+1, p5f(cs*100), p5f(rtp*cs*100))
+		fmt.Fprintf(w, "%2d: %s %s |", sym+1, p5f(cs*100), p5f(µ*cs*100))
 		for x := range pays {
 			var cx = pays[x].Load() / sum
 			fmt.Fprintf(w, " %s", p5f(cx*100))
@@ -84,7 +84,7 @@ func Print_symbols_generic(w io.Writer, sp *ScanPar, s *StatGeneric, rtp float64
 	}
 }
 
-func Print_symbols_cascade(w io.Writer, sp *ScanPar, s *StatCascade, rtp float64) {
+func Print_symbols_cascade(w io.Writer, sp *ScanPar, s *StatCascade, µ float64) {
 	if !sp.IsSym() {
 		return
 	}
@@ -98,7 +98,7 @@ func Print_symbols_cascade(w io.Writer, sp *ScanPar, s *StatCascade, rtp float64
 	var sum = s.SumPays()
 	for sym, pays := range s.Casc[0].S {
 		var cs = s.SymPays(Sym(sym+1)) / sum
-		fmt.Fprintf(w, "%2d: %s %s |", sym+1, p5f(cs*100), p5f(rtp*cs*100))
+		fmt.Fprintf(w, "%2d: %s %s |", sym+1, p5f(cs*100), p5f(µ*cs*100))
 		for x := range pays {
 			var cx float64
 			for cfn := range s.Casc {
@@ -111,7 +111,7 @@ func Print_symbols_cascade(w io.Writer, sp *ScanPar, s *StatCascade, rtp float64
 	}
 }
 
-func Print_contribution_falls(w io.Writer, sp *ScanPar, s *StatCascade, rtp float64) {
+func Print_contribution_falls(w io.Writer, sp *ScanPar, s *StatCascade, µ float64) {
 	if !sp.IsCasc() {
 		return
 	}
@@ -121,7 +121,7 @@ func Print_contribution_falls(w io.Writer, sp *ScanPar, s *StatCascade, rtp floa
 	var sum = s.SumPays()
 	for cfn := range s.Casc {
 		var c = s.Casc[cfn].SumPays() / sum
-		fmt.Fprintf(w, "%2d: %s %s\n", cfn, p5f(c*100), p5f(rtp*c*100))
+		fmt.Fprintf(w, "%2d: %s %s\n", cfn, p5f(c*100), p5f(µ*c*100))
 		if c == 0 {
 			break
 		}
@@ -168,22 +168,22 @@ func Print_cascmetrics(w io.Writer, sp *ScanPar, s *StatCascade) {
 }
 
 // Print_all assembles all print functions of parsheets.
-func Print_all(w io.Writer, sp *ScanPar, s Simulator, rtp, D float64) {
+func Print_all(w io.Writer, sp *ScanPar, s Simulator, µ, D float64) {
 	Print_vi(w, sp, D)
-	Print_ci(w, sp, rtp, D)
-	Print_spread(w, sp, rtp, D)
+	Print_ci(w, sp, µ, D)
+	Print_spread(w, sp, µ, D)
 	switch stat := s.(type) {
 	case *StatGeneric:
-		Print_symbols_generic(w, sp, stat, rtp)
+		Print_symbols_generic(w, sp, stat, µ)
 	case *StatCascade:
 		Print_cascmetrics(w, sp, stat)
-		Print_symbols_cascade(w, sp, stat, rtp)
-		Print_contribution_falls(w, sp, stat, rtp)
+		Print_symbols_cascade(w, sp, stat, µ)
+		Print_contribution_falls(w, sp, stat, µ)
 	}
 	Print_raw(w, sp, s)
 }
 
-// Parsheet for simple slot (without free games and bonuses).
+// Parsheet for simple slot model (without free games and bonuses).
 func Parsheet_simple(w io.Writer, sp *ScanPar, s Counter, cost float64) (float64, float64) {
 	var µ, D = s.EvD(cost)
 	if sp.IsMain() {
@@ -193,7 +193,10 @@ func Parsheet_simple(w io.Writer, sp *ScanPar, s Counter, cost float64) (float64
 	return µ, D
 }
 
-func Parsheet_fgrecur(w io.Writer, sp *ScanPar, s Simulator, cost float64, m float64) (float64, float64) {
+// Parsheet for model with identical rules and symbol payout structures
+// between base paid spins and free bonus spins, recursive re-triggers
+// during free spins, and a global multiplier `m` applied during bonus rounds.
+func Parsheet_solereelrecur(w io.Writer, sp *ScanPar, s Simulator, cost float64, m float64) (float64, float64) {
 	var EVbase, Dbase = s.EvD(cost)
 	var HRfg, EK, EK2 = s.Efs()
 	var VarK = EK2 - EK*EK
@@ -215,7 +218,35 @@ func Parsheet_fgrecur(w io.Writer, sp *ScanPar, s Simulator, cost float64, m flo
 	return EV, D
 }
 
-func Parsheet_dualreelset(w io.Writer, sp *ScanPar, sr Simulator, sb Simulator, cost float64) (float64, float64) {
+// Parsheet to calculate bonus reel in dual-reel set model with recursive re-triggers.
+func Parsheet_affixrecur(w io.Writer, sp *ScanPar, s Simulator, cost float64) (float64, float64) {
+	const m = 1
+	var EVbase, Dbase = s.EvD(cost)
+	var HRfg, EK, EK2 = s.Efs()
+	var VarK = EK2 - EK*EK
+	var SEK = 1 / (1 - EK)
+	var VarNfg = VarK * SEK * SEK * SEK
+	var q = EK / (1 - EK)
+	var EV = EVbase * (1 + m*q)
+	var D = Dbase*(1+q*m*m) + m*m*EVbase*EVbase*VarNfg
+	if sp.IsFG() {
+		fmt.Fprintf(w, "base: µ = %.8g%%, sigma(base) = %.6g\n", EVbase*100, math.Sqrt(Dbase))
+		fmt.Fprintf(w, "free: HRfg = 1/%.5g, E[K] = %.5g, q = %.5g\n", 1/HRfg, EK, q)
+		if m > 1 {
+			fmt.Fprintf(w, "RTP = %.5g*(1 + %.5g*%.5g) = %.8g%%\n", EVbase*100, q, m, EV*100)
+		} else {
+			fmt.Fprintf(w, "RTP = %.5g*(1 + %.5g) = %.8g%%\n", EVbase*100, q, EV*100)
+		}
+	}
+	Print_vi(w, sp, D)
+	Print_ci(w, sp, EV, D)
+	return EV, D
+}
+
+// Parsheet for model with different reel lengths, independent counters
+// for each set, recursive re-triggers within bonus spins (which evaluate
+// on the bonus reel set), and a multiplier `m` applied to bonus spins.
+func Parsheet_dualreelrecur(w io.Writer, sp *ScanPar, sr Simulator, sb Simulator, cost float64) (float64, float64) {
 	const m = 1
 	// regular reels parameters
 	var EVr, Dr = sr.EvD(cost)
@@ -248,56 +279,52 @@ func Parsheet_dualreelset(w io.Writer, sp *ScanPar, sr Simulator, sb Simulator, 
 	return EV, D
 }
 
-// Parsheet for slot with games series of length L1 with
-// free spins series of length L2 that can be triggered only once.
-func Parsheet_fgone(w io.Writer, sp *ScanPar, s Counter, cost, m, L1, L2 float64) (float64, float64) {
-	var µ, Dsym = s.EvD(cost)
-	var Pfg, _, _ = s.Efs()           // P
-	var Pre = 1 - math.Pow(1-Pfg, L1) // P(A)=1−(1−P)^N
-	var rtp = m * µ * (1 + Pre*L2/L1)
-	var Etotal = L1 + L2*Pre
-	var Vlen = µ * µ * L2 * L2 * Pre * (1 - Pre)
-	var D = m * m * (Etotal*Dsym + Vlen)
-	if sp.IsMain() {
-		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µ*100, math.Sqrt(Dsym))
-		fmt.Fprintf(w, "free: HRfg = 1/%.5g\n", 1/Pfg)
-		fmt.Fprintf(w, "probability of %g new spins: %.6f\n", L2, Pre)
-		fmt.Fprintf(w, "RTP = %.8g%%\n", rtp*100)
+// Parsheet to calculate bonus reel in dual-reel set model.
+func Parsheet_affixonce(w io.Writer, sp *ScanPar, s Simulator, cost float64, Lr, Lb float64) (float64, float64) {
+	const m = 1
+	var EVbase, Dbase = s.EvD(cost)
+	var HRfg, EK, EK2 = s.Efs()
+	var pb = HRfg                    // P
+	var Pre = 1 - math.Pow(1-pb, Lr) // P(A)=1−(1−P)^N
+	var EV = m * EVbase * (1 + Pre*Lb/Lr)
+	var Etotal = Lr + Lb*Pre
+	var Vlen = EVbase * EVbase * Lb * Lb * Pre * (1 - Pre)
+	var D = m * m * (Etotal*Dbase + Vlen)
+	if sp.IsFG() {
+		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", EVbase*100, math.Sqrt(Dbase))
+		fmt.Fprintf(w, "free: HRfg = 1/%.5g, E[K] = %.5g, E[K2] = %.5g\n", 1/HRfg, EK, EK2)
+		fmt.Fprintf(w, "RTP = %.5g*(1+%.5g) = %.8g%%\n", EVbase*100, Pre*Lb/Lr, EV*100)
 	}
-	Print_all(w, sp, s, rtp, D)
-	return rtp, D
+	Print_vi(w, sp, D)
+	Print_ci(w, sp, EV, D)
+	return EVbase, Dbase
 }
 
-// Parsheet for slot with splitted statistics for regular
-// games `sr` and statistics for bonus games `sb` in which new games
-// can be retriggered only once. Length of first series is `L1`, second is `L2`.
-func Parsheet_fgtwice_split(w io.Writer, sp *ScanPar, sr, sb Counter, cost, m, L1, L2 float64) (float64, float64) {
-	// bonus reels parameters
-	var µb, Dsymb = sb.EvD(cost)
+// Parsheet for model utilizing two independent reel sets under the constraint
+// that Free Spins can re-trigger at most once during a bonus feature.
+func Parsheet_dualreelonce(w io.Writer, sp *ScanPar, sr Simulator, sb Simulator, cost float64, Lr, Lb float64) (float64, float64) {
+	const m = 1
 	// regular reels parameters
-	var µr, Dsymr = sr.EvD(cost)
-	// calculation
-	var Pfgb, _, _ = sb.Efs()          // P
-	var Pre = 1 - math.Pow(1-Pfgb, L1) // P(A)=1−(1−P)^N
-	var rtpfs = m * µb * (1 + Pre*L2/L1)
-	var Pfgr, qr, _ = sr.Efs()
-	var rtp = µr + qr*rtpfs
-	var Etotal = L1 + L2*Pre
-	var Vlen = µb * µb * L2 * L2 * Pre * (1 - Pre)
-	var D = Dsymr + m*m*Pfgr*(Etotal*Dsymb+Vlen) // Wald's equation
-	if sp.IsFG() {
-		fmt.Fprintf(w, "*bonus reels*\n")
-		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µb*100, math.Sqrt(Dsymb))
-		fmt.Fprintf(w, "free: HRfg = 1/%.5g\n", 1/Pfgb)
-		fmt.Fprintf(w, "probability of %g new spins: %.6f\n", L2, Pre)
-		fmt.Fprintf(w, "RTP = %.8g%%\n", rtpfs*100)
-	}
+	var EVr, Dr = sr.EvD(cost)
+	var HRfg, EKr, EK2r = sr.Efs()
+	var VarKr = EK2r - EKr*EKr
+	// bonus reels parameters
+	var EVb, Db = sb.EvD(cost)
+	var pb, _, _ = sb.Efs()
+	// aggregate parameters
+	var Pre = 1 - math.Pow(1-pb, Lr)
+	var q = EKr + HRfg*Lb*Pre
+	var VarLex = HRfg*Lb*Lb*Pre*(1-Pre) + Pre*Pre*Lb*Lb*HRfg*(1-HRfg)
+	var CovKrLex = Lr * Lb * Pre * HRfg * (1 - HRfg)
+	var VarNfg = VarKr + 2*CovKrLex + VarLex
+	var EV = EVr + q*m*EVb
+	var D = Dr + m*m*(EVb*EVb*VarNfg+q*Db)
 	if sp.IsMain() {
-		fmt.Fprintf(w, "*regular reels*\n")
-		fmt.Fprintf(w, "symbols: µ = %.8g%%, sigma(sym) = %.6g\n", µr*100, math.Sqrt(Dsymr))
-		fmt.Fprintf(w, "free: HRfg = 1/%.5g, q = %.5g\n", 1/Pfgr, qr)
-		fmt.Fprintf(w, "RTP = %.5g(sym) + %.5g*%.5g(fg) = %.8g%%\n", µr*100, qr, rtpfs*100, rtp*100)
+		fmt.Fprintf(w, "µ = %.8g%%, sigma(base) = %.6g\n", EVr*100, math.Sqrt(Dr))
+		fmt.Fprintf(w, "free: HRfg = 1/%.5g, E[K] = %.5g, q = %.5g\n", 1/HRfg, EKr, q)
+		fmt.Fprintf(w, "Pb = %.6g, Pre = %.6g, E[Lex] = %.5g\n", pb, Pre, Lb*Pre)
+		fmt.Fprintf(w, "RTP = %.5g(r) + %.5g*%.5g(b) = %.8g%%\n", EVr*100, q, EVb*100, EV*100)
 	}
-	Print_all(w, sp, sr, rtp, D)
-	return rtp, D
+	Print_all(w, sp, sr, EV, D)
+	return EV, D
 }

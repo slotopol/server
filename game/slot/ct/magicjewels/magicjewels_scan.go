@@ -39,7 +39,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var s = NewStat()
 
 	var calc = func(w io.Writer) (float64, float64) {
-		return slot.Parsheet_fgrecur(w, sp, s, g.Cost(), 2)
+		return slot.Parsheet_solereelrecur(w, sp, s, g.Cost(), 2)
 	}
 
 	return slot.ScanReelsCommon(ctx, sp, s, g, calc)
