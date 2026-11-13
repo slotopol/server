@@ -11,14 +11,14 @@ Users access levels (`gal` or `access` fields) are sum of followed ints:
   31 - all rights
 */
 
-INSERT INTO `club` (`cid`,`ctime`,`utime`,`name`,`bank`,`fund`,`lock`,`rate`,`mrtp`) VALUES
+INSERT INTO `club` (`cid`,`ctime`,`utime`,`name`,`bank`,`fund`,`depos`,`rate`,`mrtp`) VALUES
 (1,'2026-10-28 15:00:00','2026-10-28 15:00:00','virtual',10000,1000000,0,2.5,95),
 (2,'2026-10-28 15:00:00','2026-10-28 15:00:00','global',0,0,0,2.5,0);
 
-INSERT INTO `user` (`uid`,`ctime`,`utime`,`email`,`secret`,`name`,`status`,`gal`) VALUES
-(1,'2026-10-28 15:00:00','2026-10-28 15:00:00','admin@example.org','0YBoaT','admin',1,31),
-(2,'2026-10-28 15:00:00','2026-10-28 15:00:00','dealer@example.org','LtpkAr','dealer',1,3),
-(3,'2026-10-28 15:00:00','2026-10-28 15:00:00','player@example.org','iVI05M','player',1,1);
+INSERT INTO `user` (`uid`,`ctime`,`utime`,`vtime`,`email`,`secret`,`name`,`status`,`gal`) VALUES
+(1,'2026-10-28 15:00:00','2026-10-28 15:00:00','2026-10-28 15:00:00','admin@example.org','0YBoaT','admin',1,31),
+(2,'2026-10-28 15:00:00','2026-10-28 15:00:00','2026-10-28 15:00:00','dealer@example.org','LtpkAr','dealer',1,3),
+(3,'2026-10-28 15:00:00','2026-10-28 15:00:00','2026-10-28 15:00:00','player@example.org','iVI05M','player',1,1);
 
 INSERT INTO `props` (`cid`,`uid`,`wallet`,`access`,`mrtp`) VALUES
 (1,1,10000,1,0),

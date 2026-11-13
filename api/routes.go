@@ -106,8 +106,10 @@ func Ret400(c *gin.Context, code int, err error) {
 }
 
 func Ret401(c *gin.Context, code int, err error) {
-	c.Writer.Header().Add("WWW-Authenticate", realmBasic)
 	c.Writer.Header().Add("WWW-Authenticate", realmBearer)
+	if Cfg.UseBasic {
+		c.Writer.Header().Add("WWW-Authenticate", realmBasic)
+	}
 	RetErr(c, http.StatusUnauthorized, code, err)
 }
 

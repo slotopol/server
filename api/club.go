@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	sqlclub = "UPDATE club SET `bank`=`bank`+?, `fund`=`fund`+?, `lock`=`lock`+?, `utime`=CURRENT_TIMESTAMP WHERE `cid`=?"
+	sqlclub = "UPDATE club SET bank=bank+?, fund=fund+?, depos=depos+?, utime=CURRENT_TIMESTAMP WHERE cid=?"
 )
 
 func ApiClubList(c *gin.Context) {
@@ -187,7 +187,7 @@ func ApiClubRename(c *gin.Context) {
 	Ret204(c)
 }
 
-// Adding or withdrawing coins from club bank, fund and lock balances.
+// Adding or withdrawing coins from club bank, fund and depos balances.
 func ApiClubCashin(c *gin.Context) {
 	var err error
 	var ok bool
@@ -196,21 +196,21 @@ func ApiClubCashin(c *gin.Context) {
 		CID     uint64   `json:"cid" yaml:"cid" xml:"cid,attr" form:"cid" binding:"required"`
 		BankSum float64  `json:"banksum" yaml:"banksum" xml:"banksum" form:"banksum"`
 		FundSum float64  `json:"fundsum" yaml:"fundsum" xml:"fundsum" form:"fundsum"`
-		LockSum float64  `json:"locksum" yaml:"locksum" xml:"locksum" form:"locksum"`
+		DepoSum float64  `json:"deposum" yaml:"deposum" xml:"deposum" form:"deposum"`
 	}
 	var ret struct {
 		XMLName xml.Name `json:"-" yaml:"-" xml:"ret"`
 		BID     uint64   `json:"bid" yaml:"bid" xml:"bid,attr"`
 		Bank    float64  `json:"bank" yaml:"bank" xml:"bank"`
 		Fund    float64  `json:"fund" yaml:"fund" xml:"fund"`
-		Lock    float64  `json:"lock" yaml:"lock" xml:"lock"`
+		Depos   float64  `json:"depos" yaml:"depos" xml:"depos"`
 	}
 
 	if err = c.ShouldBind(&arg); err != nil {
 		Ret400(c, AEC_club_cashin_nobind, err)
 		return
 	}
-	if arg.BankSum == 0 && arg.FundSum == 0 && arg.LockSum == 0 {
+	if arg.BankSum == 0 && arg.FundSum == 0 && arg.DepoSum == 0 {
 		Ret400(c, AEC_club_cashin_nosum, ErrNoAddSum)
 		return
 	}
@@ -227,10 +227,10 @@ func ApiClubCashin(c *gin.Context) {
 		return
 	}
 
-	var bank, fund, lock = club.GetCash()
+	var bank, fund, depos = club.GetCash()
 	bank += arg.BankSum
 	fund += arg.FundSum
-	lock += arg.LockSum
+	depos += arg.DepoSum
 
 	if bank < 0 {
 		Ret403(c, AEC_club_cashin_bankout, ErrBankOut)
@@ -240,21 +240,21 @@ func ApiClubCashin(c *gin.Context) {
 		Ret403(c, AEC_club_cashin_fundout, ErrFundOut)
 		return
 	}
-	if lock < 0 {
-		Ret403(c, AEC_club_cashin_lockout, ErrLockOut)
+	if depos < 0 {
+		Ret403(c, AEC_club_cashin_deposout, ErrDeposOut)
 		return
 	}
 
 	var rec = core.Banklog{
 		Bank:    bank,
 		Fund:    fund,
-		Lock:    lock,
+		Depos:   depos,
 		BankSum: arg.BankSum,
 		FundSum: arg.FundSum,
-		LockSum: arg.LockSum,
+		DepoSum: arg.DepoSum,
 	}
 	if err = util.SafeTransaction(core.XormStorage, func(session *xorm.Session) (err error) {
-		if _, err = session.Exec(sqlclub, arg.BankSum, arg.FundSum, arg.LockSum, club.CID()); err != nil {
+		if _, err = session.Exec(sqlclub, arg.BankSum, arg.FundSum, arg.DepoSum, club.CID()); err != nil {
 			Ret500(c, AEC_club_cashin_sqlbank, err)
 			return
 		}
@@ -268,12 +268,12 @@ func ApiClubCashin(c *gin.Context) {
 	}
 
 	// make changes to memory data
-	club.AddCash(arg.BankSum, arg.FundSum, arg.LockSum)
+	club.AddCash(arg.BankSum, arg.FundSum, arg.DepoSum)
 
 	ret.BID = rec.BID
 	ret.Bank = bank
 	ret.Fund = fund
-	ret.Lock = lock
+	ret.Depos = depos
 
 	RetOk(c, ret)
 }

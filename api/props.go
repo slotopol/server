@@ -2,6 +2,7 @@ package api
 
 import (
 	"encoding/xml"
+	"math"
 
 	"github.com/gin-gonic/gin"
 	"github.com/slotopol/server/core"
@@ -118,7 +119,7 @@ func ApiPropsWalletAdd(c *gin.Context) {
 		Ret400(c, AEC_prop_walletadd_nobind, err)
 		return
 	}
-	if arg.Sum > Cfg.AdjunctLimit || arg.Sum < -Cfg.AdjunctLimit {
+	if math.IsNaN(arg.Sum) || arg.Sum > Cfg.AdjunctLimit || arg.Sum < -Cfg.AdjunctLimit {
 		Ret400(c, AEC_prop_walletadd_limit, ErrTooBig)
 		return
 	}

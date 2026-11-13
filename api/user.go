@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	sqllock = "UPDATE club SET `lock`=`lock`+?, `utime`=CURRENT_TIMESTAMP WHERE `cid`=?"
+	sqldepos = "UPDATE club SET depos=depos+?, utime=CURRENT_TIMESTAMP WHERE cid=?"
 )
 
 func ApiUserIs(c *gin.Context) {
@@ -264,7 +264,7 @@ func ApiUserDelete(c *gin.Context) {
 
 		for cid, props := range user.Items() {
 			if props.Wallet != 0 {
-				if _, err = session.Exec(sqllock, props.Wallet, cid); err != nil {
+				if _, err = session.Exec(sqldepos, props.Wallet, cid); err != nil {
 					Ret500(c, AEC_user_delete_sqllock, err)
 					return
 				}

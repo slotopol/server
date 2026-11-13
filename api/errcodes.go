@@ -418,7 +418,7 @@ const (
 	AEC_club_cashin_noaccess
 	AEC_club_cashin_bankout
 	AEC_club_cashin_fundout
-	AEC_club_cashin_lockout
+	AEC_club_cashin_deposout
 	AEC_club_cashin_sqlbank
 	AEC_club_cashin_sqllog
 )
@@ -434,7 +434,7 @@ var (
 	ErrNoGain   = errors.New("no money won")
 	ErrBankOut  = errors.New("not enough money at bank")
 	ErrFundOut  = errors.New("not enough money at jackpot fund")
-	ErrLockOut  = errors.New("not enough money at deposit")
+	ErrDeposOut  = errors.New("not enough money at deposit")
 	ErrNotSlot  = errors.New("specified GID refers to non-slot game")
 	ErrNotKeno  = errors.New("specified GID refers to non-keno game")
 	ErrNoAccess = errors.New("no access rights for this feature")

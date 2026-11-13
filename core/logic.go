@@ -33,7 +33,7 @@ type ClubData struct {
 	Name  string    `xorm:"notnull" json:"name,omitempty" yaml:"name,omitempty" xml:"name,omitempty"`
 	Bank  float64   `xorm:"notnull default 0" json:"bank" yaml:"bank" xml:"bank"`          // users win/lost balance, in coins
 	Fund  float64   `xorm:"notnull default 0" json:"fund" yaml:"fund" xml:"fund"`          // jackpot fund, in coins
-	Lock  float64   `xorm:"notnull default 0" json:"lock" yaml:"lock" xml:"lock"`          // not changed deposit within games
+	Depos float64   `xorm:"notnull default 0" json:"depos" yaml:"depos" xml:"depos"`       // not changed deposit within games
 	Rate  float64   `xorm:"'rate' notnull default 2.5" json:"rate" yaml:"rate" xml:"rate"` // jackpot rate for games with progressive jackpot
 	MRTP  float64   `xorm:"'mrtp' notnull default 0" json:"mrtp" yaml:"mrtp" xml:"mrtp"`   // master RTP
 }
@@ -161,10 +161,10 @@ type Banklog struct {
 	CTime   time.Time `xorm:"created 'ctime' notnull default CURRENT_TIMESTAMP" json:"ctime" yaml:"ctime" xml:"ctime,attr"`
 	Bank    float64   `xorm:"notnull 'bank'" json:"bank" yaml:"bank" xml:"bank"`
 	Fund    float64   `xorm:"notnull 'fund'" json:"fund" yaml:"fund" xml:"fund"`
-	Lock    float64   `xorm:"notnull 'lock'" json:"lock" yaml:"lock" xml:"lock"`
+	Depos   float64   `xorm:"notnull 'depos'" json:"depos" yaml:"depos" xml:"depos"`
 	BankSum float64   `xorm:"notnull 'banksum'" json:"banksum" yaml:"banksum" xml:"banksum" form:"banksum"`
 	FundSum float64   `xorm:"notnull 'fundsum'" json:"fundsum" yaml:"fundsum" xml:"fundsum" form:"fundsum"`
-	LockSum float64   `xorm:"notnull 'locksum'" json:"locksum" yaml:"locksum" xml:"locksum" form:"locksum"`
+	DepoSum float64   `xorm:"notnull 'deposum'" json:"deposum" yaml:"deposum" xml:"deposum" form:"deposum"`
 }
 
 // All created clubs, by CID.
@@ -218,13 +218,13 @@ func (club *Club) Fund() float64 {
 func (club *Club) Deposit() float64 {
 	club.mux.RLock()
 	defer club.mux.RUnlock()
-	return club.data.Lock
+	return club.data.Depos
 }
 
 func (club *Club) GetCash() (bank, fund, deposit float64) {
 	club.mux.RLock()
 	defer club.mux.RUnlock()
-	return club.data.Bank, club.data.Fund, club.data.Lock
+	return club.data.Bank, club.data.Fund, club.data.Depos
 }
 
 func (club *Club) AddCash(bank, fund, deposit float64) {
@@ -232,7 +232,7 @@ func (club *Club) AddCash(bank, fund, deposit float64) {
 	defer club.mux.Unlock()
 	club.data.Bank += bank
 	club.data.Fund += fund
-	club.data.Lock += deposit
+	club.data.Depos += deposit
 }
 
 func (club *Club) AddBank(bank float64) {
@@ -250,7 +250,7 @@ func (club *Club) AddFund(fund float64) {
 func (club *Club) AddDeposit(deposit float64) {
 	club.mux.Lock()
 	defer club.mux.Unlock()
-	club.data.Lock += deposit
+	club.data.Depos += deposit
 }
 
 func (club *Club) Rate() float64 {
