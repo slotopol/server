@@ -5,9 +5,10 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"xorm.io/xorm"
+
 	"github.com/slotopol/server/core"
 	"github.com/slotopol/server/util"
-	"xorm.io/xorm"
 )
 
 const (
@@ -255,7 +256,7 @@ func ApiUserDelete(c *gin.Context) {
 	}
 
 	// write gain and total bet as transaction
-	if err = core.SafeTransaction(core.XormStorage, func(session *xorm.Session) (err error) {
+	if err = util.SafeTransaction(core.XormStorage, func(session *xorm.Session) (err error) {
 		if _, err = session.ID(arg.UID).Delete(user); err != nil {
 			Ret500(c, AEC_user_delete_sqluser, err)
 			return

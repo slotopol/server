@@ -168,9 +168,10 @@ func ApiGameNew(c *gin.Context) {
 	// insert new story entry
 	if Cfg.ClubInsertBuffer > 1 {
 		core.XormWG.Go(func() (err error) {
-			return core.JoinBuf.Join(&scene.Story)
+			_, err = core.JoinBuf.Put(scene.Story)
+			return
 		})
-	} else if err = core.JoinBuf.Join(&scene.Story); err != nil {
+	} else if _, err = core.JoinBuf.Put(scene.Story); err != nil {
 		Ret500(c, AEC_game_new_sql, err)
 		return
 	}

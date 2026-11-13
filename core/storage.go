@@ -32,10 +32,10 @@ var (
 )
 
 var (
-	SpinBuf util.SqlBuf[Spinlog]
-	MultBuf util.SqlBuf[Multlog]
-	BankBat = map[uint64]*SqlBank{}
-	JoinBuf = SqlStory{}
+	BankBuf = map[uint64]*PackBank{}
+	JoinBuf util.PackLog[Story]
+	SpinBuf util.PackLog[Spinlog]
+	MultBuf util.PackLog[Multlog]
 )
 
 func InitStorage() (err error) {
@@ -120,9 +120,7 @@ func InitStorage() (err error) {
 		offset += limit
 		for _, cd := range chunk {
 			Clubs.Set(cd.CID, MakeClub(cd))
-			var bat = &SqlBank{}
-			bat.Init(XormStorage, cd.CID, Cfg.ClubUpdateBuffer, Cfg.ClubInsertBuffer)
-			BankBat[cd.CID] = bat
+			BankBuf[cd.CID] = (&PackBank{}).Init(XormStorage, cd.CID, Cfg.ClubUpdateBuffer, Cfg.ClubInsertBuffer)
 		}
 		if limit > len(chunk) {
 			break
@@ -244,19 +242,19 @@ func InitSpinlog() (err error) {
 
 func FlushAll(fd time.Duration) (err error) {
 	var errs []error
-	for cid, bat := range BankBat {
-		if err := bat.Flush(fd); err != nil {
+	for cid, bat := range BankBuf {
+		if err := bat.TryFlush(fd); err != nil {
 			errs = append(errs, fmt.Errorf("can not update bank for cid=%d: %w", cid, err))
 		}
 	}
-	if err := JoinBuf.Flush(fd); err != nil {
+	if err := JoinBuf.TryFlush(fd); err != nil {
 		errs = append(errs, fmt.Errorf("can not write to story log: %w", err))
 	}
 	if Cfg.UseSpinLog {
-		if err := SpinBuf.Flush(fd); err != nil {
+		if err := SpinBuf.TryFlush(fd); err != nil {
 			errs = append(errs, fmt.Errorf("can not write to spin log: %w", err))
 		}
-		if err := MultBuf.Flush(fd); err != nil {
+		if err := MultBuf.TryFlush(fd); err != nil {
 			errs = append(errs, fmt.Errorf("can not write to mult log: %w", err))
 		}
 	}

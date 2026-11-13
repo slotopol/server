@@ -155,9 +155,10 @@ func ApiPropsWalletAdd(c *gin.Context) {
 	// update wallet as transaction
 	if Cfg.ClubInsertBuffer > 1 {
 		core.XormWG.Go(func() (err error) {
-			return core.BankBat[arg.CID].Add(arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum)
+			_, err = core.BankBuf[arg.CID].AddCredit(arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum)
+			return
 		})
-	} else if err = core.BankBat[arg.CID].Add(arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum); err != nil {
+	} else if _, err = core.BankBuf[arg.CID].AddCredit(arg.UID, admin.UID, props.Wallet+arg.Sum, arg.Sum); err != nil {
 		Ret500(c, AEC_prop_walletadd_sql, err)
 		return
 	}
@@ -266,9 +267,10 @@ func ApiPropsAlSet(c *gin.Context) {
 	// update access level as transaction
 	if Cfg.ClubInsertBuffer > 1 {
 		core.XormWG.Go(func() (err error) {
-			return core.BankBat[arg.CID].Access(arg.UID, arg.Access)
+			_, err = core.BankBuf[arg.CID].SetAL(arg.UID, arg.Access)
+			return
 		})
-	} else if err = core.BankBat[arg.CID].Access(arg.UID, arg.Access); err != nil {
+	} else if _, err = core.BankBuf[arg.CID].SetAL(arg.UID, arg.Access); err != nil {
 		Ret500(c, AEC_prop_rtpset_sql, err)
 		return
 	}
@@ -373,9 +375,10 @@ func ApiPropsRtpSet(c *gin.Context) {
 	// update master RTP as transaction
 	if Cfg.ClubInsertBuffer > 1 {
 		core.XormWG.Go(func() (err error) {
-			return core.BankBat[arg.CID].MRTP(arg.UID, arg.MRTP)
+			_, err = core.BankBuf[arg.CID].SetRTP(arg.UID, arg.MRTP)
+			return
 		})
-	} else if err = core.BankBat[arg.CID].MRTP(arg.UID, arg.MRTP); err != nil {
+	} else if _, err = core.BankBuf[arg.CID].SetRTP(arg.UID, arg.MRTP); err != nil {
 		Ret500(c, AEC_prop_rtpset_sql, err)
 		return
 	}

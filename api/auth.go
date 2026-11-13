@@ -574,7 +574,7 @@ func ApiSignup(c *gin.Context) {
 		Code:   code,
 		Status: status,
 	}
-	if err = core.SafeTransaction(core.XormStorage, func(session *xorm.Session) (err error) {
+	if err = util.SafeTransaction(core.XormStorage, func(session *xorm.Session) (err error) {
 		if _, err = session.Insert(user); err != nil {
 			return
 		}

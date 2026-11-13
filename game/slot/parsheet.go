@@ -261,11 +261,11 @@ func Parsheet_dualreelrecur(w io.Writer, sp *ScanPar, sr Simulator, sb Simulator
 	const m = 1
 	// regular reels parameters
 	var EVr, Dr = sr.EvD(cost)
-	var HRfgr, EKr, EK2r = sr.Efs()
+	var HRfg, EKr, EK2r = sr.Efs()
 	var VarKr = EK2r - EKr*EKr
 	// bonus reels parameters
 	var EVb, Db = sb.EvD(cost)
-	var HRfgb, EKb, EK2b = sb.Efs()
+	var _, EKb, EK2b = sb.Efs()
 	var VarKb = EK2b - EKb*EKb
 	// aggregate parameters
 	var a = 1 / (1 - EKb)
@@ -273,17 +273,9 @@ func Parsheet_dualreelrecur(w io.Writer, sp *ScanPar, sr Simulator, sb Simulator
 	var VarNfg = VarKr*a*a + VarKb*EKr*a*a*a
 	var EV = EVr + q*m*EVb
 	var D = Dr + m*m*(EVb*EVb*VarNfg+q*Db)
-	if sp.IsFG() {
-		fmt.Fprintf(w, "*bonus reels*\n")
-		fmt.Fprintf(w, "µ = %.8g%%, sigma(base) = %.6g\n", EVb*100, math.Sqrt(Db))
-		if EKb > 0 {
-			fmt.Fprintf(w, "free: HRfg = 1/%.5g, E[K] = %.5g\n", 1/HRfgb, EKb)
-		}
-	}
 	if sp.IsMain() {
-		fmt.Fprintf(w, "*regular reels*\n")
 		fmt.Fprintf(w, "µ = %.8g%%, sigma(base) = %.6g\n", EVr*100, math.Sqrt(Dr))
-		fmt.Fprintf(w, "free: HRfg = 1/%.5g, E[K] = %.5g, q = %.5g\n", 1/HRfgr, EKr, q)
+		fmt.Fprintf(w, "free: HRfg = 1/%.5g, E[K] = %.5g, q = %.5g\n", 1/HRfg, EKr, q)
 		fmt.Fprintf(w, "RTP = %.5g(r) + %.5g*%.5g(b) = %.8g%%\n", EVr*100, q, EVb*100, EV*100)
 	}
 	Print_all(w, sp, sr, EV, D)
