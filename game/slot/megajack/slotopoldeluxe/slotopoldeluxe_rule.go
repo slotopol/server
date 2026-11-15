@@ -79,7 +79,7 @@ func NewGame(sel int) *Game {
 			Bet: 1,
 		},
 	}
-	g.SpinReels(g.GetReels(slot.InitRTP))
+	g.SpinReels(slot.WySRNG, g.GetReels(slot.InitRTP))
 	return g
 }
 
@@ -189,23 +189,23 @@ func (g *Game) GetReels(mrtp float64) slot.Reelx {
 	return reels
 }
 
-func (g *Game) Spin(mrtp float64) {
-	g.SpinReels(g.GetReels(mrtp))
+func (g *Game) Spin(rng *slot.Rand, mrtp float64) {
+	g.SpinReels(rng, g.GetReels(mrtp))
 }
 
-func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {
+func (g *Game) Spawn(rng *slot.Rand, wins slot.Wins, fund, mrtp float64) {
 	for i, wi := range wins {
 		switch wi.BID {
 		case mje1:
-			wins[i].Bon, wins[i].Pay = slotopol.EldoradoSpawn(g.Bet, 1)
+			wins[i].Bon, wins[i].Pay = slotopol.EldoradoSpawn(rng, g.Bet, 1)
 		case mje3:
-			wins[i].Bon, wins[i].Pay = slotopol.EldoradoSpawn(g.Bet, 3)
+			wins[i].Bon, wins[i].Pay = slotopol.EldoradoSpawn(rng, g.Bet, 3)
 		case mje6:
-			wins[i].Bon, wins[i].Pay = slotopol.EldoradoSpawn(g.Bet, 6)
+			wins[i].Bon, wins[i].Pay = slotopol.EldoradoSpawn(rng, g.Bet, 6)
 		case mje9:
-			wins[i].Bon, wins[i].Pay = slotopol.EldoradoSpawn(g.Bet, 9)
+			wins[i].Bon, wins[i].Pay = slotopol.EldoradoSpawn(rng, g.Bet, 9)
 		case mjm:
-			wins[i].Bon, wins[i].Pay = slotopol.MonopolySpawn(g.Bet)
+			wins[i].Bon, wins[i].Pay = slotopol.MonopolySpawn(rng, g.Bet)
 		}
 		if wi.JID != 0 {
 			var bulk, _ = JackMap.FindClosest(mrtp)

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"math"
+	"math/rand/v2"
 	"sort"
 
 	cfg "github.com/slotopol/server/config"
@@ -19,9 +20,9 @@ const (
 )
 
 type Gamble interface {
-	Spin(float64)         // fill the grid with random hits on reels closest to given RTP, constant function
-	GetBet() float64      // returns current bet, constant function
-	SetBet(float64) error // set bet to given value
+	Spin(*rand.Rand, float64) // fill the grid with random hits on reels closest to given RTP, constant function
+	GetBet() float64          // returns current bet, constant function
+	SetBet(float64) error     // set bet to given value
 }
 
 type GT uint // Game type

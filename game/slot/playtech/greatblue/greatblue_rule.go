@@ -4,8 +4,6 @@ package greatblue
 // See: https://www.slotsmate.com/software/playtech/great-blue
 
 import (
-	"math/rand/v2"
-
 	"github.com/slotopol/server/game/slot"
 )
 
@@ -87,7 +85,7 @@ func NewGame(sel int) *Game {
 		},
 		M: 0,
 	}
-	g.SpinReels(g.GetReels(slot.InitRTP))
+	g.SpinReels(slot.WySRNG, g.GetReels(slot.InitRTP))
 	return g
 }
 
@@ -187,18 +185,18 @@ func (g *Game) GetReels(mrtp float64) slot.Reelx {
 	return reels
 }
 
-func (g *Game) Spin(mrtp float64) {
-	g.SpinReels(g.GetReels(mrtp))
+func (g *Game) Spin(rng *slot.Rand, mrtp float64) {
+	g.SpinReels(rng, g.GetReels(mrtp))
 }
 
-func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {
+func (g *Game) Spawn(rng *slot.Rand, wins slot.Wins, fund, mrtp float64) {
 	if g.FSR > 0 {
 		return
 	}
 	for i := range wins {
 		if wi := &wins[i]; wi.Sym == scat {
 			var idx = []int{shell_x5, shell_x8, shell_fs7, shell_fs10, shell_fs15}
-			rand.Shuffle(len(idx), func(i, j int) {
+			rng.Shuffle(len(idx), func(i, j int) {
 				idx[i], idx[j] = idx[j], idx[i]
 			})
 			var bon = Seashells{

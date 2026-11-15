@@ -79,7 +79,7 @@ func NewGame(sel int) *Game {
 			Bet: 1,
 		},
 	}
-	g.SpinReels(g.GetReels(slot.InitRTP))
+	g.SpinReels(slot.WySRNG, g.GetReels(slot.InitRTP))
 	return g
 }
 
@@ -163,7 +163,7 @@ func (g *Game) GetReels(mrtp float64) slot.Reelx {
 	return reels
 }
 
-func (g *Game) SpinBon() {
+func (g *Game) SpinBon(rng *slot.Rand) {
 	var num = ReelNumBon[g.ES]
 	var x slot.Pos
 	for x = 1; x <= num; x++ {
@@ -176,16 +176,16 @@ func (g *Game) SpinBon() {
 	}
 	for x = num + 1; x <= 5; x++ {
 		var reel = ReelsBon.Reel(x)
-		var hit = rand.N(len(reel))
+		var hit = rng.N(len(reel))
 		g.SetCol(x, reel, hit)
 	}
 }
 
-func (g *Game) Spin(mrtp float64) {
+func (g *Game) Spin(rng *slot.Rand, mrtp float64) {
 	if g.FSR == 0 {
-		g.SpinReels(g.GetReels(mrtp))
+		g.SpinReels(rng, g.GetReels(mrtp))
 	} else {
-		g.SpinBon()
+		g.SpinBon(rng)
 	}
 }
 

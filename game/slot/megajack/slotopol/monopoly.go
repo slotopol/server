@@ -1,6 +1,6 @@
 package slotopol
 
-import "math/rand/v2"
+import "github.com/slotopol/server/game/slot"
 
 type MonCell struct {
 	Mult float64 `json:"mult" yaml:"mult" xml:"mult,attr"` // bet multiplier
@@ -39,13 +39,13 @@ type WinMonCell struct {
 	Pay     float64 `json:"pay" yaml:"pay" xml:"pay,attr"` // pay by this cell
 }
 
-func MonopolySpawn(bet float64) (any, float64) {
+func MonopolySpawn(rng *slot.Rand, bet float64) (any, float64) {
 	var res [7]WinMonCell
 	var cash float64
 
 	var pos = 0
 	for i := range res {
-		var dice = rand.N(6) + 1
+		var dice = rng.N(6) + 1
 		pos = (pos + dice) % len(Monopoly)
 		var mult float64
 		if Monopoly[pos].Jump > 0 {

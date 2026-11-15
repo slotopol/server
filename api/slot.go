@@ -13,6 +13,35 @@ import (
 	"github.com/slotopol/server/util"
 )
 
+// CascadeGain calculates total gain on avalanche chain for cascading slots.
+func CascadeGain(rng *slot.Rand, game slot.SlotGeneric, wins slot.Wins, fund, mrtp float64) (sumgain float64, err error) {
+	if len(wins) == 0 {
+		return
+	}
+	if _, ok := game.(slot.SlotCascade); !ok {
+		return
+	}
+	var cas = game.Clone().(slot.SlotCascade)
+	cas.Strike(wins)
+	var cw slot.Wins
+	for range slot.FallLimit {
+		cas.UntoFall()
+		cas.SpinReels(slot.WySRNG, cas.GetReels(mrtp))
+		if err = cas.Scanner(&cw); err != nil {
+			return
+		}
+		if len(cw) == 0 {
+			return
+		}
+		game.Spawn(rng, cw, fund, mrtp)
+		sumgain += cw.Gain()
+		cas.Strike(cw)
+		cw.Reset()
+	}
+	err = slot.ErrAvalanche
+	return
+}
+
 // Returns bet value.
 func ApiSlotBetGet(c *gin.Context) {
 	var err error
@@ -312,14 +341,14 @@ func ApiSlotSpin(c *gin.Context) {
 			Ret500(c, AEC_slot_spin_badbank, ErrBadBank)
 			return
 		}
-		game.Spin(mrtp - jprate)
+		game.Spin(slot.WySRNG, mrtp-jprate)
 		if game.Scanner(&wins) != nil {
 			continue
 		}
-		if _, err = slot.CascadeGain(game, wins, fund, mrtp-jprate); err != nil {
+		if _, err = CascadeGain(slot.WySRNG, game, wins, fund, mrtp-jprate); err != nil {
 			continue
 		}
-		game.Spawn(wins, fund, mrtp-jprate)
+		game.Spawn(slot.WySRNG, wins, fund, mrtp-jprate)
 		gain = wins.Gain()
 		jack = wins.Jackpot()
 		debit = cost*(1-jprate/100) - gain

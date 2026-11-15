@@ -1,8 +1,6 @@
 package champagne
 
-import (
-	"math/rand/v2"
-)
+import "github.com/slotopol/server/game/slot"
 
 // len = 5, count = 10, avr bottle gain = 68, M = 168
 var Bottles = [...]float64{
@@ -14,12 +12,12 @@ type WinBottle struct {
 	Pay  float64 `json:"pay" yaml:"pay" xml:"pay,attr"`    // pay by this cell
 }
 
-func ChampagneSpawn(bet float64) (any, float64) {
+func ChampagneSpawn(rng *slot.Rand, bet float64) (any, float64) {
 	var res [5]WinBottle
 	var cash float64
 
 	var p = Bottles
-	rand.Shuffle(len(p), func(i, j int) {
+	rng.Shuffle(len(p), func(i, j int) {
 		p[i], p[j] = p[j], p[i]
 	})
 	for i := range res {

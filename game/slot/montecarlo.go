@@ -96,7 +96,7 @@ func MonteCarlo(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric) {
 					}
 					total = max(tc, tp)
 				}
-				gt.SpinReels(reels)
+				gt.SpinReels(WySRNG, reels)
 				s.Simulate(gt, &wins, sp.MRTP)
 				wins.Reset()
 			}

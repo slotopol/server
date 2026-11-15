@@ -55,22 +55,22 @@ func (wins Wins) Jackpot() float64 {
 
 // SlotGame is common slots interface. Any slot game should implement this interface.
 type SlotGame interface {
-	Scanner(*Wins) error          // scan given grid and append result to wins, constant function
-	Cost() float64                // cost of spin on current bet and lines, constant function
-	JackFreq(float64) []float64   // returns occurrence frequency set of progressive jackpots if it has, constant function
-	FreeMode() bool               // returns true on spins without pay, constant function
-	GetReels(float64) Reelx       // returns reels for current game state, constant function
-	Spin(float64)                 // fill the grid with random hits on reels closest to given RTP, constant function
-	Spawn(Wins, float64, float64) // setup bonus games to wins results, constant function
-	Prepare()                     // update game state before new spin, grid is unknown yet
-	Apply(Wins)                   // update game state to spin results, grid is calculated
-	GetGain() float64             // returns gain for double up games, constant function
-	SetGain(float64) error        // set gain to given value on double up games
-	GetBet() float64              // returns current bet per line, constant function
-	SetBet(float64) error         // set bet per line to given value
-	GetSel() int                  // returns number of selected bet lines, constant function
-	SetSel(int) error             // setup number of selected bet lines
-	SetMode(int) error            // change game mode depending on the user's choice
+	Scanner(*Wins) error                 // scan given grid and append result to wins, constant function
+	Cost() float64                       // cost of spin on current bet and lines, constant function
+	JackFreq(float64) []float64          // returns occurrence frequency set of progressive jackpots if it has, constant function
+	FreeMode() bool                      // returns true on spins without pay, constant function
+	GetReels(float64) Reelx              // returns reels for current game state, constant function
+	Spin(*Rand, float64)                 // fill the grid with random hits on reels closest to given RTP, constant function
+	Spawn(*Rand, Wins, float64, float64) // setup bonus games to wins results, constant function
+	Prepare()                            // update game state before new spin, grid is unknown yet
+	Apply(Wins)                          // update game state to spin results, grid is calculated
+	GetGain() float64                    // returns gain for double up games, constant function
+	SetGain(float64) error               // set gain to given value on double up games
+	GetBet() float64                     // returns current bet per line, constant function
+	SetBet(float64) error                // set bet per line to given value
+	GetSel() int                         // returns number of selected bet lines, constant function
+	SetSel(int) error                    // setup number of selected bet lines
+	SetMode(int) error                   // change game mode depending on the user's choice
 }
 
 // Remark: "Scanner" method should return error only if generated grid does not appear
@@ -117,7 +117,7 @@ func (g *Slotx) FreeMode() bool {
 	return g.FSR != 0
 }
 
-func (g *Slotx) Spawn(wins Wins, fund, mrtp float64) {
+func (g *Slotx) Spawn(rng *Rand, wins Wins, fund, mrtp float64) {
 }
 
 func (g *Slotx) Prepare() {

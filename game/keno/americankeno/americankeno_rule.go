@@ -43,7 +43,7 @@ func NewGame() *Game {
 			Bet: 1,
 		},
 	}
-	g.Spin(keno.InitRTP)
+	g.Spin(keno.WySRNG, keno.InitRTP)
 	return g
 }
 

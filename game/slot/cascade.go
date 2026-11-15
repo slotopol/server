@@ -1,7 +1,5 @@
 package slot
 
-import "math/rand/v2"
-
 type Cascade interface {
 	UntoFall()            // set fall number before scanner call
 	PushFall(reels Reelx) // fill grid on fall in avalanche chain
@@ -38,17 +36,17 @@ func (s *Cascade5x3) SetCol(x Pos, reel []Sym, pos int) {
 	s.Seed[x-1] = pos
 }
 
-func (s *Cascade5x3) SpinReels(reels Reelx) {
+func (s *Cascade5x3) SpinReels(rng *Rand, reels Reelx) {
 	if s.CFN > 0 {
 		s.PushFall(reels)
 	} else {
-		s.BaseRoll(reels)
+		s.BaseRoll(rng, reels)
 	}
 }
 
-func (s *Cascade5x3) BaseRoll(reels Reelx) {
+func (s *Cascade5x3) BaseRoll(rng *Rand, reels Reelx) {
 	for x, reel := range reels {
-		var pos = rand.N(len(reel))
+		var pos = rng.N(len(reel))
 		s.SetCol(Pos(x+1), reel, pos)
 	}
 }
@@ -124,17 +122,17 @@ func (s *Cascade5x4) SetCol(x Pos, reel []Sym, pos int) {
 	s.Seed[x-1] = pos
 }
 
-func (s *Cascade5x4) SpinReels(reels Reelx) {
+func (s *Cascade5x4) SpinReels(rng *Rand, reels Reelx) {
 	if s.CFN > 0 {
 		s.PushFall(reels)
 	} else {
-		s.BaseRoll(reels)
+		s.BaseRoll(rng, reels)
 	}
 }
 
-func (s *Cascade5x4) BaseRoll(reels Reelx) {
+func (s *Cascade5x4) BaseRoll(rng *Rand, reels Reelx) {
 	for x, reel := range reels {
-		var pos = rand.N(len(reel))
+		var pos = rng.N(len(reel))
 		s.SetCol(Pos(x+1), reel, pos)
 	}
 }
@@ -187,33 +185,4 @@ func (s *Cascade5x4) Strike(wins Wins) {
 			s.Hits[wi.XY[i][0]-1][wi.XY[i][1]-1]++
 		}
 	}
-}
-
-// CascadeGain calculates total gain on avalanche chain for cascading slots.
-func CascadeGain(game SlotGeneric, wins Wins, fund, mrtp float64) (sumgain float64, err error) {
-	if len(wins) == 0 {
-		return
-	}
-	if _, ok := game.(SlotCascade); !ok {
-		return
-	}
-	var cas = game.Clone().(SlotCascade)
-	cas.Strike(wins)
-	var cw Wins
-	for range FallLimit {
-		cas.UntoFall()
-		cas.SpinReels(cas.GetReels(mrtp))
-		if err = cas.Scanner(&cw); err != nil {
-			return
-		}
-		if len(cw) == 0 {
-			return
-		}
-		game.Spawn(cw, fund, mrtp)
-		sumgain += cw.Gain()
-		cas.Strike(cw)
-		cw.Reset()
-	}
-	err = ErrAvalanche
-	return
 }

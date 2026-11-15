@@ -3,7 +3,13 @@ package slot
 import (
 	"encoding/json"
 	"math/rand/v2"
+
+	"github.com/slotopol/server/game"
 )
+
+type Rand = rand.Rand // alias to math/rand/v2.Rand
+
+var WySRNG = rand.New(game.NewRandomWyRandSafeSource())
 
 // Grid contains symbols rectangle of the slot game.
 // It can be with dimensions 3x1, 3x3, 4x4, 5x3, 5x4 or others.
@@ -14,7 +20,7 @@ type Grider interface {
 	LX(x Pos, line Linex) Sym          // returns symbol at position (x, line(x)), starts from (1, 1)
 	SetSym(x, y Pos, sym Sym)          // setup symbol at given position
 	SetCol(x Pos, reel []Sym, pos int) // setup column on grid with given reel at given position
-	SpinReels(reels Reelx)             // fill the grid with random hits on those reels
+	SpinReels(rng *Rand, reels Reelx)  // fill the grid with random hits on those reels
 	SymNum(sym Sym) (n Pos)            // returns number of symbols on the grid
 	SymPos(sym Sym) Hitx               // returns symbols positions on the grid
 }
@@ -69,9 +75,9 @@ func (s *Gridx) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Gridx) SpinReels(reels Reelx) {
+func (s *Gridx) SpinReels(rng *Rand, reels Reelx) {
 	for x, reel := range reels {
-		var hit = rand.N(len(reel))
+		var hit = rng.N(len(reel))
 		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
@@ -187,9 +193,9 @@ func (s *Grid3x3) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Grid3x3) SpinReels(reels Reelx) {
+func (s *Grid3x3) SpinReels(rng *Rand, reels Reelx) {
 	for x, reel := range reels {
-		var hit = rand.N(len(reel))
+		var hit = rng.N(len(reel))
 		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
@@ -251,9 +257,9 @@ func (s *Grid4x4) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Grid4x4) SpinReels(reels Reelx) {
+func (s *Grid4x4) SpinReels(rng *Rand, reels Reelx) {
 	for x, reel := range reels {
-		var hit = rand.N(len(reel))
+		var hit = rng.N(len(reel))
 		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
@@ -326,23 +332,23 @@ func (s *Grid5x3) SetBig(big Sym) {
 	}
 }
 
-func (s *Grid5x3) SpinReels(reels Reelx) {
+func (s *Grid5x3) SpinReels(rng *Rand, reels Reelx) {
 	for x, reel := range reels {
-		var hit = rand.N(len(reel))
+		var hit = rng.N(len(reel))
 		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
 
-func (s *Grid5x3) SpinBig(r1, rb, r5 []Sym) {
+func (s *Grid5x3) SpinBig(rng *Rand, r1, rb, r5 []Sym) {
 	var hit int
 	// set 1 reel
-	hit = rand.N(len(r1))
+	hit = rng.N(len(r1))
 	s.SetCol(1, r1, hit)
 	// set center
-	var big = rb[rand.N(len(rb))]
+	var big = rb[rng.N(len(rb))]
 	s.SetBig(big)
 	// set 5 reel
-	hit = rand.N(len(r5))
+	hit = rng.N(len(r5))
 	s.SetCol(5, r5, hit)
 }
 
@@ -461,9 +467,9 @@ func (s *Grid5x4) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Grid5x4) SpinReels(reels Reelx) {
+func (s *Grid5x4) SpinReels(rng *Rand, reels Reelx) {
 	for x, reel := range reels {
-		var hit = rand.N(len(reel))
+		var hit = rng.N(len(reel))
 		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
@@ -580,9 +586,9 @@ func (s *Grid6x3) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Grid6x3) SpinReels(reels Reelx) {
+func (s *Grid6x3) SpinReels(rng *Rand, reels Reelx) {
 	for x, reel := range reels {
-		var hit = rand.N(len(reel))
+		var hit = rng.N(len(reel))
 		s.SetCol(Pos(x+1), reel, hit)
 	}
 }
@@ -644,9 +650,9 @@ func (s *Grid6x4) SetCol(x Pos, reel []Sym, pos int) {
 	}
 }
 
-func (s *Grid6x4) SpinReels(reels Reelx) {
+func (s *Grid6x4) SpinReels(rng *Rand, reels Reelx) {
 	for x, reel := range reels {
-		var hit = rand.N(len(reel))
+		var hit = rng.N(len(reel))
 		s.SetCol(Pos(x+1), reel, hit)
 	}
 }

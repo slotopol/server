@@ -1,8 +1,6 @@
 package cashfarm
 
-import (
-	"math/rand/v2"
-)
+import "github.com/slotopol/server/game/slot"
 
 type CT int
 
@@ -52,31 +50,31 @@ var bonreel1 = []Cell{2, 2, 3, 4, 5, 6, 8, 10, 14}
 var bonreel4 = []Cell{14, 14, 20, 24}
 var bonreel5 = []Cell{20, 24, 40, 50}
 
-func br1() Cell {
-	return bonreel1[rand.N(Cell(len(bonreel1)))]
+func br1(rng *slot.Rand) Cell {
+	return bonreel1[rng.N(Cell(len(bonreel1)))]
 }
 
-func br4() Cell {
-	return bonreel4[rand.N(Cell(len(bonreel4)))]
+func br4(rng *slot.Rand) Cell {
+	return bonreel4[rng.N(Cell(len(bonreel4)))]
 }
 
-func br5() Cell {
-	return bonreel5[rand.N(Cell(len(bonreel5)))]
+func br5(rng *slot.Rand) Cell {
+	return bonreel5[rng.N(Cell(len(bonreel5)))]
 }
 
-func NewBonus() (bon *Bonus) {
+func NewBonus(rng *slot.Rand) (bon *Bonus) {
 	return &Bonus{
-		[]Cell{br1(), br1(), br1(), -br1(), -br1(), -br1()},
-		[]Cell{br1(), br1(), -br1(), -1, 0},
-		[]Cell{br1(), -br1(), -1, 0},
-		[]Cell{br4(), -1, 0},
-		[]Cell{br5(), 0},
+		[]Cell{br1(rng), br1(rng), br1(rng), -br1(rng), -br1(rng), -br1(rng)},
+		[]Cell{br1(rng), br1(rng), -br1(rng), -1, 0},
+		[]Cell{br1(rng), -br1(rng), -1, 0},
+		[]Cell{br4(rng), -1, 0},
+		[]Cell{br5(rng), 0},
 	}
 }
 
-func (b *Bonus) Shuffle() {
+func (b *Bonus) Shuffle(rng *slot.Rand) {
 	for lev := range b {
-		rand.Shuffle(len(b[lev]), func(i int, j int) {
+		rng.Shuffle(len(b[lev]), func(i int, j int) {
 			b[lev][i], b[lev][j] = b[lev][j], b[lev][i]
 		})
 	}
@@ -103,9 +101,9 @@ func (b *Bonus) Calc() (p, m float64) {
 	return
 }
 
-func FarmSpawn(bet float64) (any, float64, float64) {
-	var res = NewBonus()
-	res.Shuffle()
+func FarmSpawn(rng *slot.Rand, bet float64) (any, float64, float64) {
+	var res = NewBonus(rng)
+	res.Shuffle(rng)
 	var p, m = res.Calc()
 	return res, bet * p, m
 }

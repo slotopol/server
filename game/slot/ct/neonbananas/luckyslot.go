@@ -1,8 +1,6 @@
 package neonbananas
 
-import (
-	"math/rand/v2"
-)
+import "github.com/slotopol/server/game/slot"
 
 // Win multipliers for Lucky Slot
 // (this reel helps to increase frequency of Lucky Slot bonuses)
@@ -13,11 +11,11 @@ var LuckySlotMult = [...]float64{
 // Expected value of LuckySlotMult
 const Els = 125
 
-func LuckySlotSpawn(bet float64, spins int) (any, float64) {
+func LuckySlotSpawn(rng *slot.Rand, bet float64, spins int) (any, float64) {
 	var cash float64
 	var res = make([]float64, spins)
 	for i := range res {
-		res[i] = LuckySlotMult[rand.N(len(LuckySlotMult))]
+		res[i] = LuckySlotMult[rng.N(len(LuckySlotMult))]
 		cash += res[i]
 	}
 	return res, bet * cash

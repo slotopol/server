@@ -346,7 +346,7 @@ func ApiKenoSpin(c *gin.Context) {
 			Ret500(c, AEC_keno_spin_badbank, ErrBadBank)
 			return
 		}
-		game.Spin(mrtp)
+		game.Spin(keno.WySRNG, mrtp)
 		if game.Scanner(&wins) != nil {
 			continue
 		}

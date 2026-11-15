@@ -3,6 +3,7 @@ package dolphinspearl_test
 import (
 	"bytes"
 	_ "embed"
+	"math/rand/v2"
 	"testing"
 
 	"github.com/slotopol/server/game"
@@ -17,12 +18,13 @@ var data []byte
 
 func BenchmarkSpin(b *testing.B) {
 	game.MustReadChain(bytes.NewReader(data))
+	var rng = rand.New(game.NewWyRandSource(0))
 	var g = dolphinspearl.NewGame(10)
 	var wins = make(slot.Wins, 0, 10)
 
 	b.ResetTimer()
 	for b.Loop() {
-		g.SpinReels(g.GetReels(92))
+		g.SpinReels(rng, g.GetReels(92))
 		g.Scanner(&wins)
 		wins.Reset()
 	}

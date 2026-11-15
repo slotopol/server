@@ -45,7 +45,7 @@ func NewGame(sel int) *Game {
 			Bet: 1,
 		},
 	}
-	g.SpinReels(g.GetReels(slot.InitRTP))
+	g.SpinReels(slot.WySRNG, g.GetReels(slot.InitRTP))
 	return g
 }
 
@@ -125,8 +125,8 @@ func (g *Game) GetReels(mrtp float64) slot.Reelx {
 	return Reels
 }
 
-func (g *Game) Spin(mrtp float64) {
-	g.SpinReels(Reels)
+func (g *Game) Spin(rng *slot.Rand, mrtp float64) {
+	g.SpinReels(rng, Reels)
 	var _, wc = ChanceMap.FindClosest(mrtp) // wild chance
 	if rand.Float64() < wc {
 		var x, y = rand.N[slot.Pos](5) + 1, rand.N[slot.Pos](3) + 1

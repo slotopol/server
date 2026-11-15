@@ -2,7 +2,8 @@ package aztecgold
 
 import (
 	"math"
-	"math/rand/v2"
+
+	"github.com/slotopol/server/game/slot"
 )
 
 // aztec pyramids multipliers
@@ -211,12 +212,12 @@ var Room = [5][]Cell{
 	},
 }
 
-func AztecPyramidSpawn(bet float64) (any, float64) {
+func AztecPyramidSpawn(rng *slot.Rand, bet float64) (any, float64) {
 	var res Bonus
 	var cash float64
 	var enter bool
 	for i := range att {
-		var pyr = getpyramid(rand.Float64())
+		var pyr = getpyramid(rng.Float64())
 		cash = apm[pyr-1]
 		res.Strike[i].Type = pyr
 		res.Strike[i].Mult = cash
@@ -230,7 +231,7 @@ func AztecPyramidSpawn(bet float64) (any, float64) {
 	}
 
 	for ri := range 5 {
-		var perm = rand.Perm(len(Room[ri]))
+		var perm = rng.Perm(len(Room[ri]))
 		var row = &res.Room[ri]
 		row.Sel = Room[ri][perm[0]]
 		if ri != 3 {
@@ -251,7 +252,7 @@ func AztecPyramidSpawn(bet float64) (any, float64) {
 			}
 			row.Next[2] = Room[ri][perm[4]]
 			row.Next[3] = Room[ri][perm[5]]
-			rand.Shuffle(4, func(i int, j int) {
+			rng.Shuffle(4, func(i int, j int) {
 				row.Next[i], row.Next[j] = row.Next[j], row.Next[i]
 			})
 		}

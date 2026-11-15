@@ -59,7 +59,7 @@ func NewGame(sel int) *Game {
 			Bet: 1,
 		},
 	}
-	g.SpinReels(g.GetReels(slot.InitRTP))
+	g.SpinReels(slot.WySRNG, g.GetReels(slot.InitRTP))
 	return g
 }
 
@@ -151,15 +151,15 @@ func (g *Game) GetReels(mrtp float64) slot.Reelx {
 	return reels
 }
 
-func (g *Game) Spin(mrtp float64) {
-	g.SpinReels(g.GetReels(mrtp))
+func (g *Game) Spin(rng *slot.Rand, mrtp float64) {
+	g.SpinReels(rng, g.GetReels(mrtp))
 }
 
-func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {
+func (g *Game) Spawn(rng *slot.Rand, wins slot.Wins, fund, mrtp float64) {
 	for i, wi := range wins {
 		switch wi.BID {
 		case mjap:
-			wins[i].Bon, wins[i].Pay = AztecPyramidSpawn(g.Bet * float64(g.Sel))
+			wins[i].Bon, wins[i].Pay = AztecPyramidSpawn(rng, g.Bet*float64(g.Sel))
 		}
 		if wi.JID != 0 {
 			var bulk, _ = JackMap.FindClosest(mrtp)

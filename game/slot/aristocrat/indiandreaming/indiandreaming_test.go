@@ -3,6 +3,7 @@ package indiandreaming_test
 import (
 	"bytes"
 	_ "embed"
+	"math/rand/v2"
 	"testing"
 
 	"github.com/slotopol/server/game"
@@ -165,12 +166,13 @@ var data []byte
 
 func BenchmarkSpin(b *testing.B) {
 	game.MustReadChain(bytes.NewReader(data))
+	var rng = rand.New(game.NewWyRandSource(0))
 	var g = indiandreaming.NewGame()
 	var wins = make(slot.Wins, 0, 10)
 
 	b.ResetTimer()
 	for b.Loop() {
-		g.SpinReels(g.GetReels(95))
+		g.SpinReels(rng, g.GetReels(95))
 		g.Scanner(&wins)
 		wins.Reset()
 	}

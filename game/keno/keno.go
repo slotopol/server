@@ -121,10 +121,12 @@ type Wins struct {
 	Pay float64 `json:"pay" yaml:"pay" xml:"pay,attr"`
 }
 
+type Rand = rand.Rand // alias to math/rand/v2.Rand
+
 // KenoGame is common keno interface. Any keno game should implement this interface.
 type KenoGame interface {
 	Scanner(*Wins) error  // scan given grid and append result to wins, constant function
-	Spin(float64)         // fill the grid with random hits on reels closest to given RTP, constant function
+	Spin(*Rand, float64)  // fill the grid with random hits on reels closest to given RTP, constant function
 	GetBet() float64      // returns current bet, constant function
 	SetBet(float64) error // set bet to given value
 	GetSel() Bitset       // returns current selected numbers, constant function
@@ -138,18 +140,20 @@ var (
 	ErrKenoOutRange  = errors.New("some of given number is out of range 1..80")
 )
 
+var WySRNG = rand.New(game.NewRandomWyRandSafeSource())
+
 type Keno80 struct {
 	Grid Grid    `json:"grid" yaml:"grid" xml:"grid"` // game grid
 	Bet  float64 `json:"bet" yaml:"bet" xml:"bet"`    // bet value
 	Sel  Bitset  `json:"sel" yaml:"sel" xml:"sel"`    // selected numbers
 }
 
-func (g *Keno80) Spin(_ float64) {
+func (g *Keno80) Spin(rng *Rand, _ float64) {
 	var hits [80]int
 	for i := range 80 {
 		hits[i] = i + 1
 	}
-	rand.Shuffle(80, func(i, j int) {
+	rng.Shuffle(80, func(i, j int) {
 		hits[i], hits[j] = hits[j], hits[i]
 	})
 

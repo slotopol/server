@@ -1,6 +1,6 @@
 package slotopol
 
-import "math/rand/v2"
+import "github.com/slotopol/server/game/slot"
 
 // Average gain = 106
 var Eldorado = []float64{
@@ -32,11 +32,11 @@ type WinElSeg struct {
 	Mult float64 `json:"mult" yaml:"mult" xml:"mult,attr"` // bet multiplier
 }
 
-func EldoradoSpawn(bet float64, spins int) (any, float64) {
+func EldoradoSpawn(rng *slot.Rand, bet float64, spins int) (any, float64) {
 	var res = make([]WinElSeg, spins)
 	var pay float64
 	for i := range res {
-		var n = rand.N(len(Eldorado))
+		var n = rng.N(len(Eldorado))
 		res[i].Pos = n + 1
 		res[i].Pay = bet * Eldorado[n]
 		res[i].Mult = Eldorado[n]

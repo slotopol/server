@@ -53,7 +53,7 @@ func NewGame(sel int) *Game {
 			Bet: 1,
 		},
 	}
-	g.SpinReels(g.GetReels(slot.InitRTP))
+	g.SpinReels(slot.WySRNG, g.GetReels(slot.InitRTP))
 	return g
 }
 
@@ -168,15 +168,15 @@ func (g *Game) GetReels(mrtp float64) slot.Reelx {
 	}
 }
 
-func (g *Game) Spin(mrtp float64) {
-	g.SpinReels(g.GetReels(mrtp))
+func (g *Game) Spin(rng *slot.Rand, mrtp float64) {
+	g.SpinReels(rng, g.GetReels(mrtp))
 }
 
-func (g *Game) Spawn(wins slot.Wins, fund, mrtp float64) {
+func (g *Game) Spawn(rng *slot.Rand, wins slot.Wins, fund, mrtp float64) {
 	for i, wi := range wins {
 		switch wi.BID {
 		case ne12:
-			wins[i].Bon, wins[i].Pay = BonusSpawn(g.Bet)
+			wins[i].Bon, wins[i].Pay = BonusSpawn(rng, g.Bet)
 		}
 	}
 }

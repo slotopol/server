@@ -54,7 +54,7 @@ func NewGame(sel int) *Game {
 			Bet: 1,
 		},
 	}
-	g.SpinReels(g.GetReels(slot.InitRTP))
+	g.SpinReels(slot.WySRNG, g.GetReels(slot.InitRTP))
 	return g
 }
 
@@ -153,8 +153,8 @@ func (g *Game) GetReels(mrtp float64) slot.Reelx {
 	}
 }
 
-func (g *Game) Spin(mrtp float64) {
-	g.SpinReels(g.GetReels(mrtp))
+func (g *Game) Spin(rng *slot.Rand, mrtp float64) {
+	g.SpinReels(rng, g.GetReels(mrtp))
 }
 
 func (g *Game) Apply(wins slot.Wins) {
