@@ -2,6 +2,7 @@ package api
 
 import (
 	"errors"
+	"net/http"
 	"os"
 	"runtime"
 	"strings"
@@ -45,7 +46,9 @@ var srvinfo gin.H // lazy init
 
 // Check service response.
 func ApiPing(c *gin.Context) {
-	RetOk(c, nil)
+	c.Writer.Header().Add("Server", serverhdr)
+	c.String(http.StatusOK, "pong")
+	c.Abort()
 }
 
 // Static service system information.
