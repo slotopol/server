@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 	"math"
-	"math/rand/v2"
 	"sort"
 
 	cfg "github.com/slotopol/server/config"
+	"github.com/slotopol/server/prng"
 	"github.com/slotopol/server/util"
 )
 
@@ -20,7 +20,7 @@ const (
 )
 
 type Gamble interface {
-	Spin(*rand.Rand, float64) // fill the grid with random hits on reels closest to given RTP, constant function
+	Spin(*prng.Rand, float64) // fill the grid with random hits on reels closest to given RTP, constant function
 	GetBet() float64          // returns current bet, constant function
 	SetBet(float64) error     // set bet to given value
 }

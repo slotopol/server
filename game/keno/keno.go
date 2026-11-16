@@ -5,10 +5,10 @@ import (
 	"errors"
 	"fmt"
 	"math"
-	"math/rand/v2"
 	"sort"
 
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/prng"
 	"github.com/slotopol/server/util"
 )
 
@@ -121,7 +121,7 @@ type Wins struct {
 	Pay float64 `json:"pay" yaml:"pay" xml:"pay,attr"`
 }
 
-type Rand = rand.Rand // alias to math/rand/v2.Rand
+type Rand = prng.Rand // alias to math/rand/v2.Rand
 
 // KenoGame is common keno interface. Any keno game should implement this interface.
 type KenoGame interface {
@@ -141,10 +141,10 @@ var (
 )
 
 var (
-	// Generator to initialize the game state and for tests.
-	WySRNG = rand.New(game.NewRandomWyRandSafe())
+	// Generator to initialize the game state.
+	WySRNG = prng.New(prng.NewRandomWyRandSafe())
 	// Generator for API calls.
-	CCRNG = rand.New(game.NewChaCha20())
+	CCRNG = prng.New(prng.NewChaCha20())
 )
 
 type Keno80 struct {

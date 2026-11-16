@@ -3,8 +3,6 @@ package powerstars
 // See: https://freeslotshub.com/novomatic/power-stars/
 
 import (
-	"math/rand/v2"
-
 	"github.com/slotopol/server/game/slot"
 )
 
@@ -148,8 +146,8 @@ func (g *Game) Spin(rng *slot.Rand, mrtp float64) {
 	var _, wc = ChanceMap.FindClosest(mrtp) // wild chance
 	var x, y slot.Pos
 	for x = 2; x <= 4; x++ {
-		if rand.Float64() < wc {
-			y = rand.N[slot.Pos](3) + 1
+		if rng.Float64() < wc {
+			y = rng.N[slot.Pos](3) + 1
 			g.SetSym(x, y, wild)
 		}
 	}

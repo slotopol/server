@@ -11,7 +11,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"math/rand/v2"
 	"net/http"
 	"strconv"
 	"strings"
@@ -20,6 +19,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/slotopol/server/core"
+	"github.com/slotopol/server/prng"
 	"github.com/slotopol/server/util"
 	"xorm.io/xorm"
 )
@@ -63,6 +63,8 @@ var (
 	ErrTokTheft = errors.New("session to refresh required from not congruent device")
 	ErrTokTwice = errors.New("this token is already used to refresh")
 )
+
+var CCRNG = prng.New(prng.NewChaCha20())
 
 // Claims of JWT-tokens. `Subject` field contains
 // profile identifier or user email.
@@ -451,7 +453,7 @@ func ApiSendCode(c *gin.Context) {
 		return
 	}
 
-	var code = rand.N[uint32](1000000) // 6 digits
+	var code = CCRNG.N[uint32](1000000) // 6 digits
 
 	var u = map[string]interface{}{
 		"code":  code,
@@ -559,7 +561,7 @@ func ApiSignup(c *gin.Context) {
 	if _, al := core.GetAdmin(c, 0); al&core.ALadmin != 0 || !Cfg.UseActivation {
 		status = core.UFactivated
 	} else {
-		code = rand.N[uint32](1000000) // 6 digits
+		code = CCRNG.N[uint32](1000000) // 6 digits
 		if err = sendcode(arg.Name, email, code); err != nil {
 			Ret500(c, AEC_signup_code, err)
 			return

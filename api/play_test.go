@@ -10,7 +10,6 @@ import (
 	"errors"
 	"fmt"
 	"io"
-	"math/rand/v2"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -20,7 +19,7 @@ import (
 	"github.com/slotopol/server/api"
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/core"
-	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/prng"
 	"github.com/slotopol/server/util"
 
 	"github.com/gin-gonic/gin"
@@ -274,7 +273,7 @@ func testSinglePlay(t *testing.T, r *gin.Engine) (err error) {
 	var wallet, gain float64
 	var fsr int
 
-	var rng = rand.New(game.NewWyRand(0))
+	var rng = prng.New(prng.NewWyRand(0))
 
 	// Sign-in admin in order to top up player account
 	arg = gin.H{

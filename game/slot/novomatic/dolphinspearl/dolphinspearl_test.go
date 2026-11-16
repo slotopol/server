@@ -3,12 +3,12 @@ package dolphinspearl_test
 import (
 	"bytes"
 	_ "embed"
-	"math/rand/v2"
 	"testing"
 
 	"github.com/slotopol/server/game"
 	"github.com/slotopol/server/game/slot"
 	"github.com/slotopol/server/game/slot/novomatic/dolphinspearl"
+	"github.com/slotopol/server/prng"
 )
 
 // go test -v -bench=^BenchmarkSpin$ -run=^$ -benchmem -count=5 ./game/slot/novomatic/dolphinspearl
@@ -18,7 +18,7 @@ var data []byte
 
 func BenchmarkSpin(b *testing.B) {
 	game.MustReadChain(bytes.NewReader(data))
-	var rng = rand.New(game.NewWyRand(0))
+	var rng = prng.New(prng.NewWyRand(0))
 	var g = dolphinspearl.NewGame(10)
 	var wins = make(slot.Wins, 0, 10)
 

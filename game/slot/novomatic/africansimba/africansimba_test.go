@@ -3,12 +3,12 @@ package africansimba_test
 import (
 	"bytes"
 	_ "embed"
-	"math/rand/v2"
 	"testing"
 
 	"github.com/slotopol/server/game"
 	"github.com/slotopol/server/game/slot"
 	"github.com/slotopol/server/game/slot/novomatic/africansimba"
+	"github.com/slotopol/server/prng"
 )
 
 type preset struct {
@@ -124,7 +124,7 @@ var data []byte
 
 func BenchmarkSpin(b *testing.B) {
 	game.MustReadChain(bytes.NewReader(data))
-	var rng = rand.New(game.NewWyRand(0))
+	var rng = prng.New(prng.NewWyRand(0))
 	var g = africansimba.NewGame()
 	var wins = make(slot.Wins, 0, 10)
 

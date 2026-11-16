@@ -1,8 +1,6 @@
 package jewels4all
 
 import (
-	"math/rand/v2"
-
 	"github.com/slotopol/server/game/slot"
 )
 
@@ -128,8 +126,8 @@ func (g *Game) GetReels(mrtp float64) slot.Reelx {
 func (g *Game) Spin(rng *slot.Rand, mrtp float64) {
 	g.SpinReels(rng, Reels)
 	var _, wc = ChanceMap.FindClosest(mrtp) // wild chance
-	if rand.Float64() < wc {
-		var x, y = rand.N[slot.Pos](5) + 1, rand.N[slot.Pos](3) + 1
+	if rng.Float64() < wc {
+		var x, y = rng.N[slot.Pos](5) + 1, rng.N[slot.Pos](3) + 1
 		g.SetSym(x, y, wild)
 	}
 }

@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/prng"
 )
 
 const lolim = 1e6 // lower limit, let some space to get approximate sigma
@@ -75,6 +76,8 @@ func MonteCarlo(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric) {
 		go func() {
 			defer wg.Done()
 
+			var rng = prng.New(prng.NewRandomPCG())
+
 			var wins Wins
 			var i uint64
 			for i = 0; i < total; i += tn64 {
@@ -96,7 +99,7 @@ func MonteCarlo(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric) {
 					}
 					total = max(tc, tp)
 				}
-				gt.SpinReels(WySRNG, reels)
+				gt.SpinReels(rng, reels)
 				s.Simulate(gt, &wins, sp.MRTP)
 				wins.Reset()
 			}

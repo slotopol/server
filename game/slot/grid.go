@@ -2,18 +2,17 @@ package slot
 
 import (
 	"encoding/json"
-	"math/rand/v2"
 
-	"github.com/slotopol/server/game"
+	"github.com/slotopol/server/prng"
 )
 
-type Rand = rand.Rand // alias to math/rand/v2.Rand
+type Rand = prng.Rand // alias to math/rand/v2.Rand
 
 var (
-	// Generator to initialize the game state and for tests.
-	WySRNG = rand.New(game.NewRandomWyRandSafe())
+	// Generator to initialize the game state.
+	WySRNG = prng.New(prng.NewRandomWyRandSafe())
 	// Generator for API calls.
-	CCRNG = rand.New(game.NewChaCha20())
+	CCRNG = prng.New(prng.NewChaCha20())
 )
 
 // Grid contains symbols rectangle of the slot game.
