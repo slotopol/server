@@ -16,23 +16,44 @@ func ReelAt(reel []Sym, pos int) Sym {
 type Reelx [][]Sym
 
 // Returns reel at given column, index is 1-based.
-func (r Reelx) Reel(col Pos) []Sym {
-	return r[col-1]
+func (rx Reelx) Reel(col Pos) []Sym {
+	return rx[col-1]
 }
 
 // Returns total number of reshuffles.
-func (r Reelx) Reshuffles() uint64 {
+func (rx Reelx) Reshuffles() uint64 {
 	var res uint64 = 1
-	for _, reel := range r {
+	for _, reel := range rx {
 		res *= uint64(len(reel))
 	}
 	return res
 }
 
-func (r Reelx) String() string {
+// Returns seed position on reels from array of positions on each reel.
+func (rx Reelx) PosToSeed(pos []int) (seed uint64) {
+	var m uint64 = 1
+	for i := len(rx) - 1; i >= 0; i-- {
+		seed += uint64(pos[i]) * m
+		m *= uint64(len(rx[i]))
+	}
+	return
+}
+
+// Fills the array of positions on each reel from given seed.
+func (rx Reelx) SeedToPos(seed uint64, pos []int) {
+	var cur = seed
+	var rl uint64
+	for i := len(rx) - 1; i >= 0; i-- {
+		rl = uint64(len(rx[i]))
+		pos[i] = int(cur % rl)
+		cur /= rl
+	}
+}
+
+func (rx Reelx) String() string {
 	var b strings.Builder
 	b.WriteString("[")
-	for i, reel := range r {
+	for i, reel := range rx {
 		if i > 0 {
 			b.WriteString(", ")
 		}
@@ -42,8 +63,8 @@ func (r Reelx) String() string {
 	return b.String()
 }
 
-func (r Reelx) Clear() {
-	clear(r)
+func (rx Reelx) Clear() {
+	clear(rx)
 }
 
 type ReelsMap[T any] map[float64]T

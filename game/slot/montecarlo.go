@@ -65,18 +65,23 @@ loop:
 		N/total*100, int(N), dur, sp.Conf*100, ΔRTP*100)
 }
 
-func MonteCarlo(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric) {
-	var reels = g.GetReels(sp.MRTP)
+func MonteCarlo(ctx context.Context, sp *ScanPar, s Simulator, mgame SlotGeneric) {
+	var reels = mgame.GetReels(sp.MRTP)
 	var tn64 = uint64(sp.TN)
 	var total = max(sp.Total, lolim)
 	var wg sync.WaitGroup
+
+	var msrc = prng.NewXoshiro256PP(123456789) // master prng source
+
 	wg.Add(sp.TN)
 	for range tn64 {
-		var gt = g.Clone()
+		var wgame = mgame.Clone() // worker game
+		var wsrc = msrc.Clone()   // worker prng source
+		msrc.Jump()               // shift the master forward by 2^128 steps
+		var rng = prng.New(wsrc)
+
 		go func() {
 			defer wg.Done()
-
-			var rng = prng.New(prng.NewRandomPCG())
 
 			var wins Wins
 			var i uint64
@@ -92,15 +97,15 @@ func MonteCarlo(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric) {
 					var tc, tp uint64
 					tc = max(sp.Total, lolim)
 					if sp.Prec > 0 {
-						var _, D = s.EvD(gt.Cost())
+						var _, D = s.EvD(wgame.Cost())
 						var VI = game.GetZ(sp.Conf) * math.Sqrt(D)
 						var t2 = VI / sp.Prec
 						tp = uint64(t2 * t2)
 					}
 					total = max(tc, tp)
 				}
-				gt.SpinReels(rng, reels)
-				s.Simulate(gt, &wins, sp.MRTP)
+				wgame.SpinReels(rng, reels)
+				s.Simulate(wgame, &wins, sp.MRTP)
 				wins.Reset()
 			}
 		}()

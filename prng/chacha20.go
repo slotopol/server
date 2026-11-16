@@ -8,7 +8,6 @@ import (
 	mr "math/rand/v2"
 	"sync"
 	"time"
-	"unsafe"
 
 	"golang.org/x/crypto/chacha20"
 )
@@ -110,20 +109,6 @@ func (s *ChaCha20) reseed() {
 	s.readed = 0
 	s.last = time.Now()
 	s.index = bufferWords // Flush the buffer
-}
-
-// refill fills the buffer with 512 new numbers in one call to XORKeyStream.
-func (s *ChaCha20) refill() {
-	if s.readed >= s.thres || (s.period > 0 && time.Since(s.last) >= s.period) {
-		s.reseed()
-	}
-
-	clear(s.words[:])
-	var byteView = unsafe.Slice((*byte)(unsafe.Pointer(&s.words[0])), bufferWords*8)
-	s.cipher.XORKeyStream(byteView, byteView)
-
-	s.readed += bufferWords
-	s.index = 0
 }
 
 // Uint64 returns a random 64-bit number.
