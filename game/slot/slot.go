@@ -62,7 +62,7 @@ type SlotGame interface {
 	GetReels(float64) Reelx              // returns reels for current game state, constant function
 	Spin(*Rand, float64)                 // fill the grid with random hits on reels closest to given RTP, constant function
 	Spawn(*Rand, Wins, float64, float64) // setup bonus games to wins results, constant function
-	Prepare()                            // update game state before new spin, grid is unknown yet
+	Prepare(*Rand)                       // update game state before new spin, grid is unknown yet
 	Apply(Wins)                          // update game state to spin results, grid is calculated
 	GetGain() float64                    // returns gain for double up games, constant function
 	SetGain(float64) error               // set gain to given value on double up games
@@ -120,7 +120,7 @@ func (g *Slotx) FreeMode() bool {
 func (g *Slotx) Spawn(rng *Rand, wins Wins, fund, mrtp float64) {
 }
 
-func (g *Slotx) Prepare() {
+func (g *Slotx) Prepare(*Rand) {
 }
 
 func (g *Slotx) Apply(wins Wins) {

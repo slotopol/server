@@ -3,8 +3,6 @@ package redroo
 // See: https://freeslotshub.com/aristocrat/big-red/
 
 import (
-	"math/rand/v2"
-
 	"github.com/slotopol/server/game/slot"
 )
 
@@ -148,10 +146,10 @@ func (g *Game) Spin(rng *slot.Rand, mrtp float64) {
 	g.SpinReels(rng, g.GetReels(mrtp))
 }
 
-func (g *Game) Prepare() {
+func (g *Game) Prepare(rng *slot.Rand) {
 	if g.FSR > 0 {
 		for x := range g.MW {
-			if rand.Float64() < prob2x {
+			if rng.Float64() < prob2x {
 				g.MW[x] = 2
 			} else {
 				g.MW[x] = 3

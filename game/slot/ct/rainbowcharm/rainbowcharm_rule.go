@@ -7,8 +7,6 @@ package rainbowcharm
 // animation only and does not affect the calculation.
 
 import (
-	"math/rand/v2"
-
 	"github.com/slotopol/server/game/slot"
 )
 
@@ -119,9 +117,9 @@ func (g *Game) Spin(rng *slot.Rand, mrtp float64) {
 	g.SpinReels(rng, g.GetReels(mrtp))
 }
 
-func (g *Game) Prepare() {
+func (g *Game) Prepare(rng *slot.Rand) {
 	for x := range 5 {
-		g.M[x] = MBon[rand.N(len(MBon))]
+		g.M[x] = MBon[rng.N(len(MBon))]
 	}
 }
 

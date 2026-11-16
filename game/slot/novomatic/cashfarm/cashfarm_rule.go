@@ -153,7 +153,7 @@ func (g *Game) Spawn(rng *slot.Rand, wins slot.Wins, fund, mrtp float64) {
 	}
 }
 
-func (g *Game) Prepare() {
+func (g *Game) Prepare(rng *slot.Rand) {
 	g.UntoFall()
 }
 

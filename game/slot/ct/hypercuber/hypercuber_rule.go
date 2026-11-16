@@ -3,8 +3,6 @@ package hypercuber
 // See: https://www.livebet2.com/casino/slots/ct-interactive/hyper-cuber
 
 import (
-	"math/rand/v2"
-
 	"github.com/slotopol/server/game/slot"
 )
 
@@ -135,11 +133,11 @@ func (g *Game) Spin(rng *slot.Rand, mrtp float64) {
 	g.SpinReels(rng, g.GetReels(mrtp))
 }
 
-func (g *Game) Prepare() {
+func (g *Game) Prepare(rng *slot.Rand) {
 	g.UntoFall()
 	if g.FSR != 0 {
 		for x := range 5 {
-			g.M[x] = CuberMult[rand.N(len(CuberMult))]
+			g.M[x] = CuberMult[rng.N(len(CuberMult))]
 		}
 	} else {
 		clear(g.M[:])

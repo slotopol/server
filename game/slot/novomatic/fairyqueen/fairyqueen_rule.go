@@ -3,8 +3,6 @@ package fairyqueen
 // See: https://www.slotsmate.com/software/novomatic/fairy-queen
 
 import (
-	"math/rand/v2"
-
 	"github.com/slotopol/server/game/slot"
 )
 
@@ -189,9 +187,9 @@ func (g *Game) Spin(rng *slot.Rand, mrtp float64) {
 	}
 }
 
-func (g *Game) Prepare() {
+func (g *Game) Prepare(rng *slot.Rand) {
 	if g.FSR > 0 { // setup expanding symbol
-		g.ES = ReelExpSym[rand.N(len(ReelExpSym))]
+		g.ES = ReelExpSym[rng.N(len(ReelExpSym))]
 	} else {
 		g.ES = 0
 	}

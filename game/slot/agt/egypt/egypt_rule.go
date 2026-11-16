@@ -3,8 +3,6 @@ package egypt
 // See: https://agtsoftware.com/games/agt/egypt
 
 import (
-	"math/rand/v2"
-
 	"github.com/slotopol/server/game/slot"
 )
 
@@ -143,10 +141,10 @@ func (g *Game) Spin(rng *slot.Rand, mrtp float64) {
 	g.SpinReels(rng, g.GetReels(mrtp))
 }
 
-func (g *Game) Prepare() {
-	g.Mini[0] = rand.N[slot.Sym](3) + 1
-	g.Mini[1] = rand.N[slot.Sym](3) + 1
-	g.Mini[2] = rand.N[slot.Sym](3) + 1
+func (g *Game) Prepare(rng *slot.Rand) {
+	g.Mini[0] = rng.N[slot.Sym](3) + 1
+	g.Mini[1] = rng.N[slot.Sym](3) + 1
+	g.Mini[2] = rng.N[slot.Sym](3) + 1
 }
 
 func (g *Game) mult() float64 {

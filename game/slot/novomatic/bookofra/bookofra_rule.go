@@ -170,7 +170,7 @@ func (g *Game) Spin(rng *slot.Rand, mrtp float64) {
 	g.SpinReels(rng, g.GetReels(mrtp))
 }
 
-func (g *Game) Prepare() {
+func (g *Game) Prepare(rng *slot.Rand) {
 	if g.FSR == 0 {
 		g.ES = 0 // clear expanding symbol if no freegames
 	}

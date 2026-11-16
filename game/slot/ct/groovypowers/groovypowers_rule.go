@@ -3,8 +3,6 @@ package groovypowers
 // See: https://www.slotsmate.com/software/ct-interactive/groovy-powers
 
 import (
-	"math/rand/v2"
-
 	"github.com/slotopol/server/game/slot"
 )
 
@@ -134,8 +132,8 @@ func (g *Game) Spin(rng *slot.Rand, mrtp float64) {
 	g.SpinReels(rng, g.GetReels(mrtp))
 }
 
-func (g *Game) Prepare() {
-	g.BM = rand.Float64() < Pbm
+func (g *Game) Prepare(rng *slot.Rand) {
+	g.BM = rng.Float64() < Pbm
 }
 
 func (g *Game) SetSel(sel int) error {

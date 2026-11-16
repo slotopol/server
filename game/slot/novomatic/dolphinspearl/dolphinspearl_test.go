@@ -18,7 +18,7 @@ var data []byte
 
 func BenchmarkSpin(b *testing.B) {
 	game.MustReadChain(bytes.NewReader(data))
-	var rng = rand.New(game.NewWyRandSource(0))
+	var rng = rand.New(game.NewWyRand(0))
 	var g = dolphinspearl.NewGame(10)
 	var wins = make(slot.Wins, 0, 10)
 

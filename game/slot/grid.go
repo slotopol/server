@@ -9,7 +9,12 @@ import (
 
 type Rand = rand.Rand // alias to math/rand/v2.Rand
 
-var WySRNG = rand.New(game.NewRandomWyRandSafeSource())
+var (
+	// Generator to initialize the game state and for tests.
+	WySRNG = rand.New(game.NewRandomWyRandSafe())
+	// Generator for API calls.
+	CCRNG = rand.New(game.NewChaCha20())
+)
 
 // Grid contains symbols rectangle of the slot game.
 // It can be with dimensions 3x1, 3x3, 4x4, 5x3, 5x4 or others.

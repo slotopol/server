@@ -140,7 +140,12 @@ var (
 	ErrKenoOutRange  = errors.New("some of given number is out of range 1..80")
 )
 
-var WySRNG = rand.New(game.NewRandomWyRandSafeSource())
+var (
+	// Generator to initialize the game state and for tests.
+	WySRNG = rand.New(game.NewRandomWyRandSafe())
+	// Generator for API calls.
+	CCRNG = rand.New(game.NewChaCha20())
+)
 
 type Keno80 struct {
 	Grid Grid    `json:"grid" yaml:"grid" xml:"grid"` // game grid

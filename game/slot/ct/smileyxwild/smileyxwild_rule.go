@@ -3,8 +3,6 @@ package smileyxwild
 // See: https://www.slotsmate.com/software/ct-interactive/smiley-x-wild
 
 import (
-	"math/rand/v2"
-
 	"github.com/slotopol/server/game/slot"
 )
 
@@ -123,9 +121,9 @@ func (g *Game) Spin(rng *slot.Rand, mrtp float64) {
 	g.SpinReels(rng, g.GetReels(mrtp))
 }
 
-func (g *Game) Prepare() {
-	g.M2 = float64(rand.N(4) + 1)
-	g.M4 = float64(rand.N(4) + 1)
+func (g *Game) Prepare(rng *slot.Rand) {
+	g.M2 = float64(rng.N(4) + 1)
+	g.M4 = float64(rng.N(4) + 1)
 }
 
 func (g *Game) SetSel(sel int) error {

@@ -20,6 +20,7 @@ import (
 	"github.com/slotopol/server/api"
 	cfg "github.com/slotopol/server/config"
 	"github.com/slotopol/server/core"
+	"github.com/slotopol/server/game"
 	"github.com/slotopol/server/util"
 
 	"github.com/gin-gonic/gin"
@@ -273,6 +274,8 @@ func testSinglePlay(t *testing.T, r *gin.Engine) (err error) {
 	var wallet, gain float64
 	var fsr int
 
+	var rng = rand.New(game.NewWyRand(0))
+
 	// Sign-in admin in order to top up player account
 	arg = gin.H{
 		"email":  testAdminEmail,
@@ -330,7 +333,7 @@ func testSinglePlay(t *testing.T, r *gin.Engine) (err error) {
 		if wallet < bet*float64(sel) {
 			var sum float64
 			for wallet+sum < bet*float64(sel) {
-				sum = sumset[rand.N(len(sumset))]
+				sum = sumset[rng.N(len(sumset))]
 			}
 			arg = gin.H{
 				"cid": cid,
@@ -371,12 +374,12 @@ func testSinglePlay(t *testing.T, r *gin.Engine) (err error) {
 		}
 
 		// if there has a win, make double-ups sometime
-		if gain > 0 && rand.Float64() < 0.3 {
+		if gain > 0 && rng.Float64() < 0.3 {
 			for {
 				arg = gin.H{
 					"gid":  gid,
 					"mult": 2,
-					"half": rand.Float64() < 0.25,
+					"half": rng.Float64() < 0.25,
 				}
 				if ret, err = post(t, r, "/slot/doubleup", usrtoken, arg); err != nil {
 					return
@@ -387,7 +390,7 @@ func testSinglePlay(t *testing.T, r *gin.Engine) (err error) {
 				if gain == 0 {
 					break
 				}
-				if rand.Float64() < 0.5 {
+				if rng.Float64() < 0.5 {
 					arg = gin.H{
 						"gid": gid,
 					}
@@ -399,8 +402,8 @@ func testSinglePlay(t *testing.T, r *gin.Engine) (err error) {
 		}
 
 		// change bet value sometimes
-		if rand.Float64() < 1./25. {
-			bet = betset[rand.N(len(betset))]
+		if rng.Float64() < 1./25. {
+			bet = betset[rng.N(len(betset))]
 			arg = gin.H{
 				"gid": gid,
 				"bet": bet,
@@ -410,8 +413,8 @@ func testSinglePlay(t *testing.T, r *gin.Engine) (err error) {
 		}
 
 		// change selected bet lines sometimes
-		if rand.Float64() < 1./25. {
-			sel = 3 + rand.N(8)
+		if rng.Float64() < 1./25. {
+			sel = 3 + rng.N(8)
 			arg = gin.H{
 				"gid": gid,
 				"sel": sel,

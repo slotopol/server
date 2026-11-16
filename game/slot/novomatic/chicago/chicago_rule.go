@@ -3,8 +3,6 @@ package chicago
 // See: https://www.slotsmate.com/software/novomatic/novomatic-chicago
 
 import (
-	"math/rand/v2"
-
 	"github.com/slotopol/server/game/slot"
 )
 
@@ -162,9 +160,9 @@ func (g *Game) Spin(rng *slot.Rand, mrtp float64) {
 var MultChoose = []float64{1, 2, 3, 5, 10} // EV = 4.2
 const EVmc = 4.2
 
-func (g *Game) Prepare() {
+func (g *Game) Prepare(rng *slot.Rand) {
 	if g.FSR > 0 {
-		g.M = MultChoose[rand.N(len(MultChoose))]
+		g.M = MultChoose[rng.N(len(MultChoose))]
 	} else {
 		g.M = 0
 	}

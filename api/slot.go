@@ -3,7 +3,6 @@ package api
 import (
 	"encoding/json"
 	"encoding/xml"
-	"math/rand/v2"
 
 	"github.com/gin-gonic/gin"
 
@@ -26,7 +25,7 @@ func CascadeGain(rng *slot.Rand, game slot.SlotGeneric, wins slot.Wins, fund, mr
 	var cw slot.Wins
 	for range slot.FallLimit {
 		cas.UntoFall()
-		cas.SpinReels(slot.WySRNG, cas.GetReels(mrtp))
+		cas.SpinReels(rng, cas.GetReels(mrtp))
 		if err = cas.Scanner(&cw); err != nil {
 			return
 		}
@@ -335,20 +334,20 @@ func ApiSlotSpin(c *gin.Context) {
 	var gain, debit, jack float64
 	defer wins.Reset()
 	var n = 0
-	game.Prepare()
+	game.Prepare(slot.CCRNG)
 	for { // repeat until get valid grid and spin will fit into bank
 		if n++; n > Cfg.MaxSpinAttempts {
 			Ret500(c, AEC_slot_spin_badbank, ErrBadBank)
 			return
 		}
-		game.Spin(slot.WySRNG, mrtp-jprate)
+		game.Spin(slot.CCRNG, mrtp-jprate)
 		if game.Scanner(&wins) != nil {
 			continue
 		}
-		if _, err = CascadeGain(slot.WySRNG, game, wins, fund, mrtp-jprate); err != nil {
+		if _, err = CascadeGain(slot.CCRNG, game, wins, fund, mrtp-jprate); err != nil {
 			continue
 		}
-		game.Spawn(slot.WySRNG, wins, fund, mrtp-jprate)
+		game.Spawn(slot.CCRNG, wins, fund, mrtp-jprate)
 		gain = wins.Gain()
 		jack = wins.Jackpot()
 		debit = cost*(1-jprate/100) - gain
@@ -495,7 +494,7 @@ func ApiSlotDoubleup(c *gin.Context) {
 	var win bool       // true on double up is win
 	var upgain float64 // gain by double up
 	if bank >= risk*arg.Mult {
-		var r = rand.Float64()
+		var r = slot.CCRNG.Float64()
 		var side = 1 / arg.Mult * mrtp / 100
 		if r < side {
 			win = true
