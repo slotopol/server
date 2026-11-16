@@ -20,13 +20,34 @@ import (
 type Simulator interface {
 	// Count returns number of processed grid reshuffles, including with no wins.
 	Count() float64
-	// Returns math expectation and dispersion.
-	EvD(float64) (float64, float64)
+	// NSQ returns number of spins, sum of pays, sum of squares of pays by spin,
+	// normalized by spin cost.
+	NSQ(cost float64) (N, S, Q float64)
+	// FGC returns counter of triggering free game series, total count of free spins,
+	// and sum of squared free spin series lengths.
+	FGC() (Cfg, Cfs, Qfs float64)
 	// Returns free games hit rate, expectation of initial freespins,
 	// second moment of initial freespins calculated by dedicated counters.
-	Efs() (HRfg, EK, EK2 float64)
-	// Performs spin simulation, calculates results, update statistics.
 	Simulate(SlotGame, *Wins, float64)
+}
+
+// Returns plain math expectation (µ = S/N) and plain dispersion (D = Q/N - µ*µ).
+func EvD(s Simulator, cost float64) (float64, float64) {
+	var N, S, Q = s.NSQ(cost)
+	var µ = S / N
+	var D = Q/N - µ*µ
+	return µ, D
+}
+
+// Returns free games hit rate, expectation of initial freespins,
+// second moment of initial freespins calculated by dedicated counters.
+func Efs(s Simulator) (HRfg, EK, EK2 float64) {
+	var N = s.Count()
+	var Cfg, Cfs, Qfs = s.FGC()
+	HRfg = Cfg / N
+	EK = Cfs / N
+	EK2 = Qfs / N
+	return
 }
 
 type ScanPar = game.ScanPar
@@ -286,21 +307,12 @@ func (s *StatGeneric) NSQ(cost float64) (N float64, S float64, Q float64) {
 	return
 }
 
-// Returns plain math expectation (µ = S/N) and plain dispersion (D = Q/N - µ*µ).
-func (s *StatGeneric) EvD(cost float64) (float64, float64) {
-	var N, S, Q = s.NSQ(cost)
-	var µ = S / N
-	var D = Q/N - µ*µ
-	return µ, D
-}
-
-// Returns free games hit rate, expectation of initial freespins,
-// second moment of initial freespins calculated by dedicated counters.
-func (s *StatGeneric) Efs() (HRfg, EK, EK2 float64) {
-	var N = s.Count()
-	HRfg = float64(s.Cfg.Load()) / N
-	EK = float64(s.Cfs.Load()) / N
-	EK2 = float64(s.Qfs.Load()) / N
+// FGC returns counter of triggering free game series, total count of free spins,
+// and sum of squared free spin series lengths.
+func (s *StatGeneric) FGC() (Cfg, Cfs, Qfs float64) {
+	Cfg = float64(s.Cfg.Load())
+	Cfs = float64(s.Cfs.Load())
+	Qfs = float64(s.Qfs.Load())
 	return
 }
 
@@ -474,36 +486,24 @@ func (s *StatCascade) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
 	return
 }
 
-// Returns plain math expectation (µ = S/N) and plain dispersion (D = Q/N - µ*µ).
-func (s *StatCascade) EvD(cost float64) (float64, float64) {
-	var N, S, Q = s.NSQ(cost)
-	var µ = S / N
-	var D = Q/N - µ*µ
-	return µ, D
-}
-
-// Returns free games hit rate, expectation of initial freespins,
-// second moment of initial freespins calculated by dedicated counters.
-func (s *StatCascade) Efs() (HRfg, EK, EK2 float64) {
-	var N = s.Count()
-	for cfn := range s.Casc {
-		var c = &s.Casc[cfn]
-		HRfg += float64(c.Cfg.Load())
-		EK += float64(c.Cfs.Load())
-		EK2 += float64(c.Qfs.Load())
-	}
-	HRfg /= N
-	EK /= N
-	EK2 /= N
-	return
-}
-
 // NSQ returns number of spins, sum of pays, sum of squares of pays by spin,
 // normalized by spin cost.
 func (s *StatCascade) NSQ(cost float64) (N float64, S float64, Q float64) {
 	N = s.Count()
 	S = s.SumPays() / cost
 	Q = s.Q.Load() / cost / cost
+	return
+}
+
+// FGC returns counter of triggering free game series, total count of free spins,
+// and sum of squared free spin series lengths.
+func (s *StatCascade) FGC() (Cfg, Cfs, Qfs float64) {
+	for cfn := range s.Casc {
+		var c = &s.Casc[cfn]
+		Cfg += float64(c.Cfg.Load())
+		Cfs += float64(c.Cfs.Load())
+		Qfs += float64(c.Qfs.Load())
+	}
 	return
 }
 

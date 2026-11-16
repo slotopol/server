@@ -24,7 +24,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var s = slot.NewStatGeneric(sn, 5)
 
 	var calc = func(w io.Writer) (float64, float64) {
-		var µ, Dsym = s.EvD(g.Cost())
+		var µ, Dsym = slot.EvD(s, g.Cost())
 		var rtp = Em * µ
 		var D = Em * Em * Dsym
 		if sp.IsMain() {

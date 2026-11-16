@@ -18,16 +18,15 @@ func NewStat() *Stat {
 	return &s
 }
 
-func (s *Stat) Efs() (HRfg, EK, EK2 float64) {
-	var N = s.Count()
+func (s *Stat) FGC() (Cfg, Cfs, Qfs float64) {
 	var sum, sum2 float64
 	for _, Li := range Freegames {
 		sum += float64(Li)
 		sum2 += float64(Li * Li)
 	}
-	HRfg = float64(s.Cfg.Load()) / N
-	EK = HRfg * sum / float64(len(Freegames))
-	EK2 = HRfg * sum2 / float64(len(Freegames))
+	Cfg = float64(s.Cfg.Load())
+	Cfs = Cfg * sum / float64(len(Freegames))
+	Qfs = Cfg * sum2 / float64(len(Freegames))
 	return
 }
 

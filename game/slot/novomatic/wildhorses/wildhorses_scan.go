@@ -18,14 +18,14 @@ func NewStatBon() *StatBon {
 	return &s
 }
 
-func (s *StatBon) Efs() (HRfg, EK, EK2 float64) {
+func (s *StatBon) FGC() (Cfg, Cfs, Qfs float64) {
 	const p = 0.5 // probability of getting or not getting free spins is equal
 	const L = 10  // number of free spins
 	var N = s.Count()
 	var c = p * N / L
-	HRfg = c / N
-	EK = c * L / N
-	EK2 = c * L * L / N
+	Cfg = c
+	Cfs = c * L
+	Qfs = c * L * L
 	return
 }
 

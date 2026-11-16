@@ -31,7 +31,7 @@ func ProgressMC(ctx context.Context, sp *ScanPar, s Simulator, calc func(io.Writ
 	var param = func() {
 		dur = time.Since(t0)
 		if RTP, D = calc(io.Discard); math.IsNaN(D) {
-			_, D = s.EvD(cost)
+			_, D = EvD(s, cost)
 		}
 		VI = game.GetZ(sp.Conf) * math.Sqrt(D)
 		N = s.Count()
@@ -97,7 +97,7 @@ func MonteCarlo(ctx context.Context, sp *ScanPar, s Simulator, mgame SlotGeneric
 					var tc, tp uint64
 					tc = max(sp.Total, lolim)
 					if sp.Prec > 0 {
-						var _, D = s.EvD(wgame.Cost())
+						var _, D = EvD(s, wgame.Cost())
 						var VI = game.GetZ(sp.Conf) * math.Sqrt(D)
 						var t2 = VI / sp.Prec
 						tp = uint64(t2 * t2)

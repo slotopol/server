@@ -18,19 +18,15 @@ func NewStatReg() *StatReg {
 	return &s
 }
 
-func (s *StatReg) Efs() (HRfg, EK, EK2 float64) {
-	var N = s.Count()
+func (s *StatReg) FGC() (Cfg, Cfs, Qfs float64) {
 	for sym, L := range LineFreespinReg {
 		for i, Li := range L {
 			var c = float64(s.C[sym][i].Load())
-			HRfg += c
-			EK += c * float64(Li)
-			EK2 += c * float64(Li*Li)
+			Cfg += c
+			Cfs += c * float64(Li)
+			Qfs += c * float64(Li*Li)
 		}
 	}
-	HRfg /= N
-	EK /= N
-	EK2 /= N
 	return
 }
 
@@ -44,19 +40,15 @@ func NewStatBon() *StatBon {
 	return &s
 }
 
-func (s *StatBon) Efs() (HRfg, EK, EK2 float64) {
-	var N = s.Count()
+func (s *StatBon) FGC() (Cfg, Cfs, Qfs float64) {
 	for sym, L := range LineFreespinBon {
 		for i, Li := range L {
 			var c = float64(s.C[sym][i].Load())
-			HRfg += c
-			EK += c * float64(Li)
-			EK2 += c * float64(Li*Li)
+			Cfg += c
+			Cfs += c * float64(Li)
+			Qfs += c * float64(Li*Li)
 		}
 	}
-	HRfg /= N
-	EK /= N
-	EK2 /= N
 	return
 }
 

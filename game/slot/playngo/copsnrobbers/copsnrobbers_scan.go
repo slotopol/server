@@ -34,9 +34,9 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var cost = g.Cost()
 	var calc = func(w io.Writer) (float64, float64) {
 		// bonus reels parameters
-		var µb, Dsymb = sb.EvD(cost)
+		var µb, Dsymb = slot.EvD(sb, cost)
 		// regular reels parameters
-		var µr, Dsymr = sr.EvD(cost)
+		var µr, Dsymr = slot.EvD(sr, cost)
 		var Nr = sr.Count()
 		// calculation
 		var EL, EL2 float64

@@ -185,7 +185,7 @@ func Print_all(w io.Writer, sp *ScanPar, s Simulator, µ, D float64) {
 
 // Parsheet for simple slot model (without free games and bonuses).
 func Parsheet_simple(w io.Writer, sp *ScanPar, s Simulator, cost float64) (float64, float64) {
-	var µ, D = s.EvD(cost)
+	var µ, D = EvD(s, cost)
 	if sp.IsMain() {
 		fmt.Fprintf(w, "RTP = %.8g%%\n", µ*100)
 	}
@@ -197,8 +197,8 @@ func Parsheet_simple(w io.Writer, sp *ScanPar, s Simulator, cost float64) (float
 // between base paid spins and free bonus spins, recursive re-triggers
 // during free spins, and a global multiplier `m` applied during bonus rounds.
 func Parsheet_solereelrecur(w io.Writer, sp *ScanPar, s Simulator, cost float64, m float64) (float64, float64) {
-	var EVbase, Dbase = s.EvD(cost)
-	var HRfg, EK, EK2 = s.Efs()
+	var EVbase, Dbase = EvD(s, cost)
+	var HRfg, EK, EK2 = Efs(s)
 	var VarK = EK2 - EK*EK
 	var SEK = 1 / (1 - EK)
 	var VarNfg = VarK * SEK * SEK * SEK
@@ -220,7 +220,7 @@ func Parsheet_solereelrecur(w io.Writer, sp *ScanPar, s Simulator, cost float64,
 
 // Parsheet to calculate bonus reel in dual-reel set model on simple case.
 func Parsheet_affixsimple(w io.Writer, sp *ScanPar, s Simulator, cost float64) (float64, float64) {
-	var µ, D = s.EvD(cost)
+	var µ, D = EvD(s, cost)
 	if sp.IsFG() {
 		fmt.Fprintf(w, "RTP = %.8g%%\n", µ*100)
 	}
@@ -232,8 +232,8 @@ func Parsheet_affixsimple(w io.Writer, sp *ScanPar, s Simulator, cost float64) (
 // Parsheet to calculate bonus reel in dual-reel set model with recursive re-triggers.
 func Parsheet_affixrecur(w io.Writer, sp *ScanPar, s Simulator, cost float64) (float64, float64) {
 	const m = 1
-	var EVbase, Dbase = s.EvD(cost)
-	var HRfg, EK, EK2 = s.Efs()
+	var EVbase, Dbase = EvD(s, cost)
+	var HRfg, EK, EK2 = Efs(s)
 	var VarK = EK2 - EK*EK
 	var SEK = 1 / (1 - EK)
 	var VarNfg = VarK * SEK * SEK * SEK
@@ -260,12 +260,12 @@ func Parsheet_affixrecur(w io.Writer, sp *ScanPar, s Simulator, cost float64) (f
 func Parsheet_dualreelrecur(w io.Writer, sp *ScanPar, sr Simulator, sb Simulator, cost float64) (float64, float64) {
 	const m = 1
 	// regular reels parameters
-	var EVr, Dr = sr.EvD(cost)
-	var HRfg, EKr, EK2r = sr.Efs()
+	var EVr, Dr = EvD(sr, cost)
+	var HRfg, EKr, EK2r = Efs(sr)
 	var VarKr = EK2r - EKr*EKr
 	// bonus reels parameters
-	var EVb, Db = sb.EvD(cost)
-	var _, EKb, EK2b = sb.Efs()
+	var EVb, Db = EvD(sb, cost)
+	var _, EKb, EK2b = Efs(sb)
 	var VarKb = EK2b - EKb*EKb
 	// aggregate parameters
 	var a = 1 / (1 - EKb)
@@ -285,8 +285,8 @@ func Parsheet_dualreelrecur(w io.Writer, sp *ScanPar, sr Simulator, sb Simulator
 // Parsheet to calculate bonus reel in dual-reel set model.
 func Parsheet_affixonce(w io.Writer, sp *ScanPar, s Simulator, cost float64, Lr, Lb float64) (float64, float64) {
 	const m = 1
-	var EVbase, Dbase = s.EvD(cost)
-	var HRfg, EK, EK2 = s.Efs()
+	var EVbase, Dbase = EvD(s, cost)
+	var HRfg, EK, EK2 = Efs(s)
 	var pb = HRfg                    // P
 	var Pre = 1 - math.Pow(1-pb, Lr) // P(A)=1−(1−P)^N
 	var EV = m * EVbase * (1 + Pre*Lb/Lr)
@@ -308,12 +308,12 @@ func Parsheet_affixonce(w io.Writer, sp *ScanPar, s Simulator, cost float64, Lr,
 func Parsheet_dualreelonce(w io.Writer, sp *ScanPar, sr Simulator, sb Simulator, cost float64, Lr, Lb float64) (float64, float64) {
 	const m = 1
 	// regular reels parameters
-	var EVr, Dr = sr.EvD(cost)
-	var HRfg, EKr, EK2r = sr.Efs()
+	var EVr, Dr = EvD(sr, cost)
+	var HRfg, EKr, EK2r = Efs(sr)
 	var VarKr = EK2r - EKr*EKr
 	// bonus reels parameters
-	var EVb, Db = sb.EvD(cost)
-	var pb, _, _ = sb.Efs()
+	var EVb, Db = EvD(sb, cost)
+	var pb, _, _ = Efs(sb)
 	// aggregate parameters
 	var Pre = 1 - math.Pow(1-pb, Lr)
 	var q = EKr + HRfg*Lb*Pre

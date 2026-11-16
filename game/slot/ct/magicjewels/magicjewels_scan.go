@@ -17,8 +17,7 @@ func NewStat() *Stat {
 	return &s
 }
 
-func (s *Stat) Efs() (HRfg, EK, EK2 float64) {
-	var N = s.Count()
+func (s *Stat) FGC() (Cfg, Cfs, Qfs float64) {
 	var Cfg5 = float64(s.CascNum(4))
 	var Cfg6 = float64(s.CascNum(5))
 	var Cfg7 float64
@@ -28,9 +27,9 @@ func (s *Stat) Efs() (HRfg, EK, EK2 float64) {
 	for i := 6; i < slot.FallLimit; i++ {
 		Cfg7 += float64(s.CascNum(i))
 	}
-	HRfg = (Cfg5 + Cfg6 + Cfg7) / N
-	EK = (Cfg5*L5 + Cfg6*L6 + Cfg7*L7) / N
-	EK2 = (Cfg5*L5*L5 + Cfg6*L6*L6 + Cfg7*L7*L7) / N
+	Cfg = Cfg5 + Cfg6 + Cfg7
+	Cfs = Cfg5*L5 + Cfg6*L6 + Cfg7*L7
+	Qfs = Cfg5*L5*L5 + Cfg6*L6*L6 + Cfg7*L7*L7
 	return
 }
 
