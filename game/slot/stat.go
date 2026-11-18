@@ -300,7 +300,7 @@ func (s *StatGeneric) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
 
 // NSQ returns number of spins, sum of pays, sum of squares of pays by spin,
 // normalized by spin cost.
-func (s *StatGeneric) NSQ(cost float64) (N float64, S float64, Q float64) {
+func (s *StatGeneric) NSQ(cost float64) (N, S, Q float64) {
 	N = s.Count()
 	S = s.SumPays() / cost
 	Q = s.Q.Load() / cost / cost
@@ -488,7 +488,7 @@ func (s *StatCascade) RTPsym(cost float64, scat Sym) (lrtp, srtp float64) {
 
 // NSQ returns number of spins, sum of pays, sum of squares of pays by spin,
 // normalized by spin cost.
-func (s *StatCascade) NSQ(cost float64) (N float64, S float64, Q float64) {
+func (s *StatCascade) NSQ(cost float64) (N, S, Q float64) {
 	N = s.Count()
 	S = s.SumPays() / cost
 	Q = s.Q.Load() / cost / cost
@@ -606,14 +606,39 @@ type (
 )
 
 const (
-	CtxGranulation = 1000 // check context every N reshuffles
-	FallLimit      = 20   // maximum 20 cascades for reels ~100 symbols length
+	FallLimit = 20 // maximum 20 cascades for reels ~100 symbols length
 )
 
 var (
 	ErrAvalanche = errors.New("too many cascading falls")
 	ErrReelCount = errors.New("unexpected number of reels")
 )
+
+func ScanReels2(ctx context.Context, sp *ScanPar, ss *StatSnap, g SlotGeneric,
+	calc CalcFunc) (float64, float64) {
+	var reels = g.GetReels(sp.MRTP)
+	if sx, sy := g.Dim(); len(reels) != int(sx) {
+		panic(fmt.Errorf("%w: %d reels provided for %dx%d slot", ErrReelCount, len(reels), sx, sy))
+	}
+	switch sp.Method {
+	case game.CMbruteforce:
+		sp.Total = reels.Reshuffles()
+		//bruteforce(ctx, sp, ss, g)
+		BruteForcex2(ctx, sp, ss, g, calc)
+		/*case game.CMmontecarlo:
+		go func() {
+			defer wg.Done()
+			ProgressMC(ctx2, sp, s, calc, g.Cost())
+		}()
+		montecarlo(ctx2, sp, s, g)*/
+	}
+	return calc(io.Discard)
+}
+
+func ScanReelsCommon2(ctx context.Context,
+	sp *ScanPar, ss *StatSnap, g SlotGeneric, calc CalcFunc) (float64, float64) {
+	return ScanReels2(ctx, sp, ss, g, calc)
+}
 
 func ScanReels(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric,
 	bruteforce, montecarlo CalcAlg, calc CalcFunc) (float64, float64) {
@@ -625,27 +650,23 @@ func ScanReels(ctx context.Context, sp *ScanPar, s Simulator, g SlotGeneric,
 		fmt.Printf("selected %d lines\n", sel)
 	}
 	var wg sync.WaitGroup
-	wg.Add(2)
-	go func() {
-		defer wg.Done()
+	wg.Go(func() {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
 		switch sp.Method {
 		case game.CMbruteforce:
-			go func() {
-				defer wg.Done()
+			wg.Go(func() {
 				sp.Total = reels.Reshuffles()
-				ProgressBF(ctx2, sp, s, calc, g.Cost())
-			}()
+				ProgressBF(ctx2, sp, s, calc)
+			})
 			bruteforce(ctx2, sp, s, g)
 		case game.CMmontecarlo:
-			go func() {
-				defer wg.Done()
+			wg.Go(func() {
 				ProgressMC(ctx2, sp, s, calc, g.Cost())
-			}()
+			})
 			montecarlo(ctx2, sp, s, g)
 		}
-	}()
+	})
 	wg.Wait()
 
 	fmt.Println()

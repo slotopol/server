@@ -28,7 +28,7 @@ func BruteForceEuro(ctx context.Context, s slot.Simulator, g *Game, reels slot.R
 					g.SetCol(4, r4, i4)
 					for i5 := range r5 {
 						N++
-						if N%slot.CtxGranulation == 0 {
+						if N&0xFFF == 0 {
 							select {
 							case <-ctx.Done():
 								return
@@ -62,18 +62,15 @@ func CalcStatEuro(ctx context.Context, sp *slot.ScanPar, s *slot.StatGeneric, x,
 	}
 
 	var wg sync.WaitGroup
-	wg.Add(2)
-	go func() {
-		defer wg.Done()
+	wg.Go(func() {
 		var ctx2, cancel2 = context.WithCancel(ctx)
 		defer cancel2()
-		go func() {
-			defer wg.Done()
+		wg.Go(func() {
 			sp.Total = reels.Reshuffles()
-			slot.ProgressBF(ctx2, sp, s, calc, g.Cost())
-		}()
+			slot.ProgressBF(ctx2, sp, s, calc)
+		})
 		BruteForceEuro(ctx2, s, g, reels, x, y)
-	}()
+	})
 	wg.Wait()
 	return calc(os.Stdout)
 }

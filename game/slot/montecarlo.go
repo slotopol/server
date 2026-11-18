@@ -15,7 +15,7 @@ import (
 const lolim = 1e6 // lower limit, let some space to get approximate sigma
 
 // Function to report about progress of Monte Carlo calculation
-func ProgressMC(ctx context.Context, sp *ScanPar, s Simulator, calc func(io.Writer) (float64, float64), cost float64) {
+func ProgressMC(ctx context.Context, sp *ScanPar, s Simulator, calc CalcFunc, cost float64) {
 	const stepdur = 1000 * time.Millisecond
 	var t0 = time.Now()
 	var steps = time.Tick(stepdur)
@@ -73,20 +73,17 @@ func MonteCarlo(ctx context.Context, sp *ScanPar, s Simulator, mgame SlotGeneric
 
 	var msrc = prng.NewXoshiro256PP(123456789) // master prng source
 
-	wg.Add(sp.TN)
 	for range tn64 {
 		var wgame = mgame.Clone() // worker game
 		var wsrc = msrc.Clone()   // worker prng source
 		msrc.Jump()               // shift the master forward by 2^128 steps
 		var rng = prng.New(wsrc)
 
-		go func() {
-			defer wg.Done()
-
+		wg.Go(func() {
 			var wins Wins
-			var i uint64
-			for i = 0; i < total; i += tn64 {
-				if i%CtxGranulation == 0 {
+			var N uint64
+			for N = 0; N < total; N += tn64 {
+				if N&0xFFF == 0 {
 					// check on break
 					select {
 					case <-ctx.Done():
@@ -108,7 +105,7 @@ func MonteCarlo(ctx context.Context, sp *ScanPar, s Simulator, mgame SlotGeneric
 				s.Simulate(wgame, &wins, sp.MRTP)
 				wins.Reset()
 			}
-		}()
+		})
 	}
 	wg.Wait()
 }

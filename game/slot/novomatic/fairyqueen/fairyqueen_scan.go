@@ -17,13 +17,10 @@ func BruteForce5x3es2(ctx context.Context, sp *slot.ScanPar, s slot.Simulator, g
 	var r4 = reels.Reel(4)
 	var r5 = reels.Reel(5)
 	var wg sync.WaitGroup
-	wg.Add(sp.TN)
 	for ti := range tn64 {
 		var sg = g.Clone()
 		var N uint64
-		go func() {
-			defer wg.Done()
-
+		wg.Go(func() {
 			var wins slot.Wins
 			var x slot.Pos
 			for x = 1; x <= 2; x++ {
@@ -44,7 +41,7 @@ func BruteForce5x3es2(ctx context.Context, sp *slot.ScanPar, s slot.Simulator, g
 					sg.SetCol(4, r4, i4)
 					for i5 := range r5 {
 						N++
-						if N%slot.CtxGranulation == 0 {
+						if N&0xFFF == 0 {
 							select {
 							case <-ctx.Done():
 								return
@@ -60,7 +57,7 @@ func BruteForce5x3es2(ctx context.Context, sp *slot.ScanPar, s slot.Simulator, g
 					}
 				}
 			}
-		}()
+		})
 	}
 	wg.Wait()
 }
@@ -70,13 +67,10 @@ func BruteForce5x3es3(ctx context.Context, sp *slot.ScanPar, s slot.Simulator, g
 	var r4 = reels.Reel(4)
 	var r5 = reels.Reel(5)
 	var wg sync.WaitGroup
-	wg.Add(sp.TN)
 	for ti := range tn64 {
 		var sg = g.Clone()
 		var N uint64
-		go func() {
-			defer wg.Done()
-
+		wg.Go(func() {
 			var wins slot.Wins
 			var x slot.Pos
 			for x = 1; x <= 3; x++ {
@@ -95,7 +89,7 @@ func BruteForce5x3es3(ctx context.Context, sp *slot.ScanPar, s slot.Simulator, g
 				sg.SetCol(4, r4, i4)
 				for i5 := range r5 {
 					N++
-					if N%slot.CtxGranulation == 0 {
+					if N&0xFFF == 0 {
 						select {
 						case <-ctx.Done():
 							return
@@ -110,7 +104,7 @@ func BruteForce5x3es3(ctx context.Context, sp *slot.ScanPar, s slot.Simulator, g
 					wins.Reset()
 				}
 			}
-		}()
+		})
 	}
 	wg.Wait()
 }
