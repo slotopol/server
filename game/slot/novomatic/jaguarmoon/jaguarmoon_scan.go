@@ -11,7 +11,7 @@ import (
 
 func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	fmt.Printf("\n(1/2) bonus reels calculations\n")
-	var sb = slot.NewStatGeneric(sn, 5)
+	var sb = slot.NewSnapGeneric(sn, 5)
 	{
 		var g = NewGame()
 		g.FSR = 15 // set free spins mode
@@ -19,7 +19,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		var calc = func(w io.Writer) (float64, float64) {
 			return slot.Parsheet_simple(w, sp, sb, g.Cost())
 		}
-		slot.ScanReelsCommon(ctx, sp, sb, g, calc)
+		slot.ScanReelsCommon2(ctx, sp, sb, g, calc)
 	}
 
 	if ctx.Err() != nil {
@@ -27,10 +27,9 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	}
 
 	fmt.Printf("\n(2/2) regular reels calculations\n")
-	var sr = slot.NewStatGeneric(sn, 5)
+	var sr = slot.NewSnapGeneric(sn, 5).MakeSym(scat, 6)
 	{
 		var g = NewGame()
-		sr.SymDim(scat, 6)
 		// custom parsheet
 		var cost = g.Cost()
 		var calc = func(w io.Writer) (float64, float64) {
@@ -42,7 +41,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 			// calculation
 			var Pfg, PLm, PLm2, PL2m2 float64
 			for i := range 6 {
-				var Pfgi = float64(sr.C[scat-1][i].Load()) / Nr
+				var Pfgi = float64(sr.A[0].C[scat-1][i]) / Nr
 				var L = float64(ScatFreespin[i])
 				var m = float64(FreeMult[i])
 				var plm = Pfgi * L * m
@@ -66,6 +65,6 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 			slot.Print_all(w, sp, sr, rtp, D)
 			return rtp, D
 		}
-		return slot.ScanReelsCommon(ctx, sp, sr, g, calc)
+		return slot.ScanReelsCommon2(ctx, sp, sr, g, calc)
 	}
 }

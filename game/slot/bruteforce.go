@@ -10,8 +10,8 @@ import (
 )
 
 // Function to report about progress of calculation by brute force
-func ReporterBF2(ctx context.Context, snapch []chan *StatSnap,
-	sp *ScanPar, ss *StatSnap, g SlotGeneric, calc CalcFunc) {
+func ReporterBF2(ctx context.Context, snapch []chan Simulator2,
+	sp *ScanPar, ss Simulator2, g SlotGeneric, calc CalcFunc) {
 	var t0 = time.Now()
 	const stepdur = 1000 * time.Millisecond
 	var steps = time.Tick(stepdur)
@@ -25,7 +25,7 @@ func ReporterBF2(ctx context.Context, snapch []chan *StatSnap,
 		N   float64
 		RTP float64
 	)
-	var latest = make([]*StatSnap, len(snapch))
+	var latest = make([]Simulator2, len(snapch))
 	var closed = make([]bool, len(snapch))
 	var activeCount = len(snapch)
 	for activeCount > 0 {
@@ -79,8 +79,8 @@ func ReporterBF2(ctx context.Context, snapch []chan *StatSnap,
 	calc(os.Stdout)
 }
 
-func WorkerBF2(ctx context.Context, outch chan *StatSnap, ti, tn uint64,
-	sp *ScanPar, local *StatSnap, wgame SlotGeneric) {
+func WorkerBF2(ctx context.Context, outch chan Simulator2, ti, tn uint64,
+	sp *ScanPar, local Simulator2, wgame SlotGeneric) {
 	var reels = wgame.GetReels(sp.MRTP)
 	var total = reels.Reshuffles()
 	var _, iscascade = wgame.(SlotCascade)
@@ -145,15 +145,15 @@ func WorkerBF2(ctx context.Context, outch chan *StatSnap, ti, tn uint64,
 }
 
 func BruteForcex2(ctx context.Context,
-	sp *ScanPar, ss *StatSnap, mgame SlotGeneric, calc CalcFunc) {
+	sp *ScanPar, ss Simulator2, mgame SlotGeneric, calc CalcFunc) {
 	var reels = mgame.GetReels(sp.MRTP)
 	if sp.TN%len(reels[0]) == 0 {
 		panic("BruteForcex: thread number equals to 1-st reel length")
 	}
 
-	var snapch = make([]chan *StatSnap, sp.TN)
+	var snapch = make([]chan Simulator2, sp.TN)
 	for i := range snapch {
-		snapch[i] = make(chan *StatSnap, 1)
+		snapch[i] = make(chan Simulator2, 1)
 	}
 
 	var wg1, wg2 sync.WaitGroup

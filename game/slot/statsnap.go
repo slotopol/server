@@ -1,6 +1,14 @@
 package slot
 
-import "slices"
+import (
+	"fmt"
+	"slices"
+)
+
+var (
+	ErrTypeMatch = fmt.Errorf("operand type mismatch")
+	ErrSizeMatch = fmt.Errorf("the sizes of the operand fields do not match")
+)
 
 type StatPage struct {
 	N   uint64
@@ -83,13 +91,22 @@ func (sp *StatPage) Clear() {
 
 // Add adds all counters and sums from given StatPage to this StatPage.
 func (sp *StatPage) Add(ap *StatPage) {
+	if len(sp.C) > len(ap.C) || len(sp.S) > len(ap.S) {
+		panic(ErrSizeMatch)
+	}
 	sp.N += ap.N
 	for sym, c := range sp.C {
+		if len(c) > len(ap.C[sym]) {
+			panic(ErrSizeMatch)
+		}
 		for x, v := range ap.C[sym] {
 			c[x] += v
 		}
 	}
 	for sym, c := range sp.S {
+		if len(c) > len(ap.S[sym]) {
+			panic(ErrSizeMatch)
+		}
 		for x, v := range ap.S[sym] {
 			c[x] += v
 		}
@@ -97,6 +114,9 @@ func (sp *StatPage) Add(ap *StatPage) {
 	sp.Cfg += ap.Cfg
 	sp.Cfs += ap.Cfs
 	sp.Qfs += ap.Qfs
+	if len(sp.Cb) > len(ap.Cb) || len(sp.Sb) > len(ap.Sb) || len(sp.Cj) > len(ap.Cj) {
+		panic(ErrSizeMatch)
+	}
 	for id, v := range ap.Cb {
 		sp.Cb[id] += v
 	}
@@ -158,7 +178,7 @@ type StatSnap struct {
 }
 
 // StatSnap implements Simulator interface.
-var _ Simulator = (*StatSnap)(nil)
+var _ Simulator2 = (*StatSnap)(nil)
 
 // NewStatSnap creates a new StatSnap object with a specified number
 // of pages (corresponding to avalanche cascades), where each page
@@ -173,6 +193,14 @@ func NewStatSnap(cn, sn, rn, bn, jn int) *StatSnap {
 	return ss
 }
 
+func NewSnapGeneric(sn, rn int) *StatSnap {
+	return NewStatSnap(1, sn, rn, 0, 0)
+}
+
+func NewSnapCascade(sn, rn int) *StatSnap {
+	return NewStatSnap(FallLimit, sn, rn, 0, 0)
+}
+
 // MakeSym reserves memory for counters and sums for given symbol by
 // maximum number of this symbol in win. Symbol is 1-based.
 func (ss *StatSnap) MakeSym(sym Sym, rn int) *StatSnap {
@@ -182,7 +210,7 @@ func (ss *StatSnap) MakeSym(sym Sym, rn int) *StatSnap {
 	return ss
 }
 
-func (ss *StatSnap) Clone() *StatSnap {
+func (ss *StatSnap) Clone() Simulator2 {
 	var dub = &StatSnap{
 		A:  make([]*StatPage, len(ss.A)),
 		Q:  ss.Q,
@@ -203,12 +231,20 @@ func (ss *StatSnap) Clear() {
 }
 
 // Add adds all counters and sums from given StatSnap to this StatSnap.
-func (ss *StatSnap) Add(as *StatSnap) {
-	for cfn, sp := range ss.A {
-		sp.Add(as.A[cfn])
+func (ss *StatSnap) Add(as Simulator2) {
+	var op *StatSnap
+	var ok bool
+	if op, ok = as.(*StatSnap); !ok {
+		panic(ErrTypeMatch)
 	}
-	ss.Q += as.Q
-	ss.EC += as.EC
+	if len(ss.A) > len(op.A) {
+		panic(ErrSizeMatch)
+	}
+	for cfn, sp := range ss.A {
+		sp.Add(op.A[cfn])
+	}
+	ss.Q += op.Q
+	ss.EC += op.EC
 }
 
 // SumPays returns sum of pays by all symbols and bonuses.
@@ -218,6 +254,16 @@ func (ss *StatSnap) SumPays() (sum float64) {
 			break
 		}
 		sum += sp.SumPays()
+	}
+	return
+}
+
+// CascNum returns number of reshuffles with given cascade number
+// with avalanche end on this number.
+func (ss *StatSnap) CascNum(n int) (sum uint64) {
+	sum = ss.A[n].N
+	if n < len(ss.A)-1 {
+		sum -= ss.A[n+1].N
 	}
 	return
 }
@@ -249,11 +295,44 @@ func (ss *StatSnap) FGC() (Cfg, Cfs, Qfs float64) {
 
 // Simulate performs spin simulation, calculates results, update statistics.
 func (ss *StatSnap) Simulate(g SlotGame, wins *Wins, mrtp float64) {
-	if g.Scanner(wins) != nil {
-		ss.EC++
+	if len(ss.A) == 1 {
+		if g.Scanner(wins) != nil {
+			ss.EC++
+			return
+		}
+		if pay := ss.A[0].Update(*wins); pay != 0 {
+			ss.Q += pay * pay
+		}
 		return
 	}
-	if pay := ss.A[0].Update(*wins); pay != 0 {
+
+	var gc = g.(Cascade)
+	var err error
+	var pay float64
+	var cfn int
+	for cfn = range FallLimit {
+		gc.UntoFall()
+		var wp = len(*wins)
+		if err = g.Scanner(wins); err != nil {
+			break
+		}
+		pay += ss.A[cfn].Update((*wins)[wp:])
+		gc.Strike((*wins)[wp:])
+		if len(*wins) == wp {
+			break
+		}
+		var reels = g.GetReels(mrtp)
+		gc.PushFall(reels)
+	}
+	if cfn >= FallLimit {
+		err = ErrAvalanche
+		return
+	}
+	if pay > 0 {
 		ss.Q += pay * pay
+	}
+	if err != nil {
+		ss.EC++
+		return
 	}
 }

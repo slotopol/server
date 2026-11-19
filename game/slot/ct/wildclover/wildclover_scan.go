@@ -9,7 +9,7 @@ import (
 
 func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var g = NewGame(sp.Sel)
-	var s = slot.NewStatSnap(1, sn, 5, 0, 0)
+	var s = slot.NewSnapGeneric(sn, 5)
 
 	var calc = func(w io.Writer) (float64, float64) {
 		return slot.Parsheet_simple(w, sp, s, g.Cost())

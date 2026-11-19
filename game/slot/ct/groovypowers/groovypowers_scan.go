@@ -11,14 +11,14 @@ import (
 
 func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	fmt.Printf("\n(1/2) bonus games calculations\n")
-	var sb = slot.NewStatGeneric(sn, 5)
+	var sb = slot.NewSnapGeneric(sn, 5)
 	{
 		var g = NewGame(sp.Sel)
 		g.BM = true // set bonus mode
 		var calc = func(w io.Writer) (float64, float64) {
 			return slot.Parsheet_simple(w, sp, sb, g.Cost())
 		}
-		slot.ScanReelsCommon(ctx, sp, sb, g, calc)
+		slot.ScanReelsCommon2(ctx, sp, sb, g, calc)
 	}
 
 	if ctx.Err() != nil {
@@ -26,7 +26,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	}
 
 	fmt.Printf("\n(2/2) regular games calculations\n")
-	var sr = slot.NewStatGeneric(sn, 5)
+	var sr = slot.NewSnapGeneric(sn, 5)
 	{
 		var g = NewGame(sp.Sel)
 
@@ -48,6 +48,6 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 			return rtp, D
 		}
 
-		return slot.ScanReelsCommon(ctx, sp, sr, g, calc)
+		return slot.ScanReelsCommon2(ctx, sp, sr, g, calc)
 	}
 }

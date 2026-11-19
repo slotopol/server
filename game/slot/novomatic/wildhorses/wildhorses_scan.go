@@ -9,13 +9,13 @@ import (
 )
 
 type StatBon struct {
-	slot.StatGeneric
+	*slot.StatSnap
 }
 
 func NewStatBon() *StatBon {
-	var s StatBon
-	s.CntDim(sn, 5)
-	return &s
+	return &StatBon{
+		StatSnap: slot.NewSnapGeneric(sn, 5),
+	}
 }
 
 func (s *StatBon) FGC() (Cfg, Cfs, Qfs float64) {
@@ -38,7 +38,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		var calc = func(w io.Writer) (float64, float64) {
 			return slot.Parsheet_affixrecur(w, sp, sb, g.Cost())
 		}
-		slot.ScanReelsCommon(ctx, sp, sb, g, calc)
+		slot.ScanReelsCommon2(ctx, sp, sb, g, calc)
 	}
 
 	if ctx.Err() != nil {
@@ -46,12 +46,12 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	}
 
 	fmt.Printf("\n(2/2) regular reels calculations\n")
-	var sr = slot.NewStatGeneric(sn, 5)
+	var sr = slot.NewSnapGeneric(sn, 5)
 	{
 		var g = NewGame(sp.Sel)
 		var calc = func(w io.Writer) (float64, float64) {
 			return slot.Parsheet_dualreelrecur(w, sp, sr, sb, g.Cost())
 		}
-		return slot.ScanReelsCommon(ctx, sp, sr, g, calc)
+		return slot.ScanReelsCommon2(ctx, sp, sr, g, calc)
 	}
 }

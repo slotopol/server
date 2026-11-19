@@ -94,12 +94,12 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (rtp, D float64) {
 	var p2, p3, p4 = wc, wc, wc
 
 	var mu, d [8]float64
-	var sr *slot.StatGeneric
+	var sr slot.Simulator2
 	for mask := range mu {
 		var wc2, wc3, wc4 = mask&4 > 0, mask&2 > 0, mask&1 > 0
 
 		fmt.Printf("\n(%d/8) calculations of star combinations [%c%c%c]\n", mask+1, wcsym(wc2), wcsym(wc3), wcsym(wc4))
-		var s = slot.NewStatGeneric(sn, 5)
+		var s = slot.NewSnapGeneric(sn, 5)
 		var g = NewGame(sp.Sel)
 		if wc2 {
 			g.PRW[1] = 1
@@ -118,7 +118,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (rtp, D float64) {
 			}
 			return µ, D
 		}
-		mu[mask], d[mask] = slot.ScanReelsCommon(ctx, sp, s, g, calc)
+		mu[mask], d[mask] = slot.ScanReelsCommon2(ctx, sp, s, g, calc)
 		if mask == 0 {
 			sr = s
 			// break

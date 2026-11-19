@@ -21,7 +21,7 @@ const Em = 42. / 27.
 
 func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var g = NewGame(sp.Sel)
-	var s = slot.NewStatGeneric(sn, 5)
+	var s = slot.NewSnapGeneric(sn, 5)
 
 	var calc = func(w io.Writer) (float64, float64) {
 		var µ, Dsym = slot.EvD(s, g.Cost())
@@ -35,5 +35,5 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		return rtp, D
 	}
 
-	return slot.ScanReelsCommon(ctx, sp, s, g, calc)
+	return slot.ScanReelsCommon2(ctx, sp, s, g, calc)
 }

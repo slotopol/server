@@ -17,6 +17,17 @@ import (
 	"go.yaml.in/yaml/v3"
 )
 
+type Simulator2 interface {
+	// Clone returns a full deep copy of the statistics.
+	Clone() Simulator2
+	// Clear resets the statistics to zero.
+	Clear()
+	// Add updates the statistics with given simulator data with same type.
+	// It helps to parallelize the simulation and then merge the results.
+	Add(s Simulator2)
+	Simulator
+}
+
 type Simulator interface {
 	// Count returns number of processed grid reshuffles, including with no wins.
 	Count() float64
@@ -614,7 +625,7 @@ var (
 	ErrReelCount = errors.New("unexpected number of reels")
 )
 
-func ScanReels2(ctx context.Context, sp *ScanPar, ss *StatSnap, g SlotGeneric,
+func ScanReels2(ctx context.Context, sp *ScanPar, ss Simulator2, g SlotGeneric,
 	calc CalcFunc) (float64, float64) {
 	var reels = g.GetReels(sp.MRTP)
 	if sx, sy := g.Dim(); len(reels) != int(sx) {
@@ -636,7 +647,7 @@ func ScanReels2(ctx context.Context, sp *ScanPar, ss *StatSnap, g SlotGeneric,
 }
 
 func ScanReelsCommon2(ctx context.Context,
-	sp *ScanPar, ss *StatSnap, g SlotGeneric, calc CalcFunc) (float64, float64) {
+	sp *ScanPar, ss Simulator2, g SlotGeneric, calc CalcFunc) (float64, float64) {
 	return ScanReels2(ctx, sp, ss, g, calc)
 }
 

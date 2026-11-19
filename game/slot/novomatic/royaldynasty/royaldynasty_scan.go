@@ -9,13 +9,13 @@ import (
 )
 
 type Stat struct {
-	slot.StatGeneric
+	*slot.StatSnap
 }
 
 func NewStat() *Stat {
-	var s Stat
-	s.CntDim(sn, 5)
-	return &s
+	return &Stat{
+		StatSnap: slot.NewSnapGeneric(sn, 5),
+	}
 }
 
 func (s *Stat) FGC() (Cfg, Cfs, Qfs float64) {
@@ -24,7 +24,7 @@ func (s *Stat) FGC() (Cfg, Cfs, Qfs float64) {
 		sum += float64(Li)
 		sum2 += float64(Li * Li)
 	}
-	Cfg = float64(s.Cfg.Load())
+	Cfg = float64(s.A[0].Cfg)
 	Cfs = Cfg * sum / float64(len(Freegames))
 	Qfs = Cfg * sum2 / float64(len(Freegames))
 	return
@@ -40,7 +40,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		var calc = func(w io.Writer) (float64, float64) {
 			return slot.Parsheet_affixrecur(w, sp, sb, g.Cost())
 		}
-		slot.ScanReelsCommon(ctx, sp, sb, g, calc)
+		slot.ScanReelsCommon2(ctx, sp, sb, g, calc)
 	}
 
 	if ctx.Err() != nil {
@@ -54,6 +54,6 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		var calc = func(w io.Writer) (float64, float64) {
 			return slot.Parsheet_dualreelrecur(w, sp, sr, sb, g.Cost())
 		}
-		return slot.ScanReelsCommon(ctx, sp, sr, g, calc)
+		return slot.ScanReelsCommon2(ctx, sp, sr, g, calc)
 	}
 }

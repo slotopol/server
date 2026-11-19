@@ -33,12 +33,12 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	}
 
 	fmt.Printf("\n(2/2) regular games calculations\n")
-	var sr = slot.NewStatGeneric(sn, 5)
+	var sr = slot.NewSnapGeneric(sn, 5)
 	{
 		var g = NewGame(sp.Sel)
 		var calc = func(w io.Writer) (float64, float64) {
 			return slot.Parsheet_dualreelrecur(w, sp, sr, sb, g.Cost())
 		}
-		return slot.ScanReelsCommon(ctx, sp, sr, g, calc)
+		return slot.ScanReelsCommon2(ctx, sp, sr, g, calc)
 	}
 }

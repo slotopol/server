@@ -9,14 +9,14 @@ import (
 	"github.com/slotopol/server/game/slot"
 )
 
-func CalcStatBon(ctx context.Context, sp *slot.ScanPar, s *slot.StatGeneric, es slot.Sym) (float64, float64) {
+func CalcStatBon(ctx context.Context, sp *slot.ScanPar, s slot.Simulator2, es slot.Sym) (float64, float64) {
 	var g = NewGame(sp.Sel)
 	g.FSR = 10 // set free spins mode
 	g.ES = es
 	var calc = func(w io.Writer) (float64, float64) {
 		return slot.Parsheet_solereelrecur(w, sp, s, g.Cost(), 1)
 	}
-	return slot.ScanReelsCommon(ctx, sp, s, g, calc)
+	return slot.ScanReelsCommon2(ctx, sp, s, g, calc)
 }
 
 // custom parsheet
@@ -28,14 +28,14 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var q, sq float64
 	var es slot.Sym
 	for es = 1; es < wsc; es++ {
-		fmt.Printf("\n(%d/16) calculations for expanding symbol [%d]\n", es, es)
-		var s = slot.NewStatGeneric(sn, 5)
+		fmt.Printf("\n(%d/10) calculations for expanding symbol [%d]\n", es, es)
+		var s = slot.NewSnapGeneric(sn, 5)
 		var rtpi, _ = CalcStatBon(ctx, sp, s, es)
 		if ctx.Err() != nil {
 			return 0, 0
 		}
 		if es == 1 {
-			q = s.FSQ()
+			_, q, _ = slot.Efs(s)
 			sq = 1 / (1 - q)
 		}
 		var µ, D = slot.EvD(s, cost)
@@ -51,12 +51,11 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var Ebon = (L * sq) * µB
 
 	fmt.Printf("\n(10/10) regular reels calculations\n")
-	var sr = slot.NewStatGeneric(sn, 5)
+	var sr = slot.NewSnapGeneric(sn, 5)
 	var calc = func(w io.Writer) (float64, float64) {
 		var µr, Dsymr = slot.EvD(sr, cost)
-		var qr = sr.FSQ()
+		var Pfg, qr, _ = slot.Efs(sr)
 		var sqr = 1 / (1 - qr)
-		var Pfg = sr.FGQ()
 		var rtp = µr + qr*rtpfs
 		var D = Dsymr + Pfg*(Vbon+(Ebon-µr)*(Ebon-µr))
 		if sp.IsMain() {
@@ -68,5 +67,5 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		slot.Print_all(w, sp, sr, rtp, D)
 		return rtp, D
 	}
-	return slot.ScanReelsCommon(ctx, sp, sr, g, calc)
+	return slot.ScanReelsCommon2(ctx, sp, sr, g, calc)
 }

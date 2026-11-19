@@ -10,22 +10,21 @@ import (
 
 func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var g = NewGame(sp.Sel)
-	var s = slot.NewStatGeneric(sn, 5)
-	s.JackDim(kjj2)
+	var s = slot.NewStatSnap(1, sn, 5, 0, kjj2)
 
 	var calc = func(w io.Writer) (float64, float64) {
 		if sp.IsJack() {
 			var N = s.Count()
-			var q = s.FSQ()
+			var _, q, _ = slot.Efs(s)
 			var sq = 1 / (1 - q)
-			for idj := range s.Cj {
-				var Cj = float64(s.Cj[idj].Load()) / float64(sp.Sel)
-				var HRj = N / Cj * (1 + q*sq)
-				fmt.Fprintf(w, "jackpots%d: count per line %g, hit rate 1/%.12g\n", idj+1, Cj, HRj)
+			for idj, cj := range s.A[0].Cj {
+				var Cj = float64(cj) / float64(sp.Sel)
+				var HRj = Cj * (1 + q*sq) / N
+				fmt.Fprintf(w, "jackpots%d: count per line %g, hit rate 1/%.12g\n", idj+1, Cj, 1/HRj)
 			}
 		}
 		return slot.Parsheet_solereelrecur(w, sp, s, g.Cost(), 1)
 	}
 
-	return slot.ScanReelsCommon(ctx, sp, s, g, calc)
+	return slot.ScanReelsCommon2(ctx, sp, s, g, calc)
 }

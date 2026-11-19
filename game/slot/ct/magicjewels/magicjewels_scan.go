@@ -8,13 +8,13 @@ import (
 )
 
 type Stat struct {
-	slot.StatCascade
+	*slot.StatSnap
 }
 
 func NewStat() *Stat {
-	var s Stat
-	s.CntDim(sn, 5)
-	return &s
+	return &Stat{
+		StatSnap: slot.NewSnapCascade(sn, 5),
+	}
 }
 
 func (s *Stat) FGC() (Cfg, Cfs, Qfs float64) {
@@ -41,5 +41,5 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 		return slot.Parsheet_solereelrecur(w, sp, s, g.Cost(), 2)
 	}
 
-	return slot.ScanReelsCommon(ctx, sp, s, g, calc)
+	return slot.ScanReelsCommon2(ctx, sp, s, g, calc)
 }
