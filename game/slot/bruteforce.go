@@ -10,7 +10,7 @@ import (
 )
 
 // Function to report about progress of calculation by brute force
-func ReporterBF2(ctx context.Context, snapch []chan Simulator2,
+func ReporterBF(ctx context.Context, snapch []chan Simulator2,
 	sp *ScanPar, ss Simulator2, g SlotGeneric, calc CalcFunc) {
 	var t0 = time.Now()
 	const stepdur = 1000 * time.Millisecond
@@ -23,7 +23,6 @@ func ReporterBF2(ctx context.Context, snapch []chan Simulator2,
 	var (
 		dur time.Duration
 		N   float64
-		RTP float64
 	)
 	var latest = make([]Simulator2, len(snapch))
 	var closed = make([]bool, len(snapch))
@@ -58,7 +57,7 @@ func ReporterBF2(ctx context.Context, snapch []chan Simulator2,
 
 		dur = time.Since(t0)
 		N = ss.Count()
-		RTP, _ = calc(io.Discard)
+		var RTP, _ = calc(io.Discard)
 
 		var exp string
 		if dur > 2*stepdur {
@@ -79,7 +78,7 @@ func ReporterBF2(ctx context.Context, snapch []chan Simulator2,
 	calc(os.Stdout)
 }
 
-func WorkerBF2(ctx context.Context, outch chan Simulator2, ti, tn uint64,
+func WorkerBF(ctx context.Context, outch chan Simulator2, ti, tn uint64,
 	sp *ScanPar, local Simulator2, wgame SlotGeneric) {
 	var reels = wgame.GetReels(sp.MRTP)
 	var total = reels.Reshuffles()
@@ -162,7 +161,7 @@ func BruteForcex2(ctx context.Context,
 			var ctxrep, cancel = context.WithCancel(ctx)
 			defer cancel()
 			wg2.Go(func() {
-				ReporterBF2(ctxrep, snapch, sp, ss, mgame, calc)
+				ReporterBF(ctxrep, snapch, sp, ss, mgame, calc)
 			})
 		}
 		for ti, ch := range snapch {
@@ -170,7 +169,7 @@ func BruteForcex2(ctx context.Context,
 			var wgame = mgame.Clone()
 			wg1.Go(func() {
 				defer close(ch)
-				WorkerBF2(ctx, ch, uint64(ti), uint64(len(snapch)), sp, local, wgame)
+				WorkerBF(ctx, ch, uint64(ti), uint64(len(snapch)), sp, local, wgame)
 			})
 		}
 		wg1.Wait()

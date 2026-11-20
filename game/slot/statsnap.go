@@ -12,7 +12,7 @@ var (
 
 type StatPage struct {
 	N   uint64
-	C   [][]float64
+	C   [][]uint64
 	S   [][]float64
 	Cfg uint64
 	Cfs uint64
@@ -31,14 +31,14 @@ func (sp *StatPage) IsZero() bool {
 // of possible occurrences in a win.
 func NewStatPage(sn, rn, bn, jn int) *StatPage {
 	var sp = &StatPage{
-		C:  make([][]float64, sn),
+		C:  make([][]uint64, sn),
 		S:  make([][]float64, sn),
 		Cb: make([]uint64, bn),
 		Sb: make([]float64, bn),
 		Cj: make([]uint64, jn),
 	}
 	for i := range sn {
-		sp.C[i] = make([]float64, rn)
+		sp.C[i] = make([]uint64, rn)
 		sp.S[i] = make([]float64, rn)
 	}
 	return sp
@@ -47,7 +47,7 @@ func NewStatPage(sn, rn, bn, jn int) *StatPage {
 // Reserves memory for counters and sums for given symbol by
 // maximum number of this symbol in win. Symbol is 1-based.
 func (sp *StatPage) MakeSym(sym Sym, rn int) *StatPage {
-	sp.C[sym-1] = make([]float64, rn)
+	sp.C[sym-1] = make([]uint64, rn)
 	sp.S[sym-1] = make([]float64, rn)
 	return sp
 }
@@ -55,7 +55,7 @@ func (sp *StatPage) MakeSym(sym Sym, rn int) *StatPage {
 func (sp *StatPage) Clone() *StatPage {
 	var dub = &StatPage{
 		N:   sp.N,
-		C:   make([][]float64, len(sp.C)),
+		C:   make([][]uint64, len(sp.C)),
 		S:   make([][]float64, len(sp.C)),
 		Cfg: sp.Cfg,
 		Cfs: sp.Cfs,
@@ -193,7 +193,7 @@ func NewStatSnap(cn, sn, rn, bn, jn int) *StatSnap {
 	return ss
 }
 
-func NewSnapGeneric(sn, rn int) *StatSnap {
+func NewSnapFlat(sn, rn int) *StatSnap {
 	return NewStatSnap(1, sn, rn, 0, 0)
 }
 

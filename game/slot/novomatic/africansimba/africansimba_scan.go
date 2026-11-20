@@ -9,7 +9,7 @@ import (
 
 func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var g = NewGame()
-	var s = slot.NewSnapGeneric(sn, 5)
+	var s = slot.NewSnapFlat(sn, 5)
 
 	var calc = func(w io.Writer) (float64, float64) {
 		return slot.Parsheet_solereelrecur(w, sp, s, g.Cost(), 3)

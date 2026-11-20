@@ -14,7 +14,7 @@ type StatReg struct {
 
 func NewStatReg() *StatReg {
 	return &StatReg{
-		StatSnap: slot.NewSnapGeneric(sn, 5),
+		StatSnap: slot.NewSnapFlat(sn, 5),
 	}
 }
 
@@ -36,7 +36,7 @@ type StatBon struct {
 
 func NewStatBon() *StatBon {
 	return &StatBon{
-		StatSnap: slot.NewSnapGeneric(sn, 5),
+		StatSnap: slot.NewSnapFlat(sn, 5),
 	}
 }
 

@@ -10,7 +10,7 @@ import (
 
 func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	fmt.Printf("\n(1/2) free games calculations\n")
-	var sb = slot.NewSnapGeneric(sn, 5)
+	var sb = slot.NewSnapFlat(sn, 5)
 	{
 		var g = NewGame()
 		g.FSR = 12 // set free spins mode
@@ -25,7 +25,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	}
 
 	fmt.Printf("\n(2/2) regular games calculations\n")
-	var sr = slot.NewSnapGeneric(sn, 5)
+	var sr = slot.NewSnapFlat(sn, 5)
 	{
 		var g = NewGame()
 		var calc = func(w io.Writer) (float64, float64) {

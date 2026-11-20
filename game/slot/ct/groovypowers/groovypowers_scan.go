@@ -11,7 +11,7 @@ import (
 
 func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	fmt.Printf("\n(1/2) bonus games calculations\n")
-	var sb = slot.NewSnapGeneric(sn, 5)
+	var sb = slot.NewSnapFlat(sn, 5)
 	{
 		var g = NewGame(sp.Sel)
 		g.BM = true // set bonus mode
@@ -26,7 +26,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	}
 
 	fmt.Printf("\n(2/2) regular games calculations\n")
-	var sr = slot.NewSnapGeneric(sn, 5)
+	var sr = slot.NewSnapFlat(sn, 5)
 	{
 		var g = NewGame(sp.Sel)
 

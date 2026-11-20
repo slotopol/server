@@ -29,7 +29,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var es slot.Sym
 	for es = 1; es < wsc; es++ {
 		fmt.Printf("\n(%d/10) calculations for expanding symbol [%d]\n", es, es)
-		var s = slot.NewSnapGeneric(sn, 5)
+		var s = slot.NewSnapFlat(sn, 5)
 		var rtpi, _ = CalcStatBon(ctx, sp, s, es)
 		if ctx.Err() != nil {
 			return 0, 0
@@ -51,7 +51,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	var Ebon = (L * sq) * µB
 
 	fmt.Printf("\n(10/10) regular reels calculations\n")
-	var sr = slot.NewSnapGeneric(sn, 5)
+	var sr = slot.NewSnapFlat(sn, 5)
 	var calc = func(w io.Writer) (float64, float64) {
 		var µr, Dsymr = slot.EvD(sr, cost)
 		var Pfg, qr, _ = slot.Efs(sr)

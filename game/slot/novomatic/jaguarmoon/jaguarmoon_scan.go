@@ -11,7 +11,7 @@ import (
 
 func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	fmt.Printf("\n(1/2) bonus reels calculations\n")
-	var sb = slot.NewSnapGeneric(sn, 5)
+	var sb = slot.NewSnapFlat(sn, 5)
 	{
 		var g = NewGame()
 		g.FSR = 15 // set free spins mode
@@ -27,7 +27,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (float64, float64) {
 	}
 
 	fmt.Printf("\n(2/2) regular reels calculations\n")
-	var sr = slot.NewSnapGeneric(sn, 5).MakeSym(scat, 6)
+	var sr = slot.NewSnapFlat(sn, 5).MakeSym(scat, 6)
 	{
 		var g = NewGame()
 		// custom parsheet

@@ -99,7 +99,7 @@ func CalcStat(ctx context.Context, sp *slot.ScanPar) (rtp, D float64) {
 		var wc2, wc3, wc4 = mask&4 > 0, mask&2 > 0, mask&1 > 0
 
 		fmt.Printf("\n(%d/8) calculations of star combinations [%c%c%c]\n", mask+1, wcsym(wc2), wcsym(wc3), wcsym(wc4))
-		var s = slot.NewSnapGeneric(sn, 5)
+		var s = slot.NewSnapFlat(sn, 5)
 		var g = NewGame(sp.Sel)
 		if wc2 {
 			g.PRW[1] = 1
