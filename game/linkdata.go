@@ -139,6 +139,7 @@ type (
 	ScanPar struct {
 		Method CM      // calculations method ID
 		TN     int     // threads number (0 to use all hardware available cores)
+		Seed   uint64  // initial seed for Xoshiro256++ generator
 		Total  uint64  // number of total spins
 		Prec   float64 // expected precision for Monte Carlo method
 		Conf   float64 // confidence (for Z, VI, CI)

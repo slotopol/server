@@ -34,6 +34,10 @@ func SetupParSheet(pf *pflag.FlagSet, sp *game.ScanPar, gi *game.GameInfo) (err 
 	}
 	sp.TN = tn
 
+	if sp.Seed, err = pf.GetUint64("seed"); err != nil {
+		return
+	}
+
 	if sp.MRTP, err = pf.GetFloat64("rtp"); err != nil {
 		return
 	}
@@ -179,6 +183,7 @@ func init() {
 	f.StringP("game", "g", "", "identifier of game to scan")
 	// ParSheet
 	f.Int("mt", 0, "multithreaded scanning threads number")
+	f.Uint64("seed", 123456789, "initial seed for Xoshiro256++ random numners generator")
 	f.Float64P("rtp", "r", cfg.DefMRTP, "master RTP of game")
 	f.IntP("sel", "l", 0, "number of selected bet lines, 0 for all")
 	f.Float64("conf", 95, "confidence probability, in percents")

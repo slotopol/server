@@ -11,15 +11,15 @@ var (
 )
 
 type StatPage struct {
-	N   uint64
-	C   [][]uint64
-	S   [][]float64
-	Cfg uint64
-	Cfs uint64
-	Qfs uint64
-	Cb  []uint64
-	Sb  []float64
-	Cj  []uint64
+	N   uint64      `yaml:"N"`
+	C   [][]uint64  `yaml:"C"`
+	S   [][]float64 `yaml:"S"`
+	Cfg uint64      `yaml:"Cfg,omitempty"` // free games hits count
+	Cfs uint64      `yaml:"Cfs,omitempty"` // free spins count
+	Qfs uint64      `yaml:"Qfs,omitempty"` // free spins series squares count
+	Cb  []uint64    `yaml:"Cb,omitempty"`  // bonus hits count
+	Sb  []float64   `yaml:"Sb,omitempty"`  // sum of bonuses pays
+	Cj  []uint64    `yaml:"Cj,omitempty"`  // progressive jackpot hits count
 }
 
 func (sp *StatPage) IsZero() bool {
@@ -172,9 +172,9 @@ func (sp *StatPage) Update(wins Wins) (pay float64) {
 }
 
 type StatSnap struct {
-	A  []*StatPage
-	Q  float64
-	EC uint64
+	EC uint64      `yaml:"EC"`
+	Q  float64     `yaml:"Q"`
+	A  []*StatPage `yaml:"A"`
 }
 
 // StatSnap implements Simulator interface.
@@ -212,9 +212,9 @@ func (ss *StatSnap) MakeSym(sym Sym, rn int) *StatSnap {
 
 func (ss *StatSnap) Clone() Simulator2 {
 	var dub = &StatSnap{
-		A:  make([]*StatPage, len(ss.A)),
-		Q:  ss.Q,
 		EC: ss.EC,
+		Q:  ss.Q,
+		A:  make([]*StatPage, len(ss.A)),
 	}
 	for cfn, sp := range ss.A {
 		dub.A[cfn] = sp.Clone()
@@ -223,11 +223,11 @@ func (ss *StatSnap) Clone() Simulator2 {
 }
 
 func (ss *StatSnap) Clear() {
+	ss.EC = 0
+	ss.Q = 0
 	for _, sp := range ss.A {
 		sp.Clear()
 	}
-	ss.Q = 0
-	ss.EC = 0
 }
 
 // Add adds all counters and sums from given StatSnap to this StatSnap.
@@ -237,14 +237,14 @@ func (ss *StatSnap) Add(as Simulator2) {
 	if op, ok = as.(*StatSnap); !ok {
 		panic(ErrTypeMatch)
 	}
+	ss.EC += op.EC
+	ss.Q += op.Q
 	if len(ss.A) > len(op.A) {
 		panic(ErrSizeMatch)
 	}
 	for cfn, sp := range ss.A {
 		sp.Add(op.A[cfn])
 	}
-	ss.Q += op.Q
-	ss.EC += op.EC
 }
 
 // SumPays returns sum of pays by all symbols and bonuses.

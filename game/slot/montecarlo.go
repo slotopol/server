@@ -145,7 +145,7 @@ func MonteCarlo2(ctx context.Context, sp *ScanPar, ss Simulator2, mgame SlotGene
 		snapch[i] = make(chan Simulator2, 1)
 	}
 
-	var msrc = prng.NewXoshiro256PP(123456789) // master prng source
+	var msrc = prng.NewXoshiro256PP(sp.Seed) // master prng source
 
 	var wg1, wg2 sync.WaitGroup
 	func() {
